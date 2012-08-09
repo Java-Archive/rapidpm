@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Dependencies: org.rapidpm.base,
+ org.rapidpm.commons,
+ org.rapidpm.guava,
+ org.rapidpm.httpcomponents,
+ org.rapidpm.logger,
+ org.rapidpm.neoscio,
+ org.rapidpm.poi,
+ org.rapidpm.solrj
+

@@ -1,0 +1,12 @@
+ww1.xyz.de ; www.abc.de
+ww2.xyz.de ; www.abc.de
+ww3.xyz.de ; www.abc.de
+ww4.xyz.de ; www.abc.de
+
+ww1.def.de ; ww1.xyz.de
+ww2.def.de ; ww1.xyz.de
+ww3.def.de ; ww1.xyz.de
+
+ww1.def.de ; ww2.xyz.de
+ww2.def.de ; ww2.xyz.de
+ww3.def.de ; ww2.xyz.de
