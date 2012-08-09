@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="module-neoscio">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/lib/module/org/rapidpm/neoscio/main" />
+      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/neoscio/main/NeoScioLIBS.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/lib/org/rapidpm/neoscio/main" recursive="false" />
+  </library>
+</component>

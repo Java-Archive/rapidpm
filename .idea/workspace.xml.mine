@@ -1,0 +1,3553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="ANALYZE_TEST_SOURCES" value="false" />
+    <option name="ANALYSIS_IN_BACKGROUND" value="true" />
+  </component>
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="Prozess_XML2Solr:jar" />
+    </artifacts-to-build>
+  </component>
+  <component name="BuildServerSettings">
+    <option name="LOGIN" value="sven.ruppert" />
+    <option name="SERVER_URL" value="http://dev.neoscio.de:8080/teamcity" />
+    <option name="PASSWORD" value="dfecdfefdf93df9adfdedfd0dfebdff9df9ddf92dfc8dfc2df99" />
+    <option name="REMEMBER_ME" value="true" />
+    <option name="USE_IDEA_PROXY_SETTINGS" value="true" />
+    <option name="INSPECTIONS_BUILD_TYPE_NAME" />
+    <option name="INSPECTIONS_PROJECT_ID" />
+    <option name="INSPECTIONS_BUILD_TYPE_ID" />
+    <option name="DUPLICATES_BUILD_TYPE_NAME" />
+    <option name="DUPLICATES_PROJECT_ID" />
+    <option name="DUPLICATES_BUILD_TYPE_ID" />
+    <option name="PERFORM_COMMIT_IF_SUCCESSFUL" value="true" />
+    <option name="PERFORM_COMMIT_IF_NO_NEW_FAILED_TESTS" value="false" />
+    <option name="REQUEST_CONFIRMATON" value="false" />
+    <option name="PRE_TESTED_COMMIT" value="true" />
+    <option name="PROJECT_STATUS_DIALOG_SPLITTER_DIVIDER_LOCATION" value="500" />
+    <option name="CHANGES_STATUS_DIALOG_SPLITTER_DIVIDER_LOCATION" value="500" />
+    <option name="FILTER_BY_USER" value="true" />
+    <option name="FILTER_REMOTE_RUN_TREE" value="true" />
+    <option name="FILTER_BY_STATUS" value="false" />
+    <option name="SHOW_CLOSE_PROMPT" value="true" />
+    <option name="TOOL_WINDOW_SELECTED_CONTENT_INDEX" value="1" />
+    <treeState key="responsibilities">
+      <selectedPath>
+        <pathElement>
+          <option name="myNodeId" value="No responsibilities assigned" />
+          <option name="myNodeType" value="jetbrains.buildServer.tree.descriptors.StringDescriptor" />
+        </pathElement>
+      </selectedPath>
+    </treeState>
+    <treeState key="changes">
+      <selectedPath>
+        <pathElement>
+          <option name="myNodeId" value="3" />
+          <option name="myNodeType" value="jetbrains.buildServer.tree.descriptors.ChangesGroupDescriptor" />
+        </pathElement>
+      </selectedPath>
+    </treeState>
+  </component>
+  <component name="ChangeListManager">
+    <list id="a6d1f1f5-f410-4ffc-bf7c-8d52de1d3788" name="parked - not for commit" comment="refactoring" />
+    <list id="42ff8575-1b45-4b9c-9c5a-9424deb8c81f" name="NS-799: PersonDAO - saveOrUpdate - Speicherung der BenutzerID bei neu failed" comment="NS-904: BUG - ManagedSearchQueryDAO - loadforUser - java.lang.NullPointerException" />
+    <list id="24817eff-58bc-464f-ad15-a3e79b520b43" name="refactoring" comment="baseimport" />
+    <list id="735c6c92-b7b0-421b-b209-1d47aebeacd0" name="NS-737: Umbenennen von NewTerm und NewTermAttribute in IdxStatistikNewTerm usw." comment="NS-737: Umbenennen von NewTerm und NewTermAttribute in IdxStatistikNewTerm usw." />
+    <list id="d91ec2c6-1dd7-4417-8a38-84ecf25c8025" name="NS-936: WS IssueComments zur Verfügung stellen" comment="NS-936: WS IssueComments zur Verfügung stellen" />
+    <list id="ec48c642-7d22-43ae-a841-f62e834e3c22" name="NS-1077 EJB - Logger per CDI einbinden" comment="NS-1077 EJB - Logger per CDI einbinden" />
+    <list id="219a9e1b-3474-4cf0-923f-d1a05a23d593" name="NS-927: PersonDAO - org.hibernate.exception.GenericJDBCException: Could not open connection" comment="NS-927: PersonDAO - org.hibernate.exception.GenericJDBCException: Could not open connection" />
+    <list id="cbcee469-4723-4179-b964-e6f3ad0697c0" name="NS-1091: OrganisationseinheitDAO - flatOrganisationseinheit - gesellschaftsform umbenennen nach gesellschaftsformOID" comment="NS-1091: OrganisationseinheitDAO - flatOrganisationseinheit - gesellschaftsform umbenennen nach gesellschaftsformOID" />
+    <list id="e25c8817-bc65-4064-b351-daf50fb2e8da" name="allgemein" comment="allgemein">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/artifacts/BaseORM_ERP_ejb_exploded.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/artifacts/BaseORM_NeoMeta_ejb_exploded.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/artifacts/BaseServicesEJB_MyNeoScio_ejb_exploded.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/artifacts/BaseServicesEJB_NeoMeta_ejb_exploded.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/artifacts/BaseServicesEJB_Seo_ejb_exploded.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BaseORM_NeoMeta/BaseORM_NeoMeta.iml" afterPath="$PROJECT_DIR$/BaseORM_NeoMeta/BaseORM_NeoMeta.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/atlassian-ide-plugin.xml" afterPath="$PROJECT_DIR$/atlassian-ide-plugin.xml" />
+    </list>
+    <list id="f864acc5-5180-4436-9cac-ed71d60dec4b" name="NS-1194" comment="" />
+    <list id="0ed67964-fa4b-41b7-a9a9-501e9f0fe294" name="NS-1215 - DifferenceReport : allegemeine Fehlerbeseitigung und Beschleunigung" comment="NS-1215 - DifferenceReport : allegemeine Fehlerbeseitigung und Beschleunigung" />
+    <list id="e0a10c20-0fa2-4c93-8b5e-5415c215c50b" name="NS-1216 - refactoring: verschiebe Klassen mit main methoden (Produktionsklasen) zu prozesse" comment="NS-1216 - refactoring: verschiebe Klassen mit main methoden (Produktionsklasen) zu prozesse" />
+    <list default="true" id="3d467df5-6b3c-4cdb-bac4-b44e636547b0" name="NS-1215: DifferenceReport : allgemeine Fehlerbeseitigung und Beschleunigung" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/BaseServices_MyNeoScio/data/Kundenaccounts.txt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BaseORM_MyNeoScio/BaseORM_MyNeoScio.iml" afterPath="$PROJECT_DIR$/BaseORM_MyNeoScio/BaseORM_MyNeoScio.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BaseORM_MyNeoScio/src/META-INF/persistence.xml" afterPath="$PROJECT_DIR$/BaseORM_MyNeoScio/src/META-INF/persistence.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BaseORM_MyNeoScio/src/de/neoscio/orm/myneoscio/rohdaten/index/IdxVersion.java" afterPath="$PROJECT_DIR$/BaseORM_MyNeoScio/src/de/neoscio/orm/myneoscio/rohdaten/index/IdxVersion.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BaseServicesEJB_MyNeoScio/BaseServicesEJB_MyNeoScio.iml" afterPath="$PROJECT_DIR$/BaseServicesEJB_MyNeoScio/BaseServicesEJB_MyNeoScio.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BaseServicesEJB_MyNeoScio/devtasks.xml" afterPath="$PROJECT_DIR$/BaseServicesEJB_MyNeoScio/devtasks.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BaseServicesEJB_MyNeoScio/src-test-remote/de/neoscio/remote/ws/myneoscio/analyzer/differencereport/DifferencereportTest.java" afterPath="$PROJECT_DIR$/BaseServicesEJB_MyNeoScio/src-test-remote/de/neoscio/remote/ws/myneoscio/analyzer/differencereport/DifferencereportTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/myneoscio/prozesse/reportings/ProzessNewTerms.java" afterPath="$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/myneoscio/prozesse/reportings/ProzessNewTerms.java" />
+    </list>
+    <ignored path="NeoScio_Base.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <ignored path="NeoScio.log.2011-04-02" />
+    <ignored path="transaction.log" />
+    <ignored path="seeds.txt.5" />
+    <ignored path="surtsSource.txt.2" />
+    <ignored path="seeds.txt.3" />
+    <ignored path="seeds.txt.4" />
+    <ignored path="seeds.txt.2" />
+    <ignored path="seeds.txt" />
+    <ignored path="surtsSource.txt" />
+    <ignored path="surtsSource.txt.5" />
+    <ignored path="NeoScio.log.2011-03-29" />
+    <ignored path="NeoScio.log" />
+    <ignored path="NeoScio.log.2011-03-30" />
+    <ignored path="surtsSource.txt.3" />
+    <ignored path="surtsSource.txt.4" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/analyzer/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/" />
+    <ignored path="BaseRemote/src-generated/de/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/analyzer/indexanalyzer/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/analyzer/personalindexanalyzer/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/analyzer/text/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/analyzer/query/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/book/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/services/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/helloworld/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/suchmodul/search/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/rohdaten/synonymgruppe/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/web/webdomains/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/web/webdomains/webdomain/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/suchmodul/filter/suchmodulfiltergrupe/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/suchmodul/suchmodul/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/suchmodul/filter/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/suchmodul/search/managedsearchquery/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/person/person/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/issuetracking/project/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/organisationseinheiten/taetigkeitsfeld/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/organisationseinheiten/branchenklassifizierung/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/organisationseinheiten/organisationseinheit/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/security/mandantengruppe/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/security/benutzer/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/security/registrationstatus/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/security/benutzerwebapplikation/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/security/benutzergruppe/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/kommunikation/kommunikationsservice/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/kommunikation/kommunikationsserviceklassifizierung/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/kommunikation/kommunikationsserviceuid/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/kommunikation/kommunikationsserviceuidpartklassifikation/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/services/sessionobject/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/services/webserviceinfo/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/organisationseinheiten/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/kommunikation/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/rohdaten/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/web/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/person/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/suchmodul/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/security/registration/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/issuetracking/" />
+    <ignored path="BaseRemote/src-generated/de/neoscio/remote/ws/orm/security/" />
+    <ignored path="BaseRemote/src-wsdl/ManagedSearchQueryDAOWS.wsdl" />
+    <ignored path="BaseRemote/src-wsdl/SuchmodulDAOWS.wsdl" />
+    <ignored path="BaseRemote/src-wsdl/ProjectDAOWS.wsdl" />
+    <ignored path="BaseRemote/src-wsdl/SuchmodulFilterGruppeDAOWS.wsdl" />
+    <ignored path="BaseRemote/src-wsdl/PersonDAOWS.wsdl" />
+    <ignored path="BaseRemote/src-wsdl/SynonymGruppeDAOWS.wsdl" />
+    <ignored path="BaseRemote/src-wsdl/TaetigkeitsfeldDAOWS.wsdl" />
+    <file path="$PROJECT_DIR$/atlassian-ide-plugin.xml" changelist="3d467df5-6b3c-4cdb-bac4-b44e636547b0" time="1334612772929" ignored="false" />
+    <file path="$PROJECT_DIR$/BaseServices/src/de/neoscio/prozesse/index/newterm/ProzessNewTerms.java" changelist="ea18cb82-463d-4b0e-bcd0-3be34a8a2699" time="1317851731081" ignored="false" />
+    <file path="$PROJECT_DIR$/.idea/workspace.xml" changelist="b7550735-a72f-434d-a9c4-a43309f9e4bb" time="1329319119485" ignored="false" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="true" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="SWITCH" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="ClassPatternConfiguration">
+    <testPatterns>
+      <classPattern testedClass="src/$DIRECTORY$/$CLASS$" testClass="src-test/$DIRECTORY$/$CLASS$Test" />
+    </testPatterns>
+  </component>
+  <component name="CloverPlugin" class="com.cenqua.clover.idea.config.IdeaCloverConfig">
+    <loadPerTestData>true</loadPerTestData>
+    <projectRebuild class="com.cenqua.clover.idea.config.ProjectRebuild">ASK</projectRebuild>
+    <filteredHighlight>-4144960</filteredHighlight>
+    <relativeInitString>false</relativeInitString>
+    <lastProjectConfigTabSelected>0</lastProjectConfigTabSelected>
+    <buildWithClover>true</buildWithClover>
+    <periodicRefresh>false</periodicRefresh>
+    <notCoveredStripe>-65536</notCoveredStripe>
+    <flushPolicy>0</flushPolicy>
+    <viewIncludeAnnotation>true</viewIncludeAnnotation>
+    <alwaysExpandTestClasses>false</alwaysExpandTestClasses>
+    <languageLevel>1.3</languageLevel>
+    <manualInitString null="true" />
+    <flushInterval>5000</flushInterval>
+    <showInline>true</showInline>
+    <autoRefreshInterval>2000</autoRefreshInterval>
+    <showSummaryInToolwindow>true</showSummaryInToolwindow>
+    <autoRefresh>true</autoRefresh>
+    <coveredHighlight>-3605816</coveredHighlight>
+    <enabled>false</enabled>
+    <alwaysCollapseTestClasses>false</alwaysCollapseTestClasses>
+    <filteredStripe>-12566464</filteredStripe>
+    <excludes null="true" />
+    <instrumentTests>true</instrumentTests>
+    <calculateTestCoverage>true</calculateTestCoverage>
+    <outOfDateHighlight>-32</outOfDateHighlight>
+    <notCoveredHighlight>-341816</notCoveredHighlight>
+    <hideFullyCovered>false</hideFullyCovered>
+    <cloudReportIncludeSubpkgs>false</cloudReportIncludeSubpkgs>
+    <includes null="true" />
+    <includePassedTestCoverageOnly>true</includePassedTestCoverageOnly>
+    <testViewScope class="com.cenqua.clover.idea.config.TestViewScope">GLOBAL</testViewScope>
+    <testCaseLayout class="com.cenqua.clover.idea.config.TestCaseLayout">TEST_CASES</testCaseLayout>
+    <viewCoverage>true</viewCoverage>
+    <contextFilterSpec />
+    <coveredStripe>-16711936</coveredStripe>
+    <autoScroll>true</autoScroll>
+    <autoViewInCloudReport>true</autoViewInCloudReport>
+    <useGeneratedInitString>true</useGeneratedInitString>
+    <showGutter>true</showGutter>
+    <failedCoveredStripe>-14336</failedCoveredStripe>
+    <regexpContexts class="java.util.ArrayList" />
+    <showErrorMarks>true</showErrorMarks>
+    <flattenPackages>false</flattenPackages>
+    <autoScrollFromSource>false</autoScrollFromSource>
+    <showTooltips>true</showTooltips>
+    <showSummaryInToolbar>true</showSummaryInToolbar>
+    <span>0 days</span>
+    <outOfDateStripe>-256</outOfDateStripe>
+    <modelScope class="com.cenqua.clover.idea.config.ModelScope">APP_CLASSES_ONLY</modelScope>
+    <failedCoveredHighlight>-3920</failedCoveredHighlight>
+    <highlightCovered>true</highlightCovered>
+  </component>
+  <component name="CommittedChangesCache">
+    <option name="refreshEnabled" value="true" />
+    <option name="refreshInterval" value="60" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="Cvs2Configuration">
+    <option name="TAG_AFTER_PROJECT_COMMIT_NAME" value="refactoring-pkg" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="DatabaseView">
+    <flatten value="false" />
+    <groupTables value="false" />
+  </component>
+  <component name="DebuggerManager">
+    <line_breakpoints>
+      <breakpoint url="file://$PROJECT_DIR$/BaseProduction/Prozess_XML2Solr/src/de/neoscio/production/xml2solr/XML2SolrConverter.java" line="67" class="de.neoscio.production.xml2solr.XML2SolrConverter" package="de.neoscio.production.xml2solr">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/BaseProduction/Prozess_XML2Solr/src/de/neoscio/production/xml2solr/XML2SolrConverter.java" line="103" class="de.neoscio.production.xml2solr.XML2SolrConverter" package="de.neoscio.production.xml2solr">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/BaseProduction/Prozess_XML2Solr/src/de/neoscio/production/xml2solr/XML2SolrConverter.java" line="162" class="de.neoscio.production.xml2solr.XML2SolrConverter.Worker" package="de.neoscio.production.xml2solr">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/BaseProduction/Prozess_XML2Solr/src/de/neoscio/production/xml2solr/XML2SolrConverter.java" line="145" class="de.neoscio.production.xml2solr.XML2SolrConverter.Worker" package="de.neoscio.production.xml2solr">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/BaseProduction/Prozess_XML2Solr/src/de/neoscio/production/xml2solr/XML2SolrConverter.java" line="163" class="de.neoscio.production.xml2solr.XML2SolrConverter.Worker" package="de.neoscio.production.xml2solr">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/BaseProduction/Prozess_XML2Solr/src/de/neoscio/production/xml2solr/XML2SolrConverter.java" line="188" class="de.neoscio.production.xml2solr.XML2SolrConverter.Worker" package="de.neoscio.production.xml2solr">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/BaseProduction/Prozess_XML2Solr/src/de/neoscio/production/xml2solr/XML2SolrConverter.java" line="210" class="de.neoscio.production.xml2solr.XML2SolrConverter.Worker" package="de.neoscio.production.xml2solr">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/BaseProduction/Prozess_XML2Solr/src/de/neoscio/production/xml2solr/XML2SolrConverter.java" line="212" class="de.neoscio.production.xml2solr.XML2SolrConverter.Worker" package="de.neoscio.production.xml2solr">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/myneoscio/prozesse/reportings/IndexTrendAnalyzer.java" line="45" class="de.neoscio.myneoscio.prozesse.reportings.IndexTrendAnalyzer" package="de.neoscio.myneoscio.prozesse.reportings">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/myneoscio/prozesse/reportings/IndexTrendAnalyzer.java" line="42" class="de.neoscio.myneoscio.prozesse.reportings.IndexTrendAnalyzer" package="de.neoscio.myneoscio.prozesse.reportings">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/myneoscio/index/NeoScioIndex.java" line="134" class="de.neoscio.myneoscio.index.NeoScioIndex" package="de.neoscio.myneoscio.index">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/myneoscio/index/NeoScioIndex.java" line="136" class="de.neoscio.myneoscio.index.NeoScioIndex" package="de.neoscio.myneoscio.index">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/myneoscio/prozesse/reportings/IndexAnalyzer.java" line="737" class="de.neoscio.myneoscio.prozesse.reportings.IndexAnalyzer" package="de.neoscio.myneoscio.prozesse.reportings">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/myneoscio/prozesse/reportings/IndexAnalyzer.java" line="735" class="de.neoscio.myneoscio.prozesse.reportings.IndexAnalyzer" package="de.neoscio.myneoscio.prozesse.reportings">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/BaseORM/src-dao/de/neoscio/orm/DaoFactory.java" line="308" class="de.neoscio.orm.DaoFactory.Transaction" package="de.neoscio.orm">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </line_breakpoints>
+    <breakpoint_any>
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </breakpoint_any>
+    <breakpoint_rules />
+    <ui_properties />
+  </component>
+  <component name="Ebean Action Component">
+    <setting name="isActivated" value="false" />
+  </component>
+  <component name="ErrorTreeViewConfiguration">
+    <option name="hideWarnings" value="true" />
+    <option name="HIDE_WARNINGS" value="true" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="NeoScio_Base" />
+  </component>
+  <component name="FileEditorManager">
+    <splitter split-orientation="horizontal" split-proportion="0.573472">
+      <split-first>
+        <leaf>
+          <file leaf-file-name="LuceneUtils.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/BaseServices_Seo/src/de/neoscio/seo/tools/LuceneUtils.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="19" column="13" selection-start="549" selection-end="549" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="LuceneUtils.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/myneoscio/tools/LuceneUtils.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="117" column="44" selection-start="4352" selection-end="4352" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="FileUtils.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/BaseLang/src/de/neoscio/lang/fs/FileUtils.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="28" column="8" selection-start="644" selection-end="768" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ProzessNewTerms.java" pinned="false" current="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/myneoscio/prozesse/reportings/ProzessNewTerms.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="48" column="0" selection-start="1741" selection-end="1741" vertical-scroll-proportion="0.0093998555">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="HistoryIndex.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/myneoscio/index/HistoryIndex.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="45" column="0" selection-start="1250" selection-end="1250" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="SeedFileGenerator.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/BaseCollector/src/de/neoscio/collector/SeedFileGenerator.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="43" column="51" selection-start="1222" selection-end="1222" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="BasicSolrAnalyzerTest.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/BaseServices_MyNeoScio/src-test/de/neoscio/analyzer/query/BasicSolrAnalyzerTest.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="105" column="101" selection-start="4598" selection-end="4598" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="UrlUtils.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/BaseLang/src/de/neoscio/lang/UrlUtils.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="38" column="25" selection-start="1114" selection-end="1114" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="WarcRecord.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/BaseLang/src/de/neoscio/lang/data/WarcRecord.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="370" column="15" selection-start="14371" selection-end="14371" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="WarcFileRecordReader.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/BaseHadoop/src/de/neoscio/hadoop/mr/warc/data/WarcFileRecordReader.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="165" column="46" selection-start="6080" selection-end="6080" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="DifferenceReportBean.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/BaseServicesEJB_MyNeoScio/src/de/neoscio/myneoscio/analyzer/difference/DifferenceReportBean.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="53" column="23" selection-start="1593" selection-end="1593" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="BasicSolrAnalyzer.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/myneoscio/analyzer/query/BasicSolrAnalyzer.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="159" column="20" selection-start="7001" selection-end="7001" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="SearchResult.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/data/SearchResult.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="18" column="13" selection-start="410" selection-end="410" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Constants.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/BaseLang/src/de/neoscio/Constants.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="149" column="0" selection-start="7016" selection-end="7016" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="AnalyzerBean.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/BaseServicesEJB_MyNeoScio/src/de/neoscio/myneoscio/analyzer/query/AnalyzerBean.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="172" column="8" selection-start="8472" selection-end="8531" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="IdxVersionDAOBean.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/BaseServicesEJB_MyNeoScio/src/de/neoscio/orm/myneoscio/rohdaten/IdxVersionDAOBean.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="31" column="13" selection-start="968" selection-end="968" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="IdxVersion.java" pinned="false" current="true" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/BaseORM_MyNeoScio/src/de/neoscio/orm/myneoscio/rohdaten/index/IdxVersion.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="72" column="53" selection-start="1911" selection-end="1911" vertical-scroll-proportion="0.58832115">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="IdxStatistikNewTermAttribute.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/BaseORM_MyNeoScio/src/de/neoscio/orm/myneoscio/rohdaten/index/IdxStatistikNewTermAttribute.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="19" column="13" selection-start="495" selection-end="495" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="IdxStatistikNewTerm.java" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/BaseORM_MyNeoScio/src/de/neoscio/orm/myneoscio/rohdaten/index/IdxStatistikNewTerm.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state line="21" column="13" selection-start="471" selection-end="471" vertical-scroll-proportion="0.0">
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="Git.Settings">
+    <option name="LINE_SEPARATORS_CONVERSION" value="ASK" />
+  </component>
+  <component name="GitLogSettings">
+    <option name="myStructureFilterPaths" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/myneoscio/tools/LuceneUtils.java" />
+        <option value="$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/myneoscio/index/NeoScioIndex.java" />
+        <option value="$PROJECT_DIR$/BaseORM/src-dao/de/neoscio/orm/DaoFactory.java" />
+        <option value="$PROJECT_DIR$/BaseServicesEJB_MyNeoScio/src/de/neoscio/services/SessionObjectSecBean.java" />
+        <option value="$PROJECT_DIR$/BaseORM_MyNeoScio/src-dao/de/neoscio/orm/myneoscio/WebDomainDAO.java" />
+        <option value="$PROJECT_DIR$/BaseServicesEJB_MyNeoScio/src/de/neoscio/orm/myneoscio/WebDomainDAOBean.java" />
+        <option value="$PROJECT_DIR$/BaseServicesEJB_MyNeoScio/src/de/neoscio/orm/myneoscio/rohdaten/IdxVersionDAOBean.java" />
+        <option value="$PROJECT_DIR$/BaseServicesEJB_MyNeoScio/src/de/neoscio/myneoscio/analyzer/index/IndexAnalyzerBean.java" />
+        <option value="$PROJECT_DIR$/BaseServicesEJB_MyNeoScio/src/de/neoscio/myneoscio/solr/SolrBean.java" />
+        <option value="$PROJECT_DIR$/BaseLang/src/de/neoscio/Constants.java" />
+        <option value="$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/myneoscio/analyzer/query/BasicSolrAnalyzer.java" />
+        <option value="$PROJECT_DIR$/BaseServicesEJB_MyNeoScio/src/de/neoscio/myneoscio/analyzer/difference/DifferenceReportBean.java" />
+        <option value="$PROJECT_DIR$/BaseORM_MyNeoScio/src/de/neoscio/orm/myneoscio/rohdaten/index/IdxVersion.java" />
+        <option value="$PROJECT_DIR$/BaseORM_MyNeoScio/src/META-INF/persistence.xml" />
+        <option value="$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/myneoscio/prozesse/reportings/ProzessNewTerms.java" />
+        <option value="/pgdb01 - myneoscio_prod" />
+      </list>
+    </option>
+  </component>
+  <component name="InspectionPassRegistrar">
+    <option name="LOAD_NEW_PROBLEMS" value="true" />
+  </component>
+  <component name="JUnitClassTemplateConfiguration">
+    <option name="DONT_SHOW_TEMPLATE_DIALOG_IF_ONLY_ONE_TEMPLATE" value="false" />
+    <option name="DONT_SHOW_METHODS_DIALOG_IF_ONLY_ONE_METHOD" value="false" />
+    <option name="LAST_TEMPLATE_NAME" value="Default Test Class.java" />
+    <option name="TEST_TEMPLATES">
+      <value>
+        <list size="1">
+          <item index="0" class="java.lang.String" itemvalue="Default Test Class.java" />
+        </list>
+      </value>
+    </option>
+  </component>
+  <component name="JUnitMethodTemplateConfiguration">
+    <option name="DONT_SHOW_TEMPLATE_DIALOG_IF_ONLY_ONE_TEMPLATE" value="false" />
+    <option name="DONT_SHOW_METHODS_DIALOG_IF_ONLY_ONE_METHOD" value="false" />
+    <option name="LAST_TEMPLATE_NAME" value="Default Test Method.java" />
+    <option name="TEST_TEMPLATES">
+      <value>
+        <list size="2">
+          <item index="0" class="java.lang.String" itemvalue="Default Test Method.java" />
+          <item index="1" class="java.lang.String" itemvalue="Test Method throws Exception.java" />
+        </list>
+      </value>
+    </option>
+  </component>
+  <component name="JUnitTestConfiguration">
+    <option name="IS_AUTO_TEST_CLASS_RENAME_ENABLED" value="true" />
+    <option name="IS_AUTO_TEST_CLASS_MOVE_ENABLED" value="true" />
+    <option name="IS_AUTO_TEST_CLASS_REFACTORING_ENABLED" value="true" />
+    <option name="IS_AUTO_TEST_METHODS_RENAME_ENABLED" value="true" />
+    <option name="IS_UNTESTED_METHOD_ICON_ENABLED" value="true" />
+    <option name="IS_GET_METHOD_ICONS_ENABLED" value="true" />
+    <option name="IS_SET_METHOD_ICONS_ENABLED" value="true" />
+    <option name="IS_UNIT_TEST_ENABLED" value="true" />
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState />
+  </component>
+  <component name="MavenRunner">
+    <option name="jreName" value="1.7" />
+  </component>
+  <component name="ModuleEditorState">
+    <option name="LAST_EDITED_MODULE_NAME" />
+    <option name="LAST_EDITED_TAB_NAME" />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="2565" />
+    <option name="y" value="25" />
+    <option name="width" value="2553" />
+    <option name="height" value="1550" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>General</id>
+          </State>
+          <State>
+            <id>Performance issues</id>
+          </State>
+          <State>
+            <id>Probable bugs</id>
+          </State>
+          <State>
+            <id>Threading issues</id>
+          </State>
+          <State>
+            <id>XPath</id>
+          </State>
+          <State>
+            <id>XSLT</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>Visibility issues</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="2" id="Add" />
+    <ConfirmationsSetting value="2" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages ProjectPane="false" />
+      <showMembers ProjectPane="true" />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages ProjectPane="false" />
+      <abbreviatePackageNames ProjectPane="true" />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NeoScio_Base" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="NeoScio_Base" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Favorites" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="JpaConsole.ResultInNewTab" value="true" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="Persistence.ERD.GroupObjects" value="false" />
+    <property name="JdbcConsole.Connection.Autocommit" value="true" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="recentsLimit" value="5" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
+    <property name="Database.TableEditor.Splitter" value="0.9" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeWidth5" value="260" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeWidth6" value="932" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeWidth3" value="260" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeWidth4" value="258" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeWidth1" value="252" />
+    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeWidth2" value="252" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeWidth0" value="259" />
+    <property name="Downloaded.Files.Path" value="$PROJECT_DIR$/lib" />
+    <property name="options.splitter.details.proportions" value="0.3300562" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="Persistence.ERD.SimpleMode" value="false" />
+    <property name="options.lastSelected" value="preferences.pluginManager" />
+    <property name="download.sources.last.used.dir" value="$PROJECT_DIR$/../NeoScio_Libs/sources" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="JdbcConsole.Extract.ClosingQuote" value="'" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="FORWARD_ANALIZER" value="false" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeOrder4" value="4" />
+    <property name="JdbcConsole.EnableParameterPattern" value="false" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeOrder3" value="3" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeOrder6" value="6" />
+    <property name="WebServerToolWindowPanel.toolwindow.highlight.symlinks" value="true" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeOrder5" value="5" />
+    <property name="JdbcConsole.ParameterPattern" value="(\?\d*|\:\w+|\@\w+|\$\{[^$\{\}]*\}|\$\w+\$|\#\w+\#)" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeOrder0" value="0" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeOrder2" value="2" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatWidth3" value="262" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatWidth2" value="255" />
+    <property name="JdbcConsole.Extract.Separator" value="'" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatWidth1" value="253" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="OverrideImplement.combined" value="true" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatWidth0" value="244" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.permissions" value="false" />
+    <property name="Persistence.ERD.MergeEmbedded" value="false" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatOrder4" value="4" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatOrder5" value="5" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatOrder6" value="6" />
+    <property name="JdbcConsole.ResultInNewTab" value="true" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatWidth6" value="935" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatWidth5" value="263" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatWidth4" value="261" />
+    <property name="GoToClass.includeJavaFiles" value="false" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
+    <property name="JpaConsole.ResultPageSize" value="1000" />
+    <property name="JdbcConsole.Extract.IncludeRowNumbers" value="true" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.size" value="false" />
+    <property name="JdbcConsole.Extract.OpeningQuote" value="'" />
+    <property name="JdbcConsole.Batch.Mode" value="false" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatOrder3" value="3" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatOrder1" value="1" />
+    <property name="WebServerToolWindowPanel.toolwindow.show.date" value="false" />
+    <property name="FileHistory.com.intellij.cvsSupport2.history.CvsHistoryProvider_flatOrder0" value="0" />
+    <property name="JdbcConsole.Extract.IncludeHeader" value="true" />
+    <property name="Persistence.ERD.MergeInherited" value="false" />
+    <property name="JdbcConsole.ResultPageSize" value="1000" />
+    <property name="options.searchVisible" value="true" />
+    <property name="dynamic.classpath" value="false" />
+  </component>
+  <component name="PublishConfig" serverName="kio oberberg" serverId="9eb9d426-8f37-4b2c-b85b-4901f5403c26">
+    <servers>
+      <server id="9eb9d426-8f37-4b2c-b85b-4901f5403c26">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/httpdocs_doc" local="$PROJECT_DIR$/doc/api-doc" web="/" />
+          </mappings>
+        </serverdata>
+      </server>
+      <server id="db1eb15f-163d-4126-9628-93ca39aa37e4">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$/BaseCollector" />
+            <mapping local="$PROJECT_DIR$/BaseLang" />
+            <mapping local="$PROJECT_DIR$/BaseORM" />
+            <mapping local="$PROJECT_DIR$/BaseRemote" />
+            <mapping local="$PROJECT_DIR$/BaseRepository" />
+            <mapping local="$PROJECT_DIR$/BaseServices" />
+            <mapping local="$PROJECT_DIR$/BaseServicesEJB" />
+          </mappings>
+        </serverdata>
+      </server>
+      <server id="dd8425e9-120a-47bb-bd5f-72c3fbe9583b">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$/BaseCollector" />
+            <mapping local="$PROJECT_DIR$/BaseHadoop" />
+            <mapping local="$PROJECT_DIR$/BaseLang" />
+            <mapping local="$PROJECT_DIR$/BaseORM" />
+            <mapping local="$PROJECT_DIR$/BaseORM_ERP" />
+            <mapping local="$PROJECT_DIR$/BaseORM_MyNeoScio" />
+            <mapping local="$PROJECT_DIR$/BaseORM_NeoMeta" />
+            <mapping local="$PROJECT_DIR$/BaseORM_Seo" />
+            <mapping local="$PROJECT_DIR$/BasePHP" />
+            <mapping local="$PROJECT_DIR$/BasePHP_Proxy" />
+            <mapping local="$PROJECT_DIR$/BaseServices" />
+            <mapping local="$PROJECT_DIR$/BaseServicesEJB" />
+            <mapping local="$PROJECT_DIR$/BaseServicesEJB_MyNeoScio" />
+            <mapping local="$PROJECT_DIR$/BaseServicesEJB_NeoMeta" />
+            <mapping local="$PROJECT_DIR$/BaseServicesEJB_Seo" />
+            <mapping local="$PROJECT_DIR$/BaseServices_ERP" />
+            <mapping local="$PROJECT_DIR$/BaseServices_MyNeoScio" />
+            <mapping local="$PROJECT_DIR$/BaseServices_NeoMeta" />
+            <mapping local="$PROJECT_DIR$/BaseServices_Seo" />
+            <mapping local="$PROJECT_DIR$/BaseSwing" />
+            <mapping local="$PROJECT_DIR$/BaseProduction/Prozess_Warc2XML" />
+            <mapping local="$PROJECT_DIR$/BaseProduction/Prozess_XML2Solr" />
+          </mappings>
+        </serverdata>
+      </server>
+    </servers>
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="de.neoscio.services" />
+      <recent name="de.neoscio.lang.data" />
+      <recent name="de.neoscio.production.warc2xml" />
+    </key>
+    <key name="ExtractSuperBase.RECENT_KEYS">
+      <recent name="de.neoscio.analyzer.query" />
+    </key>
+    <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="de.neoscio.Constants" />
+      <recent name="de.neoscio.tools.solr.SolrUtils" />
+      <recent name="de.neoscio.tools.lucene.LuceneUtils" />
+      <recent name="de.neoscio.collector.webcrawler.NeoScioWebCrawler" />
+    </key>
+    <key name="IntroduceConstantDialog.RECENTS_KEY">
+      <recent name="de.neoscio.Constants" />
+      <recent name="de.neoscio.analyzer.text.TextAnalyzerBean" />
+    </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="de.neoscio.orm.rohdaten" />
+      <recent name="org.carrot2.examples" />
+      <recent name="de.neoscio.orm.address" />
+      <recent name="de.neoscio.orm.web" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="de.neoscio.orm.seo.web" />
+      <recent name="de.neoscio.orm.seo.rohdaten" />
+      <recent name="de.neoscio.data" />
+      <recent name="de.neoscio.seo.analyzer" />
+      <recent name="de.neoscio.orm.seo.rohdaten.index" />
+    </key>
+  </component>
+  <component name="Regex">
+    <option name="pos1" value="674" />
+    <option name="pos2" value="674" />
+    <option name="pos3" value="227" />
+    <option name="pos4" value="1348" />
+    <option name="pos5" value="227" />
+    <option name="autoUpdate" value="true" />
+    <option name="referenceOn" value="false" />
+    <option name="referencePos" value="0" />
+    <option name="showLabels" value="true" />
+  </component>
+  <component name="RemoteSynchronizer">
+    <option name="generalOptions">
+      <GeneralOptions />
+    </option>
+    <option name="logOptions">
+      <LogOptions />
+    </option>
+    <option name="targetMappings">
+      <list>
+        <TargetMappings>
+          <option name="name" value="Default" />
+        </TargetMappings>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Application.ProzessNewTerms">
+    <configuration default="false" name="ProzessWebdomain2FilterOID" type="Application" factoryName="Application" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="de.neoscio.myneoscio.prozesse.stammdaten.ProzessWebdomain2FilterOID" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="BaseServices_MyNeoScio" />
+      <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="SeedFileGenerator" type="Application" factoryName="Application" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="de.neoscio.collector.SeedFileGenerator" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="BaseCollector" />
+      <envs />
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JavaRebel">
+        <option name="bootstrapPath" />
+        <option name="jrebelArgs" value="" />
+        <option name="loggingEnabled" value="false" />
+        <option name="useBootstrapDefaults" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JavaRebel Debug">
+        <option name="bootstrapPath" />
+        <option name="debugPort" value="" />
+        <option name="jrebelArgs" value="" />
+        <option name="loggingEnabled" value="false" />
+        <option name="transport" value="0" />
+        <option name="useBootstrapDefaults" value="true" />
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="HSMAnalyzerTest.testSearch002" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="de.neoscio.analyzer.query.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="BaseServices" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="de.neoscio.analyzer.query" />
+      <option name="MAIN_CLASS_NAME" value="de.neoscio.analyzer.query.HSMAnalyzerTest" />
+      <option name="METHOD_NAME" value="testSearch002" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="de.neoscio.lang in BaseLang" type="JUnit" factoryName="JUnit" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" runner="idea" />
+      <module name="BaseLang" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="de.neoscio.lang" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="package" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Default" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console" temporary="true">
+      <option name="VM_PARAMETERS" value="" />
+      <option name="USER_CFG_CLASS" />
+      <option name="CONTEXT_PROVIDER" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JBossConfiguration" factoryName="Remote">
+      <option name="HOST" value="" />
+      <option name="LOCAL" value="false" />
+      <option name="OPEN_IN_BROWSER" value="false" />
+      <option name="OPEN_IN_BROWSER_URL" value="" />
+      <option name="SHOW_DIALOG_ON_UPDATE" value="false" />
+      <deployment />
+      <server-settings>
+        <data>
+          <option name="stagingRemotePath" value="" />
+        </data>
+      </server-settings>
+      <predefined_log_file id="JBoss" enabled="true" />
+      <extension name="coverage" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JBossConfiguration" factoryName="Local">
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment />
+      <server-settings>
+        <option name="SERVER" />
+        <option name="BINDING_SET_NAME" value="" />
+        <option name="USERNAME" value="" />
+        <option name="PASSWORD" value="" />
+      </server-settings>
+      <predefined_log_file id="JBoss" enabled="true" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="37951" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="JVM" value="/usr/lib/jvm/java-6-sun" />
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/run.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/shutdown.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value=" -s jnp://localhost:2147483647 -S" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="JProfiler">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/run.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/shutdown.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value=" -s jnp://localhost:2147483647 -S" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/run.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/shutdown.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value=" -s jnp://localhost:2147483647 -S" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" runner="idea" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" runner="idea" />
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="com.intellij.persistence.run.ConsoleRunConfigurationType" factoryName="Query Language Console">
+      <option name="VM_PARAMETERS" value="" />
+      <option name="USER_CFG_CLASS" />
+      <option name="CONTEXT_PROVIDER" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="false" name="MyNeoScio" type="GlassfishConfiguration" factoryName="Local">
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment />
+      <server-settings>
+        <option name="DOMAIN" value="" />
+        <option name="PRESERVE" value="false" />
+        <option name="USERNAME" value="admin" />
+        <option name="PASSWORD" value="" />
+      </server-settings>
+      <predefined_log_file id="GlassFish" enabled="true" />
+      <RunnerSettings RunnerId="Clover Optimizing Runner">
+        <option name="discardSnapshots" value="false" />
+        <option name="compilesBeforeStaleSnapshot" value="10" />
+        <option name="minimize" value="true" />
+        <option name="reorder" value="FAILFAST" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="9009" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="JVM" value="/opt/jvm/jdk1.7.0" />
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JavaRebel">
+        <option name="bootstrapPath" />
+        <option name="jrebelArgs" value="" />
+        <option name="loggingEnabled" value="false" />
+        <option name="useBootstrapDefaults" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JavaRebel Debug">
+        <option name="bootstrapPath" />
+        <option name="debugPort" value="9009" />
+        <option name="jrebelArgs" value="" />
+        <option name="loggingEnabled" value="false" />
+        <option name="transport" value="0" />
+        <option name="useBootstrapDefaults" value="true" />
+        <option name="DEBUG_PORT" value="9009" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper VM_VAR="" RunnerId="Clover Optimizing Runner">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/asadmin" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="start-domain" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/asadmin" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="stop-domain" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/asadmin" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="start-domain --debug" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/asadmin" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="stop-domain" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="" RunnerId="JProfiler">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/asadmin" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="start-domain" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/asadmin" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="stop-domain" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="" RunnerId="JavaRebel">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/asadmin" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="start-domain" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/asadmin" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="stop-domain" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="" RunnerId="JavaRebel Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/asadmin" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="start-domain --debug" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/asadmin" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="stop-domain" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/asadmin" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="start-domain" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/asadmin" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="stop-domain" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method />
+    </configuration>
+    <configuration default="false" name="XSSFImporter" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="de.neoscio.tools.poi.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="de.neoscio.myneoscio.prozesse.XSSFImporter" />
+      <option name="VM_PARAMETERS" value="-Xmx2048m" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="BaseServices_MyNeoScio" />
+      <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="56170" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="ContentXML2DomainGraphConverter" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="de.neoscio.collector.converter.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="de.neoscio.collector.converter.ContentXML2DomainGraphConverter" />
+      <option name="VM_PARAMETERS" value="-Xmx8024m" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="BaseCollector" />
+      <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="38473" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JavaRebel">
+        <option name="bootstrapPath" />
+        <option name="jrebelArgs" value="" />
+        <option name="loggingEnabled" value="false" />
+        <option name="useBootstrapDefaults" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JavaRebel Debug">
+        <option name="bootstrapPath" />
+        <option name="debugPort" value="" />
+        <option name="jrebelArgs" value="" />
+        <option name="loggingEnabled" value="false" />
+        <option name="transport" value="0" />
+        <option name="useBootstrapDefaults" value="true" />
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="NeoScioWebCrawler" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="de.neoscio.collector.webcrawler.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="de.neoscio.collector.webcrawler.NeoScioWebCrawler" />
+      <option name="VM_PARAMETERS" value="-Xmx1024m" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="BaseCollector" />
+      <envs />
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JavaRebel">
+        <option name="bootstrapPath" />
+        <option name="jrebelArgs" value="" />
+        <option name="loggingEnabled" value="false" />
+        <option name="useBootstrapDefaults" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JavaRebel Debug">
+        <option name="bootstrapPath" />
+        <option name="debugPort" value="" />
+        <option name="jrebelArgs" value="" />
+        <option name="loggingEnabled" value="false" />
+        <option name="transport" value="0" />
+        <option name="useBootstrapDefaults" value="true" />
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="LocalPatenteIndexer" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="de.neoscio.indexer.local.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="de.neoscio.indexer.local.LocalPatenteIndexer" />
+      <option name="VM_PARAMETERS" value="-Xmx2048m" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="BaseHadoop" />
+      <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="46777" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="ConvertVerlinkung2Neo4J" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="de.neoscio.hadoop.tools.verlinkung.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="de.neoscio.hadoop.tools.verlinkung.ConvertVerlinkung2Neo4J" />
+      <option name="VM_PARAMETERS" value="-Xmx1024m" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="BaseHadoop" />
+      <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="54968" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="JProfiler" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="NeoScioProductionIndexMerger" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="de.neoscio.indexer.hdfs.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="de.neoscio.indexer.hdfs.NeoScioProductionIndexMerger" />
+      <option name="VM_PARAMETERS" value="-Xmx2048m" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="BaseHadoop" />
+      <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="45001" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="LocalIndexMerger" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="de.neoscio.indexer.local.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="de.neoscio.indexer.local.LocalIndexMerger" />
+      <option name="VM_PARAMETERS" value="-Xmx20480m" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="BaseHadoop" />
+      <envs />
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="NeoScioIndexMerger" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="de.neoscio.indexer.hdfs.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="de.neoscio.indexer.hdfs.NeoScioIndexMerger" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="BaseHadoop" />
+      <envs />
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="LocalIndexOptimizer" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="de.neoscio.indexer.local.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="de.neoscio.indexer.local.LocalIndexOptimizer" />
+      <option name="VM_PARAMETERS" value="-Xmx4096m" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="BaseHadoop" />
+      <envs />
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="LocalContentIndexer" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="de.neoscio.indexer.local.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="de.neoscio.indexer.local.LocalContentIndexer" />
+      <option name="VM_PARAMETERS" value="-Xmx40960m" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="BaseHadoop" />
+      <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JavaRebel">
+        <option name="bootstrapPath" />
+        <option name="jrebelArgs" value="" />
+        <option name="loggingEnabled" value="false" />
+        <option name="useBootstrapDefaults" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JavaRebel Debug">
+        <option name="bootstrapPath" />
+        <option name="debugPort" value="" />
+        <option name="jrebelArgs" value="" />
+        <option name="loggingEnabled" value="false" />
+        <option name="transport" value="0" />
+        <option name="useBootstrapDefaults" value="true" />
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Main" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="de.neoscio.gui.Main" />
+      <option name="VM_PARAMETERS" value="-Xmx1024m" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="BaseSwing" />
+      <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="ProzessNewTerms" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="de.neoscio.myneoscio.prozesse.reportings.ProzessNewTerms" />
+      <option name="VM_PARAMETERS" value="-Xmx8096m" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="BaseServices_MyNeoScio" />
+      <envs />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JavaRebel">
+        <option name="bootstrapPath" />
+        <option name="jrebelArgs" value="" />
+        <option name="loggingEnabled" value="false" />
+        <option name="useBootstrapDefaults" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JavaRebel Debug">
+        <option name="bootstrapPath" />
+        <option name="debugPort" value="" />
+        <option name="jrebelArgs" value="" />
+        <option name="loggingEnabled" value="false" />
+        <option name="transport" value="0" />
+        <option name="useBootstrapDefaults" value="true" />
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Warc2XMLConverter" type="Application" factoryName="Application">
+      <extension name="coverage" enabled="false" merge="false" runner="idea" />
+      <option name="MAIN_CLASS_NAME" value="de.neoscio.production.warc2xml.Warc2XMLConverter" />
+      <option name="VM_PARAMETERS" value="-Xmx10240m" />
+      <option name="PROGRAM_PARAMETERS" value="201203 /opt_data/warc_ready_for_warc2xml/201203 10 prod.neoscio.de core0" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="Prozess_Warc2XML" />
+      <envs />
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JavaRebel">
+        <option name="bootstrapPath" />
+        <option name="jrebelArgs" value="" />
+        <option name="loggingEnabled" value="false" />
+        <option name="useBootstrapDefaults" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JavaRebel Debug">
+        <option name="bootstrapPath" />
+        <option name="debugPort" value="" />
+        <option name="jrebelArgs" value="" />
+        <option name="loggingEnabled" value="false" />
+        <option name="transport" value="0" />
+        <option name="useBootstrapDefaults" value="true" />
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <ConfigurationWrapper RunnerId="JProfiler" />
+      <method />
+    </configuration>
+    <configuration default="false" name="JBoss 6.0.0.Final" type="JBossConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="JBoss 6.0.0.Final">
+      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/" />
+      <option name="COMMON_VM_ARGUMENTS" value="-Xmx4096m" />
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="BaseServicesEJB">
+          <settings />
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="SERVER" value="all" />
+        <option name="BINDING_SET_NAME" value="" />
+        <option name="USERNAME" value="admin" />
+        <option name="PASSWORD" value="admin" />
+      </server-settings>
+      <predefined_log_file id="JBoss" enabled="true" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="45100" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="JVM" value="/usr/lib/jvm/java-6-sun" />
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/opt/jboss/6.0.0.Final/bin/run.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/opt/jboss/6.0.0.Final/bin/shutdown.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value=" -s service:jmx:rmi:///jndi/rmi://localhost:2147483647/jmxrmi -S" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="JProfiler">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/opt/jboss/6.0.0.Final/bin/run.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/opt/jboss/6.0.0.Final/bin/shutdown.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value=" -s service:jmx:rmi:///jndi/rmi://localhost:2147483647/jmxrmi -S" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/opt/jboss/6.0.0.Final/bin/run.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/opt/jboss/6.0.0.Final/bin/shutdown.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value=" -s service:jmx:rmi:///jndi/rmi://localhost:2147483647/jmxrmi -S" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method>
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="BaseServicesEJB" />
+        </option>
+      </method>
+    </configuration>
+    <configuration default="false" name="JBoss 7.0.2" type="JBossConfiguration" factoryName="Local">
+      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8080/" />
+      <option name="COMMON_VM_ARGUMENTS" value="-Xmx10240m" />
+      <option name="UPDATING_POLICY" value="redeploy-artifacts" />
+      <deployment>
+        <artifact name="BaseServicesEJB">
+          <settings />
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="SERVER" />
+        <option name="BINDING_SET_NAME" value="" />
+        <option name="USERNAME" value="" />
+        <option name="PASSWORD" value="" />
+      </server-settings>
+      <log_file path="/opt/jboss/7.0.2/standalone/log/server.log" checked="true" skipped="true" show_all="false" alias="server.log" />
+      <predefined_log_file id="JBoss" enabled="true" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="37951" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/run.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/shutdown.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value=" -s jnp://localhost:2147483647 -S" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/run.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/shutdown.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value=" -s jnp://localhost:2147483647 -S" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method>
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="BaseServicesEJB" />
+        </option>
+      </method>
+    </configuration>
+    <configuration default="false" name="JBoss 7.0.2.Final" type="JBossConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="JBoss 7.0.2.Final">
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="BaseORM_ERP:ejb exploded">
+          <settings />
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="SERVER" />
+        <option name="BINDING_SET_NAME" value="" />
+        <option name="USERNAME" value="" />
+        <option name="PASSWORD" value="" />
+      </server-settings>
+      <predefined_log_file id="JBoss" enabled="true" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <RunnerSettings RunnerId="Clover Optimizing Runner">
+        <option name="discardSnapshots" value="false" />
+        <option name="compilesBeforeStaleSnapshot" value="10" />
+        <option name="minimize" value="true" />
+        <option name="reorder" value="FAILFAST" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="37951" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="JVM" />
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Clover Optimizing Runner">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/run.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/shutdown.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value=" -s jnp://localhost:2147483647 -S" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="JProfiler">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/run.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="/bin/shutdown.sh" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value=" -s jnp://localhost:2147483647 -S" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method>
+        <option name="BuildArtifacts" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="false" name="de.neoscio.orm.address in BaseORM" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="de.neoscio.orm.address.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="BaseORM" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="de.neoscio.orm.address" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="package" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <method />
+    </configuration>
+    <configuration default="false" name="IndexTrendAnalyzerTest.testCalculateNewTermsForMandantengruppeBasedOn" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="de.neoscio.analyzer.index.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="BaseServices" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="PACKAGE_NAME" value="de.neoscio.analyzer.index" />
+      <option name="MAIN_CLASS_NAME" value="de.neoscio.analyzer.index.IndexTrendAnalyzerTest" />
+      <option name="METHOD_NAME" value="testCalculateNewTermsForMandantengruppeBasedOn" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-Xmx10240M" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="56361" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Debug" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="IndexAnalyzerTest.testExtractDomain2DocumentCounterForAllModules" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="de.neoscio.analyzer.index.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="BaseServices" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="PACKAGE_NAME" value="de.neoscio.analyzer.index" />
+      <option name="MAIN_CLASS_NAME" value="de.neoscio.analyzer.index.IndexAnalyzerTest" />
+      <option name="METHOD_NAME" value="testExtractDomain2DocumentCounterForAllModules" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-Xmx1024m" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="JProfiler">
+        <option name="WINDOW" value="false" />
+        <option name="JVMPI" value="false" />
+        <option name="INTERPRETED" value="false" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="false" name="BenutzerDAOTest" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="de.neoscio.orm.security.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <module name="BaseORM" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="PACKAGE_NAME" value="de.neoscio.orm.security" />
+      <option name="MAIN_CLASS_NAME" value="de.neoscio.orm.security.BenutzerDAOTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-Xmx1024m" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <list size="26">
+      <item index="0" class="java.lang.String" itemvalue="Application.XSSFImporter" />
+      <item index="1" class="java.lang.String" itemvalue="Application.ContentXML2DomainGraphConverter" />
+      <item index="2" class="java.lang.String" itemvalue="Application.NeoScioWebCrawler" />
+      <item index="3" class="java.lang.String" itemvalue="Application.LocalPatenteIndexer" />
+      <item index="4" class="java.lang.String" itemvalue="Application.ConvertVerlinkung2Neo4J" />
+      <item index="5" class="java.lang.String" itemvalue="Application.NeoScioProductionIndexMerger" />
+      <item index="6" class="java.lang.String" itemvalue="Application.LocalIndexMerger" />
+      <item index="7" class="java.lang.String" itemvalue="Application.NeoScioIndexMerger" />
+      <item index="8" class="java.lang.String" itemvalue="Application.LocalIndexOptimizer" />
+      <item index="9" class="java.lang.String" itemvalue="Application.LocalContentIndexer" />
+      <item index="10" class="java.lang.String" itemvalue="Application.Main" />
+      <item index="11" class="java.lang.String" itemvalue="Application.XML2SolrConverter" />
+      <item index="12" class="java.lang.String" itemvalue="Application.ProzessWebdomain2FilterOID" />
+      <item index="13" class="java.lang.String" itemvalue="Application.ProzessNewTerms" />
+      <item index="14" class="java.lang.String" itemvalue="Application.SeedFileGenerator" />
+      <item index="15" class="java.lang.String" itemvalue="Application.Warc2XMLConverter" />
+      <item index="16" class="java.lang.String" itemvalue="JBoss Server.JBoss 6.0.0.Final" />
+      <item index="17" class="java.lang.String" itemvalue="JBoss Server.JBoss 7.0.2" />
+      <item index="18" class="java.lang.String" itemvalue="JBoss Server.JBoss 7.0.2.Final" />
+      <item index="19" class="java.lang.String" itemvalue="JUnit.HSMAnalyzerTest.testSearch002" />
+      <item index="20" class="java.lang.String" itemvalue="JUnit.de.neoscio.orm.address in BaseORM" />
+      <item index="21" class="java.lang.String" itemvalue="JUnit.IndexTrendAnalyzerTest.testCalculateNewTermsForMandantengruppeBasedOn" />
+      <item index="22" class="java.lang.String" itemvalue="JUnit.IndexAnalyzerTest.testExtractDomain2DocumentCounterForAllModules" />
+      <item index="23" class="java.lang.String" itemvalue="JUnit.BenutzerDAOTest" />
+      <item index="24" class="java.lang.String" itemvalue="JUnit.de.neoscio.lang in BaseLang" />
+      <item index="25" class="java.lang.String" itemvalue="Query Language Console.Default" />
+    </list>
+    <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
+      <Host>localhost</Host>
+      <Port>5050</Port>
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="StructuralSearchPlugin">
+    <replaceConfiguration name="user defined" text="return createResult(getEntityDAO().loadWithOIDList(oids));" recursive="false" caseInsensitive="true" type="JAVA" reformatAccordingToStyle="true" shortenFQN="true" replacement="final Object obj = getEntityDAO().loadWithOIDList(oids)&#10;if(obj == null){&#10; return new $$   &#10;}else{&#10; return createResult(obj);   &#10;}&#10;&#10;" history="1" />
+  </component>
+  <component name="StructureViewFactory">
+    <option name="ACTIVE_ACTIONS" value="SHOW_PROPERTIES,ALPHA_COMPARATOR,SHOW_INTERFACES" />
+  </component>
+  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="true">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="DETECT_NESTED_COPIES" value="true" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <configuration useDefault="true">$USER_HOME$/.subversion_IDEA</configuration>
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+    <supportedVersion>125</supportedVersion>
+  </component>
+  <component name="SvnConfiguration17" maxAnnotateRevisions="500">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="DETECT_NESTED_COPIES" value="true" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <configuration useDefault="false">$USER_HOME$/.subversion_IDEA</configuration>
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  </component>
+  <component name="SvnFileUrlMappingImpl">
+    <option name="myMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/.idea" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/.idea" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseCollector" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseCollector" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseHadoop" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseHadoop" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseLang" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseLang" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseORM" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseORM" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseORM_ERP" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseORM_ERP" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseORM_MyNeoScio" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseORM_MyNeoScio" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseORM_NeoMeta" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseORM_NeoMeta" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseORM_Seo" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseORM_Seo" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BasePHP" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BasePHP" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BasePHP_Proxy" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BasePHP_Proxy" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseProduction/Prozess_Warc2XML" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseProduction/Prozess_Warc2XML" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseProduction/Prozess_XML2Solr" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseProduction/Prozess_XML2Solr" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseServices" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseServices" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseServicesEJB" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseServicesEJB" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseServicesEJB_MyNeoScio" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseServicesEJB_MyNeoScio" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseServicesEJB_NeoMeta" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseServicesEJB_NeoMeta" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseServicesEJB_Seo" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseServicesEJB_Seo" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseServices_ERP" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseServices_ERP" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseServices_MyNeoScio" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseServices_MyNeoScio" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseServices_NeoMeta" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseServices_NeoMeta" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseServices_Seo" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseServices_Seo" />
+        </SvnCopyRootSimple>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$/BaseSwing" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$/BaseSwing" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+    <option name="myMoreRealMappingRoots">
+      <list>
+        <SvnCopyRootSimple>
+          <option name="myVcsRoot" value="$PROJECT_DIR$" />
+          <option name="myCopyRoot" value="$PROJECT_DIR$" />
+        </SvnCopyRootSimple>
+      </list>
+    </option>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <created>1333639355594</created>
+      <updated>1333639355594</updated>
+    </task>
+    <task id="NS-323" summary="NS-323: IMAPCollector">
+      <created>1317072335324</created>
+      <option name="issue" value="true" />
+      <updated>1317072335324</updated>
+    </task>
+    <task id="NS-441" summary="NS-441: Index auf die notwendigen Attribute reduzieren">
+      <created>1317072335324</created>
+      <option name="issue" value="true" />
+      <updated>1317072335324</updated>
+    </task>
+    <task id="NS-389" summary="NS-389: Meotec Daten einpflegen">
+      <created>1317339275470</created>
+      <option name="issue" value="true" />
+      <updated>1317339275470</updated>
+    </task>
+    <task id="LOCAL-00002" summary="WSDL Snapshot">
+      <created>1317339275470</created>
+      <updated>1317339275470</updated>
+    </task>
+    <task id="NS-368" summary="NS-368: Pinöpelbild http://verwaltung.uni-koeln.de/">
+      <created>1318326988726</created>
+      <option name="issue" value="true" />
+      <updated>1318326988726</updated>
+    </task>
+    <task id="NS-458" summary="NS-458: Aktivieren der gecrawlten Subdomains">
+      <created>1318326988726</created>
+      <option name="issue" value="true" />
+      <updated>1318326988726</updated>
+    </task>
+    <task id="NS-460" summary="NS-460: IndexAnalyzer - ZeroDocumentDomainPriority liefert für Vulkaneifel Ergebniss ohne Inhalte">
+      <created>1318326988726</created>
+      <option name="issue" value="true" />
+      <updated>1318326988726</updated>
+    </task>
+    <task id="NS-435" summary="NS-435: JRC - Methode getNodeById ">
+      <created>1318326988726</created>
+      <option name="issue" value="true" />
+      <updated>1318326988726</updated>
+    </task>
+    <task id="NS-474" summary="NS-474: Anpassungen an jUnit4">
+      <created>1318326988726</created>
+      <option name="issue" value="true" />
+      <updated>1318326988726</updated>
+    </task>
+    <task id="NS-463" summary="NS-463: IndexAnalyzer - getDomain2TermCount liefert Ergebnis mit leeren Inhalte">
+      <created>1318326988726</created>
+      <option name="issue" value="true" />
+      <updated>1318326988726</updated>
+    </task>
+    <task id="NS-484" summary="NS-484: Bug - OrganisationseinheitDAO - loadOrganisationseinheitenForMandantengruppe failed">
+      <created>1318326988726</created>
+      <option name="issue" value="true" />
+      <updated>1318326988726</updated>
+    </task>
+    <task id="NS-490" summary="NS-490: Index 201109 neu indizieren ohne die nicht benötigten Felder">
+      <created>1318326988726</created>
+      <option name="issue" value="true" />
+      <updated>1318326988726</updated>
+    </task>
+    <task id="NS-503" summary="NS-503: UrlUtils  - neue Methode extractMainDomain und extractMainSURT">
+      <created>1318326988726</created>
+      <option name="issue" value="true" />
+      <updated>1318326988726</updated>
+    </task>
+    <task id="NS-531" summary="NS-531: BUG - MetaTagDAO - findByID liefert Fehlermeldung, wenn die ID nicht gibt">
+      <created>1319365431699</created>
+      <option name="issue" value="true" />
+      <updated>1319365431699</updated>
+    </task>
+    <task id="NS-550" summary="NS-550: BenutzerDAO - neue Methode - Anmeldename existiert">
+      <created>1319365431699</created>
+      <option name="issue" value="true" />
+      <updated>1319365431699</updated>
+    </task>
+    <task id="LOCAL-00004" summary="parked - not for commit">
+      <changelist id="a6d1f1f5-f410-4ffc-bf7c-8d52de1d3788" name="parked - not for commit" comment="" />
+      <created>1319740770893</created>
+      <updated>1322143155754</updated>
+    </task>
+    <task id="NS-720" summary="NS-720: Beschaffung der URLs über die idxVersion und den Domain">
+      <created>1321432484309</created>
+      <option name="issue" value="true" />
+      <updated>1321432484309</updated>
+    </task>
+    <task id="NS-732" summary="NS-732: XML Marshalling Exception nachdem eine person mit einem Benutzer assoziiert worden ist.">
+      <created>1321432484309</created>
+      <option name="issue" value="true" />
+      <updated>1321432484309</updated>
+    </task>
+    <task id="NS-723" summary="NS-723: StateDAO als WS umsetzen">
+      <created>1321432484309</created>
+      <option name="issue" value="true" />
+      <updated>1321432484309</updated>
+    </task>
+    <task id="NS-690" summary="NS-690: BenutzerDAO - neue Methode - getPersonOfBenutzer ">
+      <created>1321432484309</created>
+      <option name="issue" value="true" />
+      <updated>1321432484309</updated>
+    </task>
+    <task id="NS-520" summary="NS-520: ESM Difference-Report neue Terme">
+      <created>1321880250340</created>
+      <option name="issue" value="true" />
+      <updated>1321880250340</updated>
+    </task>
+    <task id="NS-785" summary="NS-785: Proxy - Schreibfehler in resultOverviewElement(Object), copmanyname anstelle von companyname">
+      <created>1322462997765</created>
+      <option name="issue" value="true" />
+      <updated>1322462997765</updated>
+    </task>
+    <task id="NS-799" summary="NS-799: PersonDAO - saveOrUpdate - Speicherung der BenutzerID bei neu failed">
+      <changelist id="42ff8575-1b45-4b9c-9c5a-9424deb8c81f" name="NS-799: PersonDAO - saveOrUpdate - Speicherung der BenutzerID bei neu failed" comment="NS-904: BUG - ManagedSearchQueryDAO - loadforUser - java.lang.NullPointerException" />
+      <created>1323203398350</created>
+      <option name="issue" value="true" />
+      <updated>1323203398350</updated>
+    </task>
+    <task id="LOCAL-00012" summary="allgemein">
+      <created>1323263585265</created>
+      <updated>1323263585265</updated>
+    </task>
+    <task id="LOCAL-00013" summary="refactoring">
+      <changelist id="24817eff-58bc-464f-ad15-a3e79b520b43" name="refactoring" comment="refactoring" />
+      <created>1323263585265</created>
+      <updated>1329164260916</updated>
+    </task>
+    <task id="NS-737" summary="NS-737: Umbenennen von NewTerm und NewTermAttribute in IdxStatistikNewTerm usw.">
+      <changelist id="735c6c92-b7b0-421b-b209-1d47aebeacd0" name="NS-737: Umbenennen von NewTerm und NewTermAttribute in IdxStatistikNewTerm usw." comment="NS-737: Umbenennen von NewTerm und NewTermAttribute in IdxStatistikNewTerm usw." />
+      <created>1329325891744</created>
+      <option name="issue" value="true" />
+      <updated>1329325891744</updated>
+    </task>
+    <task id="NS-936" summary="NS-936: WS IssueComments zur Verfügung stellen">
+      <changelist id="d91ec2c6-1dd7-4417-8a38-84ecf25c8025" name="NS-936: WS IssueComments zur Verfügung stellen" comment="NS-936: WS IssueComments zur Verfügung stellen" />
+      <created>1329325891744</created>
+      <option name="issue" value="true" />
+      <updated>1329325891744</updated>
+    </task>
+    <task id="NS-1077" summary="NS-1077 EJB - Logger per CDI einbinden">
+      <changelist id="ec48c642-7d22-43ae-a841-f62e834e3c22" name="NS-1077 EJB - Logger per CDI einbinden" comment="NS-1077 EJB - Logger per CDI einbinden" />
+      <created>1329325891744</created>
+      <option name="issue" value="true" />
+      <updated>1329325891744</updated>
+    </task>
+    <task id="NS-927" summary="NS-927: PersonDAO - org.hibernate.exception.GenericJDBCException: Could not open connection">
+      <changelist id="219a9e1b-3474-4cf0-923f-d1a05a23d593" name="NS-927: PersonDAO - org.hibernate.exception.GenericJDBCException: Could not open connection" comment="NS-927: PersonDAO - org.hibernate.exception.GenericJDBCException: Could not open connection" />
+      <created>1329325891744</created>
+      <option name="issue" value="true" />
+      <updated>1329325891744</updated>
+    </task>
+    <task id="NS-1091" summary="NS-1091: OrganisationseinheitDAO - flatOrganisationseinheit - gesellschaftsform umbenennen nach gesellschaftsformOID">
+      <changelist id="cbcee469-4723-4179-b964-e6f3ad0697c0" name="NS-1091: OrganisationseinheitDAO - flatOrganisationseinheit - gesellschaftsform umbenennen nach gesellschaftsformOID" comment="NS-1091: OrganisationseinheitDAO - flatOrganisationseinheit - gesellschaftsform umbenennen nach gesellschaftsformOID" />
+      <created>1329325891744</created>
+      <option name="issue" value="true" />
+      <updated>1329325891744</updated>
+    </task>
+    <task id="LOCAL-00024" summary="allgemein">
+      <changelist id="e25c8817-bc65-4064-b351-daf50fb2e8da" name="allgemein" comment="allgemein" />
+      <created>1329325891744</created>
+      <updated>1329325891744</updated>
+    </task>
+    <task id="NS-1176" summary="NS-1176: OrganisationDAO - positionenOIDs  umbenennen nach positionOIDs">
+      <changelist id="b7550735-a72f-434d-a9c4-a43309f9e4bb" name="NS-1176: OrganisationDAO - positionenOIDs  umbenennen nach positionOIDs" comment="NS-1176: OrganisationDAO - positionenOIDs  umbenennen nach positionOIDs" />
+      <created>1329325891744</created>
+      <option name="issue" value="true" />
+      <updated>1329325891744</updated>
+    </task>
+    <task id="NS-1194" summary="NS-1194">
+      <changelist id="f864acc5-5180-4436-9cac-ed71d60dec4b" name="NS-1194" comment="" />
+      <created>1329325891744</created>
+      <option name="issue" value="true" />
+      <updated>1329325891744</updated>
+    </task>
+    <task id="NS-1199" summary="Warc2XML initial implementieren">
+      <changelist id="03bc2d0c-ee4b-47ba-8a6f-4ff995ac0dac" name="NS-1199: Warc2XML initial implementieren" comment="" />
+      <changelist id="03bc2d0c-ee4b-47ba-8a6f-4ff995ac0dac" name="NS-1199: Warc2XML initial implementieren" comment="" />
+      <created>1329758236000</created>
+      <option name="issue" value="true" />
+      <updated>1334311353000</updated>
+    </task>
+    <task id="NS-1215" summary="DifferenceReport : allgemeine Fehlerbeseitigung und Beschleunigung">
+      <changelist id="3d467df5-6b3c-4cdb-bac4-b44e636547b0" name="NS-1215: DifferenceReport : allgemeine Fehlerbeseitigung und Beschleunigung" comment="" />
+      <changelist id="0ed67964-fa4b-41b7-a9a9-501e9f0fe294" name="NS-1215 - DifferenceReport : allegemeine Fehlerbeseitigung und Beschleunigung" comment="NS-1215 - DifferenceReport : allegemeine Fehlerbeseitigung und Beschleunigung" />
+      <created>1330979731000</created>
+      <option name="issue" value="true" />
+      <updated>1334311352000</updated>
+    </task>
+    <task id="NS-1216" summary="refactoring: verschiebe Klassen mit main methoden (Produktionsklasen) zu prozesse">
+      <changelist id="e0a10c20-0fa2-4c93-8b5e-5415c215c50b" name="NS-1216 - refactoring: verschiebe Klassen mit main methoden (Produktionsklasen) zu prozesse" comment="NS-1216 - refactoring: verschiebe Klassen mit main methoden (Produktionsklasen) zu prozesse" />
+      <created>1330980305000</created>
+      <option name="issue" value="true" />
+      <updated>1334311352000</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
+    <option name="clearContext" value="false" />
+    <servers>
+      <JIRA shared="true" url="https://neoscio.atlassian.net">
+        <commitMessageFormat>{id} {summary}</commitMessageFormat>
+        <password>dfecdfefdf93df9adfdedfd0dfc1dfd8dfdfdfdadfdadfdcdfcedfc7df9ddf9c</password>
+        <option name="shouldFormatCommitMessage" value="false" />
+        <option name="useHttpAuthentication" value="true" />
+        <option name="useProxy" value="true" />
+        <username>sven.ruppert</username>
+      </JIRA>
+    </servers>
+  </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <are-modules-shown value="true" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="2565" y="25" width="2553" height="1550" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22619048" sideWeight="0.42731276" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="JavaEE:App" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295955" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Persistence" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.09418838" sideWeight="0.8557423" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22478992" sideWeight="0.32735962" order="27" side_tool="true" content_ui="tabs" x="2586" y="571" width="2508" height="483" />
+      <window_info id="JavaRebel Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26960784" sideWeight="0.39287144" order="26" side_tool="true" content_ui="tabs" x="1778" y="405" width="777" height="434" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32983193" sideWeight="0.61794156" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23428114" sideWeight="0.232493" order="8" side_tool="true" content_ui="tabs" x="2016" y="34" width="424" height="369" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3277311" sideWeight="0.7200641" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="JavaRebel" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.11293552" sideWeight="0.18137255" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Coverage" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24369748" sideWeight="0.4954238" order="25" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23428114" sideWeight="0.7626051" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.27240896" sideWeight="0.6043252" order="21" side_tool="false" content_ui="tabs" />
+      <window_info id="Test Runs" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Data Sources" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17581098" sideWeight="0.65686274" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Atlassian " active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23809524" sideWeight="0.0" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="CheckStyle" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32920963" sideWeight="0.49860168" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36344537" sideWeight="0.82018423" order="22" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960448" sideWeight="0.7862543" order="9" side_tool="true" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14737685" sideWeight="0.67016804" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329996" sideWeight="0.32843137" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="EJB" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.10973168" sideWeight="0.72829133" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3739496" sideWeight="0.6697211" order="16" side_tool="false" content_ui="tabs" />
+      <window_info id="jenkinsBrowser" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3299758" sideWeight="0.73310345" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3295955" sideWeight="0.6666667" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="AWS Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1710052" sideWeight="0.3809524" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="combo" />
+      <window_info id="Message Pane" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32991803" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Database Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38235295" sideWeight="0.8021626" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="File Transfer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913166" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="TunnelliJ" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32966277" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="PlugProxy" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32966277" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33753502" sideWeight="0.5694834" order="20" side_tool="false" content_ui="tabs" />
+      <window_info id="TeamCity" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329235" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.179972" sideWeight="0.6127353" order="6" side_tool="false" content_ui="tabs" x="32" y="521" width="2497" height="1010" />
+      <window_info id="Web" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
+      <window_info id="CVS" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36344537" sideWeight="0.49379256" order="15" side_tool="false" content_ui="tabs" />
+      <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.23548257" sideWeight="0.32352942" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="RemoteSynchronizer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913166" sideWeight="0.4985983" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="SVN Repositories" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3662465" sideWeight="0.49379256" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="TrackLink" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17581098" sideWeight="0.5035014" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Issues - JIRA" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.29034483" sideWeight="0.49043825" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="JPA Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5565517" sideWeight="0.7853445" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="23" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="19" side_tool="false" content_ui="tabs" />
+      <window_info id="Project Explorer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1838118" sideWeight="0.44603825" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Properties Pane" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.7759104" sideWeight="0.49539447" order="17" side_tool="false" content_ui="tabs" />
+      <window_info id="Duplicates" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32993197" sideWeight="0.6434263" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25910366" sideWeight="0.7100521" order="24" side_tool="false" content_ui="tabs" />
+      <window_info id="Regex" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293872" sideWeight="0.8058098" order="18" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="UpdateCopyrightCheckinHandler">
+    <option name="UPDATE_COPYRIGHT" value="true" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="true" />
+    <option name="myTodoPanelSettings">
+      <value>
+        <are-packages-shown value="false" />
+        <are-modules-shown value="false" />
+        <flatten-packages value="false" />
+        <is-autoscroll-to-source value="false" />
+      </value>
+    </option>
+    <option name="PERFORM_UPDATE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_COMMIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
+    <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="true" />
+    <option name="ENABLE_BACKGROUND_PROCESSES" value="true" />
+    <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
+    <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
+    <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
+    <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
+    <option name="SHORT_DIFF_HORISONTALLY" value="true" />
+    <option name="SHORT_DIFF_EXTRA_LINES" value="2" />
+    <option name="SOFT_WRAPS_IN_SHORT_DIFF" value="true" />
+    <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
+    <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
+    <option name="CREATE_PATCH_EXPAND_DETAILS_DEFAULT" value="true" />
+    <option name="SHOW_FILE_HISTORY_DETAILS" value="true" />
+    <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
+    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
+    <option name="LAST_COMMIT_MESSAGE" value="NS-1199 Warc2XML initial implementieren" />
+    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
+    <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
+    <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
+    <option name="ACTIVE_VCS_NAME" />
+    <option name="UPDATE_GROUP_BY_PACKAGES" value="false" />
+    <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
+    <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
+    <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+    <MESSAGE value="NS-920: Projektplanung - Swing - Datenmodell erstellen" />
+    <MESSAGE value="NS-932 WS BranchenKlassifizierungDAO bitte umbenennen nach BrancheKlassifizierung" />
+    <MESSAGE value="NS-1021: BrancheAssocDAO - branchenKlassifizierung umbennennen nach BrancheKlassifizierung" />
+    <MESSAGE value="NS-951: Attribute umbenennen" />
+    <MESSAGE value="NS-736: NewTerm - beim erstellen und speichern Abgleich mit schon vorhandenen Daten in der DB" />
+    <MESSAGE value="NS-173: Leistungsskalierung der IndexMaschine f komplexe Anfragen" />
+    <MESSAGE value="NS-281: voraggregieren: DomainStatistikenTeil I" />
+    <MESSAGE value="NS-2: Entwicklung RSS Crawler" />
+    <MESSAGE value="NS-737: Umbenennen von NewTerm und NewTermAttribute in IdxStatistikNewTerm usw." />
+    <MESSAGE value="NS-936: WS IssueComments zur Verfügung stellen" />
+    <MESSAGE value="NS-1077 EJB - Logger per CDI einbinden" />
+    <MESSAGE value="NS-927: PersonDAO - org.hibernate.exception.GenericJDBCException: Could not open connection" />
+    <MESSAGE value="NS-1091: OrganisationseinheitDAO - flatOrganisationseinheit - gesellschaftsform umbenennen nach gesellschaftsformOID" />
+    <MESSAGE value="NS-970: Logfiles als Webservice zur verfügung stellen" />
+    <MESSAGE value="allgemein" />
+    <MESSAGE value="NS-1092: OrganisationeinheitDAO - Attribute umbenennen" />
+    <MESSAGE value="refactoring" />
+    <MESSAGE value="baseimport" />
+    <MESSAGE value="NS-1172 OrganisationeinheitDAO - webdomain umbenennen nach webDomain" />
+    <MESSAGE value="NS-1215 - DifferenceReport : allegemeine Fehlerbeseitigung und Beschleunigung" />
+    <MESSAGE value="NS-1176: OrganisationDAO - positionenOIDs  umbenennen nach positionOIDs" />
+    <MESSAGE value="NS-1216 - refactoring: verschiebe Klassen mit main methoden (Produktionsklasen) zu prozesse" />
+    <MESSAGE value="NS-1200: XML2Solr initial implementierung" />
+    <MESSAGE value="NS-1199: Warc2XML initial implementieren" />
+    <MESSAGE value="NS-1199 Warc2XML initial implementieren" />
+  </component>
+  <component name="WindowDressing">
+    <option name="x" value="2556" />
+    <option name="y" value="26" />
+    <option name="width" value="2560" />
+    <option name="height" value="1574" />
+    <option name="extendedState" value="6" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+  </component>
+  <component name="XPathView.XPathProjectComponent">
+    <history>
+      <element expression="/dpmadoc/title-body/SD0BI/B000/DPMATAGS/B030DPMA/B032DPMA" />
+      <element expression="/dpmadoc/titel-body/SDOBI/B000/DPMATAGS/B040DPMA/B042DPMA" />
+      <element expression="/dpmadoc/titel-body/SDOBI/B000/DPMATAGS/B033DPMA" />
+      <element expression="/dpmadoc/titel-body/SDOBI/B000/DPMATAGS/B030DPMA/B034DPMA" />
+      <element expression="/dpmadoc/titel-body/SDOBI/B000/DPMATAGS/B044DPMA" />
+      <element expression="/dpmadoc/titel-body/SDOBI/B000/DPMATAGS/B030DPMA/B032DPMA" />
+      <element expression="/dpmadoc/titel-body/SDOBI/B100/B140/DATE" />
+      <element expression="/dpmadoc/titel-body/SDOBI/B100/B120/B121" />
+      <element expression="/dpmadoc/titel-body/SDOBI/B100/B110" />
+    </history>
+    <find-history />
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+  </component>
+  <component name="atlassian-ide-plugin-workspace">
+    <option name="activeToolWindowTab" value="Issues - JIRA" />
+    <option name="bambooConfiguration">
+      <BambooWorkspaceConfiguration>
+        <option name="view">
+          <BambooViewConfigurationBean />
+        </option>
+      </BambooWorkspaceConfiguration>
+    </option>
+    <option name="defaultCredentials">
+      <UserCfgBean>
+        <option name="username" value="sven.ruppert" />
+      </UserCfgBean>
+    </option>
+    <option name="defaultCredentialsAsked" value="true" />
+  </component>
+  <component name="atlassian-ide-plugin-workspace-issues">
+    <option name="activeIssueCommitChanges" value="true" />
+    <option name="activeIssueLogWork" value="true" />
+    <option name="filtersMap">
+      <map>
+        <entry>
+          <key>
+            <ServerIdImpl>
+              <option name="id" value="342c370e-61e6-47ad-8242-93264592d965" />
+            </ServerIdImpl>
+          </key>
+          <value>
+            <JiraCustomFilterMap />
+          </value>
+        </entry>
+        <entry>
+          <key>
+            <ServerIdImpl>
+              <option name="id" value="179b544b-2dcb-4e48-a01e-e685aba6dab4" />
+            </ServerIdImpl>
+          </key>
+          <value>
+            <JiraCustomFilterMap />
+          </value>
+        </entry>
+        <entry>
+          <key>
+            <ServerIdImpl>
+              <option name="id" value="acc01129-4194-408e-b8b1-e118f57e429a" />
+            </ServerIdImpl>
+          </key>
+          <value>
+            <JiraCustomFilterMap />
+          </value>
+        </entry>
+        <entry>
+          <key>
+            <ServerIdImpl>
+              <option name="id" value="9dcf66e7-7c13-41f1-8a9a-c88da994655c" />
+            </ServerIdImpl>
+          </key>
+          <value>
+            <JiraCustomFilterMap />
+          </value>
+        </entry>
+        <entry>
+          <key>
+            <ServerIdImpl>
+              <option name="id" value="a496f415-d57a-404f-8af0-77fee821d34e" />
+            </ServerIdImpl>
+          </key>
+          <value>
+            <JiraCustomFilterMap />
+          </value>
+        </entry>
+        <entry>
+          <key>
+            <ServerIdImpl>
+              <option name="id" value="7dc31ffd-64db-41ec-bef4-8ae403fcf869" />
+            </ServerIdImpl>
+          </key>
+          <value>
+            <JiraCustomFilterMap />
+          </value>
+        </entry>
+        <entry>
+          <key>
+            <ServerIdImpl>
+              <option name="id" value="6546a604-f742-4cdd-8885-0ce192d6189f" />
+            </ServerIdImpl>
+          </key>
+          <value>
+            <JiraCustomFilterMap>
+              <option name="customFilters">
+                <map>
+                  <entry key="a0396b76-5fa6-446f-aa9c-3c32ad5c1f75">
+                    <value>
+                      <JiraFilterConfigurationBean>
+                        <option name="manualFilter">
+                          <list>
+                            <JiraFilterEntryBean>
+                              <option name="filterEntry">
+                                <map>
+                                  <entry key="description" value="" />
+                                  <entry key="filterTypeClass" value="com.atlassian.connector.commons.jira.beans.JIRAProjectBean" />
+                                  <entry key="id" value="10000" />
+                                  <entry key="key" value="NS" />
+                                  <entry key="lead" value="sven.ruppert" />
+                                  <entry key="name" value="NeoScio Developer" />
+                                  <entry key="url" value="http://dev.neoscio.de:8070/browse/NS" />
+                                </map>
+                              </option>
+                            </JiraFilterEntryBean>
+                            <JiraFilterEntryBean>
+                              <option name="filterEntry">
+                                <map>
+                                  <entry key="filterTypeClass" value="com.atlassian.connector.commons.jira.beans.JIRAResolutionBean" />
+                                  <entry key="id" value="-1" />
+                                  <entry key="name" value="Unresolved" />
+                                </map>
+                              </option>
+                            </JiraFilterEntryBean>
+                            <JiraFilterEntryBean>
+                              <option name="filterEntry">
+                                <map>
+                                  <entry key="filterTypeClass" value="com.atlassian.connector.commons.jira.beans.JIRAFixForVersionBean" />
+                                  <entry key="id" value="10311" />
+                                  <entry key="name" value="20111209" />
+                                </map>
+                              </option>
+                            </JiraFilterEntryBean>
+                            <JiraFilterEntryBean>
+                              <option name="filterEntry">
+                                <map>
+                                  <entry key="filterTypeClass" value="com.atlassian.connector.commons.jira.beans.JIRAAssigneeBean" />
+                                  <entry key="id" value="-1" />
+                                  <entry key="name" value="Current User" />
+                                  <entry key="value" value="sven.ruppert" />
+                                </map>
+                              </option>
+                            </JiraFilterEntryBean>
+                            <JiraFilterEntryBean>
+                              <option name="filterEntry">
+                                <map>
+                                  <entry key="filterTypeClass" value="com.atlassian.connector.commons.jira.beans.JIRAReporterBean" />
+                                  <entry key="id" value="-1000" />
+                                  <entry key="name" value="Any User" />
+                                  <entry key="value" value="null" />
+                                </map>
+                              </option>
+                            </JiraFilterEntryBean>
+                          </list>
+                        </option>
+                        <option name="name" value="SRU - 20111209" />
+                        <option name="uid" value="a0396b76-5fa6-446f-aa9c-3c32ad5c1f75" />
+                      </JiraFilterConfigurationBean>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </JiraCustomFilterMap>
+          </value>
+        </entry>
+        <entry>
+          <key>
+            <ServerIdImpl>
+              <option name="id" value="e94f9e87-7bd8-4a7e-a529-bb8fec9ada3e" />
+            </ServerIdImpl>
+          </key>
+          <value>
+            <JiraCustomFilterMap />
+          </value>
+        </entry>
+        <entry>
+          <key>
+            <ServerIdImpl>
+              <option name="id" value="5189b15f-4295-4210-90aa-36e526e4b931" />
+            </ServerIdImpl>
+          </key>
+          <value>
+            <JiraCustomFilterMap />
+          </value>
+        </entry>
+        <entry>
+          <key>
+            <ServerIdImpl>
+              <option name="id" value="86db5d51-9c57-4910-8c77-a34876e25c0e" />
+            </ServerIdImpl>
+          </key>
+          <value>
+            <JiraCustomFilterMap />
+          </value>
+        </entry>
+        <entry>
+          <key>
+            <ServerIdImpl>
+              <option name="id" value="f518e754-2fc7-4f6c-8d4a-d7ce2777562e" />
+            </ServerIdImpl>
+          </key>
+          <value>
+            <JiraCustomFilterMap />
+          </value>
+        </entry>
+        <entry>
+          <key>
+            <ServerIdImpl>
+              <option name="id" value="74ac2657-75a7-4c42-9e0d-f6c81549129f" />
+            </ServerIdImpl>
+          </key>
+          <value>
+            <JiraCustomFilterMap />
+          </value>
+        </entry>
+        <entry>
+          <key>
+            <ServerIdImpl>
+              <option name="id" value="4a53abab-ac4e-4606-8792-b4a9ec2e92fd" />
+            </ServerIdImpl>
+          </key>
+          <value>
+            <JiraCustomFilterMap>
+              <option name="customFilters">
+                <map>
+                  <entry key="e6f58058-8af8-488e-8423-629342f5462e">
+                    <value>
+                      <JiraFilterConfigurationBean>
+                        <option name="manualFilter">
+                          <list>
+                            <JiraFilterEntryBean>
+                              <option name="filterEntry">
+                                <map>
+                                  <entry key="description" value="" />
+                                  <entry key="filterTypeClass" value="com.atlassian.connector.commons.jira.beans.JIRAProjectBean" />
+                                  <entry key="id" value="10000" />
+                                  <entry key="key" value="NS" />
+                                  <entry key="lead" value="sven.ruppert" />
+                                  <entry key="name" value="NeoScio" />
+                                  <entry key="url" value="http://dev.neoscio.de:8070/browse/NS" />
+                                </map>
+                              </option>
+                            </JiraFilterEntryBean>
+                            <JiraFilterEntryBean>
+                              <option name="filterEntry">
+                                <map>
+                                  <entry key="filterTypeClass" value="com.atlassian.connector.commons.jira.beans.JIRAStatusBean" />
+                                  <entry key="icon" value="http://dev.neoscio.de:8070/images/icons/status_open.gif" />
+                                  <entry key="id" value="1" />
+                                  <entry key="name" value="Open" />
+                                </map>
+                              </option>
+                            </JiraFilterEntryBean>
+                            <JiraFilterEntryBean>
+                              <option name="filterEntry">
+                                <map>
+                                  <entry key="filterTypeClass" value="com.atlassian.connector.commons.jira.beans.JIRAStatusBean" />
+                                  <entry key="icon" value="http://dev.neoscio.de:8070/images/icons/status_inprogress.gif" />
+                                  <entry key="id" value="3" />
+                                  <entry key="name" value="In Progress" />
+                                </map>
+                              </option>
+                            </JiraFilterEntryBean>
+                            <JiraFilterEntryBean>
+                              <option name="filterEntry">
+                                <map>
+                                  <entry key="filterTypeClass" value="com.atlassian.connector.commons.jira.beans.JIRAStatusBean" />
+                                  <entry key="icon" value="http://dev.neoscio.de:8070/images/icons/status_reopened.gif" />
+                                  <entry key="id" value="4" />
+                                  <entry key="name" value="Reopened" />
+                                </map>
+                              </option>
+                            </JiraFilterEntryBean>
+                            <JiraFilterEntryBean>
+                              <option name="filterEntry">
+                                <map>
+                                  <entry key="filterTypeClass" value="com.atlassian.connector.commons.jira.beans.JIRAStatusBean" />
+                                  <entry key="icon" value="http://dev.neoscio.de:8070/images/icons/status_information.gif" />
+                                  <entry key="id" value="10000" />
+                                  <entry key="name" value="On-Hold" />
+                                </map>
+                              </option>
+                            </JiraFilterEntryBean>
+                            <JiraFilterEntryBean>
+                              <option name="filterEntry">
+                                <map>
+                                  <entry key="filterTypeClass" value="com.atlassian.connector.commons.jira.beans.JIRAStatusBean" />
+                                  <entry key="icon" value="http://dev.neoscio.de:8070/images/icons/status_needinfo.gif" />
+                                  <entry key="id" value="10001" />
+                                  <entry key="name" value="Waiting-For-Info" />
+                                </map>
+                              </option>
+                            </JiraFilterEntryBean>
+                            <JiraFilterEntryBean>
+                              <option name="filterEntry">
+                                <map>
+                                  <entry key="filterTypeClass" value="com.atlassian.connector.commons.jira.beans.JIRAFixForVersionBean" />
+                                  <entry key="id" value="10011" />
+                                  <entry key="name" value="20110923" />
+                                </map>
+                              </option>
+                            </JiraFilterEntryBean>
+                            <JiraFilterEntryBean>
+                              <option name="filterEntry">
+                                <map>
+                                  <entry key="filterTypeClass" value="com.atlassian.connector.commons.jira.beans.JIRAAssigneeBean" />
+                                  <entry key="id" value="-1" />
+                                  <entry key="name" value="Current User" />
+                                  <entry key="value" value="sven.ruppert" />
+                                </map>
+                              </option>
+                            </JiraFilterEntryBean>
+                            <JiraFilterEntryBean>
+                              <option name="filterEntry">
+                                <map>
+                                  <entry key="filterTypeClass" value="com.atlassian.connector.commons.jira.beans.JIRAReporterBean" />
+                                  <entry key="id" value="-1000" />
+                                  <entry key="name" value="Any User" />
+                                  <entry key="value" value="null" />
+                                </map>
+                              </option>
+                            </JiraFilterEntryBean>
+                          </list>
+                        </option>
+                        <option name="name" value="eigene Aufgaben - 20110923" />
+                        <option name="uid" value="e6f58058-8af8-488e-8423-629342f5462e" />
+                      </JiraFilterConfigurationBean>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </JiraCustomFilterMap>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="logWorkOnCommit" value="true" />
+    <option name="recentlyOpenIssuess">
+      <list>
+        <IssueRecentlyOpenBean>
+          <option name="issueKey" value="NS-1200" />
+          <option name="issueUrl" value="https://neoscio.atlassian.net/browse/NS-1200" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="e94f9e87-7bd8-4a7e-a529-bb8fec9ada3e" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+        <IssueRecentlyOpenBean>
+          <option name="issueKey" value="NS-539" />
+          <option name="issueUrl" value="http://dev.neoscio.de:8070/browse/NS-539" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="6546a604-f742-4cdd-8885-0ce192d6189f" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+        <IssueRecentlyOpenBean>
+          <option name="issueKey" value="NS-864" />
+          <option name="issueUrl" value="http://dev.neoscio.de:8070/browse/NS-864" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="5189b15f-4295-4210-90aa-36e526e4b931" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+        <IssueRecentlyOpenBean>
+          <option name="issueKey" value="NSB-316" />
+          <option name="issueUrl" value="http://dev.neoscio.de:8070/browse/NSB-316" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="5189b15f-4295-4210-90aa-36e526e4b931" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+        <IssueRecentlyOpenBean>
+          <option name="issueKey" value="NS-790" />
+          <option name="issueUrl" value="http://dev.neoscio.de:8070/browse/NS-790" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="5189b15f-4295-4210-90aa-36e526e4b931" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+        <IssueRecentlyOpenBean>
+          <option name="issueKey" value="NS-2" />
+          <option name="issueUrl" value="http://dev.neoscio.de:8070/browse/NS-2" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="5189b15f-4295-4210-90aa-36e526e4b931" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+        <IssueRecentlyOpenBean>
+          <option name="issueKey" value="NS-788" />
+          <option name="issueUrl" value="http://dev.neoscio.de:8070/browse/NS-788" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="5189b15f-4295-4210-90aa-36e526e4b931" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+        <IssueRecentlyOpenBean>
+          <option name="issueKey" value="NS-55" />
+          <option name="issueUrl" value="http://dev.neoscio.de:8070/browse/NS-55" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="5189b15f-4295-4210-90aa-36e526e4b931" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+        <IssueRecentlyOpenBean>
+          <option name="issueKey" value="NS-769" />
+          <option name="issueUrl" value="http://dev.neoscio.de:8070/browse/NS-769" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="5189b15f-4295-4210-90aa-36e526e4b931" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+        <IssueRecentlyOpenBean>
+          <option name="issueKey" value="NS-746" />
+          <option name="issueUrl" value="http://dev.neoscio.de:8070/browse/NS-746" />
+          <option name="serverId">
+            <ServerIdImpl>
+              <option name="id" value="5189b15f-4295-4210-90aa-36e526e4b931" />
+            </ServerIdImpl>
+          </option>
+        </IssueRecentlyOpenBean>
+      </list>
+    </option>
+    <option name="selectedWorkflowAction" value="701" />
+    <option name="view">
+      <JiraViewConfigurationBean>
+        <option name="collapseSubtasksUnderParent" value="true" />
+        <option name="groupBy" value="Status" />
+        <option name="viewFilterId" value="" />
+        <option name="viewFilterType" value="manualFilter" />
+      </JiraViewConfigurationBean>
+    </option>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/myneoscio/prozesse/reportings/ProzessNewTerms.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="0" selection-start="1741" selection-end="1741" vertical-scroll-proportion="0.0093998555">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/myneoscio/index/HistoryIndex.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="45" column="0" selection-start="1250" selection-end="1250" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BaseCollector/src/de/neoscio/collector/SeedFileGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="51" selection-start="1222" selection-end="1222" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BaseServices_MyNeoScio/src-test/de/neoscio/analyzer/query/BasicSolrAnalyzerTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="105" column="101" selection-start="4598" selection-end="4598" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BaseLang/src/de/neoscio/lang/UrlUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="38" column="25" selection-start="1114" selection-end="1114" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BaseLang/src/de/neoscio/lang/data/WarcRecord.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="370" column="15" selection-start="14371" selection-end="14371" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BaseHadoop/src/de/neoscio/hadoop/mr/warc/data/WarcFileRecordReader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="165" column="46" selection-start="6080" selection-end="6080" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BaseServicesEJB_MyNeoScio/src/de/neoscio/myneoscio/analyzer/difference/DifferenceReportBean.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="53" column="23" selection-start="1593" selection-end="1593" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/myneoscio/analyzer/query/BasicSolrAnalyzer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="159" column="20" selection-start="7001" selection-end="7001" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BaseServices_MyNeoScio/src/de/neoscio/data/SearchResult.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="13" selection-start="410" selection-end="410" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BaseLang/src/de/neoscio/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="149" column="0" selection-start="7016" selection-end="7016" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BaseServicesEJB_MyNeoScio/src/de/neoscio/myneoscio/analyzer/query/AnalyzerBean.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="172" column="8" selection-start="8472" selection-end="8531" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BaseServicesEJB_MyNeoScio/src/de/neoscio/orm/myneoscio/rohdaten/IdxVersionDAOBean.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="31" column="13" selection-start="968" selection-end="968" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BaseORM_MyNeoScio/src/de/neoscio/orm/myneoscio/rohdaten/index/IdxStatistikNewTermAttribute.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="13" selection-start="495" selection-end="495" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BaseORM_MyNeoScio/src/de/neoscio/orm/myneoscio/rohdaten/index/IdxStatistikNewTerm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="21" column="13" selection-start="471" selection-end="471" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/BaseORM_MyNeoScio/src/de/neoscio/orm/myneoscio/rohdaten/index/IdxVersion.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="72" column="53" selection-start="1911" selection-end="1911" vertical-scroll-proportion="0.58832115">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor>
+            <show-content>
+              <type id="javaee-facet-resources" />
+              <type id="library" />
+              <type id="jpa-descriptors" />
+              <type id="artifact" />
+            </show-content>
+          </artifact-editor>
+          <last-edited>BaseServicesEJB</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Detection</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>lib-hadoop</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.6 openjdk</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>BaseSwing</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.6</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>local-solr-3.4.0</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <last-edited>NeoMeta</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+          <order>
+            <scope name="NeoMeta" />
+            <scope name="MyNeoScio" />
+            <scope name="SEO" />
+          </order>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
+

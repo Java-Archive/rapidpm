@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module xmlns="urn:jboss:module:1.0" name="org.rapidpm.base">
+  <resources>
+    <resource-root path="antlr-3.1.3.jar"/>
+    <resource-root path="apache-mime4j-0.4.jar"/>
+    <resource-root path="asm.jar"/>
+    <resource-root path="boilerpipe-1.0.4.jar"/>
+    <resource-root path="bsh-2.0b4.jar"/>
+    <resource-root path="cglib-2.2.jar"/>
+    <resource-root path="collections-generic-4.01.jar"/>
+    <resource-root path="colt-1.2.0.jar"/>
+    <resource-root path="concurrent-1.3.4.jar"/>
+    <resource-root path="core-3.1.1.jar"/>
+    <resource-root path="htmllexer.jar"/>
+    <resource-root path="htmlparser.jar"/>
+    <resource-root path="icu4j-4_2.jar"/>
+    <resource-root path="jakarta-oro-2.0.8.jar"/>
+    <resource-root path="jakarta-regexp-1.5.jar"/>
+    <resource-root path="javaswf-CVS-SNAPSHOT-1.jar"/>
+    <resource-root path="jaxen.jar"/>
+    <resource-root path="jets3t-0.6.1.jar"/>
+    <resource-root path="joda-time-1.6.1.jar"/>
+    <resource-root path="kfs-0.2.0.jar"/>
+    <resource-root path="libidn-0.5.9.jar"/>
+    <resource-root path="mail.jar"/>
+    <resource-root path="mg4j-1.0.1.jar"/>
+    <resource-root path="mockito-all-1.8.5.jar"/>
+    <resource-root path="resolver.jar"/>
+    <resource-root path="rome-1.0.jar"/>
+    <resource-root path="serializer.jar"/>
+    <resource-root path="standard.jar"/>
+    <resource-root path="tagsoup-1.2.jar"/>
+    <resource-root path="Tidy.jar"/>
+    <resource-root path="xercesImpl.jar"/>
+    <!--resource-root path="xml-apis.jar"/-->
+    <resource-root path="xmlenc-0.52.jar"/>
+  </resources>
+  <dependencies>
+    <!-- <module name="org.rapidpm.moduleName"/> -->
+  </dependencies>
+</module>

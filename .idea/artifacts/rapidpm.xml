@@ -1,0 +1,25 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="rapidpm">
+    <output-path>$PROJECT_DIR$/out/artifacts/rapidpm</output-path>
+    <root id="archive" name="rapidpm.war">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="base" />
+          <element id="jpa-descriptors" facet="base/jpa/JPA" />
+          <element id="module-output" name="ejb" />
+          <element id="module-output" name="webgui" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="module-vaadin" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="ejb/ejb/EJB" />
+      <element id="javaee-facet-resources" facet="webgui/web/Web" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/webgui/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="dir-copy" path="$PROJECT_DIR$/webgui/web/VAADIN" />
+      <element id="vaadin.resources" include-widgetset-compilation="true" vaadin-facet-name="Vaadin Application (on Web)" web-root-dir="$PROJECT_DIR$/webgui/web" />
+    </root>
+  </artifact>
+</component>

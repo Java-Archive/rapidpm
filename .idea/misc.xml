@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CheckStyle-IDEA">
+    <option name="configuration">
+      <map>
+        <entry key="location-0" value="CLASSPATH:/sun_checks.xml:The default CheckStyle rules." />
+      </map>
+    </option>
+  </component>
+  <component name="EntryPointsManager">
+    <entry_points version="2.0" />
+  </component>
+  <component name="IdProvider" IDEtalkID="A4B98868E75CCAA99A2FB05F4ED8B8C5" />
+  <component name="JavadocGenerationManager">
+    <option name="OUTPUT_DIRECTORY" />
+    <option name="OPTION_SCOPE" value="protected" />
+    <option name="OPTION_HIERARCHY" value="true" />
+    <option name="OPTION_NAVIGATOR" value="true" />
+    <option name="OPTION_INDEX" value="true" />
+    <option name="OPTION_SEPARATE_INDEX" value="true" />
+    <option name="OPTION_DOCUMENT_TAG_USE" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_AUTHOR" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_VERSION" value="false" />
+    <option name="OPTION_DOCUMENT_TAG_DEPRECATED" value="true" />
+    <option name="OPTION_DEPRECATED_LIST" value="true" />
+    <option name="OTHER_OPTIONS" value="" />
+    <option name="HEAP_SIZE" />
+    <option name="LOCALE" />
+    <option name="OPEN_IN_BROWSER" value="true" />
+  </component>
+  <component name="ModuleEditorState">
+    <option name="LAST_EDITED_MODULE_NAME" />
+    <option name="LAST_EDITED_TAB_NAME" />
+  </component>
+  <component name="PlugProxyProjectComponent">
+    <option name="host" value="" />
+    <option name="hostPort" value="" />
+    <option name="localPort" value="" />
+    <option name="hexDump" />
+  </component>
+  <component name="ProjectKey">
+    <option name="state" value=":ssh:sven.ruppert@dev.neoscio.de:/usr/local/cvsroot|NeoScio_Base/.idea" />
+  </component>
+  <component name="ProjectResources">
+    <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+  <component name="Regex">
+    <option name="pos1" value="218" />
+    <option name="pos2" value="218" />
+    <option name="pos3" value="162" />
+    <option name="pos4" value="444" />
+    <option name="pos5" value="162" />
+    <option name="autoUpdate" value="true" />
+    <option name="referenceOn" value="false" />
+    <option name="referencePos" value="0" />
+    <option name="showLabels" value="true" />
+  </component>
+  <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://neoscio.atlassian.net/svn/NS/branches" />
+                  <option value="https://neoscio.atlassian.net/svn/NS/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://neoscio.atlassian.net/svn/NS/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/BaseLang">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://neoscio.atlassian.net/svn/NS/branches" />
+                  <option value="https://neoscio.atlassian.net/svn/NS/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://neoscio.atlassian.net/svn/NS/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/BaseORM">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://neoscio.atlassian.net/svn/NS/branches" />
+                  <option value="https://neoscio.atlassian.net/svn/NS/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://neoscio.atlassian.net/svn/NS/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/BaseServices">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://neoscio.atlassian.net/svn/NS/branches" />
+                  <option value="https://neoscio.atlassian.net/svn/NS/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://neoscio.atlassian.net/svn/NS/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/BaseServicesEJB">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://neoscio.atlassian.net/svn/NS/branches" />
+                  <option value="https://neoscio.atlassian.net/svn/NS/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://neoscio.atlassian.net/svn/NS/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/BaseServicesEJB_NeoMeta">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://neoscio.atlassian.net/svn/NS/branches" />
+                  <option value="https://neoscio.atlassian.net/svn/NS/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://neoscio.atlassian.net/svn/NS/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/BaseServices_NeoMeta">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://neoscio.atlassian.net/svn/NS/branches" />
+                  <option value="https://neoscio.atlassian.net/svn/NS/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://neoscio.atlassian.net/svn/NS/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/BaseWeb">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="trunkUrl" value="https://neoscio.atlassian.net/svn/NS/trunk/BaseWeb" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/BaseWeb_MyNeoScio">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="trunkUrl" value="https://neoscio.atlassian.net/svn/NS/trunk/BaseWeb_MyNeoScio" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="mySupportsUserInfoFilter" value="true" />
+  </component>
+  <component name="TL_PLUGIN">
+    <option name="myModel">
+      <IssueLinkModel>
+        <option name="integrateWith" value="2" />
+        <option name="myCurrentTypeList">
+          <list>
+            <CodeLinkType>
+              <option name="patternString" value="\b(\QRPM\E\-\d+)\b" />
+              <option name="replacePattern" value="http://jira.rapidpm.org/browse/$1" />
+            </CodeLinkType>
+          </list>
+        </option>
+        <option name="myIntegrateWith" value="2" />
+      </IssueLinkModel>
+    </option>
+    <option name="myCheckinOptions">
+      <CheckinOptions />
+    </option>
+  </component>
+  <component name="TrackLink.DashboardWindow">
+    <option name="myModelBeanOrderedList">
+      <list>
+        <option value="favorites" />
+        <option value="b82b-14b" />
+      </list>
+    </option>
+    <option name="myModelBean">
+      <map>
+        <entry key="b82b-14b" value="true" />
+        <entry key="favorites" value="true" />
+      </map>
+    </option>
+  </component>
+  <component name="WebServicesPlugin" addRequiredLibraries="true" />
+</project>
+

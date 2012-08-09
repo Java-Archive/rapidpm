@@ -1,0 +1,57 @@
+<plannedProject status="Developer Tasks" basedir=".">
+    <description>
+        Developer Tasks
+    </description>
+    <!--<property status ="tc_basePath" location ="/prog/tomcat/apache-tomcat-6.0.26/"/>-->
+    <!--<property status ="tc_basePath" location ="/Volumes/RAID_01/prog/tomcat/apache-tomcat-6.0.26/"/>-->
+    <!--<property status ="tc_basePath" location ="/Volumes/RAID_01/opt/apache-tomcat-6.0.26/"/>-->
+    <property status="data_basePath" location="/mnt/raid1/opt_data"/>
+    <!--<property status="tc_basePath" location="/opt/tomcat/apache-tomcat-6.0.26"/>-->
+    <property status="tc_basePath" location="/opt/tomcat/apache-tomcat-7.0.4"/>
+    <property status="lib_basePath" location="/mnt/raid1/workspace/NeoScio_Libs/"/>
+
+    <property status="tc_path_lib" location="${tc_basePath}/lib"/>
+    <property status="tc_path_layout" location="${data_basePath}/layoutdata/"/>
+    <!--<property status="lib_path_neosciobase" location="../../../../NeoScio_Libs/lib-neoscio"/>-->
+    <!--<property status="lib_path_neosciobaseweb" location="../../../../NeoScio_Libs/lib-neoscio-web"/>-->
+
+
+    <target status="copyNeoScioBaseORM.jar">
+        <copy file="../../../out/artifacts/BaseORM/BaseORM.jar" todir="${tc_path_lib}" overwrite="true"/>
+        <copy file="../../../out/artifacts/BaseORM/BaseORM.jar" todir="${lib_basePath}/lib-neoscio"
+              overwrite="true"/>
+    </target>
+
+    <target status="copyNeoScioBaseServices.jar">
+        <copy file="../../../out/artifacts/BaseServices/BaseServices.jar" todir="${tc_path_lib}" overwrite="true"/>
+        <copy file="../../../out/artifacts/BaseServices/BaseServices.jar" todir="${lib_basePath}/lib-neoscio"
+              overwrite="true"/>
+    </target>
+
+    <target status="copyNeoScioConfig">
+        <copy file="../../BaseWeb/data/webapp/layout/neoscioconfig.xml" todir="${tc_path_layout}" overwrite="true"/>
+        <copy file="../../BaseWeb/data/webapp/layout/neoscioconfig.dtd" todir="${tc_path_layout}" overwrite="true"/>
+    </target>
+
+
+    <!--<target status="copyNeoScioBaseX-2libs">-->
+    <!--<copy file="../../../out/artifacts/NeoScioBase/NeoScioBase.jar" todir="${lib_path_neosciobase}" overwrite="true"/>-->
+    <!--<copy file="../../../out/artifacts/NeoScioBaseWeb/NeoScioBaseWeb.jar" todir="${lib_path_neosciobaseweb}" overwrite="true"/>-->
+    <!--</target>-->
+
+    <!--<target status="ANT-JavaDoc" depends="">-->
+    <!--?? ?? ?? ??<javadoc destdir="${doc.api}" windowtitle="Java Doc mit ANT" >-->
+    <!--?? ?? ?? ??<packageset dir="${src}" defaultexcludes="yes">-->
+    <!--?? ?? ?? ?? ?? ??<include status="de/nss/**"/>-->
+    <!--?? ?? ?? ??</packageset>-->
+    <!--?? ?? ?? ??<doctitle>-->
+    <!--?? ?? ?? ?? ?? ??<![CDATA[<h1>Mein Java Doc mit ANT</h1>]]>-->
+    <!--?? ?? ?? ??</doctitle>-->
+    <!--?? ?? ?? ?? ?? ??<bottom>-->
+    <!--?? ?? ?? ?? ?? ?? ?? ??<![CDATA[<i>Copyright &#169; 2010 Manfred Lindenberg.</i>]]>-->
+    <!--?? ?? ?? ?? ?? ??</bottom>-->
+    <!--?? ?? ?? ?? ?? ??<link offline="true" href="http://download.oracle.com/javase/6/docs/api/" packagelistLoc="C:\tmp"??/>-->
+    <!--?? ?? ?? ??</javadoc>-->
+    <!--?? ??</target>-->
+
+</plannedProject>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="baseorm" transaction-type="JTA">
+        <jta-data-source>java:/jboss/datasources/RapidPMDS</jta-data-source>
+        <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+        <!--<validation-mode>NONE</validation-mode>-->
+
+        <!--<class>de.neoscio.stammdaten.system.security.Benutzer</class>-->
+        <!--<class>de.neoscio.stammdaten.system.security.BenutzerGruppe</class>-->
+        <!--<class>de.neoscio.stammdaten.system.security.BenutzerWebapplikation</class>-->
+        <!--<class>de.neoscio.stammdaten.system.security.Mandantengruppe</class>-->
+        <!--<class>de.neoscio.stammdaten.system.security.berechtigungen.Berechtigung</class>-->
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <!--<property name="hibernate.dialect" value="org.hibernate.dialect.DerbyTenSevenDialect"/>-->
+            <!--<property name="javax.persistence.validation.mode" value="none"/>-->
+            <!--<property name="hibernate.transaction.manager_lookup_class"-->
+            <!--value="org.hibernate.transaction.JBossTransactionManagerLookup"/>-->
+            <!--<property name="hibernate.hbm2ddl.auto" value="update"/>-->
+            <property name="hibernate.cache.use_second_level_cache" value="true"/>
+            <property name="hibernate.id.new_generator_mappings" value="false"/>
+        </properties>
+    </persistence-unit>
+
+    <!-- svenruppert / vrthowei56vseribw5b -->
+
+    <!--<persistence-unit name="stammdaten" transaction-type="JTA">-->
+    <!--<jta-data-source>java:/MyNeoScioProdDS</jta-data-source>-->
+    <!--<class>de.neoscio.stammdaten.system.security.Benutzer</class>-->
+    <!--<class>de.neoscio.stammdaten.system.security.BenutzerGruppe</class>-->
+    <!--<class>de.neoscio.stammdaten.system.security.BenutzerWebapplikation</class>-->
+    <!--<class>de.neoscio.stammdaten.system.security.Mandantengruppe</class>-->
+    <!--<class>de.neoscio.stammdaten.system.security.berechtigungen.Berechtigung</class>-->
+    <!--<properties>-->
+    <!--<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>-->
+
+    <!--<property name="hibernate.transaction.manager_lookup_class"-->
+    <!--value="org.hibernate.transaction.JBossTransactionManagerLookup"/>-->
+    <!--&lt;!&ndash;<property name="hibernate.hbm2ddl.auto" value="update"/>&ndash;&gt;-->
+    <!--</properties>-->
+    <!--</persistence-unit>-->
+
+    <!--<persistence-unit name="baseormMyNeoScioJDBCbeta" transaction-type="RESOURCE_LOCAL">-->
+    <!--<provider>org.hibernate.ejb.HibernatePersistence</provider>-->
+    <!--<class>de.neoscio.stammdaten.system.security.Benutzer</class>-->
+    <!--<class>de.neoscio.stammdaten.system.security.BenutzerGruppe</class>-->
+    <!--<class>de.neoscio.stammdaten.system.security.BenutzerWebapplikation</class>-->
+    <!--<class>de.neoscio.stammdaten.system.security.Mandantengruppe</class>-->
+    <!--<class>de.neoscio.stammdaten.system.security.berechtigungen.Berechtigung</class>-->
+    <!--<properties>-->
+    <!--<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>-->
+    <!--<property name="hibernate.connection.url" value="jdbc:postgresql://192.168.178.70:5432/myneoscio_beta"/>-->
+    <!--<property name="hibernate.connection.username" value="neoscio"/>-->
+    <!--<property name="hibernate.connection.password" value="neoscio"/>-->
+    <!--&lt;!&ndash;<property status="hibernate.default_schema" value="public" />&ndash;&gt;-->
+    <!--&lt;!&ndash;<property name="hibernate.hbm2ddl.auto" value="update"/>&ndash;&gt;-->
+    <!--<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>-->
+    <!--</properties>-->
+    <!--</persistence-unit>-->
+    <!--<persistence-unit name="baseormMyNeoScioJDBC" transaction-type="RESOURCE_LOCAL">-->
+    <!--<provider>org.hibernate.ejb.HibernatePersistence</provider>-->
+    <!--<class>de.neoscio.stammdaten.system.security.Benutzer</class>-->
+    <!--<class>de.neoscio.stammdaten.system.security.BenutzerGruppe</class>-->
+    <!--<class>de.neoscio.stammdaten.system.security.BenutzerWebapplikation</class>-->
+    <!--<class>de.neoscio.stammdaten.system.security.Mandantengruppe</class>-->
+    <!--<class>de.neoscio.stammdaten.system.security.berechtigungen.Berechtigung</class>-->
+    <!--<properties>-->
+    <!--<property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>-->
+    <!--<property name="hibernate.connection.url" value="jdbc:postgresql://192.168.178.70:5432/myneoscio_prod"/>-->
+    <!--<property name="hibernate.connection.username" value="neoscio"/>-->
+    <!--<property name="hibernate.connection.password" value="neoscio"/>-->
+    <!--&lt;!&ndash;<property status="hibernate.default_schema" value="public" />&ndash;&gt;-->
+    <!--&lt;!&ndash;<property name="hibernate.hbm2ddl.auto" value="update"/>&ndash;&gt;-->
+    <!--<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>-->
+    <!--</properties>-->
+    <!--</persistence-unit>-->
+</persistence>

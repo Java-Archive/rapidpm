@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="module-logger">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/lib/module/org/rapidpm/logger/main" />
+      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/logger/main/log4j-1.2.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/logger/main/logkit-1.2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/logger/main/slf4j-api-1.4.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/logger/main/slf4j-log4j12-1.4.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/lib/org/rapidpm/logger/main" recursive="false" />
+  </library>
+</component>

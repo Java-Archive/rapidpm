@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_neoscio_base" default="compile.module.neoscio_base">
+    <dirname property="module.neoscio_base.basedir" file="${ant.file.module_neoscio_base}"/>
+
+    <property name="module.jdk.home.neoscio_base" value="${project.jdk.home}"/>
+    <property name="module.jdk.bin.neoscio_base" value="${project.jdk.bin}"/>
+    <property name="module.jdk.classpath.neoscio_base" value="${project.jdk.classpath}"/>
+
+    <property name="compiler.args.neoscio_base" value="${compiler.args}"/>
+
+    <property name="neoscio_base.output.dir"
+              value="/Users/neoscio/Desktop/workspace/NeoScio_Main/out/production/NeoScio_Base"/>
+    <property name="neoscio_base.testoutput.dir"
+              value="/Users/neoscio/Desktop/workspace/NeoScio_Main/out/test/NeoScio_Base"/>
+
+    <path id="neoscio_base.module.bootclasspath">
+        <!-- Paths to be included in compilation bootclasspath -->
+    </path>
+
+    <path id="neoscio_base.module.classpath">
+        <path refid="${module.jdk.classpath.neoscio_base}"/>
+        <pathelement location="${baseorm.output.dir}"/>
+        <pathelement location="${baseorm.testoutput.dir}"/>
+        <pathelement location="${baseservices.output.dir}"/>
+        <pathelement location="${baseservices.testoutput.dir}"/>
+        <pathelement location="${baseweb.output.dir}"/>
+        <pathelement location="${baseweb.testoutput.dir}"/>
+    </path>
+
+    <path id="neoscio_base.runtime.module.classpath">
+        <pathelement location="${neoscio_base.output.dir}"/>
+        <pathelement location="${neoscio_base.testoutput.dir}"/>
+        <path refid="baseorm.runtime.module.classpath"/>
+        <path refid="baseservices.runtime.module.classpath"/>
+        <path refid="baseweb.runtime.module.classpath"/>
+    </path>
+
+
+    <patternset id="excluded.from.module.neoscio_base">
+        <patternset refid="ignored.files"/>
+    </patternset>
+
+    <patternset id="excluded.from.compilation.neoscio_base">
+        <patternset refid="excluded.from.module.neoscio_base"/>
+    </patternset>
+
+
+    <target name="compile.module.neoscio_base"
+            depends="compile.module.neoscio_base.production,compile.module.neoscio_base.tests"
+            description="Compile module NeoScio_Base"/>
+
+    <target name="compile.module.neoscio_base.production"
+            depends="compile.module.baseorm,compile.module.baseservices,compile.module.baseweb"
+            description="Compile module NeoScio_Base; production classes"/>
+
+    <target name="compile.module.neoscio_base.tests" depends="compile.module.neoscio_base.production"
+            description="compile module NeoScio_Base; test classes" unless="skip.tests"/>
+
+    <target name="clean.module.neoscio_base" description="cleanup module">
+        <delete dir="${neoscio_base.output.dir}"/>
+        <delete dir="${neoscio_base.testoutput.dir}"/>
+    </target>
+</project>
