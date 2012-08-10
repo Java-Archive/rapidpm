@@ -21,10 +21,6 @@
             <param-value>org.rapidpm.webapp.vaadin.MainRoot</param-value>
             <!--<param-value>org.rapidpm.webapp.vaadin.MainApplication</param-value>-->
         </init-param>
-        <init-param>
-            <param-name>widgetset</param-name>
-            <param-value>org.rapidpm.webapp.vaadin.MainWidgetset</param-value>
-        </init-param>
     </servlet>
 
     <servlet-mapping>
