@@ -83,9 +83,9 @@ public abstract class BaseRoot extends Root {
             buildMainLayout();
         } else {
 //            removeAllComponents();
-            final Window window = new Window(applicationName, new LoginWindow());
-            setContent(window);
-            //this.set
+            VerticalLayout layout = new VerticalLayout();
+            final LoginWindow window = new LoginWindow(this);
+            addWindow(window);
         }
     }
 
@@ -135,16 +135,19 @@ public abstract class BaseRoot extends Root {
 
 
     private void buildMainLayout() {
-        final VerticalLayout mainlayout = new VerticalLayout();
 
-        final Window window = new Window(applicationName, mainlayout);
-        addComponent(window);
+        final VerticalLayout mainlayout = new VerticalLayout();
+        mainlayout.setSizeFull();
+        //final Window window = new Window(applicationName, mainlayout);
+        //addWindow(window);
 
         final HorizontalLayout gl = new HorizontalLayout();
-        gl.setWidth(windowWidth, Sizeable.Unit.PIXELS);
+        //gl.setSizeFull();
+        //gl.setWidth(windowWidth, Sizeable.Unit.PIXELS);
         gl.setSpacing(true);
         mainlayout.addComponent(gl);
-        mainlayout.setComponentAlignment(gl, Alignment.TOP_CENTER);
+        //mainlayout.setComponentAlignment(gl, Alignment.TOP_CENTER);
+
 
         //Hpt 3 Spalten
         final VerticalLayout vlLeft = new VerticalLayout();
@@ -211,6 +214,7 @@ public abstract class BaseRoot extends Root {
         //hlWorkingAreaContainer
 //        final Component demoWorkingArea = createDemoWorkingArea();
         setWorkingArea(new DemoWorkingArea());
+        addComponent(mainlayout);
 
         // vaadin 7
 //        setImmediate(true);
@@ -298,7 +302,7 @@ public abstract class BaseRoot extends Root {
 
     private HorizontalLayout createStdHeaderLine() {
         final HorizontalLayout hlHeaderLine = new HorizontalLayout();
-
+        hlHeaderLine.setSizeFull();
         hlHeaderLine.setSpacing(true);
         final Button buttonKontakt = new Button("Kontakt", new Button.ClickListener() {
 

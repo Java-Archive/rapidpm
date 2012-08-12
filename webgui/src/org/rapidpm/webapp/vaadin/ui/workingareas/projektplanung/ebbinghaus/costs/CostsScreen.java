@@ -36,6 +36,7 @@ public class CostsScreen extends Screen
 		erstelleUebersichtTableLayout();
 		erstelleDetailsTableLayout();
 		erstelleEinmaligRegelmaessigTablesLayout();
+        setComponents();
 		
 	}
 
