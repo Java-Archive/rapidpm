@@ -3,6 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.ebbinghaus.proj
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.ebbinghaus.Screen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.ebbinghaus.projinit.logic.ProjInitComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.ebbinghaus.projinit.logic.TableItemClickListener;
 
 import java.util.ArrayList;
@@ -12,13 +13,14 @@ public class AufwandProjInitScreen extends Screen
 
 	private ArrayList<Integer> ersteEbeneIds = new ArrayList<Integer>();
 
+	private Button saveButton = new Button("Speichern");
 	private TextField kundeField;
 	private TextField projektField;
 	private TextField datumField;
 	private TextField projektLeiterField;
 	private TextField unterschriftField;
 	private TextField manntageField;
-	private TextField summeInStdField;
+	private TextField summeInMinField;
 	private TextField summeKundentermineInStdField;
 
 	private TreeTable tt = new TreeTable();
@@ -28,17 +30,24 @@ public class AufwandProjInitScreen extends Screen
 	private VerticalLayout unterschriftLayout = new VerticalLayout();
 	private VerticalLayout table1layout = new VerticalLayout();
 	private VerticalLayout table2layout = new VerticalLayout();
-	private GridLayout formLayout = new GridLayout(2, 10);
+	private VerticalLayout formLayout = new VerticalLayout();
+	private GridLayout upperFormLayout = new GridLayout(2, 10);
+	private VerticalLayout lowerFormLayout = new VerticalLayout();
 
 	public AufwandProjInitScreen()
 	{
+		
+		
 		erstelleUnterschriftLayout();
 		erstelleFelderLayout();
 		fillTable();
 
+		
 		uebersichtTable.setPageLength(4);
 		final HierarchicalContainer container = new HierarchicalContainer();
 		addData(container);
+		
+		tt.setNullSelectionAllowed(false);
 		tt.setContainerDataSource(container);
 		tt.setSelectable(true);
 		tt.setSizeFull();
@@ -56,6 +65,16 @@ public class AufwandProjInitScreen extends Screen
 		table2layout.addComponent(tt);
 		table1layout.setMargin(true, false, true, false);
 		table2layout.setMargin(true, false, true, false);
+        ProjInitComputer computer = new ProjInitComputer(this);
+        computer.compute();
+        computer.setValuesInScreen();
+		
+		lowerFormLayout.addComponent(saveButton);
+		
+		formLayout.addComponent(upperFormLayout);
+		formLayout.addComponent(lowerFormLayout);
+		formLayout.setVisible(false);
+        setComponents();
 
 	}
 
@@ -70,27 +89,8 @@ public class AufwandProjInitScreen extends Screen
 		uebersichtTable.addContainerProperty("Projektleiter", Double.class,
 				null);
 
-		Object id = uebersichtTable.addItem();
-		uebersichtTable.getItem(id).getItemProperty("Angabe")
-				.setValue("Summe in %");
-		uebersichtTable.getItem(id).getItemProperty("Aushilfe").setValue(17.25);
-		uebersichtTable.getItem(id).getItemProperty("Multiprojektmanager")
-				.setValue(39.63);
-		uebersichtTable.getItem(id).getItemProperty("Projektmitarbeiter")
-				.setValue(29.57);
-		uebersichtTable.getItem(id).getItemProperty("Projektleiter")
-				.setValue(13.55);
-
-		id = uebersichtTable.addItem();
-		uebersichtTable.getItem(id).getItemProperty("Angabe")
-				.setValue("Summe in h");
-		uebersichtTable.getItem(id).getItemProperty("Aushilfe").setValue(420.0);
-		uebersichtTable.getItem(id).getItemProperty("Multiprojektmanager")
-				.setValue(965.0);
-		uebersichtTable.getItem(id).getItemProperty("Projektmitarbeiter")
-				.setValue(720.0);
-		uebersichtTable.getItem(id).getItemProperty("Projektleiter")
-				.setValue(330.0);
+		uebersichtTable.addItem();
+        uebersichtTable.addItem();
 	}
 
 	private void addData(HierarchicalContainer container)
@@ -253,7 +253,7 @@ public class AufwandProjInitScreen extends Screen
 
 		final Object vorbereitungenId2 = container.addItem();
 		container.getItem(vorbereitungenId2).getItemProperty("Aufgabe")
-				.setValue("Gespr�chsvorbereitung");
+				.setValue("Gespr\u00E4chsvorbereitung");
 		container.getItem(vorbereitungenId2).getItemProperty("Aushilfe (min)")
 				.setValue(null);
 		container.getItem(vorbereitungenId2)
@@ -303,16 +303,16 @@ public class AufwandProjInitScreen extends Screen
 		unterschriftField = new TextField();
 		manntageField = new TextField();
 		manntageField.setEnabled(false);
-		summeInStdField = new TextField();
-		summeInStdField.setEnabled(false);
+		summeInMinField = new TextField();
+		summeInMinField.setEnabled(false);
 		summeKundentermineInStdField = new TextField();
 		summeKundentermineInStdField.setEnabled(false);
 		final Label eins = new Label("Kunde:");
 		final Label zwei = new Label("Projekt:");
 		final Label drei = new Label("Datum:");
 		final Label vier = new Label("MT:");
-		final Label fuenf = new Label("Summe in h:");
-		final Label sechs = new Label("Summe in h (Kundentermine):");
+		final Label fuenf = new Label("Summe in min:");
+		final Label sechs = new Label("Summe in min (Kundentermine):");
 		felderLayout.setWidth("700px");
 
 		final VerticalLayout linkeZeilen = new VerticalLayout();
@@ -349,7 +349,7 @@ public class AufwandProjInitScreen extends Screen
 		rechteZeile1
 				.setComponentAlignment(manntageField, Alignment.MIDDLE_LEFT);
 		rechteZeile2.addComponent(fuenf);
-		rechteZeile2.addComponent(summeInStdField);
+		rechteZeile2.addComponent(summeInMinField);
 		rechteZeile3.addComponent(sechs);
 		rechteZeile3.addComponent(summeKundentermineInStdField);
 
@@ -392,8 +392,8 @@ public class AufwandProjInitScreen extends Screen
 		unterschriftLayout.setMargin(true, false, true, false);
 	}
 
-	private void setComponents()
-    {
+	public void setComponents()
+	{
 		addComponent(felderLayout);
 		addComponent(unterschriftLayout);
 		addComponent(table1layout);
@@ -401,81 +401,94 @@ public class AufwandProjInitScreen extends Screen
 		addComponent(formLayout);
 	}
 
-    @Override
-    public Screen getScreen()
-    {
-        return this;
-    }
 
 
-	public TextField getVertrieblerField()
+	
+	
+
+
+	
+
+
+	public TextField getKundeField()
 	{
 		return kundeField;
 	}
 
-	public void setVertrieblerField(TextField vertrieblerField)
+	public void setKundeField(TextField kundeField)
 	{
-		this.kundeField = vertrieblerField;
+		this.kundeField = kundeField;
 	}
 
-	public TextField getDatumField()
+	public TextField getProjektField()
 	{
 		return projektField;
 	}
 
-	public void setDatumField(TextField datumField)
+	public void setProjektField(TextField projektField)
 	{
-		this.projektField = datumField;
+		this.projektField = projektField;
 	}
 
-	public TextField getEuroProKmField()
+	public TextField getDatumField()
 	{
 		return datumField;
 	}
 
-	public void setEuroProKmField(TextField euroProKmField)
+	public void setDatumField(TextField datumField)
 	{
-		this.datumField = euroProKmField;
+		this.datumField = datumField;
 	}
 
-	public TextField getStdSatzFuerReiseZeitField()
+	public TextField getProjektLeiterField()
 	{
 		return projektLeiterField;
 	}
 
-	public void setStdSatzFuerReiseZeitField(TextField stdSatzFuerReiseZeitField)
+	public void setProjektLeiterField(TextField projektLeiterField)
 	{
-		this.projektLeiterField = stdSatzFuerReiseZeitField;
+		this.projektLeiterField = projektLeiterField;
 	}
 
-	public TextField getMannTageField()
+	public TextField getUnterschriftField()
 	{
 		return unterschriftField;
 	}
 
-	public void setMannTageField(TextField mannTageField)
+	public void setUnterschriftField(TextField unterschriftField)
 	{
-		this.unterschriftField = mannTageField;
+		this.unterschriftField = unterschriftField;
 	}
 
-	public TextField getSummeInH()
+	public TextField getManntageField()
 	{
 		return manntageField;
 	}
 
-	public void setSummeInH(TextField summeInH)
+	public void setManntageField(TextField manntageField)
 	{
-		this.manntageField = summeInH;
+		this.manntageField = manntageField;
 	}
 
-	public TextField getKostenField()
+	public TextField getSummeInMinField()
+	{
+		return summeInMinField;
+	}
+
+	public void setSummeInMinField(TextField summeInMinField)
+	{
+		this.summeInMinField = summeInMinField;
+	}
+
+	public TextField getSummeKundentermineInStdField()
 	{
 		return summeKundentermineInStdField;
 	}
 
-	public void setKostenField(TextField kostenField)
+	public void setSummeKundentermineInStdField(
+			TextField summeKundentermineInStdField)
 	{
-		this.summeKundentermineInStdField = kostenField;
+		this.summeKundentermineInStdField = summeKundentermineInStdField;
 	}
 
 	public ArrayList<Integer> getErsteEbeneIds()
@@ -488,14 +501,68 @@ public class AufwandProjInitScreen extends Screen
 		this.ersteEbeneIds = ersteEbeneIds;
 	}
 
-	public GridLayout getFormLayout()
+	public VerticalLayout getFormLayout()
 	{
 		return formLayout;
 	}
 
-	public void setFormLayout(GridLayout formLayout)
+	public void setFormLayout(VerticalLayout formLayout)
 	{
 		this.formLayout = formLayout;
 	}
+
+	public GridLayout getUpperFormLayout()
+	{
+		return upperFormLayout;
+	}
+
+	public void setUpperFormLayout(GridLayout upperFormLayout)
+	{
+		this.upperFormLayout = upperFormLayout;
+	}
+
+	public VerticalLayout getLowerFormLayout()
+	{
+		return lowerFormLayout;
+	}
+
+	public void setLowerFormLayout(VerticalLayout lowerFormLayout)
+	{
+		this.lowerFormLayout = lowerFormLayout;
+	}
+
+	public Button getSaveButton()
+	{
+		return saveButton;
+	}
+
+	public void setSaveButton(Button saveButton)
+	{
+		this.saveButton = saveButton;
+	}
+
+	public TreeTable getTt()
+	{
+		return tt;
+	}
+
+	public void setTt(TreeTable tt)
+	{
+		this.tt = tt;
+	}
+
+	public Table getUebersichtTable()
+	{
+		return uebersichtTable;
+	}
+
+	public void setUebersichtTable(Table uebersichtTable)
+	{
+		this.uebersichtTable = uebersichtTable;
+	}
+	
+	
+	
+	
 
 }
