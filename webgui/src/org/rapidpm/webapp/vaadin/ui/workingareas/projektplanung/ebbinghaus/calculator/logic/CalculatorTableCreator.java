@@ -19,7 +19,7 @@ public class CalculatorTableCreator
 
 	public CalculatorTableCreator(
 			ArrayList<ItemClickDependentComponent> itemClickdependentComponents,
-			Button deleteButton, Layout formLayout, Button saveButton,
+			Button deleteButton, Layout upperFormLayout, Layout formLayout, Button saveButton,
 			TextField betriebsFraField, TextField betriebsStdField)
 	{
 		tabelle = new Table();
@@ -30,7 +30,7 @@ public class CalculatorTableCreator
 		tabelle.setSelectable(true);
 		tabelle.setNullSelectionAllowed(false);
 		tabelle.addListener(new CalculatorItemClickListener(
-				itemClickdependentComponents, deleteButton, formLayout,
+				itemClickdependentComponents, deleteButton, upperFormLayout, formLayout,
 				saveButton, tabelle, betriebsFraField, betriebsStdField));
 		tabelle.addListener(new CalculatorItemSetChangeListener(tabelle,
 				betriebsStdField, betriebsFraField));

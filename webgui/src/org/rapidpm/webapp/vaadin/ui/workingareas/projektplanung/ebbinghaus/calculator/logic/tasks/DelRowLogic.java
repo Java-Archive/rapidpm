@@ -19,5 +19,6 @@ public class DelRowLogic
 	{
 		final Table tabelle = screen.getTabelle();
 		tabelle.removeItem(button.getItemId());
+        screen.getFormLayout().setVisible(false);
 	}
 }
