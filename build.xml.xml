@@ -605,6 +605,7 @@
   
   <target name="init" description="Build initialization">
     <!-- Perform any build initialization in this target -->
+      <mkdir description="create test result dir" dir="test-reports"/>
   </target>
   
   <target name="clean" depends="clean.module.base, clean.module.ejb, clean.module.webgui" description="cleanup all"/>
