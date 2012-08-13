@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class RowBean implements Serializable
 {
 	public static final String[] VISIBLECOLUMNS = new String[] { "Ressource",
-			"Brutto-Jahresgehalt", "h / Woche", "Arbeitsstunden / Jahr",
+			"Brutto-Jahresgehalt", "h / Woche", "Arbeitswochen / Jahr",
 			"h / Jahr", "Fakturierbar", Constants.EUR+" / h", "extern"+ Constants.EUR+" / h",
 			"operativ"+ Constants.EUR+" / h", "Brutto / Monat", "Plan-Anzahl", "Summe / Monat",
 			"Summe / Tag" };
@@ -17,17 +17,17 @@ public class RowBean implements Serializable
 			"operativeEurosPerHour", "bruttoPerMonth", "planAnzahl",
 			"sumPerMonth", "sumPerDay" };
 
-	private String ressource;
-	private Double bruttoGehalt;
-	private Integer hoursPerWeek;
-	private Integer weeksPerYear;
+	private String ressource = "neue Ressource";
+	private Double bruttoGehalt = 100000.0;
+	private Integer hoursPerWeek = 40;
+	private Integer weeksPerYear = 46;
 	private Integer hoursPerYear;
-	private Double facturizable;
+	private Double facturizable = 0.5;
 	private Double eurosPerHour;
-	private Double externalEurosPerHour;
+	private Double externalEurosPerHour = 125.0;
 	private Double operativeEurosPerHour;
 	private Double bruttoPerMonth;
-	private Integer planAnzahl;
+	private Integer planAnzahl = 1;
 	private Double sumPerMonth;
 	private Double sumPerDay;
 

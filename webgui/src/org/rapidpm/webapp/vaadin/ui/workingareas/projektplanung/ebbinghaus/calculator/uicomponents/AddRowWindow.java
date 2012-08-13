@@ -65,7 +65,7 @@ public class AddRowWindow extends Window
 					final Component component = it.next();
 					if (component instanceof AbstractField)
 					{
-						if (((TextField) component).getValue() == null)
+						if (((TextField) component).getValue() == null || ((TextField) component).getValue().equals("") )
 							allFilled = false;
 					}
 				}
