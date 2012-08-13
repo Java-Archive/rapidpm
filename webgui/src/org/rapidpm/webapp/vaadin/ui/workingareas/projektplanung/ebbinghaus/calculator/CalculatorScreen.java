@@ -28,7 +28,9 @@ public class CalculatorScreen extends Screen
 	private GridLayout tabellenTasksLayout = new GridLayout(2,2);
 	private Table tabelle;
 	private HorizontalLayout tabellenLayout = new HorizontalLayout();
-	private GridLayout formLayout = new GridLayout(2, 2);
+    private VerticalLayout formLayout = new VerticalLayout();
+	private GridLayout upperFormLayout = new GridLayout(2, 2);
+    private HorizontalLayout lowerFormLayout = new HorizontalLayout();
 	private Button saveButton = new Button("Speichern");
 	private EditOptionButtonGroup optionGroup = new EditOptionButtonGroup();
 
@@ -68,7 +70,7 @@ public class CalculatorScreen extends Screen
 		// formlayout wird bis zum itemclicklistener durchgereicht, savelayout
 		// ebenfalls
 		final CalculatorTableCreator creator = new CalculatorTableCreator(
-				dependentComponents, delRowButton, formLayout, saveButton,
+				dependentComponents, delRowButton, upperFormLayout, formLayout, saveButton,
 				betriebsfraField, betriebsstdField);
 
 		tabelle = creator.getTabelle();
@@ -76,7 +78,7 @@ public class CalculatorScreen extends Screen
 		tabellenLayout.setSpacing(true);
 		tabellenLayout.setMargin(false, false, true, false);
 		
-		optionGroup.addListener(new EditGroupValueChangeListener(formLayout, optionGroup, betriebsstdField, betriebsfraField, saveButton, tabelle));
+		optionGroup.addListener(new EditGroupValueChangeListener(formLayout, upperFormLayout, lowerFormLayout, optionGroup, betriebsstdField, betriebsfraField, saveButton, tabelle));
 		optionGroup.setValue(Constants.ROWEDIT);
 		optionGroup.setImmediate(true);
 
@@ -96,6 +98,9 @@ public class CalculatorScreen extends Screen
 		//tabellenTasksLayout.setSpacing(true);
 
 		formLayout.setSpacing(true);
+        lowerFormLayout.addComponent(saveButton);
+        formLayout.addComponent(upperFormLayout);
+        formLayout.addComponent(lowerFormLayout);
 		
 
 		final CalculatorFieldsComputer computer = new CalculatorFieldsComputer(
@@ -118,7 +123,6 @@ public class CalculatorScreen extends Screen
 		addComponent(tabellenTasksLayout);
 		addComponent(tabellenLayout);
 		addComponent(formLayout);
-		addComponent(saveButton);
 	}
 
 	/* getters and setters */
@@ -163,4 +167,13 @@ public class CalculatorScreen extends Screen
 		this.betriebsstdField = betriebsstdField;
 	}
 
+    public VerticalLayout getFormLayout()
+    {
+        return formLayout;
+    }
+
+    public void setFormLayout(VerticalLayout formLayout)
+    {
+        this.formLayout = formLayout;
+    }
 }

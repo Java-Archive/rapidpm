@@ -18,8 +18,10 @@ public class EditGroupValueChangeListener implements ValueChangeListener
 	private TextField betriebsstdField;
 	private TextField betriebsfraField;
 	private Layout formLayout;
+    private Layout upperFormLayout;
+    private Layout lowerFormLayout;
 
-	public EditGroupValueChangeListener(Layout formLayout, OptionGroup group,
+	public EditGroupValueChangeListener(Layout formLayout, Layout upperFormLayout, Layout lowerFormLayout, OptionGroup group,
 			TextField betriebsstdField, TextField betriebsfraField,
 			Button saveButton, Table tabelle)
 	{
@@ -29,6 +31,8 @@ public class EditGroupValueChangeListener implements ValueChangeListener
 		this.saveButton = saveButton;
 		this.tabelle = tabelle;
 		this.formLayout = formLayout;
+        this.upperFormLayout = upperFormLayout;
+        this.lowerFormLayout = lowerFormLayout;
 	}
 
 	@Override
@@ -38,7 +42,9 @@ public class EditGroupValueChangeListener implements ValueChangeListener
 		{
 			if (event.getProperty().getValue().equals(Constants.TABLEEDIT))
 			{
-				formLayout.setVisible(false);
+				formLayout.setVisible(true);
+                upperFormLayout.setVisible(false);
+                lowerFormLayout.setVisible(true);
 				tabelle.setValue(null);
 				EditModeGetter.setMode(EditModes.TABLEEDIT);
 				saveButton.setVisible(true);
@@ -86,6 +92,9 @@ public class EditGroupValueChangeListener implements ValueChangeListener
 				tabelle.setReadOnly(false);
 				tabelle.setSelectable(true);
 				tabelle.setEditable(false);
+                upperFormLayout.setVisible(true);
+                lowerFormLayout.setVisible(true);
+                formLayout.setVisible(false);
 			}
 		}
 

@@ -23,7 +23,8 @@ public class CalculatorItemClickListener implements ItemClickListener
 	private ArrayList<ItemClickDependentComponent> components = new ArrayList<ItemClickDependentComponent>();
 
 	private boolean state = false;
-	private Layout formLayout;
+	private Layout upperFormLayout;
+    private Layout formLayout;
 	private Button saveButton;
 	private Button deleteButton;
 
@@ -34,13 +35,14 @@ public class CalculatorItemClickListener implements ItemClickListener
 
 	public CalculatorItemClickListener(
 			ArrayList<ItemClickDependentComponent> components,
-			Button deleteButton, Layout formLayout, Button saveButton,
+			Button deleteButton, Layout upperFormLayout, Layout formLayout, Button saveButton,
 			Table tabelle, TextField betriebsFraField,
 			TextField betriebsStdField)
 	{
 		this.components = components;
 		this.deleteButton = deleteButton;
-		this.formLayout = formLayout;
+		this.upperFormLayout = upperFormLayout;
+        this.formLayout = formLayout;
 		this.saveButton = saveButton;
 		this.betriebsFraField = betriebsFraField;
 		this.betriebsStdField = betriebsStdField;
@@ -56,13 +58,12 @@ public class CalculatorItemClickListener implements ItemClickListener
 		{
 			formLayout.setVisible(true);
 			
-			formLayout.removeAllComponents();
+			upperFormLayout.removeAllComponents();
 			for(final Object listener : saveButton.getListeners(Event.class))
 			{
 				if(listener instanceof ClickListener)
 				{
 					saveButton.removeListener((ClickListener)listener);
-					System.out.println("yeha");
 				}
 					
 			}
@@ -73,7 +74,7 @@ public class CalculatorItemClickListener implements ItemClickListener
 			final ArrayList<Component> components = fieldGroup.getComponents();
 			for (final Component component : components)
 			{
-				formLayout.addComponent(component);
+				upperFormLayout.addComponent(component);
 			}
 
 			saveButton.addListener(new ClickListener()
@@ -96,7 +97,7 @@ public class CalculatorItemClickListener implements ItemClickListener
 								.getBetriebsFraAsString());
 						betriebsStdField.setValue(fieldsComputer
 								.getBetriebsStundeAsString());
-						formLayout.setVisible(false);
+						upperFormLayout.setVisible(false);
 						saveButton.setVisible(false);
 					} catch (CommitException e)
 					{
