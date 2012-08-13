@@ -27,7 +27,6 @@
     <option name="MAXIMUM_HEAP_SIZE" value="1024" />
   </component>
   <component name="JavacSettings">
-    <option name="DEBUGGING_INFO" value="false" />
     <option name="MAXIMUM_HEAP_SIZE" value="1024" />
   </component>
 </project>
