@@ -106,6 +106,6 @@ public class AddRowWindow extends Window
 
 	public void show()
 	{
-		//root.set
+		root.addWindow(this);
 	}
 }
