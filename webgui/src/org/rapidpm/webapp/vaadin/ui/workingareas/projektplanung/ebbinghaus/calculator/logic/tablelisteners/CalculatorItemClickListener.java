@@ -24,6 +24,7 @@ public class CalculatorItemClickListener implements ItemClickListener
 
 	private boolean state = false;
 	private Layout upperFormLayout;
+    private Layout lowerFormLayout;
     private Layout formLayout;
 	private Button saveButton;
 	private Button deleteButton;
@@ -35,13 +36,14 @@ public class CalculatorItemClickListener implements ItemClickListener
 
 	public CalculatorItemClickListener(
 			ArrayList<ItemClickDependentComponent> components,
-			Button deleteButton, Layout upperFormLayout, Layout formLayout, Button saveButton,
+			Button deleteButton, Layout upperFormLayout, Layout lowerFormLayout, Layout formLayout, Button saveButton,
 			Table tabelle, TextField betriebsFraField,
 			TextField betriebsStdField)
 	{
 		this.components = components;
 		this.deleteButton = deleteButton;
 		this.upperFormLayout = upperFormLayout;
+        this.lowerFormLayout = lowerFormLayout;
         this.formLayout = formLayout;
 		this.saveButton = saveButton;
 		this.betriebsFraField = betriebsFraField;
@@ -57,6 +59,8 @@ public class CalculatorItemClickListener implements ItemClickListener
 		if(EditModeGetter.getMode() == EditModes.ROWEDIT)
 		{
 			formLayout.setVisible(true);
+            lowerFormLayout.setVisible(true);
+            upperFormLayout.setVisible(true);
 			
 			upperFormLayout.removeAllComponents();
 			for(final Object listener : saveButton.getListeners(Event.class))

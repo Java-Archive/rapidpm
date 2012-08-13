@@ -70,7 +70,7 @@ public class CalculatorScreen extends Screen
 		// formlayout wird bis zum itemclicklistener durchgereicht, savelayout
 		// ebenfalls
 		final CalculatorTableCreator creator = new CalculatorTableCreator(
-				dependentComponents, delRowButton, upperFormLayout, formLayout, saveButton,
+				dependentComponents, delRowButton, upperFormLayout, lowerFormLayout, formLayout, saveButton,
 				betriebsfraField, betriebsstdField);
 
 		tabelle = creator.getTabelle();
