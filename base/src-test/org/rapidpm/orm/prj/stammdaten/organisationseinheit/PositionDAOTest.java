@@ -3,7 +3,7 @@ package org.rapidpm.orm.prj.stammdaten.organisationseinheit; /**
  * User: svenruppert
  * Date: 24.03.11
  * Time: 10:01
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
 import org.rapidpm.orm.prj.BaseDAOTest;

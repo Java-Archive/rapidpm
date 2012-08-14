@@ -5,7 +5,7 @@ package org.rapidpm.orm.prj.book.kommentar;
  * User: svenruppert
  * Date: 14.02.11
  * Time: 18:07
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
 import org.rapidpm.orm.BaseDaoFactory;

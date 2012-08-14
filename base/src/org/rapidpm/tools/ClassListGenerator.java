@@ -3,7 +3,7 @@ package org.rapidpm.tools; /**
  * User: svenruppert
  * Date: 15.11.11
  * Time: 09:57
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
 import org.rapidpm.Constants;

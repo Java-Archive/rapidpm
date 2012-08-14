@@ -5,7 +5,7 @@ package org.rapidpm.orm.prj.projectmanagement.planning;
  * User: svenruppert
  * Date: 28.04.11
  * Time: 21:58
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
 import org.apache.log4j.Logger;

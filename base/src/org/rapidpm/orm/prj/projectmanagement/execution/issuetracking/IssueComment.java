@@ -10,7 +10,7 @@ import java.util.Date;
  * User: sven.ruppert
  * Date: 06.03.11
  * Time: 22:10
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 @Entity
 public class IssueComment {

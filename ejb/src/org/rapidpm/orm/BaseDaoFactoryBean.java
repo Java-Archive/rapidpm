@@ -19,7 +19,7 @@ import java.io.Serializable;
  * User: svenruppert
  * Date: 07.02.11
  * Time: 23:44
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 @Stateful(name = "BaseDaoFactoryEJB")
 @TransactionManagement

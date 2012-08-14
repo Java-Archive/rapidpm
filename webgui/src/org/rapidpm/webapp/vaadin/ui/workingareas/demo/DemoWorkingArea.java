@@ -4,7 +4,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.demo;
  * User: svenruppert
  * Date: 18.03.12
  * Time: 01:44
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
 import com.vaadin.ui.*;

@@ -5,7 +5,7 @@ package org.rapidpm.ejb3.interceptor;
  * User: svenruppert
  * Date: 25.02.11
  * Time: 12:32
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
 import org.rapidpm.data.LoggingResult;

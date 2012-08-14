@@ -10,7 +10,7 @@ import javax.persistence.TypedQuery;
  * User: svenruppert
  * Date: 11/23/10
  * Time: 11:31 AM
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 public class IssuePriorityDAO extends BaseDaoFactory.BaseDAO<Long, IssuePriority> {
     public IssuePriorityDAO(final EntityManager entityManager) {

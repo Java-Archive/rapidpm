@@ -180,13 +180,13 @@ public class BenutzerDAOTest extends BaseDAOTest {
     public void testLoadBenutzerByEmail() throws Exception {
         final BenutzerDAO dao = daoFactory.getBenutzerDAO();
 
-//        assertEquals(1, dao.loadBenutzerByEmail("sven.ruppert@neoscio.de").size());
+//        assertEquals(1, dao.loadBenutzerByEmail("sven.ruppert@rapidpm.org").size());
 //        assertTrue(dao.loadBenutzerByEmail("max.mustermann@test.de").isEmpty());
 
-        assertNotNull(dao.loadBenutzerByEmail("sven.ruppert@neoscio.de", 16L));
-        assertNull(dao.loadBenutzerByEmail("sven.ruppert@neoscio.de", 1L));
+        assertNotNull(dao.loadBenutzerByEmail("sven.ruppert@rapidpm.org", 16L));
+        assertNull(dao.loadBenutzerByEmail("sven.ruppert@rapidpm.org", 1L));
 
-        assertNotNull(dao.loadBenutzerByEmail("sven.ruppert@neoscio.de", "NeoScioPortal"));
-        assertNull(dao.loadBenutzerByEmail("sven.ruppert@neoscio.de", "NeoScioTest"));
+        assertNotNull(dao.loadBenutzerByEmail("sven.ruppert@rapidpm.org", "NeoScioPortal"));
+        assertNull(dao.loadBenutzerByEmail("sven.ruppert@rapidpm.org", "NeoScioTest"));
     }
 }

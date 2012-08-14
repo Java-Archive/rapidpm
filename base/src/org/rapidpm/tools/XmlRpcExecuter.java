@@ -5,7 +5,7 @@ package org.rapidpm.tools;
  * User: svenruppert
  * Date: 12/18/10
  * Time: 8:58 AM
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
 import org.apache.log4j.Logger;

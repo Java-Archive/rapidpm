@@ -3,7 +3,7 @@ package org.rapidpm.orm.prj.stammdaten.person; /**
  * User: svenruppert
  * Date: 14.04.11
  * Time: 21:22
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
 import org.rapidpm.data.BaseFlatEntity;

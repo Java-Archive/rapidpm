@@ -3,7 +3,7 @@ package org.rapidpm.logging; /**
  * User: svenruppert
  * Date: 30.05.11
  * Time: 18:01
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
 import org.rapidpm.data.BaseFlatEntity;

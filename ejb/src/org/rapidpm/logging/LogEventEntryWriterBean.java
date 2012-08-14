@@ -20,7 +20,7 @@ import java.util.Locale;
  * User: svenruppert
  * Date: 31.12.10
  * Time: 15:43
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 @Stateless(name = "LogEventEntryWriterEJB")
 public class LogEventEntryWriterBean {

@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
  * User: svenruppert
  * Date: 11/21/10
  * Time: 5:35 PM
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 public class OntologieConnectionDAO extends BaseDaoFactory.BaseDAO<Long, OntologieConnection> {
     public OntologieConnectionDAO(final EntityManager entityManager) {

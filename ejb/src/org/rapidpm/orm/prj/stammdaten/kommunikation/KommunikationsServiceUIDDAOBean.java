@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2011. Diese Quelltexte sind Eigentum der RapidPM - www.rapidpm.org (RapidPM - www.rapidpm.org)
- * Bei Frage wenden Sie sich bitte an sven.ruppert@neoscio.de
+ * Bei Frage wenden Sie sich bitte an sven.ruppert@rapidpm.org
  */
 
 package org.rapidpm.orm.prj.stammdaten.kommunikation;
@@ -31,7 +31,7 @@ import java.util.List;
  * User: svenruppert
  * Date: 04.03.11
  * Time: 12:11
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 @Stateless(name = "KommunikationsServiceUIDDAOEJB")
 @WebService(name = "KommunikationsServiceUIDDAOWS")

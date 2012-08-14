@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2011. Diese Quelltexte sind Eigentum der RapidPM - www.rapidpm.org (RapidPM - www.rapidpm.org)
- * Bei Frage wenden Sie sich bitte an sven.ruppert@neoscio.de
+ * Bei Frage wenden Sie sich bitte an sven.ruppert@rapidpm.org
  */
 
 package org.rapidpm.orm;
@@ -88,7 +88,6 @@ public class BaseDaoFactory implements Serializable {
     public EntityUtils getEntityUtils() {
         return entityUtils;
     }
-
 
 
     public <T> void removeTX(final T entity) {
@@ -314,23 +313,6 @@ public class BaseDaoFactory implements Serializable {
             return entityUtils;
         }
 
-
-        //        /**
-        //         * @param entity die zu speichernde Entität
-        //         *
-        //         * @return true wenn alles OK ist sonst false
-        //         */
-        //        public boolean persist(final E entity){
-        //            entityManager.persist(entity);
-        //            return true;
-        //        }
-
-        //        public boolean merge(final E entity){
-        //            //            entityManager.joinTransaction();
-        //            entityManager.merge(entity);
-        //            return true;
-        //        }
-
         /**
          * Die Aktion ist in einer Transaktion gekapselt.
          * Liefert true zurück wenn der Forgang erfolgreich absolviert wurde.
@@ -346,159 +328,12 @@ public class BaseDaoFactory implements Serializable {
             return true;
         }
 
-        //
-        //    protected Query<E> query() {
-        //        return entityManager.find(entityClass);
-        //    }
-        //
-        //
-        //    private ExpressionList<E> expressionList = null;
-        //
-        //    public void setExpressionList(ExpressionList<E> expressionList) {
-        //        this.expressionList = expressionList;
-        //    }
-        //
-        //    public ExpressionList<E> getExpressionList() {
-        //        return expressionList;
-        //    }
-        //
-        //    protected E findUniqueForExpressionList() {
-        //        if (expressionList != null) {
-        //            final E unique = expressionList.findUnique();
-        //            expressionList = null;
-        //            return unique;
-        //        } else {
-        //            return null;
-        //        }
-        //    }
-        //
-        //    protected List<E> findListForExpressionList() {
-        //        if (expressionList != null) {
-        //            final List<E> entityList = expressionList.findList();
-        //            expressionList = null;
-        //            return entityList;
-        //        } else {
-        //            return Collections.emptyList();
-        //        }
-        //    }
-
         /**
-         * Null-Werte werden nicht der ExpressionList hinzugefügt.
-         * Abfrage dann mit den Methoden
-         * -  E findUniqueForExpressionList()
-         * -  List<E> findListForExpressionList()
-         * <p/>
-         * <p/>
-         * Die ExpressionList wird danach auf null gesetzt.
+         * Liefert die Entität passend zum PKey
+         *
+         * @param id PKey der Entität
+         * @return Die Entität oder null falls nichts gefunden wurde.
          */
-        //    protected void addEq(final String attributeName, final Object value) {
-        //
-        //        if (expressionList == null) {
-        //            expressionList = createWhereClause();
-        //        }
-        //
-        //        if (value == null) {
-        //            logger.debug("Ignoriere Parameter da null " + attributeName);
-        //        } else {
-        //            expressionList.eq(attributeName, value);
-        //        }
-        //    }
-        //
-        //    protected void addLe(final String attributeName, final Object value) {
-        //
-        //        if (expressionList == null) {
-        //            expressionList = createWhereClause();
-        //        }
-        //
-        //        if (value == null) {
-        //            logger.debug("Ignoriere Parameter da null " + attributeName);
-        //        } else {
-        //            expressionList.le(attributeName, value);
-        //        }
-        //    }
-        //
-        //    protected void addLt(final String attributeName, final Object value) {
-        //
-        //        if (expressionList == null) {
-        //            expressionList = createWhereClause();
-        //        }
-        //
-        //        if (value == null) {
-        //            logger.debug("Ignoriere Parameter da null " + attributeName);
-        //        } else {
-        //            expressionList.lt(attributeName, value);
-        //        }
-        //    }
-        //
-        //    protected void addNe(final String attributeName, final Object value) {
-        //
-        //        if (expressionList == null) {
-        //            expressionList = createWhereClause();
-        //        }
-        //
-        //        if (value == null) {
-        //            logger.debug("Ignoriere Parameter da null " + attributeName);
-        //        } else {
-        //            expressionList.ne(attributeName, value);
-        //        }
-        //    }
-        //
-        //    protected void addGe(final String attributeName, final Object value) {
-        //
-        //        if (expressionList == null) {
-        //            expressionList = createWhereClause();
-        //        }
-        //
-        //        if (value == null) {
-        //            logger.debug("Ignoriere Parameter da null " + attributeName);
-        //        } else {
-        //            expressionList.ge(attributeName, value);
-        //        }
-        //    }
-        //
-        //    protected void addGt(final String attributeName, final Object value) {
-        //
-        //        if (expressionList == null) {
-        //            expressionList = createWhereClause();
-        //        }
-        //
-        //        if (value == null) {
-        //            logger.debug("Ignoriere Parameter da null " + attributeName);
-        //        } else {
-        //            expressionList.gt(attributeName, value);
-        //        }
-        //    }
-        //
-        //    protected ExpressionList<E> createWhereClause() {
-        //        final Query<E> query = entityManager.find(entityClass);
-        //        return query.where();
-        //    }
-
-        /**
-         * Die Selectanweisung wird immer mit select id from tablename ergänzt.
-         * Die Anfrage wird beim getterzuGriff durch autofetch vervollständigt.
-         * Das führt zu SubSelects.. Performanceprobleme ??
-         */
-        //    public Query<E> createQuery(final String partialSQL) {
-        //
-        //        final UnderscoreNamingConvention underscoreNamingConvention = new UnderscoreNamingConvention();
-        //        final TableName tableName = underscoreNamingConvention.getTableName(entityClass);
-        //        logger.debug("erzeuge Select for " + tableName.getName());
-        //        final RawSqlBuilder builder = RawSqlBuilder.parse(partialSQL);
-        //        builder.columnMapping("id", "id");
-        //        final RawSql rawSql = builder.create();
-        //        final Query<E> query = entityManager.find(entityClass).setRawSql(rawSql);
-        //        return query;
-        //    }
-
-
-        //    /**
-        //     * Liefert die Entität passend zum PKey
-        //     *
-        //     * @param id PKey der Entität
-        //     *
-        //     * @return Die Entität oder null falls nichts gefunden wurde.
-        //     */
         public E findByID(final Long id) {
             final TypedQuery<E> query = entityManager.createQuery("from " + entityClass.getName() + " e where e.id=:id", entityClass);
             final TypedQuery<E> typedQuery = query.setParameter("id", id);

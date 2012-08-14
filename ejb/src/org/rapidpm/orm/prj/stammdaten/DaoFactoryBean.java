@@ -5,7 +5,7 @@ package org.rapidpm.orm.prj.stammdaten;
  * User: svenruppert
  * Date: 13.01.12
  * Time: 13:12
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
 import org.rapidpm.orm.DaoFactory;

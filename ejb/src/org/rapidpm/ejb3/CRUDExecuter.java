@@ -5,7 +5,7 @@ package org.rapidpm.ejb3;
  * User: svenruppert
  * Date: 17.03.11
  * Time: 15:18
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
 import org.rapidpm.data.BaseFlatEntity;

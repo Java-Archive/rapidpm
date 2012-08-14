@@ -26,7 +26,7 @@ import java.util.List;
  * User: svenruppert
  * Date: 07.03.11
  * Time: 12:52
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 @Stateless(name = "RegistrationStatusDAOEJB")
 @WebService(name = "RegistrationStatusDAOWS")

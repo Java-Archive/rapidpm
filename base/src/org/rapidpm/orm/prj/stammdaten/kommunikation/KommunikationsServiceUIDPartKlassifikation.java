@@ -5,7 +5,7 @@ package org.rapidpm.orm.prj.stammdaten.kommunikation;
  * User: svenruppert
  * Date: 12.01.11
  * Time: 08:33
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
 import org.apache.log4j.Logger;

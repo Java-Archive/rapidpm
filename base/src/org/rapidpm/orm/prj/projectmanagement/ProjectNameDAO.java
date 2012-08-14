@@ -3,7 +3,7 @@ package org.rapidpm.orm.prj.projectmanagement; /**
  * User: svenruppert
  * Date: 29.04.11
  * Time: 00:33
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
 import org.rapidpm.orm.BaseDaoFactory;

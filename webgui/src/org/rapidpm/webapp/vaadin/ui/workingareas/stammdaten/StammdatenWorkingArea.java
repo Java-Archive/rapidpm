@@ -150,7 +150,7 @@ public class StammdatenWorkingArea extends HorizontalLayout {
         final Berechtigung berechtigungLesen = new Berechtigung(1L, "Lesen");
         final Berechtigung berechtigungSchreiben = new Berechtigung(2L, "Schreiben");
 
-        final Benutzer ruppert = new Benutzer(1L, "sven.ruppert", "ruppert", "sven.ruppert@neoscio.de");
+        final Benutzer ruppert = new Benutzer(1L, "sven.ruppert", "ruppert", "sven.ruppert@rapidpm.org");
         ruppert.setMandantengruppe(mandantengruppeA);
         ruppert.addBerechtigungen(berechtigungLesen, berechtigungSchreiben);
         benutzer.add(ruppert);
