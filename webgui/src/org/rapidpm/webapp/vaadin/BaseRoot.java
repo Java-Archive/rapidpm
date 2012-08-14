@@ -44,6 +44,7 @@ public abstract class BaseRoot extends Root {
 
     protected BaseRoot(final String applicationName) {
         this.applicationName = applicationName;
+        setSizeFull();
     }
 
 //    public int getWindowWidth() {

@@ -8,6 +8,8 @@ import com.vaadin.ui.Component.Event;
 import com.vaadin.ui.GridLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.AufwandProjInitScreen;
 
+import java.util.ArrayList;
+
 public class TableItemClickListener implements ItemClickListener {
 
     private AufwandProjInitScreen screen;
@@ -19,7 +21,8 @@ public class TableItemClickListener implements ItemClickListener {
     @Override
     public void itemClick(ItemClickEvent event) {
         final GridLayout formUnterlayout = screen.getUpperFormLayout();
-
+        final FieldGroup fieldGroup = new FieldGroup(event.getItem());
+        final ArrayList<Integer> ersteEbeneIds = screen.getContainer().getErsteEbeneIds();
         for (final Object listener : screen.getSaveButton().getListeners(Event.class)) {
             if (listener instanceof ClickListener) {
                 screen.getSaveButton().removeListener((ClickListener) listener);
@@ -28,8 +31,8 @@ public class TableItemClickListener implements ItemClickListener {
         }
 
         formUnterlayout.removeAllComponents();
-        final FieldGroup fieldGroup = new FieldGroup(event.getItem());
-        if (!screen.getErsteEbeneIds().contains(event.getItemId())) {
+
+        if (!ersteEbeneIds.contains(event.getItemId())) {
             for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
                 formUnterlayout.addComponent(
                         fieldGroup.buildAndBind(prop));

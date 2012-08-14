@@ -1,16 +1,12 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit;
 
-import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.Screen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitsContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.ProjInitComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.TableItemClickListener;
 
-import java.util.ArrayList;
-
 public class AufwandProjInitScreen extends Screen {
-
-    private ArrayList<Integer> ersteEbeneIds = new ArrayList<Integer>();
 
     private Button saveButton = new Button("Speichern");
     private TextField kundeField;
@@ -22,6 +18,7 @@ public class AufwandProjInitScreen extends Screen {
     private TextField summeInMinField;
     private TextField summeKundentermineInStdField;
 
+    private PlanningUnitsContainer container;
     private TreeTable treeTable = new TreeTable();
     private Table uebersichtTable = new Table();
 
@@ -33,8 +30,8 @@ public class AufwandProjInitScreen extends Screen {
     private GridLayout upperFormLayout = new GridLayout(2, 10);
     private VerticalLayout lowerFormLayout = new VerticalLayout();
 
-    public AufwandProjInitScreen() {
-        final HierarchicalContainer container = new HierarchicalContainer();
+    public AufwandProjInitScreen(PlanningUnitsContainer cont) {
+        this.container = cont;
         final ProjInitComputer computer = new ProjInitComputer(this);
 
         erstelleUnterschriftLayout();
@@ -42,19 +39,19 @@ public class AufwandProjInitScreen extends Screen {
         fillTable();
 
         uebersichtTable.setPageLength(4);
-        addData(container);
+
 
         treeTable.setNullSelectionAllowed(false);
-        treeTable.setContainerDataSource(container);
         treeTable.setSelectable(true);
         treeTable.setSizeFull();
         uebersichtTable.setSizeFull();
         treeTable.addListener(new TableItemClickListener(this));
 
-        for (final Object id : container.getItemIds()) {
-            if (!ersteEbeneIds.contains((Integer) id))
-                treeTable.setChildrenAllowed(id, false);
+        for (final Object id : cont.getItemIds()) {
+            if (!container.getErsteEbeneIds().contains((Integer) id))
+                container.setChildrenAllowed(id, false);
         }
+        treeTable.setContainerDataSource(container);
         table1layout.addComponent(uebersichtTable);
         table2layout.setWidth("900px");
         table1layout.setWidth("900px");
@@ -86,204 +83,6 @@ public class AufwandProjInitScreen extends Screen {
 
         uebersichtTable.addItem();
         uebersichtTable.addItem();
-    }
-
-    private void addData(HierarchicalContainer container) {
-
-        container.addContainerProperty("Aufgabe", String.class, null);
-        container.addContainerProperty("Aushilfe (min)", Integer.class, null);
-        container.addContainerProperty("Multiprojektmanager (min)",
-                Integer.class, null);
-        container.addContainerProperty("Projektmitarbeiter (min)",
-                Integer.class, null);
-        container.addContainerProperty("Projektleiter (min)", Integer.class,
-                null);
-
-        // oberste ebene
-        Object itemId = container.addItem();
-        ersteEbeneIds.add((Integer) itemId);
-        container.getItem(itemId).getItemProperty("Aufgabe")
-                .setValue("Vorbereitungen");
-        container.getItem(itemId).getItemProperty("Aushilfe (min)")
-                .setValue(null);
-        System.out.println(container.getItem(itemId));
-        container.getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-                .setValue(195);
-        container.getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-                .setValue(null);
-        container.getItem(itemId).getItemProperty("Projektleiter (min)")
-                .setValue(null);
-
-        itemId = container.addItem();
-        ersteEbeneIds.add((Integer) itemId);
-        container.getItem(itemId).getItemProperty("Aufgabe")
-                .setValue("Projekt-Workshop");
-        container.getItem(itemId).getItemProperty("Aushilfe (min)")
-                .setValue(null);
-        container.getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-                .setValue(270);
-        container.getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-                .setValue(null);
-        container.getItem(itemId).getItemProperty("Projektleiter (min)")
-                .setValue(null);
-
-        itemId = container.addItem();
-        ersteEbeneIds.add((Integer) itemId);
-        container.getItem(itemId).getItemProperty("Aufgabe")
-                .setValue("Angebotserstellung");
-        container.getItem(itemId).getItemProperty("Aushilfe (min)")
-                .setValue(null);
-        container.getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-                .setValue(310);
-        container.getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-                .setValue(null);
-        container.getItem(itemId).getItemProperty("Projektleiter (min)")
-                .setValue(null);
-
-        itemId = container.addItem();
-        ersteEbeneIds.add((Integer) itemId);
-        container.getItem(itemId).getItemProperty("Aufgabe")
-                .setValue("Realisierung Mandantengruppe");
-        container.getItem(itemId).getItemProperty("Aushilfe (min)")
-                .setValue(300);
-        container.getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-                .setValue(130);
-        container.getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-                .setValue(300);
-        container.getItem(itemId).getItemProperty("Projektleiter (min)")
-                .setValue(null);
-
-        itemId = container.addItem();
-        ersteEbeneIds.add((Integer) itemId);
-        container.getItem(itemId).getItemProperty("Aufgabe")
-                .setValue("Realisierung / Daten kollektieren");
-        container.getItem(itemId).getItemProperty("Aushilfe (min)")
-                .setValue(null);
-        container.getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-                .setValue(null);
-        container.getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-                .setValue(60);
-        container.getItem(itemId).getItemProperty("Projektleiter (min)")
-                .setValue(null);
-
-        itemId = container.addItem();
-        ersteEbeneIds.add((Integer) itemId);
-        container.getItem(itemId).getItemProperty("Aufgabe")
-                .setValue("Vorbereiten des Reporting");
-        container.getItem(itemId).getItemProperty("Aushilfe (min)")
-                .setValue(null);
-        container.getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-                .setValue(null);
-        container.getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-                .setValue(null);
-        container.getItem(itemId).getItemProperty("Projektleiter (min)")
-                .setValue(null);
-
-        itemId = container.addItem();
-        ersteEbeneIds.add((Integer) itemId);
-        container.getItem(itemId).getItemProperty("Aufgabe")
-                .setValue("Projektmanagement");
-        container.getItem(itemId).getItemProperty("Aushilfe (min)")
-                .setValue(null);
-        container.getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-                .setValue(null);
-        container.getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-                .setValue(120);
-        container.getItem(itemId).getItemProperty("Projektleiter (min)")
-                .setValue(null);
-
-        itemId = container.addItem();
-        ersteEbeneIds.add((Integer) itemId);
-        container.getItem(itemId).getItemProperty("Aufgabe")
-                .setValue("Kommunikation");
-        container.getItem(itemId).getItemProperty("Aushilfe (min)")
-                .setValue(60);
-        container.getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-                .setValue(60);
-        container.getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-                .setValue(null);
-        container.getItem(itemId).getItemProperty("Projektleiter (min)")
-                .setValue(null);
-
-        itemId = container.addItem();
-        ersteEbeneIds.add((Integer) itemId);
-        container.getItem(itemId).getItemProperty("Aufgabe")
-                .setValue("Abschlussarbeiten");
-        container.getItem(itemId).getItemProperty("Aushilfe (min)")
-                .setValue(60);
-        container.getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-                .setValue(null);
-        container.getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-                .setValue(240);
-        container.getItem(itemId).getItemProperty("Projektleiter (min)")
-                .setValue(null);
-
-        itemId = container.addItem();
-        ersteEbeneIds.add((Integer) itemId);
-        container.getItem(itemId).getItemProperty("Aufgabe")
-                .setValue("Schulung");
-        container.getItem(itemId).getItemProperty("Aushilfe (min)")
-                .setValue(null);
-        container.getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-                .setValue(null);
-        container.getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-                .setValue(null);
-        container.getItem(itemId).getItemProperty("Projektleiter (min)")
-                .setValue(null);
-
-        // --------------------
-
-        final Object vorbereitungenId1 = container.addItem();
-        container.getItem(vorbereitungenId1).getItemProperty("Aufgabe")
-                .setValue("Erstkontakt vor Ort");
-        container.getItem(vorbereitungenId1).getItemProperty("Aushilfe (min)")
-                .setValue(null);
-        container.getItem(vorbereitungenId1)
-                .getItemProperty("Multiprojektmanager (min)").setValue(120);
-        container.getItem(vorbereitungenId1)
-                .getItemProperty("Projektmitarbeiter (min)").setValue(null);
-        container.getItem(vorbereitungenId1)
-                .getItemProperty("Projektleiter (min)").setValue(null);
-
-        final Object vorbereitungenId2 = container.addItem();
-        container.getItem(vorbereitungenId2).getItemProperty("Aufgabe")
-                .setValue("Gespr\u00E4chsvorbereitung");
-        container.getItem(vorbereitungenId2).getItemProperty("Aushilfe (min)")
-                .setValue(null);
-        container.getItem(vorbereitungenId2)
-                .getItemProperty("Multiprojektmanager (min)").setValue(60);
-        container.getItem(vorbereitungenId2)
-                .getItemProperty("Projektmitarbeiter (min)").setValue(null);
-        container.getItem(vorbereitungenId2)
-                .getItemProperty("Projektleiter (min)").setValue(null);
-
-        final Object vorbereitungenId3 = container.addItem();
-        container.getItem(vorbereitungenId3).getItemProperty("Aufgabe")
-                .setValue("Pr\u00E4sentation");
-        container.getItem(vorbereitungenId3).getItemProperty("Aushilfe (min)")
-                .setValue(null);
-        container.getItem(vorbereitungenId3)
-                .getItemProperty("Multiprojektmanager (min)").setValue(null);
-        container.getItem(vorbereitungenId3)
-                .getItemProperty("Projektmitarbeiter (min)").setValue(null);
-        container.getItem(vorbereitungenId3)
-                .getItemProperty("Projektleiter (min)").setValue(null);
-
-        final Object vorbereitungenId4 = container.addItem();
-        container.getItem(vorbereitungenId4).getItemProperty("Aufgabe")
-                .setValue("Gespr\u00E4chsbest\u00E4tigung");
-        container.getItem(vorbereitungenId4).getItemProperty("Aushilfe (min)")
-                .setValue(null);
-        container.getItem(vorbereitungenId4)
-                .getItemProperty("Multiprojektmanager (min)").setValue(15);
-        container.getItem(vorbereitungenId4)
-                .getItemProperty("Projektmitarbeiter (min)").setValue(null);
-        container.getItem(vorbereitungenId4)
-                .getItemProperty("Projektleiter (min)").setValue(null);
-        container.setParent(vorbereitungenId1, ersteEbeneIds.get(0));
-        container.setParent(vorbereitungenId2, ersteEbeneIds.get(0));
-        container.setParent(vorbereitungenId3, ersteEbeneIds.get(0));
-        container.setParent(vorbereitungenId4, ersteEbeneIds.get(0));
     }
 
     private void erstelleFelderLayout() {
@@ -454,14 +253,6 @@ public class AufwandProjInitScreen extends Screen {
         this.summeKundentermineInStdField = summeKundentermineInStdField;
     }
 
-    public ArrayList<Integer> getErsteEbeneIds() {
-        return ersteEbeneIds;
-    }
-
-    public void setErsteEbeneIds(ArrayList<Integer> ersteEbeneIds) {
-        this.ersteEbeneIds = ersteEbeneIds;
-    }
-
     public VerticalLayout getFormLayout() {
         return formLayout;
     }
@@ -510,5 +301,7 @@ public class AufwandProjInitScreen extends Screen {
         this.uebersichtTable = uebersichtTable;
     }
 
-
+    public PlanningUnitsContainer getContainer() {
+        return container;
+    }
 }

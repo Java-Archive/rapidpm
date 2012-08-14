@@ -3,11 +3,12 @@ package org.rapidpm.webapp.vaadin;
 import com.vaadin.annotations.Theme;
 import com.vaadin.ui.MenuBar;
 import org.rapidpm.webapp.vaadin.ui.workingareas.anfragenmanagement.AnfragenmanagementWorkingArea;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.ProjektplanungWorkingArea;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.ProjektplanungWorkingArea2;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.CalculatorScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.CostsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.distribution.VertriebScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.AufwandProjInitScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitsContainer;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,6 +20,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.Aufwand
 //@JavaScript({   "http://localhost:8080/rapidpm/javascript/highcharts/highcharts.js",
 //                "http://localhost:8080/rapidpm/javascript/jquery/jquery-1.4.4.min.js"})
 public class MainRoot extends BaseRoot {
+
+    private PlanningUnitsContainer planningUnitsContainer = new PlanningUnitsContainer();
 
     public MainRoot() {
         super("RapidPM application");
@@ -42,7 +45,7 @@ public class MainRoot extends BaseRoot {
         menuBar.addItem("Projektplanung", new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new ProjektplanungWorkingArea());
+                setWorkingArea(new ProjektplanungWorkingArea2(planningUnitsContainer));
             }
         });
 
@@ -52,7 +55,7 @@ public class MainRoot extends BaseRoot {
         view.addItem("Aufwand - Projektinitialisierung", null, new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new AufwandProjInitScreen());
+                setWorkingArea(new AufwandProjInitScreen(planningUnitsContainer));
             }
         });
 
@@ -80,4 +83,7 @@ public class MainRoot extends BaseRoot {
         });
     }
 
+    public PlanningUnitsContainer getPlanningUnitsContainer() {
+        return planningUnitsContainer;
+    }
 }
