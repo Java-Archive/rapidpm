@@ -1,14 +1,13 @@
 package org.rapidpm.webapp.vaadin;
 
-import com.vaadin.annotations.JavaScript;
 import com.vaadin.annotations.Theme;
 import com.vaadin.ui.MenuBar;
 import org.rapidpm.webapp.vaadin.ui.workingareas.anfragenmanagement.AnfragenmanagementWorkingArea;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.ProjektplanungWorkingArea;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.ebbinghaus.calculator.CalculatorScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.ebbinghaus.costs.CostsScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.ebbinghaus.distribution.VertriebScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.ebbinghaus.projinit.AufwandProjInitScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.CalculatorScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.CostsScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.distribution.VertriebScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.AufwandProjInitScreen;
 
 /**
  * Created by IntelliJ IDEA.
