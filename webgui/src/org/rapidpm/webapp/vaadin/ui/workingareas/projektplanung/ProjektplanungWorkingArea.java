@@ -20,6 +20,11 @@ import java.util.Set;
  * Date: 05.04.12
  * Time: 09:43
  */
+
+/**
+ * @deprecated  replaced by {@link ProjektplanungScreen}
+ */
+@Deprecated
 public class ProjektplanungWorkingArea extends HorizontalSplitPanel {
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm");

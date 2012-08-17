@@ -19,7 +19,7 @@ import java.util.*;
  * Date: 05.04.12
  * Time: 09:43
  */
-public class ProjektplanungWorkingArea2 extends HorizontalSplitPanel {
+public class ProjektplanungScreen extends HorizontalSplitPanel {
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
@@ -31,7 +31,7 @@ public class ProjektplanungWorkingArea2 extends HorizontalSplitPanel {
     private final VerticalLayout mainLayout;
     private PlanningUnitsContainer container;
 
-    public ProjektplanungWorkingArea2(PlanningUnitsContainer cont) {
+    public ProjektplanungScreen(PlanningUnitsContainer cont) {
         final ArrayList<String> ersteEbeneItems = new ArrayList<>();
         this.container = cont;
         setSizeFull();
@@ -202,7 +202,7 @@ public class ProjektplanungWorkingArea2 extends HorizontalSplitPanel {
                             }
                             hl.addComponent(createTeilLayout(teil));
                         }
-                        ProjektplanungWorkingArea2.this.requestRepaintAll();
+                        ProjektplanungScreen.this.requestRepaintAll();
                     }
                 }
             }
