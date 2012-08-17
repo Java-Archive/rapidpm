@@ -6,7 +6,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.Action;
 import com.vaadin.terminal.Resource;
 import com.vaadin.ui.*;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitsContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -34,9 +34,9 @@ public class ProjektplanungWorkingArea extends HorizontalSplitPanel {
     private final Panel treePanel;
     private final Panel detailPanel;
     private final VerticalLayout mainLayout;
-    private PlanningUnitsContainer container;
+    private ProjektBean container;
 
-    public ProjektplanungWorkingArea(PlanningUnitsContainer cont) {
+    public ProjektplanungWorkingArea(ProjektBean cont) {
         this.container = cont;
         setSizeFull();
         setSplitPosition(350, Unit.PIXELS);

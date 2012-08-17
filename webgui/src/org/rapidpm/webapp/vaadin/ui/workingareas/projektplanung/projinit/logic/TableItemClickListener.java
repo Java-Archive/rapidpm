@@ -7,12 +7,12 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component.Event;
 import com.vaadin.ui.GridLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.AufwandProjInitScreen;
-
-import java.util.ArrayList;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitGroupPlanningUnit;
 
 public class TableItemClickListener implements ItemClickListener {
 
     private AufwandProjInitScreen screen;
+    private PlanningUnitGroupPlanningUnit planningUnitGroupPlanningUnit;
 
     public TableItemClickListener(AufwandProjInitScreen screen) {
         this.screen = screen;
@@ -22,7 +22,6 @@ public class TableItemClickListener implements ItemClickListener {
     public void itemClick(ItemClickEvent event) {
         final GridLayout formUnterlayout = screen.getUpperFormLayout();
         final FieldGroup fieldGroup = new FieldGroup(event.getItem());
-        final ArrayList<Integer> ersteEbeneIds = screen.getContainer().getErsteEbeneIds();
         for (final Object listener : screen.getSaveButton().getListeners(Event.class)) {
             if (listener instanceof ClickListener) {
                 screen.getSaveButton().removeListener((ClickListener) listener);
@@ -31,20 +30,27 @@ public class TableItemClickListener implements ItemClickListener {
         }
 
         formUnterlayout.removeAllComponents();
-
-        if (!ersteEbeneIds.contains(event.getItemId())) {
+        System.out.println(screen.getProjektBean().getProjekt().getPlanningUnitGroups());
+        System.out.println(event.getItemId().toString());
+        if (!screen.getProjektBean().getProjekt().getPlanningUnitGroupsNames().contains(event.getItemId().toString())) {
+            planningUnitGroupPlanningUnit = PlanningUnitGroupPlanningUnit.PLANNING_UNIT;
             for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
                 formUnterlayout.addComponent(
                         fieldGroup.buildAndBind(prop));
             }
         } else {
+            planningUnitGroupPlanningUnit = PlanningUnitGroupPlanningUnit.PLANNING_UNIT_GROUP;
             for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
                 if (prop.equals("Aufgabe"))
                     formUnterlayout.addComponent(
                             fieldGroup.buildAndBind(prop));
             }
         }
-        screen.getSaveButton().addListener(new SaveButtonClickListener(fieldGroup, screen));
+        for(Object propertyId : fieldGroup.getBoundPropertyIds())
+        {
+            System.out.println("propertyId:"+propertyId.toString());
+        }
+        screen.getSaveButton().addListener(new SaveButtonClickListener(fieldGroup, screen, planningUnitGroupPlanningUnit, event.getItemId()));
         screen.getFormLayout().setVisible(true);
 
     }

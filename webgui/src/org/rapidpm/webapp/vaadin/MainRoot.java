@@ -8,7 +8,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.Calcu
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.CostsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.distribution.VertriebScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.AufwandProjInitScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitsContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,7 +21,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmo
 //                "http://localhost:8080/rapidpm/javascript/jquery/jquery-1.4.4.min.js"})
 public class MainRoot extends BaseRoot {
 
-    private PlanningUnitsContainer planningUnitsContainer = new PlanningUnitsContainer();
+    private ProjektBean planningUnitsContainer = new ProjektBean();
 
     public MainRoot() {
         super("RapidPM application");
@@ -83,7 +83,7 @@ public class MainRoot extends BaseRoot {
         });
     }
 
-    public PlanningUnitsContainer getPlanningUnitsContainer() {
+    public ProjektBean getPlanningUnitsContainer() {
         return planningUnitsContainer;
     }
 }

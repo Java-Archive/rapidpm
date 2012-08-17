@@ -1,10 +1,13 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit;
 
+import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.Screen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitsContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.ProjInitComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.TableItemClickListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.TreeTableContainerFiller;
 
 public class AufwandProjInitScreen extends Screen {
 
@@ -18,7 +21,9 @@ public class AufwandProjInitScreen extends Screen {
     private TextField summeInMinField;
     private TextField summeKundentermineInStdField;
 
-    private PlanningUnitsContainer container;
+    private ProjektBean projektBean;
+    private TreeTableContainerFiller containerFiller;
+    private HierarchicalContainer dataSource;
     private TreeTable treeTable = new TreeTable();
     private Table uebersichtTable = new Table();
 
@@ -30,8 +35,11 @@ public class AufwandProjInitScreen extends Screen {
     private GridLayout upperFormLayout = new GridLayout(2, 10);
     private VerticalLayout lowerFormLayout = new VerticalLayout();
 
-    public AufwandProjInitScreen(PlanningUnitsContainer cont) {
-        this.container = cont;
+    public AufwandProjInitScreen(ProjektBean cont) {
+        this.projektBean = cont;
+        containerFiller = new TreeTableContainerFiller(projektBean);
+        containerFiller.fill();
+        dataSource = containerFiller.getHierarchicalContainer();
         final ProjInitComputer computer = new ProjInitComputer(this);
 
         erstelleUnterschriftLayout();
@@ -47,11 +55,8 @@ public class AufwandProjInitScreen extends Screen {
         uebersichtTable.setSizeFull();
         treeTable.addListener(new TableItemClickListener(this));
 
-        for (final Object id : cont.getItemIds()) {
-            if (!container.getErsteEbeneIds().contains((Integer) id))
-                container.setChildrenAllowed(id, false);
-        }
-        treeTable.setContainerDataSource(container);
+
+        treeTable.setContainerDataSource(dataSource);
         table1layout.addComponent(uebersichtTable);
         table2layout.setWidth("900px");
         table1layout.setWidth("900px");
@@ -73,16 +78,9 @@ public class AufwandProjInitScreen extends Screen {
 
     private void fillTable() {
         uebersichtTable.addContainerProperty("Angabe", String.class, null);
-        uebersichtTable.addContainerProperty("Aushilfe", Double.class, null);
-        uebersichtTable.addContainerProperty("Multiprojektmanager",
-                Double.class, null);
-        uebersichtTable.addContainerProperty("Projektmitarbeiter",
-                Double.class, null);
-        uebersichtTable.addContainerProperty("Projektleiter", Double.class,
-                null);
-
-        uebersichtTable.addItem();
-        uebersichtTable.addItem();
+        for(RessourceGroup ressourceGroup : projektBean.getProjekt().getRessourceGroups()){
+            uebersichtTable.addContainerProperty(ressourceGroup.getName(), String.class, null);
+        }
     }
 
     private void erstelleFelderLayout() {
@@ -301,7 +299,17 @@ public class AufwandProjInitScreen extends Screen {
         this.uebersichtTable = uebersichtTable;
     }
 
-    public PlanningUnitsContainer getContainer() {
-        return container;
+    public ProjektBean getProjektBean() {
+        return projektBean;
     }
+
+    public HierarchicalContainer getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(HierarchicalContainer dataSource) {
+        this.dataSource = dataSource;
+    }
+
+
 }

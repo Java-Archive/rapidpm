@@ -7,7 +7,7 @@ import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.event.Action;
 import com.vaadin.terminal.Resource;
 import com.vaadin.ui.*;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitsContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -29,9 +29,9 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
     private final Panel detailPanel;
     private TreeTable detailPanelTreeTable;
     private final VerticalLayout mainLayout;
-    private PlanningUnitsContainer container;
+    private ProjektBean container;
 
-    public ProjektplanungScreen(PlanningUnitsContainer cont) {
+    public ProjektplanungScreen(ProjektBean cont) {
         final ArrayList<String> ersteEbeneItems = new ArrayList<>();
         this.container = cont;
         setSizeFull();
@@ -54,10 +54,10 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         addComponent(mainLayout);
 
 
-        for (Integer i : container.getErsteEbeneIds()) {
-            final String ersteEbeneName = container.getItem(i).getItemProperty("Aufgabe").getValue().toString();
-            ersteEbeneItems.add(ersteEbeneName);
-        }
+//        for (Integer i : container.getErsteEbeneIds()) {
+//            final String ersteEbeneName = container.getItem(i).getItemProperty("Aufgabe").getValue().toString();
+//            ersteEbeneItems.add(ersteEbeneName);
+//        }
         final ListSelect projektSelect = new ListSelect(null, ersteEbeneItems);
 
         projektSelect.setNullSelectionAllowed(false);
@@ -84,32 +84,32 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
 
     private void fillTreePanel(String planningGroupName) {
         final HierarchicalContainer treePanelContainer = new HierarchicalContainer();
-        for (Object containerSpaltenId : container.getContainerPropertyIds()) {
-            treePanelContainer.addContainerProperty(containerSpaltenId, containerSpaltenId.getClass(), null);
-        }
+//        for (Object containerSpaltenId : container.getContainerPropertyIds()) {
+//            treePanelContainer.addContainerProperty(containerSpaltenId, containerSpaltenId.getClass(), null);
+//        }
 
         Object theItemId = null;
-        for (Object itemId : container.getErsteEbeneIds()) {
-            if (container.getItem(itemId).getItemProperty("Aufgabe").getValue().toString().equals(planningGroupName)) {
-                theItemId = itemId;
-            }
-        }
-        if (container.hasChildren(theItemId)) {
-            for (Object itemId : container.getChildren(theItemId)) {
-                final Object newItem = treePanelContainer.addItem();
-                for (Object containerProperty : container.getContainerPropertyIds()) {
-                    System.out.println(containerProperty.getClass());
-                    System.out.println(containerProperty.toString());
-                    final Object inhaltDerZelleImContainer = container.getItem(itemId).getItemProperty(containerProperty).getValue();
-                    final Property<?> spalteImTreeTableContainerItem = treePanelContainer.getItem(newItem).getItemProperty(containerProperty);
-                    if(inhaltDerZelleImContainer == null){
-                        spalteImTreeTableContainerItem.setValue("");
-                    } else {
-                    spalteImTreeTableContainerItem.setValue(inhaltDerZelleImContainer.toString());
-                    }
-                }
-            }
-        }
+//        for (Object itemId : container.getErsteEbeneIds()) {
+//            if (container.getItem(itemId).getItemProperty("Aufgabe").getValue().toString().equals(planningGroupName)) {
+//                theItemId = itemId;
+//            }
+//        }
+//        if (container.hasChildren(theItemId)) {
+//            for (Object itemId : container.getChildren(theItemId)) {
+//                final Object newItem = treePanelContainer.addItem();
+//                for (Object containerProperty : container.getContainerPropertyIds()) {
+//                    System.out.println(containerProperty.getClass());
+//                    System.out.println(containerProperty.toString());
+//                    final Object inhaltDerZelleImContainer = container.getItem(itemId).getItemProperty(containerProperty).getValue();
+//                    final Property<?> spalteImTreeTableContainerItem = treePanelContainer.getItem(newItem).getItemProperty(containerProperty);
+//                    if(inhaltDerZelleImContainer == null){
+//                        spalteImTreeTableContainerItem.setValue("");
+//                    } else {
+//                    spalteImTreeTableContainerItem.setValue(inhaltDerZelleImContainer.toString());
+//                    }
+//                }
+//            }
+//        }
         detailPanelTreeTable = new TreeTable();
         detailPanelTreeTable.setContainerDataSource(treePanelContainer);
         treePanel.addComponent(detailPanelTreeTable);
