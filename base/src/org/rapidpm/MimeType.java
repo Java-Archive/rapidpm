@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2009. This is part of the NeoScio Project from RapidPM - www.rapidpm.org.
+ * Copyright (c) 2009. This is part of the RapidPM Project from RapidPM - www.rapidpm.org.
  * please contact sven.ruppert@me.com
  */
 
 /**
- * NeoScio
+ * RapidPM
  * @author svenruppert
  * @since 02.08.2008
  * Time: 20:14:07

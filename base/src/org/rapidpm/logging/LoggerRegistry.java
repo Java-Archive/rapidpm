@@ -1,6 +1,6 @@
 package org.rapidpm.logging;
 
-import org.rapidpm.orm.system.logging.LogLevelEnum;
+import org.rapidpm.persistence.system.logging.LogLevelEnum;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * RapidPM - www.rapidpm.org
  *
- * @author neoscio
+ * @author RapidPM
  * @version This Source Code is part of the RapidPM - www.rapidpm.org project.
  *          please contact sven.ruppert@me.com
  * @since 13.01.2010

@@ -6,7 +6,7 @@
 package org.rapidpm;
 
 /**
- * NeoScio
+ * RapidPM
  * @author svenruppert
  * @since 05.08.2008
  * Time: 17:42:55
@@ -163,8 +163,8 @@ public class Constants {
 
     public static final int MAX_DATAVOLUME_FOR_READING = 20 * 1024 * 1024;
 
-    public static final String HTTP_SOLR_CORE0 = "http://prod.neoscio.de:8983/solr/core0";
-    public static final String HTTP_SOLR_CORE1 = "http://prod.neoscio.de:8983/solr/core1";
+    public static final String HTTP_SOLR_CORE0 = "http://prod.RapidPM.de:8983/solr/core0";
+    public static final String HTTP_SOLR_CORE1 = "http://prod.RapidPM.de:8983/solr/core1";
 
     //    public static final String ORM_VIEW_TMP_DIR = "D:\\opt\\jboss-as-7.1.1.Final\\standalone\\tmp";
     public static final String ORM_VIEW_TMP_DIR = "/opt/jboss/7.1.1/standalone/tmp";

@@ -1,6 +1,6 @@
 /*
  * Copyright (c) since 2009
- * Dieses ist Bestandteil des NeoScio-Projektes und Eigentum der RapidPM - www.rapidpm.org (haftungsbeschraenkt)
+ * Dieses ist Bestandteil des RapidPM-Projektes und Eigentum der RapidPM - www.rapidpm.org (haftungsbeschraenkt)
  * Sven Ruppert : sven.ruppert@me.com
  * .
  */

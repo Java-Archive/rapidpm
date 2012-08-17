@@ -7,7 +7,7 @@ package org.rapidpm.util;
 
 import org.rapidpm.TestConfig;
 import org.rapidpm.lang.PackageClassLoader;
-import org.rapidpm.orm.EntityFactory;
+import org.rapidpm.persistence.EntityFactory;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Test;
@@ -73,7 +73,7 @@ public class EntityTestSuite {
 //        BasicConfigurator.configure(); // REFAC log4j config
 
         final PackageClassLoader pcl = new PackageClassLoader();
-        final List<Class> classes = pcl.getClasses("de.neoscio");
+        final List<Class> classes = pcl.getClasses("de.RapidPM");
         for (final Class aClass : classes) {
             if (aClass.getSuperclass() == EntityFactory.class) { // REFAC abgeleitet von EntityTestFactory
                 if (logger.isDebugEnabled()) {

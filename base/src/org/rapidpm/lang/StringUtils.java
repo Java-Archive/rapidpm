@@ -6,8 +6,8 @@
 package org.rapidpm.lang;
 
 /**
- * NeoScio
- * User: neoscio
+ * RapidPM
+ * User: RapidPM
  * Date: 21.09.2009
  * Time: 19:58:58
  * This Source Code is part of the RapidPM - www.rapidpm.org project.

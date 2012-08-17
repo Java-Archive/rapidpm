@@ -5,8 +5,8 @@
 
 package org.rapidpm.services;
 
-import org.rapidpm.orm.BaseDAOBeanTest;
-import org.rapidpm.orm.BaseDaoFactoryBean;
+import org.rapidpm.persistence.BaseDAOBeanTest;
+import org.rapidpm.persistence.BaseDaoFactoryBean;
 import org.junit.Test;
 
 import java.util.List;

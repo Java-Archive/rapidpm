@@ -1,6 +1,6 @@
 package org.rapidpm.data;
 
-import org.rapidpm.orm.system.logging.LoggingEventEntry;
+import org.rapidpm.persistence.system.logging.LoggingEventEntry;
 import org.apache.log4j.Logger;
 
 import javax.inject.Inject;

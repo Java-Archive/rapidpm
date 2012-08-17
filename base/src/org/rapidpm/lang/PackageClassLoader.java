@@ -5,7 +5,7 @@
 
 package org.rapidpm.lang;
 /**
- * NeoScio
+ * RapidPM
  * User: svenruppert
  * Date: 07.04.2010
  * Time: 23:20:02

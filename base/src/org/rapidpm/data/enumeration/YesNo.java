@@ -1,14 +1,14 @@
 /*
- * Copyright (c) 2009. This is part of the NeoScio Project from RapidPM - www.rapidpm.org.
+ * Copyright (c) 2009. This is part of the RapidPM Project from RapidPM - www.rapidpm.org.
  * please contact sven.ruppert@me.com
  */
 
 package org.rapidpm.data.enumeration;
 
 /**
- * NeoScio
+ * RapidPM
  *
- * @author neoscio
+ * @author RapidPM
  * @since 07.05.2009
  *        Time: 22:42:05
  *        This Source Code is part of the RapidPM - www.rapidpm.org project.

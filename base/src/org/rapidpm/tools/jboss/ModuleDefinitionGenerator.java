@@ -26,7 +26,7 @@ public class ModuleDefinitionGenerator {
     private static final String MODULE_SUBDIR = "main";
     private static final String MODULE_FILENAME = "module.xml";
 
-    private String baseLibDir = "/opt/neoscio/NeoScio_Libs";
+    private String baseLibDir = "/opt/RapidPM/RapidPM_Libs";
     private String baseModuleDir = "/opt/jboss/modules";
 
     private boolean copyLibs = true;

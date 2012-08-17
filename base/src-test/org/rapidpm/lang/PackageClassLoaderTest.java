@@ -18,7 +18,7 @@ public class PackageClassLoaderTest {
     public void testGetClassesWithAnnotation() throws Exception {
         final PackageClassLoader classLoader = new PackageClassLoader();
         final Class<? extends Annotation> annotation = Deprecated.class;
-        final List<Class> classes = classLoader.getClassesWithAnnotation("de.neoscio", annotation);
+        final List<Class> classes = classLoader.getClassesWithAnnotation("de.RapidPM", annotation);
         for (final Class aClass : classes) {
             System.out.println(aClass);
             assertTrue(aClass.isAnnotationPresent(annotation));
@@ -28,7 +28,7 @@ public class PackageClassLoaderTest {
     @Test
     public void testGetClasses() throws Exception {
         final PackageClassLoader classLoader = new PackageClassLoader();
-        final List<Class> classes = classLoader.getClasses("de.neoscio");
+        final List<Class> classes = classLoader.getClasses("de.RapidPM");
         for (final Class aClass : classes) {
             System.out.println(aClass);
         }

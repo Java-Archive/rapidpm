@@ -19,7 +19,7 @@ public class ClassListGenerator {
 
     public static void main(String[] args) throws IOException {
         final PackageClassLoader pcl = new PackageClassLoader();
-        final List<Class> classes = pcl.getClasses("de.neoscio");
+        final List<Class> classes = pcl.getClasses("de.RapidPM");
         final FileWriter fw = new FileWriter("classlist.txt");
         for (final Class aClass : classes) {
             System.out.println("aClass.getName() = " + aClass.getName());

@@ -10,10 +10,9 @@ import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
 import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
-import org.rapidpm.orm.BaseDaoFactoryBean;
-import org.rapidpm.orm.prj.stammdaten.DaoFactoryBean;
-import org.rapidpm.orm.system.logging.LogginEntityActionDAO;
-import org.rapidpm.orm.system.logging.LoggingEntityAction;
+import org.rapidpm.persistence.prj.stammdaten.DaoFactoryBean;
+import org.rapidpm.persistence.system.logging.LogginEntityActionDAO;
+import org.rapidpm.persistence.system.logging.LoggingEntityAction;
 import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;

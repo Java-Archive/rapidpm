@@ -46,7 +46,7 @@ public class WebServiceInfoBean {
                                    @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid) {
 
         final PackageClassLoader packageClassLoader = new PackageClassLoader();
-        final List<Class> classesWithAnnotation = packageClassLoader.getClassesWithAnnotation("de.neoscio", WebService.class);
+        final List<Class> classesWithAnnotation = packageClassLoader.getClassesWithAnnotation("de.RapidPM", WebService.class);
         final List<String> result = new ArrayList<>();
         for (final Class aClass : classesWithAnnotation) {
             final WebService annotation = (WebService) aClass.getAnnotation(WebService.class);
