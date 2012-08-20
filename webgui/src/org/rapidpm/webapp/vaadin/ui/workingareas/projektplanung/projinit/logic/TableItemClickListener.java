@@ -7,6 +7,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component.Event;
 import com.vaadin.ui.GridLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.AufwandProjInitScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.DaysHoursMinutesFieldValidator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitGroupPlanningUnit;
 
 public class TableItemClickListener implements ItemClickListener {
@@ -30,9 +31,9 @@ public class TableItemClickListener implements ItemClickListener {
         }
 
         formUnterlayout.removeAllComponents();
-        System.out.println(screen.getProjektBean().getProjekt().getPlanningUnitGroups());
+        System.out.println("pug names:" + screen.getProjektBean().getProjekt().getPlanningUnitGroupsNames());
         System.out.println(event.getItemId().toString());
-        if (!screen.getProjektBean().getProjekt().getPlanningUnitGroupsNames().contains(event.getItemId().toString())) {
+        if (!screen.getProjektBean().getProjekt().getPlanningUnitGroupsNames().contains(screen.getDataSource().getItem(event.getItemId()).getItemProperty("Aufgabe").getValue().toString())) {
             planningUnitGroupPlanningUnit = PlanningUnitGroupPlanningUnit.PLANNING_UNIT;
             for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
                 formUnterlayout.addComponent(
@@ -48,7 +49,12 @@ public class TableItemClickListener implements ItemClickListener {
         }
         for(Object propertyId : fieldGroup.getBoundPropertyIds())
         {
-            System.out.println("propertyId:"+propertyId.toString());
+            if(!propertyId.equals("Aufgabe")){
+                fieldGroup.getField(propertyId).addValidator(new DaysHoursMinutesFieldValidator());
+            } else {
+
+            }
+            fieldGroup.getField(propertyId).setRequired(true);
         }
         screen.getSaveButton().addListener(new SaveButtonClickListener(fieldGroup, screen, planningUnitGroupPlanningUnit, event.getItemId()));
         screen.getFormLayout().setVisible(true);

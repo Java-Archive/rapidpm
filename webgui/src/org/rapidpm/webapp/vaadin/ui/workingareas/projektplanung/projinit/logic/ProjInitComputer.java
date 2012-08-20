@@ -71,10 +71,12 @@ public class ProjInitComputer {
                 }
                 for(RessourceGroup spalte : spalten){
                     if(!spalte.getName().equals("Aufgabe")){
-                        System.out.println(ressourceGroupDaysHoursMinutesItemMap.get(spalte).toString());
-                        System.out.println(spalte.getName());
                         System.out.println(planningUnitGroup.getPlanningUnitName());
+                        for(Object itemId : dataSource.getItemIds()){
+                            System.out.println("itemId: "+itemId.toString());
+                        }
                         Item item = dataSource.getItem(planningUnitGroup.getPlanningUnitName());
+                        String property = dataSource.getItem(planningUnitGroup.getPlanningUnitName()).getItemProperty(spalte.getName()).getValue().toString();
                         dataSource.getItem(planningUnitGroup.getPlanningUnitName()).getItemProperty(spalte.getName()).setValue(ressourceGroupDaysHoursMinutesItemMap.get(spalte).toString());
                     }
 

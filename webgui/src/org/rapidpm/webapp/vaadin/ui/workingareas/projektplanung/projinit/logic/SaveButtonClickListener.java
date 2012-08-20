@@ -4,6 +4,7 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.TreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitElement;
@@ -27,7 +28,7 @@ public class SaveButtonClickListener implements ClickListener {
     public void buttonClick(ClickEvent event) {
 
 
-        final ProjInitComputer computer = new ProjInitComputer(screen);
+
         try {
             fieldGroup.commit();
             screen.getTreeTable().setValue(null);    //null selection
@@ -36,6 +37,7 @@ public class SaveButtonClickListener implements ClickListener {
             if (planningUnitGroupPlanningUnit.equals(PlanningUnitGroupPlanningUnit.PLANNING_UNIT_GROUP)) {
                 for(PlanningUnitGroup planningUnitGroup : screen.getProjektBean().getProjekt().getPlanningUnitGroups()){
                     if(planningUnitGroup.getPlanningUnitName().equals(itemId)){
+                        System.out.println("setzte planningunitgroup: "+screen.getDataSource().getItem(itemId).getItemProperty("Aufgabe").getValue().toString());
                         planningUnitGroup.setPlanningUnitName(screen.getDataSource().getItem(itemId).getItemProperty("Aufgabe").getValue().toString());
                     }
                 }
@@ -59,9 +61,25 @@ public class SaveButtonClickListener implements ClickListener {
                     }
 
                 }
-                computer.compute();
-                computer.setValuesInScreen();
+
             }
+            TreeTableContainerFiller filler = new TreeTableContainerFiller(screen.getProjektBean());
+            filler.fill();
+            screen.setDataSource(filler.getHierarchicalContainer());
+            final TreeTable treeTable = new TreeTable();
+            treeTable.setNullSelectionAllowed(false);
+            treeTable.setSelectable(true);
+            treeTable.setSizeFull();
+            treeTable.setContainerDataSource(screen.getDataSource());
+            treeTable.addListener(new TableItemClickListener(screen));
+            screen.setTreeTable(treeTable);
+            screen.getTable2layout().removeAllComponents();
+            screen.getTable2layout().addComponent(screen.getTreeTable());
+
+            final ProjInitComputer computer = new ProjInitComputer(screen);
+            computer.compute();
+            computer.setValuesInScreen();
+
             screen.getFormLayout().setVisible(false);
 
             for(PlanningUnitGroup group : screen.getProjektBean().getProjekt().getPlanningUnitGroups())

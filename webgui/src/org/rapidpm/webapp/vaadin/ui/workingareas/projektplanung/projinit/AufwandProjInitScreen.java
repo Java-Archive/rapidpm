@@ -307,6 +307,14 @@ public class AufwandProjInitScreen extends Screen {
         return dataSource;
     }
 
+    public VerticalLayout getTable2layout() {
+        return table2layout;
+    }
+
+    public void setTable2layout(VerticalLayout table2layout) {
+        this.table2layout = table2layout;
+    }
+
     public void setDataSource(HierarchicalContainer dataSource) {
         this.dataSource = dataSource;
     }
