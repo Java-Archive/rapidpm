@@ -92,4 +92,32 @@ public class PlanningUnitGroup {
     public void setPlannedMeetingList(List<PlannedMeeting> plannedMeetingList) {
         this.plannedMeetingList = plannedMeetingList;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PlanningUnitGroup that = (PlanningUnitGroup) o;
+
+        if (!id.equals(that.id)) return false;
+        if (!planningUnitName.equals(that.planningUnitName)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + planningUnitName.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PlanningUnitGroup{" +
+                "planningUnitName='" + planningUnitName + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }

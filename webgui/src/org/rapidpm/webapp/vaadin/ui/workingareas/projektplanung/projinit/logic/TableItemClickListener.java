@@ -29,10 +29,7 @@ public class TableItemClickListener implements ItemClickListener {
             }
 
         }
-
         formUnterlayout.removeAllComponents();
-        System.out.println("pug names:" + screen.getProjektBean().getProjekt().getPlanningUnitGroupsNames());
-        System.out.println(event.getItemId().toString());
         if (!screen.getProjektBean().getProjekt().getPlanningUnitGroupsNames().contains(screen.getDataSource().getItem(event.getItemId()).getItemProperty("Aufgabe").getValue().toString())) {
             planningUnitGroupPlanningUnit = PlanningUnitGroupPlanningUnit.PLANNING_UNIT;
             for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
@@ -47,18 +44,15 @@ public class TableItemClickListener implements ItemClickListener {
                             fieldGroup.buildAndBind(prop));
             }
         }
-        for(Object propertyId : fieldGroup.getBoundPropertyIds())
+        for(final Object propertyId : fieldGroup.getBoundPropertyIds())
         {
             if(!propertyId.equals("Aufgabe")){
                 fieldGroup.getField(propertyId).addValidator(new DaysHoursMinutesFieldValidator());
-            } else {
-
             }
             fieldGroup.getField(propertyId).setRequired(true);
         }
         screen.getSaveButton().addListener(new SaveButtonClickListener(fieldGroup, screen, planningUnitGroupPlanningUnit, event.getItemId()));
         screen.getFormLayout().setVisible(true);
-
     }
 
 }

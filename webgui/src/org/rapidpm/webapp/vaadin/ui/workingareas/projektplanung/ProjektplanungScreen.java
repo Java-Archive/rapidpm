@@ -7,12 +7,12 @@ import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.event.Action;
 import com.vaadin.terminal.Resource;
 import com.vaadin.ui.*;
+import org.rapidpm.webapp.vaadin.Constants;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -23,7 +23,7 @@ import java.util.*;
  */
 public class ProjektplanungScreen extends HorizontalSplitPanel {
 
-    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+
 
     private final VerticalLayout menuLayout;
     private final Panel projektPanel;
@@ -99,7 +99,7 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
 //            treePanelContainer.addContainerProperty(containerSpaltenId, containerSpaltenId.getClass(), null);
 //        }
 
-        Object theItemId = null;
+        //Object theItemId = null;
 //        for (Object itemId : container.getErsteEbeneIds()) {
 //            if (container.getItem(itemId).getItemProperty("Aufgabe").getValue().toString().equals(planningGroupName)) {
 //                theItemId = itemId;
@@ -124,7 +124,7 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         treePanelTree = new Tree();
         //treePanelTree.setContainerDataSource(treePanelContainer);
         PlanningUnitGroup planningUnitGroup = null;
-        for(PlanningUnitGroup pug : container.getProjekt().getPlanningUnitGroups()){
+        for(final PlanningUnitGroup pug : container.getProjekt().getPlanningUnitGroups()){
             if(pug.getPlanningUnitName().equals(planningGroupName)){
                 planningUnitGroup = pug;
             }
@@ -171,7 +171,6 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
 
     private void showTechnischePlanung() {
         final Projekt projekt = createDemoData();
-
         final ComponentContainer treePanelContent = treePanel.getContent();
         treePanelContent.removeAllComponents();
         final Tree tree = new Tree();
@@ -294,11 +293,11 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         formLayout.addComponent(planerComboBox);
 
         final DateField createdDateField = new DateField("Erstellt", teil.getDateCreated());
-        createdDateField.setDateFormat(DATE_FORMAT.toPattern());
+        createdDateField.setDateFormat(Constants.DATE_FORMAT.toPattern());
         formLayout.addComponent(createdDateField);
 
         final DateField updatedDateField = new DateField("Aktualisiert", teil.getDateUpdated());
-        updatedDateField.setDateFormat(DATE_FORMAT.toPattern());
+        updatedDateField.setDateFormat(Constants.DATE_FORMAT.toPattern());
         formLayout.addComponent(updatedDateField);
 
         detailPanel.addComponent(formLayout);

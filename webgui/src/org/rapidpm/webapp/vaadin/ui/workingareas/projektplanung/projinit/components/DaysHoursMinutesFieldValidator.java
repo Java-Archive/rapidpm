@@ -1,6 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components;
 
 import com.vaadin.data.Validator;
+import org.rapidpm.webapp.vaadin.Constants;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,14 +17,14 @@ public class DaysHoursMinutesFieldValidator implements Validator {
             return false;
         }
 
-        return ((String) value).matches("[0-9]{1,}:[012]{1}[0-9]{1}:[012345]{1}[0-9]{1}");
+        return ((String) value).matches(Constants.DAYSHOURSMINUTES_REGEX);
     }
 
     @Override
     public void validate(Object value) throws InvalidValueException {
         if (!isValid(value)) {
                 throw new InvalidValueException(
-                        "Format: [d*]d:hh:mm! (hh = 23 max., mm = 59 max.)");
+                        Constants.DAYSHOURSMINUTES_VALIDATOR_EXCEPTION_MESSAGE);
         }
     }
 }

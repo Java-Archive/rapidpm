@@ -50,4 +50,29 @@ public class PlanningUnit {
     public void setPlanningUnitElementList(List<PlanningUnitElement> planningUnitElementList) {
         this.planningUnitElementList = planningUnitElementList;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PlanningUnit that = (PlanningUnit) o;
+
+        if (!id.equals(that.id)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "PlanningUnit{" +
+                "id=" + id +
+                ", planningUnitElementName='" + planningUnitElementName + '\'' +
+                '}';
+    }
 }

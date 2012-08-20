@@ -23,8 +23,8 @@ public class ProjektBean {
         projekt = new Projekt();
         projekt.setProjektName("Projekt 1");
 
-        ArrayList<PlanningUnitGroup> planningUnitGroups = new ArrayList<>();
-        ArrayList<RessourceGroup> ressourceGroups = new ArrayList<>();
+        final ArrayList<PlanningUnitGroup> planningUnitGroups = new ArrayList<>();
+        final ArrayList<RessourceGroup> ressourceGroups = new ArrayList<>();
         final RessourceGroup aushilfe = new RessourceGroup();
         final RessourceGroup multiProjektManager = new RessourceGroup();
         final RessourceGroup projektMitarbeiter = new RessourceGroup();
@@ -74,14 +74,14 @@ public class ProjektBean {
             planningUnitGroup.setPlanningUnitList(new ArrayList<PlanningUnit>());
         }
         //--PlanningUnitGroup: Vorbereitungen mit PlanningUnits füllen (welche mit PlanningUnitElements gefüllt werden)
-        ArrayList<PlanningUnit> planningUnitsVorbereitungen = new ArrayList<>();
+        final ArrayList<PlanningUnit> planningUnitsVorbereitungen = new ArrayList<>();
 
         String[] planningUnitsArray = {"Erstkontakt vor Ort","Gesprächsvorbereitung","Präsentation","Gesprächsbestätigung"};
-        for(String planningUnitName : Arrays.asList(planningUnitsArray)){  //für jede unterzeile
-            PlanningUnit planningUnit = new PlanningUnit();
+        for(final String planningUnitName : Arrays.asList(planningUnitsArray)){  //für jede unterzeile
+            final PlanningUnit planningUnit = new PlanningUnit();
             planningUnit.setPlanningUnitElementName(planningUnitName);
-            ArrayList<PlanningUnitElement> planningUnitElements = new ArrayList<>();
-            for(RessourceGroup ressourceGroup : ressourceGroups)          //für jede zelle
+            final ArrayList<PlanningUnitElement> planningUnitElements = new ArrayList<>();
+            for(final RessourceGroup ressourceGroup : ressourceGroups)          //für jede zelle
             {
                 PlanningUnitElement planningUnitElement = new PlanningUnitElement();
                 planningUnitElement.setPlannedDays((int) (Math.random()*10));

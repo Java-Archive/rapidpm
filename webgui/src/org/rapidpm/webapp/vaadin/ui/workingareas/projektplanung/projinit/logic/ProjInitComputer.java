@@ -1,6 +1,5 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic;
 
-import com.vaadin.data.Item;
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.TreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.AufwandProjInitScreen;
@@ -26,12 +25,12 @@ public class ProjInitComputer {
 
     public void compute() {
         projekt = screen.getProjektBean().getProjekt();
-        final ArrayList<RessourceGroup> ressourceGroups = screen.getProjektBean().getProjekt().getRessourceGroups();
-        for(RessourceGroup ressourceGroup : ressourceGroups){
+        final ArrayList<RessourceGroup> ressourceGroups = projekt.getRessourceGroups();
+        for(final RessourceGroup ressourceGroup : ressourceGroups){
             spalten.add(ressourceGroup);
         }
 
-        for (RessourceGroup spalte : spalten) {
+        for (final RessourceGroup spalte : spalten) {
             absoluteWerte.put(spalte, new DaysHoursMinutesItem());
             relativeWerte.put(spalte, 0.0);
         }
@@ -45,12 +44,11 @@ public class ProjInitComputer {
         //final ArrayList<RessourceGroup> spalten = projekt.getRessourceGroups();//ressourceGorups
         final Map<RessourceGroup, String> spaltenWerteMap = new HashMap<>();
 
-        for (PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()){
+        for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()){
             final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
             if(planningUnitGroup.getPlanningUnitList().size() > 0){
-                for(PlanningUnit planningUnit : planningUnitGroup.getPlanningUnitList()){
-
-                    for(PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList())  {
+                for(final PlanningUnit planningUnit : planningUnitGroup.getPlanningUnitList()){
+                    for(final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList())  {
                         if(!planningUnitElement.getRessourceGroup().getName().equals("Aufgabe")) {
                             final RessourceGroup ressourceGroup1 = planningUnitElement.getRessourceGroup();
                             final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
@@ -69,14 +67,8 @@ public class ProjInitComputer {
 
                     }
                 }
-                for(RessourceGroup spalte : spalten){
+                for(final RessourceGroup spalte : spalten){
                     if(!spalte.getName().equals("Aufgabe")){
-                        System.out.println(planningUnitGroup.getPlanningUnitName());
-                        for(Object itemId : dataSource.getItemIds()){
-                            System.out.println("itemId: "+itemId.toString());
-                        }
-                        Item item = dataSource.getItem(planningUnitGroup.getPlanningUnitName());
-                        String property = dataSource.getItem(planningUnitGroup.getPlanningUnitName()).getItemProperty(spalte.getName()).getValue().toString();
                         dataSource.getItem(planningUnitGroup.getPlanningUnitName()).getItemProperty(spalte.getName()).setValue(ressourceGroupDaysHoursMinutesItemMap.get(spalte).toString());
                     }
 
@@ -208,7 +200,6 @@ public class ProjInitComputer {
             if(!spalte.equals("Angabe")){
                 for(Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry : absoluteWerte.entrySet()){
                     if(absoluteWerteEntry.getKey().getName().equals(spalte.toString())){
-                        System.out.println("jetzt:"+absoluteWerte.get(absoluteWerteEntry.getKey()));
                         screen.getUebersichtTable().getItem("absolut").getItemProperty(spalte).setValue(absoluteWerte.get(absoluteWerteEntry.getKey()).toString());
                     }
 

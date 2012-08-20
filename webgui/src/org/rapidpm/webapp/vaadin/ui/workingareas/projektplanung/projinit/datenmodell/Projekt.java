@@ -45,9 +45,9 @@ public class Projekt {
 
     public ArrayList<RessourceGroup> getRessourceGroups() {
         ArrayList<RessourceGroup> result = new ArrayList<>();
-        for (PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
-            for (PlanningUnit planningUnit : planningUnitGroup.getPlanningUnitList()) {
-                for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+        for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
+            for (final PlanningUnit planningUnit : planningUnitGroup.getPlanningUnitList()) {
+                for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
                     if(!result.contains(planningUnitElement.getRessourceGroup()))
                         result.add(planningUnitElement.getRessourceGroup());
                 }
@@ -56,7 +56,7 @@ public class Projekt {
         return result;
     }
 
-    public void setPlanningUnitGroups(ArrayList<PlanningUnitGroup> planningUnitGroups) {
+    public void setPlanningUnitGroups(final ArrayList<PlanningUnitGroup> planningUnitGroups) {
         this.planningUnitGroups = planningUnitGroups;
     }
 

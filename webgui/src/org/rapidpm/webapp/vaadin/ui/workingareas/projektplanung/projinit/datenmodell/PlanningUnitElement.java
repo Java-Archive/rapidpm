@@ -60,4 +60,41 @@ public class PlanningUnitElement {
     public void setRessourceGroup(RessourceGroup ressourceGroup) {
         this.ressourceGroup = ressourceGroup;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PlanningUnitElement that = (PlanningUnitElement) o;
+
+        if (plannedDays != that.plannedDays) return false;
+        if (plannedHours != that.plannedHours) return false;
+        if (plannedMinutes != that.plannedMinutes) return false;
+        if (!id.equals(that.id)) return false;
+        if (ressourceGroup != null ? !ressourceGroup.equals(that.ressourceGroup) : that.ressourceGroup != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + plannedDays;
+        result = 31 * result + plannedHours;
+        result = 31 * result + plannedMinutes;
+        result = 31 * result + (ressourceGroup != null ? ressourceGroup.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PlanningUnitElement{" +
+                "plannedDays=" + plannedDays +
+                ", plannedHours=" + plannedHours +
+                ", plannedMinutes=" + plannedMinutes +
+                ", ressourceGroup=" + ressourceGroup.getName() +
+                '}';
+    }
 }

@@ -90,4 +90,35 @@ public class RessourceGroup {
     public void setCostPerHour(float costPerHour) {
         this.costPerHour = costPerHour;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RessourceGroup that = (RessourceGroup) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (!name.equals(that.name)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + name.hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RessourceGroup{" +
+                "validFrom=" + validFrom +
+                ", validUntil=" + validUntil +
+                ", currency='" + currency + '\'' +
+                ", costPerHour=" + costPerHour +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

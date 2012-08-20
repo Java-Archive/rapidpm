@@ -28,36 +28,35 @@ public class TreeTableContainerFiller {
         final ArrayList<PlanningUnitGroup> planningUnitGroups = projekt.getPlanningUnitGroups();
         final ArrayList<RessourceGroup> ressourceGroups = new ArrayList<>();
 
-        for (PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
-            for (PlanningUnit planningUnit : planningUnitGroup.getPlanningUnitList()) {
-                for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+        for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
+            for (final PlanningUnit planningUnit : planningUnitGroup.getPlanningUnitList()) {
+                for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
                     ressourceGroups.add(planningUnitElement.getRessourceGroup());
                 }
             }
         }
         hierarchicalContainer.addContainerProperty("Aufgabe", String.class, null);
-        for (RessourceGroup ressourceGroup : ressourceGroups) {
+        for (final RessourceGroup ressourceGroup : ressourceGroups) {
             hierarchicalContainer.addContainerProperty(ressourceGroup.getName(), String.class, "");
         }
 
-        for (PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
-            Item planningUnitGroupItem = hierarchicalContainer.addItem(planningUnitGroup.getPlanningUnitName());
+        for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
+            final Item planningUnitGroupItem = hierarchicalContainer.addItem(planningUnitGroup.getPlanningUnitName());
             planningUnitGroupItem.getItemProperty("Aufgabe").setValue(planningUnitGroup.getPlanningUnitName());
-            for (RessourceGroup ressourceGroup : ressourceGroups) {
+            for (final RessourceGroup ressourceGroup : ressourceGroups) {
                 planningUnitGroupItem.getItemProperty(ressourceGroup.getName()).setValue("zu berechnen");
             }
-            for (PlanningUnit planningUnit : planningUnitGroup.getPlanningUnitList()) {
-                Item planningUnitItem = hierarchicalContainer.addItem(planningUnit.getPlanningUnitElementName());
+            for (final PlanningUnit planningUnit : planningUnitGroup.getPlanningUnitList()) {
+                final Item planningUnitItem = hierarchicalContainer.addItem(planningUnit.getPlanningUnitElementName());
                 planningUnitItem.getItemProperty("Aufgabe").setValue(planningUnit.getPlanningUnitElementName());
-                for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-                    planningUnitItem.getItemProperty(planningUnitElement.getRessourceGroup().getName()).setValue(parseToTimeString(planningUnitElement));
+                for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+                    final String planningUnitElementRessourceGroupName = planningUnitElement.getRessourceGroup().getName();
+                    planningUnitItem.getItemProperty(planningUnitElementRessourceGroupName).setValue(parseToTimeString(planningUnitElement));
                 }
                 hierarchicalContainer.setParent( (Object) planningUnit.getPlanningUnitElementName(),(Object)planningUnitGroup.getPlanningUnitName());
                 hierarchicalContainer.setChildrenAllowed((Object) planningUnit.getPlanningUnitElementName(),false);
             }
-
         }
-
     }
 
     private String parseToTimeString(PlanningUnitElement planningUnitElement) {

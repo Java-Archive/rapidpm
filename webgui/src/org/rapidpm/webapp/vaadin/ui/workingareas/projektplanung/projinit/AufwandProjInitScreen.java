@@ -27,6 +27,10 @@ public class AufwandProjInitScreen extends Screen {
     private TreeTable treeTable = new TreeTable();
     private Table uebersichtTable = new Table();
 
+    private static final String TABLELAYOUT_WIDTH = "900px";
+    private static final String COLUMN_WIDTH = "350px";
+    private static final String ABSOLUTE_WIDTH = "700px";
+
     private HorizontalLayout felderLayout = new HorizontalLayout();
     private VerticalLayout unterschriftLayout = new VerticalLayout();
     private VerticalLayout table1layout = new VerticalLayout();
@@ -58,8 +62,9 @@ public class AufwandProjInitScreen extends Screen {
 
         treeTable.setContainerDataSource(dataSource);
         table1layout.addComponent(uebersichtTable);
-        table2layout.setWidth("900px");
-        table1layout.setWidth("900px");
+
+        table2layout.setWidth(TABLELAYOUT_WIDTH);
+        table1layout.setWidth(TABLELAYOUT_WIDTH);
         table2layout.addComponent(treeTable);
         table1layout.setMargin(true, false, true, false);
         table2layout.setMargin(true, false, true, false);
@@ -112,9 +117,9 @@ public class AufwandProjInitScreen extends Screen {
         summeKundentermineInStdField.setEnabled(false);
         // Horizontallayout (700px) beinhaltet 2 VerticalLayouts(jew. 350px)
         // beinhalten jeweils x horizontallayouts (sizefull)
-        felderLayout.setWidth("700px");
-        linkeZeilen.setWidth("350px");
-        rechteZeilen.setWidth("350px");
+        felderLayout.setWidth(ABSOLUTE_WIDTH);
+        linkeZeilen.setWidth(COLUMN_WIDTH );
+        rechteZeilen.setWidth(COLUMN_WIDTH );
         linkeZeile1.setSizeFull();
         linkeZeile2.setSizeFull();
         linkeZeile3.setSizeFull();
