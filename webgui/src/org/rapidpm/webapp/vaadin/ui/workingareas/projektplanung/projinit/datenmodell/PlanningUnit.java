@@ -17,6 +17,7 @@ public class PlanningUnit {
     private Long id;
     private int orderNumber;
     private String planningUnitElementName;
+    private List<PlanningUnit> kindPlanningUnits;
     private List<PlanningUnitElement> planningUnitElementList;
 
     public Long getId() {
@@ -49,6 +50,14 @@ public class PlanningUnit {
 
     public void setPlanningUnitElementList(List<PlanningUnitElement> planningUnitElementList) {
         this.planningUnitElementList = planningUnitElementList;
+    }
+
+    public List<PlanningUnit> getKindPlanningUnits() {
+        return kindPlanningUnits;
+    }
+
+    public void setKindPlanningUnits(List<PlanningUnit> kindPlanningUnits) {
+        this.kindPlanningUnits = kindPlanningUnits;
     }
 
     @Override

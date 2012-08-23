@@ -5,6 +5,7 @@ import com.vaadin.data.util.HierarchicalContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,23 +41,60 @@ public class TreeTableContainerFiller {
             hierarchicalContainer.addContainerProperty(ressourceGroup.getName(), String.class, "");
         }
 
+
+
         for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
+            //System.out.println("pug: "+planningUnitGroup.getPlanningUnitName());
             final Item planningUnitGroupItem = hierarchicalContainer.addItem(planningUnitGroup.getPlanningUnitName());
             planningUnitGroupItem.getItemProperty("Aufgabe").setValue(planningUnitGroup.getPlanningUnitName());
             for (final RessourceGroup ressourceGroup : ressourceGroups) {
                 planningUnitGroupItem.getItemProperty(ressourceGroup.getName()).setValue("zu berechnen");
             }
-            for (final PlanningUnit planningUnit : planningUnitGroup.getPlanningUnitList()) {
-                final Item planningUnitItem = hierarchicalContainer.addItem(planningUnit.getPlanningUnitElementName());
-                planningUnitItem.getItemProperty("Aufgabe").setValue(planningUnit.getPlanningUnitElementName());
-                for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-                    final String planningUnitElementRessourceGroupName = planningUnitElement.getRessourceGroup().getName();
-                    planningUnitItem.getItemProperty(planningUnitElementRessourceGroupName).setValue(parseToTimeString(planningUnitElement));
-                }
-                hierarchicalContainer.setParent( (Object) planningUnit.getPlanningUnitElementName(),(Object)planningUnitGroup.getPlanningUnitName());
-                hierarchicalContainer.setChildrenAllowed((Object) planningUnit.getPlanningUnitElementName(),false);
-            }
+            buildItems(planningUnitGroup.getPlanningUnitList(), planningUnitGroup.getPlanningUnitName());
+
+
+//
+//
+//
+//            for (final PlanningUnit planningUnit : planningUnitGroup.getPlanningUnitList()) {
+//                final Item planningUnitItem = hierarchicalContainer.addItem(planningUnit.getPlanningUnitElementName());
+//                planningUnitItem.getItemProperty("Aufgabe").setValue(planningUnit.getPlanningUnitElementName());
+//                for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+//                    final String planningUnitElementRessourceGroupName = planningUnitElement.getRessourceGroup().getName();
+//                    planningUnitItem.getItemProperty(planningUnitElementRessourceGroupName).setValue(parseToTimeString(planningUnitElement));
+//                }
+//                hierarchicalContainer.setParent( (Object) planningUnit.getPlanningUnitElementName(),(Object)planningUnitGroup.getPlanningUnitName());
+//                hierarchicalContainer.setChildrenAllowed((Object) planningUnit.getPlanningUnitElementName(),false);
+//            }
         }
+    }
+
+    private void buildItems(List<PlanningUnit> planningUnits, String parentName)
+    {
+         for(PlanningUnit planningUnit : planningUnits)
+         {
+            //System.out.println(planningUnit);
+             //---
+            final Item planningUnitItem = hierarchicalContainer.addItem(planningUnit.getPlanningUnitElementName());
+            planningUnitItem.getItemProperty("Aufgabe").setValue(planningUnit.getPlanningUnitElementName());
+
+            //---
+             hierarchicalContainer.setParent( (Object) planningUnit.getPlanningUnitElementName(),(Object)parentName);
+             if(planningUnit.getKindPlanningUnits() != null && !planningUnit.getKindPlanningUnits().isEmpty()){
+                 for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+                     final String planningUnitElementRessourceGroupName = planningUnitElement.getRessourceGroup().getName();
+                     planningUnitItem.getItemProperty(planningUnitElementRessourceGroupName).setValue("zu berechnen");
+                 }
+                 hierarchicalContainer.setChildrenAllowed((Object) planningUnit.getPlanningUnitElementName(),true);
+                 buildItems(planningUnit.getKindPlanningUnits(),planningUnit.getPlanningUnitElementName());
+             } else{
+                 for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+                     final String planningUnitElementRessourceGroupName = planningUnitElement.getRessourceGroup().getName();
+                     planningUnitItem.getItemProperty(planningUnitElementRessourceGroupName).setValue(parseToTimeString(planningUnitElement));
+                 }
+                 hierarchicalContainer.setChildrenAllowed((Object) planningUnit.getPlanningUnitElementName(),false);
+             }
+         }
     }
 
     private String parseToTimeString(PlanningUnitElement planningUnitElement) {

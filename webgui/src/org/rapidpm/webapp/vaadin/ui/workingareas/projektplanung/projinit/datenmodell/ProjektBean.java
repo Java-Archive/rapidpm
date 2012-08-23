@@ -93,6 +93,45 @@ public class ProjektBean {
             planningUnit.setPlanningUnitElementList(planningUnitElements);
             planningUnitsVorbereitungen.add(planningUnit);
         }
+        //Erstkontakt vor Ort kinder übergeben
+        for(PlanningUnit planningUnit : planningUnitsVorbereitungen){
+            if(planningUnit.getPlanningUnitElementName().equals("Erstkontakt vor Ort")){
+                ArrayList<PlanningUnit> childPlanningUnits = new ArrayList<>();
+                PlanningUnit childPlanningUnit1 = new PlanningUnit();
+                childPlanningUnit1.setPlanningUnitElementName("Person A kontaktieren");
+                final ArrayList<PlanningUnitElement> planningUnitElements1 = new ArrayList<>();
+                for(final RessourceGroup ressourceGroup : ressourceGroups)          //für jede zelle
+                {
+                    PlanningUnitElement planningUnitElement = new PlanningUnitElement();
+                    planningUnitElement.setPlannedDays((int) (Math.random()*10));
+                    planningUnitElement.setPlannedHours((int) (Math.random()*24));
+                    planningUnitElement.setPlannedMinutes((int) (Math.random()*60));
+                    planningUnitElement.setRessourceGroup(ressourceGroup);
+                    System.out.println("Person a: "+planningUnitElement.toString());
+                    planningUnitElements1.add(planningUnitElement);
+                }
+                childPlanningUnit1.setPlanningUnitElementList(planningUnitElements1);
+
+                PlanningUnit childPlanningUnit2 = new PlanningUnit();
+                childPlanningUnit2.setPlanningUnitElementName("Person B kontaktieren");
+                final ArrayList<PlanningUnitElement> planningUnitElements2 = new ArrayList<>();
+                for(final RessourceGroup ressourceGroup : ressourceGroups)          //für jede zelle
+                {
+                    PlanningUnitElement planningUnitElement = new PlanningUnitElement();
+                    planningUnitElement.setPlannedDays((int) (Math.random()*10));
+                    planningUnitElement.setPlannedHours((int) (Math.random()*24));
+                    planningUnitElement.setPlannedMinutes((int) (Math.random()*60));
+                    planningUnitElement.setRessourceGroup(ressourceGroup);
+                    System.out.println("Person b: "+planningUnitElement.toString());
+                    planningUnitElements2.add(planningUnitElement);
+                }
+                childPlanningUnit2.setPlanningUnitElementList(planningUnitElements2);
+                childPlanningUnits.add(childPlanningUnit1);
+                childPlanningUnits.add(childPlanningUnit2);
+                planningUnit.setKindPlanningUnits(childPlanningUnits);
+
+            }
+        }
         vorbereitungen.setPlanningUnitList(planningUnitsVorbereitungen);
         //--------
 

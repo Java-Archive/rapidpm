@@ -70,7 +70,7 @@ public class AufwandProjInitScreen extends Screen {
         table2layout.setMargin(true, false, true, false);
 
         computer.compute();
-        computer.setValuesInScreen();
+        //computer.setValuesInScreen();
 
         lowerFormLayout.addComponent(saveButton);
 

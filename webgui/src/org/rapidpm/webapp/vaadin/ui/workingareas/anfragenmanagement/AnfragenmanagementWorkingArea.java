@@ -4,10 +4,6 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import org.rapidpm.orm.prj.bewegungsdaten.anfragen.Projektanfrage;
-import org.rapidpm.orm.prj.bewegungsdaten.anfragen.ProjektanfrageDAO;
-import org.rapidpm.orm.prj.stammdaten.DaoFactoryBean;
-
-import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,12 +15,12 @@ import java.util.List;
 public class AnfragenmanagementWorkingArea extends VerticalLayout {
 
     public AnfragenmanagementWorkingArea() {
-        final DaoFactoryBean daoFactoryBean = null; // TODO AnfragenmanagementWorkingAreaBean
-        final ProjektanfrageDAO projektanfrageDAO = daoFactoryBean.getProjektanfrageDAO();
+        //final DaoFactoryBean daoFactoryBean = null; // TODO AnfragenmanagementWorkingAreaBean
+        //final ProjektanfrageDAO projektanfrageDAO = daoFactoryBean.getProjektanfrageDAO();
 
         final BeanItemContainer<Projektanfrage> dataSource = new BeanItemContainer<>(Projektanfrage.class);
-        final List<Projektanfrage> projektanfrageList = projektanfrageDAO.loadAllEntities();
-        dataSource.addAll(projektanfrageList);
+        //final List<Projektanfrage> projektanfrageList = projektanfrageDAO.loadAllEntities();
+        //dataSource.addAll(projektanfrageList);
 
         final Table table = new Table("Projektanfragen", dataSource);
         table.setVisibleColumns(ProjektanfrageUI.VISIBLE_COLUMNS);
