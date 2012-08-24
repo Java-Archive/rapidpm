@@ -107,7 +107,6 @@ public class ProjektBean {
                     planningUnitElement.setPlannedHours((int) (Math.random()*24));
                     planningUnitElement.setPlannedMinutes((int) (Math.random()*60));
                     planningUnitElement.setRessourceGroup(ressourceGroup);
-                    System.out.println("Person a: "+planningUnitElement.toString());
                     planningUnitElements1.add(planningUnitElement);
                 }
                 childPlanningUnit1.setPlanningUnitElementList(planningUnitElements1);
@@ -122,7 +121,6 @@ public class ProjektBean {
                     planningUnitElement.setPlannedHours((int) (Math.random()*24));
                     planningUnitElement.setPlannedMinutes((int) (Math.random()*60));
                     planningUnitElement.setRessourceGroup(ressourceGroup);
-                    System.out.println("Person b: "+planningUnitElement.toString());
                     planningUnitElements2.add(planningUnitElement);
                 }
                 childPlanningUnit2.setPlanningUnitElementList(planningUnitElements2);

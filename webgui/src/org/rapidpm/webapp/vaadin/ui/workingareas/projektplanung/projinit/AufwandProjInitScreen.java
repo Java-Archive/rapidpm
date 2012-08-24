@@ -70,7 +70,7 @@ public class AufwandProjInitScreen extends Screen {
         table2layout.setMargin(true, false, true, false);
 
         computer.compute();
-        //computer.setValuesInScreen();
+        computer.setValuesInScreen();
 
         lowerFormLayout.addComponent(saveButton);
 
@@ -83,7 +83,7 @@ public class AufwandProjInitScreen extends Screen {
 
     private void fillTable() {
         uebersichtTable.addContainerProperty("Angabe", String.class, null);
-        for(RessourceGroup ressourceGroup : projektBean.getProjekt().getRessourceGroups()){
+        for (RessourceGroup ressourceGroup : projektBean.getProjekt().getRessourceGroups()) {
             uebersichtTable.addContainerProperty(ressourceGroup.getName(), String.class, null);
         }
     }
@@ -93,8 +93,8 @@ public class AufwandProjInitScreen extends Screen {
         final Label projektLabel = new Label("Projekt:");
         final Label datumLabel = new Label("Datum:");
         final Label manntageLabel = new Label("MT:");
-        final Label summeInMinLabel = new Label("Summe in min:");
-        final Label kundentermineLabel = new Label("Summe in min (Kundentermine):");
+        final Label summeInMinLabel = new Label("Summe (d..)d:hh:mm");
+        final Label kundentermineLabel = new Label("Summe (d..)d:hh:mm (Kundentermine):");
         final VerticalLayout linkeZeilen = new VerticalLayout();
         final VerticalLayout rechteZeilen = new VerticalLayout();
         final HorizontalLayout linkeZeile1 = new HorizontalLayout();
@@ -118,8 +118,8 @@ public class AufwandProjInitScreen extends Screen {
         // Horizontallayout (700px) beinhaltet 2 VerticalLayouts(jew. 350px)
         // beinhalten jeweils x horizontallayouts (sizefull)
         felderLayout.setWidth(ABSOLUTE_WIDTH);
-        linkeZeilen.setWidth(COLUMN_WIDTH );
-        rechteZeilen.setWidth(COLUMN_WIDTH );
+        linkeZeilen.setWidth(COLUMN_WIDTH);
+        rechteZeilen.setWidth(COLUMN_WIDTH);
         linkeZeile1.setSizeFull();
         linkeZeile2.setSizeFull();
         linkeZeile3.setSizeFull();

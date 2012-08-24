@@ -8,12 +8,19 @@ import com.vaadin.ui.Component.Event;
 import com.vaadin.ui.GridLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.DaysHoursMinutesFieldValidator;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitGroupPlanningUnit;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnit;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.KnotenBlatt;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TableItemClickListener implements ItemClickListener {
 
     private AufwandProjInitScreen screen;
-    private PlanningUnitGroupPlanningUnit planningUnitGroupPlanningUnit;
+    private KnotenBlatt knotenBlatt;
+
+    private PlanningUnit foundPlanningUnit = null;
 
     public TableItemClickListener(AufwandProjInitScreen screen) {
         this.screen = screen;
@@ -30,29 +37,69 @@ public class TableItemClickListener implements ItemClickListener {
 
         }
         formUnterlayout.removeAllComponents();
-        if (!screen.getProjektBean().getProjekt().getPlanningUnitGroupsNames().contains(screen.getDataSource().getItem(event.getItemId()).getItemProperty("Aufgabe").getValue().toString())) {
-            planningUnitGroupPlanningUnit = PlanningUnitGroupPlanningUnit.PLANNING_UNIT;
-            for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
-                formUnterlayout.addComponent(
-                        fieldGroup.buildAndBind(prop));
-            }
-        } else {
-            planningUnitGroupPlanningUnit = PlanningUnitGroupPlanningUnit.PLANNING_UNIT_GROUP;
+        final Object itemId = event.getItemId();
+        final String aufgabe = screen.getDataSource().getItem(itemId).getItemProperty("Aufgabe").getValue().toString();
+        final ArrayList<String> planningUnitGroupsNames = screen.getProjektBean().getProjekt().getPlanningUnitGroupsNames();
+
+        foundPlanningUnit = null;
+        if (planningUnitGroupsNames.contains(aufgabe)) {
+            knotenBlatt = KnotenBlatt.PLANNING_UNIT_GROUP;
             for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
                 if (prop.equals("Aufgabe"))
                     formUnterlayout.addComponent(
                             fieldGroup.buildAndBind(prop));
             }
-        }
-        for(final Object propertyId : fieldGroup.getBoundPropertyIds())
-        {
-            if(!propertyId.equals("Aufgabe")){
-                fieldGroup.getField(propertyId).addValidator(new DaysHoursMinutesFieldValidator());
+        } else {
+            final ArrayList<PlanningUnitGroup> planningUnitGroups = screen.getProjektBean().getProjekt().getPlanningUnitGroups();
+            //PlanningUnit planningUnit = null;
+            for(final PlanningUnitGroup planningUnitGroup : planningUnitGroups){
+                if(foundPlanningUnit == null){
+                    getPlanningUnit(planningUnitGroup.getPlanningUnitList(), itemId.toString());
+                }
             }
-            fieldGroup.getField(propertyId).setRequired(true);
+            if (foundPlanningUnit.getKindPlanningUnits() != null && !foundPlanningUnit.getKindPlanningUnits().isEmpty()) {
+                knotenBlatt = KnotenBlatt.PLANNING_UNIT_KNOTEN;
+                for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
+                    if (prop.equals("Aufgabe"))
+                        formUnterlayout.addComponent(
+                                fieldGroup.buildAndBind(prop));
+                }
+                for(final Object propertyId : fieldGroup.getBoundPropertyIds())
+                {
+                    fieldGroup.getField(propertyId).setRequired(true);
+                }
+            } else {
+                knotenBlatt = KnotenBlatt.PLANNING_UNIT_BLATT;
+                for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
+                    formUnterlayout.addComponent(
+                            fieldGroup.buildAndBind(prop));
+                }
+                for(final Object propertyId : fieldGroup.getBoundPropertyIds())
+                {
+                    if(!propertyId.equals("Aufgabe")){
+                        fieldGroup.getField(propertyId).addValidator(new DaysHoursMinutesFieldValidator());
+                    }
+                    fieldGroup.getField(propertyId).setRequired(true);
+                }
+            }
         }
-        screen.getSaveButton().addListener(new SaveButtonClickListener(fieldGroup, screen, planningUnitGroupPlanningUnit, event.getItemId()));
+
+        screen.getSaveButton().addListener(new SaveButtonClickListener(fieldGroup, screen, knotenBlatt, itemId));
         screen.getFormLayout().setVisible(true);
     }
+
+    private void getPlanningUnit(List<PlanningUnit> planningUnits, String itemId) {
+        for (PlanningUnit planningUnit : planningUnits) {
+            if(planningUnit.getPlanningUnitElementName().equals(itemId)){
+                foundPlanningUnit = planningUnit;
+            } else {
+                if(planningUnit.getKindPlanningUnits() != null && !planningUnit.getKindPlanningUnits().isEmpty() ){
+                    getPlanningUnit(planningUnit.getKindPlanningUnits(), itemId);
+                }
+            }
+        }
+    }
+
+
 
 }

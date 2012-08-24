@@ -3,7 +3,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.event.Action;
 import com.vaadin.terminal.Resource;
 import com.vaadin.ui.*;
@@ -24,19 +23,18 @@ import java.util.*;
 public class ProjektplanungScreen extends HorizontalSplitPanel {
 
 
-
     private final VerticalLayout menuLayout;
     private final Panel projektPanel;
     private final Panel treePanel;
     private final Panel detailPanel;
     private Tree treePanelTree;
     private final VerticalLayout mainLayout;
-    private ProjektBean container;
+    private ProjektBean projektBean;
 
     public ProjektplanungScreen(ProjektBean cont) {
-        this.container = cont;
+        this.projektBean = cont;
         setSizeFull();
-        setSplitPosition(80, Unit.PERCENTAGE);
+        setSplitPosition(40, Unit.PERCENTAGE);
 
         menuLayout = new VerticalLayout();
         menuLayout.setSpacing(true);
@@ -55,10 +53,6 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         addComponent(mainLayout);
 
 
-//        for (Integer i : container.getErsteEbeneIds()) {
-//            final String ersteEbeneName = container.getItem(i).getItemProperty("Aufgabe").getValue().toString();
-//            ersteEbeneItems.add(ersteEbeneName);
-//        }
         final List<String> listenWerte = Arrays.asList("Projektmanagement",
                 "Zeitplanung",
                 "Technische Planung",
@@ -67,9 +61,9 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
                 "Gewährleistung",
                 "Dokumentation",
                 "Schulung");
-        final ArrayList<String> listenWerteArrayList = container.getProjekt().getPlanningUnitGroupsNames() ;
+        final ArrayList<String> listenWerteArrayList = projektBean.getProjekt().getPlanningUnitGroupsNames();
         listenWerteArrayList.addAll(listenWerte);
-        final ListSelect projektSelect = new ListSelect(null, listenWerteArrayList) ;
+        final ListSelect projektSelect = new ListSelect(null, listenWerteArrayList);
 
         projektSelect.setNullSelectionAllowed(false);
         projektSelect.setImmediate(true);
@@ -85,8 +79,6 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
                 fillTreePanel(value);
                 mainLayout.addComponent(new Label(value));
                 detailPanel.setCaption("Details");
-
-
             }
 
         });
@@ -94,24 +86,24 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
     }
 
     private void fillTreePanel(String planningGroupName) {
-        final HierarchicalContainer treePanelContainer = new HierarchicalContainer();
-//        for (Object containerSpaltenId : container.getContainerPropertyIds()) {
+        //final HierarchicalContainer treePanelContainer = new HierarchicalContainer();
+//        for (Object containerSpaltenId : projektBean.getContainerPropertyIds()) {
 //            treePanelContainer.addContainerProperty(containerSpaltenId, containerSpaltenId.getClass(), null);
 //        }
 
         //Object theItemId = null;
-//        for (Object itemId : container.getErsteEbeneIds()) {
-//            if (container.getItem(itemId).getItemProperty("Aufgabe").getValue().toString().equals(planningGroupName)) {
+//        for (Object itemId : projektBean.getErsteEbeneIds()) {
+//            if (projektBean.getItem(itemId).getItemProperty("Aufgabe").getValue().toString().equals(planningGroupName)) {
 //                theItemId = itemId;
 //            }
 //        }
-//        if (container.hasChildren(theItemId)) {
-//            for (Object itemId : container.getChildren(theItemId)) {
+//        if (projektBean.hasChildren(theItemId)) {
+//            for (Object itemId : projektBean.getChildren(theItemId)) {
 //                final Object newItem = treePanelContainer.addItem();
-//                for (Object containerProperty : container.getContainerPropertyIds()) {
+//                for (Object containerProperty : projektBean.getContainerPropertyIds()) {
 //                    System.out.println(containerProperty.getClass());
 //                    System.out.println(containerProperty.toString());
-//                    final Object inhaltDerZelleImContainer = container.getItem(itemId).getItemProperty(containerProperty).getValue();
+//                    final Object inhaltDerZelleImContainer = projektBean.getItem(itemId).getItemProperty(containerProperty).getValue();
 //                    final Property<?> spalteImTreeTableContainerItem = treePanelContainer.getItem(newItem).getItemProperty(containerProperty);
 //                    if(inhaltDerZelleImContainer == null){
 //                        spalteImTreeTableContainerItem.setValue("");
@@ -121,17 +113,18 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
 //                }
 //            }
 //        }
-        treePanelTree = new Tree();
+
         //treePanelTree.setContainerDataSource(treePanelContainer);
+        treePanelTree = new Tree();
         PlanningUnitGroup planningUnitGroup = null;
-        for(final PlanningUnitGroup pug : container.getProjekt().getPlanningUnitGroups()){
-            if(pug.getPlanningUnitName().equals(planningGroupName)){
+        for (final PlanningUnitGroup pug : projektBean.getProjekt().getPlanningUnitGroups()) {
+            if (pug.getPlanningUnitName().equals(planningGroupName)) {
                 planningUnitGroup = pug;
             }
         }
 
         //treePanelTree.addContainerProperty("obj", Teil.class, null);
-        if(planningUnitGroup != null){
+        if (planningUnitGroup != null) {
             treePanelTree.addContainerProperty("name", String.class, "");
             treePanelTree.addContainerProperty("icon", Resource.class, null);
             treePanelTree.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
@@ -139,19 +132,27 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
             treePanelTree.setItemIconPropertyId("icon");
             treePanelTree.setMultiSelect(true);
             treePanelTree.setImmediate(true);
-            final Object projektId = treePanelTree.addItem();
-            final Item projektItem = treePanelTree.getItem(projektId);
+            final Object planningUnitGroupId = treePanelTree.addItem();
+            final Item projektItem = treePanelTree.getItem(planningUnitGroupId);
             projektItem.getItemProperty("name").setValue(planningUnitGroup.getPlanningUnitName());
             //projektItem.getItemProperty("icon").setValue(projekt.getStatus().getIcon());
-            treePanelTree.setChildrenAllowed(projektId, true);
-            for (final PlanningUnit planningUnit: planningUnitGroup.getPlanningUnitList()) {
-                final Object planningUnitId = treePanelTree.addItem();
-                final Item planningUnitItem = treePanelTree.getItem(planningUnitId);
-                //planningUnitItem.getItemProperty("obj").setValue(planningUnit);
-                planningUnitItem.getItemProperty("name").setValue(planningUnit.getPlanningUnitElementName());
-                //planningUnitItem.getItemProperty("icon").setValue(planningUnit.getStatus().getIcon());
-                treePanelTree.setParent(planningUnitId, projektId);
-                treePanelTree.setChildrenAllowed(planningUnitId, false);
+            if (planningUnitGroup.getPlanningUnitList() != null && !planningUnitGroup.getPlanningUnitList().isEmpty()) {
+                treePanelTree.setChildrenAllowed(planningUnitGroupId, true);
+            } else {
+                treePanelTree.setChildrenAllowed(planningUnitGroupId, false);
+            }
+
+            buildTree(planningUnitGroup.getPlanningUnitList(), planningUnitGroupId);
+//            for (final PlanningUnit planningUnit: planningUnitGroup.getPlanningUnitList()) {
+//                final Object planningUnitId = treePanelTree.addItem();
+//                final Item planningUnitItem = treePanelTree.getItem(planningUnitId);
+//                //planningUnitItem.getItemProperty("obj").setValue(planningUnit);
+//                planningUnitItem.getItemProperty("name").setValue(planningUnit.getPlanningUnitElementName());
+//                //planningUnitItem.getItemProperty("icon").setValue(planningUnit.getStatus().getIcon());
+//                treePanelTree.setParent(planningUnitId, planningUnitGroupId);
+//                treePanelTree.setChildrenAllowed(planningUnitId, false);
+
+
 //            for (final Einzelteil einzelteil : planningUnit.getEinzelteile()) {
 //                final Object einzelteilId = treePanelTree.addItem();
 //                final Item einzelteilItem = treePanelTree.getItem(einzelteilId);
@@ -161,11 +162,24 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
 //                treePanelTree.setParent(einzelteilId, planningUnitId);
 //                treePanelTree.setChildrenAllowed(einzelteilId, false);
 //            }
-            }
-            treePanelTree.expandItemsRecursively(projektId);
+            //}
+            treePanelTree.expandItemsRecursively(planningUnitGroupId);
             treePanel.addComponent(treePanelTree);
         } else if (planningGroupName.equals("Technische Planung")) {
             showTechnischePlanung();
+        }
+    }
+
+    private void buildTree(List<PlanningUnit> planningUnits, Object parentId) {
+        for (PlanningUnit planningUnit : planningUnits) {
+            final Object itemId = treePanelTree.addItem();
+            treePanelTree.getItem(itemId).getItemProperty("name").setValue(planningUnit.getPlanningUnitElementName());
+            treePanelTree.setParent(itemId, parentId);
+            if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
+                treePanelTree.setChildrenAllowed(itemId, false);
+            } else {
+                buildTree(planningUnit.getKindPlanningUnits(), itemId);
+            }
         }
     }
 
