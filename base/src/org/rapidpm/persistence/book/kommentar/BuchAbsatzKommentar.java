@@ -1,9 +1,9 @@
-package org.rapidpm.persistence.prj.book.kommentar;
+package org.rapidpm.persistence.book.kommentar;
 /**
  * RapidPM - www.rapidpm.org
  * User: svenruppert
  * Date: 14.02.11
- * Time: 17:04
+ * Time: 17:34
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
@@ -14,13 +14,14 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class BuchKommentar {
-    private static final Logger logger = Logger.getLogger(BuchKommentar.class);
+public class BuchAbsatzKommentar {
+    private static final Logger logger = Logger.getLogger(BuchAbsatzKommentar.class);
 
-    @TableGenerator(name = "PKGenBuchKommentar", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "BuchKommentar_id",
+
+    @TableGenerator(name = "PKGenBuchAbsatzKommentar", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "BuchAbsatzKommentar_id",
             valueColumnName = "gen_value", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.TABLE,
-            generator = "PKGenBuchKommentar")
+            generator = "PKGenBuchAbsatzKommentar")
     @Id
     private Long id;
     @Basic
@@ -30,12 +31,12 @@ public class BuchKommentar {
     @OneToOne
     private Benutzer kommentator;
 
-    public Benutzer getKommentator() {
-        return kommentator;
+    public Long getId() {
+        return id;
     }
 
-    public void setKommentator(final Benutzer kommentator) {
-        this.kommentator = kommentator;
+    public void setId(final Long id) {
+        this.id = id;
     }
 
     public String getKommentar() {
@@ -54,18 +55,18 @@ public class BuchKommentar {
         this.datum = datum;
     }
 
-    public Long getId() {
-        return id;
+    public Benutzer getKommentator() {
+        return kommentator;
     }
 
-    public void setId(final Long id) {
-        this.id = id;
+    public void setKommentator(final Benutzer kommentator) {
+        this.kommentator = kommentator;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append("BuchKommentar");
+        sb.append("BuchAbsatzKommentar");
         sb.append("{id=").append(id);
         sb.append(", kommentar='").append(kommentar).append('\'');
         sb.append(", datum=").append(datum);

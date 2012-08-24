@@ -1,10 +1,9 @@
-package org.rapidpm.persistence.prj.book.kommentar;
-
+package org.rapidpm.persistence.book.kommentar;
 /**
  * RapidPM - www.rapidpm.org
  * User: svenruppert
  * Date: 14.02.11
- * Time: 17:06
+ * Time: 17:04
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
@@ -15,14 +14,13 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class BuchSeitenKommentar {
-    private static final Logger logger = Logger.getLogger(BuchSeitenKommentar.class);
+public class BuchKommentar {
+    private static final Logger logger = Logger.getLogger(BuchKommentar.class);
 
-    @TableGenerator(name = "PKGenBuchSeitenKommentar", table = "pk_gen", pkColumnName = "gen_key",
-            pkColumnValue = "BuchSeitenKommentar_id",
+    @TableGenerator(name = "PKGenBuchKommentar", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "BuchKommentar_id",
             valueColumnName = "gen_value", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.TABLE,
-            generator = "PKGenBuchSeitenKommentar")
+            generator = "PKGenBuchKommentar")
     @Id
     private Long id;
     @Basic
@@ -38,14 +36,6 @@ public class BuchSeitenKommentar {
 
     public void setKommentator(final Benutzer kommentator) {
         this.kommentator = kommentator;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(final Long id) {
-        this.id = id;
     }
 
     public String getKommentar() {
@@ -64,10 +54,18 @@ public class BuchSeitenKommentar {
         this.datum = datum;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(final Long id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append("BuchSeitenKommentar");
+        sb.append("BuchKommentar");
         sb.append("{id=").append(id);
         sb.append(", kommentar='").append(kommentar).append('\'');
         sb.append(", datum=").append(datum);

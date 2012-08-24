@@ -1,9 +1,10 @@
-package org.rapidpm.persistence.prj.book.kommentar;
+package org.rapidpm.persistence.book.kommentar;
+
 /**
  * RapidPM - www.rapidpm.org
  * User: svenruppert
  * Date: 14.02.11
- * Time: 17:34
+ * Time: 17:06
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
@@ -14,14 +15,14 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class BuchAbsatzKommentar {
-    private static final Logger logger = Logger.getLogger(BuchAbsatzKommentar.class);
+public class BuchSeitenKommentar {
+    private static final Logger logger = Logger.getLogger(BuchSeitenKommentar.class);
 
-
-    @TableGenerator(name = "PKGenBuchAbsatzKommentar", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "BuchAbsatzKommentar_id",
+    @TableGenerator(name = "PKGenBuchSeitenKommentar", table = "pk_gen", pkColumnName = "gen_key",
+            pkColumnValue = "BuchSeitenKommentar_id",
             valueColumnName = "gen_value", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.TABLE,
-            generator = "PKGenBuchAbsatzKommentar")
+            generator = "PKGenBuchSeitenKommentar")
     @Id
     private Long id;
     @Basic
@@ -30,6 +31,14 @@ public class BuchAbsatzKommentar {
     Date datum;
     @OneToOne
     private Benutzer kommentator;
+
+    public Benutzer getKommentator() {
+        return kommentator;
+    }
+
+    public void setKommentator(final Benutzer kommentator) {
+        this.kommentator = kommentator;
+    }
 
     public Long getId() {
         return id;
@@ -55,18 +64,10 @@ public class BuchAbsatzKommentar {
         this.datum = datum;
     }
 
-    public Benutzer getKommentator() {
-        return kommentator;
-    }
-
-    public void setKommentator(final Benutzer kommentator) {
-        this.kommentator = kommentator;
-    }
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
-        sb.append("BuchAbsatzKommentar");
+        sb.append("BuchSeitenKommentar");
         sb.append("{id=").append(id);
         sb.append(", kommentar='").append(kommentar).append('\'');
         sb.append(", datum=").append(datum);

@@ -1,8 +1,8 @@
-package org.rapidpm.persistence.prj.book;
+package org.rapidpm.persistence.book;
 
 import org.rapidpm.RandomGenerator;
 import org.rapidpm.persistence.EntityFactory;
-import org.rapidpm.persistence.prj.book.kommentar.BuchAbsatzKommentarEntityFactory;
+import org.rapidpm.persistence.book.kommentar.BuchAbsatzKommentarEntityFactory;
 
 /**
  * Created by IntelliJ IDEA.

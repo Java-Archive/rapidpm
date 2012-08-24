@@ -1,4 +1,4 @@
-package org.rapidpm.persistence.prj.book.kommentar;
+package org.rapidpm.persistence.book.kommentar;
 /**
  * RapidPM - www.rapidpm.org
  * User: svenruppert

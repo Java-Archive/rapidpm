@@ -1,4 +1,4 @@
-package org.rapidpm.persistence.prj.book;
+package org.rapidpm.persistence.book;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,10 +9,10 @@ package org.rapidpm.persistence.prj.book;
  */
 
 import org.rapidpm.persistence.prj.BaseDAOTest;
-import org.rapidpm.persistence.prj.book.kommentar.BuchAbsatzKommentar;
-import org.rapidpm.persistence.prj.book.kommentar.BuchKapitelKommentar;
-import org.rapidpm.persistence.prj.book.kommentar.BuchKommentar;
-import org.rapidpm.persistence.prj.book.kommentar.BuchSeitenKommentar;
+import org.rapidpm.persistence.book.kommentar.BuchAbsatzKommentar;
+import org.rapidpm.persistence.book.kommentar.BuchKapitelKommentar;
+import org.rapidpm.persistence.book.kommentar.BuchKommentar;
+import org.rapidpm.persistence.book.kommentar.BuchSeitenKommentar;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.apache.log4j.Logger;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package org.rapidpm.persistence.prj.book;
+package org.rapidpm.persistence.book;
 /**
  * RapidPM - www.rapidpm.org
  * User: svenruppert
@@ -7,7 +7,7 @@ package org.rapidpm.persistence.prj.book;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
-import org.rapidpm.persistence.prj.book.kommentar.BuchAbsatzKommentar;
+import org.rapidpm.persistence.book.kommentar.BuchAbsatzKommentar;
 import org.apache.log4j.Logger;
 
 import javax.persistence.*;

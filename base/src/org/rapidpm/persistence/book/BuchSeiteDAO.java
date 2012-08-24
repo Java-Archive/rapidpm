@@ -1,4 +1,4 @@
-package org.rapidpm.persistence.prj.book;
+package org.rapidpm.persistence.book;
 /**
  * RapidPM - www.rapidpm.org
  * User: svenruppert

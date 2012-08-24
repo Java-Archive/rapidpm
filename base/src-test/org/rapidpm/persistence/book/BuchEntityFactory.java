@@ -1,7 +1,7 @@
-package org.rapidpm.persistence.prj.book;
+package org.rapidpm.persistence.book;
 
 import org.rapidpm.persistence.EntityFactory;
-import org.rapidpm.persistence.prj.book.kommentar.BuchKommentarEntityFactory;
+import org.rapidpm.persistence.book.kommentar.BuchKommentarEntityFactory;
 import org.rapidpm.persistence.security.BenutzerEntityFactory;
 import org.junit.Test;
 

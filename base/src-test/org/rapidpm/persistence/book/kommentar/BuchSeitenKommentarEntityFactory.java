@@ -1,6 +1,7 @@
-package org.rapidpm.persistence.prj.book.kommentar;
+package org.rapidpm.persistence.book.kommentar;
 
 import org.rapidpm.persistence.EntityFactory;
+import org.rapidpm.persistence.book.kommentar.BuchSeitenKommentar;
 import org.rapidpm.persistence.security.BenutzerEntityFactory;
 
 /**
