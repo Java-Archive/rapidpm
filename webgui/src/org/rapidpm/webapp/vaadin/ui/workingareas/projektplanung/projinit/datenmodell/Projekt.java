@@ -1,6 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,6 +14,40 @@ public class Projekt {
     private long projektId;
     private String projektName;
     private ArrayList<PlanningUnitGroup> planningUnitGroups = new ArrayList<>();
+
+
+    public PlanningUnitGroup getPlanningUnitGroup(String itemId){
+        PlanningUnitGroup result = null;
+        for (PlanningUnitGroup planningUnitGroup : planningUnitGroups){
+            if (planningUnitGroup.getPlanningUnitName().equals(itemId)){
+                result = planningUnitGroup;
+            }
+        }
+        return result;
+    }
+
+//    public PlanningUnit findPlanningUnitAndWriteReferenceInList(String itemId){
+//        PlanningUnit result = null;
+//        for (PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
+//           result = findPlanningUnitAndWriteReferenceInList(planningUnitGroup.getPlanningUnitList(), itemId);
+//        }
+//        return result;
+//    }
+
+    //unelegant, aber funktional
+    public void findPlanningUnitAndWriteReferenceInList(List<PlanningUnit> planningUnits, String itemId, ArrayList<PlanningUnit> resultUnitList){
+        for (PlanningUnit planningUnit : planningUnits) {
+
+            if (planningUnit.getPlanningUnitElementName().equals(itemId)) {
+                resultUnitList.add(planningUnit);
+                return;
+            } else {
+                if (planningUnit.getKindPlanningUnits() != null && !planningUnit.getKindPlanningUnits().isEmpty()) {
+                    findPlanningUnitAndWriteReferenceInList(planningUnit.getKindPlanningUnits(), itemId, resultUnitList);
+                }
+            }
+        }
+    }
 
 
     public long getProjektId() {

@@ -4,6 +4,7 @@ import org.rapidpm.orm.prj.projectmanagement.planning.PlanningStatus;
 import org.rapidpm.orm.prj.projectmanagement.planning.management.PlannedMeeting;
 import org.rapidpm.orm.prj.projectmanagement.planning.management.travel.PlannedTravel;
 import org.rapidpm.orm.prj.stammdaten.person.Person;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.IssueBase;
 
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class PlanningUnitGroup {
     private String planningUnitName;
     private List<PlanningUnit> planningUnitList;
     private List<PlannedMeeting> plannedMeetingList;
+    private IssueBase issueBase;
 
     public Long getId() {
         return id;
@@ -91,6 +93,14 @@ public class PlanningUnitGroup {
 
     public void setPlannedMeetingList(List<PlannedMeeting> plannedMeetingList) {
         this.plannedMeetingList = plannedMeetingList;
+    }
+
+    public IssueBase getIssueBase() {
+        return issueBase;
+    }
+
+    public void setIssueBase(IssueBase issueBase) {
+        this.issueBase = issueBase;
     }
 
     @Override
