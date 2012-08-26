@@ -1,7 +1,13 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell;
 
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.Benutzer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.IssueBase;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.IssuePriority;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.IssueStatus;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,7 +18,17 @@ import java.util.Arrays;
  */
 public class ProjektBean {
 
+
     private Projekt projekt;
+
+    private final String[] issueStatuses = new String[]{"Open","Closed","InProgress","OnHold","Resolved"};
+    private final String[] issuePriorities = new String[]{"Blocker","Major","Minor","Trivial","Critical"};
+    public static final String[] issueUsers = new String[]{"franzschumacher","herbertknoll","gustavheinrich","brigitteknauf","svenjarahmer"};
+    private final IssueStatus openStatus = new IssueStatus();
+    private final IssueStatus closedStatus = new IssueStatus();
+    private final IssueStatus resolvedStatus = new IssueStatus();
+    private final IssueStatus onHoldStatus = new IssueStatus();
+    private final IssueStatus inProgressStatus = new IssueStatus();
 
     public ProjektBean() {
         addData();
@@ -23,7 +39,9 @@ public class ProjektBean {
         projekt = new Projekt();
         projekt.setProjektName("Projekt 1");
 
-        final ArrayList<PlanningUnitGroup> planningUnitGroups = new ArrayList<>();
+
+
+
         final ArrayList<RessourceGroup> ressourceGroups = new ArrayList<>();
         final RessourceGroup aushilfe = new RessourceGroup();
         final RessourceGroup multiProjektManager = new RessourceGroup();
@@ -38,6 +56,7 @@ public class ProjektBean {
         ressourceGroups.add(projektMitarbeiter);
         ressourceGroups.add(projektLeiter);
 
+        final ArrayList<PlanningUnitGroup> planningUnitGroups = new ArrayList<>();
         final PlanningUnitGroup vorbereitungen = new PlanningUnitGroup();
         final PlanningUnitGroup projektworkshop = new PlanningUnitGroup();
         final PlanningUnitGroup angebotserstellung = new PlanningUnitGroup();
@@ -49,15 +68,25 @@ public class ProjektBean {
         final PlanningUnitGroup abschlussarbeiten = new PlanningUnitGroup();
         final PlanningUnitGroup schulungen = new PlanningUnitGroup();
         vorbereitungen.setPlanningUnitName("Vorbereitungen");
+        vorbereitungen.setIssueBase(createIssueBase());
         projektworkshop.setPlanningUnitName("projektworkshop");
+        projektworkshop.setIssueBase(createIssueBase());
         angebotserstellung.setPlanningUnitName("angebotserstellung");
+        angebotserstellung.setIssueBase(createIssueBase());
         realisierungMandantengruppe.setPlanningUnitName("Realisierung Mandantengruppe");
+        realisierungMandantengruppe.setIssueBase(createIssueBase());
         realisierungDatenKollektieren.setPlanningUnitName("Realisierung / Daten kollektieren");
+        realisierungDatenKollektieren.setIssueBase(createIssueBase());
         vorbereitenDesReporting.setPlanningUnitName("Vorbereiten des Reporting");
+        vorbereitenDesReporting.setIssueBase(createIssueBase());
         projektmanagement.setPlanningUnitName("Projektmanagement");
+        projektmanagement.setIssueBase(createIssueBase());
         kommunikation.setPlanningUnitName("Kommunikation");
+        kommunikation.setIssueBase(createIssueBase());
         abschlussarbeiten.setPlanningUnitName("abschlussarbeiten");
+        abschlussarbeiten.setIssueBase(createIssueBase());
         schulungen.setPlanningUnitName("schulungen");
+        schulungen.setIssueBase(createIssueBase());
 
         planningUnitGroups.add(vorbereitungen);
         planningUnitGroups.add(projektworkshop);
@@ -80,6 +109,7 @@ public class ProjektBean {
         for(final String planningUnitName : Arrays.asList(planningUnitsArray)){  //für jede unterzeile
             final PlanningUnit planningUnit = new PlanningUnit();
             planningUnit.setPlanningUnitElementName(planningUnitName);
+            planningUnit.setIssueBase(createIssueBase());
             final ArrayList<PlanningUnitElement> planningUnitElements = new ArrayList<>();
             for(final RessourceGroup ressourceGroup : ressourceGroups)          //für jede zelle
             {
@@ -94,11 +124,12 @@ public class ProjektBean {
             planningUnitsVorbereitungen.add(planningUnit);
         }
         //Erstkontakt vor Ort kinder übergeben
-        for(PlanningUnit planningUnit : planningUnitsVorbereitungen){
+        for(final PlanningUnit planningUnit : planningUnitsVorbereitungen){
             if(planningUnit.getPlanningUnitElementName().equals("Erstkontakt vor Ort")){
                 ArrayList<PlanningUnit> childPlanningUnits = new ArrayList<>();
                 PlanningUnit childPlanningUnit1 = new PlanningUnit();
                 childPlanningUnit1.setPlanningUnitElementName("Person A kontaktieren");
+                childPlanningUnit1.setIssueBase(createIssueBase());
                 final ArrayList<PlanningUnitElement> planningUnitElements1 = new ArrayList<>();
                 for(final RessourceGroup ressourceGroup : ressourceGroups)          //für jede zelle
                 {
@@ -113,6 +144,7 @@ public class ProjektBean {
 
                 PlanningUnit childPlanningUnit2 = new PlanningUnit();
                 childPlanningUnit2.setPlanningUnitElementName("Person B kontaktieren");
+                childPlanningUnit2.setIssueBase(createIssueBase());
                 final ArrayList<PlanningUnitElement> planningUnitElements2 = new ArrayList<>();
                 for(final RessourceGroup ressourceGroup : ressourceGroups)          //für jede zelle
                 {
@@ -131,208 +163,30 @@ public class ProjektBean {
             }
         }
         vorbereitungen.setPlanningUnitList(planningUnitsVorbereitungen);
-        //--------
-
         projekt.setPlanningUnitGroups(planningUnitGroups);
+    }
 
-//        addContainerProperty("Aufgabe", String.class, null);
-//        addContainerProperty("Aushilfe (min)", Integer.class, null);
-//        addContainerProperty("Multiprojektmanager (min)",
-//                Integer.class, null);
-//        addContainerProperty("Projektmitarbeiter (min)",
-//                Integer.class, null);
-//        addContainerProperty("Projektleiter (min)", Integer.class,
-//                null);
-//
-//        // oberste ebene
-//        Object itemId = addItem();
-//        ersteEbeneIds.add((Integer) itemId);
-//        getItem(itemId).getItemProperty("Aufgabe")
-//                .setValue("Vorbereitungen");
-//        getItem(itemId).getItemProperty("Aushilfe (min)")
-//                .setValue(null);
-//        System.out.println(getItem(itemId));
-//        getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-//                .setValue(195);
-//        getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-//                .setValue(null);
-//        getItem(itemId).getItemProperty("Projektleiter (min)")
-//                .setValue(null);
-//
-//        itemId = addItem();
-//        ersteEbeneIds.add((Integer) itemId);
-//        getItem(itemId).getItemProperty("Aufgabe")
-//                .setValue("Projekt-Workshop");
-//        getItem(itemId).getItemProperty("Aushilfe (min)")
-//                .setValue(null);
-//        getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-//                .setValue(270);
-//        getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-//                .setValue(null);
-//        getItem(itemId).getItemProperty("Projektleiter (min)")
-//                .setValue(null);
-//
-//        itemId = addItem();
-//        ersteEbeneIds.add((Integer) itemId);
-//        getItem(itemId).getItemProperty("Aufgabe")
-//                .setValue("Angebotserstellung");
-//        getItem(itemId).getItemProperty("Aushilfe (min)")
-//                .setValue(null);
-//        getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-//                .setValue(310);
-//        getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-//                .setValue(null);
-//        getItem(itemId).getItemProperty("Projektleiter (min)")
-//                .setValue(null);
-//
-//        itemId = addItem();
-//        ersteEbeneIds.add((Integer) itemId);
-//        getItem(itemId).getItemProperty("Aufgabe")
-//                .setValue("Realisierung Mandantengruppe");
-//        getItem(itemId).getItemProperty("Aushilfe (min)")
-//                .setValue(300);
-//        getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-//                .setValue(130);
-//        getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-//                .setValue(300);
-//        getItem(itemId).getItemProperty("Projektleiter (min)")
-//                .setValue(null);
-//
-//        itemId = addItem();
-//        ersteEbeneIds.add((Integer) itemId);
-//        getItem(itemId).getItemProperty("Aufgabe")
-//                .setValue("Realisierung / Daten kollektieren");
-//        getItem(itemId).getItemProperty("Aushilfe (min)")
-//                .setValue(null);
-//        getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-//                .setValue(null);
-//        getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-//                .setValue(60);
-//        getItem(itemId).getItemProperty("Projektleiter (min)")
-//                .setValue(null);
-//
-//        itemId = addItem();
-//        ersteEbeneIds.add((Integer) itemId);
-//        getItem(itemId).getItemProperty("Aufgabe")
-//                .setValue("Vorbereiten des Reporting");
-//        getItem(itemId).getItemProperty("Aushilfe (min)")
-//                .setValue(null);
-//        getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-//                .setValue(null);
-//        getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-//                .setValue(null);
-//        getItem(itemId).getItemProperty("Projektleiter (min)")
-//                .setValue(null);
-//
-//        itemId = addItem();
-//        ersteEbeneIds.add((Integer) itemId);
-//        getItem(itemId).getItemProperty("Aufgabe")
-//                .setValue("Projektmanagement");
-//        getItem(itemId).getItemProperty("Aushilfe (min)")
-//                .setValue(null);
-//        getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-//                .setValue(null);
-//        getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-//                .setValue(120);
-//        getItem(itemId).getItemProperty("Projektleiter (min)")
-//                .setValue(null);
-//
-//        itemId = addItem();
-//        ersteEbeneIds.add((Integer) itemId);
-//        getItem(itemId).getItemProperty("Aufgabe")
-//                .setValue("Kommunikation");
-//        getItem(itemId).getItemProperty("Aushilfe (min)")
-//                .setValue(60);
-//        getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-//                .setValue(60);
-//        getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-//                .setValue(null);
-//        getItem(itemId).getItemProperty("Projektleiter (min)")
-//                .setValue(null);
-//
-//        itemId = addItem();
-//        ersteEbeneIds.add((Integer) itemId);
-//        getItem(itemId).getItemProperty("Aufgabe")
-//                .setValue("Abschlussarbeiten");
-//        getItem(itemId).getItemProperty("Aushilfe (min)")
-//                .setValue(60);
-//        getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-//                .setValue(null);
-//        getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-//                .setValue(240);
-//        getItem(itemId).getItemProperty("Projektleiter (min)")
-//                .setValue(null);
-//
-//        itemId = addItem();
-//        ersteEbeneIds.add((Integer) itemId);
-//        getItem(itemId).getItemProperty("Aufgabe")
-//                .setValue("Schulung");
-//        getItem(itemId).getItemProperty("Aushilfe (min)")
-//                .setValue(null);
-//        getItem(itemId).getItemProperty("Multiprojektmanager (min)")
-//                .setValue(null);
-//        getItem(itemId).getItemProperty("Projektmitarbeiter (min)")
-//                .setValue(null);
-//        getItem(itemId).getItemProperty("Projektleiter (min)")
-//                .setValue(null);
-//
-//        // --------------------
-//
-//        final Object vorbereitungenId1 = addItem();
-//        getItem(vorbereitungenId1).getItemProperty("Aufgabe")
-//                .setValue("Erstkontakt vor Ort");
-//        getItem(vorbereitungenId1).getItemProperty("Aushilfe (min)")
-//                .setValue(null);
-//        getItem(vorbereitungenId1)
-//                .getItemProperty("Multiprojektmanager (min)").setValue(120);
-//        getItem(vorbereitungenId1)
-//                .getItemProperty("Projektmitarbeiter (min)").setValue(null);
-//        getItem(vorbereitungenId1)
-//                .getItemProperty("Projektleiter (min)").setValue(null);
-//
-//        final Object vorbereitungenId2 = addItem();
-//        getItem(vorbereitungenId2).getItemProperty("Aufgabe")
-//                .setValue("Gespr\u00E4chsvorbereitung");
-//        getItem(vorbereitungenId2).getItemProperty("Aushilfe (min)")
-//                .setValue(null);
-//        getItem(vorbereitungenId2)
-//                .getItemProperty("Multiprojektmanager (min)").setValue(60);
-//        getItem(vorbereitungenId2)
-//                .getItemProperty("Projektmitarbeiter (min)").setValue(null);
-//        getItem(vorbereitungenId2)
-//                .getItemProperty("Projektleiter (min)").setValue(null);
-//
-//        final Object vorbereitungenId3 = addItem();
-//        getItem(vorbereitungenId3).getItemProperty("Aufgabe")
-//                .setValue("Pr\u00E4sentation");
-//        getItem(vorbereitungenId3).getItemProperty("Aushilfe (min)")
-//                .setValue(null);
-//        getItem(vorbereitungenId3)
-//                .getItemProperty("Multiprojektmanager (min)").setValue(null);
-//        getItem(vorbereitungenId3)
-//                .getItemProperty("Projektmitarbeiter (min)").setValue(null);
-//        getItem(vorbereitungenId3)
-//                .getItemProperty("Projektleiter (min)").setValue(null);
-//
-//        final Object vorbereitungenId4 = addItem();
-//        getItem(vorbereitungenId4).getItemProperty("Aufgabe")
-//                .setValue("Gespr\u00E4chsbest\u00E4tigung");
-//        getItem(vorbereitungenId4).getItemProperty("Aushilfe (min)")
-//                .setValue(null);
-//        getItem(vorbereitungenId4)
-//                .getItemProperty("Multiprojektmanager (min)").setValue(15);
-//        getItem(vorbereitungenId4)
-//                .getItemProperty("Projektmitarbeiter (min)").setValue(null);
-//        getItem(vorbereitungenId4)
-//                .getItemProperty("Projektleiter (min)").setValue(null);
-//        setParent(vorbereitungenId1, ersteEbeneIds.get(0));
-//        setParent(vorbereitungenId2, ersteEbeneIds.get(0));
-//        setParent(vorbereitungenId3, ersteEbeneIds.get(0));
-//        setParent(vorbereitungenId4, ersteEbeneIds.get(0));
-//    }
-//
-//    public ArrayList<Integer> getErsteEbeneIds() {
-//        return ersteEbeneIds;
+    private IssueBase createIssueBase() {
+        IssueBase issueBase = new IssueBase();
+        IssueStatus issueStatus = new IssueStatus();
+        IssuePriority issuePriority = new IssuePriority();
+        Benutzer reporter = new Benutzer();
+        Benutzer assignee = new Benutzer();
+        Date plannedDate = new Date();
+        Date resolvedDate = new Date();
+        Date closedDate = new Date();
+        issueStatus.setStatusName(issueStatuses[(int)(Math.random() * (issueStatuses.length))]);
+        issuePriority.setPriorityName(issuePriorities[(int)(Math.random() * (issuePriorities.length))]);
+        reporter.setLogin(issueUsers[(int)(Math.random() * (issueUsers.length))]);
+        assignee.setLogin(issueUsers[(int)(Math.random() * (issueUsers.length))]);
+        issueBase.setIssueStatus(issueStatus);
+        issueBase.setIssuePriority(issuePriority);
+        issueBase.setReporter(reporter);
+        issueBase.setAssignee(assignee);
+        issueBase.setDueDate_planned(plannedDate);
+        issueBase.setDueDate_resolved(resolvedDate);
+        issueBase.setDueDate_closed(closedDate);
+        return issueBase;
     }
 
     public Projekt getProjekt() {

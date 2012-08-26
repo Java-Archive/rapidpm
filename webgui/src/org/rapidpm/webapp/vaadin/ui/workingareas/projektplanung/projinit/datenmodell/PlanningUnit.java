@@ -1,5 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell;
 
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.IssueBase;
+
 import java.util.List;
 
 /**
@@ -19,6 +21,7 @@ public class PlanningUnit {
     private String planningUnitElementName;
     private List<PlanningUnit> kindPlanningUnits;
     private List<PlanningUnitElement> planningUnitElementList;
+    private IssueBase issueBase;
 
     public Long getId() {
         return id;
@@ -58,6 +61,14 @@ public class PlanningUnit {
 
     public void setKindPlanningUnits(List<PlanningUnit> kindPlanningUnits) {
         this.kindPlanningUnits = kindPlanningUnits;
+    }
+
+    public IssueBase getIssueBase() {
+        return issueBase;
+    }
+
+    public void setIssueBase(IssueBase issueBase) {
+        this.issueBase = issueBase;
     }
 
     @Override
