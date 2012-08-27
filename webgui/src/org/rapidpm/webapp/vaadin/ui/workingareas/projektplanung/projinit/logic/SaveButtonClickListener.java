@@ -79,18 +79,22 @@ public class SaveButtonClickListener implements ClickListener {
 //                    }
 //                }
             }
-            final TreeTableContainerFiller filler = new TreeTableContainerFiller(screen.getProjektBean());
+            final TreeTableContainerFiller filler = new TreeTableContainerFiller(screen.getProjektBean(), screen.getRessourceGroupsBean());
             filler.fill();
             screen.setDataSource(filler.getHierarchicalContainer());
             final TreeTable treeTable = new TreeTable();
             treeTable.setNullSelectionAllowed(false);
             treeTable.setSelectable(true);
-            treeTable.setSizeFull();
+            //treeTable.setSizeFull();
             treeTable.setContainerDataSource(screen.getDataSource());
+            treeTable.setColumnCollapsingAllowed(true);
+            treeTable.setColumnReorderingAllowed(true);
             treeTable.addListener(new TableItemClickListener(screen));
+            treeTable.setColumnWidth("Aufgabe",250);
             screen.setTreeTable(treeTable);
             screen.getTable2layout().removeAllComponents();
             screen.getTable2layout().addComponent(screen.getTreeTable());
+            //screen.getTable2layout().setSizeFull();
 
             final ProjInitComputer computer = new ProjInitComputer(screen);
             computer.compute();

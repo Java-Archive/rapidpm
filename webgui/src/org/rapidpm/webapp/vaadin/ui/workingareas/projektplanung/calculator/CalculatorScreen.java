@@ -4,6 +4,7 @@ import com.vaadin.external.com.ibm.icu.text.DecimalFormat;
 import com.vaadin.terminal.gwt.client.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.Constants;
+import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.logic.CalculatorFieldsComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.logic.CalculatorTableCreator;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 
 public class CalculatorScreen extends Screen {
 
-    private Root root;
+    private MainRoot root;
     private GridLayout gridLayout;
     private TextField betriebsWertField;
     private TextField betriebsstdField;
@@ -36,7 +37,7 @@ public class CalculatorScreen extends Screen {
 
     private ArrayList<ItemClickDependentComponent> dependentComponents = new ArrayList<ItemClickDependentComponent>();
 
-    public CalculatorScreen(Root root) {
+    public CalculatorScreen(MainRoot root) {
         this.root = root;
         saveButton.setVisible(false);
         final Label betriebsstdLabel = new Label("Betriebsstunde / JTEL:");
@@ -68,7 +69,7 @@ public class CalculatorScreen extends Screen {
         // formlayout wird bis zum itemclicklistener durchgereicht, savelayout
         // ebenfalls
         final CalculatorTableCreator creator = new CalculatorTableCreator(
-                dependentComponents, delRowButton, upperFormLayout, lowerFormLayout, formLayout, saveButton,
+                root.getRessourceGroupsBean(), dependentComponents, delRowButton, upperFormLayout, lowerFormLayout, formLayout, saveButton,
                 betriebsWertField, betriebsstdField);
 
         tabelle = creator.getTabelle();
@@ -81,7 +82,7 @@ public class CalculatorScreen extends Screen {
         optionGroup.setImmediate(true);
 
         delRowButton.setEnabled(false);
-        delRowButton.addListener(new DelRowClickListener(this, delRowButton));
+        delRowButton.addListener(new DelRowClickListener(root, this, delRowButton));
         tabellenTasksLayout.setWidth("500px");
         tabellenTasksLayout.addComponent(new Label("Ressourcen hinzufuegen / loeschen:"));
         tabellenTasksLayout.addComponent(new Label("Editiermodus:"));

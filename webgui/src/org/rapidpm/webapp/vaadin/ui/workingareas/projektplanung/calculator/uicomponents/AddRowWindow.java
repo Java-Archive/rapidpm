@@ -4,13 +4,16 @@ import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.CalculatorScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RowBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
 
 import java.util.Iterator;
 
 public class AddRowWindow extends Window {
-    private Root root;
+    private MainRoot root;
 
     private GridLayout gridLayout = new GridLayout(2, 2);
     private HorizontalLayout horizontalButtonLayout = new HorizontalLayout();
@@ -19,7 +22,7 @@ public class AddRowWindow extends Window {
     private Table tabelle;
     private RowFieldGroup fieldGroup;
 
-    public AddRowWindow(Root root, CalculatorScreen screen) {
+    public AddRowWindow(final MainRoot root, final CalculatorScreen screen) {
         this.root = root;
         tabelle = screen.getTabelle();
         setCaption("Ressource hinzufügen");
@@ -28,7 +31,7 @@ public class AddRowWindow extends Window {
         setPositionX(50);
         setPositionY(100);
 
-        final RowBean row = new RowBean();
+        final RessourceGroup row = new RessourceGroup();
         fieldGroup = new RowFieldGroup(row);
 
         for (Component comp : fieldGroup.getComponents()) {
@@ -41,12 +44,12 @@ public class AddRowWindow extends Window {
 
         addComponent(horizontalButtonLayout);
 
-        addListeners(row);
+        addListeners(row, root, screen);
 
     }
 
-    private void addListeners(RowBean rowBean) {
-        final RowBean row = rowBean;
+    private void addListeners(final RessourceGroup ressourceGroup, final MainRoot root, final CalculatorScreen screen) {
+        final RessourceGroup row = ressourceGroup;
         saveButton.addListener(new ClickListener() {
 
             @Override
@@ -64,8 +67,11 @@ public class AddRowWindow extends Window {
                 if (allFilled) {
                     try {
                         fieldGroup.commit();
-                        tabelle.getContainerDataSource().addItem(row);
+                        final RessourceGroupsBean ressourceGroupsBean = root.getRessourceGroupsBean();
+                        ressourceGroupsBean.getRessourceGroups().add(row);
+                        root.setPlanningUnitsBean(new ProjektBean(ressourceGroupsBean));
                         AddRowWindow.this.close();
+                        root.setWorkingArea(new CalculatorScreen(root));
                     } catch (CommitException e) {
                         // don't try to commit or to close window if commit
                         // fails

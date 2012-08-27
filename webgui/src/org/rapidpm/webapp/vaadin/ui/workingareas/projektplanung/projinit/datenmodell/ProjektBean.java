@@ -4,6 +4,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.Benutzer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.IssuePriority;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.IssueStatus;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,31 +32,14 @@ public class ProjektBean {
     private final IssueStatus onHoldStatus = new IssueStatus();
     private final IssueStatus inProgressStatus = new IssueStatus();
 
-    public ProjektBean() {
-        addData();
+    public ProjektBean(RessourceGroupsBean ressourceGroupsBean) {
+        addData(ressourceGroupsBean);
     }
 
-    private void addData()
+    private void addData(RessourceGroupsBean ressourceGroupsBean)
     {
         projekt = new Projekt();
         projekt.setProjektName("Projekt 1");
-
-
-
-
-        final ArrayList<RessourceGroup> ressourceGroups = new ArrayList<>();
-        final RessourceGroup aushilfe = new RessourceGroup();
-        final RessourceGroup multiProjektManager = new RessourceGroup();
-        final RessourceGroup projektMitarbeiter = new RessourceGroup();
-        final RessourceGroup projektLeiter = new RessourceGroup();
-        aushilfe.setName("stud. Aushilfskraft");
-        multiProjektManager.setName("Multi-Projektmanager");
-        projektMitarbeiter.setName("Projektmitarbeiter");
-        projektLeiter.setName("Projektleiter");
-        ressourceGroups.add(aushilfe);
-        ressourceGroups.add(multiProjektManager);
-        ressourceGroups.add(projektMitarbeiter);
-        ressourceGroups.add(projektLeiter);
 
         final ArrayList<PlanningUnitGroup> planningUnitGroups = new ArrayList<>();
         final PlanningUnitGroup vorbereitungen = new PlanningUnitGroup();
@@ -111,7 +96,7 @@ public class ProjektBean {
             planningUnit.setPlanningUnitElementName(planningUnitName);
             planningUnit.setIssueBase(createIssueBase());
             final ArrayList<PlanningUnitElement> planningUnitElements = new ArrayList<>();
-            for(final RessourceGroup ressourceGroup : ressourceGroups)          //für jede zelle
+            for(final RessourceGroup ressourceGroup : ressourceGroupsBean.getRessourceGroups())          //für jede zelle
             {
                 PlanningUnitElement planningUnitElement = new PlanningUnitElement();
                 planningUnitElement.setPlannedDays((int) (Math.random()*10));
@@ -131,7 +116,7 @@ public class ProjektBean {
                 childPlanningUnit1.setPlanningUnitElementName("Person A kontaktieren");
                 childPlanningUnit1.setIssueBase(createIssueBase());
                 final ArrayList<PlanningUnitElement> planningUnitElements1 = new ArrayList<>();
-                for(final RessourceGroup ressourceGroup : ressourceGroups)          //für jede zelle
+                for(final RessourceGroup ressourceGroup : ressourceGroupsBean.getRessourceGroups())          //für jede zelle
                 {
                     PlanningUnitElement planningUnitElement = new PlanningUnitElement();
                     planningUnitElement.setPlannedDays((int) (Math.random()*10));
@@ -146,7 +131,7 @@ public class ProjektBean {
                 childPlanningUnit2.setPlanningUnitElementName("Person B kontaktieren");
                 childPlanningUnit2.setIssueBase(createIssueBase());
                 final ArrayList<PlanningUnitElement> planningUnitElements2 = new ArrayList<>();
-                for(final RessourceGroup ressourceGroup : ressourceGroups)          //für jede zelle
+                for(final RessourceGroup ressourceGroup : ressourceGroupsBean.getRessourceGroups())          //für jede zelle
                 {
                     PlanningUnitElement planningUnitElement = new PlanningUnitElement();
                     planningUnitElement.setPlannedDays((int) (Math.random()*10));

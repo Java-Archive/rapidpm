@@ -7,7 +7,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RowBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroup;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,8 +20,8 @@ public class RowFieldGroup extends FieldGroup {
     private GridLayout gridLayout = new GridLayout(2, 2);
     private HorizontalLayout horizontalButtonLayout = new HorizontalLayout();
 
-    public RowFieldGroup(RowBean row) {
-        setItemDataSource(new BeanItem<RowBean>(row));
+    public RowFieldGroup(RessourceGroup row) {
+        setItemDataSource(new BeanItem<RessourceGroup>(row));
         buildForm();
     }
 
