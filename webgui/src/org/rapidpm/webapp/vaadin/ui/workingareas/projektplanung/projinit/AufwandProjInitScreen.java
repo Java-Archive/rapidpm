@@ -2,9 +2,11 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit;
 
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
+import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.Screen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.ProjInitComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.TableItemClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.TreeTableContainerFiller;
@@ -22,12 +24,13 @@ public class AufwandProjInitScreen extends Screen {
     private TextField summeKundentermineInStdField;
 
     private ProjektBean projektBean;
+    private RessourceGroupsBean ressourceGroupsBean;
     private TreeTableContainerFiller containerFiller;
     private HierarchicalContainer dataSource;
     private TreeTable treeTable = new TreeTable();
     private Table uebersichtTable = new Table();
 
-    private static final String TABLELAYOUT_WIDTH = "900px";
+    //private static final String TABLELAYOUT_WIDTH = "900px";
     private static final String COLUMN_WIDTH = "350px";
     private static final String ABSOLUTE_WIDTH = "700px";
 
@@ -39,32 +42,39 @@ public class AufwandProjInitScreen extends Screen {
     private GridLayout upperFormLayout = new GridLayout(2, 10);
     private VerticalLayout lowerFormLayout = new VerticalLayout();
 
-    public AufwandProjInitScreen(ProjektBean cont) {
-        this.projektBean = cont;
-        containerFiller = new TreeTableContainerFiller(projektBean);
+    public AufwandProjInitScreen(MainRoot root) {
+        this.projektBean = root.getPlanningUnitsBean();
+        this.ressourceGroupsBean = root.getRessourceGroupsBean();
+        containerFiller = new TreeTableContainerFiller(projektBean, ressourceGroupsBean);
         containerFiller.fill();
         dataSource = containerFiller.getHierarchicalContainer();
         final ProjInitComputer computer = new ProjInitComputer(this);
 
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
-        fillTable();
+
 
         uebersichtTable.setPageLength(4);
+        uebersichtTable.setColumnCollapsingAllowed(true);
+        uebersichtTable.setColumnReorderingAllowed(true);
 
 
         treeTable.setNullSelectionAllowed(false);
+        treeTable.setColumnCollapsingAllowed(true);
+        treeTable.setColumnReorderingAllowed(true);
         treeTable.setSelectable(true);
-        treeTable.setSizeFull();
-        uebersichtTable.setSizeFull();
+        //treeTable.setSizeFull();
+        //uebersichtTable.setSizeFull();
         treeTable.addListener(new TableItemClickListener(this));
 
 
         treeTable.setContainerDataSource(dataSource);
+        treeTable.setColumnWidth("Aufgabe",250);
         table1layout.addComponent(uebersichtTable);
 
-        table2layout.setWidth(TABLELAYOUT_WIDTH);
-        table1layout.setWidth(TABLELAYOUT_WIDTH);
+        createOverviewTableColumns();
+        //table2layout.setSizeFull();
+        //table1layout.setSizeFull();
         table2layout.addComponent(treeTable);
         table1layout.setMargin(true, false, true, false);
         table2layout.setMargin(true, false, true, false);
@@ -81,10 +91,12 @@ public class AufwandProjInitScreen extends Screen {
 
     }
 
-    private void fillTable() {
+    private void createOverviewTableColumns() {
         uebersichtTable.addContainerProperty("Angabe", String.class, null);
-        for (RessourceGroup ressourceGroup : projektBean.getProjekt().getRessourceGroups()) {
-            uebersichtTable.addContainerProperty(ressourceGroup.getName(), String.class, null);
+        uebersichtTable.setColumnWidth("Angabe", 250);
+        for (RessourceGroup ressourceGroup : ressourceGroupsBean.getRessourceGroups()) {
+            final String spaltenName = ressourceGroup.getName();
+            uebersichtTable.addContainerProperty(spaltenName, String.class, null);
         }
     }
 
@@ -324,5 +336,7 @@ public class AufwandProjInitScreen extends Screen {
         this.dataSource = dataSource;
     }
 
-
+    public RessourceGroupsBean getRessourceGroupsBean() {
+        return ressourceGroupsBean;
+    }
 }

@@ -2,6 +2,8 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.HierarchicalContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.*;
 
 import java.util.ArrayList;
@@ -16,26 +18,19 @@ import java.util.List;
  */
 public class TreeTableContainerFiller {
 
-    private ProjektBean container;
+    private ProjektBean projektBean;
+    private RessourceGroupsBean ressourceGroupsBean;
     private HierarchicalContainer hierarchicalContainer = new HierarchicalContainer();
 
-    public TreeTableContainerFiller(ProjektBean cont) {
-        this.container = cont;
-
+    public TreeTableContainerFiller(ProjektBean projektBean, RessourceGroupsBean ressourceGroupsBean) {
+        this.projektBean = projektBean;
+        this.ressourceGroupsBean = ressourceGroupsBean;
     }
 
     public void fill() {
-        final Projekt projekt = container.getProjekt();
+        final Projekt projekt = projektBean.getProjekt();
         final ArrayList<PlanningUnitGroup> planningUnitGroups = projekt.getPlanningUnitGroups();
-        final ArrayList<RessourceGroup> ressourceGroups = new ArrayList<>();
-
-        for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
-            for (final PlanningUnit planningUnit : planningUnitGroup.getPlanningUnitList()) {
-                for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-                    ressourceGroups.add(planningUnitElement.getRessourceGroup());
-                }
-            }
-        }
+        final ArrayList<RessourceGroup> ressourceGroups = ressourceGroupsBean.getRessourceGroups();
         hierarchicalContainer.addContainerProperty("Aufgabe", String.class, null);
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
             hierarchicalContainer.addContainerProperty(ressourceGroup.getName(), String.class, "");
@@ -44,7 +39,6 @@ public class TreeTableContainerFiller {
 
 
         for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
-            //System.out.println("pug: "+planningUnitGroup.getPlanningUnitName());
             final Item planningUnitGroupItem = hierarchicalContainer.addItem(planningUnitGroup.getPlanningUnitName());
             planningUnitGroupItem.getItemProperty("Aufgabe").setValue(planningUnitGroup.getPlanningUnitName());
             for (final RessourceGroup ressourceGroup : ressourceGroups) {
@@ -73,7 +67,6 @@ public class TreeTableContainerFiller {
     {
          for(PlanningUnit planningUnit : planningUnits)
          {
-            //System.out.println(planningUnit);
              //---
             final Item planningUnitItem = hierarchicalContainer.addItem(planningUnit.getPlanningUnitElementName());
             planningUnitItem.getItemProperty("Aufgabe").setValue(planningUnit.getPlanningUnitElementName());
