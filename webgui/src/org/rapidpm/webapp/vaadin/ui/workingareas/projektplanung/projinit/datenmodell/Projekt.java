@@ -78,19 +78,6 @@ public class Projekt {
         return result;
     }
 
-    public ArrayList<RessourceGroup> getRessourceGroups() {
-        ArrayList<RessourceGroup> result = new ArrayList<>();
-        for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
-            for (final PlanningUnit planningUnit : planningUnitGroup.getPlanningUnitList()) {
-                for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-                    if(!result.contains(planningUnitElement.getRessourceGroup()))
-                        result.add(planningUnitElement.getRessourceGroup());
-                }
-            }
-        }
-        return result;
-    }
-
     public void setPlanningUnitGroups(final ArrayList<PlanningUnitGroup> planningUnitGroups) {
         this.planningUnitGroups = planningUnitGroups;
     }

@@ -1,6 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell;
 
 
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroup;
 
 /**
  *
