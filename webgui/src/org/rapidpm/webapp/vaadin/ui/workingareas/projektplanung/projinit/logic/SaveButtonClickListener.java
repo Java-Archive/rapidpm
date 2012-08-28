@@ -5,8 +5,8 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.TreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.AufwandProjInitScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.*;
 
 import java.util.ArrayList;
@@ -82,13 +82,10 @@ public class SaveButtonClickListener implements ClickListener {
             final TreeTableContainerFiller filler = new TreeTableContainerFiller(screen.getProjektBean(), screen.getRessourceGroupsBean());
             filler.fill();
             screen.setDataSource(filler.getHierarchicalContainer());
-            final TreeTable treeTable = new TreeTable();
-            treeTable.setNullSelectionAllowed(false);
-            treeTable.setSelectable(true);
+            final MyTreeTable treeTable = new MyTreeTable();
+            treeTable.setConnectedTable(screen.getUebersichtTable());
             //treeTable.setSizeFull();
             treeTable.setContainerDataSource(screen.getDataSource());
-            treeTable.setColumnCollapsingAllowed(true);
-            treeTable.setColumnReorderingAllowed(true);
             treeTable.addListener(new TableItemClickListener(screen));
             treeTable.setColumnWidth("Aufgabe",250);
             screen.setTreeTable(treeTable);

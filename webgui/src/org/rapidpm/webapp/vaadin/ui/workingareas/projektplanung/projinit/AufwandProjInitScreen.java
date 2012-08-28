@@ -6,6 +6,8 @@ import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTable;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.ProjInitComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.TableItemClickListener;
@@ -27,8 +29,8 @@ public class AufwandProjInitScreen extends Screen {
     private RessourceGroupsBean ressourceGroupsBean;
     private TreeTableContainerFiller containerFiller;
     private HierarchicalContainer dataSource;
-    private TreeTable treeTable = new TreeTable();
-    private Table uebersichtTable = new Table();
+    private MyTreeTable treeTable = new MyTreeTable();
+    private MyTable uebersichtTable = new MyTable();
 
     //private static final String TABLELAYOUT_WIDTH = "900px";
     private static final String COLUMN_WIDTH = "350px";
@@ -53,23 +55,18 @@ public class AufwandProjInitScreen extends Screen {
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
 
-
-        uebersichtTable.setPageLength(4);
-        uebersichtTable.setColumnCollapsingAllowed(true);
-        uebersichtTable.setColumnReorderingAllowed(true);
-
-
-        treeTable.setNullSelectionAllowed(false);
-        treeTable.setColumnCollapsingAllowed(true);
-        treeTable.setColumnReorderingAllowed(true);
-        treeTable.setSelectable(true);
         //treeTable.setSizeFull();
         //uebersichtTable.setSizeFull();
         treeTable.addListener(new TableItemClickListener(this));
 
 
         treeTable.setContainerDataSource(dataSource);
+        treeTable.setColumnCollapsible("Aufgabe", false);
         treeTable.setColumnWidth("Aufgabe",250);
+
+        uebersichtTable.setPageLength(4);
+        uebersichtTable.setConnectedTable(treeTable);
+        treeTable.setConnectedTable(uebersichtTable);
         table1layout.addComponent(uebersichtTable);
 
         createOverviewTableColumns();
@@ -93,6 +90,7 @@ public class AufwandProjInitScreen extends Screen {
 
     private void createOverviewTableColumns() {
         uebersichtTable.addContainerProperty("Angabe", String.class, null);
+        uebersichtTable.setColumnCollapsible("Angabe", false);
         uebersichtTable.setColumnWidth("Angabe", 250);
         for (RessourceGroup ressourceGroup : ressourceGroupsBean.getRessourceGroups()) {
             final String spaltenName = ressourceGroup.getName();
@@ -300,19 +298,19 @@ public class AufwandProjInitScreen extends Screen {
         this.saveButton = saveButton;
     }
 
-    public TreeTable getTreeTable() {
+    public MyTreeTable getTreeTable() {
         return treeTable;
     }
 
-    public void setTreeTable(TreeTable treeTable) {
+    public void setTreeTable(MyTreeTable treeTable) {
         this.treeTable = treeTable;
     }
 
-    public Table getUebersichtTable() {
+    public MyTable getUebersichtTable() {
         return uebersichtTable;
     }
 
-    public void setUebersichtTable(Table uebersichtTable) {
+    public void setUebersichtTable(MyTable uebersichtTable) {
         this.uebersichtTable = uebersichtTable;
     }
 

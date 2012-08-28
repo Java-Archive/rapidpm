@@ -2,7 +2,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.HierarchicalContainer;
-import com.vaadin.ui.TreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.*;
@@ -169,7 +168,6 @@ public class ProjInitComputer {
     }
 
     private void computeTotalsAbsolute() {              //holt sich Werte aus Container, NICHT aus Projekt(bean)
-        final TreeTable table = screen.getTreeTable();
         for (RessourceGroup ressourceGroup : ressourceGroups) {
             if (!ressourceGroup.getName().equals("Aufgabe")) {
                 final DaysHoursMinutesItem item = new DaysHoursMinutesItem();
