@@ -1,6 +1,6 @@
 package org.rapidpm.data;
 
-import org.rapidpm.orm.system.logging.LoggingEventEntry;
+import org.rapidpm.persistence.system.logging.LoggingEventEntry;
 import org.apache.log4j.Logger;
 
 import javax.inject.Inject;
@@ -12,7 +12,7 @@ import java.util.List;
  * User: svenruppert
  * Date: 01.07.11
  * Time: 01:10
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 public class LoggingResult {
     private List<LoggingEventEntry> loggingEventEntries = new ArrayList<>();

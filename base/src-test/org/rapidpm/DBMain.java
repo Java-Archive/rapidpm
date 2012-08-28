@@ -8,11 +8,11 @@ package org.rapidpm;
  * To change this template use File | Settings | File Templates.
  */
 
-import org.rapidpm.orm.BaseDaoFactory;
-import org.rapidpm.orm.DaoFactory;
-import org.rapidpm.orm.system.security.*;
-import org.rapidpm.orm.system.security.berechtigungen.Berechtigung;
-import org.rapidpm.orm.system.security.berechtigungen.BerechtigungDAO;
+import org.rapidpm.persistence.BaseDaoFactory;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.system.security.*;
+import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
+import org.rapidpm.persistence.system.security.berechtigungen.BerechtigungDAO;
 import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
@@ -35,7 +35,7 @@ public class DBMain {
         final EntityTransaction transaction = entityManager.getTransaction();
         try {
             Class.forName("org.postgresql.Driver");
-            final String url = "jdbc:postgresql://ws.neoscio.de:5432/neoscio_dev";
+            final String url = "jdbc:postgresql://ws.RapidPM.de:5432/RapidPM_dev";
             Properties props = new Properties();
             props.setProperty("user", "ruppert");
             props.setProperty("password", "FE90tz");
@@ -164,7 +164,7 @@ public class DBMain {
             benutzer.setMandantengruppe(mandantengruppe);
 
             benutzer.setBerechtigungen(new ArrayList<Berechtigung>());
-            if (mandantengruppe.getMandantengruppe().equals("NeoScioPortal")) {
+            if (mandantengruppe.getMandantengruppe().equals("RapidPMPortal")) {
                 benutzer.getBerechtigungen().addAll(berechtigungDAO.loadAllEntities());
             } else {
                 benutzer.getBerechtigungen().add(berechtigungDAO.loadBerechtigung(mandantengruppe.getMandantengruppe()));

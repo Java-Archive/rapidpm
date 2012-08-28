@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2011. Diese Quelltexte sind Eigentum der RapidPM - www.rapidpm.org (RapidPM - www.rapidpm.org)
- * Bei Frage wenden Sie sich bitte an sven.ruppert@neoscio.de
+ * Bei Frage wenden Sie sich bitte an sven.ruppert@rapidpm.org
  */
 
 package org.rapidpm.tools.jboss;
@@ -26,7 +26,7 @@ public class ModuleDefinitionGenerator {
     private static final String MODULE_SUBDIR = "main";
     private static final String MODULE_FILENAME = "module.xml";
 
-    private String baseLibDir = "/opt/neoscio/NeoScio_Libs";
+    private String baseLibDir = "/opt/RapidPM/RapidPM_Libs";
     private String baseModuleDir = "/opt/jboss/modules";
 
     private boolean copyLibs = true;

@@ -1,11 +1,11 @@
 /*
  * Copyright (c) 2011. Diese Quelltexte sind Eigentum der RapidPM - www.rapidpm.org (RapidPM - www.rapidpm.org)
- * Bei Frage wenden Sie sich bitte an sven.ruppert@neoscio.de
+ * Bei Frage wenden Sie sich bitte an sven.ruppert@rapidpm.org
  */
 
 package org.rapidpm.lang;
 /**
- * NeoScio
+ * RapidPM
  * User: svenruppert
  * Date: 07.04.2010
  * Time: 23:20:02

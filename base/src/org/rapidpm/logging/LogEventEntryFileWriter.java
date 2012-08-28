@@ -1,12 +1,12 @@
 package org.rapidpm.logging;
 
 import org.rapidpm.Constants;
-import org.rapidpm.orm.system.logging.LoggingEventEntry;
-import org.rapidpm.orm.system.logging.LoggingEventParam;
-import org.rapidpm.orm.system.security.Benutzer;
-import org.rapidpm.orm.system.security.BenutzerGruppe;
-import org.rapidpm.orm.system.security.BenutzerWebapplikation;
-import org.rapidpm.orm.system.security.Mandantengruppe;
+import org.rapidpm.persistence.system.logging.LoggingEventEntry;
+import org.rapidpm.persistence.system.logging.LoggingEventParam;
+import org.rapidpm.persistence.system.security.Benutzer;
+import org.rapidpm.persistence.system.security.BenutzerGruppe;
+import org.rapidpm.persistence.system.security.BenutzerWebapplikation;
+import org.rapidpm.persistence.system.security.Mandantengruppe;
 import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
 import org.apache.log4j.Logger;
 import org.jdom.Attribute;

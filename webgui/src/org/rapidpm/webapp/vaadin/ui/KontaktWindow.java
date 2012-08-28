@@ -4,7 +4,7 @@ package org.rapidpm.webapp.vaadin.ui;
  * User: svenruppert
  * Date: 17.03.12
  * Time: 21:55
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
 import com.vaadin.data.Validatable;

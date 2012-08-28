@@ -1,13 +1,13 @@
 /*
  * Copyright (c) 2011. Diese Quelltexte sind Eigentum der RapidPM - www.rapidpm.org (RapidPM - www.rapidpm.org)
- * Bei Frage wenden Sie sich bitte an sven.ruppert@neoscio.de
+ * Bei Frage wenden Sie sich bitte an sven.ruppert@rapidpm.org
  */
 
 package org.rapidpm.lang;
 
 /**
- * NeoScio
- * User: neoscio
+ * RapidPM
+ * User: RapidPM
  * Date: 21.09.2009
  * Time: 19:58:58
  * This Source Code is part of the RapidPM - www.rapidpm.org project.

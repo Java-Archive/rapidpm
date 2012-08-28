@@ -5,18 +5,18 @@ package org.rapidpm.ejb3;
  * User: svenruppert
  * Date: 17.03.11
  * Time: 15:18
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
 import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.logging.LogEventEntryWriterBean;
-import org.rapidpm.orm.DaoFactory;
-import org.rapidpm.orm.system.logging.LogLevelEnum;
-import org.rapidpm.orm.system.logging.LoggingEntityEntry;
-import org.rapidpm.orm.system.logging.LoggingEventEntry;
-import org.rapidpm.orm.system.logging.LoggingEventParam;
-import org.rapidpm.orm.system.security.Benutzer;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.system.logging.LogLevelEnum;
+import org.rapidpm.persistence.system.logging.LoggingEntityEntry;
+import org.rapidpm.persistence.system.logging.LoggingEventEntry;
+import org.rapidpm.persistence.system.logging.LoggingEventParam;
+import org.rapidpm.persistence.system.security.Benutzer;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;

@@ -3,7 +3,7 @@ package org.rapidpm.ormviews; /**
  * User: svenruppert
  * Date: 30.04.11
  * Time: 01:58
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
 import org.apache.log4j.Logger;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 - NeoScio. All Rights Reserved.
+ * Copyright (c) 2011 - RapidPM. All Rights Reserved.
  */
 
 package org.rapidpm.tools;

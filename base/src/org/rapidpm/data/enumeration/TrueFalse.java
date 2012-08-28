@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009. This is part of the NeoScio Project from RapidPM - www.rapidpm.org.
+ * Copyright (c) 2009. This is part of the RapidPM Project from RapidPM - www.rapidpm.org.
  * please contact sven.ruppert@me.com
  */
 

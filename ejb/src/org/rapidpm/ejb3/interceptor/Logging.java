@@ -8,7 +8,7 @@ import java.lang.annotation.*;
  * User: svenruppert
  * Date: 16.03.11
  * Time: 01:02
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 @Inherited
 @InterceptorBinding

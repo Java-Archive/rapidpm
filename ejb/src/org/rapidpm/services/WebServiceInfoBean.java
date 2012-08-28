@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2011. Diese Quelltexte sind Eigentum der RapidPM - www.rapidpm.org (RapidPM - www.rapidpm.org)
- * Bei Frage wenden Sie sich bitte an sven.ruppert@neoscio.de
+ * Bei Frage wenden Sie sich bitte an sven.ruppert@rapidpm.org
  */
 
 package org.rapidpm.services;
@@ -27,7 +27,7 @@ import java.util.List;
  * User: svenruppert
  * Date: 18.03.11
  * Time: 02:19
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 @Stateless(name = "WebServiceInfoEJB")
 @WebService(name = "WebServiceInfoWS")
@@ -46,7 +46,7 @@ public class WebServiceInfoBean {
                                    @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid) {
 
         final PackageClassLoader packageClassLoader = new PackageClassLoader();
-        final List<Class> classesWithAnnotation = packageClassLoader.getClassesWithAnnotation("de.neoscio", WebService.class);
+        final List<Class> classesWithAnnotation = packageClassLoader.getClassesWithAnnotation("de.RapidPM", WebService.class);
         final List<String> result = new ArrayList<>();
         for (final Class aClass : classesWithAnnotation) {
             final WebService annotation = (WebService) aClass.getAnnotation(WebService.class);

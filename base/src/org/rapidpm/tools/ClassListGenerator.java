@@ -3,7 +3,7 @@ package org.rapidpm.tools; /**
  * User: svenruppert
  * Date: 15.11.11
  * Time: 09:57
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
 import org.rapidpm.Constants;
@@ -19,7 +19,7 @@ public class ClassListGenerator {
 
     public static void main(String[] args) throws IOException {
         final PackageClassLoader pcl = new PackageClassLoader();
-        final List<Class> classes = pcl.getClasses("de.neoscio");
+        final List<Class> classes = pcl.getClasses("de.RapidPM");
         final FileWriter fw = new FileWriter("classlist.txt");
         for (final Class aClass : classes) {
             System.out.println("aClass.getName() = " + aClass.getName());
