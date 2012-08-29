@@ -1,0 +1,129 @@
+package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tablelisteners;
+
+import com.vaadin.data.Item;
+import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
+import com.vaadin.event.ItemClickEvent;
+import com.vaadin.event.ItemClickEvent.ItemClickListener;
+import com.vaadin.ui.*;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Component.Event;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeFieldsComputer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeTableComputer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.EditModeGetter;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.EditModes;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.components.ItemClickDependentComponent;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.components.RowFieldGroup;
+
+import java.util.ArrayList;
+
+public class StundensaetzeTableItemClickListener implements ItemClickListener {
+
+    private ArrayList<ItemClickDependentComponent> components = new ArrayList<ItemClickDependentComponent>();
+
+    private boolean state = false;
+    private Layout upperFormLayout;
+    private Layout lowerFormLayout;
+    private Layout formLayout;
+    private Button saveButton;
+    private Button deleteButton;
+
+    private TextField betriebsWertField;
+    private TextField betriebsStdField;
+
+    private Table table;
+
+    public StundensaetzeTableItemClickListener(
+            ArrayList<ItemClickDependentComponent> components,
+            Button deleteButton, Layout upperFormLayout, Layout lowerFormLayout, Layout formLayout, Button saveButton,
+            Table tabelle, TextField betriebsWertField,
+            TextField betriebsStdField) {
+        this.components = components;
+        this.deleteButton = deleteButton;
+        this.upperFormLayout = upperFormLayout;
+        this.lowerFormLayout = lowerFormLayout;
+        this.formLayout = formLayout;
+        this.saveButton = saveButton;
+        this.betriebsWertField = betriebsWertField;
+        this.betriebsStdField = betriebsStdField;
+        table = tabelle;
+        informComponents(state);
+    }
+
+    @Override
+    public void itemClick(ItemClickEvent event) {
+
+        if (EditModeGetter.getMode() == EditModes.ROWEDIT) {
+            formLayout.setVisible(true);
+            lowerFormLayout.setVisible(true);
+            upperFormLayout.setVisible(true);
+
+            upperFormLayout.removeAllComponents();
+            for (final Object listener : saveButton.getListeners(Event.class)) {
+                if (listener instanceof ClickListener) {
+                    saveButton.removeListener((ClickListener) listener);
+                }
+
+            }
+            deleteButton.setEnabled(true);
+
+            final Item item = event.getItem();
+            final RowFieldGroup fieldGroup = new RowFieldGroup(item);
+            final ArrayList<Component> components = fieldGroup.getComponents();
+            for (final Component component : components) {
+                upperFormLayout.addComponent(component);
+            }
+
+            saveButton.addListener(new ClickListener() {
+
+                @Override
+                public void buttonClick(ClickEvent event) {
+                    try {
+                        fieldGroup.commit();
+                        final StundensaetzeTableComputer computer = new StundensaetzeTableComputer(
+                                table);
+                        computer.computeColumns();
+
+                        final StundensaetzeFieldsComputer fieldsComputer = new StundensaetzeFieldsComputer(
+                                table);
+                        fieldsComputer.compute();
+                        betriebsWertField.setValue(fieldsComputer
+                                .getBetriebsFraAsString());
+                        betriebsStdField.setValue(fieldsComputer
+                                .getBetriebsStundeAsString());
+                        upperFormLayout.setVisible(false);
+                        saveButton.setVisible(false);
+                    } catch (CommitException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            saveButton.setVisible(true);
+
+            if (event.getItemId() == null)
+                state = false;
+            else {
+                final Object itemId = event.getItemId();
+                informComponents(itemId);
+                state = true;
+            }
+
+            informComponents(state);
+
+        }
+
+    }
+
+    private void informComponents(boolean state) {
+        for (final ItemClickDependentComponent component : components) {
+            component.getState(state);
+        }
+    }
+
+    private void informComponents(Object itemId) {
+        for (final ItemClickDependentComponent component : components) {
+            component.setItemId(itemId);
+        }
+    }
+
+}

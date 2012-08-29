@@ -3,14 +3,14 @@ package org.rapidpm.webapp.vaadin;
 import com.vaadin.annotations.Theme;
 import com.vaadin.ui.MenuBar;
 import org.rapidpm.webapp.vaadin.ui.workingareas.anfragenmanagement.AnfragenmanagementWorkingArea;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.ProjektplanungScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.CalculatorScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.CostsScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.distribution.VertriebScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.AufwandProjInitScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenWorkingArea;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projektinitialisierung.ProjektinitialisierungScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projektplanung.ProjektplanungScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
+import org.rapidpm.transience.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.kosten.CostsScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.vertrieb.VertriebScreen;
+import org.rapidpm.transience.prj.projectmanagement.planning.ProjektBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.BenutzerWorkingArea;
 
 /**
  * Created by IntelliJ IDEA.
@@ -37,14 +37,14 @@ public class MainRoot extends BaseRoot {
         stammdatenMenu.addItem("Benutzer", new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new StammdatenWorkingArea());
+                setWorkingArea(new BenutzerWorkingArea());
             }
         });
 
         stammdatenMenu.addItem("Stundensätze", new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new CalculatorScreen(MainRoot.this));
+                setWorkingArea(new StundensaetzeScreen(MainRoot.this));
             }
         });
 
@@ -73,7 +73,7 @@ public class MainRoot extends BaseRoot {
         projektmanagement.addItem("Projektinitialisierung", new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new AufwandProjInitScreen(MainRoot.this));
+                setWorkingArea(new ProjektinitialisierungScreen(MainRoot.this));
             }
         });
 

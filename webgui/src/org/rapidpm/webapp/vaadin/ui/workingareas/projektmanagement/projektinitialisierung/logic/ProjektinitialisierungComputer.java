@@ -1,0 +1,310 @@
+package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projektinitialisierung.logic;
+
+import com.vaadin.data.Item;
+import com.vaadin.data.util.HierarchicalContainer;
+import org.rapidpm.transience.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.transience.prj.projectmanagement.planning.PlanningUnitElement;
+import org.rapidpm.transience.prj.projectmanagement.planning.PlanningUnitGroup;
+import org.rapidpm.transience.prj.projectmanagement.planning.Projekt;
+import org.rapidpm.transience.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projektinitialisierung.ProjektinitialisierungScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projektinitialisierung.datenmodell.*;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class ProjektinitialisierungComputer {
+    private ProjektinitialisierungScreen screen;
+    private ArrayList<RessourceGroup> ressourceGroups;
+    private HashMap<RessourceGroup, DaysHoursMinutesItem> absoluteWerte = new HashMap<RessourceGroup, DaysHoursMinutesItem>();
+    private HashMap<RessourceGroup, Double> relativeWerte = new HashMap<RessourceGroup, Double>();
+    private Projekt projekt;
+    private Integer gesamtSumme;
+    private HierarchicalContainer dataSource;
+
+    public ProjektinitialisierungComputer(ProjektinitialisierungScreen screen) {
+        this.screen = screen;
+        dataSource = screen.getDataSource();
+    }
+
+    public void compute() {
+        projekt = screen.getProjektBean().getProjekt();
+        ressourceGroups = screen.getRessourceGroupsBean().getRessourceGroups();
+
+        for (final RessourceGroup spalte : this.ressourceGroups) {
+            absoluteWerte.put(spalte, new DaysHoursMinutesItem());
+            relativeWerte.put(spalte, 0.0);
+        }
+
+        computePlanningUnitGroups();
+        computeTotalsAbsolute();
+        comptueTotalsRelative();
+    }
+
+
+    private void computePlanningUnits(List<PlanningUnit> planningUnits, String parent, Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap) {
+        for (PlanningUnit planningUnit : planningUnits) {
+            if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
+                addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, planningUnit);
+            } else {
+                computePlanningUnits(planningUnit.getKindPlanningUnits(), planningUnit.getPlanningUnitName(), ressourceGroupDaysHoursMinutesItemMap);
+            }
+        }
+        for (RessourceGroup spalte : ressourceGroups) {
+            dataSource.getItem(parent).getItemProperty(spalte.getName()).setValue(ressourceGroupDaysHoursMinutesItemMap.get(spalte).toString());
+        }
+    }
+
+    private void addiereZeileZurRessourceMap(Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap, PlanningUnit planningUnit) {
+        for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+            if (!planningUnitElement.getRessourceGroup().getName().equals("Aufgabe")) {
+                final RessourceGroup ressourceGroup1 = planningUnitElement.getRessourceGroup();
+                final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
+                daysHoursMinutesItem.setDays(planningUnitElement.getPlannedDays());
+                daysHoursMinutesItem.setHours(planningUnitElement.getPlannedHours());
+                daysHoursMinutesItem.setMinutes(planningUnitElement.getPlannedMinutes());
+                if (ressourceGroupDaysHoursMinutesItemMap.containsKey(ressourceGroup1)) {
+                    daysHoursMinutesItem.setDays(daysHoursMinutesItem.getDays() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getDays());
+                    daysHoursMinutesItem.setHours(daysHoursMinutesItem.getHours() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getHours());
+                    daysHoursMinutesItem.setMinutes(daysHoursMinutesItem.getMinutes() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getMinutes());
+                }
+                correctDaysHoursMinutesItem(daysHoursMinutesItem);
+                ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup1, daysHoursMinutesItem);
+            }
+        }
+    }
+
+    private void computePlanningUnitGroups() {
+        //final ArrayList<RessourceGroup> ressourceGroups = projekt.getRessourceGroups();//ressourceGorups
+        //final Map<RessourceGroup, String> spaltenWerteMap = new HashMap<>();
+
+        for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
+            final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
+            if (planningUnitGroup.getPlanningUnitList() == null || planningUnitGroup.getPlanningUnitList().isEmpty()) {
+                for (RessourceGroup spalte : ressourceGroups) {
+                    dataSource.getItem(planningUnitGroup.getPlanningUnitGroupName()).getItemProperty(spalte.getName()).setValue("00:00:00");
+                }
+            } else {
+                computePlanningUnits(planningUnitGroup.getPlanningUnitList(), planningUnitGroup.getPlanningUnitGroupName(), ressourceGroupDaysHoursMinutesItemMap);
+            }
+
+        }
+//            if(planningUnitGroup.getPlanningUnitList().size() > 0){
+//                for(final PlanningUnit planningUnit : planningUnitGroup.getPlanningUnitList()){
+//                    for(final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList())  {
+//                        if(!planningUnitElement.getRessourceGroup().getName().equals("Aufgabe")) {
+//                            final RessourceGroup ressourceGroup1 = planningUnitElement.getRessourceGroup();
+//                            final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
+//                            daysHoursMinutesItem.setDays(planningUnitElement.getPlannedDays());
+//                            daysHoursMinutesItem.setHours(planningUnitElement.getPlannedHours());
+//                            daysHoursMinutesItem.setMinutes(planningUnitElement.getPlannedMinutes());
+//                            if(ressourceGroupDaysHoursMinutesItemMap.containsKey(ressourceGroup1)){
+//                                daysHoursMinutesItem.setDays(daysHoursMinutesItem.getDays() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getDays());
+//                                daysHoursMinutesItem.setHours( daysHoursMinutesItem.getHours() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getHours());
+//                                daysHoursMinutesItem.setMinutes(daysHoursMinutesItem.getMinutes() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getMinutes());
+//                            }
+//                            correctDaysHoursMinutesItem(daysHoursMinutesItem);
+//                            ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup1,daysHoursMinutesItem);
+//                        }
+//
+//
+//                    }
+//                }
+//                for(final RessourceGroup spalte : ressourceGroups){
+//                    if(!spalte.getName().equals("Aufgabe")){
+//                        dataSource.getItem(planningUnitGroup.getPlanningUnitGroupName()).getItemProperty(spalte.getName()).setValue(ressourceGroupDaysHoursMinutesItemMap.get(spalte).toString());
+//                    }
+//
+//                }
+//            } else {
+//                for(RessourceGroup spalte : ressourceGroups){
+//                    if(!spalte.getName().equals("Aufgabe")){
+//                        dataSource.getItem(planningUnitGroup.getPlanningUnitGroupName()).getItemProperty(spalte.getName()).setValue("");
+//                    }
+//                }
+//            }
+
+        //
+
+//        for (Integer parentId : ersteEbeneIds) {
+//            final HashMap<String, Integer> spaltenMap = new HashMap<String, Integer>();
+//            try {
+//                for (Object id : container.getChildren(parentId)) {
+//                    for (String spaltenName : spaltenNamen) {
+//                        if (container.getItem(id).getItemProperty(spaltenName).getValue() != null) {
+//                            final String spaltenNameString = spaltenName.toString();
+//                            final Integer zellenInhalt = (Integer) container.getItem(id).getItemProperty(spaltenName).getValue();
+//                            if (spaltenMap.containsKey(spaltenName)) {
+//                                spaltenMap.put(spaltenNameString, spaltenMap.get(spaltenNameString) + zellenInhalt);
+//                            } else {
+//                                spaltenMap.put(spaltenNameString, zellenInhalt);
+//                            }
+//                        }
+//
+//                    }
+//                }
+//                for (Object spaltenName : spaltenNamen) {
+//                    final Property<?> spalte = container.getItem(parentId).getItemProperty(spaltenName);
+//                    final String spaltenNameString = spaltenName.toString();
+//                    spalte.setValue(spaltenMap.get(spaltenNameString));
+//                }
+//            } catch (NullPointerException ex) {
+//                ///
+//            }
+//
+//        }
+    }
+
+    private void correctDaysHoursMinutesItem(DaysHoursMinutesItem item) {
+        final int hours = item.getMinutes() / 60;
+        if (hours > 0) {
+            item.setHours(item.getHours() + hours);
+            item.setMinutes(item.getMinutes() - (hours * 60));
+        }
+        final int days = item.getHours() / 24;
+        if (days > 0) {
+            item.setDays(item.getDays() + days);
+            item.setHours(item.getHours() - (days * 24));
+        }
+    }
+
+    private void computeTotalsAbsolute() {              //holt sich Werte aus Container, NICHT aus Projekt(bean)
+        for (RessourceGroup ressourceGroup : ressourceGroups) {
+            if (!ressourceGroup.getName().equals("Aufgabe")) {
+                final DaysHoursMinutesItem item = new DaysHoursMinutesItem();
+                for (PlanningUnitGroup planningUnitGroup : screen.getProjektBean().getProjekt().getPlanningUnitGroups()) {
+                    final String planningUnitGroupName = planningUnitGroup.getPlanningUnitGroupName();
+                    final String zellenInhalt = screen.getDataSource().getItem(planningUnitGroupName).getItemProperty(ressourceGroup.getName()).getValue().toString();
+                    final String[] daysHoursMinutes = zellenInhalt.split(":");
+
+                    if (zellenInhalt.equals("")) {
+                    } else {
+                        item.setDays(item.getDays() + Integer.parseInt(daysHoursMinutes[0]));
+                        item.setHours(item.getHours() + Integer.parseInt(daysHoursMinutes[1]));
+                        item.setMinutes(item.getMinutes() + Integer.parseInt(daysHoursMinutes[2]));
+                    }
+                }
+                absoluteWerte.put(ressourceGroup, item);
+            }
+        }
+    }
+
+    private void comptueTotalsRelative() {
+        gesamtSumme = 0;
+        for (Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry : absoluteWerte.entrySet()) {
+            gesamtSumme += absoluteWerteEntry.getValue().getDays() * 24 * 60;
+            gesamtSumme += absoluteWerteEntry.getValue().getHours() * 60;
+            gesamtSumme += absoluteWerteEntry.getValue().getMinutes();
+        }
+        for (Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry : absoluteWerte.entrySet()) {
+            final RessourceGroup absoluterWertRessourceGroup = absoluteWerteEntry.getKey();
+            Integer absoluterWertWert = absoluteWerteEntry.getValue().getDays() * 24 * 60;
+            absoluterWertWert += absoluteWerteEntry.getValue().getHours() * 60;
+            absoluterWertWert += absoluteWerteEntry.getValue().getMinutes();
+            relativeWerte.put(absoluterWertRessourceGroup, absoluterWertWert.doubleValue() / gesamtSumme.doubleValue() * 100.0);
+        }
+    }
+//
+//    public HashMap<String, Integer> getAbsoluteWerte() {
+//        return absoluteWerte;
+//    }
+//
+//    public void setAbsoluteWerte(HashMap<String, Integer> absoluteWerte) {
+//        this.absoluteWerte = absoluteWerte;
+//    }
+//
+//    public HashMap<String, Double> getRelativeWerte() {
+//        return relativeWerte;
+//    }
+//
+//    public void setRelativeWerte(HashMap<String, Double> relativeWerte) {
+//        this.relativeWerte = relativeWerte;
+//    }
+
+    public Integer getGesamtSumme() {
+        return gesamtSumme;
+    }
+
+    public void setGesamtSumme(Integer gesamtSumme) {
+        this.gesamtSumme = gesamtSumme;
+    }
+
+    public void setValuesInScreen() {
+
+
+        screen.getSummeInMinField().setValue(getDaysHoursMinutesString());
+
+        screen.getUebersichtTable().addItem("absolut");
+        screen.getUebersichtTable().addItem("relativ");
+
+        screen.getUebersichtTable().getItem("absolut").getItemProperty("Angabe").setValue("Summe in h");
+        for (Object spalte : screen.getUebersichtTable().getItem("absolut").getItemPropertyIds()) {
+            if (!spalte.equals("Angabe")) {
+                for (Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry : absoluteWerte.entrySet()) {
+                    if (absoluteWerteEntry.getKey().getName().equals(spalte.toString())) {
+                        screen.getUebersichtTable().getItem("absolut").getItemProperty(spalte).setValue(absoluteWerte.get(absoluteWerteEntry.getKey()).toString());
+                    }
+
+                }
+
+            }
+
+        }
+
+        DecimalFormat format = new DecimalFormat("#0.00");
+        final Item relativZeile = screen.getUebersichtTable().getItem("relativ");
+        relativZeile.getItemProperty("Angabe").setValue("Summe in %");
+        for (Object spalte : relativZeile.getItemPropertyIds()) {
+            if (!spalte.equals("Angabe"))
+                for (Map.Entry<RessourceGroup, Double> relativeWerteEntry : relativeWerte.entrySet()) {
+                    if (relativeWerteEntry.getKey().getName().equals(spalte.toString())) {
+                        relativZeile.getItemProperty(spalte).setValue(format.format(relativeWerte.get(relativeWerteEntry.getKey())).toString());
+                    }
+
+                }
+        }
+    }
+
+    private String getDaysHoursMinutesString() {
+        String daysString = null;
+        String hoursString = null;
+        String minutesString = null;
+        final Integer days = gesamtSumme / 1440;
+        if (days < 10) {
+            if (days < 1) {
+                daysString = "00";
+            } else {
+                daysString = "0" + String.valueOf(days);
+            }
+        } else {
+            daysString = String.valueOf(days);
+        }
+        final Integer gesamtSummeOhneTage = gesamtSumme - (days * 24 * 60);
+        final Integer hours = gesamtSummeOhneTage / 60;
+        if (hours < 10) {
+            if (hours < 1) {
+                hoursString = "00";
+            } else {
+                hoursString = "0" + String.valueOf(hours);
+            }
+        } else {
+            hoursString = String.valueOf(hours);
+        }
+        final Integer gesamtSummeOhneTageUndStunden = gesamtSummeOhneTage - (hours * 60);
+        if (gesamtSummeOhneTageUndStunden < 10) {
+            if (gesamtSummeOhneTageUndStunden < 1) {
+                minutesString = "00";
+            } else {
+                minutesString = "0" + String.valueOf(gesamtSummeOhneTageUndStunden);
+            }
+        } else {
+            minutesString = String.valueOf(gesamtSummeOhneTageUndStunden);
+        }
+        return (daysString + ":" + hoursString + ":" + minutesString);
+    }
+
+
+}

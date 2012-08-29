@@ -57,7 +57,7 @@ public class Constants {
 
 
 
-
+    public static final String EUR = " \u20AC";
     public static final String MAIL = "mail";
     public static final String WEB = "web";
     public static final String DOWNLOAD = "download";
