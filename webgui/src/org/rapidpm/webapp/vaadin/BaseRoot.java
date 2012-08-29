@@ -290,20 +290,7 @@ public abstract class BaseRoot extends Root {
     private void initMenuBarIntern(final MenuBar menuBar) {
 
 
-        final MenuBar.MenuItem stammdatenMenu = menuBar.addItem("Stammdaten", null);
-        stammdatenMenu.addItem("Benutzer", new MenuBar.Command() {
-            @Override
-            public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new StammdatenWorkingArea());
-            }
-        });
 
-        stammdatenMenu.addItem("Stundensätze", new MenuBar.Command() {
-            @Override
-            public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new CalculatorScreen(BaseRoot.this));
-            }
-        });
 
         initMenuBar(menuBar);
         menuBar.setWidth(getMiddleStripeWidth(), Sizeable.Unit.PIXELS);

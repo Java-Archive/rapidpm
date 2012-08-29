@@ -3,13 +3,14 @@ package org.rapidpm.webapp.vaadin;
 import com.vaadin.annotations.Theme;
 import com.vaadin.ui.MenuBar;
 import org.rapidpm.webapp.vaadin.ui.workingareas.anfragenmanagement.AnfragenmanagementWorkingArea;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.ProjektplanungWorkingArea;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.CalculatorScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.CostsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.distribution.VertriebScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenWorkingArea;
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,6 +33,21 @@ public class MainRoot extends BaseRoot {
     @Override
     protected void initMenuBar(final MenuBar menuBar) {
 
+        final MenuBar.MenuItem stammdatenMenu = menuBar.addItem("Stammdaten", null);
+        stammdatenMenu.addItem("Benutzer", new MenuBar.Command() {
+            @Override
+            public void menuSelected(final MenuBar.MenuItem menuItem) {
+                setWorkingArea(new StammdatenWorkingArea());
+            }
+        });
+
+        stammdatenMenu.addItem("Stundensätze", new MenuBar.Command() {
+            @Override
+            public void menuSelected(final MenuBar.MenuItem menuItem) {
+                setWorkingArea(new CalculatorScreen(MainRoot.this));
+            }
+        });
+
         final MenuBar.MenuItem reportings = menuBar.addItem("Analysen", null, null);
         final MenuBar.MenuItem rp_difference = reportings.addItem("Wortraumanalyse", null, null);
         rp_difference.addItem("Difference-Report", null, null);
@@ -44,16 +60,12 @@ public class MainRoot extends BaseRoot {
             }
         });
         final MenuBar.MenuItem projektmanagement = menuBar.addItem("Projektmanagement", null, null);
-        final MenuBar.MenuItem rp_difference = reportings.addItem("Wortraumanalyse", null, null);
-        rp_difference.addItem("Difference-Report", null, null);
-        rp_difference.addItem("Termmatrix", null, null);
-
 
 
         projektmanagement.addItem("Projektplanung", new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new ProjektplanungWorkingArea(planningUnitsBean));
+                setWorkingArea(new ProjektplanungScreen(planningUnitsBean));
             }
         });
 
@@ -79,7 +91,7 @@ public class MainRoot extends BaseRoot {
                 setWorkingArea(new VertriebScreen());
             }
         });
-
+    }
 
 
     public ProjektBean getPlanningUnitsBean() {

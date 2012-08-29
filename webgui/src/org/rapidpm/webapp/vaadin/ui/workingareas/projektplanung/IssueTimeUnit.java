@@ -1,7 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung;
 
 import org.apache.log4j.Logger;
-import org.rapidpm.orm.system.security.Benutzer;
+import org.rapidpm.persistence.system.security.Benutzer;
 
 import java.util.Date;
 
