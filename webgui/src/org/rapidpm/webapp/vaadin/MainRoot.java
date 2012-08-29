@@ -4,9 +4,12 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.ui.MenuBar;
 import org.rapidpm.webapp.vaadin.ui.workingareas.anfragenmanagement.AnfragenmanagementWorkingArea;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.ProjektplanungWorkingArea;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.CalculatorScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.CostsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.distribution.VertriebScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.AufwandProjInitScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
 
 /**
  * Created by IntelliJ IDEA.
@@ -19,6 +22,9 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.Aufwand
 //                "http://localhost:8080/rapidpm/javascript/jquery/jquery-1.4.4.min.js"})
 public class MainRoot extends BaseRoot {
 
+    private RessourceGroupsBean ressourceGroupsBean = new RessourceGroupsBean();
+    private ProjektBean planningUnitsBean = new ProjektBean(ressourceGroupsBean);
+
     public MainRoot() {
         super("RapidPM application");
     }
@@ -27,6 +33,10 @@ public class MainRoot extends BaseRoot {
     protected void initMenuBar(final MenuBar menuBar) {
 
         final MenuBar.MenuItem reportings = menuBar.addItem("Analysen", null, null);
+        final MenuBar.MenuItem rp_difference = reportings.addItem("Wortraumanalyse", null, null);
+        rp_difference.addItem("Difference-Report", null, null);
+        rp_difference.addItem("Termmatrix", null, null);
+
         menuBar.addItem("Anfragenmanagement", new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
@@ -43,7 +53,7 @@ public class MainRoot extends BaseRoot {
         projektmanagement.addItem("Projektplanung", new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new ProjektplanungWorkingArea());
+                setWorkingArea(new ProjektplanungWorkingArea(planningUnitsBean));
             }
         });
 
@@ -51,7 +61,7 @@ public class MainRoot extends BaseRoot {
         projektmanagement.addItem("Projektinitialisierung", new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new AufwandProjInitScreen());
+                setWorkingArea(new AufwandProjInitScreen(MainRoot.this));
             }
         });
 
@@ -72,6 +82,19 @@ public class MainRoot extends BaseRoot {
 
 
 
+    public ProjektBean getPlanningUnitsBean() {
+        return planningUnitsBean;
     }
 
+    public RessourceGroupsBean getRessourceGroupsBean() {
+        return ressourceGroupsBean;
+    }
+
+    public void setRessourceGroupsBean(RessourceGroupsBean ressourceGroupsBean) {
+        this.ressourceGroupsBean = ressourceGroupsBean;
+    }
+
+    public void setPlanningUnitsBean(ProjektBean planningUnitsBean) {
+        this.planningUnitsBean = planningUnitsBean;
+    }
 }

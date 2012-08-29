@@ -1,14 +1,14 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.logic.tasks;
 
-import com.vaadin.ui.Root;
+import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.CalculatorScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.uicomponents.AddRowWindow;
 
 public class AddRowLogic {
-    private Root root;
+    private MainRoot root;
     private CalculatorScreen screen;
 
-    public AddRowLogic(Root root, CalculatorScreen screen) {
+    public AddRowLogic(MainRoot root, CalculatorScreen screen) {
         this.root = root;
         this.screen = screen;
 

@@ -6,6 +6,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.Action;
 import com.vaadin.terminal.Resource;
 import com.vaadin.ui.*;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -19,6 +20,11 @@ import java.util.Set;
  * Date: 05.04.12
  * Time: 09:43
  */
+
+/**
+ * @deprecated  replaced by {@link ProjektplanungScreen}
+ */
+@Deprecated
 public class ProjektplanungWorkingArea extends HorizontalSplitPanel {
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm");
@@ -28,9 +34,11 @@ public class ProjektplanungWorkingArea extends HorizontalSplitPanel {
     private final Panel treePanel;
     private final Panel detailPanel;
     private final VerticalLayout mainLayout;
+    private ProjektBean container;
 
-    public ProjektplanungWorkingArea() {
-        setSizeUndefined();
+    public ProjektplanungWorkingArea(ProjektBean cont) {
+        this.container = cont;
+        setSizeFull();
         setSplitPosition(350, Unit.PIXELS);
 
         menuLayout = new VerticalLayout();
