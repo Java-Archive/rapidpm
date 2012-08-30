@@ -25,6 +25,7 @@ public class IssueBase {
     private Long id;
     private String summary;
     private String text;
+    private Integer storyPoints;
     private IssuePriority issuePriority;
     private IssueStatus issueStatus;
     private IssueTimeUnit issueTimeUnitEstimated;
@@ -244,5 +245,13 @@ public class IssueBase {
 
     public void setVersion(final String version) {
         this.version = version;
+    }
+
+    public Integer getStoryPoints() {
+        return storyPoints;
+    }
+
+    public void setStoryPoints(Integer storyPoints) {
+        this.storyPoints = storyPoints;
     }
 }

@@ -79,9 +79,20 @@ public class ProjInitComputer {
 
         for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
             final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
+            planningUnitGroup.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
             if (planningUnitGroup.getPlanningUnitList() == null || planningUnitGroup.getPlanningUnitList().isEmpty()) {
-                for (RessourceGroup spalte : ressourceGroups) {
-                    dataSource.getItem(planningUnitGroup.getPlanningUnitName()).getItemProperty(spalte.getName()).setValue("00:00:00");
+                for (final RessourceGroup spalte : ressourceGroups) {
+                    final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
+                    final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
+                    planningUnitElement.setPlannedDays(0);
+                    planningUnitElement.setPlannedHours(0);
+                    planningUnitElement.setPlannedMinutes(0);
+                    planningUnitElement.setRessourceGroup(spalte);
+                    planningUnitGroup.getPlanningUnitElementList().add(planningUnitElement);
+                    daysHoursMinutesItem.setDays(planningUnitElement.getPlannedDays());
+                    daysHoursMinutesItem.setHours(planningUnitElement.getPlannedHours());
+                    daysHoursMinutesItem.setMinutes(planningUnitElement.getPlannedMinutes());
+                    dataSource.getItem(planningUnitGroup.getPlanningUnitName()).getItemProperty(spalte.getName()).setValue(daysHoursMinutesItem.toString());
                 }
             } else {
                 computePlanningUnits(planningUnitGroup.getPlanningUnitList(), planningUnitGroup.getPlanningUnitName(), ressourceGroupDaysHoursMinutesItemMap);

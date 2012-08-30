@@ -4,7 +4,7 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.terminal.Resource;
 import com.vaadin.ui.*;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.logic.TreeItemClickListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.logic.TreeValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
@@ -22,7 +22,9 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
 
 
     private final VerticalLayout menuLayout;
-    private final Panel projektPanel;
+    private Panel mainPanel;
+    private Panel ressourcesPanel;
+    private final Panel planningUnitGroupPanel;
     private final Panel treePanel;
     private final Panel detailPanel;
     private final ListSelect projektSelect;
@@ -40,16 +42,20 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         menuLayout.setSpacing(true);
         addComponent(menuLayout);
 
-        projektPanel = new Panel("Projekt");
-        menuLayout.addComponent(projektPanel);
+        planningUnitGroupPanel = new Panel("Projekt");
+        menuLayout.addComponent(planningUnitGroupPanel);
         treePanel = new Panel();
         menuLayout.addComponent(treePanel);
         detailPanel = new Panel("Details");
         menuLayout.addComponent(detailPanel);
 
+        mainPanel = new Panel();
+        ressourcesPanel = new Panel();
         mainLayout = new VerticalLayout();
         mainLayout.setMargin(true);
         mainLayout.setSpacing(true);
+        mainLayout.addComponent(mainPanel);
+        mainLayout.addComponent(ressourcesPanel);
         addComponent(mainLayout);
 
 
@@ -67,17 +73,18 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
 
         projektSelect.setNullSelectionAllowed(false);
         projektSelect.setImmediate(true);
-        projektPanel.getContent().addComponent(projektSelect);
+        planningUnitGroupPanel.getContent().addComponent(projektSelect);
         projektSelect.addListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(final Property.ValueChangeEvent valueChangeEvent) {
                 final String value = (String) valueChangeEvent.getProperty().getValue();
-                mainLayout.removeAllComponents();
+        //        mainLayout.removeAllComponents();
                 treePanel.getContent().removeAllComponents();
                 detailPanel.getContent().removeAllComponents();
                 treePanel.setCaption(value);
                 fillTreePanel(value);
-                mainLayout.addComponent(new Label(value));
+                treePanelTree.select(value);
+        //        mainLayout.addComponent(new Label(value));
                 detailPanel.setCaption("Details");
             }
 
@@ -102,20 +109,21 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
             treePanelTree.setItemCaptionPropertyId("name");
             treePanelTree.setItemIconPropertyId("icon");
             treePanelTree.setImmediate(true);
-            final Object planningUnitGroupId = treePanelTree.addItem();
-            final Item planningUnitGroupItem = treePanelTree.getItem(planningUnitGroupId);
-            planningUnitGroupItem.getItemProperty("name").setValue(planningUnitGroup.getPlanningUnitName());
+            final String itemId = planningUnitGroup.getPlanningUnitName();
+            final Item planningUnitGroupItem = treePanelTree.addItem(itemId);
+
+            planningUnitGroupItem.getItemProperty("name").setValue(itemId);
             final String issueStatusName = planningUnitGroup.getIssueBase().getIssueStatus().getStatusName();
             planningUnitGroupItem.getItemProperty("icon").setValue(IssueStati.valueOf(issueStatusName).getIcon());
             if (planningUnitGroup.getPlanningUnitList() != null && !planningUnitGroup.getPlanningUnitList().isEmpty()) {
-                treePanelTree.setChildrenAllowed(planningUnitGroupId, true);
+                treePanelTree.setChildrenAllowed(itemId, true);
             } else {
-                treePanelTree.setChildrenAllowed(planningUnitGroupId, false);
+                treePanelTree.setChildrenAllowed(itemId, false);
             }
 
-            buildTree(planningUnitGroup.getPlanningUnitList(), planningUnitGroupId);
-            treePanelTree.expandItemsRecursively(planningUnitGroupId);
-            treePanelTree.addListener(new TreeItemClickListener(this, projektBean.getProjekt()));
+            buildTree(planningUnitGroup.getPlanningUnitList(), itemId);
+            treePanelTree.expandItemsRecursively(itemId);
+            treePanelTree.addListener(new TreeValueChangeListener(this, projektBean.getProjekt()));
             treePanel.addComponent(treePanelTree);
         } //else if (planningGroupName.equals("Technische Planung")) {
           //  showTechnischePlanung();
@@ -236,7 +244,7 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
 //
 //        detailPanel.addComponent(new Label(teil.getClass().getSimpleName()));
 //
-//        final FormLayout formLayout = new FormLayout();
+//        final MyFormLayout formLayout = new MyFormLayout();
 //
 //        final ComboBox statusComboBox = new ComboBox("Status", new BeanItemContainer<>(Teil.Status.class, Arrays.asList(Teil.Status.values())));
 //        statusComboBox.setItemIconPropertyId("icon");
@@ -351,8 +359,8 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         return detailPanel;
     }
 
-    public Panel getProjektPanel() {
-        return projektPanel;
+    public Panel getPlanningUnitGroupPanel() {
+        return planningUnitGroupPanel;
     }
 
     public Panel getTreePanel() {
@@ -361,5 +369,17 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
 
     public ProjektBean getProjektBean() {
         return projektBean;
+    }
+
+    public VerticalLayout getMainLayout() {
+        return mainLayout;
+    }
+
+    public Panel getMainPanel() {
+        return mainPanel;
+    }
+
+    public Panel getRessourcesPanel() {
+        return ressourcesPanel;
     }
 }

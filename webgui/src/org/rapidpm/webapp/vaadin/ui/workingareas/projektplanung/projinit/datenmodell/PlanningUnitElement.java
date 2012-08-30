@@ -72,7 +72,6 @@ public class PlanningUnitElement {
         if (plannedDays != that.plannedDays) return false;
         if (plannedHours != that.plannedHours) return false;
         if (plannedMinutes != that.plannedMinutes) return false;
-        if (!id.equals(that.id)) return false;
         if (ressourceGroup != null ? !ressourceGroup.equals(that.ressourceGroup) : that.ressourceGroup != null)
             return false;
 
