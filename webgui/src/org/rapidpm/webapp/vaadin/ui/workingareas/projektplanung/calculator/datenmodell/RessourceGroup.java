@@ -140,24 +140,7 @@ public class RessourceGroup implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
 
         RessourceGroup that = (RessourceGroup) o;
-
-        if (bruttoGehalt != null ? !bruttoGehalt.equals(that.bruttoGehalt) : that.bruttoGehalt != null) return false;
-        if (bruttoPerMonth != null ? !bruttoPerMonth.equals(that.bruttoPerMonth) : that.bruttoPerMonth != null)
-            return false;
-        if (eurosPerHour != null ? !eurosPerHour.equals(that.eurosPerHour) : that.eurosPerHour != null) return false;
-        if (externalEurosPerHour != null ? !externalEurosPerHour.equals(that.externalEurosPerHour) : that.externalEurosPerHour != null)
-            return false;
-        if (facturizable != null ? !facturizable.equals(that.facturizable) : that.facturizable != null) return false;
-        if (hoursPerWeek != null ? !hoursPerWeek.equals(that.hoursPerWeek) : that.hoursPerWeek != null) return false;
-        if (hoursPerYear != null ? !hoursPerYear.equals(that.hoursPerYear) : that.hoursPerYear != null) return false;
         if (!name.equals(that.name)) return false;
-        if (operativeEurosPerHour != null ? !operativeEurosPerHour.equals(that.operativeEurosPerHour) : that.operativeEurosPerHour != null)
-            return false;
-        if (planAnzahl != null ? !planAnzahl.equals(that.planAnzahl) : that.planAnzahl != null) return false;
-        if (sumPerDay != null ? !sumPerDay.equals(that.sumPerDay) : that.sumPerDay != null) return false;
-        if (sumPerMonth != null ? !sumPerMonth.equals(that.sumPerMonth) : that.sumPerMonth != null) return false;
-        if (weeksPerYear != null ? !weeksPerYear.equals(that.weeksPerYear) : that.weeksPerYear != null) return false;
-
         return true;
     }
 

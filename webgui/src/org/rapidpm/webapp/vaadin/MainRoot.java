@@ -80,7 +80,7 @@ public class MainRoot extends BaseRoot {
         projektmanagement.addItem("Kosten", new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new CostsScreen());
+                setWorkingArea(new CostsScreen(MainRoot.this));
             }
         });
 

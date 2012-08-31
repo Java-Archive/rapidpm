@@ -1,164 +1,213 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs;
 
+import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
-import org.rapidpm.webapp.vaadin.Constants;
+import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.Screen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.logic.UebersichtTableCreator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.logic.TreeTableContainerFiller;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTable;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTreeTable;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
 
 public class CostsScreen extends Screen {
-    private TextField vertrieblerField;
+
+    private Button saveButton = new Button("Speichern");
+    private TextField kundeField;
+    private TextField projektField;
     private TextField datumField;
-    private TextField euroProKmField;
-    private TextField stdSatzFuerReiseZeitField;
-    private TextField mannTageField;
-    private TextField summeInStdField;
-    private TextField kostenField;
+    private TextField projektLeiterField;
+    private TextField unterschriftField;
+    private TextField manntageField;
+    private TextField summeInMinField;
+    private TextField summeKundentermineInStdField;
 
-    private Table uebersichtTable;
-    private Table detailsTable = new Table();
-    private Table einmaligeKostenTable = new Table();
-    private Table monatlicheKostenTable = new Table();
+    private ProjektBean projektBean;
+    private RessourceGroupsBean ressourceGroupsBean;
+    private TreeTableContainerFiller containerFiller;
+    private HierarchicalContainer dataSource;
+    private MyTreeTable treeTable = new MyTreeTable();
+    private MyTable uebersichtTable = new MyTable();
 
-    private GridLayout unterschriftLayout = new GridLayout(2, 2);
-    private GridLayout felderLayout = new GridLayout(2, 5);
-    private VerticalLayout uebersichtTableLayout = new VerticalLayout();
-    private VerticalLayout detailsTableLayout = new VerticalLayout();
-    private HorizontalLayout einmaligRegelmaessigLayout = new HorizontalLayout();
+    private static final String COLUMN_WIDTH = "350px";
+    private static final String ABSOLUTE_WIDTH = "700px";
 
-    public CostsScreen() {
+    private HorizontalLayout felderLayout = new HorizontalLayout();
+    private VerticalLayout unterschriftLayout = new VerticalLayout();
+    private VerticalLayout table1layout = new VerticalLayout();
+    private VerticalLayout table2layout = new VerticalLayout();
+    private VerticalLayout formLayout = new VerticalLayout();
+    private GridLayout upperFormLayout = new GridLayout(2, 10);
+    private VerticalLayout lowerFormLayout = new VerticalLayout();
+
+    public CostsScreen(MainRoot root) {
+        this.projektBean = root.getPlanningUnitsBean();
+        this.ressourceGroupsBean = root.getRessourceGroupsBean();
+        containerFiller = new TreeTableContainerFiller(projektBean, ressourceGroupsBean);
+        containerFiller.fill();
+        dataSource = containerFiller.getHierarchicalContainer();
+        //final ProjInitComputer computer = new ProjInitComputer(this);
 
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
 
-        fillSummaryTable();
-        erstelleUebersichtTableLayout();
-        erstelleDetailsTableLayout();
-        erstelleEinmaligRegelmaessigTablesLayout();
+        //treeTable.addListener(new TableItemClickListener(this));
+
+
+        treeTable.setContainerDataSource(dataSource);
+        treeTable.setColumnCollapsible("Aufgabe", false);
+        treeTable.setColumnWidth("Aufgabe",250);
+
+        uebersichtTable.setPageLength(4);
+        uebersichtTable.setConnectedTable(treeTable);
+        treeTable.setConnectedTable(uebersichtTable);
+        table1layout.addComponent(uebersichtTable);
+
+        createOverviewTableColumns();
+        table2layout.addComponent(treeTable);
+        table1layout.setMargin(true, false, true, false);
+        table2layout.setMargin(true, false, true, false);
+
+        //computer.compute();
+        //computer.setValuesInScreen();
+
+        lowerFormLayout.addComponent(saveButton);
+
+        formLayout.addComponent(upperFormLayout);
+        formLayout.addComponent(lowerFormLayout);
+        formLayout.setVisible(false);
         setComponents();
 
     }
 
-    private void erstelleUebersichtTableLayout() {
-        uebersichtTableLayout.addComponent(new Label("Uebersicht"));
-        uebersichtTableLayout.addComponent(uebersichtTable);
-        uebersichtTableLayout.setMargin(true, false, true, false);
-    }
-
-    private void erstelleDetailsTableLayout() {
-        detailsTableLayout.addComponent(new Label("Details"));
-        detailsTableLayout.addComponent(detailsTable);
-        detailsTableLayout.setMargin(true, false, true, false);
-    }
-
-    private void erstelleEinmaligRegelmaessigTablesLayout() {
-        final VerticalLayout einmaligLayout = new VerticalLayout();
-        final VerticalLayout monatlichLayout = new VerticalLayout();
-        einmaligLayout.addComponent(new Label("einmalige Kosten"));
-        einmaligLayout.addComponent(einmaligeKostenTable);
-        einmaligLayout.setMargin(true, false, true, false);
-        monatlichLayout.addComponent(new Label("monatliche Kosten"));
-        monatlichLayout.addComponent(monatlicheKostenTable);
-        monatlichLayout.setMargin(true, false, true, false);
-        einmaligRegelmaessigLayout.addComponent(einmaligLayout);
-        einmaligRegelmaessigLayout.addComponent(monatlichLayout);
-        einmaligRegelmaessigLayout.setSpacing(true);
+    private void createOverviewTableColumns() {
+        uebersichtTable.addContainerProperty("Angabe", String.class, null);
+        uebersichtTable.setColumnCollapsible("Angabe", false);
+        uebersichtTable.setColumnWidth("Angabe", 250);
+        for (RessourceGroup ressourceGroup : ressourceGroupsBean.getRessourceGroups()) {
+            final String spaltenName = ressourceGroup.getName();
+            uebersichtTable.addContainerProperty(spaltenName, String.class, null);
+        }
     }
 
     private void erstelleFelderLayout() {
-        final Label eins = new Label("Euro pro km:");
-        final Label zwei = new Label("Stundensatz f. Reisezeit:");
-        final Label drei = new Label("MT:");
-        final Label vier = new Label("Summe in h");
-        final Label fuenf = new Label("Kosten:");
-        // Textfelder
-        fillFields();
-        mannTageField.setEnabled(false);
-        summeInStdField.setEnabled(false);
-        kostenField.setEnabled(false);
-        felderLayout.setWidth("350px");
-        felderLayout.addComponent(eins);
-        felderLayout.addComponent(euroProKmField);
-        felderLayout.addComponent(zwei);
-        felderLayout.addComponent(stdSatzFuerReiseZeitField);
-        felderLayout.addComponent(drei);
-        felderLayout.addComponent(mannTageField);
-        felderLayout.addComponent(vier);
-        felderLayout.addComponent(summeInStdField);
-        felderLayout.addComponent(fuenf);
-        felderLayout.addComponent(kostenField);
-        felderLayout.setComponentAlignment(eins, Alignment.MIDDLE_LEFT);
-        felderLayout.setComponentAlignment(zwei, Alignment.MIDDLE_LEFT);
-        felderLayout.setComponentAlignment(drei, Alignment.MIDDLE_LEFT);
-        felderLayout.setComponentAlignment(vier, Alignment.MIDDLE_LEFT);
-        felderLayout.setComponentAlignment(fuenf, Alignment.MIDDLE_LEFT);
-        felderLayout.setComponentAlignment(euroProKmField,
-                Alignment.MIDDLE_RIGHT);
-        felderLayout.setComponentAlignment(stdSatzFuerReiseZeitField,
-                Alignment.MIDDLE_RIGHT);
-        felderLayout.setComponentAlignment(mannTageField,
-                Alignment.MIDDLE_RIGHT);
-        felderLayout.setComponentAlignment(summeInStdField,
-                Alignment.MIDDLE_RIGHT);
-        felderLayout.setComponentAlignment(kostenField, Alignment.MIDDLE_RIGHT);
+        final Label kundeLabel = new Label("Kunde:");
+        final Label projektLabel = new Label("Projekt:");
+        final Label datumLabel = new Label("Datum:");
+        final Label manntageLabel = new Label("MT:");
+        final Label summeInMinLabel = new Label("Summe (d..)d:hh:mm");
+        final Label kundentermineLabel = new Label("Summe (d..)d:hh:mm (Kundentermine):");
+        final VerticalLayout linkeZeilen = new VerticalLayout();
+        final VerticalLayout rechteZeilen = new VerticalLayout();
+        final HorizontalLayout linkeZeile1 = new HorizontalLayout();
+        final HorizontalLayout linkeZeile2 = new HorizontalLayout();
+        final HorizontalLayout linkeZeile3 = new HorizontalLayout();
+        final HorizontalLayout rechteZeile1 = new HorizontalLayout();
+        final HorizontalLayout rechteZeile2 = new HorizontalLayout();
+        final HorizontalLayout rechteZeile3 = new HorizontalLayout();
+
+        kundeField = new TextField();
+        projektField = new TextField();
+        datumField = new TextField();
+        projektLeiterField = new TextField();
+        unterschriftField = new TextField();
+        manntageField = new TextField();
+        manntageField.setEnabled(false);
+        summeInMinField = new TextField();
+        summeInMinField.setEnabled(false);
+        summeKundentermineInStdField = new TextField();
+        summeKundentermineInStdField.setEnabled(false);
+        // Horizontallayout (700px) beinhaltet 2 VerticalLayouts(jew. 350px)
+        // beinhalten jeweils x horizontallayouts (sizefull)
+        felderLayout.setWidth(ABSOLUTE_WIDTH);
+        linkeZeilen.setWidth(COLUMN_WIDTH);
+        rechteZeilen.setWidth(COLUMN_WIDTH);
+        linkeZeile1.setSizeFull();
+        linkeZeile2.setSizeFull();
+        linkeZeile3.setSizeFull();
+        rechteZeile1.setSizeFull();
+        rechteZeile2.setSizeFull();
+        rechteZeile3.setSizeFull();
+
+        linkeZeile1.addComponent(kundeLabel);
+        linkeZeile1.addComponent(kundeField);
+        linkeZeile1.setComponentAlignment(kundeLabel, Alignment.MIDDLE_LEFT);
+        linkeZeile1.setComponentAlignment(kundeField, Alignment.MIDDLE_LEFT);
+        linkeZeile2.addComponent(projektLabel);
+        linkeZeile2.addComponent(projektField);
+        linkeZeile3.addComponent(datumLabel);
+        linkeZeile3.addComponent(datumField);
+
+        rechteZeile1.addComponent(manntageLabel);
+        rechteZeile1.addComponent(manntageField);
+        rechteZeile1.setComponentAlignment(manntageLabel, Alignment.MIDDLE_LEFT);
+        rechteZeile1
+                .setComponentAlignment(manntageField, Alignment.MIDDLE_LEFT);
+        rechteZeile2.addComponent(summeInMinLabel);
+        rechteZeile2.addComponent(summeInMinField);
+        rechteZeile3.addComponent(kundentermineLabel);
+        rechteZeile3.addComponent(summeKundentermineInStdField);
+
+        linkeZeilen.addComponent(linkeZeile1);
+        linkeZeilen.addComponent(linkeZeile2);
+        linkeZeilen.addComponent(linkeZeile3);
+
+        rechteZeilen.addComponent(rechteZeile1);
+        rechteZeilen.addComponent(rechteZeile2);
+        rechteZeilen.addComponent(rechteZeile3);
+
+        felderLayout.addComponent(linkeZeilen);
+        felderLayout.addComponent(rechteZeilen);
         felderLayout.setMargin(true, false, true, false);
+
     }
 
     private void erstelleUnterschriftLayout() {
-        final Label vertrieblerLabel = new Label("Verantwortlicher Vertriebler:");
-        final Label datumLabel = new Label("Datum:");
-        // Unterschrift
-        vertrieblerField = new TextField();
-        datumField = new TextField();
-        unterschriftLayout.setWidth("560px");
-        unterschriftLayout.addComponent(vertrieblerLabel);
-        unterschriftLayout.addComponent(vertrieblerField);
-        unterschriftLayout.addComponent(datumLabel);
-        unterschriftLayout.addComponent(datumField);
-        unterschriftLayout.setComponentAlignment(vertrieblerLabel, Alignment.MIDDLE_RIGHT);
-        unterschriftLayout.setComponentAlignment(datumLabel, Alignment.MIDDLE_RIGHT);
-        unterschriftLayout.setComponentAlignment(datumField,
-                Alignment.MIDDLE_LEFT);
-        unterschriftLayout.setComponentAlignment(vertrieblerField,
-                Alignment.MIDDLE_LEFT);
+        final Label projleiterLabel = new Label("Projektleiter:");
+        final Label unterschriftLabel = new Label("Unterschrift PM:");
+        final HorizontalLayout zeile1 = new HorizontalLayout();
+        final HorizontalLayout zeile2 = new HorizontalLayout();
+        projektLeiterField = new TextField();
+        unterschriftField = new TextField();
+        unterschriftLayout.setWidth("350px");
+
+        zeile1.setSizeFull();
+        zeile2.setSizeFull();
+
+        zeile1.addComponent(projleiterLabel);
+        zeile1.addComponent(projektLeiterField);
+        zeile2.addComponent(unterschriftLabel);
+        zeile2.addComponent(unterschriftField);
+
+        unterschriftLayout.addComponent(zeile1);
+        unterschriftLayout.addComponent(zeile2);
         unterschriftLayout.setMargin(true, false, true, false);
-
-
     }
 
-    private void fillFields() {
-        euroProKmField = new TextField();
-        stdSatzFuerReiseZeitField = new TextField();
-        summeInStdField = new TextField();
-        mannTageField = new TextField();
-        kostenField = new TextField();
-
-        euroProKmField.setValue("0,30" + Constants.EUR);
-        stdSatzFuerReiseZeitField.setValue("0,45" + Constants.EUR);
-        summeInStdField.setValue("40:35:00");
-        mannTageField.setValue("5,07");
-        kostenField.setValue("3270,42" + Constants.EUR);
-
-    }
-
-    private void fillSummaryTable() {
-        final UebersichtTableCreator creator = new UebersichtTableCreator();
-        uebersichtTable = creator.getTabelle();
-    }
-
-    private void setComponents() {
-        addComponent(unterschriftLayout);
+    public void setComponents() {
         addComponent(felderLayout);
-        addComponent(uebersichtTableLayout);
-        addComponent(detailsTableLayout);
-        addComponent(einmaligRegelmaessigLayout);
+        addComponent(unterschriftLayout);
+        addComponent(table1layout);
+        addComponent(table2layout);
+        addComponent(formLayout);
     }
 
-    public TextField getVertrieblerField() {
-        return vertrieblerField;
+
+    public TextField getKundeField() {
+        return kundeField;
     }
 
-    public void setVertrieblerField(TextField vertrieblerField) {
-        this.vertrieblerField = vertrieblerField;
+    public void setKundeField(TextField kundeField) {
+        this.kundeField = kundeField;
+    }
+
+    public TextField getProjektField() {
+        return projektField;
+    }
+
+    public void setProjektField(TextField projektField) {
+        this.projektField = projektField;
     }
 
     public TextField getDatumField() {
@@ -169,44 +218,116 @@ public class CostsScreen extends Screen {
         this.datumField = datumField;
     }
 
-    public TextField getEuroProKmField() {
-        return euroProKmField;
+    public TextField getProjektLeiterField() {
+        return projektLeiterField;
     }
 
-    public void setEuroProKmField(TextField euroProKmField) {
-        this.euroProKmField = euroProKmField;
+    public void setProjektLeiterField(TextField projektLeiterField) {
+        this.projektLeiterField = projektLeiterField;
     }
 
-    public TextField getStdSatzFuerReiseZeitField() {
-        return stdSatzFuerReiseZeitField;
+    public TextField getUnterschriftField() {
+        return unterschriftField;
     }
 
-    public void setStdSatzFuerReiseZeitField(TextField stdSatzFuerReiseZeitField) {
-        this.stdSatzFuerReiseZeitField = stdSatzFuerReiseZeitField;
+    public void setUnterschriftField(TextField unterschriftField) {
+        this.unterschriftField = unterschriftField;
     }
 
-    public TextField getMannTageField() {
-        return mannTageField;
+    public TextField getManntageField() {
+        return manntageField;
     }
 
-    public void setMannTageField(TextField mannTageField) {
-        this.mannTageField = mannTageField;
+    public void setManntageField(TextField manntageField) {
+        this.manntageField = manntageField;
     }
 
-    public TextField getSummeInH() {
-        return summeInStdField;
+    public TextField getSummeInMinField() {
+        return summeInMinField;
     }
 
-    public void setSummeInH(TextField summeInH) {
-        this.summeInStdField = summeInH;
+    public void setSummeInMinField(TextField summeInMinField) {
+        this.summeInMinField = summeInMinField;
     }
 
-    public TextField getKostenField() {
-        return kostenField;
+    public TextField getSummeKundentermineInStdField() {
+        return summeKundentermineInStdField;
     }
 
-    public void setKostenField(TextField kostenField) {
-        this.kostenField = kostenField;
+    public void setSummeKundentermineInStdField(
+            TextField summeKundentermineInStdField) {
+        this.summeKundentermineInStdField = summeKundentermineInStdField;
     }
 
+    public VerticalLayout getFormLayout() {
+        return formLayout;
+    }
+
+    public void setFormLayout(VerticalLayout formLayout) {
+        this.formLayout = formLayout;
+    }
+
+    public GridLayout getUpperFormLayout() {
+        return upperFormLayout;
+    }
+
+    public void setUpperFormLayout(GridLayout upperFormLayout) {
+        this.upperFormLayout = upperFormLayout;
+    }
+
+    public VerticalLayout getLowerFormLayout() {
+        return lowerFormLayout;
+    }
+
+    public void setLowerFormLayout(VerticalLayout lowerFormLayout) {
+        this.lowerFormLayout = lowerFormLayout;
+    }
+
+    public Button getSaveButton() {
+        return saveButton;
+    }
+
+    public void setSaveButton(Button saveButton) {
+        this.saveButton = saveButton;
+    }
+
+    public MyTreeTable getTreeTable() {
+        return treeTable;
+    }
+
+    public void setTreeTable(MyTreeTable treeTable) {
+        this.treeTable = treeTable;
+    }
+
+    public MyTable getUebersichtTable() {
+        return uebersichtTable;
+    }
+
+    public void setUebersichtTable(MyTable uebersichtTable) {
+        this.uebersichtTable = uebersichtTable;
+    }
+
+    public ProjektBean getProjektBean() {
+        return projektBean;
+    }
+
+    public HierarchicalContainer getDataSource() {
+        return dataSource;
+    }
+
+    public VerticalLayout getTable2layout() {
+        return table2layout;
+    }
+
+    public void setTable2layout(VerticalLayout table2layout) {
+        this.table2layout = table2layout;
+    }
+
+    public void setDataSource(HierarchicalContainer dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public RessourceGroupsBean getRessourceGroupsBean() {
+        return ressourceGroupsBean;
+    }
 }

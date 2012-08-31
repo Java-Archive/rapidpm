@@ -90,11 +90,9 @@ public class CalculatorScreen extends Screen {
 
         addDeleteLayout.addComponent(addRowButton);
         addDeleteLayout.addComponent(delRowButton);
-        //addDeleteLayout.setSpacing(true);
         tabellenTasksLayout.addComponent(addDeleteLayout);
         tabellenTasksLayout.addComponent(optionGroup);
         addRowButton.addListener(new AddRowClickListener(root, this));
-        //tabellenTasksLayout.setSpacing(true);
 
         formLayout.setSpacing(true);
         lowerFormLayout.addComponent(saveButton);
