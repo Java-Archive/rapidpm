@@ -25,10 +25,12 @@ public class IssueBase {
     private Long id;
     private String summary;
     private String text;
+    private Integer storyPoints;
     private IssuePriority issuePriority;
     private IssueStatus issueStatus;
     private IssueTimeUnit issueTimeUnitEstimated;
     private List<IssueTimeUnit> issueTimeUnitsUsed;
+    private List<String> testcases;
     private Benutzer issueReporter;
     private Benutzer isssueAssignee;
 //    @Basic
@@ -244,5 +246,21 @@ public class IssueBase {
 
     public void setVersion(final String version) {
         this.version = version;
+    }
+
+    public Integer getStoryPoints() {
+        return storyPoints;
+    }
+
+    public void setStoryPoints(Integer storyPoints) {
+        this.storyPoints = storyPoints;
+    }
+
+    public List<String> getTestcases() {
+        return testcases;
+    }
+
+    public void setTestcases(List<String> testcases) {
+        this.testcases = testcases;
     }
 }

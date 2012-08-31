@@ -5,7 +5,9 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.management.Planned
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedTravel;
 import org.rapidpm.persistence.prj.stammdaten.person.Person;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.IssueBase;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,7 +39,19 @@ public class PlanningUnitGroup {
     private String planningUnitName;
     private List<PlanningUnit> planningUnitList;
     private List<PlannedMeeting> plannedMeetingList;
+    private List<PlanningUnitElement> planningUnitElementList = new ArrayList<>();
     private IssueBase issueBase;
+
+    public PlanningUnitGroup(ArrayList<RessourceGroup> ressourceGroups){
+        if(ressourceGroups != null){
+            for(RessourceGroup ressourceGroup : ressourceGroups){
+                PlanningUnitElement element = new PlanningUnitElement();
+                element.setRessourceGroup(ressourceGroup);
+                planningUnitElementList.add(element);
+            }
+        }
+
+    }
 
     public Long getId() {
         return id;
@@ -129,5 +143,13 @@ public class PlanningUnitGroup {
                 "planningUnitName='" + planningUnitName + '\'' +
                 ", id=" + id +
                 '}';
+    }
+
+    public List<PlanningUnitElement> getPlanningUnitElementList() {
+        return planningUnitElementList;
+    }
+
+    public void setPlanningUnitElementList(List<PlanningUnitElement> planningUnitElementList) {
+        this.planningUnitElementList = planningUnitElementList;
     }
 }

@@ -1,7 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.logic;
 
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.event.MouseEvents;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.Constants;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.IssueBase;
@@ -25,13 +24,8 @@ import java.util.Iterator;
 /**
  * Nicht als FieldGroup möglich, da für nicht-primitive Attribute kein entsprechendes Feld erstellt werden kann
  */
-public class PlanningDetailsFormLayout extends VerticalLayout {
+public class PlanningDetailsMyFormLayout extends MyFormLayout {
 
-    private Button saveButton = new Button("Save");
-    private Button cancelButton = new Button("Cancel");
-
-    private FormLayout componentsLayout = new FormLayout();
-    private HorizontalLayout buttonLayout = new HorizontalLayout();
 
     private ComboBox statusComboBox;
     private ComboBox priorityComboBox;
@@ -41,7 +35,8 @@ public class PlanningDetailsFormLayout extends VerticalLayout {
     private DateField resolvedDateField;
     private DateField closedDateField;
 
-    public PlanningDetailsFormLayout(final IssueBase issueBase, final ProjektplanungScreen screen){
+    public PlanningDetailsMyFormLayout(final IssueBase issueBase, final ProjektplanungScreen screen, final Panel screenPanel){
+        super(issueBase, screen, screenPanel);
 
         buildStatusBox(issueBase);
         buildPriorityBox(issueBase);
@@ -52,19 +47,6 @@ public class PlanningDetailsFormLayout extends VerticalLayout {
         buildClosedDateField(issueBase);
         buildForm();
 
-        screen.getDetailPanel().addListener(new MouseEvents.ClickListener() {
-            @Override
-            public void click(MouseEvents.ClickEvent event) {
-                final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
-                while(componentIterator.hasNext()){
-                    final Component component = componentIterator.next();
-                    if( component instanceof Field){
-                        component.setReadOnly(false);
-                    }
-                }
-                buttonLayout.setVisible(true);
-            }
-        });
         cancelButton.addListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -116,18 +98,14 @@ public class PlanningDetailsFormLayout extends VerticalLayout {
                 while(componentIterator.hasNext()){
                     final Component component = componentIterator.next();
                     if( component instanceof Field){
-                       component.setReadOnly(true);
+                        component.setReadOnly(true);
                     }
                 }
                 buttonLayout.setVisible(false);
             }
         });
 
-       buttonLayout.addComponent(saveButton);
-       buttonLayout.addComponent(cancelButton);
-       buttonLayout.setVisible(false);
-       addComponent(componentsLayout);
-       addComponent(buttonLayout);
+
 
 
     }
@@ -180,8 +158,8 @@ public class PlanningDetailsFormLayout extends VerticalLayout {
         assigneeComboBox.setReadOnly(true);
     }
 
-    private void buildForm() {
-
+    @Override
+    protected void buildForm(){
         componentsLayout.addComponent(statusComboBox);
         componentsLayout.addComponent(priorityComboBox);
         componentsLayout.addComponent(reporterComboBox);
@@ -191,19 +169,5 @@ public class PlanningDetailsFormLayout extends VerticalLayout {
         componentsLayout.addComponent(closedDateField);
     }
 
-    public FormLayout getComponentsLayout() {
-        return componentsLayout;
-    }
 
-    public void setComponentsLayout(FormLayout componentsLayout) {
-        this.componentsLayout = componentsLayout;
-    }
-
-    public HorizontalLayout getButtonLayout() {
-        return buttonLayout;
-    }
-
-    public void setButtonLayout(HorizontalLayout buttonLayout) {
-        this.buttonLayout = buttonLayout;
-    }
 }

@@ -8,7 +8,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.IssueBase;
 
 /**
  * @deprecated vermutlich nicht umsetzbar, daher
- * Eigenkonstruktion: {@link org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.logic.PlanningDetailsFormLayout}
+ * Eigenkonstruktion: {@link org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.logic.PlanningDetailsMyFormLayout}
  */
 @Deprecated
 public class IssueFieldGroup extends FieldGroup {

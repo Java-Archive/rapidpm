@@ -26,6 +26,7 @@ public class MainRoot extends BaseRoot {
     private RessourceGroupsBean ressourceGroupsBean = new RessourceGroupsBean();
     private ProjektBean planningUnitsBean = new ProjektBean(ressourceGroupsBean);
 
+
     public MainRoot() {
         super("RapidPM application");
     }
@@ -65,7 +66,7 @@ public class MainRoot extends BaseRoot {
         projektmanagement.addItem("Projektplanung", new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new ProjektplanungScreen(planningUnitsBean));
+                setWorkingArea(new ProjektplanungScreen(planningUnitsBean,ressourceGroupsBean));
             }
         });
 

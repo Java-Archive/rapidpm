@@ -1,5 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell;
 
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroup;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +16,7 @@ public class Projekt {
     private long projektId;
     private String projektName;
     private ArrayList<PlanningUnitGroup> planningUnitGroups = new ArrayList<>();
-
+    private ArrayList<RessourceGroup> ressourceGroups;
 
     public PlanningUnitGroup getPlanningUnitGroup(String itemId){
         PlanningUnitGroup result = null;
@@ -82,5 +84,11 @@ public class Projekt {
         this.planningUnitGroups = planningUnitGroups;
     }
 
+    public ArrayList<RessourceGroup> getRessourceGroups() {
+        return ressourceGroups;
+    }
 
+    public void setRessourceGroups(ArrayList<RessourceGroup> ressourceGroups) {
+        this.ressourceGroups = ressourceGroups;
+    }
 }
