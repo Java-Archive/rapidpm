@@ -9,9 +9,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.daten
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.ProjInitComputer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.TableItemClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.TreeTableContainerFiller;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.TreeTableCreator;
 
 public class AufwandProjInitScreen extends Screen {
 
@@ -28,7 +27,7 @@ public class AufwandProjInitScreen extends Screen {
     private ProjektBean projektBean;
     private RessourceGroupsBean ressourceGroupsBean;
     private TreeTableContainerFiller containerFiller;
-    private HierarchicalContainer dataSource;
+    private HierarchicalContainer dataSource = new HierarchicalContainer();
     private MyTreeTable treeTable = new MyTreeTable();
     private MyTable uebersichtTable = new MyTable();
 
@@ -47,22 +46,18 @@ public class AufwandProjInitScreen extends Screen {
     public AufwandProjInitScreen(MainRoot root) {
         this.projektBean = root.getPlanningUnitsBean();
         this.ressourceGroupsBean = root.getRessourceGroupsBean();
-        containerFiller = new TreeTableContainerFiller(projektBean, ressourceGroupsBean);
-        containerFiller.fill();
-        dataSource = containerFiller.getHierarchicalContainer();
-        final ProjInitComputer computer = new ProjInitComputer(this);
+        //containerFiller = new TreeTableContainerFiller(projektBean, ressourceGroupsBean);
+        //containerFiller.fill();
+        //dataSource = containerFiller.getHierarchicalContainer();
+        //final ProjInitPlanningUnitKnotenComputer computer = new ProjInitPlanningUnitKnotenComputer(this);
 
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
 
-        //treeTable.setSizeFull();
-        //uebersichtTable.setSizeFull();
-        treeTable.addListener(new TableItemClickListener(this));
+        TreeTableCreator treeTableCreator = new TreeTableCreator(this, projektBean, ressourceGroupsBean, treeTable, dataSource);
+        treeTableCreator.create();
 
 
-        treeTable.setContainerDataSource(dataSource);
-        treeTable.setColumnCollapsible("Aufgabe", false);
-        treeTable.setColumnWidth("Aufgabe",250);
 
         uebersichtTable.setPageLength(4);
         uebersichtTable.setConnectedTable(treeTable);
@@ -70,14 +65,13 @@ public class AufwandProjInitScreen extends Screen {
         table1layout.addComponent(uebersichtTable);
 
         createOverviewTableColumns();
-        //table2layout.setSizeFull();
-        //table1layout.setSizeFull();
+
         table2layout.addComponent(treeTable);
         table1layout.setMargin(true, false, true, false);
         table2layout.setMargin(true, false, true, false);
 
-        computer.compute();
-        computer.setValuesInScreen();
+        //computer.compute();
+        //computer.setValuesInScreen();
 
         lowerFormLayout.addComponent(saveButton);
 

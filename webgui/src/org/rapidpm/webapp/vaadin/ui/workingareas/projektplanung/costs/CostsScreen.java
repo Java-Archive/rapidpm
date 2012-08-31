@@ -6,6 +6,8 @@ import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.logic.PlanningUnitKnotenComputer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.logic.CostsConverterAdder;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.logic.TreeTableContainerFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTreeTable;
@@ -46,8 +48,9 @@ public class CostsScreen extends Screen {
         this.ressourceGroupsBean = root.getRessourceGroupsBean();
         containerFiller = new TreeTableContainerFiller(projektBean, ressourceGroupsBean);
         containerFiller.fill();
+
         dataSource = containerFiller.getHierarchicalContainer();
-        //final ProjInitComputer computer = new ProjInitComputer(this);
+        final PlanningUnitKnotenComputer computer = new PlanningUnitKnotenComputer(this);
 
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
@@ -56,8 +59,12 @@ public class CostsScreen extends Screen {
 
 
         treeTable.setContainerDataSource(dataSource);
+        CostsConverterAdder converterAdder = new CostsConverterAdder();
+        converterAdder.addConvertersTo(treeTable);
         treeTable.setColumnCollapsible("Aufgabe", false);
         treeTable.setColumnWidth("Aufgabe",250);
+
+
 
         uebersichtTable.setPageLength(4);
         uebersichtTable.setConnectedTable(treeTable);
@@ -69,7 +76,7 @@ public class CostsScreen extends Screen {
         table1layout.setMargin(true, false, true, false);
         table2layout.setMargin(true, false, true, false);
 
-        //computer.compute();
+        computer.compute();
         //computer.setValuesInScreen();
 
         lowerFormLayout.addComponent(saveButton);

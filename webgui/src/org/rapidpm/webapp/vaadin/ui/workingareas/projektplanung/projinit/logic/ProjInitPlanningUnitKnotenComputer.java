@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProjInitComputer {
+public class ProjInitPlanningUnitKnotenComputer {
     private AufwandProjInitScreen screen;
     private ArrayList<RessourceGroup> ressourceGroups;
     private HashMap<RessourceGroup, DaysHoursMinutesItem> absoluteWerte = new HashMap<RessourceGroup, DaysHoursMinutesItem>();
@@ -21,7 +21,7 @@ public class ProjInitComputer {
     private Integer gesamtSumme;
     private HierarchicalContainer dataSource;
 
-    public ProjInitComputer(AufwandProjInitScreen screen) {
+    public ProjInitPlanningUnitKnotenComputer(AufwandProjInitScreen screen) {
         this.screen = screen;
         dataSource = screen.getDataSource();
     }
@@ -74,28 +74,17 @@ public class ProjInitComputer {
     }
 
     private void computePlanningUnitGroups() {
+
         for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
             final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
-            final String planningUnitGroupName = planningUnitGroup.getPlanningUnitName();
             if (planningUnitGroup.getPlanningUnitList() == null || planningUnitGroup.getPlanningUnitList().isEmpty()) {
-                for (final RessourceGroup spalte : ressourceGroups) {
-                    final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
-                    Integer index = null;
-                    for(final PlanningUnitElement planningUnitElement : planningUnitGroup.getPlanningUnitElementList()){
-                        final String planningUnitElementRessourceGroupName = planningUnitElement.getRessourceGroup().getName();
-                        if(planningUnitElementRessourceGroupName.equals(spalte.getName())){
-                            index = planningUnitGroup.getPlanningUnitElementList().indexOf(planningUnitElement);
-                        }
-                    }
-                    final PlanningUnitElement planningUnitElement = planningUnitGroup.getPlanningUnitElementList().get(index);
-                    daysHoursMinutesItem.setDays(planningUnitElement.getPlannedDays());
-                    daysHoursMinutesItem.setHours(planningUnitElement.getPlannedHours());
-                    daysHoursMinutesItem.setMinutes(planningUnitElement.getPlannedMinutes());
-                    dataSource.getItem(planningUnitGroupName).getItemProperty(spalte.getName()).setValue(daysHoursMinutesItem.toString());
+                for (RessourceGroup spalte : ressourceGroups) {
+                    dataSource.getItem(planningUnitGroup.getPlanningUnitName()).getItemProperty(spalte.getName()).setValue("00:00:00");
                 }
             } else {
-                computePlanningUnits(planningUnitGroup.getPlanningUnitList(), planningUnitGroupName, ressourceGroupDaysHoursMinutesItemMap);
+                computePlanningUnits(planningUnitGroup.getPlanningUnitList(), planningUnitGroup.getPlanningUnitName(), ressourceGroupDaysHoursMinutesItemMap);
             }
+
         }
     }
 
@@ -148,6 +137,22 @@ public class ProjInitComputer {
             relativeWerte.put(absoluterWertRessourceGroup, absoluterWertWert.doubleValue() / gesamtSumme.doubleValue() * 100.0);
         }
     }
+//
+//    public HashMap<String, Integer> getAbsoluteWerte() {
+//        return absoluteWerte;
+//    }
+//
+//    public void setAbsoluteWerte(HashMap<String, Integer> absoluteWerte) {
+//        this.absoluteWerte = absoluteWerte;
+//    }
+//
+//    public HashMap<String, Double> getRelativeWerte() {
+//        return relativeWerte;
+//    }
+//
+//    public void setRelativeWerte(HashMap<String, Double> relativeWerte) {
+//        this.relativeWerte = relativeWerte;
+//    }
 
     public Integer getGesamtSumme() {
         return gesamtSumme;

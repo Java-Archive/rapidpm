@@ -33,7 +33,7 @@ public class TreeTableContainerFiller {
         final ArrayList<RessourceGroup> ressourceGroups = ressourceGroupsBean.getRessourceGroups();
         hierarchicalContainer.addContainerProperty("Aufgabe", String.class, null);
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
-            hierarchicalContainer.addContainerProperty(ressourceGroup.getName(), String.class, "");
+            hierarchicalContainer.addContainerProperty(ressourceGroup.getName(), Double.class, "");
         }
 
 
@@ -42,7 +42,7 @@ public class TreeTableContainerFiller {
             final Item planningUnitGroupItem = hierarchicalContainer.addItem(planningUnitGroup.getPlanningUnitName());
             planningUnitGroupItem.getItemProperty("Aufgabe").setValue(planningUnitGroup.getPlanningUnitName());
             for (final RessourceGroup ressourceGroup : ressourceGroups) {
-                planningUnitGroupItem.getItemProperty(ressourceGroup.getName()).setValue("zu berechnen");
+                planningUnitGroupItem.getItemProperty(ressourceGroup.getName()).setValue(0.0);
             }
             buildItems(planningUnitGroup.getPlanningUnitList(), planningUnitGroup.getPlanningUnitName());
         }
@@ -61,7 +61,7 @@ public class TreeTableContainerFiller {
              if(planningUnit.getKindPlanningUnits() != null && !planningUnit.getKindPlanningUnits().isEmpty()){
                  for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
                      final String planningUnitElementRessourceGroupName = planningUnitElement.getRessourceGroup().getName();
-                     planningUnitElementItem.getItemProperty(planningUnitElementRessourceGroupName).setValue("zu berechnen");
+                     planningUnitElementItem.getItemProperty(planningUnitElementRessourceGroupName).setValue(0.0);
                  }
                  hierarchicalContainer.setChildrenAllowed((Object) planningUnit.getPlanningUnitElementName(),true);
                  buildItems(planningUnit.getKindPlanningUnits(),planningUnit.getPlanningUnitElementName());
@@ -76,8 +76,8 @@ public class TreeTableContainerFiller {
                         }
                     }
 
-                     final String kostenString = ((Double) (getHours(planningUnitElement) * ressourceGroup1.getExternalEurosPerHour())).toString();
-                     planningUnitElementItem.getItemProperty(planningUnitElementRessourceGroupName).setValue(kostenString);
+                     final Double kosten = (getHours(planningUnitElement) * ressourceGroup1.getExternalEurosPerHour());
+                     planningUnitElementItem.getItemProperty(planningUnitElementRessourceGroupName).setValue(kosten);
                  }
                  hierarchicalContainer.setChildrenAllowed((Object) planningUnit.getPlanningUnitElementName(),false);
              }
@@ -87,7 +87,7 @@ public class TreeTableContainerFiller {
     private Double getHours(PlanningUnitElement planningUnitElement) {
         Double hours = (24.0*planningUnitElement.getPlannedDays())
                 +planningUnitElement.getPlannedHours()
-                +(100.0/60.0*planningUnitElement.getPlannedMinutes());
+                +(1.0/60.0*planningUnitElement.getPlannedMinutes());
         return hours;
     }
 

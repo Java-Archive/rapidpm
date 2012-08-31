@@ -124,7 +124,6 @@ public class PlanningUnitGroup {
 
         PlanningUnitGroup that = (PlanningUnitGroup) o;
 
-        if (!id.equals(that.id)) return false;
         if (!planningUnitName.equals(that.planningUnitName)) return false;
 
         return true;

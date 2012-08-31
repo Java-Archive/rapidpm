@@ -18,6 +18,12 @@ public class DaysHoursMinutesItem {
         minutes = 0;
     }
 
+    public DaysHoursMinutesItem(PlanningUnitElement planningUnitElement) {
+        days = planningUnitElement.getPlannedDays();
+        hours = planningUnitElement.getPlannedHours();
+        minutes = planningUnitElement.getPlannedMinutes();
+    }
+
     public Integer getDays() {
         return days;
     }

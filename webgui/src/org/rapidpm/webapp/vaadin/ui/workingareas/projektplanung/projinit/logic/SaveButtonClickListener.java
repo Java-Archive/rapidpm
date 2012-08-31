@@ -93,7 +93,7 @@ public class SaveButtonClickListener implements ClickListener {
             screen.getTable2layout().addComponent(screen.getTreeTable());
             //screen.getTable2layout().setSizeFull();
 
-            final ProjInitComputer computer = new ProjInitComputer(screen);
+            final ProjInitPlanningUnitKnotenComputer computer = new ProjInitPlanningUnitKnotenComputer(screen);
             computer.compute();
             computer.setValuesInScreen();
             screen.getFormLayout().setVisible(false);
