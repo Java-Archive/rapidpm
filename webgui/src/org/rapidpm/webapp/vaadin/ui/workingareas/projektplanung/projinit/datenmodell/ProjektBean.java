@@ -155,15 +155,21 @@ public class ProjektBean {
     }
 
     private IssueBase createIssueBase() {
-        IssueBase issueBase = new IssueBase();
-        Integer storyPoints = this.storyPoints[(int) (Math.random() * (this.storyPoints.length))];
-        IssueStatus issueStatus = new IssueStatus();
-        IssuePriority issuePriority = new IssuePriority();
-        Benutzer reporter = new Benutzer();
-        Benutzer assignee = new Benutzer();
-        Date plannedDate = new Date();
-        Date resolvedDate = new Date();
-        Date closedDate = new Date();
+        final IssueBase issueBase = new IssueBase();
+        final Integer storyPoints = this.storyPoints[(int) (Math.random() * (this.storyPoints.length))];
+        final IssueStatus issueStatus = new IssueStatus();
+        final IssuePriority issuePriority = new IssuePriority();
+        final Benutzer reporter = new Benutzer();
+        final Benutzer assignee = new Benutzer();
+        final Date plannedDate = new Date();
+        final Date resolvedDate = new Date();
+        final Date closedDate = new Date();
+        final int anzTestCases = (int) (Math.random() * 5);
+        final ArrayList<String> testCases = new ArrayList<>();
+        for(int i=0;i<anzTestCases;i++){
+           final String testCase = "Testcase "+(i+1);
+            testCases.add(testCase);
+        }
         issueStatus.setStatusName(issueStatuses[(int) (Math.random() * (issueStatuses.length))]);
         issuePriority.setPriorityName(issuePriorities[(int) (Math.random() * (issuePriorities.length))]);
         reporter.setLogin(issueUsers[(int) (Math.random() * (issueUsers.length))]);
@@ -178,6 +184,7 @@ public class ProjektBean {
         issueBase.setDueDate_planned(plannedDate);
         issueBase.setDueDate_resolved(resolvedDate);
         issueBase.setDueDate_closed(closedDate);
+        issueBase.setTestcases(testCases);
         return issueBase;
     }
 

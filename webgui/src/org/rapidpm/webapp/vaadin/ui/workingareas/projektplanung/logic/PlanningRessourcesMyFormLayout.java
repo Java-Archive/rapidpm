@@ -5,10 +5,7 @@ import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.DaysHoursMinutesFieldValidator;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.DaysHoursMinutesItem;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnit;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitElement;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -88,6 +85,8 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
                         }
                     }
                 }
+                InitComputer computer = new InitComputer(screen.getProjektBean(), screen.getRessourceGroupsBean());
+                computer.compute();
 
                 final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
                 while(componentIterator.hasNext()){
@@ -114,7 +113,8 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
                 element = planningUnitElement;
             }
         }
-        final PlanningUnitElement planningUnitElement = planningUnitGroup.getPlanningUnitElementList().get(planningUnitGroup.getPlanningUnitElementList().indexOf(element));
+        final int index = planningUnitGroup.getPlanningUnitElementList().indexOf(element);
+        final PlanningUnitElement planningUnitElement = planningUnitGroup.getPlanningUnitElementList().get(index);
         daysHoursMinutesItem.setDays(planningUnitElement.getPlannedDays());
         daysHoursMinutesItem.setHours(planningUnitElement.getPlannedHours());
         daysHoursMinutesItem.setMinutes(planningUnitElement.getPlannedMinutes());
@@ -133,7 +133,8 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
                 element = planningUnitElement;
             }
         }
-        final PlanningUnitElement planningUnitElement = planningUnit.getPlanningUnitElementList().get(planningUnit.getPlanningUnitElementList().indexOf(element));
+        final int index = planningUnit.getPlanningUnitElementList().indexOf(element);
+        final PlanningUnitElement planningUnitElement = planningUnit.getPlanningUnitElementList().get(index);
         daysHoursMinutesItem.setDays(planningUnitElement.getPlannedDays());
         daysHoursMinutesItem.setHours(planningUnitElement.getPlannedHours());
         daysHoursMinutesItem.setMinutes(planningUnitElement.getPlannedMinutes());

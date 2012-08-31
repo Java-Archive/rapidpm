@@ -4,6 +4,7 @@ import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.ProjektplanungScreen;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -18,11 +19,16 @@ public class PlanningMainMyFormLayout extends MyFormLayout {
 
     private TextArea descriptionTextArea;
     private ComboBox storyPointsComboBox;
+    private ArrayList<TextArea> testCasesAreas = new ArrayList<>();
 
     public PlanningMainMyFormLayout(final IssueBase issueBase, final ProjektplanungScreen screen, final Panel screenPanel){
         super(issueBase, screen, screenPanel);
         buildDescriptionTextArea(issueBase);
         buildStoryPointsListSelect(issueBase);
+        Integer testCaseCounter = 0;
+        for(String testCase :issueBase.getTestcases()){
+            buildTestCaseArea(++testCaseCounter, testCase);
+        }
         buildForm();
 
         cancelButton.addListener(new Button.ClickListener() {
@@ -33,6 +39,13 @@ public class PlanningMainMyFormLayout extends MyFormLayout {
                 final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
                 descriptionTextArea.setValue(issueText);
                 storyPointsComboBox.setValue(issueStoryPoints);
+                for(final TextArea testCaseArea : testCasesAreas){
+                    for(final String testCase : issueBase.getTestcases()){
+                        if(testCase.equals(testCaseArea.getCaption())){
+                            testCaseArea.setValue(testCase);
+                        }
+                    }
+                }
                 while (componentIterator.hasNext()) {
                     final Component component = componentIterator.next();
                     if (component instanceof Field) {
@@ -48,12 +61,14 @@ public class PlanningMainMyFormLayout extends MyFormLayout {
             public void buttonClick(Button.ClickEvent event) {
                 final String descriptionAreaValue = descriptionTextArea.getValue().toString();
                 final String storyPointsComboBoxValue = storyPointsComboBox.getValue().toString();
-                //final String planningUnitGroupListSelection = screen.getProjektSelect().getValue().toString();
                 final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
                 issueBase.setText(descriptionAreaValue);
                 issueBase.setStoryPoints(Integer.parseInt(storyPointsComboBoxValue));
-
-                //screen.fillTreePanel(planningUnitGroupListSelection);
+                Integer index = 0;
+                for(final TextArea testCaseArea : testCasesAreas){
+                    issueBase.getTestcases().set(index, testCaseArea.getValue());
+                    index++;
+                }
 
                 while(componentIterator.hasNext()){
                     final Component component = componentIterator.next();
@@ -64,6 +79,13 @@ public class PlanningMainMyFormLayout extends MyFormLayout {
                 buttonLayout.setVisible(false);
             }
         });
+    }
+
+    private void buildTestCaseArea(Integer testCaseCounter, String testCase) {
+        TextArea testCaseArea = new TextArea("Testcase "+testCaseCounter, testCase);
+        testCaseArea.setReadOnly(true);
+        testCaseArea.setSizeFull();
+        testCasesAreas.add(testCaseArea);
     }
 
     private void buildDescriptionTextArea(IssueBase issueBase) {
@@ -85,6 +107,9 @@ public class PlanningMainMyFormLayout extends MyFormLayout {
     protected void buildForm(){
         componentsLayout.addComponent(descriptionTextArea);
         componentsLayout.addComponent(storyPointsComboBox);
+        for(final TextArea testCaseArea : testCasesAreas){
+            componentsLayout.addComponent(testCaseArea);
+        }
     }
 
 

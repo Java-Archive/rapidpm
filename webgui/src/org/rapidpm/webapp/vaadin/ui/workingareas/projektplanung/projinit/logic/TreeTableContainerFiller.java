@@ -45,21 +45,6 @@ public class TreeTableContainerFiller {
                 planningUnitGroupItem.getItemProperty(ressourceGroup.getName()).setValue("zu berechnen");
             }
             buildItems(planningUnitGroup.getPlanningUnitList(), planningUnitGroup.getPlanningUnitName());
-
-
-//
-//
-//
-//            for (final PlanningUnit planningUnit : planningUnitGroup.getPlanningUnitList()) {
-//                final Item planningUnitItem = hierarchicalContainer.addItem(planningUnit.getPlanningUnitElementName());
-//                planningUnitItem.getItemProperty("Aufgabe").setValue(planningUnit.getPlanningUnitElementName());
-//                for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-//                    final String planningUnitElementRessourceGroupName = planningUnitElement.getRessourceGroup().getName();
-//                    planningUnitItem.getItemProperty(planningUnitElementRessourceGroupName).setValue(parseToTimeString(planningUnitElement));
-//                }
-//                hierarchicalContainer.setParent( (Object) planningUnit.getPlanningUnitElementName(),(Object)planningUnitGroup.getPlanningUnitName());
-//                hierarchicalContainer.setChildrenAllowed((Object) planningUnit.getPlanningUnitElementName(),false);
-//            }
         }
     }
 

@@ -9,7 +9,6 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.daten
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.CostsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.distribution.VertriebScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.AufwandProjInitScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.InitComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenWorkingArea;
 
@@ -26,12 +25,10 @@ public class MainRoot extends BaseRoot {
 
     private RessourceGroupsBean ressourceGroupsBean = new RessourceGroupsBean();
     private ProjektBean planningUnitsBean = new ProjektBean(ressourceGroupsBean);
-    private InitComputer computer = new InitComputer(planningUnitsBean,ressourceGroupsBean);
 
 
     public MainRoot() {
         super("RapidPM application");
-        computer.compute();
     }
 
     @Override
@@ -69,7 +66,7 @@ public class MainRoot extends BaseRoot {
         projektmanagement.addItem("Projektplanung", new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new ProjektplanungScreen(planningUnitsBean));
+                setWorkingArea(new ProjektplanungScreen(planningUnitsBean,ressourceGroupsBean));
             }
         });
 

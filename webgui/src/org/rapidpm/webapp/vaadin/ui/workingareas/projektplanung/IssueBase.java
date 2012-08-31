@@ -30,6 +30,7 @@ public class IssueBase {
     private IssueStatus issueStatus;
     private IssueTimeUnit issueTimeUnitEstimated;
     private List<IssueTimeUnit> issueTimeUnitsUsed;
+    private List<String> testcases;
     private Benutzer issueReporter;
     private Benutzer isssueAssignee;
 //    @Basic
@@ -253,5 +254,13 @@ public class IssueBase {
 
     public void setStoryPoints(Integer storyPoints) {
         this.storyPoints = storyPoints;
+    }
+
+    public List<String> getTestcases() {
+        return testcases;
+    }
+
+    public void setTestcases(List<String> testcases) {
+        this.testcases = testcases;
     }
 }
