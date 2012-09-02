@@ -4,14 +4,13 @@ import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.Screen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.logic.PlanningUnitKnotenComputer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.logic.CostsConverterAdder;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.logic.TreeTableContainerFiller;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.logic.OverviewTableFiller;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.logic.TreeTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
+
 
 public class CostsScreen extends Screen {
 
@@ -27,8 +26,7 @@ public class CostsScreen extends Screen {
 
     private ProjektBean projektBean;
     private RessourceGroupsBean ressourceGroupsBean;
-    private TreeTableContainerFiller containerFiller;
-    private HierarchicalContainer dataSource;
+    private HierarchicalContainer dataSource = new HierarchicalContainer();
     private MyTreeTable treeTable = new MyTreeTable();
     private MyTable uebersichtTable = new MyTable();
 
@@ -46,38 +44,24 @@ public class CostsScreen extends Screen {
     public CostsScreen(MainRoot root) {
         this.projektBean = root.getPlanningUnitsBean();
         this.ressourceGroupsBean = root.getRessourceGroupsBean();
-        containerFiller = new TreeTableContainerFiller(projektBean, ressourceGroupsBean);
-        containerFiller.fill();
-
-        dataSource = containerFiller.getHierarchicalContainer();
-        final PlanningUnitKnotenComputer computer = new PlanningUnitKnotenComputer(this);
 
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
 
-        //treeTable.addListener(new TableItemClickListener(this));
+        final TreeTableFiller treeTableFiller = new TreeTableFiller(projektBean, ressourceGroupsBean, treeTable, dataSource);
+        treeTableFiller.fill();
 
-
-        treeTable.setContainerDataSource(dataSource);
-        CostsConverterAdder converterAdder = new CostsConverterAdder();
-        converterAdder.addConvertersTo(treeTable);
-        treeTable.setColumnCollapsible("Aufgabe", false);
-        treeTable.setColumnWidth("Aufgabe",250);
-
-
+        final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(uebersichtTable, projektBean, ressourceGroupsBean);
+        overviewTableFiller.fill();
 
         uebersichtTable.setPageLength(4);
         uebersichtTable.setConnectedTable(treeTable);
         treeTable.setConnectedTable(uebersichtTable);
         table1layout.addComponent(uebersichtTable);
 
-        createOverviewTableColumns();
         table2layout.addComponent(treeTable);
         table1layout.setMargin(true, false, true, false);
         table2layout.setMargin(true, false, true, false);
-
-        computer.compute();
-        //computer.setValuesInScreen();
 
         lowerFormLayout.addComponent(saveButton);
 
@@ -86,16 +70,6 @@ public class CostsScreen extends Screen {
         formLayout.setVisible(false);
         setComponents();
 
-    }
-
-    private void createOverviewTableColumns() {
-        uebersichtTable.addContainerProperty("Angabe", String.class, null);
-        uebersichtTable.setColumnCollapsible("Angabe", false);
-        uebersichtTable.setColumnWidth("Angabe", 250);
-        for (RessourceGroup ressourceGroup : ressourceGroupsBean.getRessourceGroups()) {
-            final String spaltenName = ressourceGroup.getName();
-            uebersichtTable.addContainerProperty(spaltenName, String.class, null);
-        }
     }
 
     private void erstelleFelderLayout() {

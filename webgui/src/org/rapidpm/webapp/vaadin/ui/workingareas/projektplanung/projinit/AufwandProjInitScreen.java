@@ -4,13 +4,12 @@ import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.Screen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.TreeTableContainerFiller;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.TreeTableCreator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.OverviewTableFiller;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.TreeTableFiller;
 
 public class AufwandProjInitScreen extends Screen {
 
@@ -26,7 +25,6 @@ public class AufwandProjInitScreen extends Screen {
 
     private ProjektBean projektBean;
     private RessourceGroupsBean ressourceGroupsBean;
-    private TreeTableContainerFiller containerFiller;
     private HierarchicalContainer dataSource = new HierarchicalContainer();
     private MyTreeTable treeTable = new MyTreeTable();
     private MyTable uebersichtTable = new MyTable();
@@ -46,32 +44,24 @@ public class AufwandProjInitScreen extends Screen {
     public AufwandProjInitScreen(MainRoot root) {
         this.projektBean = root.getPlanningUnitsBean();
         this.ressourceGroupsBean = root.getRessourceGroupsBean();
-        //containerFiller = new TreeTableContainerFiller(projektBean, ressourceGroupsBean);
-        //containerFiller.fill();
-        //dataSource = containerFiller.getHierarchicalContainer();
-        //final ProjInitPlanningUnitKnotenComputer computer = new ProjInitPlanningUnitKnotenComputer(this);
 
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
 
-        TreeTableCreator treeTableCreator = new TreeTableCreator(this, projektBean, ressourceGroupsBean, treeTable, dataSource);
-        treeTableCreator.create();
+        final TreeTableFiller treeTableFiller = new TreeTableFiller(this, projektBean, ressourceGroupsBean, treeTable, dataSource);
+        treeTableFiller.fill();
 
-
+        final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(uebersichtTable, projektBean, ressourceGroupsBean);
+        overviewTableFiller.fill();
 
         uebersichtTable.setPageLength(4);
         uebersichtTable.setConnectedTable(treeTable);
         treeTable.setConnectedTable(uebersichtTable);
         table1layout.addComponent(uebersichtTable);
 
-        createOverviewTableColumns();
-
         table2layout.addComponent(treeTable);
         table1layout.setMargin(true, false, true, false);
         table2layout.setMargin(true, false, true, false);
-
-        //computer.compute();
-        //computer.setValuesInScreen();
 
         lowerFormLayout.addComponent(saveButton);
 
@@ -80,16 +70,6 @@ public class AufwandProjInitScreen extends Screen {
         formLayout.setVisible(false);
         setComponents();
 
-    }
-
-    private void createOverviewTableColumns() {
-        uebersichtTable.addContainerProperty("Angabe", String.class, null);
-        uebersichtTable.setColumnCollapsible("Angabe", false);
-        uebersichtTable.setColumnWidth("Angabe", 250);
-        for (RessourceGroup ressourceGroup : ressourceGroupsBean.getRessourceGroups()) {
-            final String spaltenName = ressourceGroup.getName();
-            uebersichtTable.addContainerProperty(spaltenName, String.class, null);
-        }
     }
 
     private void erstelleFelderLayout() {

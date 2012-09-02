@@ -164,8 +164,6 @@ public class RessourceGroup implements Serializable {
 
     @Override
     public String toString() {
-        return "RessourceGroup{" +
-                "name='" + name + '\'' +
-                '}';
+        return name;
     }
 }

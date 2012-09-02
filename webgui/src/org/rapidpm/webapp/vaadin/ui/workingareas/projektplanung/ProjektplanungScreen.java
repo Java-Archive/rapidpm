@@ -64,17 +64,7 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         mainLayout.addComponent(ressourcesPanel);
         addComponent(mainLayout);
 
-
-//        final List<String> listenWerte = Arrays.asList("Projektmanagement",
-//                "Zeitplanung",
-//                "Technische Planung",
-//                "Inbetriebnahme",
-//                "Abnahme",
-//                "Gewährleistung",
-//                "Dokumentation",
-//                "Schulung");
         final ArrayList<String> listenWerteArrayList = projektBean.getProjekt().getPlanningUnitGroupsNames();
-//        listenWerteArrayList.addAll(listenWerte);
         projektSelect = new ListSelect(null, listenWerteArrayList);
 
         projektSelect.setNullSelectionAllowed(false);
@@ -84,13 +74,11 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
             @Override
             public void valueChange(final Property.ValueChangeEvent valueChangeEvent) {
                 final String value = (String) valueChangeEvent.getProperty().getValue();
-        //        mainLayout.removeAllComponents();
                 treePanel.getContent().removeAllComponents();
                 detailPanel.getContent().removeAllComponents();
                 treePanel.setCaption(value);
                 fillTreePanel(value);
                 treePanelTree.select(value);
-        //        mainLayout.addComponent(new Label(value));
                 detailPanel.setCaption("Details");
             }
 

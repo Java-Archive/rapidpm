@@ -8,7 +8,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.Calcu
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.CostsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.distribution.VertriebScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.logic.TimesPerRessourceGroupComputer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.logic.TimesComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenWorkingArea;
@@ -30,7 +30,7 @@ public class MainRoot extends BaseRoot {
 
     public MainRoot() {
         super("RapidPM application");
-        TimesPerRessourceGroupComputer computer = new TimesPerRessourceGroupComputer(ressourceGroupsBean,planningUnitsBean);
+        TimesComputer computer = new TimesComputer(ressourceGroupsBean,planningUnitsBean);
         computer.compute();
     }
 

@@ -1,5 +1,7 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.logic;
+package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic;
 
+import com.vaadin.data.Item;
+import com.vaadin.data.util.HierarchicalContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.*;
@@ -13,76 +15,83 @@ import java.util.Map;
  * RapidPM - www.rapidpm.org
  * User: Marco
  * Date: 31.08.12
- * Time: 14:34
+ * Time: 16:29
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class TimesPerRessourceGroupComputer {
+public class TreeTableDataSourceFiller {
 
     private RessourceGroupsBean ressourceGroupsBean;
     private ProjektBean projektBean;
     private ArrayList<RessourceGroup> ressourceGroups;
-
-    private HashMap<RessourceGroup, Double> relativeWerte = new HashMap<RessourceGroup, Double>();
     private final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
-    private Integer gesamtSumme;
 
-    public TimesPerRessourceGroupComputer(RessourceGroupsBean rBean, ProjektBean pBean){
-         ressourceGroupsBean = rBean;
+    private HierarchicalContainer dataSource;
+
+    public TreeTableDataSourceFiller(RessourceGroupsBean rBean, ProjektBean pBean, HierarchicalContainer dSource){
+        ressourceGroupsBean = rBean;
         projektBean = pBean;
+        dataSource = dSource;
         ressourceGroups = ressourceGroupsBean.getRessourceGroups();
+
+        dataSource.removeAllItems();
+            dataSource.addContainerProperty("Aufgabe", String.class, null);
+            for (final RessourceGroup ressourceGroup : ressourceGroups) {
+                dataSource.addContainerProperty(ressourceGroup.getName(), String.class, "");
+            }
+
+
+
     }
 
-    public void compute(){
-        for (final RessourceGroup spalte : this.ressourceGroups) {
-            relativeWerte.put(spalte, 0.0);
-        }
-
+    public void fill(){
         computePlanningUnitGroupsAndTotalsAbsolut();
-        computeTotalsRelative();
     }
 
     private void computePlanningUnitGroupsAndTotalsAbsolut() {
         for (final PlanningUnitGroup planningUnitGroup : projektBean.getProjekt().getPlanningUnitGroups()) {
-            final String planningUnitGroupName = planningUnitGroup.getPlanningUnitName();
+            final Item planningUnitGroupItem = dataSource.addItem(planningUnitGroup.getPlanningUnitName());
+            planningUnitGroupItem.getItemProperty("Aufgabe").setValue(planningUnitGroup.getPlanningUnitName());
             if (planningUnitGroup.getPlanningUnitList() == null || planningUnitGroup.getPlanningUnitList().isEmpty()) {
                 for (final RessourceGroup spalte : ressourceGroups) {
-                    for(PlanningUnitElement planningUnitElement : planningUnitGroup.getPlanningUnitElementList()){
+                    for(final PlanningUnitElement planningUnitElement : planningUnitGroup.getPlanningUnitElementList()){
                         if(planningUnitElement.getRessourceGroup().equals(spalte)){
                             planningUnitElement.setPlannedDays(0);
                             planningUnitElement.setPlannedHours(0);
                             planningUnitElement.setPlannedMinutes(0);
+                            DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem(planningUnitElement);
+                            planningUnitGroupItem.getItemProperty(spalte.getName()).setValue(daysHoursMinutesItem.toString());
                         }
                     }
                 }
             } else {
-                computePlanningUnits(planningUnitGroup.getPlanningUnitList(), planningUnitGroupName, ressourceGroupDaysHoursMinutesItemMap);
+                computePlanningUnits(planningUnitGroup.getPlanningUnitList(), planningUnitGroup.getPlanningUnitName());
             }
         }
     }
 
 
-    private void computePlanningUnits(List<PlanningUnit> planningUnits, String parent, Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap) {
-        for (PlanningUnit planningUnit : planningUnits) {
+    private void computePlanningUnits(List<PlanningUnit> planningUnits, String parent) {
+        for (final PlanningUnit planningUnit : planningUnits) {
+            final String planningUnitName = planningUnit.getPlanningUnitElementName();
+            final Item planningUnitItem = dataSource.addItem(planningUnitName);
+            planningUnitItem.getItemProperty("Aufgabe").setValue(planningUnitName);
+            dataSource.setParent(planningUnitName, parent);
             if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
-                addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, planningUnit);
+                for(final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()){
+                    final DaysHoursMinutesItem item = new DaysHoursMinutesItem(planningUnitElement);
+                    planningUnitItem.getItemProperty(planningUnitElement.getRessourceGroup().getName()).setValue(item.toString());
+                }
+                addiereZeileZurRessourceMap(planningUnit);
             } else {
-                computePlanningUnits(planningUnit.getKindPlanningUnits(), planningUnit.getPlanningUnitElementName(), ressourceGroupDaysHoursMinutesItemMap);
+                computePlanningUnits(planningUnit.getKindPlanningUnits(), planningUnitName);
             }
         }
         for (RessourceGroup spalte : ressourceGroups) {
-            for(PlanningUnitGroup planningUnitGroup : projektBean.getProjekt().getPlanningUnitGroups()){
-                for(PlanningUnitElement planningUnitElement : planningUnitGroup.getPlanningUnitElementList()){
-                    if(planningUnitElement.getRessourceGroup().equals(spalte)){
-                        planningUnitElement.setPlannedDays(ressourceGroupDaysHoursMinutesItemMap.get(spalte).getDays());
-                        planningUnitElement.setPlannedHours(ressourceGroupDaysHoursMinutesItemMap.get(spalte).getHours());
-                        planningUnitElement.setPlannedMinutes(ressourceGroupDaysHoursMinutesItemMap.get(spalte).getMinutes());
-                    }
-                }
-            }
+            dataSource.getItem(parent).getItemProperty(spalte.getName()).setValue(ressourceGroupDaysHoursMinutesItemMap.get(spalte).toString());
         }
     }
 
-    private void addiereZeileZurRessourceMap(Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap, PlanningUnit planningUnit) {
+    private void addiereZeileZurRessourceMap(PlanningUnit planningUnit) {
         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
             if (!planningUnitElement.getRessourceGroup().getName().equals("Aufgabe")) {
                 final RessourceGroup ressourceGroup1 = planningUnitElement.getRessourceGroup();
@@ -101,28 +110,6 @@ public class TimesPerRessourceGroupComputer {
         }
     }
 
-//    private void computeTotalsAbsolute() {
-//        for(RessourceGroup ressourceGroup : projektBean.getProjekt().getRessourceGroups()){
-//            System.out.println(ressourceGroup.getName() + ":" + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).toString());
-//        }
-//    }
-
-    private void computeTotalsRelative() {
-        gesamtSumme = 0;
-        for (Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry : ressourceGroupDaysHoursMinutesItemMap.entrySet()) {
-            gesamtSumme += absoluteWerteEntry.getValue().getDays() * 24 * 60;
-            gesamtSumme += absoluteWerteEntry.getValue().getHours() * 60;
-            gesamtSumme += absoluteWerteEntry.getValue().getMinutes();
-        }
-        for (Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry : ressourceGroupDaysHoursMinutesItemMap.entrySet()) {
-            final RessourceGroup absoluterWertRessourceGroup = absoluteWerteEntry.getKey();
-            Integer absoluterWertWert = absoluteWerteEntry.getValue().getDays() * 24 * 60;
-            absoluterWertWert += absoluteWerteEntry.getValue().getHours() * 60;
-            absoluterWertWert += absoluteWerteEntry.getValue().getMinutes();
-            relativeWerte.put(absoluterWertRessourceGroup, absoluterWertWert.doubleValue() / gesamtSumme.doubleValue() * 100.0);
-        }
-    }
-
     private void correctDaysHoursMinutesItem(DaysHoursMinutesItem item) {
         final int hours = item.getMinutes() / 60;
         if (hours > 0) {
@@ -134,13 +121,5 @@ public class TimesPerRessourceGroupComputer {
             item.setDays(item.getDays() + days);
             item.setHours(item.getHours() - (days * 24));
         }
-    }
-
-    public HashMap<RessourceGroup, Double> getRelativeWerte() {
-        return relativeWerte;
-    }
-
-    public Map<RessourceGroup, DaysHoursMinutesItem> getAbsoluteWerte() {
-        return ressourceGroupDaysHoursMinutesItemMap;
     }
 }

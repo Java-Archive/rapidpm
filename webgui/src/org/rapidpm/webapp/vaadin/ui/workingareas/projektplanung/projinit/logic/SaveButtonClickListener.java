@@ -6,7 +6,6 @@ import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.AufwandProjInitScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.*;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class SaveButtonClickListener implements ClickListener {
     public void buttonClick(ClickEvent event) {
         try {
             fieldGroup.commit();
-            screen.getTreeTable().setValue(null);    //null selection
+            //screen.getTreeTable().setValue(null);    //null selection
             final Projekt projekt = screen.getProjektBean().getProjekt();
             final String planningUnitName = screen.getDataSource().getItem(itemId).getItemProperty("Aufgabe").getValue().toString();
             if (knotenBlatt.equals(KnotenBlatt.PLANNING_UNIT_GROUP)) {
@@ -61,41 +60,12 @@ public class SaveButtonClickListener implements ClickListener {
                         planningUnitElement.setPlannedMinutes(Integer.parseInt(daysHoursMinutes[2]));
                     }
                 }
-
-//                for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
-//                    for (final PlanningUnit planningUnit : planningUnitGroup.getPlanningUnitList()) {
-//                        if (planningUnit.getPlanningUnitElementName().equals(itemId)) {
-//                            planningUnit.setPlanningUnitElementName(planningUnitName);
-//                            for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-//                                final String planningUnitElementRessourceGroupName = planningUnitElement.getRessourceGroup().getName();
-//                                final Property<?> planningUnitElementCellContent = screen.getDataSource().getItem(itemId).getItemProperty(planningUnitElementRessourceGroupName);
-//                                final String daysHoursMinutesString = planningUnitElementCellContent.getValue().toString();
-//                                final String[] daysHoursMinutes = daysHoursMinutesString.split(":");
-//                                planningUnitElement.setPlannedDays(Integer.parseInt(daysHoursMinutes[0]));
-//                                planningUnitElement.setPlannedHours(Integer.parseInt(daysHoursMinutes[1]));
-//                                planningUnitElement.setPlannedMinutes(Integer.parseInt(daysHoursMinutes[2]));
-//                            }
-//                        }
-//                    }
-//                }
             }
-            final TreeTableContainerFiller filler = new TreeTableContainerFiller(screen.getProjektBean(), screen.getRessourceGroupsBean());
+            TreeTableFiller filler = new TreeTableFiller(screen,screen.getProjektBean(),screen.getRessourceGroupsBean(),screen.getTreeTable(),screen.getDataSource());
             filler.fill();
-            screen.setDataSource(filler.getHierarchicalContainer());
-            final MyTreeTable treeTable = new MyTreeTable();
-            treeTable.setConnectedTable(screen.getUebersichtTable());
-            //treeTable.setSizeFull();
-            treeTable.setContainerDataSource(screen.getDataSource());
-            treeTable.addListener(new TableItemClickListener(screen));
-            treeTable.setColumnWidth("Aufgabe",250);
-            screen.setTreeTable(treeTable);
-            screen.getTable2layout().removeAllComponents();
-            screen.getTable2layout().addComponent(screen.getTreeTable());
-            //screen.getTable2layout().setSizeFull();
 
-            final ProjInitPlanningUnitKnotenComputer computer = new ProjInitPlanningUnitKnotenComputer(screen);
-            computer.compute();
-            computer.setValuesInScreen();
+            OverviewTableFiller overviewTableFiller = new OverviewTableFiller(screen.getUebersichtTable(),screen.getProjektBean(),screen.getRessourceGroupsBean());
+            overviewTableFiller.fill();
             screen.getFormLayout().setVisible(false);
         } catch (CommitException e) {
             //tue nichts falls commit nicht erfolgreich war
