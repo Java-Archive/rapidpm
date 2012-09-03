@@ -5,6 +5,7 @@ import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.logic.TimesComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
@@ -20,8 +21,7 @@ public class AufwandProjInitScreen extends Screen {
     private TextField projektLeiterField;
     private TextField unterschriftField;
     private TextField manntageField;
-    private TextField summeInMinField;
-    private TextField summeKundentermineInStdField;
+    private TextField summeField;
 
     private ProjektBean projektBean;
     private RessourceGroupsBean ressourceGroupsBean;
@@ -54,6 +54,8 @@ public class AufwandProjInitScreen extends Screen {
         final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(uebersichtTable, projektBean, ressourceGroupsBean);
         overviewTableFiller.fill();
 
+        fillFields();
+
         uebersichtTable.setPageLength(4);
         uebersichtTable.setConnectedTable(treeTable);
         treeTable.setConnectedTable(uebersichtTable);
@@ -72,13 +74,23 @@ public class AufwandProjInitScreen extends Screen {
 
     }
 
+    public void fillFields() {
+        final TimesComputer timesComputer = new TimesComputer(ressourceGroupsBean,projektBean);
+        timesComputer.compute();
+        manntageField.setReadOnly(false);
+        summeField.setReadOnly(false);
+        manntageField.setValue(timesComputer.getMannTageGerundet().toString());
+        summeField.setValue(timesComputer.getGesamtSummeItem().toString());
+        manntageField.setReadOnly(true);
+        summeField.setReadOnly(true);
+    }
+
     private void erstelleFelderLayout() {
         final Label kundeLabel = new Label("Kunde:");
         final Label projektLabel = new Label("Projekt:");
         final Label datumLabel = new Label("Datum:");
         final Label manntageLabel = new Label("MT:");
         final Label summeInMinLabel = new Label("Summe (d..)d:hh:mm");
-        final Label kundentermineLabel = new Label("Summe (d..)d:hh:mm (Kundentermine):");
         final VerticalLayout linkeZeilen = new VerticalLayout();
         final VerticalLayout rechteZeilen = new VerticalLayout();
         final HorizontalLayout linkeZeile1 = new HorizontalLayout();
@@ -94,11 +106,7 @@ public class AufwandProjInitScreen extends Screen {
         projektLeiterField = new TextField();
         unterschriftField = new TextField();
         manntageField = new TextField();
-        manntageField.setEnabled(false);
-        summeInMinField = new TextField();
-        summeInMinField.setEnabled(false);
-        summeKundentermineInStdField = new TextField();
-        summeKundentermineInStdField.setEnabled(false);
+        summeField = new TextField();
         // Horizontallayout (700px) beinhaltet 2 VerticalLayouts(jew. 350px)
         // beinhalten jeweils x horizontallayouts (sizefull)
         felderLayout.setWidth(ABSOLUTE_WIDTH);
@@ -126,9 +134,7 @@ public class AufwandProjInitScreen extends Screen {
         rechteZeile1
                 .setComponentAlignment(manntageField, Alignment.MIDDLE_LEFT);
         rechteZeile2.addComponent(summeInMinLabel);
-        rechteZeile2.addComponent(summeInMinField);
-        rechteZeile3.addComponent(kundentermineLabel);
-        rechteZeile3.addComponent(summeKundentermineInStdField);
+        rechteZeile2.addComponent(summeField);
 
         linkeZeilen.addComponent(linkeZeile1);
         linkeZeilen.addComponent(linkeZeile2);
@@ -223,21 +229,12 @@ public class AufwandProjInitScreen extends Screen {
         this.manntageField = manntageField;
     }
 
-    public TextField getSummeInMinField() {
-        return summeInMinField;
+    public TextField getSummeField() {
+        return summeField;
     }
 
-    public void setSummeInMinField(TextField summeInMinField) {
-        this.summeInMinField = summeInMinField;
-    }
-
-    public TextField getSummeKundentermineInStdField() {
-        return summeKundentermineInStdField;
-    }
-
-    public void setSummeKundentermineInStdField(
-            TextField summeKundentermineInStdField) {
-        this.summeKundentermineInStdField = summeKundentermineInStdField;
+    public void setSummeField(TextField summeField) {
+        this.summeField = summeField;
     }
 
     public VerticalLayout getFormLayout() {

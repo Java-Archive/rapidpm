@@ -66,6 +66,8 @@ public class SaveButtonClickListener implements ClickListener {
 
             OverviewTableFiller overviewTableFiller = new OverviewTableFiller(screen.getUebersichtTable(),screen.getProjektBean(),screen.getRessourceGroupsBean());
             overviewTableFiller.fill();
+
+            screen.fillFields();
             screen.getFormLayout().setVisible(false);
         } catch (CommitException e) {
             //tue nichts falls commit nicht erfolgreich war

@@ -2,11 +2,14 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs;
 
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
+import org.rapidpm.webapp.vaadin.Constants;
 import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.logic.CostsComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.logic.OverviewTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs.logic.TreeTableFiller;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.logic.TimesComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
@@ -15,14 +18,17 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmo
 public class CostsScreen extends Screen {
 
     private Button saveButton = new Button("Speichern");
-    private TextField kundeField;
-    private TextField projektField;
+    private TextField vertrieblerField;
     private TextField datumField;
-    private TextField projektLeiterField;
-    private TextField unterschriftField;
     private TextField manntageField;
     private TextField summeInMinField;
-    private TextField summeKundentermineInStdField;
+    private TextField kostenField;
+
+    //private Table einmaligeKostenTable = new Table();
+    //private Table monatlicheKostenTable = new Table();
+
+    private GridLayout unterschriftLayout = new GridLayout(2, 2);
+    private GridLayout felderLayout = new GridLayout(2, 5);
 
     private ProjektBean projektBean;
     private RessourceGroupsBean ressourceGroupsBean;
@@ -33,8 +39,6 @@ public class CostsScreen extends Screen {
     private static final String COLUMN_WIDTH = "350px";
     private static final String ABSOLUTE_WIDTH = "700px";
 
-    private HorizontalLayout felderLayout = new HorizontalLayout();
-    private VerticalLayout unterschriftLayout = new VerticalLayout();
     private VerticalLayout table1layout = new VerticalLayout();
     private VerticalLayout table2layout = new VerticalLayout();
     private VerticalLayout formLayout = new VerticalLayout();
@@ -73,97 +77,66 @@ public class CostsScreen extends Screen {
     }
 
     private void erstelleFelderLayout() {
-        final Label kundeLabel = new Label("Kunde:");
-        final Label projektLabel = new Label("Projekt:");
-        final Label datumLabel = new Label("Datum:");
-        final Label manntageLabel = new Label("MT:");
-        final Label summeInMinLabel = new Label("Summe (d..)d:hh:mm");
-        final Label kundentermineLabel = new Label("Summe (d..)d:hh:mm (Kundentermine):");
-        final VerticalLayout linkeZeilen = new VerticalLayout();
-        final VerticalLayout rechteZeilen = new VerticalLayout();
-        final HorizontalLayout linkeZeile1 = new HorizontalLayout();
-        final HorizontalLayout linkeZeile2 = new HorizontalLayout();
-        final HorizontalLayout linkeZeile3 = new HorizontalLayout();
-        final HorizontalLayout rechteZeile1 = new HorizontalLayout();
-        final HorizontalLayout rechteZeile2 = new HorizontalLayout();
-        final HorizontalLayout rechteZeile3 = new HorizontalLayout();
-
-        kundeField = new TextField();
-        projektField = new TextField();
-        datumField = new TextField();
-        projektLeiterField = new TextField();
-        unterschriftField = new TextField();
-        manntageField = new TextField();
-        manntageField.setEnabled(false);
-        summeInMinField = new TextField();
-        summeInMinField.setEnabled(false);
-        summeKundentermineInStdField = new TextField();
-        summeKundentermineInStdField.setEnabled(false);
-        // Horizontallayout (700px) beinhaltet 2 VerticalLayouts(jew. 350px)
-        // beinhalten jeweils x horizontallayouts (sizefull)
-        felderLayout.setWidth(ABSOLUTE_WIDTH);
-        linkeZeilen.setWidth(COLUMN_WIDTH);
-        rechteZeilen.setWidth(COLUMN_WIDTH);
-        linkeZeile1.setSizeFull();
-        linkeZeile2.setSizeFull();
-        linkeZeile3.setSizeFull();
-        rechteZeile1.setSizeFull();
-        rechteZeile2.setSizeFull();
-        rechteZeile3.setSizeFull();
-
-        linkeZeile1.addComponent(kundeLabel);
-        linkeZeile1.addComponent(kundeField);
-        linkeZeile1.setComponentAlignment(kundeLabel, Alignment.MIDDLE_LEFT);
-        linkeZeile1.setComponentAlignment(kundeField, Alignment.MIDDLE_LEFT);
-        linkeZeile2.addComponent(projektLabel);
-        linkeZeile2.addComponent(projektField);
-        linkeZeile3.addComponent(datumLabel);
-        linkeZeile3.addComponent(datumField);
-
-        rechteZeile1.addComponent(manntageLabel);
-        rechteZeile1.addComponent(manntageField);
-        rechteZeile1.setComponentAlignment(manntageLabel, Alignment.MIDDLE_LEFT);
-        rechteZeile1
-                .setComponentAlignment(manntageField, Alignment.MIDDLE_LEFT);
-        rechteZeile2.addComponent(summeInMinLabel);
-        rechteZeile2.addComponent(summeInMinField);
-        rechteZeile3.addComponent(kundentermineLabel);
-        rechteZeile3.addComponent(summeKundentermineInStdField);
-
-        linkeZeilen.addComponent(linkeZeile1);
-        linkeZeilen.addComponent(linkeZeile2);
-        linkeZeilen.addComponent(linkeZeile3);
-
-        rechteZeilen.addComponent(rechteZeile1);
-        rechteZeilen.addComponent(rechteZeile2);
-        rechteZeilen.addComponent(rechteZeile3);
-
-        felderLayout.addComponent(linkeZeilen);
-        felderLayout.addComponent(rechteZeilen);
+        final Label drei = new Label("MT:");
+        final Label vier = new Label("Summe [d:hh:mm]");
+        final Label fuenf = new Label("Kosten:");
+        // Textfelder
+        fillFields();
+        felderLayout.setWidth("350px");
+        felderLayout.addComponent(drei);
+        felderLayout.addComponent(manntageField);
+        felderLayout.addComponent(vier);
+        felderLayout.addComponent(summeInMinField);
+        felderLayout.addComponent(fuenf);
+        felderLayout.addComponent(kostenField);
+        felderLayout.setComponentAlignment(drei, Alignment.MIDDLE_LEFT);
+        felderLayout.setComponentAlignment(vier, Alignment.MIDDLE_LEFT);
+        felderLayout.setComponentAlignment(fuenf, Alignment.MIDDLE_LEFT);
+        felderLayout.setComponentAlignment(manntageField,
+                Alignment.MIDDLE_RIGHT);
+        felderLayout.setComponentAlignment(summeInMinField,
+                Alignment.MIDDLE_RIGHT);
+        felderLayout.setComponentAlignment(kostenField, Alignment.MIDDLE_RIGHT);
         felderLayout.setMargin(true, false, true, false);
-
     }
 
     private void erstelleUnterschriftLayout() {
-        final Label projleiterLabel = new Label("Projektleiter:");
-        final Label unterschriftLabel = new Label("Unterschrift PM:");
-        final HorizontalLayout zeile1 = new HorizontalLayout();
-        final HorizontalLayout zeile2 = new HorizontalLayout();
-        projektLeiterField = new TextField();
-        unterschriftField = new TextField();
-        unterschriftLayout.setWidth("350px");
-
-        zeile1.setSizeFull();
-        zeile2.setSizeFull();
-
-        zeile1.addComponent(projleiterLabel);
-        zeile1.addComponent(projektLeiterField);
-        zeile2.addComponent(unterschriftLabel);
-        zeile2.addComponent(unterschriftField);
-
-        unterschriftLayout.addComponent(zeile1);
-        unterschriftLayout.addComponent(zeile2);
+        final Label vertrieblerLabel = new Label("Verantwortlicher Vertriebler:");
+        final Label datumLabel = new Label("Datum:");
+        // Unterschrift
+        vertrieblerField = new TextField();
+        datumField = new TextField();
+        unterschriftLayout.setWidth("560px");
+        unterschriftLayout.addComponent(vertrieblerLabel);
+        unterschriftLayout.addComponent(vertrieblerField);
+        unterschriftLayout.addComponent(datumLabel);
+        unterschriftLayout.addComponent(datumField);
+        unterschriftLayout.setComponentAlignment(vertrieblerLabel, Alignment.MIDDLE_RIGHT);
+        unterschriftLayout.setComponentAlignment(datumLabel, Alignment.MIDDLE_RIGHT);
+        unterschriftLayout.setComponentAlignment(datumField,
+                Alignment.MIDDLE_LEFT);
+        unterschriftLayout.setComponentAlignment(vertrieblerField,
+                Alignment.MIDDLE_LEFT);
         unterschriftLayout.setMargin(true, false, true, false);
+
+
+    }
+
+    private void fillFields() {
+        final TimesComputer timesComputer = new TimesComputer(ressourceGroupsBean,projektBean);
+        final CostsComputer costsComputer = new CostsComputer(projektBean);
+        costsComputer.compute();
+        timesComputer.compute();
+        summeInMinField = new TextField();
+        summeInMinField.setValue(timesComputer.getGesamtSummeItem().toString());
+        manntageField = new TextField();
+        kostenField = new TextField();
+        manntageField.setValue(timesComputer.getMannTageGerundet().toString());
+        kostenField.setValue(costsComputer.getTotalCostsGerundet() + Constants.EUR);
+        kostenField.setReadOnly(true);
+        manntageField.setReadOnly(true);
+        summeInMinField.setReadOnly(true);
+
     }
 
     public void setComponents() {
@@ -175,22 +148,6 @@ public class CostsScreen extends Screen {
     }
 
 
-    public TextField getKundeField() {
-        return kundeField;
-    }
-
-    public void setKundeField(TextField kundeField) {
-        this.kundeField = kundeField;
-    }
-
-    public TextField getProjektField() {
-        return projektField;
-    }
-
-    public void setProjektField(TextField projektField) {
-        this.projektField = projektField;
-    }
-
     public TextField getDatumField() {
         return datumField;
     }
@@ -199,21 +156,6 @@ public class CostsScreen extends Screen {
         this.datumField = datumField;
     }
 
-    public TextField getProjektLeiterField() {
-        return projektLeiterField;
-    }
-
-    public void setProjektLeiterField(TextField projektLeiterField) {
-        this.projektLeiterField = projektLeiterField;
-    }
-
-    public TextField getUnterschriftField() {
-        return unterschriftField;
-    }
-
-    public void setUnterschriftField(TextField unterschriftField) {
-        this.unterschriftField = unterschriftField;
-    }
 
     public TextField getManntageField() {
         return manntageField;
@@ -229,15 +171,6 @@ public class CostsScreen extends Screen {
 
     public void setSummeInMinField(TextField summeInMinField) {
         this.summeInMinField = summeInMinField;
-    }
-
-    public TextField getSummeKundentermineInStdField() {
-        return summeKundentermineInStdField;
-    }
-
-    public void setSummeKundentermineInStdField(
-            TextField summeKundentermineInStdField) {
-        this.summeKundentermineInStdField = summeKundentermineInStdField;
     }
 
     public VerticalLayout getFormLayout() {

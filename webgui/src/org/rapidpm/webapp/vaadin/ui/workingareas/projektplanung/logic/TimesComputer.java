@@ -4,6 +4,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.daten
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.*;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +26,7 @@ public class TimesComputer {
     private HashMap<RessourceGroup, Double> relativeWerte = new HashMap<RessourceGroup, Double>();
     private final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
     private Integer gesamtSumme;
+    private Double mannTageExakt;
 
     public TimesComputer(RessourceGroupsBean rBean, ProjektBean pBean){
         ressourceGroupsBean = rBean;
@@ -39,6 +41,11 @@ public class TimesComputer {
 
         computePlanningUnitGroupsAndTotalsAbsolut();
         computeTotalsRelative();
+        computeMannTage();
+    }
+
+    private void computeMannTage() {
+        mannTageExakt = gesamtSumme / 60.0 * 8.0;
     }
 
     private void computePlanningUnitGroupsAndTotalsAbsolut() {
@@ -114,5 +121,25 @@ public class TimesComputer {
 
     public Map<RessourceGroup, DaysHoursMinutesItem> getAbsoluteWerte() {
         return ressourceGroupDaysHoursMinutesItemMap;
+    }
+
+    public Integer getGesamtSumme() {
+        return gesamtSumme;
+    }
+
+    public DaysHoursMinutesItem getGesamtSummeItem(){
+        final DaysHoursMinutesItem item = new DaysHoursMinutesItem();
+        item.setMinutes(gesamtSumme);
+        correctDaysHoursMinutesItem(item);
+        return item;
+    }
+
+    public Double getMannTageExakt() {
+        return mannTageExakt;
+    }
+
+    public String getMannTageGerundet() {
+        final DecimalFormat format = new DecimalFormat("#0.00");
+        return format.format(mannTageExakt);
     }
 }

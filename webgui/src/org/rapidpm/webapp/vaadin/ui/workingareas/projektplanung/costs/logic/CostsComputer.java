@@ -6,6 +6,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmo
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,12 +24,21 @@ public class CostsComputer {
 
     private final Map<RessourceGroup, Double> ressourceGroupsCostsMap = new HashMap<>();
 
+    private Double totalCostsExakt = 0.0;
+
     public CostsComputer(ProjektBean pBean){
         projektBean = pBean;
     }
 
     public void compute(){
         computePlanningUnitGroupsAndTotalsAbsolut();
+        computeTotalCosts();
+    }
+
+    private void computeTotalCosts() {
+        for(RessourceGroup ressourceGroup : ressourceGroupsCostsMap.keySet()){
+            totalCostsExakt += ressourceGroupsCostsMap.get(ressourceGroup);
+        }
     }
 
 
@@ -73,5 +83,14 @@ public class CostsComputer {
 
     public Map<RessourceGroup, Double> getRessourceGroupsCostsMap() {
         return ressourceGroupsCostsMap;
+    }
+
+    public Double getTotalCostsExakt(){
+        return totalCostsExakt;
+    }
+
+    public String getTotalCostsGerundet(){
+        final DecimalFormat format = new DecimalFormat("#0.00");
+        return format.format(totalCostsExakt);
     }
 }
