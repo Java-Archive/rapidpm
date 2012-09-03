@@ -14,12 +14,14 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.compone
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
 
+import java.util.Date;
+
 
 public class CostsScreen extends Screen {
 
     private Button saveButton = new Button("Speichern");
     private TextField vertrieblerField;
-    private TextField datumField;
+    private DateField datumField;
     private TextField manntageField;
     private TextField summeInMinField;
     private TextField kostenField;
@@ -27,8 +29,8 @@ public class CostsScreen extends Screen {
     //private Table einmaligeKostenTable = new Table();
     //private Table monatlicheKostenTable = new Table();
 
-    private GridLayout unterschriftLayout = new GridLayout(2, 2);
-    private GridLayout felderLayout = new GridLayout(2, 5);
+    private FormLayout unterschriftLayout = new FormLayout();
+    private FormLayout felderLayout = new FormLayout();
 
     private ProjektBean projektBean;
     private RessourceGroupsBean ressourceGroupsBean;
@@ -77,46 +79,23 @@ public class CostsScreen extends Screen {
     }
 
     private void erstelleFelderLayout() {
-        final Label drei = new Label("MT:");
-        final Label vier = new Label("Summe [d:hh:mm]");
-        final Label fuenf = new Label("Kosten:");
         // Textfelder
         fillFields();
         felderLayout.setWidth("350px");
-        felderLayout.addComponent(drei);
         felderLayout.addComponent(manntageField);
-        felderLayout.addComponent(vier);
         felderLayout.addComponent(summeInMinField);
-        felderLayout.addComponent(fuenf);
         felderLayout.addComponent(kostenField);
-        felderLayout.setComponentAlignment(drei, Alignment.MIDDLE_LEFT);
-        felderLayout.setComponentAlignment(vier, Alignment.MIDDLE_LEFT);
-        felderLayout.setComponentAlignment(fuenf, Alignment.MIDDLE_LEFT);
-        felderLayout.setComponentAlignment(manntageField,
-                Alignment.MIDDLE_RIGHT);
-        felderLayout.setComponentAlignment(summeInMinField,
-                Alignment.MIDDLE_RIGHT);
-        felderLayout.setComponentAlignment(kostenField, Alignment.MIDDLE_RIGHT);
         felderLayout.setMargin(true, false, true, false);
     }
 
     private void erstelleUnterschriftLayout() {
-        final Label vertrieblerLabel = new Label("Verantwortlicher Vertriebler:");
-        final Label datumLabel = new Label("Datum:");
         // Unterschrift
-        vertrieblerField = new TextField();
-        datumField = new TextField();
+        vertrieblerField = new TextField("Verantwortlicher Vertriebler:");
+        datumField = new DateField("Datum:",new Date());
+        datumField.setDateFormat(Constants.DATE_FORMAT.toPattern());
         unterschriftLayout.setWidth("560px");
-        unterschriftLayout.addComponent(vertrieblerLabel);
         unterschriftLayout.addComponent(vertrieblerField);
-        unterschriftLayout.addComponent(datumLabel);
         unterschriftLayout.addComponent(datumField);
-        unterschriftLayout.setComponentAlignment(vertrieblerLabel, Alignment.MIDDLE_RIGHT);
-        unterschriftLayout.setComponentAlignment(datumLabel, Alignment.MIDDLE_RIGHT);
-        unterschriftLayout.setComponentAlignment(datumField,
-                Alignment.MIDDLE_LEFT);
-        unterschriftLayout.setComponentAlignment(vertrieblerField,
-                Alignment.MIDDLE_LEFT);
         unterschriftLayout.setMargin(true, false, true, false);
 
 
@@ -127,10 +106,10 @@ public class CostsScreen extends Screen {
         final CostsComputer costsComputer = new CostsComputer(projektBean);
         costsComputer.compute();
         timesComputer.compute();
-        summeInMinField = new TextField();
+        summeInMinField = new TextField("Summe [d:hh:mm]");
         summeInMinField.setValue(timesComputer.getGesamtSummeItem().toString());
-        manntageField = new TextField();
-        kostenField = new TextField();
+        manntageField = new TextField("MT:");
+        kostenField = new TextField("Kosten:");
         manntageField.setValue(timesComputer.getMannTageGerundet().toString());
         kostenField.setValue(costsComputer.getTotalCostsGerundet() + Constants.EUR);
         kostenField.setReadOnly(true);
@@ -148,11 +127,11 @@ public class CostsScreen extends Screen {
     }
 
 
-    public TextField getDatumField() {
+    public DateField getDatumField() {
         return datumField;
     }
 
-    public void setDatumField(TextField datumField) {
+    public void setDatumField(DateField datumField) {
         this.datumField = datumField;
     }
 

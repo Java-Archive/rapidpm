@@ -60,8 +60,8 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         mainLayout = new VerticalLayout();
         mainLayout.setMargin(true);
         mainLayout.setSpacing(true);
-        mainLayout.addComponent(mainPanel);
         mainLayout.addComponent(ressourcesPanel);
+        mainLayout.addComponent(mainPanel);
         addComponent(mainLayout);
 
         final ArrayList<String> listenWerteArrayList = projektBean.getProjekt().getPlanningUnitGroupsNames();

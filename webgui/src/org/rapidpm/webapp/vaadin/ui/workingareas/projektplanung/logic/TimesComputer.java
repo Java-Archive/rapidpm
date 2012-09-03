@@ -45,7 +45,7 @@ public class TimesComputer {
     }
 
     private void computeMannTage() {
-        mannTageExakt = gesamtSumme / 60.0 * 8.0;
+        mannTageExakt = gesamtSumme / 60.0 / 8.0;
     }
 
     private void computePlanningUnitGroupsAndTotalsAbsolut() {

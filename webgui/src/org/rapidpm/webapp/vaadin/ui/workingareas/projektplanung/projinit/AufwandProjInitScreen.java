@@ -2,6 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit;
 
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
+import org.rapidpm.webapp.vaadin.Constants;
 import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
@@ -12,12 +13,14 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmo
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.OverviewTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.TreeTableFiller;
 
+import java.util.Date;
+
 public class AufwandProjInitScreen extends Screen {
 
     private Button saveButton = new Button("Speichern");
     private TextField kundeField;
     private TextField projektField;
-    private TextField datumField;
+    private DateField datumField;
     private TextField projektLeiterField;
     private TextField unterschriftField;
     private TextField manntageField;
@@ -34,7 +37,7 @@ public class AufwandProjInitScreen extends Screen {
     private static final String ABSOLUTE_WIDTH = "700px";
 
     private HorizontalLayout felderLayout = new HorizontalLayout();
-    private VerticalLayout unterschriftLayout = new VerticalLayout();
+    private FormLayout unterschriftLayout = new FormLayout();
     private VerticalLayout table1layout = new VerticalLayout();
     private VerticalLayout table2layout = new VerticalLayout();
     private VerticalLayout formLayout = new VerticalLayout();
@@ -86,89 +89,44 @@ public class AufwandProjInitScreen extends Screen {
     }
 
     private void erstelleFelderLayout() {
-        final Label kundeLabel = new Label("Kunde:");
-        final Label projektLabel = new Label("Projekt:");
-        final Label datumLabel = new Label("Datum:");
-        final Label manntageLabel = new Label("MT:");
-        final Label summeInMinLabel = new Label("Summe (d..)d:hh:mm");
-        final VerticalLayout linkeZeilen = new VerticalLayout();
-        final VerticalLayout rechteZeilen = new VerticalLayout();
-        final HorizontalLayout linkeZeile1 = new HorizontalLayout();
-        final HorizontalLayout linkeZeile2 = new HorizontalLayout();
-        final HorizontalLayout linkeZeile3 = new HorizontalLayout();
-        final HorizontalLayout rechteZeile1 = new HorizontalLayout();
-        final HorizontalLayout rechteZeile2 = new HorizontalLayout();
-        final HorizontalLayout rechteZeile3 = new HorizontalLayout();
+        final FormLayout layoutLinks = new FormLayout();
+        final FormLayout layoutRechts = new FormLayout();
 
-        kundeField = new TextField();
-        projektField = new TextField();
-        datumField = new TextField();
-        projektLeiterField = new TextField();
-        unterschriftField = new TextField();
-        manntageField = new TextField();
-        summeField = new TextField();
+        kundeField = new TextField("Kunde: ");
+        projektField = new TextField("Projekt: ");
+        datumField = new DateField("Datum: ", new Date());
+        datumField.setDateFormat(Constants.DATE_FORMAT.toPattern());
+        projektLeiterField = new TextField("Projektleiter: ");
+        unterschriftField = new TextField("Unterschrift: ");
+        manntageField = new TextField("MT: ");
+        summeField = new TextField("Summe (d:hh:mm): ");
         // Horizontallayout (700px) beinhaltet 2 VerticalLayouts(jew. 350px)
         // beinhalten jeweils x horizontallayouts (sizefull)
         felderLayout.setWidth(ABSOLUTE_WIDTH);
-        linkeZeilen.setWidth(COLUMN_WIDTH);
-        rechteZeilen.setWidth(COLUMN_WIDTH);
-        linkeZeile1.setSizeFull();
-        linkeZeile2.setSizeFull();
-        linkeZeile3.setSizeFull();
-        rechteZeile1.setSizeFull();
-        rechteZeile2.setSizeFull();
-        rechteZeile3.setSizeFull();
 
-        linkeZeile1.addComponent(kundeLabel);
-        linkeZeile1.addComponent(kundeField);
-        linkeZeile1.setComponentAlignment(kundeLabel, Alignment.MIDDLE_LEFT);
-        linkeZeile1.setComponentAlignment(kundeField, Alignment.MIDDLE_LEFT);
-        linkeZeile2.addComponent(projektLabel);
-        linkeZeile2.addComponent(projektField);
-        linkeZeile3.addComponent(datumLabel);
-        linkeZeile3.addComponent(datumField);
+        layoutLinks.addComponent(kundeField);
+        layoutLinks.addComponent(projektField);
+        layoutLinks.addComponent(datumField);
+        layoutLinks.setMargin(false,true,false,false);
 
-        rechteZeile1.addComponent(manntageLabel);
-        rechteZeile1.addComponent(manntageField);
-        rechteZeile1.setComponentAlignment(manntageLabel, Alignment.MIDDLE_LEFT);
-        rechteZeile1
-                .setComponentAlignment(manntageField, Alignment.MIDDLE_LEFT);
-        rechteZeile2.addComponent(summeInMinLabel);
-        rechteZeile2.addComponent(summeField);
+        layoutRechts.addComponent(manntageField);
+        layoutRechts.addComponent(summeField);
+        layoutRechts.setMargin(false,false,false,true);
 
-        linkeZeilen.addComponent(linkeZeile1);
-        linkeZeilen.addComponent(linkeZeile2);
-        linkeZeilen.addComponent(linkeZeile3);
-
-        rechteZeilen.addComponent(rechteZeile1);
-        rechteZeilen.addComponent(rechteZeile2);
-        rechteZeilen.addComponent(rechteZeile3);
-
-        felderLayout.addComponent(linkeZeilen);
-        felderLayout.addComponent(rechteZeilen);
+        felderLayout.addComponent(layoutLinks);
+        felderLayout.addComponent(layoutRechts);
         felderLayout.setMargin(true, false, true, false);
 
     }
 
     private void erstelleUnterschriftLayout() {
-        final Label projleiterLabel = new Label("Projektleiter:");
-        final Label unterschriftLabel = new Label("Unterschrift PM:");
-        final HorizontalLayout zeile1 = new HorizontalLayout();
-        final HorizontalLayout zeile2 = new HorizontalLayout();
-        projektLeiterField = new TextField();
-        unterschriftField = new TextField();
+        projektLeiterField = new TextField("Projektleiter:");
+        unterschriftField = new TextField("Unterschrift PM:");
         unterschriftLayout.setWidth("350px");
 
-        zeile1.setSizeFull();
-        zeile2.setSizeFull();
+        unterschriftLayout.addComponent(projektLeiterField);
+        unterschriftLayout.addComponent(unterschriftField);
 
-        zeile1.addComponent(projleiterLabel);
-        zeile1.addComponent(projektLeiterField);
-        zeile2.addComponent(unterschriftLabel);
-        zeile2.addComponent(unterschriftField);
-
-        unterschriftLayout.addComponent(zeile1);
-        unterschriftLayout.addComponent(zeile2);
         unterschriftLayout.setMargin(true, false, true, false);
     }
 
@@ -197,11 +155,11 @@ public class AufwandProjInitScreen extends Screen {
         this.projektField = projektField;
     }
 
-    public TextField getDatumField() {
+    public DateField getDatumField() {
         return datumField;
     }
 
-    public void setDatumField(TextField datumField) {
+    public void setDatumField(DateField datumField) {
         this.datumField = datumField;
     }
 
