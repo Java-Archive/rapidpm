@@ -9,7 +9,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.logic
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.logic.CalculatorTableComputer;
 
 public class CalculatorItemSetChangeListener implements ItemSetChangeListener {
-    private Logger logger = Logger.getLogger("org.apache");    //TODO ob ds der richtige ist ?
+    private Logger logger = Logger.getLogger(CalculatorItemSetChangeListener.class);
 
     private Table tabelle;
     private TextField betriebsstdField;

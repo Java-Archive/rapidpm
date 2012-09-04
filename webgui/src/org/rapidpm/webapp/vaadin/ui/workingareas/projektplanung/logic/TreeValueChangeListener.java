@@ -21,6 +21,8 @@ import java.util.ArrayList;
  */
 public class TreeValueChangeListener implements Property.ValueChangeListener {
 
+    private static final String RESSOURCE_GROUPS = "RessourceGroups";
+
     private ProjektplanungScreen screen;
     private Projekt projekt;
 
@@ -51,7 +53,7 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                 ressourcesPanel.removeAllComponents();
                 detailPanel.addComponent(new Label(itemName.toString()));
                 mainPanel.setCaption(itemName.toString());
-                ressourcesPanel.setCaption("RessourceGroups");
+                ressourcesPanel.setCaption(RESSOURCE_GROUPS);
                 final ArrayList<PlanningUnit> planningUnitList = new ArrayList<>();
                 for(final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()){
                     if(planningUnitGroup.getPlanningUnitName().equals(itemName.toString())){

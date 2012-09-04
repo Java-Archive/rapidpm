@@ -3,7 +3,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator;
 import com.vaadin.external.com.ibm.icu.text.DecimalFormat;
 import com.vaadin.terminal.gwt.client.ui.label.ContentMode;
 import com.vaadin.ui.*;
-import org.rapidpm.webapp.vaadin.Constants;
 import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.logic.CalculatorFieldsComputer;
@@ -16,6 +15,9 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.uicom
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.uicomponents.ItemClickDependentComponent;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static org.rapidpm.Constants.*;
 
 public class CalculatorScreen extends Screen {
 
@@ -35,7 +37,7 @@ public class CalculatorScreen extends Screen {
     private EditOptionButtonGroup optionGroup = new EditOptionButtonGroup();
 
 
-    private ArrayList<ItemClickDependentComponent> dependentComponents = new ArrayList<ItemClickDependentComponent>();
+    private List<ItemClickDependentComponent> dependentComponents = new ArrayList<>();
 
     public CalculatorScreen(MainRoot root) {
         this.root = root;
@@ -69,16 +71,17 @@ public class CalculatorScreen extends Screen {
         // formlayout wird bis zum itemclicklistener durchgereicht, savelayout
         // ebenfalls
         final CalculatorTableCreator creator = new CalculatorTableCreator(
-                root.getRessourceGroupsBean(), dependentComponents, delRowButton, upperFormLayout, lowerFormLayout, formLayout, saveButton,
-                betriebsWertField, betriebsstdField);
+                root.getRessourceGroupsBean(), dependentComponents, delRowButton, upperFormLayout, lowerFormLayout,
+                formLayout, saveButton, betriebsWertField, betriebsstdField);
 
         tabelle = creator.getTabelle();
         tabellenLayout.addComponent(tabelle);
         tabellenLayout.setSpacing(true);
         tabellenLayout.setMargin(false, false, true, false);
 
-        optionGroup.addListener(new EditGroupValueChangeListener(formLayout, upperFormLayout, lowerFormLayout, optionGroup, betriebsstdField, betriebsWertField, saveButton, tabelle));
-        optionGroup.setValue(Constants.ROWEDIT);
+        optionGroup.addListener(new EditGroupValueChangeListener(formLayout, upperFormLayout, lowerFormLayout,
+                optionGroup, betriebsstdField, betriebsWertField, saveButton, tabelle));
+        optionGroup.setValue(ROWEDIT);
         optionGroup.setImmediate(true);
 
         delRowButton.setEnabled(false);
@@ -104,11 +107,9 @@ public class CalculatorScreen extends Screen {
                 tabelle);
         computer.compute();
 
-        final DecimalFormat f = new DecimalFormat("0.00");
-        betriebsstdField.setValue(f.format(computer.getBetriebsStunde())
-                + Constants.EUR);
-        betriebsWertField.setValue(f.format(computer.getBetriebsWert())
-                + Constants.EUR);
+        final DecimalFormat f = new DecimalFormat(DECIMAL_FORMAT);
+        betriebsstdField.setValue(f.format(computer.getBetriebsStunde()) + EUR);
+        betriebsWertField.setValue(f.format(computer.getBetriebsWert()) + EUR);
 
         setComponents();
     }

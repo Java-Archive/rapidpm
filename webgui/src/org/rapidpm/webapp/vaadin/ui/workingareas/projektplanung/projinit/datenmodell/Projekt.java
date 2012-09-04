@@ -15,10 +15,10 @@ import java.util.List;
 public class Projekt {
     private long projektId;
     private String projektName;
-    private ArrayList<PlanningUnitGroup> planningUnitGroups = new ArrayList<>();
-    private ArrayList<RessourceGroup> ressourceGroups;
+    private List<PlanningUnitGroup> planningUnitGroups = new ArrayList<>();
+    private List<RessourceGroup> ressourceGroups;
 
-    public PlanningUnitGroup getPlanningUnitGroup(String itemId){
+    public PlanningUnitGroup getPlanningUnitGroup(final String itemId){
         PlanningUnitGroup result = null;
         for (PlanningUnitGroup planningUnitGroup : planningUnitGroups){
             if (planningUnitGroup.getPlanningUnitName().equals(itemId)){
@@ -28,18 +28,10 @@ public class Projekt {
         return result;
     }
 
-//    public PlanningUnit findPlanningUnitAndWriteReferenceInList(String itemId){
-//        PlanningUnit result = null;
-//        for (PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
-//           result = findPlanningUnitAndWriteReferenceInList(planningUnitGroup.getPlanningUnitList(), itemId);
-//        }
-//        return result;
-//    }
-
     //unelegant, aber funktional
-    public void findPlanningUnitAndWriteReferenceInList(List<PlanningUnit> planningUnits, String itemId, ArrayList<PlanningUnit> resultUnitList){
-        for (PlanningUnit planningUnit : planningUnits) {
-
+    public void findPlanningUnitAndWriteReferenceInList(final List<PlanningUnit> planningUnits, final String itemId,
+                                                        final List<PlanningUnit> resultUnitList){
+        for (final PlanningUnit planningUnit : planningUnits) {
             if (planningUnit.getPlanningUnitElementName().equals(itemId)) {
                 resultUnitList.add(planningUnit);
                 return;
@@ -68,11 +60,11 @@ public class Projekt {
         this.projektName = projektName;
     }
 
-    public ArrayList<PlanningUnitGroup> getPlanningUnitGroups() {
+    public List<PlanningUnitGroup> getPlanningUnitGroups() {
         return planningUnitGroups;
     }
 
-    public ArrayList<String> getPlanningUnitGroupsNames() {
+    public List<String> getPlanningUnitGroupsNames() {
         ArrayList<String> result = new ArrayList<>();
         for (PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
             result.add(planningUnitGroup.getPlanningUnitName());
@@ -84,11 +76,11 @@ public class Projekt {
         this.planningUnitGroups = planningUnitGroups;
     }
 
-    public ArrayList<RessourceGroup> getRessourceGroups() {
+    public List<RessourceGroup> getRessourceGroups() {
         return ressourceGroups;
     }
 
-    public void setRessourceGroups(ArrayList<RessourceGroup> ressourceGroups) {
+    public void setRessourceGroups(List<RessourceGroup> ressourceGroups) {
         this.ressourceGroups = ressourceGroups;
     }
 }

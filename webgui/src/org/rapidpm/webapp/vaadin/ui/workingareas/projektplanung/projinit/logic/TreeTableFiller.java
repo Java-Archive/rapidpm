@@ -7,6 +7,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.Aufwand
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
 
+import static org.rapidpm.Constants.*;
+
 /**
  * RapidPM - www.rapidpm.org
  * User: Marco
@@ -16,13 +18,16 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmo
  */
 public class TreeTableFiller {
 
+    private static final int WIDTH = 250;
     private HierarchicalContainer dataSource;
     private ProjektBean projektBean;
     private RessourceGroupsBean ressourceGroupsBean;
     private MyTreeTable treeTable;
     private AufwandProjInitScreen screen;
 
-    public TreeTableFiller(AufwandProjInitScreen screen, ProjektBean projektBean, RessourceGroupsBean ressourceGroupsBean, MyTreeTable treeTable, HierarchicalContainer dataSource) {
+    public TreeTableFiller(final AufwandProjInitScreen screen, final ProjektBean projektBean, 
+                           final RessourceGroupsBean ressourceGroupsBean, final MyTreeTable treeTable, 
+                           final HierarchicalContainer dataSource) {
         this.dataSource = dataSource;
         this.projektBean = projektBean;
         this.ressourceGroupsBean = ressourceGroupsBean;
@@ -31,15 +36,16 @@ public class TreeTableFiller {
     }
 
     public void fill() {
-        TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(ressourceGroupsBean, projektBean, dataSource);
+        final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(ressourceGroupsBean, 
+                projektBean, dataSource);
         treeTableDataSourceFiller.fill();
-        for(Object listener : treeTable.getListeners(ItemClickEvent.ItemClickListener.class)){
+        for(final Object listener : treeTable.getListeners(ItemClickEvent.ItemClickListener.class)){
             treeTable.removeListener((ItemClickEvent.ItemClickListener)listener);
         }
         treeTable.addListener(new TableItemClickListener(screen));
         treeTable.setContainerDataSource(this.dataSource);
-        treeTable.setColumnCollapsible("Aufgabe", false);
-        treeTable.setColumnWidth("Aufgabe",250);
+        treeTable.setColumnCollapsible(AUFGABE_SPALTE, false);
+        treeTable.setColumnWidth(AUFGABE_SPALTE, WIDTH);
         treeTable.setValue(null);
     }
 }

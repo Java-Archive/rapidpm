@@ -5,7 +5,7 @@ import java.util.List;
 
 public class RessourceGroupsBean {
 
-    private ArrayList<RessourceGroup> ressourceGroups = new ArrayList<>();
+    private List<RessourceGroup> ressourceGroups = new ArrayList<>();
 
     public RessourceGroupsBean(){
         fill();  //TODO indirekte Initialisierung ist meist nicht so gut..
@@ -100,7 +100,7 @@ public class RessourceGroupsBean {
         return ressourceGroups;
     }
 
-    public void setRessourceGroups(final ArrayList<RessourceGroup> ressourceGroups) {
+    public void setRessourceGroups(final List<RessourceGroup> ressourceGroups) {
         this.ressourceGroups = ressourceGroups;
     }
 }

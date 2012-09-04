@@ -1,7 +1,8 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components;
 
 import com.vaadin.data.Validator;
-import org.rapidpm.webapp.vaadin.Constants;
+
+import static org.rapidpm.Constants.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,14 +18,14 @@ public class DaysHoursMinutesFieldValidator implements Validator {
             return false;
         }
 
-        return ((String) value).matches(Constants.DAYSHOURSMINUTES_REGEX);
+        return ((String) value).matches(DAYSHOURSMINUTES_REGEX);
     }
 
     @Override
     public void validate(Object value) throws InvalidValueException {
         if (!isValid(value)) {
                 throw new InvalidValueException(
-                        Constants.DAYSHOURSMINUTES_VALIDATOR_EXCEPTION_MESSAGE);
+                        DAYSHOURSMINUTES_VALIDATOR_EXCEPTION_MESSAGE);
         }
     }
 }

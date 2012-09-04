@@ -1,7 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.logic;
 
 import com.vaadin.data.Item;
-import org.rapidpm.webapp.vaadin.Constants;
 
 import com.vaadin.external.com.ibm.icu.text.DecimalFormat;
 import com.vaadin.ui.Table;
@@ -27,8 +26,8 @@ public class CalculatorFieldsComputer {
             final Double sumPerDay = (Double) item.getItemProperty(SUM_PER_DAY).getValue();
             summeProTag += sumPerDay;
         }
-        betriebsStunde = summeProTag / Constants.HOURSPERDAY;
-        betriebsWert = summeProTag / Constants.KONSTANTE;
+        betriebsStunde = summeProTag / WORKINGHOURS_DAY;
+        betriebsWert = summeProTag / KONSTANTE;
     }
 
     public Double getBetriebsStunde() {
@@ -41,12 +40,12 @@ public class CalculatorFieldsComputer {
 
     public String getBetriebsStundeAsString() {
         final DecimalFormat f = new DecimalFormat(DECIMAL_FORMAT);
-        return f.format(betriebsStunde) + Constants.EUR;
+        return f.format(betriebsStunde) + EUR;
     }
 
     public String getBetriebsFraAsString() {
         final DecimalFormat f = new DecimalFormat(DECIMAL_FORMAT);
-        return f.format(betriebsWert) + Constants.EUR;
+        return f.format(betriebsWert) + EUR;
     }
 
 }

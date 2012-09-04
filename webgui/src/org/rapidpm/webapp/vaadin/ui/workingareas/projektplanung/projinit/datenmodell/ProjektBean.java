@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
+import static org.rapidpm.Constants.*;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Marco
@@ -20,6 +22,8 @@ import java.util.Date;
  */
 public class ProjektBean {
 
+
+    private  static final int MAXDAYS = 10;
 
     private Projekt projekt;
 
@@ -99,10 +103,10 @@ public class ProjektBean {
             final ArrayList<PlanningUnitElement> planningUnitElements = new ArrayList<>();
             for (final RessourceGroup ressourceGroup : ressourceGroupsBean.getRessourceGroups())          //für jede zelle
             {
-                PlanningUnitElement planningUnitElement = new PlanningUnitElement();
-                planningUnitElement.setPlannedDays((int) (Math.random() * 10));
-                planningUnitElement.setPlannedHours((int) (Math.random() * 24));
-                planningUnitElement.setPlannedMinutes((int) (Math.random() * 60));
+                final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
+                planningUnitElement.setPlannedDays((int) (Math.random() * MAXDAYS));
+                planningUnitElement.setPlannedHours((int) (Math.random() * HOURS_DAY));
+                planningUnitElement.setPlannedMinutes((int) (Math.random() * MINS_HOUR));
                 planningUnitElement.setRessourceGroup(ressourceGroup);
                 planningUnitElements.add(planningUnitElement);
             }
@@ -112,32 +116,32 @@ public class ProjektBean {
         //Erstkontakt vor Ort kinder übergeben
         for (final PlanningUnit planningUnit : planningUnitsVorbereitungen) {
             if (planningUnit.getPlanningUnitElementName().equals("Erstkontakt vor Ort")) {
-                ArrayList<PlanningUnit> childPlanningUnits = new ArrayList<>();
-                PlanningUnit childPlanningUnit1 = new PlanningUnit();
+                final ArrayList<PlanningUnit> childPlanningUnits = new ArrayList<>();
+                final PlanningUnit childPlanningUnit1 = new PlanningUnit();
                 childPlanningUnit1.setPlanningUnitElementName("Person A kontaktieren");
                 childPlanningUnit1.setIssueBase(createIssueBase());
                 final ArrayList<PlanningUnitElement> planningUnitElements1 = new ArrayList<>();
                 for (final RessourceGroup ressourceGroup : ressourceGroupsBean.getRessourceGroups())          //für jede zelle
                 {
                     PlanningUnitElement planningUnitElement = new PlanningUnitElement();
-                    planningUnitElement.setPlannedDays((int) (Math.random() * 10));
-                    planningUnitElement.setPlannedHours((int) (Math.random() * 24));
-                    planningUnitElement.setPlannedMinutes((int) (Math.random() * 60));
+                    planningUnitElement.setPlannedDays((int) (Math.random() * MAXDAYS));
+                    planningUnitElement.setPlannedHours((int) (Math.random() * HOURS_DAY));
+                    planningUnitElement.setPlannedMinutes((int) (Math.random() * MINS_HOUR));
                     planningUnitElement.setRessourceGroup(ressourceGroup);
                     planningUnitElements1.add(planningUnitElement);
                 }
                 childPlanningUnit1.setPlanningUnitElementList(planningUnitElements1);
 
-                PlanningUnit childPlanningUnit2 = new PlanningUnit();
+                final PlanningUnit childPlanningUnit2 = new PlanningUnit();
                 childPlanningUnit2.setPlanningUnitElementName("Person B kontaktieren");
                 childPlanningUnit2.setIssueBase(createIssueBase());
                 final ArrayList<PlanningUnitElement> planningUnitElements2 = new ArrayList<>();
                 for (final RessourceGroup ressourceGroup : ressourceGroupsBean.getRessourceGroups())          //für jede zelle
                 {
                     PlanningUnitElement planningUnitElement = new PlanningUnitElement();
-                    planningUnitElement.setPlannedDays((int) (Math.random() * 10));
-                    planningUnitElement.setPlannedHours((int) (Math.random() * 24));
-                    planningUnitElement.setPlannedMinutes((int) (Math.random() * 60));
+                    planningUnitElement.setPlannedDays((int) (Math.random() * MAXDAYS));
+                    planningUnitElement.setPlannedHours((int) (Math.random() * HOURS_DAY));
+                    planningUnitElement.setPlannedMinutes((int) (Math.random() * MINS_HOUR));
                     planningUnitElement.setRessourceGroup(ressourceGroup);
                     planningUnitElements2.add(planningUnitElement);
                 }

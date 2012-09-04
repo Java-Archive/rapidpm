@@ -7,9 +7,9 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component.Event;
-import org.rapidpm.webapp.vaadin.Constants;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.logic.CalculatorFieldsComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.logic.CalculatorTableComputer;
+import static org.rapidpm.Constants.*;
 
 public class EditGroupValueChangeListener implements ValueChangeListener {
     private OptionGroup editGroup;
@@ -21,9 +21,10 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
     private Layout upperFormLayout;
     private Layout lowerFormLayout;
 
-    public EditGroupValueChangeListener(Layout formLayout, Layout upperFormLayout, Layout lowerFormLayout, OptionGroup group,
-                                        TextField betriebsstdField, TextField betriebsfraField,
-                                        Button saveButton, Table tabelle) {
+    public EditGroupValueChangeListener(final Layout formLayout, final Layout upperFormLayout,
+                                        final Layout lowerFormLayout, final OptionGroup group,
+                                        final TextField betriebsstdField, final TextField betriebsfraField,
+                                        final Button saveButton, final Table tabelle) {
         this.betriebsfraField = betriebsfraField;
         this.betriebsstdField = betriebsstdField;
         this.editGroup = group;
@@ -39,7 +40,7 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
         final Property property = event.getProperty();
         final Object value = property.getValue();
         if (value != null) {
-            if (value.equals(Constants.TABLEEDIT)) {
+            if (value.equals(TABLEEDIT)) {
                 formLayout.setVisible(true);
                 upperFormLayout.setVisible(false);
                 lowerFormLayout.setVisible(true);
@@ -62,7 +63,7 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
                         tabelle.commit();
                         saveButton.setVisible(false);
                         EditModeGetter.setMode(EditModes.ROWEDIT);
-                        editGroup.setValue(Constants.ROWEDIT);
+                        editGroup.setValue(ROWEDIT);
                         tabelle.setEditable(false);
                         tabelle.setSelectable(true);
                         final CalculatorTableComputer computer = new CalculatorTableComputer(tabelle);

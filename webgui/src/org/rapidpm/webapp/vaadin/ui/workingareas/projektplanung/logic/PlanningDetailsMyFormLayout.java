@@ -2,7 +2,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.logic;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
-import org.rapidpm.webapp.vaadin.Constants;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.IssuePriorities;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.IssueStati;
@@ -12,6 +11,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmo
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
+
+import static org.rapidpm.Constants.*;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -27,6 +28,13 @@ import java.util.Iterator;
 public class PlanningDetailsMyFormLayout extends MyFormLayout {
 
 
+    private static final String CLOSED = "Closed";
+    private static final String RESOLVED = "Resolved";
+    private static final String PLANNED = "Planned";
+    private static final String PRIORITY = "Priority";
+    private static final String STATUS = "Status";
+    private static final String REPORTER = "Reporter";
+    private static final String ASSIGNEE = "Assignee";
     private ComboBox statusComboBox;
     private ComboBox priorityComboBox;
     private ComboBox reporterComboBox;
@@ -111,25 +119,25 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
     }
 
     private void buildClosedDateField(IssueBase issueBase) {
-        closedDateField = new DateField("Closed", issueBase.getDueDate_closed());
-        closedDateField.setDateFormat(Constants.DATE_FORMAT.toPattern());
+        closedDateField = new DateField(CLOSED, issueBase.getDueDate_closed());
+        closedDateField.setDateFormat(DATE_FORMAT.toPattern());
         closedDateField.setReadOnly(true);
     }
 
     private void buildResolvedDateField(IssueBase issueBase) {
-        resolvedDateField = new DateField("Resolved", issueBase.getDueDate_resolved());
-        resolvedDateField.setDateFormat(Constants.DATE_FORMAT.toPattern());
+        resolvedDateField = new DateField(RESOLVED, issueBase.getDueDate_resolved());
+        resolvedDateField.setDateFormat(DATE_FORMAT.toPattern());
         resolvedDateField.setReadOnly(true);
     }
 
     private void buildPlannedDateField(IssueBase issueBase) {
-        plannedDateField = new DateField("Planned", issueBase.getDueDate_planned());
-        plannedDateField.setDateFormat(Constants.DATE_FORMAT.toPattern());
+        plannedDateField = new DateField(PLANNED, issueBase.getDueDate_planned());
+        plannedDateField.setDateFormat(DATE_FORMAT.toPattern());
         plannedDateField.setReadOnly(true);
     }
 
     private void buildPriorityBox(IssueBase issueBase) {
-        priorityComboBox = new ComboBox("Priority", new BeanItemContainer<>(IssuePriorities.class, Arrays.asList(IssuePriorities.values())));
+        priorityComboBox = new ComboBox(PRIORITY, new BeanItemContainer<>(IssuePriorities.class, Arrays.asList(IssuePriorities.values())));
         priorityComboBox.setItemIconPropertyId("icon");
         priorityComboBox.setNullSelectionAllowed(false);
         priorityComboBox.select(IssuePriorities.valueOf(issueBase.getIssuePriority().getPriorityName()));
@@ -137,7 +145,7 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
     }
 
     private void buildStatusBox(IssueBase issueBase) {
-        statusComboBox = new ComboBox("Status", new BeanItemContainer<>(IssueStati.class, Arrays.asList(IssueStati.values())));
+        statusComboBox = new ComboBox(STATUS, new BeanItemContainer<>(IssueStati.class, Arrays.asList(IssueStati.values())));
         statusComboBox.setItemIconPropertyId("icon");
         statusComboBox.setNullSelectionAllowed(false);
         statusComboBox.select(IssueStati.valueOf(issueBase.getIssueStatus().getStatusName()));
@@ -145,14 +153,14 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
     }
 
     private void buildReporterBox(IssueBase issueBase) {
-        reporterComboBox = new ComboBox("Reporter", new BeanItemContainer<>(String.class, Arrays.asList(ProjektBean.issueUsers)));
+        reporterComboBox = new ComboBox(REPORTER, new BeanItemContainer<>(String.class, Arrays.asList(ProjektBean.issueUsers)));
         reporterComboBox.setNullSelectionAllowed(false);
         reporterComboBox.select(issueBase.getReporter().getLogin());
         reporterComboBox.setReadOnly(true);
     }
 
     private void buildAssigneeBox(IssueBase issueBase) {
-        assigneeComboBox = new ComboBox("Assignee", new BeanItemContainer<>(String.class, Arrays.asList(ProjektBean.issueUsers)));
+        assigneeComboBox = new ComboBox(ASSIGNEE, new BeanItemContainer<>(String.class, Arrays.asList(ProjektBean.issueUsers)));
         assigneeComboBox.setNullSelectionAllowed(false);
         assigneeComboBox.select(issueBase.getAssignee().getLogin());
         assigneeComboBox.setReadOnly(true);

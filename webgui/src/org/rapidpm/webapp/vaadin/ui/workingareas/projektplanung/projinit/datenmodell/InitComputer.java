@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.rapidpm.Constants.*;
+
 /**
  * RapidPM - www.rapidpm.org
  * User: Marco
@@ -19,7 +21,7 @@ public class InitComputer {
 
     private ProjektBean projektBean;
     private RessourceGroupsBean ressourceGroupsBean;
-    private ArrayList<RessourceGroup> ressourceGroups;
+    private List<RessourceGroup> ressourceGroups;
     private Projekt projekt;
 
     public InitComputer(ProjektBean projektBean, RessourceGroupsBean ressourceGroupsBean) {
@@ -47,71 +49,92 @@ public class InitComputer {
                     planningUnitGroup.getPlanningUnitElementList().add(planningUnitElement);
                 }
             } else {
-                computePlanningUnits(planningUnitGroup.getPlanningUnitList(), planningUnitGroup.getPlanningUnitName(), ressourceGroupDaysHoursMinutesItemMap);
+                computePlanningUnits(planningUnitGroup.getPlanningUnitList(), planningUnitGroup.getPlanningUnitName(),
+                        ressourceGroupDaysHoursMinutesItemMap);
             }
         }
     }
 
 
-    private void computePlanningUnits(List<PlanningUnit> planningUnits, String parent, Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap) {
-        for (PlanningUnit planningUnit : planningUnits) {
+    private void computePlanningUnits(final List<PlanningUnit> planningUnits, final String parent,
+                                      final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap) {
+        for (final PlanningUnit planningUnit : planningUnits) {
             if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
                 addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, planningUnit);
             } else {
-                computePlanningUnits(planningUnit.getKindPlanningUnits(), planningUnit.getPlanningUnitElementName(), ressourceGroupDaysHoursMinutesItemMap);
+                computePlanningUnits(planningUnit.getKindPlanningUnits(), planningUnit.getPlanningUnitElementName(),
+                        ressourceGroupDaysHoursMinutesItemMap);
             }
         }
         boolean parentIsGroup = false;
-        for (RessourceGroup ressourceGroup : ressourceGroups) {
-            for(PlanningUnitGroup group : projektBean.getProjekt().getPlanningUnitGroups()){
+        for (final RessourceGroup ressourceGroup : ressourceGroups) {
+            for(final PlanningUnitGroup group : projektBean.getProjekt().getPlanningUnitGroups()){
                 if (group.getPlanningUnitName().equals(parent)){
                     parentIsGroup = true;
                 }
             }
+            final Integer daysFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getDays();
+            final Integer hoursFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getHours();
+            final Integer minutesFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getMinutes();
             if(parentIsGroup){
                 PlanningUnitElement element = new PlanningUnitElement();
-                for(PlanningUnitElement planningUnitElement : projekt.getPlanningUnitGroup(parent).getPlanningUnitElementList()){
+                for(final PlanningUnitElement planningUnitElement : projekt.getPlanningUnitGroup(parent)
+                        .getPlanningUnitElementList()){
                     if (planningUnitElement.getRessourceGroup().getName().equals(ressourceGroup.getName())){
                         element = planningUnitElement;
                     }
                 }
                 final int index = projekt.getPlanningUnitGroup(parent).getPlanningUnitElementList().indexOf(element);
-                PlanningUnitElement pue = projekt.getPlanningUnitGroup(parent).getPlanningUnitElementList().get(index);
-                pue.setPlannedDays(ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getDays());
-                pue.setPlannedHours(ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getHours());
-                pue.setPlannedMinutes(ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getMinutes());
+                final PlanningUnitElement planningUnitElement = projekt.getPlanningUnitGroup(parent)
+                        .getPlanningUnitElementList().get(index);
+                planningUnitElement.setPlannedDays(daysFromMap);
+                planningUnitElement.setPlannedHours(hoursFromMap);
+                planningUnitElement.setPlannedMinutes(minutesFromMap);
             }else{
-                ArrayList<PlanningUnit> planningUnitsResultList = new ArrayList<>();
-                for(PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()){
-                    projekt.findPlanningUnitAndWriteReferenceInList(planningUnitGroup.getPlanningUnitList(),parent,planningUnitsResultList);
+                final ArrayList<PlanningUnit> planningUnitsResultList = new ArrayList<>();
+                for(final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()){
+                    projekt.findPlanningUnitAndWriteReferenceInList(planningUnitGroup.getPlanningUnitList(),parent,
+                            planningUnitsResultList);
                 }
                 PlanningUnitElement element = new PlanningUnitElement();
-                for(PlanningUnitElement planningUnitElement : planningUnitsResultList.get(0).getPlanningUnitElementList()){
+                for(final PlanningUnitElement planningUnitElement : planningUnitsResultList.get(0)
+                        .getPlanningUnitElementList()){
                     if (planningUnitElement.getRessourceGroup().getName().equals(ressourceGroup.getName())){
                         element = planningUnitElement;
                     }
                 }
                 final int index = planningUnitsResultList.get(0).getPlanningUnitElementList().indexOf(element);
-               PlanningUnitElement pue = planningUnitsResultList.get(0).getPlanningUnitElementList().get(index);
-                pue.setPlannedDays(ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getDays());
-                pue.setPlannedHours(ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getHours());
-                pue.setPlannedMinutes(ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getMinutes());
+                final PlanningUnitElement planningUnitElement = planningUnitsResultList.get(0)
+                        .getPlanningUnitElementList().get(index);
+                planningUnitElement.setPlannedDays(daysFromMap);
+                planningUnitElement.setPlannedHours(hoursFromMap);
+                planningUnitElement.setPlannedMinutes(minutesFromMap);
             }
         }
     }
 
-    private void addiereZeileZurRessourceMap(Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap, PlanningUnit planningUnit) {
+    private void addiereZeileZurRessourceMap(final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap,
+                                             final PlanningUnit planningUnit) {
         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-            if (!planningUnitElement.getRessourceGroup().getName().equals("Aufgabe")) {
+            if (!planningUnitElement.getRessourceGroup().getName().equals(AUFGABE_SPALTE)) {
                 final RessourceGroup ressourceGroup1 = planningUnitElement.getRessourceGroup();
                 final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
-                daysHoursMinutesItem.setDays(planningUnitElement.getPlannedDays());
-                daysHoursMinutesItem.setHours(planningUnitElement.getPlannedHours());
-                daysHoursMinutesItem.setMinutes(planningUnitElement.getPlannedMinutes());
+                final int plannedDays = planningUnitElement.getPlannedDays();
+                final int plannedHours = planningUnitElement.getPlannedHours();
+                final int plannedMinutes = planningUnitElement.getPlannedMinutes();
+                daysHoursMinutesItem.setDays(plannedDays);
+                daysHoursMinutesItem.setHours(plannedHours);
+                daysHoursMinutesItem.setMinutes(plannedMinutes);
                 if (ressourceGroupDaysHoursMinutesItemMap.containsKey(ressourceGroup1)) {
-                    daysHoursMinutesItem.setDays(daysHoursMinutesItem.getDays() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getDays());
-                    daysHoursMinutesItem.setHours(daysHoursMinutesItem.getHours() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getHours());
-                    daysHoursMinutesItem.setMinutes(daysHoursMinutesItem.getMinutes() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getMinutes());
+                    final Integer days = daysHoursMinutesItem.getDays();
+                    final Integer hours = daysHoursMinutesItem.getHours();
+                    final Integer minutes = daysHoursMinutesItem.getMinutes();
+                    final Integer daysFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getDays();
+                    final Integer hoursFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getHours();
+                    final Integer minutesFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getMinutes();
+                    daysHoursMinutesItem.setDays(days + daysFromMap);
+                    daysHoursMinutesItem.setHours(hours + hoursFromMap);
+                    daysHoursMinutesItem.setMinutes(minutes + minutesFromMap);
                 }
                 correctDaysHoursMinutesItem(daysHoursMinutesItem);
                 ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup1, daysHoursMinutesItem);
@@ -122,15 +145,15 @@ public class InitComputer {
 
 
     private void correctDaysHoursMinutesItem(DaysHoursMinutesItem item) {
-        final int hours = item.getMinutes() / 60;
+        final int hours = item.getMinutes() / MINS_HOUR;
         if (hours > 0) {
             item.setHours(item.getHours() + hours);
-            item.setMinutes(item.getMinutes() - (hours * 60));
+            item.setMinutes(item.getMinutes() - (hours * MINS_HOUR));
         }
-        final int days = item.getHours() / 24;
+        final int days = item.getHours() / HOURS_DAY;
         if (days > 0) {
             item.setDays(item.getDays() + days);
-            item.setHours(item.getHours() - (days * 24));
+            item.setHours(item.getHours() - (days * HOURS_DAY));
         }
     }
 

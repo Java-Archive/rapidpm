@@ -2,7 +2,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit;
 
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
-import org.rapidpm.webapp.vaadin.Constants;
 import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
@@ -12,6 +11,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.compone
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.OverviewTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic.TreeTableFiller;
+
+import static org.rapidpm.Constants.*;
 
 import java.util.Date;
 
@@ -95,7 +96,7 @@ public class AufwandProjInitScreen extends Screen {
         kundeField = new TextField("Kunde: ");
         projektField = new TextField("Projekt: ");
         datumField = new DateField("Datum: ", new Date());
-        datumField.setDateFormat(Constants.DATE_FORMAT.toPattern());
+        datumField.setDateFormat(DATE_FORMAT.toPattern());
         projektLeiterField = new TextField("Projektleiter: ");
         unterschriftField = new TextField("Unterschrift: ");
         manntageField = new TextField("MT: ");

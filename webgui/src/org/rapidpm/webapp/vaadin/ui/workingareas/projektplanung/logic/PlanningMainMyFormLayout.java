@@ -17,6 +17,9 @@ import java.util.Iterator;
  */
 public class PlanningMainMyFormLayout extends MyFormLayout {
 
+    private static final String STORYPOINTS = "Storypoints";
+    private static final String BESCHREIBUNG = "Beschreibung";
+    private static final String TESTCASE = "Testcase ";
     private TextArea descriptionTextArea;
     private ComboBox storyPointsComboBox;
     private ArrayList<TextArea> testCasesAreas = new ArrayList<>();
@@ -82,14 +85,14 @@ public class PlanningMainMyFormLayout extends MyFormLayout {
     }
 
     private void buildTestCaseArea(Integer testCaseCounter, String testCase) {
-        TextArea testCaseArea = new TextArea("Testcase "+testCaseCounter, testCase);
+        final TextArea testCaseArea = new TextArea(TESTCASE +testCaseCounter, testCase);
         testCaseArea.setReadOnly(true);
         testCaseArea.setSizeFull();
         testCasesAreas.add(testCaseArea);
     }
 
     private void buildDescriptionTextArea(IssueBase issueBase) {
-        descriptionTextArea = new TextArea("Beschreibung");
+        descriptionTextArea = new TextArea(BESCHREIBUNG);
         descriptionTextArea.setValue(issueBase.getText());
         descriptionTextArea.setReadOnly(true);
         descriptionTextArea.setSizeFull();
@@ -97,7 +100,7 @@ public class PlanningMainMyFormLayout extends MyFormLayout {
 
     private void buildStoryPointsListSelect(IssueBase issueBase) {
         final Integer[] storyPoints = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-        storyPointsComboBox = new ComboBox("Storypoints", Arrays.asList(storyPoints) );
+        storyPointsComboBox = new ComboBox(STORYPOINTS, Arrays.asList(storyPoints) );
         storyPointsComboBox.setValue(issueBase.getStoryPoints());
         storyPointsComboBox.setNullSelectionAllowed(false);
         storyPointsComboBox.setReadOnly(true);

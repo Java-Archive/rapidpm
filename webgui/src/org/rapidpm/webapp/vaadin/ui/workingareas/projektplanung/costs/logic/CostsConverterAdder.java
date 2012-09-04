@@ -7,6 +7,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.interfaces.Conve
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import static org.rapidpm.Constants.*;
+
 public class CostsConverterAdder implements ConverterAdder {
 
     @Override
@@ -14,7 +16,7 @@ public class CostsConverterAdder implements ConverterAdder {
 
 
         for(Object spaltenId : tabelle.getContainerPropertyIds()){
-            if(!spaltenId.equals("Aufgabe")){
+            if(!spaltenId.equals(AUFGABE_SPALTE)){
                 tabelle.setConverter(spaltenId,
                         new StringToNumberConverter() {
                             @Override

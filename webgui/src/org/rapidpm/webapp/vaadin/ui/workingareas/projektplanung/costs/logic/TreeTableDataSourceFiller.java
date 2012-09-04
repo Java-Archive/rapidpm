@@ -4,12 +4,16 @@ import com.vaadin.data.Item;
 import com.vaadin.data.util.HierarchicalContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.*;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnit;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitElement;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.rapidpm.Constants.*;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -19,22 +23,22 @@ import java.util.Map;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 public class TreeTableDataSourceFiller {
-
     private RessourceGroupsBean ressourceGroupsBean;
     private ProjektBean projektBean;
-    private ArrayList<RessourceGroup> ressourceGroups;
+    private List<RessourceGroup> ressourceGroups;
     private final Map<RessourceGroup, Double> ressourceGroupsCostsMap = new HashMap<>();
 
     private HierarchicalContainer dataSource;
 
-    public TreeTableDataSourceFiller(RessourceGroupsBean rBean, ProjektBean pBean, HierarchicalContainer dSource){
+    public TreeTableDataSourceFiller(final RessourceGroupsBean rBean, final ProjektBean pBean,
+                                     final HierarchicalContainer dSource){
         ressourceGroupsBean = rBean;
         projektBean = pBean;
         dataSource = dSource;
         ressourceGroups = ressourceGroupsBean.getRessourceGroups();
 
         dataSource.removeAllItems();
-        dataSource.addContainerProperty("Aufgabe", String.class, null);
+        dataSource.addContainerProperty(AUFGABE_SPALTE, String.class, null);
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
             dataSource.addContainerProperty(ressourceGroup.getName(), Double.class, "");
         }
@@ -51,10 +55,10 @@ public class TreeTableDataSourceFiller {
         for (final PlanningUnitGroup planningUnitGroup : projektBean.getProjekt().getPlanningUnitGroups()) {
             final String planningUnitGroupName = planningUnitGroup.getPlanningUnitName();
             final Item planningUnitGroupItem = dataSource.addItem(planningUnitGroupName);
-            planningUnitGroupItem.getItemProperty("Aufgabe").setValue(planningUnitGroupName);
+            planningUnitGroupItem.getItemProperty(AUFGABE_SPALTE).setValue(planningUnitGroupName);
             if (planningUnitGroup.getPlanningUnitList() == null || planningUnitGroup.getPlanningUnitList().isEmpty()) {
                 for (final RessourceGroup spalte : ressourceGroups) {
-                    for(PlanningUnitElement planningUnitElement : planningUnitGroup.getPlanningUnitElementList()){
+                    for(final PlanningUnitElement planningUnitElement : planningUnitGroup.getPlanningUnitElementList()){
                         if(planningUnitElement.getRessourceGroup().equals(spalte)){
                             planningUnitGroupItem.getItemProperty(spalte.getName()).setValue(0.0);
                         }
@@ -71,7 +75,7 @@ public class TreeTableDataSourceFiller {
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitElementName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
-            planningUnitItem.getItemProperty("Aufgabe").setValue(planningUnitName);
+            planningUnitItem.getItemProperty(AUFGABE_SPALTE).setValue(planningUnitName);
             dataSource.setParent(planningUnitName, parent);
             if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
                 for(final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()){
@@ -83,17 +87,16 @@ public class TreeTableDataSourceFiller {
                 computePlanningUnits(planningUnit.getKindPlanningUnits(), planningUnitName);
             }
         }
-        for (RessourceGroup spalte : ressourceGroups) {
+        for (final RessourceGroup spalte : ressourceGroups) {
             dataSource.getItem(parent).getItemProperty(spalte.getName()).setValue(ressourceGroupsCostsMap.get(spalte));
         }
     }
 
     private void addiereZeileZurRessourceMap(PlanningUnit planningUnit) {
         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-            if (!planningUnitElement.getRessourceGroup().getName().equals("Aufgabe")) {
+            if (!planningUnitElement.getRessourceGroup().getName().equals(AUFGABE_SPALTE)) {
                 final RessourceGroup ressourceGroup1 = planningUnitElement.getRessourceGroup();
-                Double costs;
-                costs = getCosts(planningUnitElement);
+                Double costs = getCosts(planningUnitElement);
                 if (ressourceGroupsCostsMap.containsKey(ressourceGroup1)) {
                     costs += ressourceGroupsCostsMap.get(ressourceGroup1);
                 }
@@ -103,10 +106,12 @@ public class TreeTableDataSourceFiller {
     }
 
     private Double getCosts(PlanningUnitElement planningUnitElement) {
-        Double hours = (24.0*planningUnitElement.getPlannedDays())
-                +planningUnitElement.getPlannedHours()
-                +(1.0/60.0*planningUnitElement.getPlannedMinutes());
-        return hours * planningUnitElement.getRessourceGroup().getExternalEurosPerHour();
+        final int hoursFromDays = HOURS_DAY * planningUnitElement.getPlannedDays();
+        final int hours = planningUnitElement.getPlannedHours();
+        final double hoursFromMinutes = STD_ANTEILE * planningUnitElement.getPlannedMinutes();
+        final Double totalHours = hoursFromDays + hours + hoursFromMinutes;
+        final Double externalEurosPerHour = planningUnitElement.getRessourceGroup().getExternalEurosPerHour();
+        return totalHours * externalEurosPerHour;
     }
 
 }

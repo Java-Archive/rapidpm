@@ -3,10 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.uico
 import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroup;
 
 import java.util.ArrayList;
@@ -27,6 +24,7 @@ public class RowFieldGroup extends FieldGroup {
 
     public RowFieldGroup(Item item) {
         setItemDataSource(item);
+
         buildForm();
     }
 
@@ -38,8 +36,11 @@ public class RowFieldGroup extends FieldGroup {
                     && !spaltenName.equals("bruttoPerMonth")
                     && !spaltenName.equals("operativeEurosPerHour")
                     && !spaltenName.equals("eurosPerHour")
-                    && !spaltenName.equals("hoursPerYear"))
-                gridLayout.addComponent(buildAndBind(propertyId));
+                    && !spaltenName.equals("hoursPerYear")){
+                    AbstractTextField field = (AbstractTextField) buildAndBind(propertyId);
+                field.setNullRepresentation("");
+                gridLayout.addComponent(field);
+            }
         }
 
         horizontalButtonLayout.setSpacing(true);

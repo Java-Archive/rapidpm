@@ -4,7 +4,6 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.external.com.ibm.icu.text.DecimalFormat;
 import com.vaadin.ui.Table;
-import org.rapidpm.webapp.vaadin.Constants;
 
 import java.util.Collection;
 
@@ -41,78 +40,83 @@ public class CalculatorTableComputer {
     public void computeColumns() {
         itemIds = table.getItemIds();
         for (final Object itemId : itemIds) {
-            computeHoursPerYear(itemId);
-            computeEurosPerHour(itemId);
-            computeOperativeEurosPerHour(itemId);
-            computeBruttoPerMonth(itemId);
-            computeSumPerMonth(itemId);
-            computeSumPerDay(itemId);
+            final Item item = table.getItem(itemId);
+            computeHoursPerYear(item);
+            computeEurosPerHour(item);
+            computeOperativeEurosPerHour(item);
+            computeBruttoPerMonth(item);
+            computeSumPerMonth(item);
+            computeSumPerDay(item);
         }
         final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
-        table.setColumnFooter(SUM_PER_MONTH, format.format(sumPerMonthTotal)+ Constants.EUR);
-        table.setColumnFooter(SUM_PER_DAY, format.format(sumPerDayTotal) + Constants.EUR);
+        table.setColumnFooter(SUM_PER_MONTH, format.format(sumPerMonthTotal)+ EUR);
+        table.setColumnFooter(SUM_PER_DAY, format.format(sumPerDayTotal) + EUR);
         table.setColumnFooter(RESSOURCE, GESAMTSUMMEN);
     }
 
-    private void computeHoursPerYear(final Object itemId) {
-        final Item item = table.getItem(itemId);
-        final Integer hoursPerWeek = (Integer) getCellContent(itemId, HOURS_PER_WEEK);
-        final Integer weeksPerYear = (Integer) getCellContent(itemId, WEEKS_PER_YEAR);
+    private void computeHoursPerYear(final Item item) {
+        final Integer hoursPerWeek = Integer.parseInt(getCellContent(item, HOURS_PER_WEEK));
+        final Integer weeksPerYear = Integer.parseInt(getCellContent(item, WEEKS_PER_YEAR));
         final Integer hoursPerYear = hoursPerWeek * weeksPerYear;
         final Property<?> itemProperty = item.getItemProperty(HOURS_PER_YEAR);
         itemProperty.setValue(hoursPerYear);
     }
 
-    private void computeEurosPerHour(final Object itemId) {
-        final Item item = table.getItem(itemId);
-        final Double bruttoGehalt = (Double) getCellContent(itemId, BRUTTO_GEHALT);
-        final double hoursPerYear = Double.parseDouble(getCellContent(itemId, HOURS_PER_YEAR).toString());
-        final double facturierbar = Double.parseDouble(getCellContent(itemId, FACTURIZABLE).toString());
+    private void computeEurosPerHour(final Item item) {
+        final Double bruttoGehalt = Double.parseDouble(getCellContent(item, BRUTTO_GEHALT));
+        final Double hoursPerYear = Double.parseDouble(getCellContent(item, HOURS_PER_YEAR));
+        final Double facturierbar = Double.parseDouble(getCellContent(item, FACTURIZABLE));
         final Double eurosPerHour = bruttoGehalt/ (hoursPerYear * facturierbar);
-        item.getItemProperty(EUROS_PER_HOUR).setValue(eurosPerHour);
+        final Property<?> itemProperty = item.getItemProperty(EUROS_PER_HOUR);
+        itemProperty.setValue(eurosPerHour);
     }
 
-    private void computeOperativeEurosPerHour(final Object itemId) {
-        final Item item = table.getItem(itemId);
-        final Double externalEurosPerHour = (Double) getCellContent(itemId, EXTERNAL_EUROS_PER_HOUR);
-        final Double eurosPerHour = (Double) getCellContent(itemId, EUROS_PER_HOUR);
+    private void computeOperativeEurosPerHour(final Item item) {
+        final Double externalEurosPerHour = Double.parseDouble(getCellContent(item, EXTERNAL_EUROS_PER_HOUR));
+        final Double eurosPerHour = Double.parseDouble(getCellContent(item, EUROS_PER_HOUR));
         final Double operativeEurosPerHour = externalEurosPerHour - eurosPerHour;
-        item.getItemProperty(OPERATIVE_EUROS_PER_HOUR).setValue(operativeEurosPerHour);
+        final Property<?> itemProperty = item.getItemProperty(OPERATIVE_EUROS_PER_HOUR);
+        itemProperty.setValue(operativeEurosPerHour);
     }
 
-    private void computeBruttoPerMonth(final Object itemId) {
-        final Double bruttoGehalt = (Double) getCellContent(itemId, BRUTTO_GEHALT);
+    private void computeBruttoPerMonth(final Item item) {
+        final Double bruttoGehalt = Double.parseDouble(getCellContent(item, BRUTTO_GEHALT));
         final Double bruttoPerMonth = bruttoGehalt / MONTH_COUNT_YEAR;
-        final Item item = table.getItem(itemId);
-        item.getItemProperty(BRUTTO_PER_MONTH).setValue(bruttoPerMonth);
+        final Property<?> itemProperty = item.getItemProperty(BRUTTO_PER_MONTH);
+        itemProperty.setValue(bruttoPerMonth);
     }
 
-    private void computeSumPerMonth(final Object itemId) {
-        final Double bruttoPerMonth = (Double) getCellContent(itemId, BRUTTO_PER_MONTH);
-        final double planAnzahl = Double.parseDouble(getCellContent(itemId, PLAN_ANZAHL).toString());
+    private void computeSumPerMonth(final Item item) {
+        final Double bruttoPerMonth = Double.parseDouble(getCellContent(item, BRUTTO_PER_MONTH));
+        final Double planAnzahl = Double.parseDouble(getCellContent(item, PLAN_ANZAHL));
         final Double sumPerMonth = bruttoPerMonth * planAnzahl;
-        final Item item = table.getItem(itemId);
         final Property<?> itemProperty = item.getItemProperty(SUM_PER_MONTH);
         itemProperty.setValue(sumPerMonth);
 
         sumPerMonthTotal += sumPerMonth;
     }
 
-    private void computeSumPerDay(final Object itemId) {
-        final Double sumPerMonth = (Double) getCellContent(itemId, SUM_PER_MONTH);
+    private void computeSumPerDay(final Item item) {
+        final Double sumPerMonth = Double.parseDouble(getCellContent(item, SUM_PER_MONTH));
         final Double sumPerDay = sumPerMonth / STD_WORKING_DAYS_PER_MONTH;
-        final Item item = table.getItem(itemId);
-        item.getItemProperty(SUM_PER_DAY).setValue(sumPerDay);
+        final Property<?> itemProperty = item.getItemProperty(SUM_PER_DAY);
+        itemProperty.setValue(sumPerDay);
 
         sumPerDayTotal += sumPerDay;
 
     }
 
-    private Object getCellContent(final Object itemId, final String propertyId) {
-        final Item item = table.getItem(itemId);
-        final Property<?> itemProperty = item.getItemProperty(propertyId);
-        final Object value = itemProperty.getValue();
-        return value;
+    private String getCellContent(final Item item, final String propertyId) {
+        Property<?> itemProperty = null;
+        String value = null;
+        try{
+           itemProperty = item.getItemProperty(propertyId);
+           value = itemProperty.getValue().toString();
+        } catch(NullPointerException npe) {
+            value = "0";
+        }finally {
+            return value;
+        }
     }
 
 }

@@ -8,12 +8,13 @@ import com.vaadin.ui.Component.Event;
 import com.vaadin.ui.GridLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.DaysHoursMinutesFieldValidator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.KnotenBlatt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.KnotenBlatt;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static org.rapidpm.Constants.*;
 
 public class TableItemClickListener implements ItemClickListener {
 
@@ -38,19 +39,19 @@ public class TableItemClickListener implements ItemClickListener {
         }
         formUnterlayout.removeAllComponents();
         final Object itemId = event.getItemId();
-        final String aufgabe = screen.getDataSource().getItem(itemId).getItemProperty("Aufgabe").getValue().toString();
-        final ArrayList<String> planningUnitGroupsNames = screen.getProjektBean().getProjekt().getPlanningUnitGroupsNames();
+        final String aufgabe = screen.getDataSource().getItem(itemId).getItemProperty(AUFGABE_SPALTE).getValue().toString();
+        final List<String> planningUnitGroupsNames = screen.getProjektBean().getProjekt().getPlanningUnitGroupsNames();
 
         foundPlanningUnit = null;
         if (planningUnitGroupsNames.contains(aufgabe)) {
             knotenBlatt = KnotenBlatt.PLANNING_UNIT_GROUP;
             for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
-                if (prop.equals("Aufgabe"))
+                if (prop.equals(AUFGABE_SPALTE))
                     formUnterlayout.addComponent(
                             fieldGroup.buildAndBind(prop));
             }
         } else {
-            final ArrayList<PlanningUnitGroup> planningUnitGroups = screen.getProjektBean().getProjekt().getPlanningUnitGroups();
+            final List<PlanningUnitGroup> planningUnitGroups = screen.getProjektBean().getProjekt().getPlanningUnitGroups();
             //PlanningUnit planningUnit = null;
             for(final PlanningUnitGroup planningUnitGroup : planningUnitGroups){
                 if(foundPlanningUnit == null){
@@ -60,7 +61,7 @@ public class TableItemClickListener implements ItemClickListener {
             if (foundPlanningUnit.getKindPlanningUnits() != null && !foundPlanningUnit.getKindPlanningUnits().isEmpty()) {
                 knotenBlatt = KnotenBlatt.PLANNING_UNIT_KNOTEN;
                 for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
-                    if (prop.equals("Aufgabe"))
+                    if (prop.equals(AUFGABE_SPALTE))
                         formUnterlayout.addComponent(
                                 fieldGroup.buildAndBind(prop));
                 }
@@ -76,7 +77,7 @@ public class TableItemClickListener implements ItemClickListener {
                 }
                 for(final Object propertyId : fieldGroup.getBoundPropertyIds())
                 {
-                    if(!propertyId.equals("Aufgabe")){
+                    if(!propertyId.equals(AUFGABE_SPALTE)){
                         fieldGroup.getField(propertyId).addValidator(new DaysHoursMinutesFieldValidator());
                     }
                     fieldGroup.getField(propertyId).setRequired(true);

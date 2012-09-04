@@ -5,10 +5,11 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.daten
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.*;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.rapidpm.Constants.*;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -21,11 +22,11 @@ public class TimesComputer {
 
     private RessourceGroupsBean ressourceGroupsBean;
     private ProjektBean projektBean;
-    private ArrayList<RessourceGroup> ressourceGroups;
+    private List<RessourceGroup> ressourceGroups;
 
-    private HashMap<RessourceGroup, Double> relativeWerte = new HashMap<RessourceGroup, Double>();
+    private Map<RessourceGroup, Double> relativeWerte = new HashMap<RessourceGroup, Double>();
     private final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
-    private Integer gesamtSumme;
+    private Integer gesamtSummeInMin;
     private Double mannTageExakt;
 
     public TimesComputer(RessourceGroupsBean rBean, ProjektBean pBean){
@@ -45,7 +46,7 @@ public class TimesComputer {
     }
 
     private void computeMannTage() {
-        mannTageExakt = gesamtSumme / 60.0 / 8.0;
+        mannTageExakt = gesamtSummeInMin / MINS_HOUR.doubleValue() / WORKINGHOURS_DAY.doubleValue();
     }
 
     private void computePlanningUnitGroupsAndTotalsAbsolut() {
@@ -67,18 +68,22 @@ public class TimesComputer {
 
     }
 
-    private void addiereZeileZurRessourceMap(Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap, PlanningUnit planningUnit) {
+    private void addiereZeileZurRessourceMap(final Map<RessourceGroup, DaysHoursMinutesItem>
+                                                     ressourceGroupDaysHoursMinutesItemMap, PlanningUnit planningUnit) {
         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-            if (!planningUnitElement.getRessourceGroup().getName().equals("Aufgabe")) {
+            if (!planningUnitElement.getRessourceGroup().getName().equals(AUFGABE_SPALTE)) {
                 final RessourceGroup ressourceGroup1 = planningUnitElement.getRessourceGroup();
                 final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
                 daysHoursMinutesItem.setDays(planningUnitElement.getPlannedDays());
                 daysHoursMinutesItem.setHours(planningUnitElement.getPlannedHours());
                 daysHoursMinutesItem.setMinutes(planningUnitElement.getPlannedMinutes());
                 if (ressourceGroupDaysHoursMinutesItemMap.containsKey(ressourceGroup1)) {
-                    daysHoursMinutesItem.setDays(daysHoursMinutesItem.getDays() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getDays());
-                    daysHoursMinutesItem.setHours(daysHoursMinutesItem.getHours() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getHours());
-                    daysHoursMinutesItem.setMinutes(daysHoursMinutesItem.getMinutes() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getMinutes());
+                    final int days = daysHoursMinutesItem.getDays() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getDays();
+                    final int hours = daysHoursMinutesItem.getHours() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getHours();
+                    final int minutes = daysHoursMinutesItem.getMinutes() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getMinutes();
+                    daysHoursMinutesItem.setDays(days);
+                    daysHoursMinutesItem.setHours(hours);
+                    daysHoursMinutesItem.setMinutes(minutes);
                 }
                 correctDaysHoursMinutesItem(daysHoursMinutesItem);
                 ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup1, daysHoursMinutesItem);
@@ -87,35 +92,37 @@ public class TimesComputer {
     }
 
     private void computeTotalsRelative() {
-        gesamtSumme = 0;
-        for (Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry : ressourceGroupDaysHoursMinutesItemMap.entrySet()) {
-            gesamtSumme += absoluteWerteEntry.getValue().getDays() * 24 * 60;
-            gesamtSumme += absoluteWerteEntry.getValue().getHours() * 60;
-            gesamtSumme += absoluteWerteEntry.getValue().getMinutes();
+        gesamtSummeInMin = 0;
+        for (final Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry :
+                ressourceGroupDaysHoursMinutesItemMap.entrySet()) {
+            gesamtSummeInMin += absoluteWerteEntry.getValue().getDays() * MINS_DAY;
+            gesamtSummeInMin += absoluteWerteEntry.getValue().getHours() * MINS_HOUR;
+            gesamtSummeInMin += absoluteWerteEntry.getValue().getMinutes();
         }
-        for (Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry : ressourceGroupDaysHoursMinutesItemMap.entrySet()) {
+        for (final Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry :
+                ressourceGroupDaysHoursMinutesItemMap.entrySet()) {
             final RessourceGroup absoluterWertRessourceGroup = absoluteWerteEntry.getKey();
-            Integer absoluterWertWert = absoluteWerteEntry.getValue().getDays() * 24 * 60;
-            absoluterWertWert += absoluteWerteEntry.getValue().getHours() * 60;
+            Integer absoluterWertWert = absoluteWerteEntry.getValue().getDays() * MINS_DAY;
+            absoluterWertWert += absoluteWerteEntry.getValue().getHours() * MINS_HOUR;
             absoluterWertWert += absoluteWerteEntry.getValue().getMinutes();
-            relativeWerte.put(absoluterWertRessourceGroup, absoluterWertWert.doubleValue() / gesamtSumme.doubleValue() * 100.0);
+            relativeWerte.put(absoluterWertRessourceGroup, absoluterWertWert.doubleValue() / gesamtSummeInMin.doubleValue() * 100.0);
         }
     }
 
     private void correctDaysHoursMinutesItem(DaysHoursMinutesItem item) {
-        final int hours = item.getMinutes() / 60;
+        final int hours = item.getMinutes() / MINS_HOUR;
         if (hours > 0) {
             item.setHours(item.getHours() + hours);
-            item.setMinutes(item.getMinutes() - (hours * 60));
+            item.setMinutes(item.getMinutes() - (hours * MINS_HOUR));
         }
-        final int days = item.getHours() / 24;
+        final int days = item.getHours() / HOURS_DAY;
         if (days > 0) {
             item.setDays(item.getDays() + days);
-            item.setHours(item.getHours() - (days * 24));
+            item.setHours(item.getHours() - (days * HOURS_DAY));
         }
     }
 
-    public HashMap<RessourceGroup, Double> getRelativeWerte() {
+    public Map<RessourceGroup, Double> getRelativeWerte() {
         return relativeWerte;
     }
 
@@ -123,13 +130,13 @@ public class TimesComputer {
         return ressourceGroupDaysHoursMinutesItemMap;
     }
 
-    public Integer getGesamtSumme() {
-        return gesamtSumme;
+    public Integer getGesamtSummeInMin() {
+        return gesamtSummeInMin;
     }
 
     public DaysHoursMinutesItem getGesamtSummeItem(){
         final DaysHoursMinutesItem item = new DaysHoursMinutesItem();
-        item.setMinutes(gesamtSumme);
+        item.setMinutes(gesamtSummeInMin);
         correctDaysHoursMinutesItem(item);
         return item;
     }
@@ -139,7 +146,7 @@ public class TimesComputer {
     }
 
     public String getMannTageGerundet() {
-        final DecimalFormat format = new DecimalFormat("#0.00");
+        final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
         return format.format(mannTageExakt);
     }
 }

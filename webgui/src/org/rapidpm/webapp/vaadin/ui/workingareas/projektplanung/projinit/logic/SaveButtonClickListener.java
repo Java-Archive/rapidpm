@@ -1,5 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.logic;
 
+import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
@@ -8,8 +9,9 @@ import com.vaadin.ui.Button.ClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.*;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static org.rapidpm.Constants.AUFGABE_SPALTE;
 
 public class SaveButtonClickListener implements ClickListener {
     private FieldGroup fieldGroup;
@@ -18,7 +20,8 @@ public class SaveButtonClickListener implements ClickListener {
     private Object itemId;
     private PlanningUnit foundPlanningUnit = null;
 
-    public SaveButtonClickListener(FieldGroup fieldGroup, AufwandProjInitScreen screen, KnotenBlatt knotenBlatt, Object itemId) {
+    public SaveButtonClickListener(final FieldGroup fieldGroup, final AufwandProjInitScreen screen, 
+                                   final KnotenBlatt knotenBlatt, final Object itemId) {
         this.fieldGroup = fieldGroup;
         this.screen = screen;
         this.knotenBlatt = knotenBlatt;
@@ -29,9 +32,9 @@ public class SaveButtonClickListener implements ClickListener {
     public void buttonClick(ClickEvent event) {
         try {
             fieldGroup.commit();
-            //screen.getTreeTable().setValue(null);    //null selection
             final Projekt projekt = screen.getProjektBean().getProjekt();
-            final String planningUnitName = screen.getDataSource().getItem(itemId).getItemProperty("Aufgabe").getValue().toString();
+            final Item item = screen.getDataSource().getItem(itemId);
+            final String planningUnitName = item.getItemProperty(AUFGABE_SPALTE).getValue().toString();
             if (knotenBlatt.equals(KnotenBlatt.PLANNING_UNIT_GROUP)) {
                 for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
                     if (planningUnitGroup.getPlanningUnitName().equals(itemId)) {
@@ -39,8 +42,7 @@ public class SaveButtonClickListener implements ClickListener {
                     }
                 }
             } else {
-                final ArrayList<PlanningUnitGroup> planningUnitGroups = screen.getProjektBean().getProjekt().getPlanningUnitGroups();
-
+                final List<PlanningUnitGroup> planningUnitGroups = projekt.getPlanningUnitGroups();
                 for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
                     if (foundPlanningUnit == null) {
                         getPlanningUnit(planningUnitGroup.getPlanningUnitList(), itemId.toString());
@@ -52,19 +54,24 @@ public class SaveButtonClickListener implements ClickListener {
                     foundPlanningUnit.setPlanningUnitElementName(planningUnitName);
                     for (final PlanningUnitElement planningUnitElement : foundPlanningUnit.getPlanningUnitElementList()) {
                         final String planningUnitElementRessourceGroupName = planningUnitElement.getRessourceGroup().getName();
-                        final Property<?> planningUnitElementCellContent = screen.getDataSource().getItem(itemId).getItemProperty(planningUnitElementRessourceGroupName);
+                        final Property<?> planningUnitElementCellContent = item.getItemProperty(planningUnitElementRessourceGroupName);
                         final String daysHoursMinutesString = planningUnitElementCellContent.getValue().toString();
                         final String[] daysHoursMinutes = daysHoursMinutesString.split(":");
-                        planningUnitElement.setPlannedDays(Integer.parseInt(daysHoursMinutes[0]));
-                        planningUnitElement.setPlannedHours(Integer.parseInt(daysHoursMinutes[1]));
-                        planningUnitElement.setPlannedMinutes(Integer.parseInt(daysHoursMinutes[2]));
+                        final int plannedDays = Integer.parseInt(daysHoursMinutes[0]);
+                        final int plannedHours = Integer.parseInt(daysHoursMinutes[1]);
+                        final int plannedMinutes = Integer.parseInt(daysHoursMinutes[2]);
+                        planningUnitElement.setPlannedDays(plannedDays);
+                        planningUnitElement.setPlannedHours(plannedHours);
+                        planningUnitElement.setPlannedMinutes(plannedMinutes);
                     }
                 }
             }
-            TreeTableFiller filler = new TreeTableFiller(screen,screen.getProjektBean(),screen.getRessourceGroupsBean(),screen.getTreeTable(),screen.getDataSource());
+            final TreeTableFiller filler = new TreeTableFiller(screen,screen.getProjektBean(),
+                    screen.getRessourceGroupsBean(),screen.getTreeTable(),screen.getDataSource());
             filler.fill();
 
-            OverviewTableFiller overviewTableFiller = new OverviewTableFiller(screen.getUebersichtTable(),screen.getProjektBean(),screen.getRessourceGroupsBean());
+            final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(screen.getUebersichtTable(),
+                    screen.getProjektBean(),screen.getRessourceGroupsBean());
             overviewTableFiller.fill();
 
             screen.fillFields();
@@ -75,7 +82,7 @@ public class SaveButtonClickListener implements ClickListener {
     }
 
     private void getPlanningUnit(List<PlanningUnit> planningUnits, String itemId) {
-        for (PlanningUnit planningUnit : planningUnits) {
+        for (final PlanningUnit planningUnit : planningUnits) {
             if (planningUnit.getPlanningUnitElementName().equals(itemId)) {
                 foundPlanningUnit = planningUnit;
             } else {

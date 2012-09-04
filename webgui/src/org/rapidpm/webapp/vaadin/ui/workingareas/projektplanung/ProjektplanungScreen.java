@@ -11,7 +11,6 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmo
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.PlanningUnitGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +21,9 @@ import java.util.List;
  */
 public class ProjektplanungScreen extends HorizontalSplitPanel {
 
+
+    private static final String NAME = "name";
+    private static final String ICON = "icon";
 
     private final VerticalLayout menuLayout;
     private Panel mainPanel;
@@ -36,7 +38,7 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
     private Tree treePanelTree;
 
 
-    public ProjektplanungScreen(ProjektBean cont, RessourceGroupsBean ressourceGroupsBean) {
+    public ProjektplanungScreen(final ProjektBean cont, final RessourceGroupsBean ressourceGroupsBean) {
         this.projektBean = cont;
         this.ressourceGroupsBean = ressourceGroupsBean;
         final InitComputer computer = new InitComputer(this.projektBean, this.ressourceGroupsBean);
@@ -64,7 +66,7 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         mainLayout.addComponent(mainPanel);
         addComponent(mainLayout);
 
-        final ArrayList<String> listenWerteArrayList = projektBean.getProjekt().getPlanningUnitGroupsNames();
+        final List<String> listenWerteArrayList = projektBean.getProjekt().getPlanningUnitGroupsNames();
         projektSelect = new ListSelect(null, listenWerteArrayList);
 
         projektSelect.setNullSelectionAllowed(false);
@@ -98,17 +100,17 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         }
 
         if (planningUnitGroup != null) {
-            treePanelTree.addContainerProperty("name", String.class, "");
-            treePanelTree.addContainerProperty("icon", Resource.class, null);
-            treePanelTree.setItemCaptionPropertyId("name");
-            treePanelTree.setItemIconPropertyId("icon");
+            treePanelTree.addContainerProperty(NAME, String.class, "");
+            treePanelTree.addContainerProperty(ICON, Resource.class, null);
+            treePanelTree.setItemCaptionPropertyId(NAME);
+            treePanelTree.setItemIconPropertyId(ICON);
             treePanelTree.setImmediate(true);
             final String itemId = planningUnitGroup.getPlanningUnitName();
             final Item planningUnitGroupItem = treePanelTree.addItem(itemId);
 
-            planningUnitGroupItem.getItemProperty("name").setValue(itemId);
+            planningUnitGroupItem.getItemProperty(NAME).setValue(itemId);
             final String issueStatusName = planningUnitGroup.getIssueBase().getIssueStatus().getStatusName();
-            planningUnitGroupItem.getItemProperty("icon").setValue(IssueStati.valueOf(issueStatusName).getIcon());
+            planningUnitGroupItem.getItemProperty(ICON).setValue(IssueStati.valueOf(issueStatusName).getIcon());
             if (planningUnitGroup.getPlanningUnitList() != null && !planningUnitGroup.getPlanningUnitList().isEmpty()) {
                 treePanelTree.setChildrenAllowed(itemId, true);
             } else {
@@ -125,11 +127,11 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
     }
 
     private void buildTree(List<PlanningUnit> planningUnits, Object parentId) {
-        for (PlanningUnit planningUnit : planningUnits) {
+        for (final PlanningUnit planningUnit : planningUnits) {
             final Object itemId = treePanelTree.addItem();
-            treePanelTree.getItem(itemId).getItemProperty("name").setValue(planningUnit.getPlanningUnitElementName());
+            treePanelTree.getItem(itemId).getItemProperty(NAME).setValue(planningUnit.getPlanningUnitElementName());
             final String issueStatusName = planningUnit.getIssueBase().getIssueStatus().getStatusName();
-            treePanelTree.getItem(itemId).getItemProperty("icon").setValue(IssueStati.valueOf(issueStatusName).getIcon());
+            treePanelTree.getItem(itemId).getItemProperty(ICON).setValue(IssueStati.valueOf(issueStatusName).getIcon());
             treePanelTree.setParent(itemId, parentId);
             if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
                 treePanelTree.setChildrenAllowed(itemId, false);

@@ -15,10 +15,8 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.BaseTheme;
 import org.rapidpm.webapp.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.demo.DemoWorkingArea;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.CalculatorScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenWorkingArea;
 
-import static org.rapidpm.webapp.vaadin.Constants.*;
+import static org.rapidpm.Constants.*;
 
 @Theme("rapidpm")
 public abstract class BaseRoot extends Root {

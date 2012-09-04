@@ -8,6 +8,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component.Event;
+import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.logic.CalculatorFieldsComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.logic.CalculatorTableComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.logic.tableedit.EditModeGetter;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CalculatorItemClickListener implements ItemClickListener {
+
+    private Logger logger = Logger.getLogger(CalculatorItemClickListener.class);
 
     private List<ItemClickDependentComponent> components = new ArrayList<ItemClickDependentComponent>();
 
@@ -34,11 +37,10 @@ public class CalculatorItemClickListener implements ItemClickListener {
 
     private Table table;
 
-    public CalculatorItemClickListener(
-            ArrayList<ItemClickDependentComponent> components,
-            Button deleteButton, Layout upperFormLayout, Layout lowerFormLayout, Layout formLayout, Button saveButton,
-            Table tabelle, TextField betriebsWertField,
-            TextField betriebsStdField) {
+    public CalculatorItemClickListener(final List<ItemClickDependentComponent> components,
+                                       final Button deleteButton, final Layout upperFormLayout, final Layout lowerFormLayout,
+                                       final Layout formLayout, final Button saveButton, final Table tabelle,
+                                       final TextField betriebsWertField, final TextField betriebsStdField) {
         this.components = components;
         this.deleteButton = deleteButton;
         this.upperFormLayout = upperFormLayout;
@@ -91,8 +93,7 @@ public class CalculatorItemClickListener implements ItemClickListener {
                         upperFormLayout.setVisible(false);
                         saveButton.setVisible(false);
                     } catch (CommitException e) {
-                        e.printStackTrace();
-                        //TODO LOGGER einsetzen
+                        logger.warn(e.getStackTrace());
                     }
                 }
             });

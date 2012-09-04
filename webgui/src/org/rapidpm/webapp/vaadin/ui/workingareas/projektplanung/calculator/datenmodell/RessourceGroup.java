@@ -1,16 +1,15 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell;
 
-import org.rapidpm.webapp.vaadin.Constants;
-
 import java.io.Serializable;
+import static org.rapidpm.Constants.*;
 
 public class RessourceGroup implements Serializable {
 
     //TODO so nicht gut, evtl in Properties auslagern oder Anotationen
     public static final String[] VISIBLECOLUMNS = new String[]{"Ressource",
             "Brutto-Jahresgehalt", "h / Woche", "Arbeitswochen / Jahr",
-            "h / Jahr", "Fakturierbar", Constants.EUR + " / h", "extern" + Constants.EUR + " / h",
-            "operativ" + Constants.EUR + " / h", "Brutto / Monat", "Plan-Anzahl", "Summe / Monat",
+            "h / Jahr", "Fakturierbar", EUR + " / h", "extern" + EUR + " / h",
+            "operativ" + EUR + " / h", "Brutto / Monat", "Plan-Anzahl", "Summe / Monat",
             "Summe / Tag"};
     public static final String[] COLUMNS = new String[]{"name",
             "bruttoGehalt", "hoursPerWeek", "weeksPerYear", "hoursPerYear",
@@ -19,19 +18,6 @@ public class RessourceGroup implements Serializable {
             "sumPerMonth", "sumPerDay"};
 
 
-//    private String name = "neue Ressource";
-//    private Double bruttoGehalt = 100000.0;
-//    private Integer hoursPerWeek = 40;
-//    private Integer weeksPerYear = 46;
-//    private Integer hoursPerYear;
-//    private Double facturizable = 0.5;
-//    private Double eurosPerHour;
-//    private Double externalEurosPerHour = 125.0;
-//    private Double operativeEurosPerHour;
-//    private Double bruttoPerMonth;
-//    private Integer planAnzahl = 1;
-//    private Double sumPerMonth;
-//    private Double sumPerDay;
     private String name ;
     private Double bruttoGehalt ;
     private Integer hoursPerWeek ;
@@ -177,23 +163,7 @@ public class RessourceGroup implements Serializable {
         return true;
     }
 
-    @Override
-    public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (bruttoGehalt != null ? bruttoGehalt.hashCode() : 0);
-        result = 31 * result + (hoursPerWeek != null ? hoursPerWeek.hashCode() : 0);
-        result = 31 * result + (weeksPerYear != null ? weeksPerYear.hashCode() : 0);
-        result = 31 * result + (hoursPerYear != null ? hoursPerYear.hashCode() : 0);
-        result = 31 * result + (facturizable != null ? facturizable.hashCode() : 0);
-        result = 31 * result + (eurosPerHour != null ? eurosPerHour.hashCode() : 0);
-        result = 31 * result + (externalEurosPerHour != null ? externalEurosPerHour.hashCode() : 0);
-        result = 31 * result + (operativeEurosPerHour != null ? operativeEurosPerHour.hashCode() : 0);
-        result = 31 * result + (bruttoPerMonth != null ? bruttoPerMonth.hashCode() : 0);
-        result = 31 * result + (planAnzahl != null ? planAnzahl.hashCode() : 0);
-        result = 31 * result + (sumPerMonth != null ? sumPerMonth.hashCode() : 0);
-        result = 31 * result + (sumPerDay != null ? sumPerDay.hashCode() : 0);
-        return result;
-    }
+
 
     @Override
     public String toString() {

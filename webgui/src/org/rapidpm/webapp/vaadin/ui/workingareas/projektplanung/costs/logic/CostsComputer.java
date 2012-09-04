@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.rapidpm.Constants.*;
+
 /**
  * RapidPM - www.rapidpm.org
  * User: Marco
@@ -26,17 +28,17 @@ public class CostsComputer {
 
     private Double totalCostsExakt = 0.0;
 
-    public CostsComputer(ProjektBean pBean){
+    public CostsComputer(ProjektBean pBean) {
         projektBean = pBean;
     }
 
-    public void compute(){
+    public void compute() {
         computePlanningUnitGroupsAndTotalsAbsolut();
         computeTotalCosts();
     }
 
     private void computeTotalCosts() {
-        for(RessourceGroup ressourceGroup : ressourceGroupsCostsMap.keySet()){
+        for (final RessourceGroup ressourceGroup : ressourceGroupsCostsMap.keySet()) {
             totalCostsExakt += ressourceGroupsCostsMap.get(ressourceGroup);
         }
     }
@@ -44,14 +46,13 @@ public class CostsComputer {
 
     private void computePlanningUnitGroupsAndTotalsAbsolut() {
         for (final PlanningUnitGroup planningUnitGroup : projektBean.getProjekt().getPlanningUnitGroups()) {
-                computePlanningUnits(planningUnitGroup.getPlanningUnitList());
-
+            computePlanningUnits(planningUnitGroup.getPlanningUnitList());
         }
     }
 
 
     private void computePlanningUnits(List<PlanningUnit> planningUnits) {
-        for (PlanningUnit planningUnit : planningUnits) {
+        for (final PlanningUnit planningUnit : planningUnits) {
             if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
                 addiereZeileZurRessourceMap(planningUnit);
             } else {
@@ -62,10 +63,10 @@ public class CostsComputer {
 
     private void addiereZeileZurRessourceMap(PlanningUnit planningUnit) {
         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-            if (!planningUnitElement.getRessourceGroup().getName().equals("Aufgabe")) {
-                final RessourceGroup ressourceGroup1 = planningUnitElement.getRessourceGroup();
-                Double costs;
-                costs = getCosts(planningUnitElement);
+            final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
+            if (!ressourceGroup.getName().equals(AUFGABE_SPALTE)) {
+                final RessourceGroup ressourceGroup1 = ressourceGroup;
+                Double costs = getCosts(planningUnitElement);
                 if (ressourceGroupsCostsMap.containsKey(ressourceGroup1)) {
                     costs += ressourceGroupsCostsMap.get(ressourceGroup1);
                 }
@@ -75,22 +76,24 @@ public class CostsComputer {
     }
 
     private Double getCosts(PlanningUnitElement planningUnitElement) {
-        Double hours = (24.0*planningUnitElement.getPlannedDays())
-                +planningUnitElement.getPlannedHours()
-                +(1.0/60.0*planningUnitElement.getPlannedMinutes());
-        return hours * planningUnitElement.getRessourceGroup().getExternalEurosPerHour();
+        final int hoursFromDays = HOURS_DAY * planningUnitElement.getPlannedDays();
+        final int hours = planningUnitElement.getPlannedHours();
+        final double hoursFromMinutes = STD_ANTEILE * planningUnitElement.getPlannedMinutes();
+        final Double totalHours = hoursFromDays + hours + hoursFromMinutes;
+        final Double externalEurosPerHour = planningUnitElement.getRessourceGroup().getExternalEurosPerHour();
+        return totalHours * externalEurosPerHour;
     }
 
     public Map<RessourceGroup, Double> getRessourceGroupsCostsMap() {
         return ressourceGroupsCostsMap;
     }
 
-    public Double getTotalCostsExakt(){
+    public Double getTotalCostsExakt() {
         return totalCostsExakt;
     }
 
-    public String getTotalCostsGerundet(){
-        final DecimalFormat format = new DecimalFormat("#0.00");
+    public String getTotalCostsGerundet() {
+        final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
         return format.format(totalCostsExakt);
     }
 }

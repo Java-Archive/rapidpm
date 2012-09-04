@@ -11,16 +11,17 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.logic
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.logic.tablelisteners.CalculatorItemSetChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.uicomponents.ItemClickDependentComponent;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 public class CalculatorTableCreator {
     private Table tabelle;
 
     public CalculatorTableCreator(
-            RessourceGroupsBean ressourceGroupsBean, ArrayList<ItemClickDependentComponent> itemClickdependentComponents,
-            Button deleteButton, Layout upperFormLayout, Layout lowerFormLayout, Layout formLayout, Button saveButton,
-            TextField betriebsFraField, TextField betriebsStdField) {
+            final RessourceGroupsBean ressourceGroupsBean, final List<ItemClickDependentComponent>
+            itemClickdependentComponents, final Button deleteButton, final Layout upperFormLayout,
+            final Layout lowerFormLayout, final Layout formLayout, final Button saveButton,
+            final TextField betriebsFraField, final TextField betriebsStdField) {
         final RessourceGroupsBeanItemContainer dataSource = new RessourceGroupsBeanItemContainer();
         dataSource.fill(ressourceGroupsBean.getRessourceGroups());
         tabelle = new Table();
@@ -34,8 +35,7 @@ public class CalculatorTableCreator {
                 itemClickdependentComponents, deleteButton, upperFormLayout, lowerFormLayout, formLayout,
                 saveButton, tabelle, betriebsFraField, betriebsStdField));
 
-        tabelle.addListener(new CalculatorItemSetChangeListener(tabelle,
-                betriebsStdField, betriebsFraField));
+        tabelle.addListener(new CalculatorItemSetChangeListener(tabelle, betriebsStdField, betriebsFraField));
         tabelle.setReadOnly(false);
 
         tabelle.setContainerDataSource(dataSource);

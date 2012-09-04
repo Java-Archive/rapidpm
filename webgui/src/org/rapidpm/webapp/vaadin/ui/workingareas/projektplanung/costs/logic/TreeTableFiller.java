@@ -5,6 +5,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.daten
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.components.MyTreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
 
+import static org.rapidpm.Constants.*;
+
 /**
  * RapidPM - www.rapidpm.org
  * User: Marco
@@ -13,6 +15,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmo
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 public class TreeTableFiller {
+
+    private static final int WIDTH = 250;
 
     private HierarchicalContainer dataSource;
     private ProjektBean projektBean;
@@ -31,8 +35,8 @@ public class TreeTableFiller {
         final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(ressourceGroupsBean, projektBean, dataSource);
         treeTableDataSourceFiller.fill();
         treeTable.setContainerDataSource(this.dataSource);
-        treeTable.setColumnCollapsible("Aufgabe", false);
-        treeTable.setColumnWidth("Aufgabe",250);
+        treeTable.setColumnCollapsible(AUFGABE_SPALTE, false);
+        treeTable.setColumnWidth(AUFGABE_SPALTE, WIDTH);
         treeTable.setValue(null);
         costsConverterAdder.addConvertersTo(treeTable);
     }

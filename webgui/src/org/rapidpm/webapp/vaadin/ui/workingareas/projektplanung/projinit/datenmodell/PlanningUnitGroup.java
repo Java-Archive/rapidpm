@@ -42,10 +42,10 @@ public class PlanningUnitGroup {
     private List<PlanningUnitElement> planningUnitElementList = new ArrayList<>();
     private IssueBase issueBase;
 
-    public PlanningUnitGroup(ArrayList<RessourceGroup> ressourceGroups){
+    public PlanningUnitGroup(final List<RessourceGroup> ressourceGroups){
         if(ressourceGroups != null){
-            for(RessourceGroup ressourceGroup : ressourceGroups){
-                PlanningUnitElement element = new PlanningUnitElement();
+            for(final RessourceGroup ressourceGroup : ressourceGroups){
+                final PlanningUnitElement element = new PlanningUnitElement();
                 element.setRessourceGroup(ressourceGroup);
                 planningUnitElementList.add(element);
             }

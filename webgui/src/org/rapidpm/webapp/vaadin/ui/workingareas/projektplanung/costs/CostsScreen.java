@@ -2,7 +2,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.costs;
 
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
-import org.rapidpm.webapp.vaadin.Constants;
 import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
@@ -15,6 +14,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.compone
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
 
 import java.util.Date;
+
+import static org.rapidpm.Constants.*;
 
 
 public class CostsScreen extends Screen {
@@ -92,7 +93,7 @@ public class CostsScreen extends Screen {
         // Unterschrift
         vertrieblerField = new TextField("Verantwortlicher Vertriebler:");
         datumField = new DateField("Datum:",new Date());
-        datumField.setDateFormat(Constants.DATE_FORMAT.toPattern());
+        datumField.setDateFormat(DATE_FORMAT.toPattern());
         unterschriftLayout.setWidth("560px");
         unterschriftLayout.addComponent(vertrieblerField);
         unterschriftLayout.addComponent(datumField);
@@ -111,7 +112,7 @@ public class CostsScreen extends Screen {
         manntageField = new TextField("MT:");
         kostenField = new TextField("Kosten:");
         manntageField.setValue(timesComputer.getMannTageGerundet().toString());
-        kostenField.setValue(costsComputer.getTotalCostsGerundet() + Constants.EUR);
+        kostenField.setValue(costsComputer.getTotalCostsGerundet() + EUR);
         kostenField.setReadOnly(true);
         manntageField.setReadOnly(true);
         summeInMinField.setReadOnly(true);
