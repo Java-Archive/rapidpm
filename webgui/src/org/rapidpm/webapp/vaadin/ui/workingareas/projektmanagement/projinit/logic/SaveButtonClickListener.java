@@ -20,15 +20,15 @@ import static org.rapidpm.Constants.AUFGABE_SPALTE;
 public class SaveButtonClickListener implements ClickListener {
     private FieldGroup fieldGroup;
     private AufwandProjInitScreen screen;
-    private KnotenBlatt knotenBlatt;
+    private KnotenBlattEnum knotenBlattEnum;
     private Object itemId;
     private PlanningUnit foundPlanningUnit = null;
 
     public SaveButtonClickListener(final FieldGroup fieldGroup, final AufwandProjInitScreen screen, 
-                                   final KnotenBlatt knotenBlatt, final Object itemId) {
+                                   final KnotenBlattEnum knotenBlattEnum, final Object itemId) {
         this.fieldGroup = fieldGroup;
         this.screen = screen;
-        this.knotenBlatt = knotenBlatt;
+        this.knotenBlattEnum = knotenBlattEnum;
         this.itemId = itemId;
     }
 
@@ -39,7 +39,7 @@ public class SaveButtonClickListener implements ClickListener {
             final Projekt projekt = screen.getProjektBean().getProjekt();
             final Item item = screen.getDataSource().getItem(itemId);
             final String planningUnitName = item.getItemProperty(AUFGABE_SPALTE).getValue().toString();
-            if (knotenBlatt.equals(KnotenBlatt.PLANNING_UNIT_GROUP)) {
+            if (knotenBlattEnum.equals(KnotenBlattEnum.PLANNING_UNIT_GROUP)) {
                 for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
                     if (planningUnitGroup.getPlanningUnitGroupName().equals(itemId)) {
                         planningUnitGroup.setPlanningUnitGroupName(planningUnitName);
@@ -52,7 +52,7 @@ public class SaveButtonClickListener implements ClickListener {
                         getPlanningUnit(planningUnitGroup.getPlanningUnitList(), itemId.toString());
                     }
                 }
-                if (knotenBlatt.equals(KnotenBlatt.PLANNING_UNIT_KNOTEN)) {
+                if (knotenBlattEnum.equals(KnotenBlattEnum.PLANNING_UNIT_KNOTEN)) {
                     foundPlanningUnit.setPlanningUnitName(planningUnitName);
                 } else {
                     foundPlanningUnit.setPlanningUnitName(planningUnitName);

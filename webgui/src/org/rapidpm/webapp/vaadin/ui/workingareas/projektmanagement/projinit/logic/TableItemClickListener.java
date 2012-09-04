@@ -8,7 +8,7 @@ import com.vaadin.ui.Component.Event;
 import com.vaadin.ui.GridLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesFieldValidator;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.datenmodell.KnotenBlatt;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.datenmodell.KnotenBlattEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
 
@@ -19,7 +19,7 @@ import static org.rapidpm.Constants.*;
 public class TableItemClickListener implements ItemClickListener {
 
     private AufwandProjInitScreen screen;
-    private KnotenBlatt knotenBlatt;
+    private KnotenBlattEnum knotenBlattEnum;
 
     private PlanningUnit foundPlanningUnit = null;
 
@@ -44,7 +44,7 @@ public class TableItemClickListener implements ItemClickListener {
 
         foundPlanningUnit = null;
         if (planningUnitGroupsNames.contains(aufgabe)) {
-            knotenBlatt = KnotenBlatt.PLANNING_UNIT_GROUP;
+            knotenBlattEnum = KnotenBlattEnum.PLANNING_UNIT_GROUP;
             for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
                 if (prop.equals(AUFGABE_SPALTE))
                     formUnterlayout.addComponent(
@@ -59,7 +59,7 @@ public class TableItemClickListener implements ItemClickListener {
                 }
             }
             if (foundPlanningUnit.getKindPlanningUnits() != null && !foundPlanningUnit.getKindPlanningUnits().isEmpty()) {
-                knotenBlatt = KnotenBlatt.PLANNING_UNIT_KNOTEN;
+                knotenBlattEnum = KnotenBlattEnum.PLANNING_UNIT_KNOTEN;
                 for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
                     if (prop.equals(AUFGABE_SPALTE))
                         formUnterlayout.addComponent(
@@ -70,7 +70,7 @@ public class TableItemClickListener implements ItemClickListener {
                     fieldGroup.getField(propertyId).setRequired(true);
                 }
             } else {
-                knotenBlatt = KnotenBlatt.PLANNING_UNIT_BLATT;
+                knotenBlattEnum = KnotenBlattEnum.PLANNING_UNIT_BLATT;
                 for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
                     formUnterlayout.addComponent(
                             fieldGroup.buildAndBind(prop));
@@ -85,7 +85,7 @@ public class TableItemClickListener implements ItemClickListener {
             }
         }
 
-        screen.getSaveButton().addListener(new SaveButtonClickListener(fieldGroup, screen, knotenBlatt, itemId));
+        screen.getSaveButton().addListener(new SaveButtonClickListener(fieldGroup, screen, knotenBlattEnum, itemId));
         screen.getFormLayout().setVisible(true);
     }
 
