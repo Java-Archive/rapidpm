@@ -1,6 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 
-import org.rapidpm.webapp.vaadin.ui.workingareas.IssueBase;
+
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
 import java.util.List;
 

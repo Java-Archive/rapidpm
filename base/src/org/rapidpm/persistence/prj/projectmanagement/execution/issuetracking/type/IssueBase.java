@@ -27,6 +27,19 @@ import java.util.List;
 public class IssueBase {
     private static final Logger logger = Logger.getLogger(IssueBase.class);
 
+    //TODO TestCases definieren - Klasse erzeugen
+    private List<String> testcases;
+    public List<String> getTestcases() {
+        return testcases;
+    }
+    public void setTestcases(List<String> testcases) {
+        this.testcases = testcases;
+    }
+
+
+
+
+
     @Id
     @TableGenerator(name = "PKGenIssueBase", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "IssueBase_id", valueColumnName = "gen_value", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.TABLE,
@@ -39,6 +52,9 @@ public class IssueBase {
     @Basic
     @Column(columnDefinition = "TEXT")
     private String text;
+
+    @Basic
+    private Integer storyPoints;
 
     @Basic
     private boolean fakturierbar;  //TODO notwendig an der Stelle hier ?
@@ -83,7 +99,7 @@ public class IssueBase {
         sb.append("{id=").append(id);
         sb.append(", summary='").append(summary).append('\'');
         sb.append(", text='").append(text).append('\'');
-        sb.append(", fakturierbar=").append(fakturierbar);
+//        sb.append(", fakturierbar=").append(fakturierbar);
         sb.append(", issuePriority=").append(issuePriority);
         sb.append(", issueStatus=").append(issueStatus);
         sb.append(", issueTimeUnitEstimated=").append(issueTimeUnitEstimated);
@@ -283,4 +299,12 @@ public class IssueBase {
     public void setVersion(final String version) {
         this.version = version;
     }
+    public Integer getStoryPoints() {
+        return storyPoints;
+    }
+
+    public void setStoryPoints(Integer storyPoints) {
+        this.storyPoints = storyPoints;
+    }
+
 }

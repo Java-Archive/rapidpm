@@ -4,7 +4,7 @@ import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
-import org.rapidpm.webapp.vaadin.ui.workingareas.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
 /**
  * @deprecated vermutlich nicht umsetzbar, daher

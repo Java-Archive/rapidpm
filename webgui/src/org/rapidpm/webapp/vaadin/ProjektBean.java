@@ -1,9 +1,9 @@
 package org.rapidpm.webapp.vaadin;
 
-import org.rapidpm.webapp.vaadin.ui.workingareas.Benutzer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.IssueBase;
-import org.rapidpm.webapp.vaadin.ui.workingareas.IssuePriority;
-import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatus;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitElement;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
@@ -12,7 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 
-import static org.rapidpm.Constants.*;
+import static org.rapidpm.Constants.HOURS_DAY;
+import static org.rapidpm.Constants.MINS_HOUR;
 
 /**
  * Created with IntelliJ IDEA.

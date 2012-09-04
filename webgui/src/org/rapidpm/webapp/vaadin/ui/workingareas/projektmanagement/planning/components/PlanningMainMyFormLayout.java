@@ -1,8 +1,8 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components;
 
 import com.vaadin.ui.*;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.IssueBase;
 
 import java.util.ArrayList;
 import java.util.Arrays;

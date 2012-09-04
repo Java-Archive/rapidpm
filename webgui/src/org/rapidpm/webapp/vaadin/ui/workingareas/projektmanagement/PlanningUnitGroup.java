@@ -1,10 +1,10 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningStatus;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.PlannedMeeting;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedTravel;
 import org.rapidpm.persistence.prj.stammdaten.person.Person;
-import org.rapidpm.webapp.vaadin.ui.workingareas.IssueBase;
 import org.rapidpm.webapp.vaadin.RessourceGroup;
 
 import java.util.ArrayList;
