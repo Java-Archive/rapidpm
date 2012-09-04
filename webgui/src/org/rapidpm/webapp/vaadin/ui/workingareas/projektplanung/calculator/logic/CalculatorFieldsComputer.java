@@ -1,17 +1,21 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.logic;
 
+import com.vaadin.data.Item;
 import org.rapidpm.webapp.vaadin.Constants;
 
 import com.vaadin.external.com.ibm.icu.text.DecimalFormat;
 import com.vaadin.ui.Table;
 
+import static org.rapidpm.Constants.*;
+
 public class CalculatorFieldsComputer {
 
+    public static final String SUM_PER_DAY = "sumPerDay";
     private Table tabelle;
     private Double betriebsStunde;
     private Double betriebsWert;
 
-    public CalculatorFieldsComputer(Table tabelle) {
+    public CalculatorFieldsComputer(final Table tabelle) {
         this.tabelle = tabelle;
     }
 
@@ -19,8 +23,9 @@ public class CalculatorFieldsComputer {
         Double summeProTag = 0.0;
 
         for (final Object itemId : tabelle.getItemIds()) {
-            summeProTag += (Double) tabelle.getItem(itemId)
-                    .getItemProperty("sumPerDay").getValue();
+            final Item item = tabelle.getItem(itemId);
+            final Double sumPerDay = (Double) item.getItemProperty(SUM_PER_DAY).getValue();
+            summeProTag += sumPerDay;
         }
         betriebsStunde = summeProTag / Constants.HOURSPERDAY;
         betriebsWert = summeProTag / Constants.KONSTANTE;
@@ -35,12 +40,12 @@ public class CalculatorFieldsComputer {
     }
 
     public String getBetriebsStundeAsString() {
-        final DecimalFormat f = new DecimalFormat("0.00");
+        final DecimalFormat f = new DecimalFormat(DECIMAL_FORMAT);
         return f.format(betriebsStunde) + Constants.EUR;
     }
 
     public String getBetriebsFraAsString() {
-        final DecimalFormat f = new DecimalFormat("0.00");
+        final DecimalFormat f = new DecimalFormat(DECIMAL_FORMAT);
         return f.format(betriebsWert) + Constants.EUR;
     }
 

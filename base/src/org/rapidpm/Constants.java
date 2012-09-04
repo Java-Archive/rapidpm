@@ -95,4 +95,5 @@ public class Constants {
     //    public static final String ORM_VIEW_TMP_DIR = "D:\\opt\\jboss-as-7.1.1.Final\\standalone\\tmp";
     public static final String ORM_VIEW_TMP_DIR = "/opt/jboss/7.1.1/standalone/tmp";
 
+    public static final String DECIMAL_FORMAT = "0.00";
 }

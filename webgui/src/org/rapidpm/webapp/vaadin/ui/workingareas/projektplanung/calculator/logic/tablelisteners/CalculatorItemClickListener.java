@@ -16,10 +16,11 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.uicom
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.uicomponents.RowFieldGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CalculatorItemClickListener implements ItemClickListener {
 
-    private ArrayList<ItemClickDependentComponent> components = new ArrayList<ItemClickDependentComponent>();
+    private List<ItemClickDependentComponent> components = new ArrayList<ItemClickDependentComponent>();
 
     private boolean state = false;
     private Layout upperFormLayout;
@@ -69,7 +70,7 @@ public class CalculatorItemClickListener implements ItemClickListener {
 
             final Item item = event.getItem();
             final RowFieldGroup fieldGroup = new RowFieldGroup(item);
-            final ArrayList<Component> components = fieldGroup.getComponents();
+            final List<Component> components = fieldGroup.getComponents();
             for (final Component component : components) {
                 upperFormLayout.addComponent(component);
             }
@@ -80,21 +81,18 @@ public class CalculatorItemClickListener implements ItemClickListener {
                 public void buttonClick(ClickEvent event) {
                     try {
                         fieldGroup.commit();
-                        final CalculatorTableComputer computer = new CalculatorTableComputer(
-                                table);
+                        final CalculatorTableComputer computer = new CalculatorTableComputer(table);
                         computer.computeColumns();
 
-                        final CalculatorFieldsComputer fieldsComputer = new CalculatorFieldsComputer(
-                                table);
+                        final CalculatorFieldsComputer fieldsComputer = new CalculatorFieldsComputer(table);
                         fieldsComputer.compute();
-                        betriebsWertField.setValue(fieldsComputer
-                                .getBetriebsFraAsString());
-                        betriebsStdField.setValue(fieldsComputer
-                                .getBetriebsStundeAsString());
+                        betriebsWertField.setValue(fieldsComputer.getBetriebsFraAsString());
+                        betriebsStdField.setValue(fieldsComputer.getBetriebsStundeAsString());
                         upperFormLayout.setVisible(false);
                         saveButton.setVisible(false);
                     } catch (CommitException e) {
                         e.printStackTrace();
+                        //TODO LOGGER einsetzen
                     }
                 }
             });

@@ -1,5 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.logic.tableedit;
 
+import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.*;
@@ -34,9 +35,11 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
     }
 
     @Override
-    public void valueChange(ValueChangeEvent event) {
-        if (event.getProperty().getValue() != null) {
-            if (event.getProperty().getValue().equals(Constants.TABLEEDIT)) {
+    public void valueChange(final ValueChangeEvent event) {
+        final Property property = event.getProperty();
+        final Object value = property.getValue();
+        if (value != null) {
+            if (value.equals(Constants.TABLEEDIT)) {
                 formLayout.setVisible(true);
                 upperFormLayout.setVisible(false);
                 lowerFormLayout.setVisible(true);
@@ -46,8 +49,7 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
                 tabelle.setReadOnly(true);
                 tabelle.setSelectable(false);
                 tabelle.setEditable(true);
-                for (final Object listener : saveButton
-                        .getListeners(Event.class)) {
+                for (final Object listener : saveButton.getListeners(Event.class)) {
                     if (listener instanceof ClickListener) {
                         saveButton.removeListener((ClickListener) listener);
                     }
@@ -63,17 +65,13 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
                         editGroup.setValue(Constants.ROWEDIT);
                         tabelle.setEditable(false);
                         tabelle.setSelectable(true);
-                        final CalculatorTableComputer computer = new CalculatorTableComputer(
-                                tabelle);
+                        final CalculatorTableComputer computer = new CalculatorTableComputer(tabelle);
                         computer.computeColumns();
 
-                        final CalculatorFieldsComputer fieldsComputer = new CalculatorFieldsComputer(
-                                tabelle);
+                        final CalculatorFieldsComputer fieldsComputer = new CalculatorFieldsComputer(tabelle);
                         fieldsComputer.compute();
-                        betriebsfraField.setValue(fieldsComputer
-                                .getBetriebsFraAsString());
-                        betriebsstdField.setValue(fieldsComputer
-                                .getBetriebsStundeAsString());
+                        betriebsfraField.setValue(fieldsComputer.getBetriebsFraAsString());
+                        betriebsstdField.setValue(fieldsComputer.getBetriebsStundeAsString());
                     }
                 });
 

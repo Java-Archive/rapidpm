@@ -11,14 +11,14 @@ public class DelRowClickListener implements ClickListener {
     private CalculatorScreen screen;
     private MainRoot root;
 
-    public DelRowClickListener(MainRoot root, CalculatorScreen screen, ButtonComponent button) {
+    public DelRowClickListener(final MainRoot root, final CalculatorScreen screen, final ButtonComponent button) {
         this.screen = screen;
         this.button = button;
         this.root = root;
     }
 
     @Override
-    public void buttonClick(ClickEvent event) {
+    public void buttonClick(final ClickEvent event) {
         final DelRowLogic logic = new DelRowLogic(root, screen, button);
         logic.execute();
     }

@@ -2,16 +2,19 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.logi
 
 import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.CalculatorScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell.RessourceGroupsBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.uicomponents.ButtonComponent;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.projinit.datenmodell.ProjektBean;
+
+import java.util.List;
 
 public class DelRowLogic {
     private ButtonComponent button;
     private CalculatorScreen screen;
     private MainRoot root;
 
-    public DelRowLogic(MainRoot root, CalculatorScreen screen, ButtonComponent button) {
+    public DelRowLogic(final MainRoot root, final CalculatorScreen screen, final ButtonComponent button) {
         this.screen = screen;
         this.button = button;
         this.root = root;
@@ -19,8 +22,10 @@ public class DelRowLogic {
 
     public void execute() {
         final RessourceGroupsBean ressourceGroupsBean = root.getRessourceGroupsBean();
-        final Object ressourceGroupFromTable = button.getItemId();
-        ressourceGroupsBean.getRessourceGroups().remove(ressourceGroupFromTable);
+        final RessourceGroup ressourceGroupFromTable = (RessourceGroup )button.getItemId();
+        final List<RessourceGroup> ressourceGroups = ressourceGroupsBean.getRessourceGroups();
+        ressourceGroups.remove(ressourceGroupFromTable);
+
         root.setPlanningUnitsBean(new ProjektBean(ressourceGroupsBean));
         screen.getFormLayout().setVisible(false);
         root.setWorkingArea(new CalculatorScreen(root));

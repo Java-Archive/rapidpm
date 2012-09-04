@@ -7,7 +7,7 @@ public class EditModeGetter {
         return mode;
     }
 
-    public static void setMode(EditModes mode) {
+    public static void setMode(final EditModes mode) {
         EditModeGetter.mode = mode;
     }
 

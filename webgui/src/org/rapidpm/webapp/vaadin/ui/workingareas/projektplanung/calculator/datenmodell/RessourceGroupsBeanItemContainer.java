@@ -3,7 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.date
 import com.vaadin.data.util.BeanItemContainer;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -19,8 +19,8 @@ public class RessourceGroupsBeanItemContainer extends BeanItemContainer<Ressourc
         super(RessourceGroup.class);
     }
 
-    public void fill(ArrayList<RessourceGroup> ressourceGroups){
-        for(RessourceGroup ressourceGroup : ressourceGroups){
+    public void fill(final List<RessourceGroup> ressourceGroups){
+        for(final RessourceGroup ressourceGroup : ressourceGroups){
             addBean(ressourceGroup);
         }
     }

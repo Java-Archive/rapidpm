@@ -8,7 +8,7 @@ public class AddRowLogic {
     private MainRoot root;
     private CalculatorScreen screen;
 
-    public AddRowLogic(MainRoot root, CalculatorScreen screen) {
+    public AddRowLogic(final MainRoot root, final CalculatorScreen screen) {
         this.root = root;
         this.screen = screen;
 

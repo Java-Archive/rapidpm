@@ -33,6 +33,7 @@ public class CalculatorTableCreator {
         tabelle.addListener(new CalculatorItemClickListener(
                 itemClickdependentComponents, deleteButton, upperFormLayout, lowerFormLayout, formLayout,
                 saveButton, tabelle, betriebsFraField, betriebsStdField));
+
         tabelle.addListener(new CalculatorItemSetChangeListener(tabelle,
                 betriebsStdField, betriebsFraField));
         tabelle.setReadOnly(false);
@@ -56,7 +57,7 @@ public class CalculatorTableCreator {
         return tabelle;
     }
 
-    public void setTabelle(Table tabelle) {
+    public void setTabelle(final Table tabelle) {
         this.tabelle = tabelle;
     }
 

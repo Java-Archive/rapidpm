@@ -9,31 +9,40 @@ import java.util.Locale;
 
 public class CalculatorConverterAdder implements ConverterAdder {
 
-    @Override
-    public void addConvertersTo(Table tabelle) {
+    public static final String BRUTTO_GEHALT = "bruttoGehalt";
+    public static final String FACTURIZABLE = "facturizable";
+    public static final String EUROS_PER_HOUR = "eurosPerHour";
+    public static final String EXTERNAL_EUROS_PER_HOUR = "externalEurosPerHour";
+    public static final String OPERATIVE_EUROS_PER_HOUR = "operativeEurosPerHour";
+    public static final String BRUTTO_PER_MONTH = "bruttoPerMonth";
+    public static final String SUM_PER_MONTH = "sumPerMonth";
+    public static final String SUM_PER_DAY = "sumPerDay";
 
-        tabelle.setConverter("bruttoGehalt", new StringToNumberConverter() {
+    @Override
+    public void addConvertersTo(final Table tabelle) {
+
+        tabelle.setConverter(BRUTTO_GEHALT, new StringToNumberConverter() {
             @Override
-            protected NumberFormat getFormat(Locale locale) {
+            protected NumberFormat getFormat(final Locale locale) {
                 return NumberFormat.getCurrencyInstance(locale);
             }
         });
 
-        tabelle.setConverter("facturizable", new StringToNumberConverter() {
+        tabelle.setConverter(FACTURIZABLE, new StringToNumberConverter() {
             @Override
             protected NumberFormat getFormat(Locale locale) {
                 return NumberFormat.getPercentInstance(locale);
             }
         });
 
-        tabelle.setConverter("eurosPerHour", new StringToNumberConverter() {
+        tabelle.setConverter(EUROS_PER_HOUR, new StringToNumberConverter() {
             @Override
             protected NumberFormat getFormat(Locale locale) {
                 return NumberFormat.getCurrencyInstance(locale);
             }
         });
 
-        tabelle.setConverter("externalEurosPerHour",
+        tabelle.setConverter(EXTERNAL_EUROS_PER_HOUR,
                 new StringToNumberConverter() {
                     @Override
                     protected NumberFormat getFormat(Locale locale) {
@@ -41,7 +50,7 @@ public class CalculatorConverterAdder implements ConverterAdder {
                     }
                 });
 
-        tabelle.setConverter("operativeEurosPerHour",
+        tabelle.setConverter(OPERATIVE_EUROS_PER_HOUR,
                 new StringToNumberConverter() {
                     @Override
                     protected NumberFormat getFormat(Locale locale) {
@@ -49,21 +58,21 @@ public class CalculatorConverterAdder implements ConverterAdder {
                     }
                 });
 
-        tabelle.setConverter("bruttoPerMonth", new StringToNumberConverter() {
+        tabelle.setConverter(BRUTTO_PER_MONTH, new StringToNumberConverter() {
             @Override
             protected NumberFormat getFormat(Locale locale) {
                 return NumberFormat.getCurrencyInstance(locale);
             }
         });
 
-        tabelle.setConverter("sumPerMonth", new StringToNumberConverter() {
+        tabelle.setConverter(SUM_PER_MONTH, new StringToNumberConverter() {
             @Override
             protected NumberFormat getFormat(Locale locale) {
                 return NumberFormat.getCurrencyInstance(locale);
             }
         });
 
-        tabelle.setConverter("sumPerDay", new StringToNumberConverter() {
+        tabelle.setConverter(SUM_PER_DAY, new StringToNumberConverter() {
             @Override
             protected NumberFormat getFormat(Locale locale) {
                 return NumberFormat.getCurrencyInstance(locale);

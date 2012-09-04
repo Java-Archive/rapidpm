@@ -1,16 +1,17 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektplanung.calculator.datenmodell;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RessourceGroupsBean {
 
     private ArrayList<RessourceGroup> ressourceGroups = new ArrayList<>();
 
     public RessourceGroupsBean(){
-        fill();
+        fill();  //TODO indirekte Initialisierung ist meist nicht so gut..
     }
 
-    public void fill() {
+    private void fill() {
         final RessourceGroup ressourceGroup = new RessourceGroup();
         ressourceGroup.setName("GF");
         ressourceGroup.setBruttoGehalt(200000.0);
@@ -95,11 +96,11 @@ public class RessourceGroupsBean {
         ressourceGroups.add(ressourceGroup9);
     }
 
-    public ArrayList<RessourceGroup> getRessourceGroups() {
+    public List<RessourceGroup> getRessourceGroups() {
         return ressourceGroups;
     }
 
-    public void setRessourceGroups(ArrayList<RessourceGroup> ressourceGroups) {
+    public void setRessourceGroups(final ArrayList<RessourceGroup> ressourceGroups) {
         this.ressourceGroups = ressourceGroups;
     }
 }

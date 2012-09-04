@@ -15,7 +15,7 @@ public class AddRowClickListener implements ClickListener {
     }
 
     @Override
-    public void buttonClick(ClickEvent event) {
+    public void buttonClick(final ClickEvent event) {
         AddRowLogic logic = new AddRowLogic(root, screen);
         logic.execute();
     }
