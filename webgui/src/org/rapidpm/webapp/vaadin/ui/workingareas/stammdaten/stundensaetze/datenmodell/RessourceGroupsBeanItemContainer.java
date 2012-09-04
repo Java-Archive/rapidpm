@@ -1,7 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell;
 
 import com.vaadin.data.util.BeanItemContainer;
-import org.rapidpm.webapp.vaadin.RessourceGroup;
 
 import java.io.Serializable;
 import java.util.List;

@@ -5,7 +5,7 @@ import com.vaadin.data.Property;
 import com.vaadin.terminal.Resource;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
-import org.rapidpm.webapp.vaadin.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;

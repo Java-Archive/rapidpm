@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin;
+package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell;
 
 import java.io.Serializable;
 import static org.rapidpm.Constants.*;

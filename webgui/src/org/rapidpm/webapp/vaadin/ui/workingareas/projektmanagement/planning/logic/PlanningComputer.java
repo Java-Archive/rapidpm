@@ -2,8 +2,8 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.log
 
 import org.rapidpm.webapp.vaadin.Projekt;
 import org.rapidpm.webapp.vaadin.ProjektBean;
-import org.rapidpm.webapp.vaadin.RessourceGroup;
-import org.rapidpm.webapp.vaadin.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitElement;

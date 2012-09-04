@@ -5,7 +5,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningStatus;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.PlannedMeeting;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedTravel;
 import org.rapidpm.persistence.prj.stammdaten.person.Person;
-import org.rapidpm.webapp.vaadin.RessourceGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
 
 import java.util.ArrayList;
 import java.util.List;

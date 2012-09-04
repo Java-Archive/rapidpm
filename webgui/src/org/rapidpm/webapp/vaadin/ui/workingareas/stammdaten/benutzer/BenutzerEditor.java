@@ -54,7 +54,7 @@ public class BenutzerEditor extends FormLayout {
 //        idTextField.setReadOnly(true);
         idTextField.setEnabled(false);
         idTextField.setConverter(Long.class); // vaadin 7
-        idTextField.addValidator(new IntegerRangeValidator("Üngültige ID",0, Integer.MAX_VALUE));
+        idTextField.addValidator(new IntegerRangeValidator("Ungültige ID",0, Integer.MAX_VALUE));
         addComponent(idTextField);
 
         loginTextField = new TextField("Login");

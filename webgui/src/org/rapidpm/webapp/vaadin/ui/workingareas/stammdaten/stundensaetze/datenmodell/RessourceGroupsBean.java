@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin;
+package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell;
 
 import java.util.ArrayList;
 import java.util.List;
