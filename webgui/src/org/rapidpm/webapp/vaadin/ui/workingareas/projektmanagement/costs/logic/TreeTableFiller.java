@@ -1,11 +1,11 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic;
 
 import com.vaadin.data.util.HierarchicalContainer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 
-import static org.rapidpm.Constants.*;
+import static org.rapidpm.Constants.AUFGABE_SPALTE;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -23,7 +23,8 @@ public class TreeTableFiller {
     private RessourceGroupsBean ressourceGroupsBean;
     private MyTreeTable treeTable;
 
-    public TreeTableFiller(ProjektBean projektBean, RessourceGroupsBean ressourceGroupsBean, MyTreeTable treeTable, HierarchicalContainer dataSource) {
+    public TreeTableFiller(final ProjektBean projektBean, final RessourceGroupsBean ressourceGroupsBean,
+                           final MyTreeTable treeTable, final HierarchicalContainer dataSource) {
         this.dataSource = dataSource;
         this.projektBean = projektBean;
         this.ressourceGroupsBean = ressourceGroupsBean;

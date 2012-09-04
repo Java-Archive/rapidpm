@@ -6,21 +6,22 @@ import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.CostsCalculator;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.OverviewTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.TreeTableFiller;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 
 import java.util.Date;
 
-import static org.rapidpm.Constants.*;
+import static org.rapidpm.Constants.DATE_FORMAT;
+import static org.rapidpm.Constants.EUR;
 
 
 public class CostsScreen extends Screen {
 
-    private Button saveButton = new Button("Speichern");
+    private Button saveButton = new Button("Speichern");  //TODO auf i18n properties wechseln ??
     private TextField vertrieblerField;
     private DateField datumField;
     private TextField manntageField;
@@ -92,7 +93,7 @@ public class CostsScreen extends Screen {
     private void erstelleUnterschriftLayout() {
         // Unterschrift
         vertrieblerField = new TextField("Verantwortlicher Vertriebler:");
-        datumField = new DateField("Datum:",new Date());
+        datumField = new DateField("Datum:", new Date());
         datumField.setDateFormat(DATE_FORMAT.toPattern());
         unterschriftLayout.setWidth("560px");
         unterschriftLayout.addComponent(vertrieblerField);
@@ -103,7 +104,7 @@ public class CostsScreen extends Screen {
     }
 
     private void fillFields() {
-        final TimesCalculator timesCalculator = new TimesCalculator(ressourceGroupsBean,projektBean);
+        final TimesCalculator timesCalculator = new TimesCalculator(ressourceGroupsBean, projektBean);
         final CostsCalculator costsCalculator = new CostsCalculator(projektBean);
         costsCalculator.compute();
         timesCalculator.compute();
@@ -111,7 +112,7 @@ public class CostsScreen extends Screen {
         summeInMinField.setValue(timesCalculator.getGesamtSummeItem().toString());
         manntageField = new TextField("MT:");
         kostenField = new TextField("Kosten:");
-        manntageField.setValue(timesCalculator.getMannTageGerundet().toString());
+        manntageField.setValue(timesCalculator.getMannTageGerundet());
         kostenField.setValue(costsCalculator.getTotalCostsGerundet() + EUR);
         kostenField.setReadOnly(true);
         manntageField.setReadOnly(true);

@@ -1,10 +1,11 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic;
 
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitElement;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -38,14 +39,16 @@ public class CostsCalculator {
     }
 
     private void computeTotalCosts() {
-        for (final RessourceGroup ressourceGroup : ressourceGroupsCostsMap.keySet()) {
-            totalCostsExakt += ressourceGroupsCostsMap.get(ressourceGroup);
+        for (final Map.Entry<RessourceGroup, Double> ressourceGroupDoubleEntry : ressourceGroupsCostsMap.entrySet()) {
+            totalCostsExakt += ressourceGroupDoubleEntry.getValue();
         }
     }
 
 
     private void computePlanningUnitGroupsAndTotalsAbsolut() {
-        for (final PlanningUnitGroup planningUnitGroup : projektBean.getProjekt().getPlanningUnitGroups()) {
+        final Projekt projekt = projektBean.getProjekt();
+        final List<PlanningUnitGroup> planningUnitGroups = projekt.getPlanningUnitGroups();
+        for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
             computePlanningUnits(planningUnitGroup.getPlanningUnitList());
         }
     }
