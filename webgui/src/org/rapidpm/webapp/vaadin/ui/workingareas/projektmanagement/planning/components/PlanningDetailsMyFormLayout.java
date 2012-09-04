@@ -3,7 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-import org.rapidpm.webapp.vaadin.ProjektBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssuePrioritiesEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;

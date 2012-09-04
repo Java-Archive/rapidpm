@@ -11,7 +11,6 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.comp
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
-import org.rapidpm.webapp.vaadin.Projekt;
 
 import java.util.ArrayList;
 

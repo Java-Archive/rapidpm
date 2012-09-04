@@ -4,7 +4,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenm
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitElement;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
-import org.rapidpm.webapp.vaadin.ProjektBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;

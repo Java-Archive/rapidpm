@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin;
+package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell;
 
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;

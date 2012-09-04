@@ -1,6 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 
-import org.rapidpm.webapp.vaadin.ProjektBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 

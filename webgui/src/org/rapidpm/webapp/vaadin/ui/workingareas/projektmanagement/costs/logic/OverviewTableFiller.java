@@ -7,7 +7,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenm
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
-import org.rapidpm.webapp.vaadin.ProjektBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
 import java.text.DecimalFormat;
 import java.util.Map;
