@@ -13,10 +13,10 @@ import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.WrappedRequest;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.BaseTheme;
-import org.rapidpm.webapp.vaadin.ui.*;
-import org.rapidpm.webapp.vaadin.ui.workingareas.demo.DemoWorkingArea;
+import org.rapidpm.webapp.vaadin.ui.windows.*;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
-import static org.rapidpm.Constants.*;
+import static org.rapidpm.Constants.IMAGE_LOGO;
 
 @Theme("rapidpm")
 public abstract class BaseRoot extends Root {
@@ -39,6 +39,9 @@ public abstract class BaseRoot extends Root {
 
     private final String applicationName;
     private String currentUser = "";
+
+    protected RessourceGroupsBean ressourceGroupsBean = new RessourceGroupsBean();
+    protected ProjektBean planningUnitsBean = new ProjektBean(ressourceGroupsBean);
 
 
     protected BaseRoot(final String applicationName) {
@@ -213,7 +216,7 @@ public abstract class BaseRoot extends Root {
 
         //hlWorkingAreaContainer
 //        final Component demoWorkingArea = createDemoWorkingArea();
-        setWorkingArea(new DemoWorkingArea());
+        setWorkingArea(new ProjektplanungScreen(planningUnitsBean, ressourceGroupsBean));
         addComponent(mainlayout);
 
         // vaadin 7
