@@ -5,8 +5,8 @@ import com.vaadin.data.Container.ItemSetChangeListener;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import org.apache.log4j.Logger;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeFieldsComputer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeTableComputer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeFieldsCalculator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeTableCalculator;
 
 public class StundensaetzeItemSetChangeListener implements ItemSetChangeListener {
     private Logger logger = Logger.getLogger(StundensaetzeItemSetChangeListener.class);
@@ -24,9 +24,9 @@ public class StundensaetzeItemSetChangeListener implements ItemSetChangeListener
     @Override
     public void containerItemSetChange(final ItemSetChangeEvent event) {
         logger.debug("jetzt");
-        final StundensaetzeTableComputer tableComp = new StundensaetzeTableComputer(tabelle);
+        final StundensaetzeTableCalculator tableComp = new StundensaetzeTableCalculator(tabelle);
         tableComp.computeColumns();
-        final StundensaetzeFieldsComputer fieldsComp = new StundensaetzeFieldsComputer(tabelle);
+        final StundensaetzeFieldsCalculator fieldsComp = new StundensaetzeFieldsCalculator(tabelle);
         fieldsComp.compute();
         betriebsWertField.setValue(fieldsComp.getBetriebsFraAsString());
         betriebsstdField.setValue(fieldsComp.getBetriebsStundeAsString());

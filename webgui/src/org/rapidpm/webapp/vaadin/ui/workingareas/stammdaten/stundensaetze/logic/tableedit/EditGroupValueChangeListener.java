@@ -7,8 +7,8 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component.Event;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeFieldsComputer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeTableComputer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeFieldsCalculator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeTableCalculator;
 
 import static org.rapidpm.Constants.*;
 
@@ -67,13 +67,13 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
                         editGroup.setValue(ROWEDIT);
                         tabelle.setEditable(false);
                         tabelle.setSelectable(true);
-                        final StundensaetzeTableComputer computer = new StundensaetzeTableComputer(tabelle);
-                        computer.computeColumns();
+                        final StundensaetzeTableCalculator calculator = new StundensaetzeTableCalculator(tabelle);
+                        calculator.computeColumns();
 
-                        final StundensaetzeFieldsComputer fieldsComputer = new StundensaetzeFieldsComputer(tabelle);
-                        fieldsComputer.compute();
-                        betriebsfraField.setValue(fieldsComputer.getBetriebsFraAsString());
-                        betriebsstdField.setValue(fieldsComputer.getBetriebsStundeAsString());
+                        final StundensaetzeFieldsCalculator fieldsCalculator = new StundensaetzeFieldsCalculator(tabelle);
+                        fieldsCalculator.compute();
+                        betriebsfraField.setValue(fieldsCalculator.getBetriebsFraAsString());
+                        betriebsstdField.setValue(fieldsCalculator.getBetriebsStundeAsString());
                     }
                 });
 

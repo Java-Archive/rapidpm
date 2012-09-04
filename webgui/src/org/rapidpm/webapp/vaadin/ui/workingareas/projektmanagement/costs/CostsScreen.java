@@ -4,11 +4,11 @@ import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.CostsCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.CostsComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.OverviewTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.TreeTableFiller;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
@@ -103,16 +103,16 @@ public class CostsScreen extends Screen {
     }
 
     private void fillFields() {
-        final TimesComputer timesComputer = new TimesComputer(ressourceGroupsBean,projektBean);
-        final CostsComputer costsComputer = new CostsComputer(projektBean);
-        costsComputer.compute();
-        timesComputer.compute();
+        final TimesCalculator timesCalculator = new TimesCalculator(ressourceGroupsBean,projektBean);
+        final CostsCalculator costsCalculator = new CostsCalculator(projektBean);
+        costsCalculator.compute();
+        timesCalculator.compute();
         summeInMinField = new TextField("Summe [d:hh:mm]");
-        summeInMinField.setValue(timesComputer.getGesamtSummeItem().toString());
+        summeInMinField.setValue(timesCalculator.getGesamtSummeItem().toString());
         manntageField = new TextField("MT:");
         kostenField = new TextField("Kosten:");
-        manntageField.setValue(timesComputer.getMannTageGerundet().toString());
-        kostenField.setValue(costsComputer.getTotalCostsGerundet() + EUR);
+        manntageField.setValue(timesCalculator.getMannTageGerundet().toString());
+        kostenField.setValue(costsCalculator.getTotalCostsGerundet() + EUR);
         kostenField.setReadOnly(true);
         manntageField.setReadOnly(true);
         summeInMinField.setReadOnly(true);

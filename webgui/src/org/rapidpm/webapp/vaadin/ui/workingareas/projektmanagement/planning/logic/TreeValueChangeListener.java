@@ -5,12 +5,13 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.PlanningDetailsMyFormLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.PlanningMainMyFormLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.PlanningRessourcesMyFormLayout;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 
 import java.util.ArrayList;
 

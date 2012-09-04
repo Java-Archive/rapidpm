@@ -1,12 +1,13 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic;
 
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitElement;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,14 +23,14 @@ import static org.rapidpm.Constants.*;
  * Time: 13:47
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class PlanningComputer {
+public class PlanningCalculator {
 
     private ProjektBean projektBean;
     private RessourceGroupsBean ressourceGroupsBean;
     private List<RessourceGroup> ressourceGroups;
     private Projekt projekt;
 
-    public PlanningComputer(ProjektBean projektBean, RessourceGroupsBean ressourceGroupsBean) {
+    public PlanningCalculator(ProjektBean projektBean, RessourceGroupsBean ressourceGroupsBean) {
         this.projektBean = projektBean;
         this.ressourceGroupsBean = ressourceGroupsBean;
     }

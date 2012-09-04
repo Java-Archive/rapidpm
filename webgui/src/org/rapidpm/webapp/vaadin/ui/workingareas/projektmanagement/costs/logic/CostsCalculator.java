@@ -20,7 +20,7 @@ import static org.rapidpm.Constants.*;
  * Time: 23:37
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class CostsComputer {
+public class CostsCalculator {
 
     private ProjektBean projektBean;
 
@@ -28,7 +28,7 @@ public class CostsComputer {
 
     private Double totalCostsExakt = 0.0;
 
-    public CostsComputer(ProjektBean pBean) {
+    public CostsCalculator(ProjektBean pBean) {
         projektBean = pBean;
     }
 

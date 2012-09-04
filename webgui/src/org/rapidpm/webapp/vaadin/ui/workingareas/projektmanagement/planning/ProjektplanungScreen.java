@@ -5,9 +5,9 @@ import com.vaadin.data.Property;
 import com.vaadin.terminal.Resource;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
@@ -42,8 +42,8 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
     public ProjektplanungScreen(final ProjektBean cont, final RessourceGroupsBean ressourceGroupsBean) {
         this.projektBean = cont;
         this.ressourceGroupsBean = ressourceGroupsBean;
-        final PlanningComputer computer = new PlanningComputer(this.projektBean, this.ressourceGroupsBean);
-        computer.compute();
+        final PlanningCalculator calculator = new PlanningCalculator(this.projektBean, this.ressourceGroupsBean);
+        calculator.compute();
         setSizeFull();
         setSplitPosition(40, Unit.PERCENTAGE);
 

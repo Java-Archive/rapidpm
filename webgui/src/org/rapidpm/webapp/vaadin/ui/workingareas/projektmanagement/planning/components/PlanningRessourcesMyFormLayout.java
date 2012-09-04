@@ -4,8 +4,8 @@ import com.vaadin.event.MouseEvents;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningComputer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -86,9 +86,9 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
                             }
                         }
                     }
-                    final PlanningComputer computer = new PlanningComputer(screen.getProjektBean(),
+                    final PlanningCalculator calculator = new PlanningCalculator(screen.getProjektBean(),
                             screen.getRessourceGroupsBean());
-                    computer.compute();
+                    calculator.compute();
 
                     final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
                     while (componentIterator.hasNext()) {

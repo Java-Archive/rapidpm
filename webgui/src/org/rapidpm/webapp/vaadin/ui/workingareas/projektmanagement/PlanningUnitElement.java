@@ -9,7 +9,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenm
  * Date: 30.07.12
  * Time: 07:34
  *
- * PlanungsUnitElement, die verbindung zwischen dem
+ * PlanungsUnitElement, die Verbindung zwischen dem
  * Planungseintrag in der Planungsgruppe und den PlanRessourcen.
  *
  */

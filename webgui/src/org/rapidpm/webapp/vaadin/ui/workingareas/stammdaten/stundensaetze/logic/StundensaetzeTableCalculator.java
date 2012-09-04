@@ -9,7 +9,7 @@ import java.util.Collection;
 
 import static org.rapidpm.Constants.*;
 
-public class StundensaetzeTableComputer {
+public class StundensaetzeTableCalculator {
     public static final double MONTH_COUNT_YEAR = 12.0;
     public static final double STD_WORKING_DAYS_PER_MONTH = 20.0;
     public static final String SUM_PER_MONTH = "sumPerMonth";
@@ -33,7 +33,7 @@ public class StundensaetzeTableComputer {
     private Double sumPerMonthTotal = 0.0;
     private Double sumPerDayTotal = 0.0;
 
-    public StundensaetzeTableComputer(final Table tabelle) {
+    public StundensaetzeTableCalculator(final Table tabelle) {
         table = tabelle;
     }
 

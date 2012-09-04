@@ -9,8 +9,8 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component.Event;
 import org.apache.log4j.Logger;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeFieldsComputer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeTableComputer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeFieldsCalculator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeTableCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.EditModeGetter;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.EditModes;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.ItemClickDependentComponent;
@@ -83,13 +83,13 @@ public class StundensaetzeItemClickListener implements ItemClickListener {
                 public void buttonClick(ClickEvent event) {
                     try {
                         fieldGroup.commit();
-                        final StundensaetzeTableComputer computer = new StundensaetzeTableComputer(table);
-                        computer.computeColumns();
+                        final StundensaetzeTableCalculator calculator = new StundensaetzeTableCalculator(table);
+                        calculator.computeColumns();
 
-                        final StundensaetzeFieldsComputer fieldsComputer = new StundensaetzeFieldsComputer(table);
-                        fieldsComputer.compute();
-                        betriebsWertField.setValue(fieldsComputer.getBetriebsFraAsString());
-                        betriebsStdField.setValue(fieldsComputer.getBetriebsStundeAsString());
+                        final StundensaetzeFieldsCalculator fieldsCalculator = new StundensaetzeFieldsCalculator(table);
+                        fieldsCalculator.compute();
+                        betriebsWertField.setValue(fieldsCalculator.getBetriebsFraAsString());
+                        betriebsStdField.setValue(fieldsCalculator.getBetriebsStundeAsString());
                         upperFormLayout.setVisible(false);
                         saveButton.setVisible(false);
                     } catch (CommitException e) {

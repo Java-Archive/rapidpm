@@ -4,8 +4,8 @@ import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
@@ -79,12 +79,12 @@ public class AufwandProjInitScreen extends Screen {
     }
 
     public void fillFields() {
-        final TimesComputer timesComputer = new TimesComputer(ressourceGroupsBean,projektBean);
-        timesComputer.compute();
+        final TimesCalculator timesCalculator = new TimesCalculator(ressourceGroupsBean,projektBean);
+        timesCalculator.compute();
         manntageField.setReadOnly(false);
         summeField.setReadOnly(false);
-        manntageField.setValue(timesComputer.getMannTageGerundet().toString());
-        summeField.setValue(timesComputer.getGesamtSummeItem().toString());
+        manntageField.setValue(timesCalculator.getMannTageGerundet().toString());
+        summeField.setValue(timesCalculator.getGesamtSummeItem().toString());
         manntageField.setReadOnly(true);
         summeField.setReadOnly(true);
     }

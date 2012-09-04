@@ -18,7 +18,7 @@ import static org.rapidpm.Constants.*;
  * Time: 14:34
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class TimesComputer {
+public class TimesCalculator {
 
     private RessourceGroupsBean ressourceGroupsBean;
     private ProjektBean projektBean;
@@ -29,7 +29,7 @@ public class TimesComputer {
     private Integer gesamtSummeInMin;
     private Double mannTageExakt;
 
-    public TimesComputer(RessourceGroupsBean rBean, ProjektBean pBean){
+    public TimesCalculator(RessourceGroupsBean rBean, ProjektBean pBean){
         ressourceGroupsBean = rBean;
         projektBean = pBean;
         ressourceGroups = ressourceGroupsBean.getRessourceGroups();

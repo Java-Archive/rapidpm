@@ -7,14 +7,14 @@ import com.vaadin.ui.Table;
 
 import static org.rapidpm.Constants.*;
 
-public class StundensaetzeFieldsComputer {
+public class StundensaetzeFieldsCalculator {
 
     public static final String SUM_PER_DAY = "sumPerDay";
     private Table tabelle;
     private Double betriebsStunde;
     private Double betriebsWert;
 
-    public StundensaetzeFieldsComputer(final Table tabelle) {
+    public StundensaetzeFieldsCalculator(final Table tabelle) {
         this.tabelle = tabelle;
     }
 

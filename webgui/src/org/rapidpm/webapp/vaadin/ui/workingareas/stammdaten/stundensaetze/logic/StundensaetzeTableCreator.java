@@ -48,8 +48,8 @@ public class StundensaetzeTableCreator {
         final StundensaetzeConverterAdder convertersAdder = new StundensaetzeConverterAdder();
         convertersAdder.addConvertersTo(tabelle);
 
-        final StundensaetzeTableComputer computer = new StundensaetzeTableComputer(tabelle);
-        computer.computeColumns();
+        final StundensaetzeTableCalculator calculator = new StundensaetzeTableCalculator(tabelle);
+        calculator.computeColumns();
 
     }
 

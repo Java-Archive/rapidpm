@@ -5,7 +5,7 @@ import com.vaadin.terminal.gwt.client.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeFieldsComputer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeFieldsCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeTableCreator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.EditGroupValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tasks.AddRowClickListener;
@@ -103,13 +103,13 @@ public class StundensaetzeScreen extends Screen {
         formLayout.addComponent(lowerFormLayout);
 
 
-        final StundensaetzeFieldsComputer computer = new StundensaetzeFieldsComputer(
+        final StundensaetzeFieldsCalculator calculator = new StundensaetzeFieldsCalculator(
                 tabelle);
-        computer.compute();
+        calculator.compute();
 
         final DecimalFormat f = new DecimalFormat(DECIMAL_FORMAT);
-        betriebsstdField.setValue(f.format(computer.getBetriebsStunde()) + EUR);
-        betriebsWertField.setValue(f.format(computer.getBetriebsWert()) + EUR);
+        betriebsstdField.setValue(f.format(calculator.getBetriebsStunde()) + EUR);
+        betriebsWertField.setValue(f.format(calculator.getBetriebsWert()) + EUR);
 
         setComponents();
     }

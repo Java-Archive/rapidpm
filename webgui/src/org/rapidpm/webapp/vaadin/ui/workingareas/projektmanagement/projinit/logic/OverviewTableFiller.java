@@ -2,9 +2,9 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.log
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesComputer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
@@ -48,8 +48,8 @@ public class OverviewTableFiller {
             final String spaltenName = ressourceGroup.getName();
             table.addContainerProperty(spaltenName, String.class, null);
         }
-        TimesComputer computer = new TimesComputer(ressourceGroupsBean, projektBean);
-        computer.compute();
+        TimesCalculator calculator = new TimesCalculator(ressourceGroupsBean, projektBean);
+        calculator.compute();
         
         
         table.addItem(ABSOLUT);
@@ -59,7 +59,7 @@ public class OverviewTableFiller {
         absolutItemAngabeProperty.setValue(SUM_IN_DAYSHOURSMINS);
         for (final Object spalte : table.getItem(ABSOLUT).getItemPropertyIds()) {
             if (!spalte.equals(ANGABE_SPALTE)) {
-                final Map<RessourceGroup, DaysHoursMinutesItem> absoluteWerte = computer.getAbsoluteWerte();
+                final Map<RessourceGroup, DaysHoursMinutesItem> absoluteWerte = calculator.getAbsoluteWerte();
                 for (Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry : absoluteWerte.entrySet()) {
                     final String spaltenNameAusMap = absoluteWerteEntry.getKey().getName();
                     final String spaltenName = spalte.toString();
@@ -80,7 +80,7 @@ public class OverviewTableFiller {
         relativItemAngabeProperty.setValue(SUM_IN_PERCENT);
         for (final Object spalte : relativZeile.getItemPropertyIds()) {
             if (!spalte.equals(ANGABE_SPALTE)) {
-                final Map<RessourceGroup,Double> relativeWerte = computer.getRelativeWerte();
+                final Map<RessourceGroup,Double> relativeWerte = calculator.getRelativeWerte();
                 for (final Map.Entry<RessourceGroup, Double> relativeWerteEntry : relativeWerte.entrySet()) {
                     final String spaltenNameAusMap = relativeWerteEntry.getKey().getName();
                     final String spaltenName = spalte.toString();
