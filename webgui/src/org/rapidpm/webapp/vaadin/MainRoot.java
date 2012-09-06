@@ -45,10 +45,10 @@ public class MainRoot extends BaseRoot {
             }
         });
 
-        final MenuBar.MenuItem reportings = menuBar.addItem("Analysen", null, null);
-        final MenuBar.MenuItem rp_difference = reportings.addItem("Wortraumanalyse", null, null);
-        rp_difference.addItem("Difference-Report", null, null);
-        rp_difference.addItem("Termmatrix", null, null);
+        //final MenuBar.MenuItem reportings = menuBar.addItem("Analysen", null, null);
+        //final MenuBar.MenuItem rp_difference = reportings.addItem("Wortraumanalyse", null, null);
+        //rp_difference.addItem("Difference-Report", null, null);
+        //rp_difference.addItem("Termmatrix", null, null);
 
         menuBar.addItem("Anfragenmanagement", new MenuBar.Command() {
             @Override
