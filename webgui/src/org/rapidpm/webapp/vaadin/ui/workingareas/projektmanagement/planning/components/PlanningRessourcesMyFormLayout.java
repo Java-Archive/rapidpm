@@ -102,7 +102,7 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
                     }
                     final RessourceGroupsBean ressourceGroupsBean = screen.getRessourceGroupsBean();
                     final PlanningCalculator calculator = new PlanningCalculator(projektBean, ressourceGroupsBean);
-                    calculator.compute();
+                    calculator.calculate();
 
                     final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
                     while (componentIterator.hasNext()) {

@@ -45,7 +45,7 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         this.projektBean = cont;
         this.ressourceGroupsBean = ressourceGroupsBean;
         final PlanningCalculator calculator = new PlanningCalculator(this.projektBean, this.ressourceGroupsBean);
-        calculator.compute();
+        calculator.calculate();
         setSizeFull();
         setSplitPosition(40, Unit.PERCENTAGE);
 

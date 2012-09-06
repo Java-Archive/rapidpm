@@ -5,6 +5,8 @@ import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TreeTableHeaderClickListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.components.UndoButton;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.CostsCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.OverviewTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.TreeTableFiller;
@@ -22,6 +24,7 @@ import static org.rapidpm.Constants.EUR;
 public class CostsScreen extends Screen {
 
     private Button saveButton = new Button("Speichern");  //TODO auf i18n properties wechseln ??
+    private Button undoButton;
     private TextField vertrieblerField;
     private DateField datumField;
     private TextField manntageField;
@@ -56,6 +59,9 @@ public class CostsScreen extends Screen {
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
 
+        undoButton = new UndoButton(treeTable, dataSource, projektBean, ressourceGroupsBean);
+        undoButton.setVisible(false);
+
         final TreeTableFiller treeTableFiller = new TreeTableFiller(projektBean, ressourceGroupsBean, treeTable, dataSource);
         treeTableFiller.fill();
 
@@ -65,8 +71,10 @@ public class CostsScreen extends Screen {
         uebersichtTable.setPageLength(4);
         uebersichtTable.setConnectedTable(treeTable);
         treeTable.setConnectedTable(uebersichtTable);
+        treeTable.addListener(new TreeTableHeaderClickListener(undoButton));
         table1layout.addComponent(uebersichtTable);
 
+        //table2layout.addComponent(undoButton);
         table2layout.addComponent(treeTable);
         table1layout.setMargin(true, false, true, false);
         table2layout.setMargin(true, false, true, false);
@@ -106,8 +114,8 @@ public class CostsScreen extends Screen {
     private void fillFields() {
         final TimesCalculator timesCalculator = new TimesCalculator(ressourceGroupsBean, projektBean);
         final CostsCalculator costsCalculator = new CostsCalculator(projektBean);
-        costsCalculator.compute();
-        timesCalculator.compute();
+        costsCalculator.calculate();
+        timesCalculator.calculate();
         summeInMinField = new TextField("Summe [d:hh:mm]");
         summeInMinField.setValue(timesCalculator.getGesamtSummeItem().toString());
         manntageField = new TextField("MT:");

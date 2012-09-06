@@ -40,14 +40,14 @@ public class PlanningCalculator {
         this.ressourceGroupsBean = ressourceGroupsBean;
     }
 
-    public void compute() {
+    public void calculate() {
         projekt = projektBean.getProjekt();
         ressourceGroups = ressourceGroupsBean.getRessourceGroups();
 
-        this.computePlanningUnitGroups();
+        this.calculatePlanningUnitGroups();
     }
 
-    private void computePlanningUnitGroups() {
+    private void calculatePlanningUnitGroups() {
         for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
             final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
             final List<PlanningUnit> planningUnitGroupPlanningUnitList = planningUnitGroup.getPlanningUnitList();
@@ -61,21 +61,21 @@ public class PlanningCalculator {
                     planningUnitGroup.getPlanningUnitElementList().add(planningUnitElement);
                 }
             } else {
-                this.computePlanningUnits(planningUnitGroupPlanningUnitList, planningUnitGroup.getPlanningUnitGroupName(),
+                this.calculatePlanningUnits(planningUnitGroupPlanningUnitList, planningUnitGroup.getPlanningUnitGroupName(),
                         ressourceGroupDaysHoursMinutesItemMap);
             }
         }
     }
 
 
-    private void computePlanningUnits(final List<PlanningUnit> planningUnits, final String parent,
+    private void calculatePlanningUnits(final List<PlanningUnit> planningUnits, final String parent,
                                       final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap) {
         for (final PlanningUnit planningUnit : planningUnits) {
             final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
             if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
                 this.addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, planningUnit);
             } else {
-                this.computePlanningUnits(kindPlanningUnits, planningUnit.getPlanningUnitName(),
+                this.calculatePlanningUnits(kindPlanningUnits, planningUnit.getPlanningUnitName(),
                         ressourceGroupDaysHoursMinutesItemMap);
             }
         }

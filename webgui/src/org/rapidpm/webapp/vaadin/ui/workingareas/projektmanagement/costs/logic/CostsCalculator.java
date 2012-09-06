@@ -33,33 +33,33 @@ public class CostsCalculator {
         projektBean = pBean;
     }
 
-    public void compute() {
-        computePlanningUnitGroupsAndTotalsAbsolut();
-        computeTotalCosts();
+    public void calculate() {
+        calculatePlanningUnitGroupsAndTotalsAbsolut();
+        calculateTotalCosts();
     }
 
-    private void computeTotalCosts() {
+    private void calculateTotalCosts() {
         for (final Map.Entry<RessourceGroup, Double> ressourceGroupDoubleEntry : ressourceGroupsCostsMap.entrySet()) {
             totalCostsExakt += ressourceGroupDoubleEntry.getValue();
         }
     }
 
 
-    private void computePlanningUnitGroupsAndTotalsAbsolut() {
+    private void calculatePlanningUnitGroupsAndTotalsAbsolut() {
         final Projekt projekt = projektBean.getProjekt();
         final List<PlanningUnitGroup> planningUnitGroups = projekt.getPlanningUnitGroups();
         for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
-            computePlanningUnits(planningUnitGroup.getPlanningUnitList());
+            calculatePlanningUnits(planningUnitGroup.getPlanningUnitList());
         }
     }
 
 
-    private void computePlanningUnits(List<PlanningUnit> planningUnits) {
+    private void calculatePlanningUnits(List<PlanningUnit> planningUnits) {
         for (final PlanningUnit planningUnit : planningUnits) {
             if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
                 addiereZeileZurRessourceMap(planningUnit);
             } else {
-                computePlanningUnits(planningUnit.getKindPlanningUnits());
+                calculatePlanningUnits(planningUnit.getKindPlanningUnits());
             }
         }
     }

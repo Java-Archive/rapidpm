@@ -50,7 +50,7 @@ public class OverviewTableFiller {
             table.addContainerProperty(spaltenName, String.class, null);
         }
         final TimesCalculator calculator = new TimesCalculator(ressourceGroupsBean, projektBean);
-        calculator.compute();
+        calculator.calculate();
 
 
         table.addItem(ABSOLUT);

@@ -39,6 +39,6 @@ public class TreeTableFiller {
         treeTable.setColumnCollapsible(AUFGABE_SPALTE, false);
         treeTable.setColumnWidth(AUFGABE_SPALTE, WIDTH);
         treeTable.setValue(null);
-        costsConverterAdder.addConvertersTo(treeTable);
+        //costsConverterAdder.addConvertersTo(treeTable);
     }
 }

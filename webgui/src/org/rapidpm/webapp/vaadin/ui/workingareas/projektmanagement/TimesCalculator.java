@@ -36,35 +36,35 @@ public class TimesCalculator {
         ressourceGroups = ressourceGroupsBean.getRessourceGroups();
     }
 
-    public void compute() {
+    public void calculate() {
         for (final RessourceGroup spalte : this.ressourceGroups) {
             relativeWerte.put(spalte, 0.0);
         }
 
-        computePlanningUnitGroupsAndTotalsAbsolut();
-        computeTotalsRelative();
-        computeMannTage();
+        calculatePlanningUnitGroupsAndTotalsAbsolut();
+        calculateTotalsRelative();
+        calculateMannTage();
     }
 
-    private void computeMannTage() {
+    private void calculateMannTage() {
         mannTageExakt = gesamtSummeInMin / MINS_HOUR.doubleValue() / WORKINGHOURS_DAY.doubleValue();
     }
 
-    private void computePlanningUnitGroupsAndTotalsAbsolut() {
+    private void calculatePlanningUnitGroupsAndTotalsAbsolut() {
         final Projekt projekt = projektBean.getProjekt();
         for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
-            computePlanningUnits(planningUnitGroup.getPlanningUnitList());
+            calculatePlanningUnits(planningUnitGroup.getPlanningUnitList());
         }
     }
 
 
-    private void computePlanningUnits(final List<PlanningUnit> planningUnits) {
+    private void calculatePlanningUnits(final List<PlanningUnit> planningUnits) {
         for (final PlanningUnit planningUnit : planningUnits) {
             final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
             if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
                 addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, planningUnit);
             } else {
-                computePlanningUnits(kindPlanningUnits);
+                calculatePlanningUnits(kindPlanningUnits);
             }
         }
 
@@ -93,7 +93,7 @@ public class TimesCalculator {
         }
     }
 
-    private void computeTotalsRelative() {
+    private void calculateTotalsRelative() {
         gesamtSummeInMin = 0;
         for (final Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry :
                 ressourceGroupDaysHoursMinutesItemMap.entrySet()) {

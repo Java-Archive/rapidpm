@@ -128,8 +128,6 @@ public class TreeTableDataSourceFiller {
                     daysHoursMinutesItem.setHours(hours + daysHoursMinutesItemFromMap
                             .getHours());
                     daysHoursMinutesItem.setMinutes(minutes + daysHoursMinutesItemFromMap.getMinutes());
-                } else {
-                    logger.warn("RessourceGroup nicht gefunden");
                 }
                 correctDaysHoursMinutesItem(daysHoursMinutesItem);
                 ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup, daysHoursMinutesItem);

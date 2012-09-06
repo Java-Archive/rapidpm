@@ -59,10 +59,10 @@ public class OverviewTableFiller {
         }
 
         final TimesCalculator timesCalculator = new TimesCalculator(ressourceGroupsBean, projektBean);
-        timesCalculator.compute();
+        timesCalculator.calculate();
 
         final CostsCalculator costsCalculator = new CostsCalculator(projektBean);
-        costsCalculator.compute();
+        costsCalculator.calculate();
 
         final Item externItem = table.addItem(EXTERN);
         final Item relativItem = table.addItem(RELATIV);

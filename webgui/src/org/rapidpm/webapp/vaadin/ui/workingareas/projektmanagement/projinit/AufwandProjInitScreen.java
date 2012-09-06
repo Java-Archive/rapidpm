@@ -8,6 +8,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculat
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TreeTableHeaderClickListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.UndoButton;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.OverviewTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.TreeTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
@@ -19,6 +21,7 @@ import static org.rapidpm.Constants.DATE_FORMAT;
 public class AufwandProjInitScreen extends Screen {
 
     private Button saveButton = new Button("Speichern");
+    private Button undoButton;
     private TextField kundeField;
     private TextField projektField;
     private DateField datumField;
@@ -45,12 +48,15 @@ public class AufwandProjInitScreen extends Screen {
     private GridLayout upperFormLayout = new GridLayout(2, 10);
     private VerticalLayout lowerFormLayout = new VerticalLayout();
 
-    public AufwandProjInitScreen(final MainRoot root) {
+    public AufwandProjInitScreen(MainRoot root) {
         this.projektBean = root.getPlanningUnitsBean();
         this.ressourceGroupsBean = root.getRessourceGroupsBean();
 
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
+
+        undoButton = new UndoButton(treeTable, dataSource, projektBean, ressourceGroupsBean);
+        undoButton.setVisible(false);
 
         final TreeTableFiller treeTableFiller = new TreeTableFiller(this, projektBean, ressourceGroupsBean, treeTable, dataSource);
         treeTableFiller.fill();
@@ -63,8 +69,10 @@ public class AufwandProjInitScreen extends Screen {
         uebersichtTable.setPageLength(4);
         uebersichtTable.setConnectedTable(treeTable);
         treeTable.setConnectedTable(uebersichtTable);
+        treeTable.addListener(new TreeTableHeaderClickListener(undoButton));
         table1layout.addComponent(uebersichtTable);
 
+        table2layout.addComponent(undoButton);
         table2layout.addComponent(treeTable);
         table1layout.setMargin(true, false, true, false);
         table2layout.setMargin(true, false, true, false);
@@ -79,11 +87,11 @@ public class AufwandProjInitScreen extends Screen {
     }
 
     public void fillFields() {
-        final TimesCalculator timesCalculator = new TimesCalculator(ressourceGroupsBean, projektBean);
-        timesCalculator.compute();
+        final TimesCalculator timesCalculator = new TimesCalculator(ressourceGroupsBean,projektBean);
+        timesCalculator.calculate();
         manntageField.setReadOnly(false);
         summeField.setReadOnly(false);
-        manntageField.setValue(timesCalculator.getMannTageGerundet());
+        manntageField.setValue(timesCalculator.getMannTageGerundet().toString());
         summeField.setValue(timesCalculator.getGesamtSummeItem().toString());
         manntageField.setReadOnly(true);
         summeField.setReadOnly(true);
@@ -108,11 +116,11 @@ public class AufwandProjInitScreen extends Screen {
         layoutLinks.addComponent(kundeField);
         layoutLinks.addComponent(projektField);
         layoutLinks.addComponent(datumField);
-        layoutLinks.setMargin(false, true, false, false);
+        layoutLinks.setMargin(false,true,false,false);
 
         layoutRechts.addComponent(manntageField);
         layoutRechts.addComponent(summeField);
-        layoutRechts.setMargin(false, false, false, true);
+        layoutRechts.setMargin(false,false,false,true);
 
         felderLayout.addComponent(layoutLinks);
         felderLayout.addComponent(layoutRechts);
