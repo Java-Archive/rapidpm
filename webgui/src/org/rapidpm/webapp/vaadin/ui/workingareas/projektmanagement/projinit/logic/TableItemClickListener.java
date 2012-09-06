@@ -8,6 +8,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component.Event;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.GridLayout;
+import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesFieldValidator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
@@ -21,6 +22,8 @@ import java.util.List;
 import static org.rapidpm.Constants.AUFGABE_SPALTE;
 
 public class TableItemClickListener implements ItemClickListener {
+
+    private static final Logger logger = Logger.getLogger(TableItemClickListener.class);
 
     private AufwandProjInitScreen screen;
     private KnotenBlattEnum knotenBlattEnum;
@@ -89,7 +92,7 @@ public class TableItemClickListener implements ItemClickListener {
                     }
                 }
             } else {
-                //TODO logger  foundPlanningUnit == null
+                logger.warn("PlanningUnit nicht gefunden");
             }
         }
 

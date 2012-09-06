@@ -1,5 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic;
 
+import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitElement;
@@ -25,6 +26,8 @@ import static org.rapidpm.Constants.*;
  */
 @SuppressWarnings("ClassWithoutNoArgConstructor")
 public class PlanningCalculator {
+
+    private static final Logger logger = Logger.getLogger(PlanningCalculator.class);
 
     private final ProjektBean projektBean;
     private final RessourceGroupsBean ressourceGroupsBean;
@@ -150,7 +153,7 @@ public class PlanningCalculator {
                 this.correctDaysHoursMinutesItem(daysHoursMinutesItem);
                 ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup, daysHoursMinutesItem);
             } else {
-                //TODO logger...
+                logger.warn("unerwartetes Verhalten in PlanningCalculator");
             }
         }
     }

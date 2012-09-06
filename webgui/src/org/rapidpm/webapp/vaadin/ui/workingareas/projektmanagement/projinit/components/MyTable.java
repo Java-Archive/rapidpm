@@ -1,6 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components;
 
 import com.vaadin.ui.Table;
+import org.apache.log4j.Logger;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -11,6 +12,7 @@ import com.vaadin.ui.Table;
  */
 public class MyTable extends Table implements ColumnCollapseHandable {
 
+    private static final Logger logger = Logger.getLogger(MyTable.class);
     private MyTreeTable connectedTreeTable;
 
     public MyTable() {
@@ -26,8 +28,7 @@ public class MyTable extends Table implements ColumnCollapseHandable {
         try {
             super.setColumnCollapsed(propertyId, collapsed);
         } catch (Exception e) {
-            //do nothing
-            //TODO logger oder Fehlerbehandlung
+            logger.warn("Exception in MyTable");
         }
     }
 
@@ -37,7 +38,7 @@ public class MyTable extends Table implements ColumnCollapseHandable {
         try {
             connectedTreeTable.setColumnCollapsedEnd(propertyId, collapsed);
         } catch (Exception e) {
-            //do nothing
+            logger.warn("Exception in MyTable");
         }
     }
 }

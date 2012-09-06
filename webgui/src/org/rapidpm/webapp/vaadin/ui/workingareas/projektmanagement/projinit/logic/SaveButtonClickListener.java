@@ -6,6 +6,7 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitElement;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
@@ -22,6 +23,7 @@ import static org.rapidpm.Constants.AUFGABE_SPALTE;
 
 public class SaveButtonClickListener implements ClickListener {
     private static final Pattern SPLITT_PATTERN = Pattern.compile(":");
+    private static final Logger logger = Logger.getLogger(SaveButtonClickListener.class);
     private FieldGroup fieldGroup;
     private AufwandProjInitScreen screen;
     private KnotenBlattEnum knotenBlattEnum;
@@ -56,7 +58,7 @@ public class SaveButtonClickListener implements ClickListener {
                     if (foundPlanningUnit == null) {
                         getPlanningUnit(planningUnitGroup.getPlanningUnitList(), itemId.toString());
                     } else {
-                        //TODO logger
+                        logger.warn("Unerwartetes Verhalten in SaveButtonClickListener (Projektinitialisierung)");
                     }
                 }
                 if (knotenBlattEnum.equals(KnotenBlattEnum.PLANNING_UNIT_KNOTEN)) {
@@ -89,8 +91,7 @@ public class SaveButtonClickListener implements ClickListener {
             screen.fillFields();
             screen.getFormLayout().setVisible(false);
         } catch (CommitException e) {
-            //tue nichts falls commit nicht erfolgreich war
-            //TODO logger !!
+            logger.warn("Commit gescheitert");
         }
     }
 

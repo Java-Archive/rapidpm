@@ -28,6 +28,7 @@ public class IssueBase {
     private static final Logger logger = Logger.getLogger(IssueBase.class);
 
     //TODO TestCases definieren - Klasse erzeugen
+    @ElementCollection
     private List<String> testcases;
     public List<String> getTestcases() {
         return testcases;

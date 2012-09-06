@@ -3,6 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.log
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.HierarchicalContainer;
+import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitElement;
@@ -26,6 +27,8 @@ import static org.rapidpm.Constants.*;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 public class TreeTableDataSourceFiller {
+
+    private static final Logger logger = Logger.getLogger(TreeTableDataSourceFiller.class);
 
     private RessourceGroupsBean ressourceGroupsBean;
     private ProjektBean projektBean;
@@ -126,7 +129,7 @@ public class TreeTableDataSourceFiller {
                             .getHours());
                     daysHoursMinutesItem.setMinutes(minutes + daysHoursMinutesItemFromMap.getMinutes());
                 } else {
-                    //TODO logger
+                    logger.warn("RessourceGroup nicht gefunden");
                 }
                 correctDaysHoursMinutesItem(daysHoursMinutesItem);
                 ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup, daysHoursMinutesItem);
