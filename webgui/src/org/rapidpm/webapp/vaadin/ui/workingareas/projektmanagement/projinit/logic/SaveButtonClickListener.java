@@ -57,8 +57,6 @@ public class SaveButtonClickListener implements ClickListener {
                 for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
                     if (foundPlanningUnit == null) {
                         getPlanningUnit(planningUnitGroup.getPlanningUnitList(), itemId.toString());
-                    } else {
-                        logger.warn("Unerwartetes Verhalten in SaveButtonClickListener (Projektinitialisierung)");
                     }
                 }
                 if (knotenBlattEnum.equals(KnotenBlattEnum.PLANNING_UNIT_KNOTEN)) {
