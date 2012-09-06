@@ -5,16 +5,16 @@ import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.OverviewTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.TreeTableFiller;
-
-import static org.rapidpm.Constants.*;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 
 import java.util.Date;
+
+import static org.rapidpm.Constants.DATE_FORMAT;
 
 public class AufwandProjInitScreen extends Screen {
 
@@ -45,7 +45,7 @@ public class AufwandProjInitScreen extends Screen {
     private GridLayout upperFormLayout = new GridLayout(2, 10);
     private VerticalLayout lowerFormLayout = new VerticalLayout();
 
-    public AufwandProjInitScreen(MainRoot root) {
+    public AufwandProjInitScreen(final MainRoot root) {
         this.projektBean = root.getPlanningUnitsBean();
         this.ressourceGroupsBean = root.getRessourceGroupsBean();
 
@@ -79,11 +79,11 @@ public class AufwandProjInitScreen extends Screen {
     }
 
     public void fillFields() {
-        final TimesCalculator timesCalculator = new TimesCalculator(ressourceGroupsBean,projektBean);
+        final TimesCalculator timesCalculator = new TimesCalculator(ressourceGroupsBean, projektBean);
         timesCalculator.compute();
         manntageField.setReadOnly(false);
         summeField.setReadOnly(false);
-        manntageField.setValue(timesCalculator.getMannTageGerundet().toString());
+        manntageField.setValue(timesCalculator.getMannTageGerundet());
         summeField.setValue(timesCalculator.getGesamtSummeItem().toString());
         manntageField.setReadOnly(true);
         summeField.setReadOnly(true);
@@ -108,11 +108,11 @@ public class AufwandProjInitScreen extends Screen {
         layoutLinks.addComponent(kundeField);
         layoutLinks.addComponent(projektField);
         layoutLinks.addComponent(datumField);
-        layoutLinks.setMargin(false,true,false,false);
+        layoutLinks.setMargin(false, true, false, false);
 
         layoutRechts.addComponent(manntageField);
         layoutRechts.addComponent(summeField);
-        layoutRechts.setMargin(false,false,false,true);
+        layoutRechts.setMargin(false, false, false, true);
 
         felderLayout.addComponent(layoutLinks);
         felderLayout.addComponent(layoutRechts);

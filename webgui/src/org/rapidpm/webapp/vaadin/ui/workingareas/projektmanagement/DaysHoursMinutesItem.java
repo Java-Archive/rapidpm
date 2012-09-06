@@ -12,13 +12,13 @@ public class DaysHoursMinutesItem {
     private Integer hours;
     private Integer minutes;
 
-    public DaysHoursMinutesItem(){
+    public DaysHoursMinutesItem() {
         days = 0;
         hours = 0;
         minutes = 0;
     }
 
-    public DaysHoursMinutesItem(PlanningUnitElement planningUnitElement) {
+    public DaysHoursMinutesItem(final PlanningUnitElement planningUnitElement) {
         days = planningUnitElement.getPlannedDays();
         hours = planningUnitElement.getPlannedHours();
         minutes = planningUnitElement.getPlannedMinutes();
@@ -50,26 +50,26 @@ public class DaysHoursMinutesItem {
 
     @Override
     public String toString() {
-        String daysString;
-        String hoursString;
-        String minutesString;
-        if (days >= 10){
+        final String daysString;
+        final String hoursString;
+        final String minutesString;
+        if (days >= 10) {
             daysString = String.valueOf(days);
         } else {
-            daysString = "0"+days;
+            daysString = "0" + days;
         }
 
-        if (hours >= 10){
+        if (hours >= 10) {
             hoursString = String.valueOf(hours);
         } else {
-            hoursString = "0"+hours;
+            hoursString = "0" + hours;
         }
 
-        if (minutes >= 10){
+        if (minutes >= 10) {
             minutesString = String.valueOf(minutes);
         } else {
-            minutesString = "0"+minutes;
+            minutesString = "0" + minutes;
         }
-        return (daysString + ":" +  hoursString + ":" + minutesString);
+        return (daysString + ":" + hoursString + ":" + minutesString);
     }
 }

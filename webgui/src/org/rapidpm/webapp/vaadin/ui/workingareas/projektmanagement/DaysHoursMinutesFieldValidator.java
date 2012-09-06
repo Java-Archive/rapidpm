@@ -2,7 +2,10 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 
 import com.vaadin.data.Validator;
 
-import static org.rapidpm.Constants.*;
+import java.util.regex.Pattern;
+
+import static org.rapidpm.Constants.DAYSHOURSMINUTES_REGEX;
+import static org.rapidpm.Constants.DAYSHOURSMINUTES_VALIDATOR_EXCEPTION_MESSAGE;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,19 +16,21 @@ import static org.rapidpm.Constants.*;
  */
 public class DaysHoursMinutesFieldValidator implements Validator {
 
-    public boolean isValid(Object value) {
+    private static final Pattern COMPILE = Pattern.compile(DAYSHOURSMINUTES_REGEX);
+
+    public boolean isValid(final Object value) {
         if (value == null || !(value instanceof String)) {
             return false;
         }
 
-        return ((String) value).matches(DAYSHOURSMINUTES_REGEX);
+        return COMPILE.matcher(((String) value)).matches();
     }
 
     @Override
-    public void validate(Object value) throws InvalidValueException {
+    public void validate(final Object value) throws InvalidValueException {
         if (!isValid(value)) {
-                throw new InvalidValueException(
-                        DAYSHOURSMINUTES_VALIDATOR_EXCEPTION_MESSAGE);
+            throw new InvalidValueException(
+                    DAYSHOURSMINUTES_VALIDATOR_EXCEPTION_MESSAGE);
         }
     }
 }

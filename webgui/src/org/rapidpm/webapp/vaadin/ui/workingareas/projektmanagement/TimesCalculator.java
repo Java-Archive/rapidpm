@@ -1,5 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
@@ -29,13 +30,13 @@ public class TimesCalculator {
     private Integer gesamtSummeInMin;
     private Double mannTageExakt;
 
-    public TimesCalculator(RessourceGroupsBean rBean, ProjektBean pBean){
+    public TimesCalculator(final RessourceGroupsBean rBean, final ProjektBean pBean) {
         ressourceGroupsBean = rBean;
         projektBean = pBean;
         ressourceGroups = ressourceGroupsBean.getRessourceGroups();
     }
 
-    public void compute(){
+    public void compute() {
         for (final RessourceGroup spalte : this.ressourceGroups) {
             relativeWerte.put(spalte, 0.0);
         }
@@ -50,43 +51,44 @@ public class TimesCalculator {
     }
 
     private void computePlanningUnitGroupsAndTotalsAbsolut() {
-        for (final PlanningUnitGroup planningUnitGroup : projektBean.getProjekt().getPlanningUnitGroups()) {
-
-                computePlanningUnits(planningUnitGroup.getPlanningUnitList());
-            }
+        final Projekt projekt = projektBean.getProjekt();
+        for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
+            computePlanningUnits(planningUnitGroup.getPlanningUnitList());
+        }
     }
 
 
-    private void computePlanningUnits(List<PlanningUnit> planningUnits) {
-        for (PlanningUnit planningUnit : planningUnits) {
-            if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
+    private void computePlanningUnits(final List<PlanningUnit> planningUnits) {
+        for (final PlanningUnit planningUnit : planningUnits) {
+            final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
+            if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
                 addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, planningUnit);
             } else {
-                computePlanningUnits(planningUnit.getKindPlanningUnits());
+                computePlanningUnits(kindPlanningUnits);
             }
         }
 
     }
 
-    private void addiereZeileZurRessourceMap(final Map<RessourceGroup, DaysHoursMinutesItem>
-                                                     ressourceGroupDaysHoursMinutesItemMap, PlanningUnit planningUnit) {
+    private void addiereZeileZurRessourceMap(final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap,
+                                             final PlanningUnit planningUnit) {
         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-            if (!planningUnitElement.getRessourceGroup().getName().equals(AUFGABE_SPALTE)) {
-                final RessourceGroup ressourceGroup1 = planningUnitElement.getRessourceGroup();
+            final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
+            if (!ressourceGroup.getName().equals(AUFGABE_SPALTE)) {
                 final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
                 daysHoursMinutesItem.setDays(planningUnitElement.getPlannedDays());
                 daysHoursMinutesItem.setHours(planningUnitElement.getPlannedHours());
                 daysHoursMinutesItem.setMinutes(planningUnitElement.getPlannedMinutes());
-                if (ressourceGroupDaysHoursMinutesItemMap.containsKey(ressourceGroup1)) {
-                    final int days = daysHoursMinutesItem.getDays() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getDays();
-                    final int hours = daysHoursMinutesItem.getHours() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getHours();
-                    final int minutes = daysHoursMinutesItem.getMinutes() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getMinutes();
+                if (ressourceGroupDaysHoursMinutesItemMap.containsKey(ressourceGroup)) {
+                    final int days = daysHoursMinutesItem.getDays() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getDays();
+                    final int hours = daysHoursMinutesItem.getHours() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getHours();
+                    final int minutes = daysHoursMinutesItem.getMinutes() + ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getMinutes();
                     daysHoursMinutesItem.setDays(days);
                     daysHoursMinutesItem.setHours(hours);
                     daysHoursMinutesItem.setMinutes(minutes);
                 }
                 correctDaysHoursMinutesItem(daysHoursMinutesItem);
-                ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup1, daysHoursMinutesItem);
+                ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup, daysHoursMinutesItem);
             }
         }
     }
@@ -102,6 +104,7 @@ public class TimesCalculator {
         for (final Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry :
                 ressourceGroupDaysHoursMinutesItemMap.entrySet()) {
             final RessourceGroup absoluterWertRessourceGroup = absoluteWerteEntry.getKey();
+
             Integer absoluterWertWert = absoluteWerteEntry.getValue().getDays() * MINS_DAY;
             absoluterWertWert += absoluteWerteEntry.getValue().getHours() * MINS_HOUR;
             absoluterWertWert += absoluteWerteEntry.getValue().getMinutes();
@@ -109,7 +112,7 @@ public class TimesCalculator {
         }
     }
 
-    private void correctDaysHoursMinutesItem(DaysHoursMinutesItem item) {
+    private void correctDaysHoursMinutesItem(final DaysHoursMinutesItem item) {
         final int hours = item.getMinutes() / MINS_HOUR;
         if (hours > 0) {
             item.setHours(item.getHours() + hours);
@@ -134,7 +137,7 @@ public class TimesCalculator {
         return gesamtSummeInMin;
     }
 
-    public DaysHoursMinutesItem getGesamtSummeItem(){
+    public DaysHoursMinutesItem getGesamtSummeItem() {
         final DaysHoursMinutesItem item = new DaysHoursMinutesItem();
         item.setMinutes(gesamtSummeInMin);
         correctDaysHoursMinutesItem(item);
