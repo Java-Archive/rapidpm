@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 
 public class Constants {
     private static final Logger logger = Logger.getLogger(Constants.class);
@@ -95,4 +96,25 @@ public class Constants {
     //    public static final String ORM_VIEW_TMP_DIR = "D:\\opt\\jboss-as-7.1.1.Final\\standalone\\tmp";
     public static final String ORM_VIEW_TMP_DIR = "/opt/jboss/7.1.1/standalone/tmp";
 
+    public static final String DECIMAL_FORMAT = "0.00";
+
+    public static final Integer WORKINGHOURS_DAY = 8;
+    public static final Integer KONSTANTE = 750;
+    public static final String EUR = " \u20AC";
+    public static final Integer HOURS_DAY = 24;
+    public static final Integer MINS_HOUR = 60;
+    public static final Integer MINS_DAY = HOURS_DAY * MINS_HOUR;
+    public static final Double STD_ANTEILE = 1.0 / 60.0;
+
+    public static final String TABLEEDIT = "Tabelle";
+    public static final String ROWEDIT = "Zeile";
+    public static final String AUFGABE_SPALTE = "Aufgabe";
+    public static final String ANGABE_SPALTE = "Angabe";
+
+    public static final String IMAGE_LOGO = "images/logo_sru.png";
+
+    public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+
+    public static final String DAYSHOURSMINUTES_REGEX = "[0-9]{1,}:[012]{1}[0-9]{1}:[012345]{1}[0-9]{1}";
+    public static final String DAYSHOURSMINUTES_VALIDATOR_EXCEPTION_MESSAGE = "Format: [d*]d:hh:mm! (hh = 23 max., mm = 59 max.)";
 }

@@ -12,6 +12,7 @@ import org.rapidpm.persistence.prj.stammdaten.DaoFactoryBean;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
 import org.rapidpm.persistence.system.security.berechtigungen.BerechtigungDAO;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.BenutzerEditor;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
