@@ -13,30 +13,30 @@ public class MyTable extends Table implements ColumnCollapseHandable {
 
     private MyTreeTable connectedTreeTable;
 
-    public MyTable()
-    {
+    public MyTable() {
         setColumnReorderingAllowed(true);
         setColumnCollapsingAllowed(true);
     }
 
-    public void setConnectedTable(MyTreeTable table){
+    public void setConnectedTable(final MyTreeTable table) {
         connectedTreeTable = table;
     }
 
-    public void setColumnCollapsedEnd(Object propertyId, boolean collapsed){
-        try{
+    public void setColumnCollapsedEnd(final Object propertyId, final boolean collapsed) {
+        try {
             super.setColumnCollapsed(propertyId, collapsed);
-        }catch(Exception e){
+        } catch (Exception e) {
             //do nothing
+            //TODO logger oder Fehlerbehandlung
         }
     }
 
     @Override
-    public void setColumnCollapsed(Object propertyId, boolean collapsed){
+    public void setColumnCollapsed(final Object propertyId, final boolean collapsed) {
         super.setColumnCollapsed(propertyId, collapsed);
-        try{
+        try {
             connectedTreeTable.setColumnCollapsedEnd(propertyId, collapsed);
-        }catch(Exception e){
+        } catch (Exception e) {
             //do nothing
         }
     }

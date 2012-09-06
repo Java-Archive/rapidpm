@@ -2,12 +2,12 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.log
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
 import java.text.DecimalFormat;
 import java.util.Map;
@@ -34,12 +34,13 @@ public class OverviewTableFiller {
     private RessourceGroupsBean ressourceGroupsBean;
     private ProjektBean projektBean;
 
-    public OverviewTableFiller(final MyTable table, final ProjektBean projektBean, final RessourceGroupsBean ressourceGroupsBean){
+    public OverviewTableFiller(final MyTable table, final ProjektBean projektBean, final RessourceGroupsBean ressourceGroupsBean) {
         this.table = table;
         this.ressourceGroupsBean = ressourceGroupsBean;
         this.projektBean = projektBean;
     }
-    public void fill(){
+
+    public void fill() {
         table.removeAllItems();
         table.addContainerProperty(ANGABE_SPALTE, String.class, null);
         table.setColumnCollapsible(ANGABE_SPALTE, false);
@@ -48,10 +49,10 @@ public class OverviewTableFiller {
             final String spaltenName = ressourceGroup.getName();
             table.addContainerProperty(spaltenName, String.class, null);
         }
-        TimesCalculator calculator = new TimesCalculator(ressourceGroupsBean, projektBean);
+        final TimesCalculator calculator = new TimesCalculator(ressourceGroupsBean, projektBean);
         calculator.compute();
-        
-        
+
+
         table.addItem(ABSOLUT);
         table.addItem(RELATIV);
 
@@ -60,7 +61,8 @@ public class OverviewTableFiller {
         for (final Object spalte : table.getItem(ABSOLUT).getItemPropertyIds()) {
             if (!spalte.equals(ANGABE_SPALTE)) {
                 final Map<RessourceGroup, DaysHoursMinutesItem> absoluteWerte = calculator.getAbsoluteWerte();
-                for (Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry : absoluteWerte.entrySet()) {
+                for (final Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry : absoluteWerte
+                        .entrySet()) {
                     final String spaltenNameAusMap = absoluteWerteEntry.getKey().getName();
                     final String spaltenName = spalte.toString();
                     if (spaltenNameAusMap.equals(spaltenName)) {
@@ -80,12 +82,12 @@ public class OverviewTableFiller {
         relativItemAngabeProperty.setValue(SUM_IN_PERCENT);
         for (final Object spalte : relativZeile.getItemPropertyIds()) {
             if (!spalte.equals(ANGABE_SPALTE)) {
-                final Map<RessourceGroup,Double> relativeWerte = calculator.getRelativeWerte();
+                final Map<RessourceGroup, Double> relativeWerte = calculator.getRelativeWerte();
                 for (final Map.Entry<RessourceGroup, Double> relativeWerteEntry : relativeWerte.entrySet()) {
                     final String spaltenNameAusMap = relativeWerteEntry.getKey().getName();
                     final String spaltenName = spalte.toString();
                     if (spaltenNameAusMap.equals(spaltenName)) {
-                        final String relativeWerteMapValue = format.format(relativeWerte.get(relativeWerteEntry.getKey())).toString();
+                        final String relativeWerteMapValue = format.format(relativeWerte.get(relativeWerteEntry.getKey()));
                         relativZeile.getItemProperty(spalte).setValue(relativeWerteMapValue);
                     }
                 }

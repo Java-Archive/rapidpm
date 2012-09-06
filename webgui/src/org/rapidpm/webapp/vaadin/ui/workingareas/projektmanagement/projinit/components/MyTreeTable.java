@@ -13,31 +13,31 @@ public class MyTreeTable extends TreeTable implements ColumnCollapseHandable {
 
     private MyTable connectedTable;
 
-    public MyTreeTable(){
+    public MyTreeTable() {
         setColumnReorderingAllowed(true);
         setColumnCollapsingAllowed(true);
         setNullSelectionAllowed(false);
         setSelectable(true);
     }
 
-    public void setConnectedTable(MyTable table){
+    public void setConnectedTable(MyTable table) {
         connectedTable = table;
     }
 
     @Override
-    public void setColumnCollapsed(Object propertyId, boolean collapsed){
+    public void setColumnCollapsed(final Object propertyId, final boolean collapsed) {
         super.setColumnCollapsed(propertyId, collapsed);
-        try{
+        try {
             connectedTable.setColumnCollapsedEnd(propertyId, collapsed);
-        }catch(Exception e){
+        } catch (Exception e) {
             //do nothing
         }
     }
 
-    public void setColumnCollapsedEnd(Object propertyId, boolean collapsed){
-        try{
+    public void setColumnCollapsedEnd(final Object propertyId, final boolean collapsed) {
+        try {
             super.setColumnCollapsed(propertyId, collapsed);
-        }catch(Exception e){
+        } catch (Exception e) {
             //do nothing
         }
     }
