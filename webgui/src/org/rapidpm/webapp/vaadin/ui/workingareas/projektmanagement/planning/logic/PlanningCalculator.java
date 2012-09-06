@@ -23,14 +23,16 @@ import static org.rapidpm.Constants.*;
  * Time: 13:47
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
+@SuppressWarnings("ClassWithoutNoArgConstructor")
 public class PlanningCalculator {
 
-    private ProjektBean projektBean;
-    private RessourceGroupsBean ressourceGroupsBean;
+    private final ProjektBean projektBean;
+    private final RessourceGroupsBean ressourceGroupsBean;
     private List<RessourceGroup> ressourceGroups;
     private Projekt projekt;
 
-    public PlanningCalculator(ProjektBean projektBean, RessourceGroupsBean ressourceGroupsBean) {
+
+    public PlanningCalculator(final ProjektBean projektBean, final RessourceGroupsBean ressourceGroupsBean) {
         this.projektBean = projektBean;
         this.ressourceGroupsBean = ressourceGroupsBean;
     }
@@ -39,13 +41,14 @@ public class PlanningCalculator {
         projekt = projektBean.getProjekt();
         ressourceGroups = ressourceGroupsBean.getRessourceGroups();
 
-        computePlanningUnitGroups();
+        this.computePlanningUnitGroups();
     }
 
     private void computePlanningUnitGroups() {
         for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
             final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
-            if (planningUnitGroup.getPlanningUnitList() == null || planningUnitGroup.getPlanningUnitList().isEmpty()) {
+            final List<PlanningUnit> planningUnitGroupPlanningUnitList = planningUnitGroup.getPlanningUnitList();
+            if (planningUnitGroupPlanningUnitList == null || planningUnitGroupPlanningUnitList.isEmpty()) {
                 for (final RessourceGroup spalte : ressourceGroups) {
                     final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
                     planningUnitElement.setPlannedDays(0);
@@ -55,7 +58,7 @@ public class PlanningCalculator {
                     planningUnitGroup.getPlanningUnitElementList().add(planningUnitElement);
                 }
             } else {
-                computePlanningUnits(planningUnitGroup.getPlanningUnitList(), planningUnitGroup.getPlanningUnitGroupName(),
+                this.computePlanningUnits(planningUnitGroupPlanningUnitList, planningUnitGroup.getPlanningUnitGroupName(),
                         ressourceGroupDaysHoursMinutesItemMap);
             }
         }
@@ -65,47 +68,48 @@ public class PlanningCalculator {
     private void computePlanningUnits(final List<PlanningUnit> planningUnits, final String parent,
                                       final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap) {
         for (final PlanningUnit planningUnit : planningUnits) {
-            if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
-                addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, planningUnit);
+            final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
+            if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
+                this.addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, planningUnit);
             } else {
-                computePlanningUnits(planningUnit.getKindPlanningUnits(), planningUnit.getPlanningUnitName(),
+                this.computePlanningUnits(kindPlanningUnits, planningUnit.getPlanningUnitName(),
                         ressourceGroupDaysHoursMinutesItemMap);
             }
         }
         boolean parentIsGroup = false;
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
-            for(final PlanningUnitGroup group : projektBean.getProjekt().getPlanningUnitGroups()){
-                if (group.getPlanningUnitGroupName().equals(parent)){
+            for (final PlanningUnitGroup group : projektBean.getProjekt().getPlanningUnitGroups()) {
+                if (group.getPlanningUnitGroupName().equals(parent)) {
                     parentIsGroup = true;
                 }
             }
             final Integer daysFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getDays();
             final Integer hoursFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getHours();
             final Integer minutesFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getMinutes();
-            if(parentIsGroup){
+            if (parentIsGroup) {
                 PlanningUnitElement element = new PlanningUnitElement();
-                for(final PlanningUnitElement planningUnitElement : projekt.getPlanningUnitGroup(parent)
-                        .getPlanningUnitElementList()){
-                    if (planningUnitElement.getRessourceGroup().getName().equals(ressourceGroup.getName())){
+                final List<PlanningUnitElement> planningUnitElementList = projekt.getPlanningUnitGroup(parent)
+                        .getPlanningUnitElementList();
+                for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
+                    if (planningUnitElement.getRessourceGroup().getName().equals(ressourceGroup.getName())) {
                         element = planningUnitElement;
                     }
                 }
-                final int index = projekt.getPlanningUnitGroup(parent).getPlanningUnitElementList().indexOf(element);
-                final PlanningUnitElement planningUnitElement = projekt.getPlanningUnitGroup(parent)
-                        .getPlanningUnitElementList().get(index);
+                final int index = planningUnitElementList.indexOf(element);
+                final PlanningUnitElement planningUnitElement = planningUnitElementList.get(index);
                 planningUnitElement.setPlannedDays(daysFromMap);
                 planningUnitElement.setPlannedHours(hoursFromMap);
                 planningUnitElement.setPlannedMinutes(minutesFromMap);
-            }else{
+            } else {
                 final ArrayList<PlanningUnit> planningUnitsResultList = new ArrayList<>();
-                for(final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()){
-                    projekt.findPlanningUnitAndWriteReferenceInList(planningUnitGroup.getPlanningUnitList(),parent,
+                for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
+                    projekt.findPlanningUnitAndWriteReferenceInList(planningUnitGroup.getPlanningUnitList(), parent,
                             planningUnitsResultList);
                 }
                 PlanningUnitElement element = new PlanningUnitElement();
-                for(final PlanningUnitElement planningUnitElement : planningUnitsResultList.get(0)
-                        .getPlanningUnitElementList()){
-                    if (planningUnitElement.getRessourceGroup().getName().equals(ressourceGroup.getName())){
+                for (final PlanningUnitElement planningUnitElement : planningUnitsResultList.get(0)
+                        .getPlanningUnitElementList()) {
+                    if (planningUnitElement.getRessourceGroup().getName().equals(ressourceGroup.getName())) {
                         element = planningUnitElement;
                     }
                 }
@@ -121,9 +125,10 @@ public class PlanningCalculator {
 
     private void addiereZeileZurRessourceMap(final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap,
                                              final PlanningUnit planningUnit) {
-        for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-            if (!planningUnitElement.getRessourceGroup().getName().equals(AUFGABE_SPALTE)) {
-                final RessourceGroup ressourceGroup1 = planningUnitElement.getRessourceGroup();
+        final List<PlanningUnitElement> planningUnitElementList = planningUnit.getPlanningUnitElementList();
+        for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
+            final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
+            if (!ressourceGroup.getName().equals(AUFGABE_SPALTE)) {
                 final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
                 final int plannedDays = planningUnitElement.getPlannedDays();
                 final int plannedHours = planningUnitElement.getPlannedHours();
@@ -131,26 +136,27 @@ public class PlanningCalculator {
                 daysHoursMinutesItem.setDays(plannedDays);
                 daysHoursMinutesItem.setHours(plannedHours);
                 daysHoursMinutesItem.setMinutes(plannedMinutes);
-                if (ressourceGroupDaysHoursMinutesItemMap.containsKey(ressourceGroup1)) {
+                if (ressourceGroupDaysHoursMinutesItemMap.containsKey(ressourceGroup)) {
                     final Integer days = daysHoursMinutesItem.getDays();
                     final Integer hours = daysHoursMinutesItem.getHours();
                     final Integer minutes = daysHoursMinutesItem.getMinutes();
-                    final Integer daysFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getDays();
-                    final Integer hoursFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getHours();
-                    final Integer minutesFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup1).getMinutes();
+                    final Integer daysFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getDays();
+                    final Integer hoursFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getHours();
+                    final Integer minutesFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getMinutes();
                     daysHoursMinutesItem.setDays(days + daysFromMap);
                     daysHoursMinutesItem.setHours(hours + hoursFromMap);
                     daysHoursMinutesItem.setMinutes(minutes + minutesFromMap);
                 }
-                correctDaysHoursMinutesItem(daysHoursMinutesItem);
-                ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup1, daysHoursMinutesItem);
+                this.correctDaysHoursMinutesItem(daysHoursMinutesItem);
+                ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup, daysHoursMinutesItem);
+            } else {
+                //TODO logger...
             }
         }
     }
 
 
-
-    private void correctDaysHoursMinutesItem(DaysHoursMinutesItem item) {
+    private void correctDaysHoursMinutesItem(final DaysHoursMinutesItem item) {
         final int hours = item.getMinutes() / MINS_HOUR;
         if (hours > 0) {
             item.setHours(item.getHours() + hours);
@@ -164,4 +170,13 @@ public class PlanningCalculator {
     }
 
 
+    @Override
+    public String toString() {
+        return "PlanningCalculator{" +
+                "projektBean=" + projektBean +
+                ", ressourceGroupsBean=" + ressourceGroupsBean +
+                ", ressourceGroups=" + ressourceGroups +
+                ", projekt=" + projekt +
+                '}';
+    }
 }

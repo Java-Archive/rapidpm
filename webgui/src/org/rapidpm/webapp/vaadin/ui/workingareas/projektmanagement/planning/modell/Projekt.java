@@ -20,27 +20,26 @@ public class Projekt {
     private List<PlanningUnitGroup> planningUnitGroups = new ArrayList<>();
     private List<RessourceGroup> ressourceGroups;
 
-    public PlanningUnitGroup getPlanningUnitGroup(final String itemId){
+    public PlanningUnitGroup getPlanningUnitGroup(final String itemId) {
         PlanningUnitGroup result = null;
-        for (PlanningUnitGroup planningUnitGroup : planningUnitGroups){
-            if (planningUnitGroup.getPlanningUnitGroupName().equals(itemId)){
+        for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
+            if (planningUnitGroup.getPlanningUnitGroupName().equals(itemId)) {
                 result = planningUnitGroup;
             }
         }
         return result;
     }
 
-    //unelegant, aber funktional
+    //REFAC unelegant, aber funktional
     public void findPlanningUnitAndWriteReferenceInList(final List<PlanningUnit> planningUnits, final String itemId,
-                                                        final List<PlanningUnit> resultUnitList){
+                                                        final List<PlanningUnit> resultUnitList) {
         for (final PlanningUnit planningUnit : planningUnits) {
             if (planningUnit.getPlanningUnitName().equals(itemId)) {
                 resultUnitList.add(planningUnit);
                 return;
-            } else {
-                if (planningUnit.getKindPlanningUnits() != null && !planningUnit.getKindPlanningUnits().isEmpty()) {
-                    findPlanningUnitAndWriteReferenceInList(planningUnit.getKindPlanningUnits(), itemId, resultUnitList);
-                }
+            }
+            if (planningUnit.getKindPlanningUnits() != null && !planningUnit.getKindPlanningUnits().isEmpty()) {
+                findPlanningUnitAndWriteReferenceInList(planningUnit.getKindPlanningUnits(), itemId, resultUnitList);
             }
         }
     }
@@ -67,8 +66,8 @@ public class Projekt {
     }
 
     public List<String> getPlanningUnitGroupsNames() {
-        ArrayList<String> result = new ArrayList<>();
-        for (PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
+        final List<String> result = new ArrayList<>();
+        for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
             result.add(planningUnitGroup.getPlanningUnitGroupName());
         }
         return result;

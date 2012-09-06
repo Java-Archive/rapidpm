@@ -27,24 +27,27 @@ import static org.rapidpm.Constants.MINS_HOUR;
 public class ProjektBean {
 
 
-    private  static final int MAXDAYS = 10;
+    private static final int MAXDAYS = 10;
 
     private Projekt projekt;
 
     private int[] storyPoints = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     private final String[] issueStatuses = new String[]{"Open", "Closed", "InProgress", "OnHold", "Resolved"};
     private final String[] issuePriorities = new String[]{"Blocker", "Major", "Minor", "Trivial", "Critical"};
+    //REFAC entfernen
     public static final String[] issueUsers = new String[]{"franzschumacher", "herbertknoll", "gustavheinrich", "brigitteknauf", "svenjarahmer"};
-    private final IssueStatus openStatus = new IssueStatus();
-    private final IssueStatus closedStatus = new IssueStatus();
-    private final IssueStatus resolvedStatus = new IssueStatus();
-    private final IssueStatus onHoldStatus = new IssueStatus();
-    private final IssueStatus inProgressStatus = new IssueStatus();
+
+//    private final IssueStatus openStatus = new IssueStatus();
+//    private final IssueStatus closedStatus = new IssueStatus();
+//    private final IssueStatus resolvedStatus = new IssueStatus();
+//    private final IssueStatus onHoldStatus = new IssueStatus();
+//    private final IssueStatus inProgressStatus = new IssueStatus();
 
     public ProjektBean(RessourceGroupsBean ressourceGroupsBean) {
         addData(ressourceGroupsBean);
     }
 
+    //REFAC auslagern so das der Code schnell entfernt werden kann
     private void addData(RessourceGroupsBean ressourceGroupsBean) {
         projekt = new Projekt();
         projekt.setProjektName("Projekt 1");
@@ -174,8 +177,8 @@ public class ProjektBean {
         final Date closedDate = new Date();
         final int anzTestCases = (int) (Math.random() * 5);
         final ArrayList<String> testCases = new ArrayList<>();
-        for(int i=0;i<anzTestCases;i++){
-           final String testCase = "Testcase "+(i+1);
+        for (int i = 0; i < anzTestCases; i++) {
+            final String testCase = "Testcase " + (i + 1);
             testCases.add(testCase);
         }
         issueStatus.setStatusName(issueStatuses[(int) (Math.random() * (issueStatuses.length))]);

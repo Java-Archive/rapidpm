@@ -5,6 +5,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
@@ -29,56 +30,72 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
     private ProjektplanungScreen screen;
     private Projekt projekt;
 
-    public TreeValueChangeListener(ProjektplanungScreen screen, Projekt projekt){
+    public TreeValueChangeListener(final ProjektplanungScreen screen, final Projekt projekt) {
         this.screen = screen;
         this.projekt = projekt;
     }
 
     @Override
     public void valueChange(final Property.ValueChangeEvent valueClickEvent) {
-        if(valueClickEvent.getProperty().getValue() != null){
+        if (valueClickEvent.getProperty().getValue() != null) {
             final Object selectedId = valueClickEvent.getProperty().getValue();
-            final boolean hasChildren = ((Tree)valueClickEvent.getProperty()).hasChildren(selectedId);
-            VerticalLayout detailsPanelComponentsLayout = null;
-            VerticalLayout mainPanelLayout = null;
-            VerticalLayout ressourcesPanelLayout = null;
-            PlanningUnit selectedPlanningUnit = new PlanningUnit();
-            PlanningUnitGroup selectedPlanningUnitGroup = new PlanningUnitGroup(null);
-            boolean isGroup = false;
+            final boolean hasChildren = ((Tree) valueClickEvent.getProperty()).hasChildren(selectedId);
+
+            //REFAC dringend die multiple initialisierung der Variablen aufheben, Schleifen aufbrechen
             if (selectedId != null) {
+
+                VerticalLayout mainPanelLayout = null;
+                VerticalLayout ressourcesPanelLayout = null;
+                PlanningUnit selectedPlanningUnit = new PlanningUnit();
+                PlanningUnitGroup selectedPlanningUnitGroup = new PlanningUnitGroup(null);
+                VerticalLayout detailsPanelComponentsLayout = null;
+
+
                 final Tree treePanelTree = screen.getTreePanelTree();
-                final Object itemName = treePanelTree.getItem(selectedId).getItemProperty("name").getValue();
+                final Object itemNameObject = treePanelTree.getItem(selectedId).getItemProperty("name").getValue();
+                final String itemName = itemNameObject.toString();
+
+
                 final Panel detailPanel = screen.getDetailPanel();
                 final Panel mainPanel = screen.getMainPanel();
                 final Panel ressourcesPanel = screen.getRessourcesPanel();
+
                 detailPanel.removeAllComponents();
                 mainPanel.removeAllComponents();
                 ressourcesPanel.removeAllComponents();
-                detailPanel.addComponent(new Label(itemName.toString()));
-                mainPanel.setCaption(itemName.toString());
+
+                detailPanel.addComponent(new Label(itemName));
+                mainPanel.setCaption(itemName);
                 ressourcesPanel.setCaption(RESSOURCE_GROUPS);
+
                 final ArrayList<PlanningUnit> planningUnitList = new ArrayList<>();
-                for(final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()){
-                    if(planningUnitGroup.getPlanningUnitGroupName().equals(itemName.toString())){
+
+                boolean isGroup = false;
+                for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
+                    if (planningUnitGroup.getPlanningUnitGroupName().equals(itemName)) {
                         isGroup = true;
                         selectedPlanningUnitGroup = planningUnitGroup;
-                        detailsPanelComponentsLayout = new PlanningDetailsMyFormLayout(selectedPlanningUnitGroup.getIssueBase(), screen, detailPanel);
-                        mainPanelLayout = new PlanningMainMyFormLayout(selectedPlanningUnitGroup.getIssueBase(),screen,mainPanel);
-                        ressourcesPanelLayout = new PlanningRessourcesMyFormLayout(selectedPlanningUnitGroup,screen,ressourcesPanel);
+                        final IssueBase issueBase = selectedPlanningUnitGroup.getIssueBase();
+                        detailsPanelComponentsLayout = new PlanningDetailsMyFormLayout(issueBase, screen, detailPanel);
+                        detailPanel.addComponent(detailsPanelComponentsLayout);
+                        mainPanelLayout = new PlanningMainMyFormLayout(issueBase, screen, mainPanel);
+                        ressourcesPanelLayout = new PlanningRessourcesMyFormLayout(selectedPlanningUnitGroup, screen, ressourcesPanel);
                     }
                 }
-                if(!isGroup){
-                    for(final PlanningUnitGroup planningUnitGroup2 : projekt.getPlanningUnitGroups()){
-                        projekt.findPlanningUnitAndWriteReferenceInList(planningUnitGroup2.getPlanningUnitList(), itemName.toString(), planningUnitList);
+                if (!isGroup) {
+                    for (final PlanningUnitGroup planningUnitGroup2 : projekt.getPlanningUnitGroups()) {
+                        projekt.findPlanningUnitAndWriteReferenceInList(planningUnitGroup2.getPlanningUnitList(), itemName, planningUnitList);
                     }
                     selectedPlanningUnit = planningUnitList.get(0);
                     detailsPanelComponentsLayout = new PlanningDetailsMyFormLayout(selectedPlanningUnit.getIssueBase(), screen, detailPanel);
-                    mainPanelLayout = new PlanningMainMyFormLayout(selectedPlanningUnit.getIssueBase(),screen,mainPanel);
-                    ressourcesPanelLayout = new PlanningRessourcesMyFormLayout(selectedPlanningUnit,screen,ressourcesPanel, hasChildren);
+                    mainPanelLayout = new PlanningMainMyFormLayout(selectedPlanningUnit.getIssueBase(), screen, mainPanel);
+                    ressourcesPanelLayout = new PlanningRessourcesMyFormLayout(selectedPlanningUnit, screen, ressourcesPanel, hasChildren);
                 }
-                detailPanel.addComponent(detailsPanelComponentsLayout);
+//                detailPanel.addComponent(detailsPanelComponentsLayout);
                 mainPanel.addComponent(mainPanelLayout);
                 ressourcesPanel.addComponent(ressourcesPanelLayout);
+            } else {
+                //TODO logger
             }
         }
 

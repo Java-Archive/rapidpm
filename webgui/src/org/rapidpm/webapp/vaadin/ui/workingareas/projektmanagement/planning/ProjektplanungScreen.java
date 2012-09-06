@@ -4,13 +4,15 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.terminal.Resource;
 import com.vaadin.ui.*;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeValueChangeListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 
 import java.util.List;
 
@@ -94,7 +96,8 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         treePanel.removeAllComponents();
         treePanelTree = new Tree();
         PlanningUnitGroup planningUnitGroup = null;
-        for (final PlanningUnitGroup pug : projektBean.getProjekt().getPlanningUnitGroups()) {
+        final Projekt projekt = projektBean.getProjekt();
+        for (final PlanningUnitGroup pug : projekt.getPlanningUnitGroups()) {
             if (pug.getPlanningUnitGroupName().equals(planningGroupName)) {
                 planningUnitGroup = pug;
             }
@@ -110,7 +113,8 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
             final Item planningUnitGroupItem = treePanelTree.addItem(itemId);
 
             planningUnitGroupItem.getItemProperty(NAME).setValue(itemId);
-            final String issueStatusName = planningUnitGroup.getIssueBase().getIssueStatus().getStatusName();
+            final IssueBase issueBase = planningUnitGroup.getIssueBase();
+            final String issueStatusName = issueBase.getIssueStatus().getStatusName();
             planningUnitGroupItem.getItemProperty(ICON).setValue(IssueStatusEnum.valueOf(issueStatusName).getIcon());
             if (planningUnitGroup.getPlanningUnitList() != null && !planningUnitGroup.getPlanningUnitList().isEmpty()) {
                 treePanelTree.setChildrenAllowed(itemId, true);
@@ -120,10 +124,10 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
 
             buildTree(planningUnitGroup.getPlanningUnitList(), itemId);
             treePanelTree.expandItemsRecursively(itemId);
-            treePanelTree.addListener(new TreeValueChangeListener(this, projektBean.getProjekt()));
+            treePanelTree.addListener(new TreeValueChangeListener(this, projekt));
             treePanel.addComponent(treePanelTree);
         } //else if (planningGroupName.equals("Technische Planung")) {
-          //  showTechnischePlanung();
+        //  showTechnischePlanung();
         //}
     }
 

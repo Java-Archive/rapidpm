@@ -3,10 +3,10 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssuePrioritiesEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -35,6 +35,7 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
     private static final String STATUS = "Status";
     private static final String REPORTER = "Reporter";
     private static final String ASSIGNEE = "Assignee";
+    private static final String ICON = "icon";
     private ComboBox statusComboBox;
     private ComboBox priorityComboBox;
     private ComboBox reporterComboBox;
@@ -43,7 +44,7 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
     private DateField resolvedDateField;
     private DateField closedDateField;
 
-    public PlanningDetailsMyFormLayout(final IssueBase issueBase, final ProjektplanungScreen screen, final Panel screenPanel){
+    public PlanningDetailsMyFormLayout(final IssueBase issueBase, final ProjektplanungScreen screen, final Panel screenPanel) {
         super(issueBase, screen, screenPanel);
 
         buildStatusBox(issueBase);
@@ -103,17 +104,15 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
                 issueBase.getDueDate_closed().setTime(closedDateFieldValueTime);
                 screen.fillTreePanel(planningUnitGroupListSelection);
 
-                while(componentIterator.hasNext()){
+                while (componentIterator.hasNext()) {
                     final Component component = componentIterator.next();
-                    if( component instanceof Field){
+                    if (component instanceof Field) {
                         component.setReadOnly(true);
                     }
                 }
                 buttonLayout.setVisible(false);
             }
         });
-
-
 
 
     }
@@ -138,7 +137,7 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
 
     private void buildPriorityBox(IssueBase issueBase) {
         priorityComboBox = new ComboBox(PRIORITY, new BeanItemContainer<>(IssuePrioritiesEnum.class, Arrays.asList(IssuePrioritiesEnum.values())));
-        priorityComboBox.setItemIconPropertyId("icon");
+        priorityComboBox.setItemIconPropertyId(ICON);
         priorityComboBox.setNullSelectionAllowed(false);
         priorityComboBox.select(IssuePrioritiesEnum.valueOf(issueBase.getIssuePriority().getPriorityName()));
         priorityComboBox.setReadOnly(true);
@@ -146,7 +145,7 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
 
     private void buildStatusBox(IssueBase issueBase) {
         statusComboBox = new ComboBox(STATUS, new BeanItemContainer<>(IssueStatusEnum.class, Arrays.asList(IssueStatusEnum.values())));
-        statusComboBox.setItemIconPropertyId("icon");
+        statusComboBox.setItemIconPropertyId(ICON);
         statusComboBox.setNullSelectionAllowed(false);
         statusComboBox.select(IssueStatusEnum.valueOf(issueBase.getIssueStatus().getStatusName()));
         statusComboBox.setReadOnly(true);
@@ -167,7 +166,7 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
     }
 
     @Override
-    protected void buildForm(){
+    protected void buildForm() {
         componentsLayout.addComponent(statusComboBox);
         componentsLayout.addComponent(priorityComboBox);
         componentsLayout.addComponent(reporterComboBox);
