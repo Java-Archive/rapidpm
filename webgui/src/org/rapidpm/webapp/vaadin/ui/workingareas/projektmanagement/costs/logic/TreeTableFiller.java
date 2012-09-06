@@ -32,6 +32,9 @@ public class TreeTableFiller {
     }
 
     public void fill() {
+        for(Object id : treeTable.getContainerPropertyIds()){
+            treeTable.setConverter(id, null);
+        }
         final CostsConverterAdder costsConverterAdder = new CostsConverterAdder();
         final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(ressourceGroupsBean, projektBean, dataSource);
         treeTableDataSourceFiller.fill();
@@ -39,6 +42,6 @@ public class TreeTableFiller {
         treeTable.setColumnCollapsible(AUFGABE_SPALTE, false);
         treeTable.setColumnWidth(AUFGABE_SPALTE, WIDTH);
         treeTable.setValue(null);
-        //costsConverterAdder.addConvertersTo(treeTable);
+        costsConverterAdder.addConvertersTo(treeTable);
     }
 }

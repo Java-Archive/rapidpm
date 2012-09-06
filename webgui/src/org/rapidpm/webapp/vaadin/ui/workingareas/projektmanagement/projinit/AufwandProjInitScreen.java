@@ -55,7 +55,7 @@ public class AufwandProjInitScreen extends Screen {
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
 
-        undoButton = new UndoButton(treeTable, dataSource, projektBean, ressourceGroupsBean);
+        undoButton = new UndoButton(this, treeTable, dataSource, projektBean, ressourceGroupsBean);
         undoButton.setVisible(false);
 
         final TreeTableFiller treeTableFiller = new TreeTableFiller(this, projektBean, ressourceGroupsBean, treeTable, dataSource);

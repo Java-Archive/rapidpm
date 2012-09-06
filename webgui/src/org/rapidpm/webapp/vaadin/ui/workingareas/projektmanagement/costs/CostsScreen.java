@@ -74,7 +74,7 @@ public class CostsScreen extends Screen {
         treeTable.addListener(new TreeTableHeaderClickListener(undoButton));
         table1layout.addComponent(uebersichtTable);
 
-        //table2layout.addComponent(undoButton);
+        table2layout.addComponent(undoButton);
         table2layout.addComponent(treeTable);
         table1layout.setMargin(true, false, true, false);
         table2layout.setMargin(true, false, true, false);

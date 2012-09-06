@@ -2,7 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.compon
 
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.Button;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.TreeTableDataSourceFiller;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.TreeTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
@@ -34,10 +34,10 @@ public class UndoButton extends Button implements Button.ClickListener {
 
     @Override
     public void buttonClick(ClickEvent event) {
-        final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(ressourceGroupsBean,
-                projektBean, dataSource);
-        treeTableDataSourceFiller.fill();
-        treeTable.setContainerDataSource(dataSource);
+
+        final TreeTableFiller treeTableFiller = new TreeTableFiller(projektBean,ressourceGroupsBean,
+            treeTable, dataSource);
+        treeTableFiller.fill();
         treeTable.requestRepaint();
 
         this.setVisible(false);

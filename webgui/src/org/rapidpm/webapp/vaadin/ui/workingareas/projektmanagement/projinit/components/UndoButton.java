@@ -3,7 +3,8 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.com
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.Button;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.TreeTableDataSourceFiller;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.TreeTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 
 /**
@@ -19,24 +20,25 @@ public class UndoButton extends Button implements Button.ClickListener {
     private HierarchicalContainer dataSource;
     private ProjektBean projektBean;
     private RessourceGroupsBean ressourceGroupsBean;
+    private AufwandProjInitScreen screen;
 
-    public UndoButton(MyTreeTable treeTable, HierarchicalContainer dataSource, ProjektBean projektBean,
-                      RessourceGroupsBean ressourceGroupsBean){
-        this.setCaption("remove sortorder");
-        this.setStyleName("link");
+    public UndoButton(AufwandProjInitScreen screen, MyTreeTable treeTable, HierarchicalContainer dataSource,
+                      ProjektBean projektBean, RessourceGroupsBean ressourceGroupsBean) {
+        this.screen = screen;
         this.treeTable = treeTable;
         this.dataSource = dataSource;
         this.projektBean = projektBean;
         this.ressourceGroupsBean = ressourceGroupsBean;
         this.addListener(this);
+        this.setCaption("remove sortorder");
+        this.setStyleName("link");
     }
 
     @Override
     public void buttonClick(Button.ClickEvent event) {
-        final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(ressourceGroupsBean,
-                projektBean, dataSource);
-        treeTableDataSourceFiller.fill();
-        treeTable.setContainerDataSource(dataSource);
+        final TreeTableFiller treeTableFiller = new TreeTableFiller(screen,projektBean, ressourceGroupsBean, treeTable
+                ,dataSource);
+        treeTableFiller.fill();
         treeTable.requestRepaint();
 
         this.setVisible(false);
