@@ -11,6 +11,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.C
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.OverviewTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.TreeTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.ExpandTableCheckBox;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
@@ -25,6 +26,7 @@ public class CostsScreen extends Screen {
 
     private Button saveButton = new Button("Speichern");  //TODO auf i18n properties wechseln ??
     private Button undoButton;
+    private CheckBox expandCheckBox;
     private TextField vertrieblerField;
     private DateField datumField;
     private TextField manntageField;
@@ -62,6 +64,8 @@ public class CostsScreen extends Screen {
         undoButton = new UndoButton(treeTable, dataSource, projektBean, ressourceGroupsBean);
         undoButton.setVisible(false);
 
+        expandCheckBox = new ExpandTableCheckBox(treeTable, dataSource);
+
         final TreeTableFiller treeTableFiller = new TreeTableFiller(projektBean, ressourceGroupsBean, treeTable, dataSource);
         treeTableFiller.fill();
 
@@ -74,6 +78,7 @@ public class CostsScreen extends Screen {
         treeTable.addListener(new TreeTableHeaderClickListener(undoButton));
         table1layout.addComponent(uebersichtTable);
 
+        table2layout.addComponent(expandCheckBox);
         table2layout.addComponent(undoButton);
         table2layout.addComponent(treeTable);
         table1layout.setMargin(true, false, true, false);
