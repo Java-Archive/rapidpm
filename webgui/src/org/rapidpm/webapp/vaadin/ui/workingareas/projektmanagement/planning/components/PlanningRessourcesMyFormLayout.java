@@ -1,7 +1,10 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components;
 
+import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.ui.*;
+import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
@@ -15,6 +18,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import static org.rapidpm.Constants.*;
+
 /**
  * RapidPM - www.rapidpm.org
  * User: Marco
@@ -24,6 +29,8 @@ import java.util.regex.Pattern;
  */
 public class PlanningRessourcesMyFormLayout extends MyFormLayout {
 
+    private static final Logger logger = Logger.getLogger(PlanningRessourcesMyFormLayout.class);
+
     private List<TextField> ressourceGroupFields = new ArrayList<>();
 
     public PlanningRessourcesMyFormLayout(final PlanningUnitGroup planningUnitGroup, final ProjektplanungScreen screen,
@@ -31,8 +38,8 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
         super(planningUnitGroup.getIssueBase(), screen, screenPanel);
         final ProjektBean projektBean = screen.getProjektBean();
         final Projekt projekt = projektBean.getProjekt();
-        final List<RessourceGroup> ressourceGroupArrayList = projekt.getRessourceGroups();
-        for (final RessourceGroup ressourceGroup : ressourceGroupArrayList) {
+        final List<RessourceGroup> ressourceGroupList = projekt.getRessourceGroups();
+        for (final RessourceGroup ressourceGroup : ressourceGroupList) {
             buildField(ressourceGroup, planningUnitGroup);
         }
         buildForm();
@@ -88,30 +95,39 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
 
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    for (final TextField textField : ressourceGroupFields) {
-                        final List<PlanningUnitElement> planningUnitElementList = planningUnit.getPlanningUnitElementList();
-                        for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
-                            final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
-                            if (ressourceGroup.getName().equals(textField.getCaption())) {
-                                final String[] daysHoursMinutes = COMPILE.split(textField.getValue());
-                                planningUnitElement.setPlannedDays(Integer.parseInt(daysHoursMinutes[0]));
-                                planningUnitElement.setPlannedHours(Integer.parseInt(daysHoursMinutes[1]));
-                                planningUnitElement.setPlannedMinutes(Integer.parseInt(daysHoursMinutes[2]));
+                    try{
+                        for (final TextField textField : ressourceGroupFields) {
+                            if(!textField.isValid()){
+                                throw new FieldGroup.CommitException();
+                            }
+                            final List<PlanningUnitElement> planningUnitElementList = planningUnit.getPlanningUnitElementList();
+                            for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
+                                final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
+                                if (ressourceGroup.getName().equals(textField.getCaption())) {
+                                    final String[] daysHoursMinutes = COMPILE.split(textField.getValue());
+                                    planningUnitElement.setPlannedDays(Integer.parseInt(daysHoursMinutes[0]));
+                                    planningUnitElement.setPlannedHours(Integer.parseInt(daysHoursMinutes[1]));
+                                    planningUnitElement.setPlannedMinutes(Integer.parseInt(daysHoursMinutes[2]));
+                                }
                             }
                         }
-                    }
-                    final RessourceGroupsBean ressourceGroupsBean = screen.getRessourceGroupsBean();
-                    final PlanningCalculator calculator = new PlanningCalculator(projektBean, ressourceGroupsBean);
-                    calculator.calculate();
+                        final RessourceGroupsBean ressourceGroupsBean = screen.getRessourceGroupsBean();
+                        final PlanningCalculator calculator = new PlanningCalculator(projektBean, ressourceGroupsBean);
+                        calculator.calculate();
 
-                    final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
-                    while (componentIterator.hasNext()) {
-                        final Component component = componentIterator.next();
-                        if (component instanceof Field) {
-                            component.setReadOnly(true);
+                        final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
+                        while (componentIterator.hasNext()) {
+                            final Component component = componentIterator.next();
+                            if (component instanceof Field) {
+                                component.setReadOnly(true);
+                            }
                         }
+                        buttonLayout.setVisible(false);
+                    }catch (CommitException e){
+                        logger.info(COMMIT_EXCEPTION_MESSAGE);
+                    }catch(Exception e){
+                        logger.warn("Exception",e);
                     }
-                    buttonLayout.setVisible(false);
                 }
             });
         }

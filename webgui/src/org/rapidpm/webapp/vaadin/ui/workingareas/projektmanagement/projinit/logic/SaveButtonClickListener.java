@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import static org.rapidpm.Constants.AUFGABE_SPALTE;
+import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
 
 public class SaveButtonClickListener implements ClickListener {
     private static final Pattern SPLITT_PATTERN = Pattern.compile(":");
@@ -88,8 +89,10 @@ public class SaveButtonClickListener implements ClickListener {
 
             screen.fillFields();
             screen.getFormLayout().setVisible(false);
-        } catch (CommitException e) {
-            logger.warn("Commit gescheitert");
+        }catch (CommitException e){
+            logger.info(COMMIT_EXCEPTION_MESSAGE);
+        }catch(Exception e){
+            logger.warn("Exception", e);
         }
     }
 

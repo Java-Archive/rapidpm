@@ -19,6 +19,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomp
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
+
 public class StundensaetzeItemClickListener implements ItemClickListener {
 
     private Logger logger = Logger.getLogger(StundensaetzeItemClickListener.class);
@@ -66,7 +68,6 @@ public class StundensaetzeItemClickListener implements ItemClickListener {
                 if (listener instanceof ClickListener) {
                     saveButton.removeListener((ClickListener) listener);
                 }
-
             }
             deleteButton.setEnabled(true);
 
@@ -92,13 +93,14 @@ public class StundensaetzeItemClickListener implements ItemClickListener {
                         betriebsStdField.setValue(fieldsCalculator.getBetriebsStundeAsString());
                         upperFormLayout.setVisible(false);
                         saveButton.setVisible(false);
-                    } catch (CommitException e) {
-                        logger.warn(e.getStackTrace());
+                    }catch (CommitException e){
+                        logger.info(COMMIT_EXCEPTION_MESSAGE);
+                    }catch(Exception e){
+                        logger.warn("Exception", e);
                     }
                 }
             });
             saveButton.setVisible(true);
-
             if (event.getItemId() == null)
                 state = false;
             else {
@@ -106,11 +108,8 @@ public class StundensaetzeItemClickListener implements ItemClickListener {
                 informComponents(itemId);
                 state = true;
             }
-
             informComponents(state);
-
         }
-
     }
 
     private void informComponents(boolean state) {

@@ -2,6 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
+import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssuePrioritiesEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
@@ -12,6 +13,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 
+import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
 import static org.rapidpm.Constants.DATE_FORMAT;
 
 /**
@@ -27,6 +29,7 @@ import static org.rapidpm.Constants.DATE_FORMAT;
  */
 public class PlanningDetailsMyFormLayout extends MyFormLayout {
 
+    private static final Logger logger = Logger.getLogger(PlanningDetailsMyFormLayout.class);
 
     private static final String CLOSED = "Closed";
     private static final String RESOLVED = "Resolved";
@@ -86,31 +89,37 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
         saveButton.addListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                final String statusBoxValue = statusComboBox.getValue().toString();
-                final String priorityBoxValue = priorityComboBox.getValue().toString();
-                final String reporterBoxValue = reporterComboBox.getValue().toString();
-                final String assigneeBoxValue = assigneeComboBox.getValue().toString();
-                final long plannedDateFieldValueTime = plannedDateField.getValue().getTime();
-                final long resolvedDateFieldValueTime = resolvedDateField.getValue().getTime();
-                final long closedDateFieldValueTime = closedDateField.getValue().getTime();
-                final String planningUnitGroupListSelection = screen.getProjektSelect().getValue().toString();
-                final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
-                issueBase.getIssueStatus().setStatusName(statusBoxValue);
-                issueBase.getIssuePriority().setPriorityName(priorityBoxValue);
-                issueBase.getReporter().setLogin(reporterBoxValue);
-                issueBase.getAssignee().setLogin(assigneeBoxValue);
-                issueBase.getDueDate_planned().setTime(plannedDateFieldValueTime);
-                issueBase.getDueDate_resolved().setTime(resolvedDateFieldValueTime);
-                issueBase.getDueDate_closed().setTime(closedDateFieldValueTime);
-                screen.fillTreePanel(planningUnitGroupListSelection);
+                try{
+                    final String statusBoxValue = statusComboBox.getValue().toString();
+                    final String priorityBoxValue = priorityComboBox.getValue().toString();
+                    final String reporterBoxValue = reporterComboBox.getValue().toString();
+                    final String assigneeBoxValue = assigneeComboBox.getValue().toString();
+                    final long plannedDateFieldValueTime = plannedDateField.getValue().getTime();
+                    final long resolvedDateFieldValueTime = resolvedDateField.getValue().getTime();
+                    final long closedDateFieldValueTime = closedDateField.getValue().getTime();
+                    final String planningUnitGroupListSelection = screen.getProjektSelect().getValue().toString();
+                    final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
+                    issueBase.getIssueStatus().setStatusName(statusBoxValue);
+                    issueBase.getIssuePriority().setPriorityName(priorityBoxValue);
+                    issueBase.getReporter().setLogin(reporterBoxValue);
+                    issueBase.getAssignee().setLogin(assigneeBoxValue);
+                    issueBase.getDueDate_planned().setTime(plannedDateFieldValueTime);
+                    issueBase.getDueDate_resolved().setTime(resolvedDateFieldValueTime);
+                    issueBase.getDueDate_closed().setTime(closedDateFieldValueTime);
+                    screen.fillTreePanel(planningUnitGroupListSelection);
 
-                while (componentIterator.hasNext()) {
-                    final Component component = componentIterator.next();
-                    if (component instanceof Field) {
-                        component.setReadOnly(true);
+                    while (componentIterator.hasNext()) {
+                        final Component component = componentIterator.next();
+                        if (component instanceof Field) {
+                            component.setReadOnly(true);
+                        }
                     }
+                    buttonLayout.setVisible(false);
+                }catch (NullPointerException e){
+                    logger.info(COMMIT_EXCEPTION_MESSAGE);
+                }catch(Exception e){
+                    logger.warn("Exception", e);
                 }
-                buttonLayout.setVisible(false);
             }
         });
 

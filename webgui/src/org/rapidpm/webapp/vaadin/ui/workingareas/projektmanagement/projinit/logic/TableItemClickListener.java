@@ -55,10 +55,7 @@ public class TableItemClickListener implements ItemClickListener {
         foundPlanningUnit = null;
         if (planningUnitGroupsNames.contains(aufgabe)) {
             knotenBlattEnum = KnotenBlattEnum.PLANNING_UNIT_GROUP;
-            for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
-                if (prop.equals(AUFGABE_SPALTE))
-                    formUnterlayout.addComponent(fieldGroup.buildAndBind(prop));
-            }
+            buildRequiredFields(formUnterlayout, fieldGroup);
         } else {
             final List<PlanningUnitGroup> planningUnitGroups = projekt.getPlanningUnitGroups();
             //PlanningUnit planningUnit = null;
@@ -71,13 +68,7 @@ public class TableItemClickListener implements ItemClickListener {
                 final List<PlanningUnit> kindPlanningUnits = foundPlanningUnit.getKindPlanningUnits();
                 if (kindPlanningUnits != null && !kindPlanningUnits.isEmpty()) {
                     knotenBlattEnum = KnotenBlattEnum.PLANNING_UNIT_KNOTEN;
-                    for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
-                        if (prop.equals(AUFGABE_SPALTE))
-                            formUnterlayout.addComponent(fieldGroup.buildAndBind(prop));
-                    }
-                    for (final Object propertyId : fieldGroup.getBoundPropertyIds()) {
-                        fieldGroup.getField(propertyId).setRequired(true);
-                    }
+                    buildRequiredFields(formUnterlayout, fieldGroup);
                 } else {
                     knotenBlattEnum = KnotenBlattEnum.PLANNING_UNIT_BLATT;
                     for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
@@ -98,6 +89,16 @@ public class TableItemClickListener implements ItemClickListener {
 
         screen.getSaveButton().addListener(new SaveButtonClickListener(fieldGroup, screen, knotenBlattEnum, itemId));
         screen.getFormLayout().setVisible(true);
+    }
+
+    private void buildRequiredFields(GridLayout formUnterlayout, FieldGroup fieldGroup) {
+        for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
+            if (prop.equals(AUFGABE_SPALTE))
+                formUnterlayout.addComponent(fieldGroup.buildAndBind(prop));
+        }
+        for (final Object propertyId : fieldGroup.getBoundPropertyIds()) {
+            fieldGroup.getField(propertyId).setRequired(true);
+        }
     }
 
     private void getPlanningUnit(final List<PlanningUnit> planningUnits, final String itemId) {
