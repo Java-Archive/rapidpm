@@ -101,7 +101,6 @@ public class StundensaetzeItemClickListener implements ItemClickListener {
                 }
             });
             saveButton.setVisible(true);
-
             if (event.getItemId() == null)
                 state = false;
             else {
