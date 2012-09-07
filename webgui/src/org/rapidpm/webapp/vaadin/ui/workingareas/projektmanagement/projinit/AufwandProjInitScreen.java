@@ -81,6 +81,7 @@ public class AufwandProjInitScreen extends Screen {
         table1layout.setMargin(true, false, true, false);
         table2layout.setMargin(true, false, true, false);
 
+
         lowerFormLayout.addComponent(saveButton);
 
         formLayout.addComponent(upperFormLayout);
