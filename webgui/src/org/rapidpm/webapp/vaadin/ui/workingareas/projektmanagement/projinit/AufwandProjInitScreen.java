@@ -6,6 +6,7 @@ import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.ExpandTableCheckBox;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TreeTableHeaderClickListener;
@@ -22,6 +23,7 @@ public class AufwandProjInitScreen extends Screen {
 
     private Button saveButton = new Button("Speichern");
     private Button undoButton;
+    private CheckBox expandCheckBox;
     private TextField kundeField;
     private TextField projektField;
     private DateField datumField;
@@ -55,6 +57,7 @@ public class AufwandProjInitScreen extends Screen {
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
 
+        expandCheckBox = new ExpandTableCheckBox(treeTable, dataSource);
         undoButton = new UndoButton(this, treeTable, dataSource, projektBean, ressourceGroupsBean);
         undoButton.setVisible(false);
 
@@ -72,6 +75,7 @@ public class AufwandProjInitScreen extends Screen {
         treeTable.addListener(new TreeTableHeaderClickListener(undoButton));
         table1layout.addComponent(uebersichtTable);
 
+        table2layout.addComponent(expandCheckBox);
         table2layout.addComponent(undoButton);
         table2layout.addComponent(treeTable);
         table1layout.setMargin(true, false, true, false);
