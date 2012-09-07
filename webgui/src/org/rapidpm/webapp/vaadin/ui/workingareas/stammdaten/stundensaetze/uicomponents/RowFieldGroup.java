@@ -39,6 +39,7 @@ public class RowFieldGroup extends FieldGroup {
                     && !spaltenName.equals("hoursPerYear")){
                     AbstractTextField field = (AbstractTextField) buildAndBind(propertyId);
                 field.setNullRepresentation("");
+                field.setRequired(true);
                 gridLayout.addComponent(field);
             }
         }
