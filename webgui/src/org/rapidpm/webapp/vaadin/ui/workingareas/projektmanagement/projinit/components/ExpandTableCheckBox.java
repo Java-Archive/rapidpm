@@ -15,20 +15,22 @@ import java.util.Collection;
  */
 public class ExpandTableCheckBox extends CheckBox implements Property.ValueChangeListener{
 
+    private static final String CAPTION = "alle Knoten aufklappen";
+
     private MyTreeTable treeTable;
     private HierarchicalContainer dataSource;
 
     public ExpandTableCheckBox(MyTreeTable treeTable, HierarchicalContainer dataSource){
         this.treeTable = treeTable;
         this.dataSource = dataSource;
-        this.setCaption("alle Knoten aufklappen");
+        this.setCaption(CAPTION);
         addListener((ValueChangeListener)this);
     }
 
     @Override
     public void valueChange(final Property.ValueChangeEvent valueClickEvent) {
         if((Boolean)valueClickEvent.getProperty().getValue()){
-           for(Object itemId : dataSource.getItemIds()){
+           for(final Object itemId : dataSource.getItemIds()){
                final Collection<?> children = dataSource.getChildren(itemId);
                if(children == null || children.isEmpty()){
                    treeTable.setCollapsed(itemId, true);
@@ -37,7 +39,7 @@ public class ExpandTableCheckBox extends CheckBox implements Property.ValueChang
                }
            }
         } else {
-            for(Object itemId : treeTable.getItemIds()){
+            for(final Object itemId : treeTable.getItemIds()){
                 treeTable.setCollapsed(itemId, true);
             }
         }
