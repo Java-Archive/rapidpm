@@ -14,11 +14,15 @@ import com.vaadin.terminal.WrappedRequest;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.BaseTheme;
 import org.rapidpm.webapp.vaadin.ui.windows.*;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import static org.rapidpm.Constants.IMAGE_LOGO;
+import static org.rapidpm.Constants.MESSAGESBUNDLE;
 
 @Theme("rapidpm")
 public abstract class BaseRoot extends Root {
@@ -44,6 +48,8 @@ public abstract class BaseRoot extends Root {
 
     protected RessourceGroupsBean ressourceGroupsBean = new RessourceGroupsBean();
     protected ProjektBean planningUnitsBean = new ProjektBean(ressourceGroupsBean);
+    protected Locale locale;
+    protected ResourceBundle messages;
 
 
     protected BaseRoot(final String applicationName) {
@@ -51,7 +57,7 @@ public abstract class BaseRoot extends Root {
         setSizeFull();
     }
 
-//    public int getWindowWidth() {
+    //    public int getWindowWidth() {
 //        return windowWidth;
 //    }
 //
@@ -103,6 +109,20 @@ public abstract class BaseRoot extends Root {
         } else {
             throw new Exception("Login failed..");
         }
+    }
+
+    public void localization(Object value) {
+        switch(value.toString()){
+            case "GERMAN":
+                locale = new Locale("de","DE");
+                messages = ResourceBundle.getBundle(MESSAGESBUNDLE, locale);
+                break;
+            case "ENGLISH":
+                locale = new Locale("en", "US");
+                messages = ResourceBundle.getBundle(MESSAGESBUNDLE, locale);
+                break;
+        }
+        //this.getApplication().setLocale(messagesBundle);
     }
 
     private void loadProtectedRessources() {
@@ -218,7 +238,7 @@ public abstract class BaseRoot extends Root {
 
         //hlWorkingAreaContainer
 //        final Component demoWorkingArea = createDemoWorkingArea();
-        setWorkingArea(new ProjektplanungScreen(planningUnitsBean, ressourceGroupsBean));
+        setWorkingArea(new ProjektplanungScreen(messages, planningUnitsBean, ressourceGroupsBean));
         addComponent(mainlayout);
 
         // vaadin 7
@@ -389,4 +409,6 @@ public abstract class BaseRoot extends Root {
 //    public static interface WindowSizeChangeListener {
 //        void onWindowSizeChanged(int newWindowWidth, int newMiddleStripeWidth);
 //    }
+
+
 }

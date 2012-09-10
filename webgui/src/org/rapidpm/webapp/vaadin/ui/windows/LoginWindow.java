@@ -7,11 +7,14 @@ package org.rapidpm.webapp.vaadin.ui.windows;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.LoginForm;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.Window;
 import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.BaseRoot;
+import org.rapidpm.webapp.vaadin.ui.Languages;
+
+import java.util.Arrays;
 
 public class LoginWindow extends Window {
     private static final Logger logger = Logger.getLogger(LoginWindow.class);
@@ -23,7 +26,8 @@ public class LoginWindow extends Window {
 //        initUI();
 
         final LoginForm loginForm = new LoginForm();
-        loginForm.setCaption("Bitte geben Sie Ihre Logindaten ein.");
+        final ComboBox languageBox = new ComboBox("Language", Arrays.asList(Languages.values()));
+        loginForm.setCaption("Please enter your username and password");
         loginForm.addListener(new LoginForm.LoginListener() {
             @Override
             public void onLogin(final LoginForm.LoginEvent loginEvent) {
@@ -31,13 +35,20 @@ public class LoginWindow extends Window {
                 try {
                     final String username = loginEvent.getLoginParameter("username");
                     final String password = loginEvent.getLoginParameter("password");
+                    root.localization(languageBox.getValue());
                     root.authentication(username, password);
                     close();
                 } catch (Exception e) {
-                    Notification.show(e.getLocalizedMessage(), Notification.TYPE_ERROR_MESSAGE);
+                    //Notification.show(e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
+                    e.printStackTrace();
                 }
             }
         });
+        languageBox.setImmediate(true);
+        languageBox.setValue(Languages.GERMAN);
+        languageBox.setNullSelectionAllowed(false);
+        languageBox.setTextInputAllowed(false);
         addComponent(loginForm);
+        addComponent(languageBox);
     }
 }

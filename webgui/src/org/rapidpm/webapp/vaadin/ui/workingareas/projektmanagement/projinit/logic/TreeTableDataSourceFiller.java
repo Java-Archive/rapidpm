@@ -16,6 +16,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenm
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import static org.rapidpm.Constants.*;
 
@@ -34,18 +35,20 @@ public class TreeTableDataSourceFiller {
     private ProjektBean projektBean;
     private List<RessourceGroup> ressourceGroups;
     private final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
-
+    private ResourceBundle messages;
     private HierarchicalContainer dataSource;
 
-    public TreeTableDataSourceFiller(final RessourceGroupsBean rBean, final ProjektBean pBean,
-                                     final HierarchicalContainer dSource) {
+    public TreeTableDataSourceFiller(final ResourceBundle bundle, final RessourceGroupsBean rBean,
+                                     final ProjektBean pBean, final HierarchicalContainer dSource) {
+        this.messages = bundle;
         ressourceGroupsBean = rBean;
         projektBean = pBean;
         dataSource = dSource;
         ressourceGroups = ressourceGroupsBean.getRessourceGroups();
 
         dataSource.removeAllItems();
-        dataSource.addContainerProperty(AUFGABE_SPALTE, String.class, null);
+        final String aufgabe = messages.getString("aufgabe");
+        dataSource.addContainerProperty(aufgabe, String.class, null);
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
             dataSource.addContainerProperty(ressourceGroup.getName(), String.class, "");
         }
@@ -62,7 +65,8 @@ public class TreeTableDataSourceFiller {
         for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
             final String planningUnitGroupName = planningUnitGroup.getPlanningUnitGroupName();
             final Item planningUnitGroupItem = dataSource.addItem(planningUnitGroupName);
-            planningUnitGroupItem.getItemProperty(AUFGABE_SPALTE).setValue(planningUnitGroupName);
+            final String aufgabe = messages.getString("aufgabe");
+            planningUnitGroupItem.getItemProperty(aufgabe).setValue(planningUnitGroupName);
             final List<PlanningUnit> planningUnitList = planningUnitGroup.getPlanningUnitList();
             if (planningUnitList == null || planningUnitList.isEmpty()) {
                 for (final RessourceGroup spalte : ressourceGroups) {
@@ -88,7 +92,8 @@ public class TreeTableDataSourceFiller {
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
-            planningUnitItem.getItemProperty(AUFGABE_SPALTE).setValue(planningUnitName);
+            final String aufgabe = messages.getString("aufgabe");
+            planningUnitItem.getItemProperty(aufgabe).setValue(planningUnitName);
             dataSource.setParent(planningUnitName, parent);
             final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
             if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
@@ -110,7 +115,8 @@ public class TreeTableDataSourceFiller {
     private void addiereZeileZurRessourceMap(final PlanningUnit planningUnit) {
         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
             final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
-            if (!ressourceGroup.getName().equals(AUFGABE_SPALTE)) {
+            final String aufgabe = messages.getString("aufgabe");
+            if (!ressourceGroup.getName().equals(aufgabe)) {
 //                final RessourceGroup ressourceGroup1 = planningUnitElement.getRessourceGroup();
                 final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
                 final int plannedDays = planningUnitElement.getPlannedDays();

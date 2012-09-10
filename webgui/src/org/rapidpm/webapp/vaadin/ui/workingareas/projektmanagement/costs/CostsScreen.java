@@ -17,6 +17,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.comp
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import static org.rapidpm.Constants.DATE_FORMAT;
 import static org.rapidpm.Constants.EUR;
@@ -24,7 +25,7 @@ import static org.rapidpm.Constants.EUR;
 
 public class CostsScreen extends Screen {
 
-    private Button saveButton = new Button("Speichern");  //TODO auf i18n properties wechseln ??
+    private Button saveButton = new Button();
     private Button undoButton;
     private CheckBox expandCheckBox;
     private TextField vertrieblerField;
@@ -39,8 +40,6 @@ public class CostsScreen extends Screen {
     private FormLayout unterschriftLayout = new FormLayout();
     private FormLayout felderLayout = new FormLayout();
 
-    private ProjektBean projektBean;
-    private RessourceGroupsBean ressourceGroupsBean;
     private HierarchicalContainer dataSource = new HierarchicalContainer();
     private MyTreeTable treeTable = new MyTreeTable();
     private MyTable uebersichtTable = new MyTable();
@@ -55,21 +54,22 @@ public class CostsScreen extends Screen {
     private VerticalLayout lowerFormLayout = new VerticalLayout();
 
     public CostsScreen(MainRoot root) {
-        this.projektBean = root.getPlanningUnitsBean();
-        this.ressourceGroupsBean = root.getRessourceGroupsBean();
+        super(root);
 
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
 
-        undoButton = new UndoButton(treeTable, dataSource, projektBean, ressourceGroupsBean);
+        undoButton = new UndoButton(messagesBundle, treeTable, dataSource, projektBean, ressourceGroupsBean);
         undoButton.setVisible(false);
 
         expandCheckBox = new ExpandTableCheckBox(treeTable, dataSource);
 
-        final TreeTableFiller treeTableFiller = new TreeTableFiller(projektBean, ressourceGroupsBean, treeTable, dataSource);
+        final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, projektBean, ressourceGroupsBean,
+                treeTable, dataSource);
         treeTableFiller.fill();
 
-        final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(uebersichtTable, projektBean, ressourceGroupsBean);
+        final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable,
+                projektBean, ressourceGroupsBean);
         overviewTableFiller.fill();
 
         uebersichtTable.setPageLength(4);
@@ -89,6 +89,8 @@ public class CostsScreen extends Screen {
         formLayout.addComponent(upperFormLayout);
         formLayout.addComponent(lowerFormLayout);
         formLayout.setVisible(false);
+
+        doInternationalization();
         setComponents();
 
     }
@@ -105,7 +107,7 @@ public class CostsScreen extends Screen {
 
     private void erstelleUnterschriftLayout() {
         // Unterschrift
-        vertrieblerField = new TextField("Verantwortlicher Vertriebler:");
+        vertrieblerField = new TextField();
         datumField = new DateField("Datum:", new Date());
         datumField.setDateFormat(DATE_FORMAT.toPattern());
         unterschriftLayout.setWidth("560px");
@@ -117,14 +119,14 @@ public class CostsScreen extends Screen {
     }
 
     private void fillFields() {
-        final TimesCalculator timesCalculator = new TimesCalculator(ressourceGroupsBean, projektBean);
-        final CostsCalculator costsCalculator = new CostsCalculator(projektBean);
+        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle, ressourceGroupsBean, projektBean);
+        final CostsCalculator costsCalculator = new CostsCalculator(projektBean, messagesBundle);
         costsCalculator.calculate();
         timesCalculator.calculate();
-        summeInMinField = new TextField("Summe [d:hh:mm]");
+        summeInMinField = new TextField();
         summeInMinField.setValue(timesCalculator.getGesamtSummeItem().toString());
-        manntageField = new TextField("MT:");
-        kostenField = new TextField("Kosten:");
+        manntageField = new TextField();
+        kostenField = new TextField();
         manntageField.setValue(timesCalculator.getMannTageGerundet());
         kostenField.setValue(costsCalculator.getTotalCostsGerundet() + EUR);
         kostenField.setReadOnly(true);
@@ -213,6 +215,18 @@ public class CostsScreen extends Screen {
 
     public void setUebersichtTable(MyTable uebersichtTable) {
         this.uebersichtTable = uebersichtTable;
+    }
+
+    @Override
+    protected void doInternationalization() {
+        expandCheckBox.setCaption(messagesBundle.getString("costsinit_expand"));
+        saveButton.setCaption(messagesBundle.getString("save"));
+        undoButton.setCaption(messagesBundle.getString("costsinit_removesortorder"));
+        datumField.setCaption(messagesBundle.getString("costsinit_date"));
+        manntageField.setCaption(messagesBundle.getString("costsinit_manday"));
+        vertrieblerField.setCaption(messagesBundle.getString("costsscreen_responsible"));
+        kostenField.setCaption(messagesBundle.getString("costsscreen_costs"));
+        summeInMinField.setCaption(messagesBundle.getString("costsinit_sumInDDHHMM"));
     }
 
     public ProjektBean getProjektBean() {

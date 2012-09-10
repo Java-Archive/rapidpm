@@ -11,8 +11,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenm
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 
 import java.util.Map;
-
-import static org.rapidpm.Constants.AUFGABE_SPALTE;
+import java.util.ResourceBundle;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -29,10 +28,13 @@ public class TreeTableFiller {
     private RessourceGroupsBean ressourceGroupsBean;
     private MyTreeTable treeTable;
     private AufwandProjInitScreen screen;
+    private ResourceBundle messages;
 
-    public TreeTableFiller(final AufwandProjInitScreen screen, final ProjektBean projektBean,
+    public TreeTableFiller(final ResourceBundle bundle, final AufwandProjInitScreen screen,
+                           final ProjektBean projektBean,
                            final RessourceGroupsBean ressourceGroupsBean, final MyTreeTable treeTable,
                            final HierarchicalContainer dataSource) {
+        this.messages = bundle;
         this.dataSource = dataSource;
         this.projektBean = projektBean;
         this.ressourceGroupsBean = ressourceGroupsBean;
@@ -41,23 +43,24 @@ public class TreeTableFiller {
     }
 
     public void fill() {
-        final TimesCalculator timesCalculator = new TimesCalculator(ressourceGroupsBean, projektBean);
-        final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(ressourceGroupsBean,
-                projektBean, dataSource);
+        final TimesCalculator timesCalculator = new TimesCalculator(messages, ressourceGroupsBean, projektBean);
+        final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller
+                (messages, ressourceGroupsBean, projektBean, dataSource);
         timesCalculator.calculate();
         treeTableDataSourceFiller.fill();
         for(final Object listener : treeTable.getListeners(ItemClickEvent.ItemClickListener.class)){
             treeTable.removeListener((ItemClickEvent.ItemClickListener)listener);
         }
-        treeTable.addListener(new TableItemClickListener(screen));
+        treeTable.addListener(new TableItemClickListener(messages, screen));
         treeTable.setContainerDataSource(this.dataSource);
-        treeTable.setColumnCollapsible(AUFGABE_SPALTE, false);
+        final String aufgabe = messages.getString("aufgabe");
+        treeTable.setColumnCollapsible(aufgabe, false);
         treeTable.setFooterVisible(true);
         final Map<RessourceGroup, DaysHoursMinutesItem> werteMap = timesCalculator.getAbsoluteWerte();
         for(final RessourceGroup ressourceGroup : werteMap.keySet()){
             treeTable.setColumnFooter(ressourceGroup.getName(), werteMap.get(ressourceGroup).toString());
         }
-        treeTable.setColumnWidth(AUFGABE_SPALTE, WIDTH);
+        treeTable.setColumnWidth(aufgabe, WIDTH);
         treeTable.setValue(null);
     }
 }

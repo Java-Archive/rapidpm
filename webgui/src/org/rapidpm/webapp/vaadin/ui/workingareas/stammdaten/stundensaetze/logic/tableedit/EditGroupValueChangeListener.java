@@ -10,7 +10,7 @@ import com.vaadin.ui.Component.Event;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeFieldsCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeTableCalculator;
 
-import static org.rapidpm.Constants.*;
+import java.util.ResourceBundle;
 
 public class EditGroupValueChangeListener implements ValueChangeListener {
     private OptionGroup editGroup;
@@ -21,11 +21,13 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
     private Layout formLayout;
     private Layout upperFormLayout;
     private Layout lowerFormLayout;
+    private ResourceBundle messages;
 
-    public EditGroupValueChangeListener(final Layout formLayout, final Layout upperFormLayout,
+    public EditGroupValueChangeListener(final ResourceBundle bundle, final Layout formLayout, final Layout upperFormLayout,
                                         final Layout lowerFormLayout, final OptionGroup group,
                                         final TextField betriebsstdField, final TextField betriebsfraField,
                                         final Button saveButton, final Table tabelle) {
+        this.messages = bundle;
         this.betriebsfraField = betriebsfraField;
         this.betriebsstdField = betriebsstdField;
         this.editGroup = group;
@@ -38,10 +40,12 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
 
     @Override
     public void valueChange(final ValueChangeEvent event) {
+        final String TABLEMODE = messages.getString("stdsatz_tablemode");
+        final String ROWMODE = messages.getString("stdsatz_rowmode");
         final Property property = event.getProperty();
         final Object value = property.getValue();
         if (value != null) {
-            if (value.equals(TABLEEDIT)) {
+            if (value.equals(TABLEMODE)) {
                 formLayout.setVisible(true);
                 upperFormLayout.setVisible(false);
                 lowerFormLayout.setVisible(true);
@@ -64,7 +68,7 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
                         tabelle.commit();
                         saveButton.setVisible(false);
                         EditModeGetter.setMode(EditModes.ROWEDIT);
-                        editGroup.setValue(ROWEDIT);
+                        editGroup.setValue(ROWMODE);
                         tabelle.setEditable(false);
                         tabelle.setSelectable(true);
                         final StundensaetzeTableCalculator calculator = new StundensaetzeTableCalculator(tabelle);

@@ -15,6 +15,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.mode
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Created by IntelliJ IDEA.
@@ -39,12 +40,16 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
     private final ProjektBean projektBean;
     private final RessourceGroupsBean ressourceGroupsBean;
     private Tree treePanelTree;
+    private ResourceBundle messages;
 
 
-    public ProjektplanungScreen(final ProjektBean cont, final RessourceGroupsBean ressourceGroupsBean) {
+    public ProjektplanungScreen(ResourceBundle bundle, final ProjektBean cont,
+                                final RessourceGroupsBean ressourceGroupsBean) {
+        this.messages = bundle;
         this.projektBean = cont;
         this.ressourceGroupsBean = ressourceGroupsBean;
-        final PlanningCalculator calculator = new PlanningCalculator(this.projektBean, this.ressourceGroupsBean);
+        final PlanningCalculator calculator = new PlanningCalculator(messages, this.projektBean,
+                this.ressourceGroupsBean);
         calculator.calculate();
         setSizeFull();
         setSplitPosition(40, Unit.PERCENTAGE);
@@ -53,11 +58,11 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         menuLayout.setSpacing(true);
         addComponent(menuLayout);
 
-        planningUnitGroupPanel = new Panel("Projekt");
+        planningUnitGroupPanel = new Panel();
         menuLayout.addComponent(planningUnitGroupPanel);
         treePanel = new Panel();
         menuLayout.addComponent(treePanel);
-        detailPanel = new Panel("Details");
+        detailPanel = new Panel();
         menuLayout.addComponent(detailPanel);
 
         mainPanel = new Panel();
@@ -84,11 +89,16 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
                 treePanel.setCaption(value);
                 fillTreePanel(value);
                 treePanelTree.select(value);
-                detailPanel.setCaption("Details");
             }
 
         });
+        doInternationalization();
 
+    }
+
+    private void doInternationalization() {
+        planningUnitGroupPanel.setCaption(messages.getString("project"));
+        detailPanel.setCaption(messages.getString("details"));
     }
 
     public void fillTreePanel(String planningGroupName) {
@@ -184,5 +194,9 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
 
     public RessourceGroupsBean getRessourceGroupsBean() {
         return ressourceGroupsBean;
+    }
+
+    public ResourceBundle getMessagesBundle() {
+        return messages;
     }
 }

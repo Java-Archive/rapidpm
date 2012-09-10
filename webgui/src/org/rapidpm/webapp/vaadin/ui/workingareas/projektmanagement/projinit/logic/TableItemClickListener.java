@@ -18,8 +18,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.Aufw
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.datenmodell.KnotenBlattEnum;
 
 import java.util.List;
-
-import static org.rapidpm.Constants.AUFGABE_SPALTE;
+import java.util.ResourceBundle;
 
 public class TableItemClickListener implements ItemClickListener {
 
@@ -29,8 +28,10 @@ public class TableItemClickListener implements ItemClickListener {
     private KnotenBlattEnum knotenBlattEnum;
 
     private PlanningUnit foundPlanningUnit = null;
+    private ResourceBundle messages;
 
-    public TableItemClickListener(AufwandProjInitScreen screen) {
+    public TableItemClickListener(final ResourceBundle bundle, final AufwandProjInitScreen screen) {
+        this.messages = bundle;
         this.screen = screen;
     }
 
@@ -47,7 +48,9 @@ public class TableItemClickListener implements ItemClickListener {
         formUnterlayout.removeAllComponents();
         final Object itemId = event.getItemId();
         final HierarchicalContainer dataSource = screen.getDataSource();
-        final String aufgabe = dataSource.getItem(itemId).getItemProperty(AUFGABE_SPALTE).getValue().toString();
+        final String aufgabeFromBundle = messages.getString("aufgabe");
+        final String aufgabe = dataSource.getItem(itemId).getItemProperty(aufgabeFromBundle).getValue()
+                .toString();
         final ProjektBean projektBean = screen.getProjektBean();
         final Projekt projekt = projektBean.getProjekt();
         final List<String> planningUnitGroupsNames = projekt.getPlanningUnitGroupsNames();
@@ -76,7 +79,7 @@ public class TableItemClickListener implements ItemClickListener {
                     }
                     for (final Object propertyId : fieldGroup.getBoundPropertyIds()) {
                         final Field<?> field = fieldGroup.getField(propertyId);
-                        if (!propertyId.equals(AUFGABE_SPALTE)) {
+                        if (!propertyId.equals(aufgabeFromBundle)) {
                             field.addValidator(new DaysHoursMinutesFieldValidator());
                         }
                         field.setRequired(true);
@@ -87,13 +90,15 @@ public class TableItemClickListener implements ItemClickListener {
             }
         }
 
-        screen.getSaveButton().addListener(new SaveButtonClickListener(fieldGroup, screen, knotenBlattEnum, itemId));
+        screen.getSaveButton().addListener(new SaveButtonClickListener(messages, fieldGroup, screen, knotenBlattEnum,
+                itemId));
         screen.getFormLayout().setVisible(true);
     }
 
     private void buildRequiredFields(GridLayout formUnterlayout, FieldGroup fieldGroup) {
         for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
-            if (prop.equals(AUFGABE_SPALTE))
+            final String aufgabe = messages.getString("aufgabe");
+            if (prop.equals(aufgabe))
                 formUnterlayout.addComponent(fieldGroup.buildAndBind(prop));
         }
         for (final Object propertyId : fieldGroup.getBoundPropertyIds()) {

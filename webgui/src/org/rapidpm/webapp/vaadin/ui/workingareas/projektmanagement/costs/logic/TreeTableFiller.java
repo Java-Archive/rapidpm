@@ -8,8 +8,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenm
 
 import java.text.DecimalFormat;
 import java.util.Map;
+import java.util.ResourceBundle;
 
-import static org.rapidpm.Constants.AUFGABE_SPALTE;
 import static org.rapidpm.Constants.DECIMAL_FORMAT;
 import static org.rapidpm.Constants.EUR;
 
@@ -28,9 +28,12 @@ public class TreeTableFiller {
     private ProjektBean projektBean;
     private RessourceGroupsBean ressourceGroupsBean;
     private MyTreeTable treeTable;
+    private ResourceBundle messages;
 
-    public TreeTableFiller(final ProjektBean projektBean, final RessourceGroupsBean ressourceGroupsBean,
+    public TreeTableFiller(final ResourceBundle bundle, final ProjektBean projektBean,
+                           final RessourceGroupsBean ressourceGroupsBean,
                            final MyTreeTable treeTable, final HierarchicalContainer dataSource) {
+        this.messages = bundle;
         this.dataSource = dataSource;
         this.projektBean = projektBean;
         this.ressourceGroupsBean = ressourceGroupsBean;
@@ -42,14 +45,15 @@ public class TreeTableFiller {
             treeTable.setConverter(id, null);
         }
         final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
-        final CostsCalculator costsCalculator = new CostsCalculator(projektBean);
-        final CostsConverterAdder costsConverterAdder = new CostsConverterAdder();
-        final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(ressourceGroupsBean, projektBean, dataSource);
+        final CostsCalculator costsCalculator = new CostsCalculator(projektBean, messages);
+        final CostsConverterAdder costsConverterAdder = new CostsConverterAdder(messages);
+        final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller
+                (messages, ressourceGroupsBean, projektBean, dataSource);
         costsCalculator.calculate();
         treeTableDataSourceFiller.fill();
         treeTable.setContainerDataSource(this.dataSource);
-        treeTable.setColumnCollapsible(AUFGABE_SPALTE, false);
-        treeTable.setColumnWidth(AUFGABE_SPALTE, WIDTH);
+        treeTable.setColumnCollapsible(messages.getString("aufgabe"), false);
+        treeTable.setColumnWidth(messages.getString("aufgabe"), WIDTH);
         treeTable.setFooterVisible(true);
         final Map<RessourceGroup, Double> werteMap = costsCalculator.getRessourceGroupsCostsMap();
         for(final RessourceGroup ressourceGroup : werteMap.keySet()){

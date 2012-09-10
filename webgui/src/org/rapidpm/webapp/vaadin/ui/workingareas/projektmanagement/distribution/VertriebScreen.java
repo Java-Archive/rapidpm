@@ -1,6 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.distribution;
 
 import com.vaadin.ui.*;
+import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 
 public class VertriebScreen extends Screen {
@@ -13,20 +14,31 @@ public class VertriebScreen extends Screen {
 
     private Table vertriebsTable;
 
-    private VerticalLayout vertrieblerLayout = new VerticalLayout();
+    private FormLayout vertrieblerLayout = new FormLayout();
     private VerticalLayout tableLayout = new VerticalLayout();
-    private GridLayout bottomLayout;
+    private FormLayout bottomLayout;
 
-    public VertriebScreen() {
+    public VertriebScreen(MainRoot root) {
+        super(root);
         erstelleVertrieblerLayout();
-        erstelleStandardTableLayout(new Label("Uebersicht"), vertriebsTable,
-                tableLayout);
+        erstelleStandardTableLayout(new Label("Uebersicht"), vertriebsTable, tableLayout);
         erstelleBottomLayout();
         setComponents();
+        doInternationalization();
+    }
+
+    @Override
+    protected void doInternationalization() {
+        vertrieblerField.setCaption(messagesBundle.getString("distri_responsible"));
+        datumField.setCaption(messagesBundle.getString("distri_date"));
+        summeMitAufschlagField.setCaption(messagesBundle.getString("distri_sumWithAddition"));
+        summeOhneAufschlagField.setCaption(messagesBundle.getString("distri_sumWithoutAddition"));
+        verhandelterPreisField.setCaption(messagesBundle.getString("distri_negotiatedPrice"));
+        bemerkungenArea.setCaption(messagesBundle.getString("distri_comments"));
     }
 
     private void erstelleBottomLayout() {
-        bottomLayout = new GridLayout(2, 5);
+        bottomLayout = new FormLayout();
         summeMitAufschlagField = new TextField();
         summeMitAufschlagField.setEnabled(false);
         summeOhneAufschlagField = new TextField();
@@ -35,45 +47,16 @@ public class VertriebScreen extends Screen {
         bemerkungenArea = new TextArea();
         bemerkungenArea.setWidth("500px");
         bemerkungenArea.setHeight("300px");
-        // GridLayout bottomGridLayout = new GridLayout(2,5);
-
-        final Label summeMitAufschlagLabel = new Label("Summe mit Verhandlungsaufschlag: ");
-        final Label summeOhneAufschlagLabel = new Label("Summe ohne Verhandlungsaufschlag: ");
-        final Label horizontaleLinieLabel = new Label("--------------------------------");
-        final Label verhandelterPreisLabel = new Label("verhandelter Preis: ");
-        final Label bemerkungenLabel = new Label("Bemerkungen: ");
 
         bottomLayout.setMargin(true, false, true, false);
-
-        bottomLayout.addComponent(summeMitAufschlagLabel);
         bottomLayout.addComponent(summeMitAufschlagField);
-        bottomLayout.addComponent(summeOhneAufschlagLabel);
         bottomLayout.addComponent(summeOhneAufschlagField);
-        bottomLayout.addComponent(horizontaleLinieLabel);
-        bottomLayout.addComponent(new Label(""));
-        bottomLayout.addComponent(verhandelterPreisLabel);
         bottomLayout.addComponent(verhandelterPreisField);
-        bottomLayout.addComponent(bemerkungenLabel);
 
         bottomLayout.addComponent(bemerkungenArea);
-        bottomLayout.setComponentAlignment(summeMitAufschlagLabel, Alignment.MIDDLE_RIGHT);
-        bottomLayout.setComponentAlignment(summeMitAufschlagField,
-                Alignment.MIDDLE_LEFT);
-        bottomLayout.setComponentAlignment(summeOhneAufschlagLabel, Alignment.MIDDLE_RIGHT);
-        bottomLayout.setComponentAlignment(summeOhneAufschlagField,
-                Alignment.MIDDLE_LEFT);
-        bottomLayout.setComponentAlignment(horizontaleLinieLabel, Alignment.MIDDLE_RIGHT);
-        bottomLayout.setComponentAlignment(verhandelterPreisLabel, Alignment.MIDDLE_RIGHT);
-        bottomLayout.setComponentAlignment(verhandelterPreisField,
-                Alignment.MIDDLE_LEFT);
-        bottomLayout.setComponentAlignment(bemerkungenLabel, Alignment.MIDDLE_RIGHT);
-        bottomLayout.setComponentAlignment(bemerkungenArea,
-                Alignment.MIDDLE_LEFT);
-
     }
 
-    private void erstelleStandardTableLayout(Label ueberschrift, Table tabelle,
-                                             Layout layout) {
+    private void erstelleStandardTableLayout(Label ueberschrift, Table tabelle, Layout layout) {
         tabelle = new Table();
         layout.addComponent(ueberschrift);
         layout.addComponent(tabelle);
@@ -81,22 +64,11 @@ public class VertriebScreen extends Screen {
     }
 
     private void erstelleVertrieblerLayout() {
-        final Label vertrieblerLabel = new Label("Verantwortlicher Vertriebler:");
-        final Label datumLayout = new Label("Datum:");
-        final HorizontalLayout zeile1 = new HorizontalLayout();
-        final HorizontalLayout zeile2 = new HorizontalLayout();
         vertrieblerLayout.setWidth("600px");
         vertrieblerField = new TextField();
         datumField = new TextField();
-
-        zeile1.addComponent(vertrieblerLabel);
-        zeile1.addComponent(vertrieblerField);
-        zeile1.setSizeFull();
-        zeile2.addComponent(datumLayout);
-        zeile2.addComponent(datumField);
-        zeile2.setSizeFull();
-        vertrieblerLayout.addComponent(zeile1);
-        vertrieblerLayout.addComponent(zeile2);
+        vertrieblerLayout.addComponent(vertrieblerField);
+        vertrieblerLayout.addComponent(datumField);
         vertrieblerLayout.setMargin(true, false, true, false);
     }
 
@@ -161,14 +133,6 @@ public class VertriebScreen extends Screen {
 
     public void setVertriebsTable(Table vertriebsTable) {
         this.vertriebsTable = vertriebsTable;
-    }
-
-    public VerticalLayout getVertrieblerLayout() {
-        return vertrieblerLayout;
-    }
-
-    public void setVertrieblerLayout(VerticalLayout vertrieblerLayout) {
-        this.vertrieblerLayout = vertrieblerLayout;
     }
 
     public VerticalLayout getTableLayout() {

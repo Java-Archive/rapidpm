@@ -2,11 +2,13 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicom
 
 import com.vaadin.ui.OptionGroup;
 
+import java.util.ResourceBundle;
+
 
 public class EditOptionButtonGroup extends OptionGroup {
-    public EditOptionButtonGroup() {
-        addItem("Tabelle");
-        addItem("Zeile");
+    public EditOptionButtonGroup(ResourceBundle bundle) {
+        addItem(bundle.getString("stdsatz_tablemode"));
+        addItem(bundle.getString("stdsatz_rowmode"));
     }
 
 }

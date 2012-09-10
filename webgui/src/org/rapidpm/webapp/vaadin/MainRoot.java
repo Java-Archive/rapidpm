@@ -5,12 +5,15 @@ import com.vaadin.ui.MenuBar;
 import org.rapidpm.webapp.vaadin.ui.workingareas.anfragenmanagement.AnfragenmanagementWorkingArea;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.CostsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.distribution.VertriebScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenWorkingArea;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
+
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  * Created by IntelliJ IDEA.
@@ -29,16 +32,16 @@ public class MainRoot extends BaseRoot {
 
     @Override
     protected void initMenuBar(final MenuBar menuBar) {
-
-        final MenuBar.MenuItem stammdatenMenu = menuBar.addItem("Stammdaten", null);
-        stammdatenMenu.addItem("Benutzer", new MenuBar.Command() {
+        final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", locale);
+        final MenuBar.MenuItem stammdatenMenu = menuBar.addItem(messages.getString("masterdata"), null);
+        stammdatenMenu.addItem(messages.getString("users"), new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
                 setWorkingArea(new StammdatenWorkingArea());
             }
         });
 
-        stammdatenMenu.addItem("Stundensätze", new MenuBar.Command() {
+        stammdatenMenu.addItem(messages.getString("hourlyrates"), new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
                 setWorkingArea(new StundensaetzeScreen(MainRoot.this));
@@ -50,31 +53,32 @@ public class MainRoot extends BaseRoot {
         //rp_difference.addItem("Difference-Report", null, null);
         //rp_difference.addItem("Termmatrix", null, null);
 
-        menuBar.addItem("Anfragenmanagement", new MenuBar.Command() {
+        menuBar.addItem(messages.getString("requestmanagement"), new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
                 setWorkingArea(new AnfragenmanagementWorkingArea());
             }
         });
-        final MenuBar.MenuItem projektmanagement = menuBar.addItem("Projektmanagement", null, null);
+        final MenuBar.MenuItem projektmanagement = menuBar.addItem(messages.getString("projectmanagement"), null,
+                null);
 
 
-        projektmanagement.addItem("Projektplanung", new MenuBar.Command() {
+        projektmanagement.addItem(messages.getString("projectplanning"), new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new ProjektplanungScreen(planningUnitsBean,ressourceGroupsBean));
+                setWorkingArea(new ProjektplanungScreen(messages, planningUnitsBean,ressourceGroupsBean));
             }
         });
 
 
-        projektmanagement.addItem("Projektinitialisierung", new MenuBar.Command() {
+        projektmanagement.addItem(messages.getString("projectinit"), new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
                 setWorkingArea(new AufwandProjInitScreen(MainRoot.this));
             }
         });
 
-        projektmanagement.addItem("Kosten", new MenuBar.Command() {
+        projektmanagement.addItem(messages.getString("costs"), new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
                 setWorkingArea(new CostsScreen(MainRoot.this));
@@ -82,10 +86,10 @@ public class MainRoot extends BaseRoot {
         });
 
 
-        projektmanagement.addItem("Vertrieb", new MenuBar.Command() {
+        projektmanagement.addItem(messages.getString("distribution"), new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new VertriebScreen());
+                setWorkingArea(new VertriebScreen(MainRoot.this));
             }
         });
     }
@@ -105,5 +109,21 @@ public class MainRoot extends BaseRoot {
 
     public void setPlanningUnitsBean(ProjektBean planningUnitsBean) {
         this.planningUnitsBean = planningUnitsBean;
+    }
+
+    public Locale getLocale(){
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+
+    public ResourceBundle getResourceBundle(){
+        return messages;
+    }
+
+    public void setResourceBundle(ResourceBundle bundle) {
+        this.messages = bundle;
     }
 }

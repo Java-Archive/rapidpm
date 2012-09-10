@@ -11,25 +11,31 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenm
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
 import java.util.Iterator;
+import java.util.ResourceBundle;
 
 public class AddRowWindow extends Window {
+    public static final String HEIGHT = "400px";
+    public static final String WIDTH = "400px";
+    public static final int POSITION_X = 50;
+    public static final int POSITION_Y = 100;
     private MainRoot root;
 
     private GridLayout gridLayout = new GridLayout(2, 2);
     private HorizontalLayout horizontalButtonLayout = new HorizontalLayout();
-    private Button saveButton = new Button("Save");
-    private Button cancelButton = new Button("Cancel");
+    private Button saveButton = new Button();
+    private Button cancelButton = new Button();
     private Table tabelle;
     private RowFieldGroup fieldGroup;
+    private ResourceBundle messages;
 
     public AddRowWindow(final MainRoot root, final StundensaetzeScreen screen) {
         this.root = root;
+        messages = screen.getMessagesBundle();
         tabelle = screen.getTabelle();
-        setCaption("Ressource hinzufügen");
-        setHeight("400px");
-        setWidth("400px");
-        setPositionX(50);
-        setPositionY(100);
+        setHeight(HEIGHT);
+        setWidth(WIDTH);
+        setPositionX(POSITION_X);
+        setPositionY(POSITION_Y);
 
         final RessourceGroup row = new RessourceGroup();
         fieldGroup = new RowFieldGroup(row);
@@ -45,7 +51,14 @@ public class AddRowWindow extends Window {
         addComponent(horizontalButtonLayout);
 
         addListeners(row, root, screen);
+        doInternationalization();
 
+    }
+
+    private void doInternationalization() {
+        this.setCaption(messages.getString("stdsatz_addRessource"));
+        saveButton.setCaption(messages.getString("save"));
+        cancelButton.setCaption(messages.getString("cancel"));
     }
 
     private void addListeners(final RessourceGroup ressourceGroup, final MainRoot root, final StundensaetzeScreen screen) {
@@ -78,8 +91,9 @@ public class AddRowWindow extends Window {
                     }
 
                 } else {
-                    AddRowWindow.this.addComponent(new Label(
-                            "Alle Felder ausfuellen"));
+                    Label lbl = new Label();
+                    lbl.setValue(messages.getString("stdsatz_fillInAllFields"));
+                    AddRowWindow.this.addComponent(lbl);
                 }
 
             }

@@ -4,10 +4,7 @@ import com.vaadin.ui.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -18,15 +15,14 @@ import java.util.List;
  */
 public class PlanningMainMyFormLayout extends MyFormLayout {
 
-    private static final String STORYPOINTS = "Storypoints";
-    private static final String BESCHREIBUNG = "Beschreibung";
-    private static final String TESTCASE = "Testcase ";
     private TextArea descriptionTextArea;
     private ComboBox storyPointsComboBox;
     private ArrayList<TextArea> testCasesAreas = new ArrayList<>();
+    private ResourceBundle messages;
 
     public PlanningMainMyFormLayout(final IssueBase issueBase, final ProjektplanungScreen screen, final Panel screenPanel) {
         super(issueBase, screen, screenPanel);
+        this.messages = screen.getMessagesBundle();
         buildDescriptionTextArea(issueBase);
         buildStoryPointsListSelect(issueBase);
         Integer testCaseCounter = 0;
@@ -88,14 +84,15 @@ public class PlanningMainMyFormLayout extends MyFormLayout {
     }
 
     private void buildTestCaseArea(final Integer testCaseCounter, final String testCase) {
-        final TextArea testCaseArea = new TextArea(TESTCASE + testCaseCounter, testCase);
+        final TextArea testCaseArea = new TextArea(messages.getString("planning_testcase") + testCaseCounter,
+                testCase);
         testCaseArea.setReadOnly(true);
         testCaseArea.setSizeFull();
         testCasesAreas.add(testCaseArea);
     }
 
     private void buildDescriptionTextArea(final IssueBase issueBase) {
-        descriptionTextArea = new TextArea(BESCHREIBUNG);
+        descriptionTextArea = new TextArea(messages.getString("planning_description"));
         descriptionTextArea.setValue(issueBase.getText());
         descriptionTextArea.setReadOnly(true);
         descriptionTextArea.setSizeFull();
@@ -104,7 +101,7 @@ public class PlanningMainMyFormLayout extends MyFormLayout {
     private void buildStoryPointsListSelect(final IssueBase issueBase) {
         final Integer[] storyPoints = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}; //TODO diese Liste muss in der DB
         // pro Mandant konfigurierbar sein
-        storyPointsComboBox = new ComboBox(STORYPOINTS, Arrays.asList(storyPoints));
+        storyPointsComboBox = new ComboBox(messages.getString("planning_storypoints"), Arrays.asList(storyPoints));
         storyPointsComboBox.setValue(issueBase.getStoryPoints());
         storyPointsComboBox.setNullSelectionAllowed(false);
         storyPointsComboBox.setReadOnly(true);

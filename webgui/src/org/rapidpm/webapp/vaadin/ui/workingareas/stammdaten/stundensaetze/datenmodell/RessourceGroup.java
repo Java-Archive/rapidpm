@@ -5,12 +5,6 @@ import static org.rapidpm.Constants.*;
 
 public class RessourceGroup implements Serializable {
 
-    //TODO so nicht gut, evtl in Properties auslagern oder Anotationen
-    public static final String[] VISIBLECOLUMNS = new String[]{"Ressource",
-            "Brutto-Jahresgehalt", "h / Woche", "Arbeitswochen / Jahr",
-            "h / Jahr", "Fakturierbar", EUR + " / h", "extern" + EUR + " / h",
-            "operativ" + EUR + " / h", "Brutto / Monat", "Plan-Anzahl", "Summe / Monat",
-            "Summe / Tag"};
     public static final String[] COLUMNS = new String[]{"name",
             "bruttoGehalt", "hoursPerWeek", "weeksPerYear", "hoursPerYear",
             "facturizable", "eurosPerHour", "externalEurosPerHour",
