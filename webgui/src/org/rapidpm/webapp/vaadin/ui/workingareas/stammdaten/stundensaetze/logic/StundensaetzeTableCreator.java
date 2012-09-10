@@ -4,6 +4,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
+import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBeanItemContainer;
@@ -11,18 +12,23 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tablelisteners.StundensaetzeItemSetChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.ItemClickDependentComponent;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class StundensaetzeTableCreator {
     private Table tabelle;
 
     public StundensaetzeTableCreator(
-            final RessourceGroupsBean ressourceGroupsBean, final List<ItemClickDependentComponent>
+            final MainRoot root, final List<ItemClickDependentComponent>
             itemClickdependentComponents, final Button deleteButton, final Layout upperFormLayout,
             final Layout lowerFormLayout, final Layout formLayout, final Button saveButton,
             final TextField betriebsFraField, final TextField betriebsStdField) {
         final RessourceGroupsBeanItemContainer dataSource = new RessourceGroupsBeanItemContainer();
+        final ArrayList<String> list = new ArrayList<>();
+        final RessourceGroupsBean ressourceGroupsBean = root.getRessourceGroupsBean();
+        final ResourceBundle messages = root.getResourceBundle();
         dataSource.fill(ressourceGroupsBean.getRessourceGroups());
         tabelle = new Table();
         tabelle.setLocale(Locale.GERMANY);
@@ -41,7 +47,13 @@ public class StundensaetzeTableCreator {
         tabelle.setContainerDataSource(dataSource);
 
         tabelle.setVisibleColumns(RessourceGroup.COLUMNS);
-        tabelle.setColumnHeaders(RessourceGroup.VISIBLECOLUMNS);
+
+        for(final String column : RessourceGroup.COLUMNS){
+            list.add(messages.getString(column));
+        }
+        final String[] columns = new String[list.size()];
+        list.toArray(columns);
+        tabelle.setColumnHeaders(columns);
 
         tabelle.setFooterVisible(true);
 

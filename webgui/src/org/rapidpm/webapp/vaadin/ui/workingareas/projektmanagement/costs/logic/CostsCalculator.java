@@ -11,6 +11,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import static org.rapidpm.Constants.*;
 
@@ -26,11 +27,13 @@ public class CostsCalculator {
     private ProjektBean projektBean;
 
     private final Map<RessourceGroup, Double> ressourceGroupsCostsMap = new HashMap<>();
+    private ResourceBundle messages;
 
     private Double totalCostsExakt = 0.0;
 
-    public CostsCalculator(ProjektBean pBean) {
+    public CostsCalculator(ProjektBean pBean, ResourceBundle bundle) {
         projektBean = pBean;
+        messages = bundle;
     }
 
     public void calculate() {
@@ -67,7 +70,7 @@ public class CostsCalculator {
     private void addiereZeileZurRessourceMap(PlanningUnit planningUnit) {
         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
             final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
-            if (!ressourceGroup.getName().equals(AUFGABE_SPALTE)) {
+            if (!ressourceGroup.getName().equals(messages.getString("aufgabe"))) {
                 final RessourceGroup ressourceGroup1 = ressourceGroup;
                 Double costs = getCosts(planningUnitElement);
                 if (ressourceGroupsCostsMap.containsKey(ressourceGroup1)) {

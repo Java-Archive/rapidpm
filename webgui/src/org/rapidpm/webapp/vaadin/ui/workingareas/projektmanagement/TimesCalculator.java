@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import static org.rapidpm.Constants.*;
 
@@ -24,13 +25,15 @@ public class TimesCalculator {
     private RessourceGroupsBean ressourceGroupsBean;
     private ProjektBean projektBean;
     private List<RessourceGroup> ressourceGroups;
+    private ResourceBundle messages;
 
     private Map<RessourceGroup, Double> relativeWerte = new HashMap<RessourceGroup, Double>();
     private final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
     private Integer gesamtSummeInMin;
     private Double mannTageExakt;
 
-    public TimesCalculator(final RessourceGroupsBean rBean, final ProjektBean pBean) {
+    public TimesCalculator(final ResourceBundle bundle, final RessourceGroupsBean rBean, final ProjektBean pBean) {
+        this.messages = bundle;
         ressourceGroupsBean = rBean;
         projektBean = pBean;
         ressourceGroups = ressourceGroupsBean.getRessourceGroups();
@@ -74,7 +77,8 @@ public class TimesCalculator {
                                              final PlanningUnit planningUnit) {
         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
             final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
-            if (!ressourceGroup.getName().equals(AUFGABE_SPALTE)) {
+            final String aufgabe = messages.getString("aufgabe");
+            if (!ressourceGroup.getName().equals(aufgabe)) {
                 final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
                 daysHoursMinutesItem.setDays(planningUnitElement.getPlannedDays());
                 daysHoursMinutesItem.setHours(planningUnitElement.getPlannedHours());

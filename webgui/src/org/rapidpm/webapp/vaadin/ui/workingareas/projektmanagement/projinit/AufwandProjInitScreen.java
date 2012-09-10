@@ -5,23 +5,24 @@ import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TreeTableHeaderClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.ExpandTableCheckBox;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TreeTableHeaderClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.UndoButton;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.OverviewTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.TreeTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import static org.rapidpm.Constants.DATE_FORMAT;
 
 public class AufwandProjInitScreen extends Screen {
 
-    private Button saveButton = new Button("Speichern");
+    private Button saveButton = new Button();
     private Button undoButton;
     private CheckBox expandCheckBox;
     private TextField kundeField;
@@ -32,8 +33,6 @@ public class AufwandProjInitScreen extends Screen {
     private TextField manntageField;
     private TextField summeField;
 
-    private ProjektBean projektBean;
-    private RessourceGroupsBean ressourceGroupsBean;
     private HierarchicalContainer dataSource = new HierarchicalContainer();
     private MyTreeTable treeTable = new MyTreeTable();
     private MyTable uebersichtTable = new MyTable();
@@ -51,8 +50,7 @@ public class AufwandProjInitScreen extends Screen {
     private VerticalLayout lowerFormLayout = new VerticalLayout();
 
     public AufwandProjInitScreen(MainRoot root) {
-        this.projektBean = root.getPlanningUnitsBean();
-        this.ressourceGroupsBean = root.getRessourceGroupsBean();
+        super(root);
 
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
@@ -61,10 +59,12 @@ public class AufwandProjInitScreen extends Screen {
         undoButton = new UndoButton(this, treeTable, dataSource, projektBean, ressourceGroupsBean);
         undoButton.setVisible(false);
 
-        final TreeTableFiller treeTableFiller = new TreeTableFiller(this, projektBean, ressourceGroupsBean, treeTable, dataSource);
+        final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, projektBean,
+                ressourceGroupsBean, treeTable, dataSource);
         treeTableFiller.fill();
 
-        final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(uebersichtTable, projektBean, ressourceGroupsBean);
+        final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable,
+                projektBean, ressourceGroupsBean);
         overviewTableFiller.fill();
 
         fillFields();
@@ -89,10 +89,25 @@ public class AufwandProjInitScreen extends Screen {
         formLayout.setVisible(false);
         setComponents();
 
+        doInternationalization();
+
+    }
+
+    protected void doInternationalization() {
+        expandCheckBox.setCaption(messagesBundle.getString("costsinit_expand"));
+        saveButton.setCaption(messagesBundle.getString("save"));
+        undoButton.setCaption(messagesBundle.getString("costsinit_removesortorder"));
+        kundeField.setCaption(messagesBundle.getString("initscreen_customer"));
+        projektField.setCaption(messagesBundle.getString("initscreen_project"));
+        datumField.setCaption(messagesBundle.getString("costsinit_date"));
+        manntageField.setCaption(messagesBundle.getString("costsinit_manday"));
+        summeField.setCaption(messagesBundle.getString("costsinit_sumInDDHHMM"));
+        projektLeiterField.setCaption(messagesBundle.getString("initscreen_projectleader"));
+        unterschriftField.setCaption(messagesBundle.getString("initscreen_signature"));
     }
 
     public void fillFields() {
-        final TimesCalculator timesCalculator = new TimesCalculator(ressourceGroupsBean,projektBean);
+        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle, ressourceGroupsBean,projektBean);
         timesCalculator.calculate();
         manntageField.setReadOnly(false);
         summeField.setReadOnly(false);
@@ -106,14 +121,12 @@ public class AufwandProjInitScreen extends Screen {
         final FormLayout layoutLinks = new FormLayout();
         final FormLayout layoutRechts = new FormLayout();
 
-        kundeField = new TextField("Kunde: ");
-        projektField = new TextField("Projekt: ");
+        kundeField = new TextField();
+        projektField = new TextField();
         datumField = new DateField("Datum: ", new Date());
         datumField.setDateFormat(DATE_FORMAT.toPattern());
-        projektLeiterField = new TextField("Projektleiter: ");
-        unterschriftField = new TextField("Unterschrift: ");
-        manntageField = new TextField("MT: ");
-        summeField = new TextField("Summe (d:hh:mm): ");
+        manntageField = new TextField();
+        summeField = new TextField();
         // Horizontallayout (700px) beinhaltet 2 VerticalLayouts(jew. 350px)
         // beinhalten jeweils x horizontallayouts (sizefull)
         felderLayout.setWidth(ABSOLUTE_WIDTH);
@@ -134,8 +147,8 @@ public class AufwandProjInitScreen extends Screen {
     }
 
     private void erstelleUnterschriftLayout() {
-        projektLeiterField = new TextField("Projektleiter:");
-        unterschriftField = new TextField("Unterschrift PM:");
+        projektLeiterField = new TextField();
+        unterschriftField = new TextField();
         unterschriftLayout.setWidth("350px");
 
         unterschriftLayout.addComponent(projektLeiterField);

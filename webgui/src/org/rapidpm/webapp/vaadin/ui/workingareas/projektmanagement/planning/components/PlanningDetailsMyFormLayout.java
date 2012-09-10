@@ -12,6 +12,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.mode
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.ResourceBundle;
 
 import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
 import static org.rapidpm.Constants.DATE_FORMAT;
@@ -30,15 +31,8 @@ import static org.rapidpm.Constants.DATE_FORMAT;
 public class PlanningDetailsMyFormLayout extends MyFormLayout {
 
     private static final Logger logger = Logger.getLogger(PlanningDetailsMyFormLayout.class);
-
-    private static final String CLOSED = "Closed";
-    private static final String RESOLVED = "Resolved";
-    private static final String PLANNED = "Planned";
-    private static final String PRIORITY = "Priority";
-    private static final String STATUS = "Status";
-    private static final String REPORTER = "Reporter";
-    private static final String ASSIGNEE = "Assignee";
     private static final String ICON = "icon";
+
     private ComboBox statusComboBox;
     private ComboBox priorityComboBox;
     private ComboBox reporterComboBox;
@@ -46,9 +40,11 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
     private DateField plannedDateField;
     private DateField resolvedDateField;
     private DateField closedDateField;
+    private ResourceBundle messages;
 
     public PlanningDetailsMyFormLayout(final IssueBase issueBase, final ProjektplanungScreen screen, final Panel screenPanel) {
         super(issueBase, screen, screenPanel);
+        messages = screen.getMessagesBundle();
 
         buildStatusBox(issueBase);
         buildPriorityBox(issueBase);
@@ -127,25 +123,27 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
     }
 
     private void buildClosedDateField(IssueBase issueBase) {
-        closedDateField = new DateField(CLOSED, issueBase.getDueDate_closed());
+        closedDateField = new DateField(messages.getString("planning_closed"), issueBase.getDueDate_closed());
         closedDateField.setDateFormat(DATE_FORMAT.toPattern());
         closedDateField.setReadOnly(true);
     }
 
     private void buildResolvedDateField(IssueBase issueBase) {
-        resolvedDateField = new DateField(RESOLVED, issueBase.getDueDate_resolved());
+        resolvedDateField = new DateField(messages.getString("planning_resolved"), issueBase.getDueDate_resolved());
         resolvedDateField.setDateFormat(DATE_FORMAT.toPattern());
         resolvedDateField.setReadOnly(true);
     }
 
     private void buildPlannedDateField(IssueBase issueBase) {
-        plannedDateField = new DateField(PLANNED, issueBase.getDueDate_planned());
+        plannedDateField = new DateField(messages.getString("planning_planned"), issueBase.getDueDate_planned());
         plannedDateField.setDateFormat(DATE_FORMAT.toPattern());
         plannedDateField.setReadOnly(true);
     }
 
     private void buildPriorityBox(IssueBase issueBase) {
-        priorityComboBox = new ComboBox(PRIORITY, new BeanItemContainer<>(IssuePrioritiesEnum.class, Arrays.asList(IssuePrioritiesEnum.values())));
+        priorityComboBox = new ComboBox(messages.getString("planning_priority"), new BeanItemContainer<>(IssuePrioritiesEnum
+                .class,
+                Arrays.asList(IssuePrioritiesEnum.values())));
         priorityComboBox.setItemIconPropertyId(ICON);
         priorityComboBox.setNullSelectionAllowed(false);
         priorityComboBox.select(IssuePrioritiesEnum.valueOf(issueBase.getIssuePriority().getPriorityName()));
@@ -153,7 +151,8 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
     }
 
     private void buildStatusBox(IssueBase issueBase) {
-        statusComboBox = new ComboBox(STATUS, new BeanItemContainer<>(IssueStatusEnum.class, Arrays.asList(IssueStatusEnum.values())));
+        statusComboBox = new ComboBox(messages.getString("planning_state"), new BeanItemContainer<>(IssueStatusEnum.class,
+                Arrays.asList(IssueStatusEnum.values())));
         statusComboBox.setItemIconPropertyId(ICON);
         statusComboBox.setNullSelectionAllowed(false);
         statusComboBox.select(IssueStatusEnum.valueOf(issueBase.getIssueStatus().getStatusName()));
@@ -161,14 +160,16 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
     }
 
     private void buildReporterBox(IssueBase issueBase) {
-        reporterComboBox = new ComboBox(REPORTER, new BeanItemContainer<>(String.class, Arrays.asList(ProjektBean.issueUsers)));
+        reporterComboBox = new ComboBox(messages.getString("planning_reporter"), new BeanItemContainer<>(String.class, 
+                Arrays.asList(ProjektBean.issueUsers)));
         reporterComboBox.setNullSelectionAllowed(false);
         reporterComboBox.select(issueBase.getReporter().getLogin());
         reporterComboBox.setReadOnly(true);
     }
 
     private void buildAssigneeBox(IssueBase issueBase) {
-        assigneeComboBox = new ComboBox(ASSIGNEE, new BeanItemContainer<>(String.class, Arrays.asList(ProjektBean.issueUsers)));
+        assigneeComboBox = new ComboBox(messages.getString("planning_assignee"), new BeanItemContainer<>(String.class,
+                Arrays.asList(ProjektBean.issueUsers)));
         assigneeComboBox.setNullSelectionAllowed(false);
         assigneeComboBox.select(issueBase.getAssignee().getLogin());
         assigneeComboBox.setReadOnly(true);

@@ -1,7 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze;
 
 import com.vaadin.external.com.ibm.icu.text.DecimalFormat;
-import com.vaadin.terminal.gwt.client.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
@@ -16,62 +15,52 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomp
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import static org.rapidpm.Constants.*;
 
 public class StundensaetzeScreen extends Screen {
 
     private MainRoot root;
-    private GridLayout gridLayout;
+
+    private FormLayout betriebsFieldsLayout = new FormLayout();
     private TextField betriebsWertField;
     private TextField betriebsstdField;
     private Button addRowButton = new Button("+");
     private ButtonComponent delRowButton = new ButtonComponent("-");
     private GridLayout tabellenTasksLayout = new GridLayout(2, 2);
     private Table tabelle;
+    private Label addDeleteRessourceLabel = new Label();
+    private Label editModeLabel = new Label();
     private HorizontalLayout tabellenLayout = new HorizontalLayout();
     private VerticalLayout formLayout = new VerticalLayout();
     private GridLayout upperFormLayout = new GridLayout(2, 2);
     private HorizontalLayout lowerFormLayout = new HorizontalLayout();
-    private Button saveButton = new Button("Speichern");
-    private EditOptionButtonGroup optionGroup = new EditOptionButtonGroup();
+    private Button saveButton = new Button();
+    private OptionGroup optionGroup;
 
 
     private List<ItemClickDependentComponent> dependentComponents = new ArrayList<>();
 
     public StundensaetzeScreen(MainRoot root) {
-        this.root = root;
+        super(root);
         saveButton.setVisible(false);
-        final Label betriebsstdLabel = new Label("Betriebsstunde / JTEL:");
         betriebsstdField = new TextField();
-        final Label betriebsfraLabel = new Label("Betriebs??? / JTEL:");
-        betriebsfraLabel.setContentMode(ContentMode.TEXT);
         betriebsWertField = new TextField();
         betriebsWertField.setEnabled(false);
         betriebsstdField.setEnabled(false);
 
-        gridLayout = new GridLayout(2, 2);
-        gridLayout.setMargin(true, false, true, false);
-        gridLayout.setSpacing(true);
-        gridLayout.addComponent(betriebsstdLabel);
-        gridLayout.addComponent(betriebsstdField);
-        gridLayout.addComponent(betriebsfraLabel);
-        gridLayout.addComponent(betriebsWertField);
-        gridLayout.setComponentAlignment(betriebsWertField,
-                Alignment.MIDDLE_CENTER);
-        gridLayout.setComponentAlignment(betriebsstdField,
-                Alignment.MIDDLE_CENTER);
-        gridLayout.setComponentAlignment(betriebsfraLabel,
-                Alignment.MIDDLE_RIGHT);
-        gridLayout.setComponentAlignment(betriebsstdLabel,
-                Alignment.MIDDLE_RIGHT);
+        betriebsFieldsLayout.addComponent(betriebsstdField);
+        betriebsFieldsLayout.addComponent(betriebsWertField);
+        betriebsFieldsLayout.setMargin(true, false, true, false);
+
 
         dependentComponents.add(delRowButton);
 
         // formlayout wird bis zum itemclicklistener durchgereicht, savelayout
         // ebenfalls
         final StundensaetzeTableCreator creator = new StundensaetzeTableCreator(
-                root.getRessourceGroupsBean(), dependentComponents, delRowButton, upperFormLayout, lowerFormLayout,
+                root, dependentComponents, delRowButton, upperFormLayout, lowerFormLayout,
                 formLayout, saveButton, betriebsWertField, betriebsstdField);
 
         tabelle = creator.getTabelle();
@@ -79,16 +68,16 @@ public class StundensaetzeScreen extends Screen {
         tabellenLayout.setSpacing(true);
         tabellenLayout.setMargin(false, false, true, false);
 
-        optionGroup.addListener(new EditGroupValueChangeListener(formLayout, upperFormLayout, lowerFormLayout,
-                optionGroup, betriebsstdField, betriebsWertField, saveButton, tabelle));
-        optionGroup.setValue(ROWEDIT);
+        optionGroup = new EditOptionButtonGroup(messagesBundle);
+        optionGroup.addListener(new EditGroupValueChangeListener(messagesBundle, formLayout, upperFormLayout,
+                lowerFormLayout, optionGroup, betriebsstdField, betriebsWertField, saveButton, tabelle));
         optionGroup.setImmediate(true);
 
         delRowButton.setEnabled(false);
         delRowButton.addListener(new DelRowClickListener(root, this, delRowButton));
         tabellenTasksLayout.setWidth("500px");
-        tabellenTasksLayout.addComponent(new Label("Ressourcen hinzufuegen / loeschen:"));
-        tabellenTasksLayout.addComponent(new Label("Editiermodus:"));
+        tabellenTasksLayout.addComponent(addDeleteRessourceLabel);
+        tabellenTasksLayout.addComponent(editModeLabel);
         final HorizontalLayout addDeleteLayout = new HorizontalLayout();
 
         addDeleteLayout.addComponent(addRowButton);
@@ -111,26 +100,30 @@ public class StundensaetzeScreen extends Screen {
         betriebsstdField.setValue(f.format(calculator.getBetriebsStunde()) + EUR);
         betriebsWertField.setValue(f.format(calculator.getBetriebsWert()) + EUR);
 
+        doInternationalization();
         setComponents();
+    }
+
+    @Override
+    protected void doInternationalization() {
+        betriebsstdField.setCaption(messagesBundle.getString("stdsatz_businesshour"));
+        betriebsWertField.setCaption(messagesBundle.getString("stdsatz_businessvalue"));
+        saveButton.setCaption(messagesBundle.getString("save"));
+        editModeLabel.setValue(messagesBundle.getString("stdsatz_editMode"));
+        addDeleteRessourceLabel.setValue(messagesBundle.getString("stdsatz_addDelete"));
+        optionGroup.setValue(messagesBundle.getString("stdsatz_rowmode"));
+
     }
 
 
     private void setComponents() {
-        addComponent(gridLayout);
+        addComponent(betriebsFieldsLayout);
         addComponent(tabellenTasksLayout);
         addComponent(tabellenLayout);
         addComponent(formLayout);
     }
 
     /* getters and setters */
-
-    public GridLayout getUpperHoriLayout() {
-        return gridLayout;
-    }
-
-    public void setUpperHoriLayout(GridLayout upperHoriLayout) {
-        this.gridLayout = upperHoriLayout;
-    }
 
     public Table getTabelle() {
         return tabelle;

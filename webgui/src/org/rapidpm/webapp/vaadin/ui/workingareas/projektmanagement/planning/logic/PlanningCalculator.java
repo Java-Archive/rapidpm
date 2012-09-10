@@ -10,10 +10,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.mode
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.rapidpm.Constants.*;
 
@@ -33,9 +30,12 @@ public class PlanningCalculator {
     private final RessourceGroupsBean ressourceGroupsBean;
     private List<RessourceGroup> ressourceGroups;
     private Projekt projekt;
+    private ResourceBundle messages;
 
 
-    public PlanningCalculator(final ProjektBean projektBean, final RessourceGroupsBean ressourceGroupsBean) {
+    public PlanningCalculator(final ResourceBundle bundle, final ProjektBean projektBean,
+                              final RessourceGroupsBean ressourceGroupsBean) {
+        this.messages = bundle;
         this.projektBean = projektBean;
         this.ressourceGroupsBean = ressourceGroupsBean;
     }
@@ -131,7 +131,8 @@ public class PlanningCalculator {
         final List<PlanningUnitElement> planningUnitElementList = planningUnit.getPlanningUnitElementList();
         for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
             final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
-            if (!ressourceGroup.getName().equals(AUFGABE_SPALTE)) {
+            final String aufgabe = messages.getString("aufgabe");
+            if (!ressourceGroup.getName().equals(aufgabe)) {
                 final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
                 final int plannedDays = planningUnitElement.getPlannedDays();
                 final int plannedHours = planningUnitElement.getPlannedHours();

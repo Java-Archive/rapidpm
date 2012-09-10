@@ -11,8 +11,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenm
 
 import java.text.DecimalFormat;
 import java.util.Map;
+import java.util.ResourceBundle;
 
-import static org.rapidpm.Constants.ANGABE_SPALTE;
 import static org.rapidpm.Constants.DECIMAL_FORMAT;
 
 /**
@@ -26,15 +26,16 @@ public class OverviewTableFiller {
 
     private static final String RELATIV = "relativ";
     private static final String ABSOLUT = "absolut";
-    private static final String SUM_IN_PERCENT = "Summe [%]";
-    private static final String SUM_IN_DAYSHOURSMINS = "Summe [d:hh:mm]";
 
 
     private MyTable table;
     private RessourceGroupsBean ressourceGroupsBean;
     private ProjektBean projektBean;
+    private ResourceBundle messages;
 
-    public OverviewTableFiller(final MyTable table, final ProjektBean projektBean, final RessourceGroupsBean ressourceGroupsBean) {
+    public OverviewTableFiller(final ResourceBundle bundle, final MyTable table, final ProjektBean projektBean, 
+                               final RessourceGroupsBean ressourceGroupsBean) {
+        messages = bundle;
         this.table = table;
         this.ressourceGroupsBean = ressourceGroupsBean;
         this.projektBean = projektBean;
@@ -42,24 +43,25 @@ public class OverviewTableFiller {
 
     public void fill() {
         table.removeAllItems();
-        table.addContainerProperty(ANGABE_SPALTE, String.class, null);
-        table.setColumnCollapsible(ANGABE_SPALTE, false);
-        table.setColumnWidth(ANGABE_SPALTE, 250);
+        final String angabe = messages.getString("angabe");
+        table.addContainerProperty(angabe, String.class, null);
+        table.setColumnCollapsible(angabe, false);
+        table.setColumnWidth(angabe, 250);
         for (final RessourceGroup ressourceGroup : ressourceGroupsBean.getRessourceGroups()) {
             final String spaltenName = ressourceGroup.getName();
             table.addContainerProperty(spaltenName, String.class, null);
         }
-        final TimesCalculator calculator = new TimesCalculator(ressourceGroupsBean, projektBean);
+        final TimesCalculator calculator = new TimesCalculator(messages,ressourceGroupsBean, projektBean);
         calculator.calculate();
 
 
         table.addItem(ABSOLUT);
         table.addItem(RELATIV);
 
-        final Property<?> absolutItemAngabeProperty = table.getItem(ABSOLUT).getItemProperty(ANGABE_SPALTE);
-        absolutItemAngabeProperty.setValue(SUM_IN_DAYSHOURSMINS);
+        final Property<?> absolutItemAngabeProperty = table.getItem(ABSOLUT).getItemProperty(angabe);
+        absolutItemAngabeProperty.setValue(messages.getString("costsinit_sumInDDHHMM"));
         for (final Object spalte : table.getItem(ABSOLUT).getItemPropertyIds()) {
-            if (!spalte.equals(ANGABE_SPALTE)) {
+            if (!spalte.equals(angabe)) {
                 final Map<RessourceGroup, DaysHoursMinutesItem> absoluteWerte = calculator.getAbsoluteWerte();
                 for (final Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry : absoluteWerte
                         .entrySet()) {
@@ -78,10 +80,10 @@ public class OverviewTableFiller {
 
         final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
         final Item relativZeile = table.getItem(RELATIV);
-        final Property<?> relativItemAngabeProperty = relativZeile.getItemProperty(ANGABE_SPALTE);
-        relativItemAngabeProperty.setValue(SUM_IN_PERCENT);
+        final Property<?> relativItemAngabeProperty = relativZeile.getItemProperty(angabe);
+        relativItemAngabeProperty.setValue(messages.getString("costsinit_sumInPercent"));
         for (final Object spalte : relativZeile.getItemPropertyIds()) {
-            if (!spalte.equals(ANGABE_SPALTE)) {
+            if (!spalte.equals(angabe)) {
                 final Map<RessourceGroup, Double> relativeWerte = calculator.getRelativeWerte();
                 for (final Map.Entry<RessourceGroup, Double> relativeWerteEntry : relativeWerte.entrySet()) {
                     final String spaltenNameAusMap = relativeWerteEntry.getKey().getName();

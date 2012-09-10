@@ -17,9 +17,9 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.date
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
-import static org.rapidpm.Constants.AUFGABE_SPALTE;
 import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
 
 public class SaveButtonClickListener implements ClickListener {
@@ -30,9 +30,11 @@ public class SaveButtonClickListener implements ClickListener {
     private KnotenBlattEnum knotenBlattEnum;
     private Object itemId;
     private PlanningUnit foundPlanningUnit = null;
+    private ResourceBundle messages;
 
-    public SaveButtonClickListener(final FieldGroup fieldGroup, final AufwandProjInitScreen screen,
-                                   final KnotenBlattEnum knotenBlattEnum, final Object itemId) {
+    public SaveButtonClickListener(final ResourceBundle bundle, final FieldGroup fieldGroup,
+                                   final AufwandProjInitScreen screen, final KnotenBlattEnum knotenBlattEnum, final Object itemId) {
+        this.messages = bundle;
         this.fieldGroup = fieldGroup;
         this.screen = screen;
         this.knotenBlattEnum = knotenBlattEnum;
@@ -46,7 +48,7 @@ public class SaveButtonClickListener implements ClickListener {
             final ProjektBean projektBean = screen.getProjektBean();
             final Projekt projekt = projektBean.getProjekt();
             final Item item = screen.getDataSource().getItem(itemId);
-            final String planningUnitName = item.getItemProperty(AUFGABE_SPALTE).getValue().toString();
+            final String planningUnitName = item.getItemProperty(messages.getString("aufgabe")).getValue().toString();
             if (knotenBlattEnum.equals(KnotenBlattEnum.PLANNING_UNIT_GROUP)) {
                 for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
                     if (planningUnitGroup.getPlanningUnitGroupName().equals(itemId)) {
@@ -79,11 +81,12 @@ public class SaveButtonClickListener implements ClickListener {
                 }
             }
             final RessourceGroupsBean ressourceGroupsBean = screen.getRessourceGroupsBean();
-            final TreeTableFiller filler = new TreeTableFiller(screen, projektBean,
+            final TreeTableFiller filler = new TreeTableFiller(messages, screen, projektBean,
                     ressourceGroupsBean, screen.getTreeTable(), screen.getDataSource());
             filler.fill();
 
-            final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(screen.getUebersichtTable(),
+            final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messages, screen
+                    .getUebersichtTable(),
                     projektBean, ressourceGroupsBean);
             overviewTableFiller.fill();
 

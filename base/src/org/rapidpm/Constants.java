@@ -106,10 +106,7 @@ public class Constants {
     public static final Integer MINS_DAY = HOURS_DAY * MINS_HOUR;
     public static final Double STD_ANTEILE = 1.0 / 60.0;
 
-    public static final String TABLEEDIT = "Tabelle";
-    public static final String ROWEDIT = "Zeile";
-    public static final String AUFGABE_SPALTE = "Aufgabe";
-    public static final String ANGABE_SPALTE = "Angabe";
+    public static final String MESSAGESBUNDLE ="MessagesBundle";
 
     public static final String IMAGE_LOGO = "images/logo_sru.png";
 
