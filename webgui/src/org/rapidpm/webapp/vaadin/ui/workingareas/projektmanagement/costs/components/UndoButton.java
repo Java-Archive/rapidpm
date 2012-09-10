@@ -28,7 +28,7 @@ public class UndoButton extends Button implements Button.ClickListener {
                       ProjektBean projektBean, RessourceGroupsBean ressourceGroupsBean){
         this.setCaption("remove sortorder");
         this.setStyleName("link");
-        this.messages = messages;
+        this.messages = bundle;
         this.treeTable = treeTable;
         this.dataSource = dataSource;
         this.projektBean = projektBean;
