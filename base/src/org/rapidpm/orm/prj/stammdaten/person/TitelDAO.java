@@ -1,6 +1,6 @@
 package org.rapidpm.orm.prj.stammdaten.person;
 
-import org.rapidpm.orm.BaseDaoFactory;
+import org.rapidpm.orm.BaseDAO;
 
 import javax.persistence.EntityManager;
 
@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
  * Time: 15:27:39
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
-public class TitelDAO extends BaseDaoFactory.BaseDAO<Long, Titel> {
+public class TitelDAO extends BaseDAO<Long, Titel> {
 
     public TitelDAO(final EntityManager entityManager) {
         super(entityManager, Titel.class);

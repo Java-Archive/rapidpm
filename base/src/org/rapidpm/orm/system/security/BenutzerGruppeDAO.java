@@ -1,7 +1,7 @@
 package org.rapidpm.orm.system.security;
 
-import org.rapidpm.orm.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.orm.BaseDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -18,7 +18,7 @@ import javax.persistence.TypedQuery;
  *        Time: 16:15:23
  */
 
-public class BenutzerGruppeDAO extends BaseDaoFactory.BaseDAO<Long, BenutzerGruppe> {
+public class BenutzerGruppeDAO extends BaseDAO<Long, BenutzerGruppe> {
     private static final Logger logger = Logger.getLogger(BenutzerGruppeDAO.class);
 
     public BenutzerGruppeDAO(final EntityManager entityManager) {

@@ -7,12 +7,12 @@ package org.rapidpm.orm.prj.book;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
-import org.rapidpm.orm.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.orm.BaseDAO;
 
 import javax.persistence.EntityManager;
 
-public class BuchSeiteDAO extends BaseDaoFactory.BaseDAO<Long, BuchSeite> {
+public class BuchSeiteDAO extends BaseDAO<Long, BuchSeite> {
     private static final Logger logger = Logger.getLogger(BuchSeiteDAO.class);
 
 

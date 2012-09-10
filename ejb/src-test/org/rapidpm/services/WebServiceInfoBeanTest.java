@@ -5,9 +5,9 @@
 
 package org.rapidpm.services;
 
-import org.rapidpm.orm.BaseDAOBeanTest;
-import org.rapidpm.orm.BaseDaoFactoryBean;
 import org.junit.Test;
+import org.rapidpm.orm.DaoFactoryBean;
+import org.rapidpm.orm.DaoFactoryBeanTest;
 
 import java.util.List;
 
@@ -17,9 +17,9 @@ import java.util.List;
  * Date: 18.01.12
  * Time: 12:31
  */
-public class WebServiceInfoBeanTest extends BaseDAOBeanTest<WebServiceInfoBean> {
+public class WebServiceInfoBeanTest extends DaoFactoryBeanTest<WebServiceInfoBean> {
     public WebServiceInfoBeanTest() {
-        super(WebServiceInfoBean.class, BaseDaoFactoryBean.class);
+        super(WebServiceInfoBean.class, DaoFactoryBean.class);
     }
 
     @Test

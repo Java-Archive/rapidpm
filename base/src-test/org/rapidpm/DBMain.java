@@ -8,12 +8,12 @@ package org.rapidpm;
  * To change this template use File | Settings | File Templates.
  */
 
-import org.rapidpm.orm.BaseDaoFactory;
+import org.apache.log4j.Logger;
+import org.rapidpm.orm.BaseDAO;
 import org.rapidpm.orm.DaoFactory;
 import org.rapidpm.orm.system.security.*;
 import org.rapidpm.orm.system.security.berechtigungen.Berechtigung;
 import org.rapidpm.orm.system.security.berechtigungen.BerechtigungDAO;
-import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -30,8 +30,8 @@ public class DBMain {
     public static void main(String[] args) {
         final EntityManagerFactory emf = Persistence.createEntityManagerFactory("baseormJDBC");
         final EntityManager entityManager = emf.createEntityManager();
-        final DaoFactory daoFactory = new DaoFactory();
-        daoFactory.setEm(entityManager);
+        final DaoFactory daoFactoryFactory = new DaoFactory();
+        daoFactoryFactory.setEntityManager(entityManager);
         final EntityTransaction transaction = entityManager.getTransaction();
         try {
             Class.forName("org.postgresql.Driver");
@@ -40,8 +40,8 @@ public class DBMain {
             props.setProperty("user", "ruppert");
             props.setProperty("password", "FE90tz");
             final Connection conn = DriverManager.getConnection(url, props);
-            convertBenutzer(daoFactory, conn);
-            convertSearchQuery(daoFactory, conn);
+            convertBenutzer(daoFactoryFactory, conn);
+//            convertSearchQuery(daoFactory, conn);
 //            convertBranche(daoFactory, conn);
         } catch (SQLException e) {
             logger.error(e);
@@ -54,7 +54,7 @@ public class DBMain {
 
     }
 
-//    private static void convertBranche(final BaseDaoFactory daoFactory, final Connection conn) throws SQLException {
+//    private static void convertBranche(final BaseDAO daoFactory, final Connection conn) throws SQLException {
 //        final Statement statement = conn.createStatement();
 //        final ResultSet resultSet = statement.executeQuery("select * from branche");
 //        while (resultSet.next()) {
@@ -67,36 +67,36 @@ public class DBMain {
 //        }
 //    }
 
-    private static void convertSearchQuery(final BaseDaoFactory daoFactory, final Connection conn) throws SQLException {
-        //        final Statement statement = conn.createStatement();
-        //        final SearchQueryDAO searchQueryDAO = daoFactory.getSearchQueryDAO();
-        //        final ResultSet resultSet = statement.executeQuery("select * from search_query");
-        //        while(resultSet.next()){
-        //            final SearchQuery q = new SearchQuery();
-        //            final String userlogin = resultSet.getString("userlogin");
-        //            final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
-        //            final List<Benutzer> benutzerList = benutzerDAO.loadBenutzerForLogin(userlogin);
-        //            if(benutzerList.size() == 1){
-        //                q.setBenutzer(benutzerList.get(0));
-        //            }else{
-        //                //
-        //            }
-        //            q.setCreated(resultSet.getDate("created"));
-        //            q.setDomains(resultSet.getString("domains"));
-        //            q.setKeywords(resultSet.getString("keywords"));
-        //            q.setMimeTypes(resultSet.getString("mime_types"));
-        //            q.setShowSummary(resultSet.getBoolean("show_summary"));
-        //            q.setSuchmaschinenmodul(resultSet.getString("suchmaschinenmodul"));
-        //            q.setUserlogin(resultSet.getString("userlogin"));
-        //            searchQueryDAO.persist(q);
-        //        }
-    }
+//    private static void convertSearchQuery(final BaseDAO DAO, final Connection conn) throws SQLException {
+    //        final Statement statement = conn.createStatement();
+    //        final SearchQueryDAO searchQueryDAO = DAO.getSearchQueryDAO();
+    //        final ResultSet resultSet = statement.executeQuery("select * from search_query");
+    //        while(resultSet.next()){
+    //            final SearchQuery q = new SearchQuery();
+    //            final String userlogin = resultSet.getString("userlogin");
+    //            final BenutzerDAO benutzerDAO = DAO.getBenutzerDAO();
+    //            final List<Benutzer> benutzerList = benutzerDAO.loadBenutzerForLogin(userlogin);
+    //            if(benutzerList.size() == 1){
+    //                q.setBenutzer(benutzerList.get(0));
+    //            }else{
+    //                //
+    //            }
+    //            q.setCreated(resultSet.getDate("created"));
+    //            q.setDomains(resultSet.getString("domains"));
+    //            q.setKeywords(resultSet.getString("keywords"));
+    //            q.setMimeTypes(resultSet.getString("mime_types"));
+    //            q.setShowSummary(resultSet.getBoolean("show_summary"));
+    //            q.setSuchmaschinenmodul(resultSet.getString("suchmaschinenmodul"));
+    //            q.setUserlogin(resultSet.getString("userlogin"));
+    //            searchQueryDAO.persist(q);
+    //        }
+//    }
 
     //TODO noch nicht vollständig - Benutzermapping noch falsch bzw mehrdeutig
-    private static void convertSearchQueries(BaseDaoFactory daoFactory, Connection conn) throws SQLException {
+    private static void convertSearchQueries(BaseDAO DAO, Connection conn) throws SQLException {
         //        final Statement statement = conn.createStatement();
-        //        final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
-        //        final SearchQueryDAO searchQueryDAO = daoFactory.getSearchQueryDAO();
+        //        final BenutzerDAO benutzerDAO = DAO.getBenutzerDAO();
+        //        final SearchQueryDAO searchQueryDAO = DAO.getSearchQueryDAO();
         //        final ResultSet resultSet = statement.executeQuery("select * from search_query");
         //        while(resultSet.next()){
         //            final SearchQuery q = new SearchQuery();
@@ -119,18 +119,18 @@ public class DBMain {
         //        }
     }
 
-    private static void convertBenutzer(final DaoFactory daoFactory, final Connection conn) throws SQLException {
+    private static void convertBenutzer(final DaoFactory daoFactoryFactory, final Connection conn) throws SQLException {
         final Statement statement = conn.createStatement();
         final
         ResultSet
                 resultSet =
                 statement.executeQuery("select b.login, b.active, b.hidden, b.passwd, b.valid_from, b.valid_until,bw.webapp_name, bg.gruppenname, " + "m.mandantengruppe from benutzer b , mandantengruppe m , benutzer_gruppe bg, " + "benutzer_webapplikation bw  where b.benutzer_gruppe_id = bg.id and  b.benutzer_webapplikation_id = bw.id   and b.mandantengruppe_id = m.id");
 
-        final BenutzerWebapplikationDAO benutzerWebapplikationDAO = daoFactory.getBenutzerWebapplikationDAO();
-        final BenutzerGruppeDAO benutzerGruppeDAO = daoFactory.getBenutzerGruppeDAO();
-        final MandantengruppeDAO mandantengruppeDAO = daoFactory.getMandantengruppeDAO();
-        final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
-        final BerechtigungDAO berechtigungDAO = daoFactory.getBerechtigungDAO();
+        final BenutzerWebapplikationDAO benutzerWebapplikationDAO = daoFactoryFactory.getBenutzerWebapplikationDAO();
+        final BenutzerGruppeDAO benutzerGruppeDAO = daoFactoryFactory.getBenutzerGruppeDAO();
+        final MandantengruppeDAO mandantengruppeDAO = daoFactoryFactory.getMandantengruppeDAO();
+        final BenutzerDAO benutzerDAO = daoFactoryFactory.getBenutzerDAO();
+        final BerechtigungDAO berechtigungDAO = daoFactoryFactory.getBerechtigungDAO();
 
         while (resultSet.next()) {
             final Benutzer benutzer = new Benutzer();
@@ -171,7 +171,7 @@ public class DBMain {
             }
 
 
-            daoFactory.saveOrUpdate(benutzer);
+            daoFactoryFactory.getBenutzerDAO().saveOrUpdate(benutzer);
         }
     }
 

@@ -11,15 +11,13 @@ package org.rapidpm.orm.prj.stammdaten.organisationseinheit; /**
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
+import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
 import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
-import org.rapidpm.orm.AbstractOneToManyConnectExecutor;
-import org.rapidpm.orm.AbstractOneToOneConnectExecutor;
-import org.rapidpm.orm.BaseDaoFactory;
-import org.rapidpm.orm.prj.stammdaten.DaoFactoryBean;
+import org.rapidpm.orm.*;
 import org.rapidpm.orm.prj.stammdaten.address.Adresse;
 import org.rapidpm.orm.prj.stammdaten.kommunikation.KommunikationsServiceUID;
 import org.rapidpm.orm.prj.stammdaten.organisationseinheit.gesellschaftsformen.Gesellschaftsform;
@@ -30,7 +28,6 @@ import org.rapidpm.orm.prj.stammdaten.web.WebDomain;
 import org.rapidpm.orm.system.logging.LogLevelEnum;
 import org.rapidpm.orm.system.security.Mandantengruppe;
 import org.rapidpm.orm.system.security.MandantengruppeDAO;
-import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -91,7 +88,7 @@ public class OrganisationseinheitDAOBean {
             typeObj.setMandantengruppe(m);
 
             final List<Long> metadataOIDs = flatTypeEntity.getMetadataOIDs();
-            typeObj.setMetadata(daoFactoryBean.getDaoFactory().getOrganisationseinheitMetaDataDAO().loadWithOIDList(metadataOIDs));
+            typeObj.setMetadata(daoFactoryBean.getOrganisationseinheitMetaDataDAO().loadWithOIDList(metadataOIDs));
             //            typeObj.setModified(flatTypeEntity.getModified());
             typeObj.setOrganisationsName(flatTypeEntity.getOrganisationsName());
             //typeObj.setPositionen(daoFactoryBean.getPositionDAO().loadWithOIDList(flatTypeEntity.getPositionOIDs()));
@@ -124,6 +121,9 @@ public class OrganisationseinheitDAOBean {
             return logEventEntryWriterBean;
         }
     };
+
+    public OrganisationseinheitDAOBean() {
+    }
 
     private OrganisationseinheitDAO getEntityDAO() {
         return daoFactoryBean.getOrganisationseinheitDAO();
@@ -195,7 +195,7 @@ public class OrganisationseinheitDAOBean {
                                               @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                               @WebParam(name = "organisationseinheitOID", mode = WebParam.Mode.IN) final Long organisationseinheitOID,
                                               @WebParam(name = "adresseOID", mode = WebParam.Mode.IN) final Long adresseOID) {
-        return new AbstractOneToManyConnectExecutor<BaseDaoFactory, Adresse, Organisationseinheit, OrganisationseinheitResult>(
+        return new AbstractOneToManyConnectExecutor<DaoFactory, Adresse, Organisationseinheit, OrganisationseinheitResult>(
                 daoFactoryBean, daoFactoryBean.getAdresseDAO(), getEntityDAO()) {
 
             @Override
@@ -218,7 +218,7 @@ public class OrganisationseinheitDAOBean {
                                                 @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                                 @WebParam(name = "organisationseinheitOID", mode = WebParam.Mode.IN) final Long organisationseinheitOID,
                                                 @WebParam(name = "webDomainOID", mode = WebParam.Mode.IN) final Long webDomainOID) {
-        return new AbstractOneToManyConnectExecutor<BaseDaoFactory, WebDomain, Organisationseinheit, OrganisationseinheitResult>(daoFactoryBean, daoFactoryBean.getWebDomainDAO(), getEntityDAO()) {
+        return new AbstractOneToManyConnectExecutor<DaoFactory, WebDomain, Organisationseinheit, OrganisationseinheitResult>(daoFactoryBean, daoFactoryBean.getWebDomainDAO(), getEntityDAO()) {
 
             @Override
             public List<WebDomain> getCollection(final Organisationseinheit organisationseinheit) {
@@ -240,7 +240,7 @@ public class OrganisationseinheitDAOBean {
                                                                @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                                                @WebParam(name = "organisationseinheitOID", mode = WebParam.Mode.IN) final Long organisationseinheitOID,
                                                                @WebParam(name = "kommunikationsServiceUIDOID", mode = WebParam.Mode.IN) final Long kommunikationsServiceUIDOID) {
-        return new AbstractOneToManyConnectExecutor<BaseDaoFactory, KommunikationsServiceUID, Organisationseinheit, OrganisationseinheitResult>(
+        return new AbstractOneToManyConnectExecutor<DaoFactory, KommunikationsServiceUID, Organisationseinheit, OrganisationseinheitResult>(
                 daoFactoryBean, daoFactoryBean.getKommunikationServiceUIDDAO(), getEntityDAO()) {
 
             @Override
@@ -263,7 +263,7 @@ public class OrganisationseinheitDAOBean {
                                                         @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                                         @WebParam(name = "organisationseinheitOID", mode = WebParam.Mode.IN) final Long organisationseinheitOID,
                                                         @WebParam(name = "gesellschaftsformOID", mode = WebParam.Mode.IN) final Long gesellschaftsformOID) {
-        return new AbstractOneToOneConnectExecutor<BaseDaoFactory, Gesellschaftsform, Organisationseinheit, OrganisationseinheitResult>(
+        return new AbstractOneToOneConnectExecutor<DaoFactory, Gesellschaftsform, Organisationseinheit, OrganisationseinheitResult>(
                 daoFactoryBean, daoFactoryBean.getGesellschaftsformDAO(), getEntityDAO()) {
 
             @Override
@@ -286,7 +286,7 @@ public class OrganisationseinheitDAOBean {
                                                    @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                                    @WebParam(name = "organisationseinheitOID", mode = WebParam.Mode.IN) final Long organisationseinheitOID,
                                                    @WebParam(name = "brancheAssocOID", mode = WebParam.Mode.IN) final Long brancheAssocOID) {
-        return new AbstractOneToManyConnectExecutor<BaseDaoFactory, BrancheAssoc, Organisationseinheit, OrganisationseinheitResult>(
+        return new AbstractOneToManyConnectExecutor<DaoFactory, BrancheAssoc, Organisationseinheit, OrganisationseinheitResult>(
                 daoFactoryBean, daoFactoryBean.getBranchenAssocDAO(), getEntityDAO()) {
 
             @Override
@@ -309,7 +309,7 @@ public class OrganisationseinheitDAOBean {
                                                          @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                                          @WebParam(name = "organisationseinheitOID", mode = WebParam.Mode.IN) final Long organisationseinheitOID,
                                                          @WebParam(name = "ausbildungseinheitOID", mode = WebParam.Mode.IN) final Long ausbildungseinheitOID) {
-        return new AbstractOneToOneConnectExecutor<BaseDaoFactory, Ausbildungseinheit, Organisationseinheit, OrganisationseinheitResult>(
+        return new AbstractOneToOneConnectExecutor<DaoFactory, Ausbildungseinheit, Organisationseinheit, OrganisationseinheitResult>(
                 daoFactoryBean, daoFactoryBean.getAusbildungseinheitDAO(), getEntityDAO()) {
 
             @Override
@@ -332,7 +332,7 @@ public class OrganisationseinheitDAOBean {
                                                            @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                                            @WebParam(name = "organisationseinheitOID", mode = WebParam.Mode.IN) final Long organisationseinheitOID,
                                                            @WebParam(name = "taetigkeitsfeldAssocOID", mode = WebParam.Mode.IN) final Long taetigkeitsfeldAssocOID) {
-        return new AbstractOneToManyConnectExecutor<BaseDaoFactory, TaetigkeitsfeldAssoc, Organisationseinheit, OrganisationseinheitResult>(
+        return new AbstractOneToManyConnectExecutor<DaoFactory, TaetigkeitsfeldAssoc, Organisationseinheit, OrganisationseinheitResult>(
                 daoFactoryBean, daoFactoryBean.getTaetigkeitsfeldAssocDAO(), getEntityDAO()) {
 
             @Override
@@ -355,7 +355,7 @@ public class OrganisationseinheitDAOBean {
                                                          @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                                          @WebParam(name = "organisationseinheitOID", mode = WebParam.Mode.IN) final Long organisationseinheitOID,
                                                          @WebParam(name = "verwaltungseinheitOID", mode = WebParam.Mode.IN) final Long verwaltungseinheitOID) {
-        return new AbstractOneToOneConnectExecutor<BaseDaoFactory, Verwaltungseinheit, Organisationseinheit, OrganisationseinheitResult>(
+        return new AbstractOneToOneConnectExecutor<DaoFactory, Verwaltungseinheit, Organisationseinheit, OrganisationseinheitResult>(
                 daoFactoryBean, daoFactoryBean.getVerwaltungseinheitDAO(), getEntityDAO()) {
 
             @Override
@@ -381,8 +381,8 @@ public class OrganisationseinheitDAOBean {
                                              @WebParam(name = "positionOID", mode = WebParam.Mode.IN) final Long positionOID) {
         final Organisationseinheit organisationseinheit = getEntityDAO().findByID(organisationseinheitOID);
         if (organisationseinheit != null) {
-            throw new RuntimeException("not yet implemented.. AbstractOneToOneConnectExecutor<BaseDaoFactory,Person, Organisationseinheit,OrganisationseinheitResult>");
-//            return new AbstractOneToOneConnectExecutor<BaseDaoFactory,Person, Organisationseinheit,OrganisationseinheitResult>(
+            throw new RuntimeException("not yet implemented.. AbstractOneToOneConnectExecutor<BaseDAO,Person, Organisationseinheit,OrganisationseinheitResult>");
+//            return new AbstractOneToOneConnectExecutor<BaseDAO,Person, Organisationseinheit,OrganisationseinheitResult>(
 //                    daoFactoryBean, daoFactoryBean.getPersonDAO(), getEntityDAO()) {
 //
 //                @Override
@@ -395,7 +395,7 @@ public class OrganisationseinheitDAOBean {
 //                    return null;  //To change body of implemented methods use File | Settings | File Templates.
 //                }
 //            }.execute("connectPerson", logEventEntryWriterBean, sessionid, personOID, positionOID);
-//            return new AbstractOneToManyConnectExecutor<BaseDaoFactory,Person, Organisationseinheit,OrganisationseinheitResult>(
+//            return new AbstractOneToManyConnectExecutor<BaseDAO,Person, Organisationseinheit,OrganisationseinheitResult>(
 //                    daoFactoryBean.getPersonDAO(), daoFactoryBean.getPositionDAO()) {
 //
 //                @Override
@@ -426,7 +426,7 @@ public class OrganisationseinheitDAOBean {
                                                          @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                                          @WebParam(name = "organisationseinheitOID", mode = WebParam.Mode.IN) final Long organisationseinheitOID,
                                                          @WebParam(name = "wirtschaftseinheitOID", mode = WebParam.Mode.IN) final Long wirtschaftseinheitOID) {
-        return new AbstractOneToOneConnectExecutor<BaseDaoFactory, Wirtschaftseinheit, Organisationseinheit, OrganisationseinheitResult>(
+        return new AbstractOneToOneConnectExecutor<DaoFactory, Wirtschaftseinheit, Organisationseinheit, OrganisationseinheitResult>(
                 daoFactoryBean, daoFactoryBean.getWirtschaftseinheitDAO(), getEntityDAO()) {
 
             @Override
@@ -462,8 +462,8 @@ public class OrganisationseinheitDAOBean {
         final FlatOrganisationseinheit ft = new FlatOrganisationseinheit();
         ft.setActive(o.isActive());
 
-        final BaseDaoFactory daoFactory = daoFactoryBean.getDaoFactory();
-        ft.setAdressenOIDs(daoFactory.getEntityUtils().getOIDs(o.getAdressen()));
+        final BaseDAO.EntityUtils entityUtils = daoFactoryBean.getEntityUtils();
+        ft.setAdressenOIDs(entityUtils.getOIDs(o.getAdressen()));
 
         final Ausbildungseinheit ausbildungseinheit = o.getAusbildungseinheit();
         if (ausbildungseinheit == null) {
@@ -471,7 +471,7 @@ public class OrganisationseinheitDAOBean {
         } else {
             ft.setAusbildungseinheitOID(ausbildungseinheit.getId());
         }
-        ft.setBrancheAssocOIDs(daoFactory.getEntityUtils().getOIDs(o.getBrancheAssocs()));
+        ft.setBrancheAssocOIDs(entityUtils.getOIDs(o.getBrancheAssocs()));
 
         ft.setBvdepId(o.getBvdepId());
         final Gesellschaftsform gesellschaftsform = o.getGesellschaftsform();
@@ -481,7 +481,7 @@ public class OrganisationseinheitDAOBean {
             ft.setGesellschaftsformOID(gesellschaftsform.getId());
         }
         ft.setGruendungsdatum(o.getGruendungsdatum());
-        ft.setKommunikationsServiceUIDOIDs(daoFactory.getEntityUtils().getOIDs(o.getKommunikationsServiceUIDs()));
+        ft.setKommunikationsServiceUIDOIDs(entityUtils.getOIDs(o.getKommunikationsServiceUIDs()));
 
         final Mandantengruppe mandantengruppe = o.getMandantengruppe();
         if (mandantengruppe == null) {
@@ -498,9 +498,9 @@ public class OrganisationseinheitDAOBean {
         } else {
         }
         ft.setOrganisationsName(o.getOrganisationsName());
-        //        ft.setPositionOIDs(daoFactory.getOIDs(o.get));
+        //        ft.setPositionOIDs(DAO.getOIDs(o.get));
 
-        ft.setTaetigkeitsfelAssocOIDs(daoFactory.getEntityUtils().getOIDs(o.getTaetigkeitsfeldAssocs()));
+        ft.setTaetigkeitsfelAssocOIDs(entityUtils.getOIDs(o.getTaetigkeitsfeldAssocs()));
 
         final Verwaltungseinheit verwaltungseinheit = o.getVerwaltungseinheit();
         if (verwaltungseinheit == null) {
@@ -545,6 +545,9 @@ public class OrganisationseinheitDAOBean {
         private Long ausbildungseinheitOID;
         private Long verwaltungseinheitOID;
         private Long wirtschaftseinheitOID;
+
+        public FlatOrganisationseinheit() {
+        }
 
         public boolean isActive() {
             return active;
@@ -701,6 +704,9 @@ public class OrganisationseinheitDAOBean {
     }
 
     public static class OrganisationseinheitResult extends BaseOrmResult<FlatOrganisationseinheit> {
+
+        public OrganisationseinheitResult() {
+        }
 
         public List<FlatOrganisationseinheit> getObjList() {
             return objList;

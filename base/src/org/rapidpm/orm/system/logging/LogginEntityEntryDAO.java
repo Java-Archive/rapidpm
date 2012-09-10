@@ -6,12 +6,12 @@ package org.rapidpm.orm.system.logging; /**
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
-import org.rapidpm.orm.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.orm.BaseDAO;
 
 import javax.persistence.EntityManager;
 
-public class LogginEntityEntryDAO extends BaseDaoFactory.BaseDAO<Long, LoggingEntityEntry> {
+public class LogginEntityEntryDAO extends BaseDAO<Long, LoggingEntityEntry> {
     private static final Logger logger = Logger.getLogger(LogginEntityEntryDAO.class);
 
     public LogginEntityEntryDAO(final EntityManager entityManager) {

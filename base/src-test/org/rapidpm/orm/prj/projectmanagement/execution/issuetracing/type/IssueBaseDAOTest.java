@@ -7,11 +7,11 @@ package org.rapidpm.orm.prj.projectmanagement.execution.issuetracing.type;
  * To change this template use File | Settings | File Templates.
  */
 
+import org.joda.time.DateTime;
+import org.junit.Test;
 import org.rapidpm.orm.prj.BaseDAOTest;
 import org.rapidpm.orm.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.orm.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
-import org.joda.time.DateTime;
-import org.junit.Test;
 
 import java.sql.Date;
 import java.util.List;
@@ -22,7 +22,7 @@ public class IssueBaseDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadAllIssuesFor001() throws Exception {
-        final IssueBaseDAO issueBaseDAO = daoFactory.getIssueBaseDAO();
+        final IssueBaseDAO issueBaseDAO = daoFactoryFactory.getIssueBaseDAO();
         final Date version = Date.valueOf("2010-11-26");
         final List<IssueBase> issueBases = issueBaseDAO.loadAllIssuesFromVersionToVersion("NeoScioPortal", "NeoScio - intern - allgemeines", "sven.ruppert", "open", version, null, null);
         assertNotNull(issueBases);
@@ -30,7 +30,7 @@ public class IssueBaseDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadAllIssuesFor002() throws Exception {
-        final IssueBaseDAO issueBaseDAO = daoFactory.getIssueBaseDAO();
+        final IssueBaseDAO issueBaseDAO = daoFactoryFactory.getIssueBaseDAO();
         final Date version = Date.valueOf("2010-11-26");
         final List<IssueBase> issueBases = issueBaseDAO.loadAllIssuesFromVersionToVersion("NeoScioPortal", "NeoScio - intern - allgemeines", "sven.ruppert", "open", null, null, null);
         assertNotNull(issueBases);
@@ -38,7 +38,7 @@ public class IssueBaseDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadAllIssuesFor003() throws Exception {
-        final IssueBaseDAO issueBaseDAO = daoFactory.getIssueBaseDAO();
+        final IssueBaseDAO issueBaseDAO = daoFactoryFactory.getIssueBaseDAO();
         final DateTime dateTime = new DateTime("2010-11-26");
         final List<IssueBase> issueBases = issueBaseDAO.loadAllIssuesFromVersionToVersion("NeoScioPortal", "NeoScio - intern - allgemeines", "sven.ruppert", "open", dateTime.toDate(), null, null);
         assertNotNull(issueBases);
@@ -46,14 +46,14 @@ public class IssueBaseDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadAllIssuesFor004() throws Exception {
-        final IssueBaseDAO issueBaseDAO = daoFactory.getIssueBaseDAO();
+        final IssueBaseDAO issueBaseDAO = daoFactoryFactory.getIssueBaseDAO();
         final List<IssueBase> issueBases = issueBaseDAO.loadAllIssuesFromVersionToVersion(null, null, null, null, null, null, null);
         assertNotNull(issueBases);
     }
 
     @Test
     public void testLoadAllIssuesFromVersionToVersion() throws Exception {
-        final IssueBaseDAO issueBaseDAO = daoFactory.getIssueBaseDAO();
+        final IssueBaseDAO issueBaseDAO = daoFactoryFactory.getIssueBaseDAO();
         List<IssueBase> issueBases = issueBaseDAO.loadAllIssuesFromVersionToVersion("NeoScioPortal", "NeoScio - intern - allgemeines", "sven.ruppert", "open", null, null, null);
         assertNotNull(issueBases);
         issueBases = issueBaseDAO.loadAllIssuesFromVersionToVersion("NeoScioPortal", "NeoScio - intern - allgemeines", "sven.ruppert", "open", new DateTime("2010-11-23").toDate(), new DateTime("2010-12-03").toDate(), null);
@@ -67,7 +67,7 @@ public class IssueBaseDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadAllIssuesForBenutzer() throws Exception {
-        final IssueBaseDAO issueBaseDAO = daoFactory.getIssueBaseDAO();
+        final IssueBaseDAO issueBaseDAO = daoFactoryFactory.getIssueBaseDAO();
         assertNotNull(issueBaseDAO.loadAllIssuesForBenutzer("sven.ruppert"));
         assertNotNull(issueBaseDAO.loadAllIssuesForBenutzer(6L));
     }

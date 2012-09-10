@@ -8,12 +8,12 @@ package org.rapidpm.orm.prj;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
+import org.apache.log4j.Logger;
 import org.rapidpm.data.LoggingResult;
 import org.rapidpm.logging.LogEventEntryWriterBean;
-import org.rapidpm.orm.BaseDaoFactoryBean;
+import org.rapidpm.orm.DaoFactoryBean;
 import org.rapidpm.orm.security.BenutzerDAOBean;
 import org.rapidpm.orm.system.logging.LoggingEventEntry;
-import org.apache.log4j.Logger;
 
 import java.lang.reflect.Field;
 
@@ -36,9 +36,9 @@ public class BaseDAOBeanTest<T> extends BaseDAOTest {
 
     private void init() {
         try {
-            final BaseDaoFactoryBean factoryBean = new BaseDaoFactoryBean();
-            setField(BaseDaoFactoryBean.class, "em", factoryBean, daoFactory.getEntityManager());
-            setField(BaseDaoFactoryBean.class, "daoFactory", factoryBean, daoFactory);
+            final DaoFactoryBean factoryBean = new DaoFactoryBean();
+            setField(DaoFactoryBean.class, "em", factoryBean, daoFactoryFactory.getEntityManager());
+            setField(DaoFactoryBean.class, "daoFactory", factoryBean, daoFactoryFactory);
 
             final LogEventEntryWriterBean logWriter = new LogEventEntryWriterBean();
             setField(LogEventEntryWriterBean.class, "daoFactory", logWriter, factoryBean);

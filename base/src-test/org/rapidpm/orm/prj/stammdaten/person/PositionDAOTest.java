@@ -6,11 +6,11 @@ package org.rapidpm.orm.prj.stammdaten.person; /**
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
+import org.apache.log4j.Logger;
+import org.junit.Test;
 import org.rapidpm.orm.prj.BaseDAOTest;
 import org.rapidpm.orm.prj.stammdaten.organisationseinheit.Organisationseinheit;
 import org.rapidpm.orm.prj.stammdaten.organisationseinheit.Position;
-import org.apache.log4j.Logger;
-import org.junit.Test;
 
 import java.util.List;
 
@@ -22,10 +22,10 @@ public class PositionDAOTest extends BaseDAOTest {
     @Test
     public void testLoad4OrgEinheit() throws Exception {
 
-        final List<Organisationseinheit> organisationseinheits = daoFactory.getOrganisationseinheitDAO().loadOrganisationseinheitenForMandantengruppe("KIO Oberberg", true);
+        final List<Organisationseinheit> organisationseinheits = daoFactoryFactory.getOrganisationseinheitDAO().loadOrganisationseinheitenForMandantengruppe("KIO Oberberg", true);
         for (final Organisationseinheit organisationseinheit : organisationseinheits) {
 
-            final List<Position> positions = daoFactory.getPositionDAO().loadPositionForOrgeinheit(organisationseinheit.getId());
+            final List<Position> positions = daoFactoryFactory.getPositionDAO().loadPositionForOrgeinheit(organisationseinheit.getId());
             assertNotNull(positions);
             for (final Position position : positions) {
                 assertNotNull(position);

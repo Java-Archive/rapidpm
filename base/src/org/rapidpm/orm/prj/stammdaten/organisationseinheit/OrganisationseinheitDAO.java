@@ -14,17 +14,17 @@ package org.rapidpm.orm.prj.stammdaten.organisationseinheit;
  *
  */
 
-import org.rapidpm.orm.BaseDaoFactory;
+import org.apache.log4j.Logger;
+import org.rapidpm.orm.BaseDAO;
 import org.rapidpm.orm.prj.stammdaten.organisationseinheit.gesellschaftsformen.Gesellschaftsform;
 import org.rapidpm.ormviews.ViewOrgEinheitHptTaetigkeitsfeld;
 import org.rapidpm.ormviews.ViewOrgEinheitWebDomain;
-import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-public class OrganisationseinheitDAO extends BaseDaoFactory.BaseDAO<Long, Organisationseinheit> {
+public class OrganisationseinheitDAO extends BaseDAO<Long, Organisationseinheit> {
     private static final Logger logger = Logger.getLogger(OrganisationseinheitDAO.class);
 
     public OrganisationseinheitDAO(final EntityManager entityManager) {

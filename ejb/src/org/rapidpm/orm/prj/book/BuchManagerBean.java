@@ -1,14 +1,14 @@
 package org.rapidpm.orm.prj.book;
 
+import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
+import org.rapidpm.orm.DaoFactoryBean;
 import org.rapidpm.orm.prj.book.kommentar.*;
-import org.rapidpm.orm.prj.stammdaten.DaoFactoryBean;
 import org.rapidpm.orm.system.logging.LogLevelEnum;
 import org.rapidpm.orm.system.logging.LoggingEventEntry;
 import org.rapidpm.orm.system.security.Benutzer;
-import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;

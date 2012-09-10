@@ -1,8 +1,8 @@
 package org.rapidpm.orm.prj.stammdaten.organisationseinheit;
 
-import org.rapidpm.orm.BaseDaoFactory;
-import org.rapidpm.orm.prj.stammdaten.organisationseinheit.gesellschaftsformen.Gesellschaftsform;
 import org.apache.log4j.Logger;
+import org.rapidpm.orm.BaseDAO;
+import org.rapidpm.orm.prj.stammdaten.organisationseinheit.gesellschaftsformen.Gesellschaftsform;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -19,7 +19,7 @@ import javax.persistence.TypedQuery;
  *        Time: 18:21:02
  */
 
-public class GesellschaftsformDAO extends BaseDaoFactory.BaseDAO<Long, Gesellschaftsform> {
+public class GesellschaftsformDAO extends BaseDAO<Long, Gesellschaftsform> {
     private static final Logger logger = Logger.getLogger(GesellschaftsformDAO.class);
     public static final String UNBEKANNT = "";
 

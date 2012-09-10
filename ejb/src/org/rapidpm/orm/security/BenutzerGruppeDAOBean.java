@@ -1,15 +1,14 @@
 package org.rapidpm.orm.security;
 
+import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
 import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
-import org.rapidpm.orm.BaseDaoFactoryBean;
-import org.rapidpm.orm.prj.stammdaten.DaoFactoryBean;
+import org.rapidpm.orm.DaoFactoryBean;
 import org.rapidpm.orm.system.security.BenutzerGruppe;
 import org.rapidpm.orm.system.security.BenutzerGruppeDAO;
-import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;

@@ -3,7 +3,8 @@
   <component name="CheckStyle-IDEA">
     <option name="configuration">
       <map>
-        <entry key="location-0" value="CLASSPATH:/sun_checks.xml:The default CheckStyle rules." />
+        <entry key="location-0" value="CLASSPATH:/sun_checks.xml:The default CheckStyle rules" />
+        <entry key="location-1" value="CLASSPATH:/sun_checks.xml:The default CheckStyle rules." />
       </map>
     </option>
   </component>
@@ -58,6 +59,7 @@
     <option name="referencePos" value="0" />
     <option name="showLabels" value="true" />
   </component>
+  <component name="RegexUtilComponent" text="1900-01-01 2007/08/13 1900.01.01 1900 01 01 1900-01.01 1900 13 01 1900 02 31" flags="0" regex="(19|20)\d\d([- /.])(0[1-9]|1[012])\2(0[1-9]|[12][0-9]|3[01])" mode="0" />
   <component name="SvnBranchConfigurationManager">
     <option name="myConfigurationMap">
       <map>

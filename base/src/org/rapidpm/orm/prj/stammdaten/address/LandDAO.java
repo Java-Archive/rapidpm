@@ -9,13 +9,13 @@ package org.rapidpm.orm.prj.stammdaten.address;
  *
  */
 
-import org.rapidpm.orm.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.orm.BaseDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-public class LandDAO extends BaseDaoFactory.BaseDAO<Long, Land> {
+public class LandDAO extends BaseDAO<Long, Land> {
     private static final Logger logger = Logger.getLogger(LandDAO.class);
 
     public LandDAO(final EntityManager entityManager) {

@@ -9,7 +9,7 @@ import org.rapidpm.orm.system.logging.LoggingEventEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractOneToOneConnectExecutor<D extends BaseDaoFactory, CE, E, RT extends BaseOrmResult<? extends BaseFlatEntity>> {
+public abstract class AbstractOneToOneConnectExecutor<D extends DaoFactory, CE, E, RT extends BaseOrmResult<? extends BaseFlatEntity>> {
 
 
 //    public AbstractOneToOneConnectExecutor(DaoFactoryBean daoFactoryBean) {
@@ -17,13 +17,13 @@ public abstract class AbstractOneToOneConnectExecutor<D extends BaseDaoFactory, 
 //    }
 
     //    abstract class AbstractOneToOneConnectExecutor<CE, E, RT extends BaseOrmResult<? extends BaseFlatEntity>> {
-    private final BaseDaoFactory.BaseDAO<Long, CE> connectEntityDAO;
-    private final BaseDaoFactory.BaseDAO<Long, E> entityDAO;
+    private final BaseDAO<Long, CE> connectEntityDAO;
+    private final BaseDAO<Long, E> entityDAO;
     private final D daoFactoryBean;
 
     public AbstractOneToOneConnectExecutor(final D daoFactory,
-                                           final BaseDaoFactory.BaseDAO<Long, CE> connectEntityDAO,
-                                           final BaseDaoFactory.BaseDAO<Long, E> entityDAO) {
+                                           final BaseDAO<Long, CE> connectEntityDAO,
+                                           final BaseDAO<Long, E> entityDAO) {
         this.connectEntityDAO = connectEntityDAO;
         this.entityDAO = entityDAO;
         this.daoFactoryBean = daoFactory;

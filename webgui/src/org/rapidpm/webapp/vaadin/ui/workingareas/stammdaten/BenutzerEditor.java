@@ -8,8 +8,7 @@ import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.IntegerRangeValidator;
 import com.vaadin.ui.*;
 import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.orm.BaseDaoFactoryBean;
-import org.rapidpm.orm.prj.stammdaten.DaoFactoryBean;
+import org.rapidpm.orm.DaoFactoryBean;
 import org.rapidpm.orm.system.security.Benutzer;
 import org.rapidpm.orm.system.security.BenutzerGruppe;
 import org.rapidpm.orm.system.security.BenutzerWebapplikation;
@@ -53,7 +52,7 @@ public class BenutzerEditor extends FormLayout {
 //        idTextField.setReadOnly(true);
         idTextField.setEnabled(false);
         idTextField.setConverter(Long.class); // vaadin 7
-        idTextField.addValidator(new IntegerRangeValidator("Üngültige ID",0, Integer.MAX_VALUE));
+        idTextField.addValidator(new IntegerRangeValidator("Üngültige ID", 0, Integer.MAX_VALUE));
         addComponent(idTextField);
 
         loginTextField = new TextField("Login");

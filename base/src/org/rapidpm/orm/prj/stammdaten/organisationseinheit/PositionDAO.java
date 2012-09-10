@@ -6,14 +6,14 @@ package org.rapidpm.orm.prj.stammdaten.organisationseinheit; /**
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
-import org.rapidpm.orm.DaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.orm.BaseDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-public class PositionDAO extends DaoFactory.BaseDAO<Long, Position> {
+public class PositionDAO extends BaseDAO<Long, Position> {
     private static final Logger logger = Logger.getLogger(PositionDAO.class);
 
 
@@ -22,7 +22,8 @@ public class PositionDAO extends DaoFactory.BaseDAO<Long, Position> {
     }
 
     public List<Position> loadPositionForOrgeinheit(final Long orgOID) {
-        final TypedQuery<Position> typedQuery = entityManager.createQuery("from Position p where  p.organisationseinheit.id=:orgOID", Position.class).setParameter("orgOID", orgOID);
+        final TypedQuery<Position> typedQuery = entityManager.createQuery("from Position p where  p.organisationseinheit.id=:orgOID", Position.class)
+                .setParameter("orgOID", orgOID);
         return typedQuery.getResultList();
     }
 

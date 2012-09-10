@@ -6,7 +6,7 @@
 package org.rapidpm.orm.prj.stammdaten.person;
 
 import org.rapidpm.Constants;
-import org.rapidpm.orm.BaseDaoFactory;
+import org.rapidpm.orm.BaseDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -17,7 +17,7 @@ import javax.persistence.TypedQuery;
  * Date: 20.12.11
  * Time: 15:14
  */
-public class GeschlechtDAO extends BaseDaoFactory.BaseDAO<Long, org.rapidpm.orm.prj.stammdaten.person.Geschlecht> {
+public class GeschlechtDAO extends BaseDAO<Long, org.rapidpm.orm.prj.stammdaten.person.Geschlecht> {
 
     public GeschlechtDAO(final EntityManager entityManager) {
         super(entityManager, org.rapidpm.orm.prj.stammdaten.person.Geschlecht.class);

@@ -21,41 +21,44 @@ import java.io.Serializable;
  * Time: 23:44
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
-@Stateful(name = "BaseDaoFactoryEJB")
+@Stateful(name = "DaoFactoryEJB")
 @TransactionManagement
-public class BaseDaoFactoryBean extends BaseDaoFactory implements Serializable {
+public class DaoFactoryBean extends DaoFactory implements Serializable {
 
     @Inject
     private transient Logger logger;
 
 
-    public BaseDaoFactoryBean() {
+    public DaoFactoryBean() {
     }
 
     //    @Resource(shareable = false)
     //    private transient UserTransaction userTransaction;
 
     @PersistenceContext(unitName = "baseorm", type = PersistenceContextType.TRANSACTION)
-    private EntityManager em;
+    public void setEntityManager(final EntityManager entityManager) {
+        super.setEntityManager(entityManager);
+    }
+//    private EntityManager em;
 
-//    private BaseDaoFactory daoFactory;
+//    private BaseDAO daoFactory;
 
 //    @Deprecated
-//    public BaseDaoFactory getDaoFactory() {
+//    public BaseDAO getDaoFactoryFactory() {
 //        return this;
 //    }
 //
 
     @PostConstruct
     void postConstruct() {
-//        daoFactory = new BaseDaoFactory();
-        setEm(em);
+//        daoFactory = new BaseDAO();
+//        setEntityManager(em);
     }
 
     @PostActivate
     private void postActivate() {
-//        daoFactory = new BaseDaoFactory();
-        setEm(em);
+//        daoFactory = new BaseDAO();
+//        setEntityManager(em);
 
     }
 
