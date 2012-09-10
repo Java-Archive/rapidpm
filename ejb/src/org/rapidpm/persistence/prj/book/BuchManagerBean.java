@@ -1,15 +1,14 @@
 package org.rapidpm.persistence.prj.book;
 
+import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
-import org.rapidpm.persistence.book.*;
-import org.rapidpm.persistence.book.kommentar.*;
-import org.rapidpm.persistence.prj.stammdaten.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.book.kommentar.*;
 import org.rapidpm.persistence.system.logging.LogLevelEnum;
 import org.rapidpm.persistence.system.logging.LoggingEventEntry;
 import org.rapidpm.persistence.system.security.Benutzer;
-import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -30,7 +29,7 @@ import java.util.List;
  * User: svenruppert
  * Date: 14.02.11
  * Time: 18:12
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 @Stateless(name = "BuchManagerEJB")
 @WebService(name = "BuchManagerWS")

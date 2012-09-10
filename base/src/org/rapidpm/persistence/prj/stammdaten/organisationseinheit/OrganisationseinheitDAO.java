@@ -1,11 +1,11 @@
 /*
  * Copyright (c) 2011. Diese Quelltexte sind Eigentum der RapidPM - www.rapidpm.org (RapidPM - www.rapidpm.org)
- * Bei Frage wenden Sie sich bitte an sven.ruppert@rapidpm.org
+ * Bei Frage wenden Sie sich bitte an sven.ruppert@neoscio.de
  */
 
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
 /**
- * RapidPM
+ * NeoScio
  * User: svenruppert
  * Date: 12.03.2010
  * Time: 23:42:22
@@ -14,17 +14,17 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
  *
  */
 
-import org.rapidpm.persistence.BaseDaoFactory;
+import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.gesellschaftsformen.Gesellschaftsform;
 import org.rapidpm.ormviews.ViewOrgEinheitHptTaetigkeitsfeld;
 import org.rapidpm.ormviews.ViewOrgEinheitWebDomain;
-import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-public class OrganisationseinheitDAO extends BaseDaoFactory.BaseDAO<Long, Organisationseinheit> {
+public class OrganisationseinheitDAO extends BaseDAO<Long, Organisationseinheit> {
     private static final Logger logger = Logger.getLogger(OrganisationseinheitDAO.class);
 
     public OrganisationseinheitDAO(final EntityManager entityManager) {

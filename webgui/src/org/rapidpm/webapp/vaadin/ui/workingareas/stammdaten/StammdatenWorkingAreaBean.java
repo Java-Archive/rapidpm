@@ -1,6 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten;
 
-import org.rapidpm.persistence.prj.stammdaten.DaoFactoryBean;
+import org.rapidpm.orm.DaoFactoryBean;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;

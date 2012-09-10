@@ -1,12 +1,12 @@
 /*
  * Copyright (c) 2011. Diese Quelltexte sind Eigentum der RapidPM - www.rapidpm.org (RapidPM - www.rapidpm.org)
- * Bei Frage wenden Sie sich bitte an sven.ruppert@rapidpm.org
+ * Bei Frage wenden Sie sich bitte an sven.ruppert@neoscio.de
  */
 
 package org.rapidpm.persistence.prj.stammdaten.person;
 
 import org.rapidpm.Constants;
-import org.rapidpm.persistence.BaseDaoFactory;
+import org.rapidpm.persistence.BaseDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -17,7 +17,7 @@ import javax.persistence.TypedQuery;
  * Date: 20.12.11
  * Time: 15:14
  */
-public class GeschlechtDAO extends BaseDaoFactory.BaseDAO<Long, org.rapidpm.persistence.prj.stammdaten.person.Geschlecht> {
+public class GeschlechtDAO extends BaseDAO<Long, org.rapidpm.persistence.prj.stammdaten.person.Geschlecht> {
 
     public GeschlechtDAO(final EntityManager entityManager) {
         super(entityManager, org.rapidpm.persistence.prj.stammdaten.person.Geschlecht.class);

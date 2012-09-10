@@ -1,20 +1,20 @@
 package org.rapidpm.persistence.prj.bewegungsdaten.msgcenter;
 
-import org.rapidpm.persistence.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 /**
- * RapidPM
+ * NeoScio
  * User: Manfred
  * Date: 22.02.2010
  * Time: 17:40:07
  * This Source Code is part of the RapidPM - www.rapidpm.org project.
  * please contact sven.ruppert@me.com
  */
-public class MessageDAO extends BaseDaoFactory.BaseDAO<Long, Message> {
+public class MessageDAO extends BaseDAO<Long, Message> {
     private static final Logger logger = Logger.getLogger(MessageDAO.class);
 
 

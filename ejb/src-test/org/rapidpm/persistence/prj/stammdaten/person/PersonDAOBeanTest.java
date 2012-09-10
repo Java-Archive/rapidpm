@@ -1,13 +1,13 @@
 /*
  * Copyright (c) 2011. Diese Quelltexte sind Eigentum der RapidPM - www.rapidpm.org (RapidPM - www.rapidpm.org)
- * Bei Frage wenden Sie sich bitte an sven.ruppert@rapidpm.org
+ * Bei Frage wenden Sie sich bitte an sven.ruppert@neoscio.de
  */
 
 package org.rapidpm.persistence.prj.stammdaten.person;
 
-import org.rapidpm.persistence.prj.BaseDAOBeanTest;
 import org.apache.log4j.BasicConfigurator;
 import org.junit.Test;
+import org.rapidpm.persistence.prj.BaseDAOBeanTest;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -31,7 +31,7 @@ public class PersonDAOBeanTest extends BaseDAOBeanTest<PersonDAOBean> {
     public void testLoadPersonByBenutzer() throws Exception {
         BasicConfigurator.configure();
 
-        daoFactory.new Transaction() {
+        daoFactoryFactory.getPersonDAO().new Transaction() {
             @Override
             public void doTask() {
                 final PersonDAOBean.PersonResult result = daoBean.loadPersonByBenutzer("sessionID", -1L, 1L);
@@ -42,13 +42,13 @@ public class PersonDAOBeanTest extends BaseDAOBeanTest<PersonDAOBean> {
 
     @Test
     public void testSaveStammdaten() throws Exception {
-        daoFactory.new Transaction() {
+        daoFactoryFactory.getPersonDAO().new Transaction() {
             @Override
             public void doTask() {
                 final PersonDAOBean.FlatPersonStammdaten stammdaten = new PersonDAOBean.FlatPersonStammdaten();
                 stammdaten.setId(3L); // Stammdaten aktualisieren
-                stammdaten.setAnredeOID(daoFactory.getAnredeDAO().loadAnredeHerr().getId());
-                stammdaten.setGeschlechtOID(daoFactory.getGeschlechtDAO().loadGeschlechtMaennlich().getId());
+                stammdaten.setAnredeOID(daoFactoryFactory.getAnredeDAO().loadAnredeHerr().getId());
+                stammdaten.setGeschlechtOID(daoFactoryFactory.getGeschlechtDAO().loadGeschlechtMaennlich().getId());
                 stammdaten.setVornamen(Arrays.asList("Max"));
                 stammdaten.setNachnamen(Arrays.asList("Mustermann"));
 //                stammdaten.setGeburtsnamen(Arrays.asList("Mustergeburt"));
@@ -65,7 +65,7 @@ public class PersonDAOBeanTest extends BaseDAOBeanTest<PersonDAOBean> {
 
     @Test
     public void testConnectBenutzer() throws Exception {
-        daoFactory.new Transaction() {
+        daoFactoryFactory.getPersonDAO().new Transaction() {
             @Override
             public void doTask() {
                 final PersonDAOBean.PersonResult result = daoBean.connectBenutzer("sessionID", -1L, 1L, 1L);
@@ -76,7 +76,7 @@ public class PersonDAOBeanTest extends BaseDAOBeanTest<PersonDAOBean> {
 
     @Test
     public void testConnectAdresse() throws Exception {
-        daoFactory.new Transaction() {
+        daoFactoryFactory.getPersonDAO().new Transaction() {
             @Override
             public void doTask() {
                 final PersonDAOBean.PersonResult result = daoBean.connectAdresse("sessionID", -1L, 1L, 1L);

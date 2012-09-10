@@ -1,20 +1,20 @@
 package org.rapidpm.persistence.system.security;
 
-import org.rapidpm.persistence.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 /**
- * RapidPM
+ * NeoScio
  * User: Manfred
  * Date: 26.02.2010
  * Time: 12:17:07
  * This Source Code is part of the RapidPM - www.rapidpm.org project.
  * please contact sven.ruppert@me.com
  */
-public class MandantengruppeDAO extends BaseDaoFactory.BaseDAO<Long, Mandantengruppe> {
+public class MandantengruppeDAO extends BaseDAO<Long, Mandantengruppe> {
     private static final Logger logger = Logger.getLogger(MandantengruppeDAO.class);
 
     public MandantengruppeDAO(final EntityManager entityManager) {

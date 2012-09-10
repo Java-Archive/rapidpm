@@ -1,9 +1,10 @@
 package org.rapidpm.persistence;
 
-import org.rapidpm.BaseTest;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.rapidpm.BaseTest;
+import org.rapidpm.Constants;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -20,14 +21,14 @@ import static org.junit.Assert.assertEquals;
  */
 public class BaseDAOTest extends BaseTest {
 
-    protected EntityManagerFactory emf = Persistence.createEntityManagerFactory("baseormJDBCbeta");
+    protected EntityManagerFactory emf = Persistence.createEntityManagerFactory(Constants.PERSISTENCE_UNIT_NAME_TEST);
     protected EntityManager entityManager = emf.createEntityManager();
     protected DaoFactory daoFactory = new DaoFactory();
 
 
     @Before
     public void setUp() throws Exception {
-        daoFactory.setEm(entityManager);
+        daoFactory.setEntityManager(entityManager);
     }
 
     @After

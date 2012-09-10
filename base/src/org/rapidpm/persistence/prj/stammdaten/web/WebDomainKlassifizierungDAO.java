@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.prj.stammdaten.web;
 
-import org.rapidpm.persistence.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -18,7 +18,7 @@ import javax.persistence.TypedQuery;
  *        Time: 15:09:34
  */
 
-public class WebDomainKlassifizierungDAO extends BaseDaoFactory.BaseDAO<Long, WebDomainKlassifizierung> {
+public class WebDomainKlassifizierungDAO extends BaseDAO<Long, WebDomainKlassifizierung> {
     private static final Logger logger = Logger.getLogger(WebDomainKlassifizierungDAO.class);
 
 

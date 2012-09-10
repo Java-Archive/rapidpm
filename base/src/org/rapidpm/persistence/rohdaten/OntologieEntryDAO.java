@@ -1,6 +1,6 @@
 package org.rapidpm.persistence.rohdaten;
 
-import org.rapidpm.persistence.BaseDaoFactory;
+import org.rapidpm.persistence.BaseDAO;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -10,9 +10,9 @@ import java.util.List;
  * User: svenruppert
  * Date: 11/21/10
  * Time: 5:39 PM
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
-public class OntologieEntryDAO extends BaseDaoFactory.BaseDAO<Long, OntologieEntry> {
+public class OntologieEntryDAO extends BaseDAO<Long, OntologieEntry> {
     public OntologieEntryDAO(final EntityManager entityManager) {
         super(entityManager, OntologieEntry.class);
     }

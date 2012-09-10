@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
 
-import org.rapidpm.persistence.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -19,7 +19,7 @@ import javax.persistence.TypedQuery;
  *        Time: 20:52:12
  */
 
-public class BranchenKlassifizierungDAO extends BaseDaoFactory.BaseDAO<Long, BrancheKlassifizierung> {
+public class BranchenKlassifizierungDAO extends BaseDAO<Long, BrancheKlassifizierung> {
     private static final Logger logger = Logger.getLogger(BranchenKlassifizierungDAO.class);
 
     public BranchenKlassifizierungDAO(final EntityManager entityManager) {

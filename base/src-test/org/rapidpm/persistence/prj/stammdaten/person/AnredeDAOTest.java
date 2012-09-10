@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.prj.stammdaten.person;
 
-import org.rapidpm.persistence.prj.BaseDAOTest;
 import org.junit.Test;
+import org.rapidpm.persistence.prj.BaseDAOTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,7 +22,7 @@ public class AnredeDAOTest extends BaseDAOTest {
      */
     @Test
     public void testLoadAnredeHerr() throws Exception {
-        final AnredeDAO dao = daoFactory.getAnredeDAO();
+        final AnredeDAO dao = daoFactoryFactory.getAnredeDAO();
         final Anrede anrede = dao.loadAnredeHerr();
         assertNotNull(anrede);
         assertEquals("Herr", anrede.getAnrede());
@@ -35,7 +35,7 @@ public class AnredeDAOTest extends BaseDAOTest {
      */
     @Test
     public void testLoadAnredeFrau() throws Exception {
-        final AnredeDAO dao = daoFactory.getAnredeDAO();
+        final AnredeDAO dao = daoFactoryFactory.getAnredeDAO();
         final Anrede anrede = dao.loadAnredeFrau();
         assertNotNull(anrede);
         assertEquals("Frau", anrede.getAnrede());

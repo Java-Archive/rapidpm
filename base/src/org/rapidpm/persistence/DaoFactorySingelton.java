@@ -12,20 +12,20 @@ package org.rapidpm.persistence;
 public class DaoFactorySingelton {
     private static DaoFactorySingelton ourInstance = new DaoFactorySingelton();
 
-    private DaoFactory daoFactory = null;
+    private DaoFactory daoFactoryFactory = null;
 
     public static DaoFactorySingelton getInstance() {
         System.out.println("ourInstance = " + ourInstance);
         return ourInstance;
     }
 
-    public DaoFactory getDaoFactory() {
-        return daoFactory;
+    public DaoFactory getDaoFactoryFactory() {
+        return daoFactoryFactory;
     }
 
     private DaoFactorySingelton() {
         //        final EbeanServer em = EbeanServerFactory.create(new ConfigDevelop());
-        //        daoFactory = new BaseDaoFactory(em);
+        //        daoFactory = new BaseDAO(em);
 
     }
 }

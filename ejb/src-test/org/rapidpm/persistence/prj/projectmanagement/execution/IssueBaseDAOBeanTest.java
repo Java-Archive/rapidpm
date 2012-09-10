@@ -1,13 +1,13 @@
 /*
  * Copyright (c) 2011. Diese Quelltexte sind Eigentum der RapidPM - www.rapidpm.org (RapidPM - www.rapidpm.org)
- * Bei Frage wenden Sie sich bitte an sven.ruppert@rapidpm.org
+ * Bei Frage wenden Sie sich bitte an sven.ruppert@neoscio.de
  */
 
 package org.rapidpm.persistence.prj.projectmanagement.execution;
 
-import org.rapidpm.persistence.BaseDAOBeanTest;
-import org.rapidpm.persistence.prj.stammdaten.DaoFactoryBean;
 import org.junit.Test;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactoryBeanTest;
 
 import static org.junit.Assert.assertTrue;
 
@@ -17,14 +17,14 @@ import static org.junit.Assert.assertTrue;
  * Date: 05.01.12
  * Time: 10:19
  */
-public class IssueBaseDAOBeanTest extends BaseDAOBeanTest<IssueBaseDAOBean> {
+public class IssueBaseDAOBeanTest extends DaoFactoryBeanTest<IssueBaseDAOBean> {
     public IssueBaseDAOBeanTest() {
         super(IssueBaseDAOBean.class, DaoFactoryBean.class);
     }
 
     @Test
     public void testConnectIssueComment() throws Exception {
-        daoFactory.new Transaction() {
+        daoFactory.getIssueBaseDAO().new Transaction() {
             @Override
             public void doTask() {
                 final IssueBaseDAOBean.IssueBaseResult result = daoBean.connectIssueComment("sessionID", -1L, 1L, 1L);
@@ -35,7 +35,7 @@ public class IssueBaseDAOBeanTest extends BaseDAOBeanTest<IssueBaseDAOBean> {
 
     @Test
     public void testConnectIssueTimeUnitUsed() throws Exception {
-        daoFactory.new Transaction() {
+        daoFactory.getIssueBaseDAO().new Transaction() {
             @Override
             public void doTask() {
                 final IssueBaseDAOBean.IssueBaseResult result = daoBean.connectIssueTimeUnitUsed("sessionID", -1L, 1L, 1L);

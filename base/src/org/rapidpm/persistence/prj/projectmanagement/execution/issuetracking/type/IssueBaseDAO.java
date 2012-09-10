@@ -1,9 +1,9 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type;
 
-import org.rapidpm.persistence.BaseDaoFactory;
+import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
-import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -22,7 +22,7 @@ import java.util.List;
  *        Time: 13:00:32
  */
 
-public class IssueBaseDAO extends BaseDaoFactory.BaseDAO<Long, IssueBase> {
+public class IssueBaseDAO extends BaseDAO<Long, IssueBase> {
     private static final Logger logger = Logger.getLogger(IssueBaseDAO.class);
 
     //    private SimpleDateFormat format = new SimpleDateFormat(Constants.YYYY_MM_DD, Locale.GERMAN);
@@ -250,10 +250,10 @@ public class IssueBaseDAO extends BaseDaoFactory.BaseDAO<Long, IssueBase> {
 
     //    //refac generischer schreiben
     //    public void createSupportIssueForRegistration(final String webAppName, final Benutzer assigne, final Benutzer reporter){
-    //        final Mandantengruppe mandantengruppeRapidPM = new MandantengruppeDAO(entityManager).loadMandantengruppe("RapidPMPortal");
+    //        final Mandantengruppe mandantengruppeNeoScio = new MandantengruppeDAO(entityManager).loadMandantengruppe("NeoScioPortal");
     //        final IssueBase issueBase = new IssueBase();
     //        issueBase.setAssignee(assigne);
-    //        issueBase.setMandantengruppe(mandantengruppeRapidPM);
+    //        issueBase.setMandantengruppe(mandantengruppeNeoScio);
     //        final IssuePriority issuePriority = new IssuePriorityDAO(entityManager).loadPriorityDringend_u_Wichtig();
     //        issueBase.setIssuePriority(issuePriority);
     //        issueBase.setReporter(reporter);
@@ -267,10 +267,10 @@ public class IssueBaseDAO extends BaseDaoFactory.BaseDAO<Long, IssueBase> {
     //    }
     //
     //    public void createSupportIssueForNewPasswdRequest(final String webAppName, final String infoTxt, final Benutzer assigne, final Benutzer reporter){
-    //        final Mandantengruppe mandantengruppeRapidPM = new MandantengruppeDAO(entityManager).loadMandantengruppe("RapidPMPortal");
+    //        final Mandantengruppe mandantengruppeNeoScio = new MandantengruppeDAO(entityManager).loadMandantengruppe("NeoScioPortal");
     //        final IssueBase issueBase = new IssueBase();
     //        issueBase.setAssignee(assigne);
-    //        issueBase.setMandantengruppe(mandantengruppeRapidPM);
+    //        issueBase.setMandantengruppe(mandantengruppeNeoScio);
     //        final IssuePriority issuePriority = new IssuePriorityDAO(entityManager).loadPriorityDringend_u_Wichtig();
     //        issueBase.setIssuePriority(issuePriority);
     //        issueBase.setReporter(reporter);
@@ -284,10 +284,10 @@ public class IssueBaseDAO extends BaseDaoFactory.BaseDAO<Long, IssueBase> {
     //    }
     //
     //    public void createSupportIssueForKontaktAnfrage(final String webAppName, final String infoTxt, final Benutzer assigne, final Benutzer reporter){
-    //        final Mandantengruppe mandantengruppeRapidPM = new MandantengruppeDAO(entityManager).loadMandantengruppe("RapidPMPortal");
+    //        final Mandantengruppe mandantengruppeNeoScio = new MandantengruppeDAO(entityManager).loadMandantengruppe("NeoScioPortal");
     //        final IssueBase issueBase = new IssueBase();
     //        issueBase.setAssignee(assigne);
-    //        issueBase.setMandantengruppe(mandantengruppeRapidPM);
+    //        issueBase.setMandantengruppe(mandantengruppeNeoScio);
     //        final IssuePriority issuePriority = new IssuePriorityDAO(entityManager).loadPriorityDringend_u_Wichtig();
     //        issueBase.setIssuePriority(issuePriority);
     //        issueBase.setReporter(reporter);

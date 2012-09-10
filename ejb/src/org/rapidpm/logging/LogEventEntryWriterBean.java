@@ -1,11 +1,11 @@
 package org.rapidpm.logging;
 
 import org.rapidpm.Constants;
-import org.rapidpm.persistence.BaseDaoFactoryBean;
-import org.rapidpm.persistence.system.logging.LogLevelEnum;
-import org.rapidpm.persistence.system.logging.LoggingEventEntry;
-import org.rapidpm.persistence.system.logging.LoggingEventParam;
-import org.rapidpm.persistence.system.security.Benutzer;
+import org.rapidpm.orm.DaoFactoryBean;
+import org.rapidpm.orm.system.logging.LogLevelEnum;
+import org.rapidpm.orm.system.logging.LoggingEventEntry;
+import org.rapidpm.orm.system.logging.LoggingEventParam;
+import org.rapidpm.orm.system.security.Benutzer;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -20,7 +20,7 @@ import java.util.Locale;
  * User: svenruppert
  * Date: 31.12.10
  * Time: 15:43
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 @Stateless(name = "LogEventEntryWriterEJB")
 public class LogEventEntryWriterBean {
@@ -29,8 +29,8 @@ public class LogEventEntryWriterBean {
     private final SimpleDateFormat formatDayHour = new SimpleDateFormat(Constants.YYYY_MM_DD_HH, Locale.GERMANY);
     private final SimpleDateFormat formatDayHourMinute = new SimpleDateFormat(Constants.YYYY_MM_DD_HH_MM_SS, Locale.GERMANY);
 
-    @EJB(beanName = "BaseDaoFactoryEJB")
-    private transient BaseDaoFactoryBean daoFactory;
+    @EJB(beanName = "DaoFactoryEJB")
+    private transient DaoFactoryBean daoFactory;
 
 
     public LogEventEntryWriterBean() {

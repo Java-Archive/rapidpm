@@ -1,14 +1,14 @@
 package org.rapidpm.persistence.security;
 
+import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
 import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
-import org.rapidpm.persistence.prj.stammdaten.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.bewegungsdaten.RegistrationStatus;
 import org.rapidpm.persistence.prj.bewegungsdaten.RegistrationStatusDAO;
-import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -26,7 +26,7 @@ import java.util.List;
  * User: svenruppert
  * Date: 07.03.11
  * Time: 12:52
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 @Stateless(name = "RegistrationStatusDAOEJB")
 @WebService(name = "RegistrationStatusDAOWS")

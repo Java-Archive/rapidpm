@@ -1,13 +1,13 @@
 /*
  * Copyright (c) 2011. Diese Quelltexte sind Eigentum der RapidPM - www.rapidpm.org (RapidPM - www.rapidpm.org)
- * Bei Frage wenden Sie sich bitte an sven.ruppert@rapidpm.org
+ * Bei Frage wenden Sie sich bitte an sven.ruppert@neoscio.de
  */
 
 package org.rapidpm.persistence.prj.security;
 
+import org.junit.Test;
 import org.rapidpm.persistence.prj.BaseDAOBeanTest;
 import org.rapidpm.persistence.security.RegistrationDAOBean;
-import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
@@ -30,7 +30,7 @@ public class RegistrationDAOBeanTest extends BaseDAOBeanTest<RegistrationDAOBean
         registration.setNachname("Mustermann");
         registration.setUnternehmen("RapidPM - www.rapidpm.org");
         registration.setPosition("Chef");
-        registration.setEmail("max.mustermann@RapidPM.de");
+        registration.setEmail("max.mustermann@neoscio.de");
         registration.setPlz("58097");
         registration.setOrt("Iserlohn");
         registration.setLaendercode("DE");
@@ -40,13 +40,13 @@ public class RegistrationDAOBeanTest extends BaseDAOBeanTest<RegistrationDAOBean
         registration.setTitel("");
         registration.setStrasse("Galmeistraße");
         registration.setHausnr("23");
-        registration.setRegistrationStatusOID(daoFactory.getRegistrationStatusDAO().loadRegistrationStatus_Zur_Pruefung().getId());
-        registration.setTaetigkeitsfeldOID(daoFactory.getTaetigkeitsfeldDAO().loadTaetigkeitsfeldNichtEingeordnet().getId());
-        registration.setAnredeOID(daoFactory.getAnredeDAO().loadAnredeHerr().getId());
-        registration.setMandantengruppeOID(daoFactory.getMandantengruppeDAO().loadMandantengruppe("RapidPMPortal").getId());
-        registration.setBenutzerWebapplikationOID(daoFactory.getBenutzerWebapplikationDAO().loadBenutzerWebapplikation("RapidPMPortal_App").getId());
+        registration.setRegistrationStatusOID(daoFactoryFactory.getRegistrationStatusDAO().loadRegistrationStatus_Zur_Pruefung().getId());
+        registration.setTaetigkeitsfeldOID(daoFactoryFactory.getTaetigkeitsfeldDAO().loadTaetigkeitsfeldNichtEingeordnet().getId());
+        registration.setAnredeOID(daoFactoryFactory.getAnredeDAO().loadAnredeHerr().getId());
+        registration.setMandantengruppeOID(daoFactoryFactory.getMandantengruppeDAO().loadMandantengruppe("NeoScioPortal").getId());
+        registration.setBenutzerWebapplikationOID(daoFactoryFactory.getBenutzerWebapplikationDAO().loadBenutzerWebapplikation("NeoScioPortal_App").getId());
 
-        daoFactory.new Transaction() {
+        daoFactoryFactory.getRegistrationDAO().new Transaction() {
             @Override
             public void doTask() {
                 final RegistrationDAOBean.RegistrationResult result = daoBean.saveOrUpdateTX("sessionID", -1L, registration);

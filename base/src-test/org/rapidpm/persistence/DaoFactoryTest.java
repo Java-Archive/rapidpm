@@ -1,15 +1,15 @@
 /*
  * Copyright (c) 2011. Diese Quelltexte sind Eigentum der RapidPM - www.rapidpm.org (RapidPM - www.rapidpm.org)
- * Bei Frage wenden Sie sich bitte an sven.ruppert@rapidpm.org
+ * Bei Frage wenden Sie sich bitte an sven.ruppert@neoscio.de
  */
 
 package org.rapidpm.persistence;
 
+import org.junit.Test;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.prj.stammdaten.person.Person;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
-import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class DaoFactoryTest {
     public void testGetOIDFromEntity() throws Exception {
         final Person entity = new Person();
         entity.setId(23L);
-        final DaoFactory.EntityUtils entityUtils = new DaoFactory.EntityUtils();
+        final BaseDAO.EntityUtils entityUtils = new BaseDAO.EntityUtils();
         final Long oid = entityUtils.getOIDFromEntity(entity);
         assertEquals(new Long(23L), oid);
         assertEquals(new Long(-1L), entityUtils.getOIDFromEntity("keine Entity"));
@@ -43,7 +43,7 @@ public class DaoFactoryTest {
             entity.setId(id);
             entityList.add(entity);
         }
-        final BaseDaoFactory.EntityUtils entityUtils = new BaseDaoFactory.EntityUtils();
+        final BaseDAO.EntityUtils entityUtils = new BaseDAO.EntityUtils();
         assertTrue(entityUtils.containsOID(entityList, 7L));
         assertFalse(entityUtils.containsOID(entityList, 15L));
     }
@@ -65,7 +65,7 @@ public class DaoFactoryTest {
         benutzerDAO.connectEntity(b3, person.getBenutzer());
     }
 
-    @Test(expected = BaseDaoFactory.BaseDAO.AlreadyConnectedException.class)
+    @Test(expected = BaseDAO.AlreadyConnectedException.class)
     public void testConnectEntityFail() throws Exception {
         final Person person = new Person();
         final ArrayList<Benutzer> benutzerList = new ArrayList<>();

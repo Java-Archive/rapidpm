@@ -8,11 +8,10 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.*;
 import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.prj.stammdaten.DaoFactoryBean;
-import org.rapidpm.persistence.system.security.*;
-import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
-import org.rapidpm.persistence.system.security.berechtigungen.BerechtigungDAO;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.BenutzerEditor;
+import org.rapidpm.orm.DaoFactoryBean;
+import org.rapidpm.orm.system.security.*;
+import org.rapidpm.orm.system.security.berechtigungen.Berechtigung;
+import org.rapidpm.orm.system.security.berechtigungen.BerechtigungDAO;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -150,21 +149,21 @@ public class StammdatenWorkingArea extends HorizontalLayout {
         final Berechtigung berechtigungLesen = new Berechtigung(1L, "Lesen");
         final Berechtigung berechtigungSchreiben = new Berechtigung(2L, "Schreiben");
 
-        final Benutzer ruppert = new Benutzer(1L, "sven.ruppert", "ruppert", "sven.ruppert@rapidpm.org");
+        final Benutzer ruppert = new Benutzer(1L, "sven.ruppert", "ruppert", "sven.ruppert@neoscio.de");
         ruppert.setMandantengruppe(mandantengruppeA);
         ruppert.addBerechtigungen(berechtigungLesen, berechtigungSchreiben);
         benutzer.add(ruppert);
 
-        final Benutzer vos = new Benutzer(2L, "alexander.vos", "vos", "alexander.vos@RapidPM.de");
+        final Benutzer vos = new Benutzer(2L, "alexander.vos", "vos", "alexander.vos@neoscio.de");
         vos.setMandantengruppe(mandantengruppeA);
         vos.addBerechtigungen(berechtigungLesen);
         benutzer.add(vos);
 
-        final Benutzer gast = new Benutzer(3L, "gast", "gast", "gast@RapidPM.de");
+        final Benutzer gast = new Benutzer(3L, "gast", "gast", "gast@neoscio.de");
         gast.setMandantengruppe(mandantengruppeB);
         benutzer.add(gast);
 
-        final Benutzer benutzerc = new Benutzer(3L, "Benutzer C", "benutzerc", "benutzerc@RapidPM.de");
+        final Benutzer benutzerc = new Benutzer(3L, "Benutzer C", "benutzerc", "benutzerc@neoscio.de");
         benutzerc.setMandantengruppe(mandantengruppeC);
         benutzerc.addBerechtigungen(berechtigungLesen);
         benutzer.add(benutzerc);

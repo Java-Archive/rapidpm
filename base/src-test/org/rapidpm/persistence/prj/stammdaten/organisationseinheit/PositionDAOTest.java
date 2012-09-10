@@ -3,12 +3,12 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit; /**
  * User: svenruppert
  * Date: 24.03.11
  * Time: 10:01
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
-import org.rapidpm.persistence.prj.BaseDAOTest;
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.rapidpm.persistence.prj.BaseDAOTest;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class PositionDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadPositionen4OrgEinheit() throws Exception {
-        final List<Position> positionList = daoFactory.getPositionDAO().loadPositionForOrgeinheit(34L);
+        final List<Position> positionList = daoFactoryFactory.getPositionDAO().loadPositionForOrgeinheit(34L);
         assertNotNull(positionList);
         assertFalse(positionList.isEmpty());
         for (final Position position : positionList) {

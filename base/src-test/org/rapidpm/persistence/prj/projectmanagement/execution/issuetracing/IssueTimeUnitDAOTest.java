@@ -7,10 +7,10 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
  * To change this template use File | Settings | File Templates.
  */
 
+import org.junit.Test;
 import org.rapidpm.persistence.prj.BaseDAOTest;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnit;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnitDAO;
-import org.junit.Test;
 
 import java.util.List;
 
@@ -21,16 +21,16 @@ public class IssueTimeUnitDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadTimeUnitsFor() throws Exception {
-        final IssueTimeUnitDAO issueTimeUnitDAO = daoFactory.getTimeUnitDAO();
-        List<IssueTimeUnit> issueTimeUnits = issueTimeUnitDAO.loadTimeUnitsFor("RapidPMPortal", "sven.ruppert", null, null, null, null);
+        final IssueTimeUnitDAO issueTimeUnitDAO = daoFactoryFactory.getTimeUnitDAO();
+        List<IssueTimeUnit> issueTimeUnits = issueTimeUnitDAO.loadTimeUnitsFor("NeoScioPortal", "sven.ruppert", null, null, null, null);
         assertNotNull(issueTimeUnits);
         assertEquals(2, issueTimeUnits.size());
 
-        issueTimeUnits = issueTimeUnitDAO.loadTimeUnitsFor("RapidPMPortal", "sven.ruppert", "2010-11-23", null, null, null);
+        issueTimeUnits = issueTimeUnitDAO.loadTimeUnitsFor("NeoScioPortal", "sven.ruppert", "2010-11-23", null, null, null);
         assertNotNull(issueTimeUnits);
         assertEquals(2, issueTimeUnits.size());
 
-        issueTimeUnits = issueTimeUnitDAO.loadTimeUnitsFor("RapidPMPortal", "sven.ruppert", "2010-11-24", null, null, null);
+        issueTimeUnits = issueTimeUnitDAO.loadTimeUnitsFor("NeoScioPortal", "sven.ruppert", "2010-11-24", null, null, null);
         assertNotNull(issueTimeUnits);
         assertEquals(1, issueTimeUnits.size());
 

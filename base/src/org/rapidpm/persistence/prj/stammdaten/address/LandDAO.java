@@ -1,6 +1,6 @@
 package org.rapidpm.persistence.prj.stammdaten.address;
 /**
- * RapidPM
+ * NeoScio
  * User: svenruppert
  * Date: 06.03.2010
  * Time: 18:45:27
@@ -9,13 +9,13 @@ package org.rapidpm.persistence.prj.stammdaten.address;
  *
  */
 
-import org.rapidpm.persistence.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-public class LandDAO extends BaseDaoFactory.BaseDAO<Long, Land> {
+public class LandDAO extends BaseDAO<Long, Land> {
     private static final Logger logger = Logger.getLogger(LandDAO.class);
 
     public LandDAO(final EntityManager entityManager) {

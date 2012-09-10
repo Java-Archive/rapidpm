@@ -1,6 +1,6 @@
 package org.rapidpm.persistence.prj.stammdaten.person;
 /**
- * RapidPM
+ * NeoScio
  * User: svenruppert
  * Date: 04.03.2010
  * Time: 17:34:02
@@ -9,13 +9,13 @@ package org.rapidpm.persistence.prj.stammdaten.person;
  *
  */
 
-import org.rapidpm.persistence.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-public class NamensKlassifizierungDAO extends BaseDaoFactory.BaseDAO<Long, NamensKlassifizierung> {
+public class NamensKlassifizierungDAO extends BaseDAO<Long, NamensKlassifizierung> {
     private static final Logger logger = Logger.getLogger(NamensKlassifizierungDAO.class);
 
     public NamensKlassifizierungDAO(final EntityManager entityManager) {

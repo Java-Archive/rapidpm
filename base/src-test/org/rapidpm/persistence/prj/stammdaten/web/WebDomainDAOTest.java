@@ -3,13 +3,13 @@ package org.rapidpm.persistence.prj.stammdaten.web; /**
  * User: svenruppert
  * Date: 25.03.11
  * Time: 12:29
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
-import org.rapidpm.persistence.prj.BaseDAOTest;
-import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.rapidpm.persistence.prj.BaseDAOTest;
+import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
 
 import java.util.HashSet;
 import java.util.List;
@@ -23,9 +23,9 @@ public class WebDomainDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadWebDomainsFor() throws Exception {
-        final WebDomainDAO dao = daoFactory.getWebDomainDAO();
+        final WebDomainDAO dao = daoFactoryFactory.getWebDomainDAO();
 
-        final List<Berechtigung> berechtigungList = daoFactory.getBerechtigungDAO().loadAllEntities();
+        final List<Berechtigung> berechtigungList = daoFactoryFactory.getBerechtigungDAO().loadAllEntities();
         for (final Berechtigung berechtigung : berechtigungList) {
             System.out.println("berechtigung = " + berechtigung);
             final Set<String> webdomainSet = new HashSet<String>();
@@ -57,7 +57,7 @@ public class WebDomainDAOTest extends BaseDAOTest {
 
         for (int i = 0; i < 4; i++) {
             final long start = System.nanoTime();
-            final List<WebDomain> webDomains = daoFactory.getWebDomainDAO().loadWebDomainsFor("Hochschulsuchmaschine", "Universität");
+            final List<WebDomain> webDomains = daoFactoryFactory.getWebDomainDAO().loadWebDomainsFor("Hochschulsuchmaschine", "Universität");
             final long stop = System.nanoTime();
             System.out.println("diff [ms] = " + (stop - start) / 1000 / 1000);
             assertNotNull(webDomains);
@@ -67,7 +67,7 @@ public class WebDomainDAOTest extends BaseDAOTest {
         System.out.println(" = ");
         for (int i = 0; i < 4; i++) {
             final long start = System.nanoTime();
-            final List<WebDomain> webDomains = daoFactory.getWebDomainDAO().loadWebDomainsForSQL("Hochschulsuchmaschine", "Universität");
+            final List<WebDomain> webDomains = daoFactoryFactory.getWebDomainDAO().loadWebDomainsForSQL("Hochschulsuchmaschine", "Universität");
             final long stop = System.nanoTime();
             System.out.println("diff [ms] = " + (stop - start) / 1000 / 1000);
             assertNotNull(webDomains);

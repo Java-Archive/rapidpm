@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.system.security.berechtigungen;
 
-import org.rapidpm.persistence.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -18,7 +18,7 @@ import javax.persistence.TypedQuery;
  *        Time: 18:01:24
  */
 
-public class BerechtigungDAO extends BaseDaoFactory.BaseDAO<Long, Berechtigung> {
+public class BerechtigungDAO extends BaseDAO<Long, Berechtigung> {
     private static final Logger logger = Logger.getLogger(BerechtigungDAO.class);
 
     public BerechtigungDAO(final EntityManager entityManager) {
@@ -29,9 +29,8 @@ public class BerechtigungDAO extends BaseDaoFactory.BaseDAO<Long, Berechtigung> 
         if (logger.isInfoEnabled()) {
             logger.info("loadBerechtigung : " + name);
         }
-        final TypedQuery<Berechtigung> query = entityManager.createQuery("from Berechtigung  b where b.name=:name", Berechtigung.class).setParameter(
-                "name",
-                name);
+        final TypedQuery<Berechtigung> query = entityManager.createQuery("from Berechtigung  b where b.name=:name", Berechtigung.class)
+                .setParameter("name", name);
         return getSingleResultOrNull(query);
         //        return createWhereClause().eq("name", name).findUnique();
 

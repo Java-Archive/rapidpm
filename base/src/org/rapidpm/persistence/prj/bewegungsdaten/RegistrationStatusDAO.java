@@ -1,20 +1,20 @@
 package org.rapidpm.persistence.prj.bewegungsdaten;
 
-import org.rapidpm.persistence.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 /**
- * RapidPM
+ * NeoScio
  * User: Manfred
  * Date: 22.02.2010
  * Time: 18:39:09
  * This Source Code is part of the RapidPM - www.rapidpm.org project.
  * please contact sven.ruppert@me.com
  */
-public class RegistrationStatusDAO extends BaseDaoFactory.BaseDAO<Long, RegistrationStatus> {
+public class RegistrationStatusDAO extends BaseDAO<Long, RegistrationStatus> {
     private static final Logger logger = Logger.getLogger(RegistrationStatusDAO.class);
 
     //    public List<RegistrationStatus> loadAllEntities() {

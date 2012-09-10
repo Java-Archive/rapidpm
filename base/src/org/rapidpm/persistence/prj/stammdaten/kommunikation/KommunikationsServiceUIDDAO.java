@@ -5,17 +5,17 @@ package org.rapidpm.persistence.prj.stammdaten.kommunikation;
  * User: svenruppert
  * Date: 04.03.11
  * Time: 12:02
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
-import org.rapidpm.persistence.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-public class KommunikationsServiceUIDDAO extends BaseDaoFactory.BaseDAO<Long, KommunikationsServiceUID> {
+public class KommunikationsServiceUIDDAO extends BaseDAO<Long, KommunikationsServiceUID> {
     private static final Logger logger = Logger.getLogger(KommunikationsServiceUIDDAO.class);
 
 

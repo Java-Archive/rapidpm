@@ -3,16 +3,16 @@ package org.rapidpm.persistence.prj.projectmanagement; /**
  * User: svenruppert
  * Date: 29.04.11
  * Time: 00:33
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
-import org.rapidpm.persistence.BaseDaoFactory;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectName;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectName;
 
 import javax.persistence.EntityManager;
 
-public class ProjectNameDAO extends BaseDaoFactory.BaseDAO<Long, PlannedProjectName> {
+public class ProjectNameDAO extends BaseDAO<Long, PlannedProjectName> {
     private static final Logger logger = Logger.getLogger(ProjectNameDAO.class);
 
 

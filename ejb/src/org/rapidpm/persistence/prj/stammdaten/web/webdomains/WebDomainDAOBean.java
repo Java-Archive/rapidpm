@@ -4,20 +4,20 @@ package org.rapidpm.persistence.prj.stammdaten.web.webdomains;
  * User: svenruppert
  * Date: 18.03.11
  * Time: 14:33
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
+import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
 import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
-import org.rapidpm.persistence.prj.stammdaten.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomain;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomainDAO;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomainKlassifizierung;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomainMetaData;
-import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;

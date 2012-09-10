@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
-import org.rapidpm.persistence.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
 
 import javax.persistence.EntityManager;
 import java.util.Collections;
@@ -19,7 +19,7 @@ import java.util.List;
  *        Time: 16:58:15
  */
 
-public class IssueTimeUnitDAO extends BaseDaoFactory.BaseDAO<Long, IssueTimeUnit> {
+public class IssueTimeUnitDAO extends BaseDAO<Long, IssueTimeUnit> {
     private static final Logger logger = Logger.getLogger(IssueTimeUnitDAO.class);
 
     public IssueTimeUnitDAO(final EntityManager entityManager) {
@@ -35,10 +35,10 @@ public class IssueTimeUnitDAO extends BaseDaoFactory.BaseDAO<Long, IssueTimeUnit
     /**
      * select * from time_unit tu
      * where tu.worker_id = (select id from benutzer b where b.login='sven.ruppert' and
-     * b.mandantengruppe_id = (select id from mandantengruppe m where m.mandantengruppe='RapidPMPortal'))
+     * b.mandantengruppe_id = (select id from mandantengruppe m where m.mandantengruppe='NeoScioPortal'))
      * and datum >= '2010-11-23'
      * and datum <= '2010-11-30'
-     * and issue_nr in (select id from base_issue bi where bi.project_id = (select id from project p where p.project_name='RapidPM - intern - allgemeines'))
+     * and issue_nr in (select id from base_issue bi where bi.project_id = (select id from project p where p.project_name='NeoScio - intern - allgemeines'))
      * and issue_nr in (select id from base_issue bi where bi.status_id = (select id from status s where s.name='open'))
      *
      * @param mandantengruppe

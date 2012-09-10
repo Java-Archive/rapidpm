@@ -1,6 +1,6 @@
 package org.rapidpm.persistence.prj.stammdaten.address;
 /**
- * RapidPM
+ * NeoScio
  * User: svenruppert
  * Date: 06.03.2010
  * Time: 18:45:14
@@ -9,13 +9,13 @@ package org.rapidpm.persistence.prj.stammdaten.address;
  *
  */
 
-import org.rapidpm.persistence.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-public class StateDAO extends BaseDaoFactory.BaseDAO<Long, State> {
+public class StateDAO extends BaseDAO<Long, State> {
     private static final Logger logger = Logger.getLogger(StateDAO.class);
 
     public StateDAO(final EntityManager entityManager) {
@@ -23,9 +23,8 @@ public class StateDAO extends BaseDaoFactory.BaseDAO<Long, State> {
     }
 
     public State loadStateForShortname(final String shortname) {
-        final TypedQuery<State> typedQuery = entityManager.createQuery("from State s where s.kurzName=:shortname", State.class).setParameter(
-                "shortname",
-                shortname);
+        final TypedQuery<State> typedQuery = entityManager.createQuery("from State s where s.kurzName=:shortname", State.class)
+                .setParameter("shortname", shortname);
         return getSingleResultOrNull(typedQuery);
     }
 }

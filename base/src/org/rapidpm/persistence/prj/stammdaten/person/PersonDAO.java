@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.prj.stammdaten.person;
 
-import org.rapidpm.persistence.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -12,9 +12,9 @@ import java.util.List;
  * User: sven.ruppert
  * Date: 23.04.2010
  * Time: 11:28:38
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
-public class PersonDAO extends BaseDaoFactory.BaseDAO<Long, Person> {
+public class PersonDAO extends BaseDAO<Long, Person> {
     private static final Logger logger = Logger.getLogger(PersonDAO.class);
 
     public PersonDAO(final EntityManager entityManager) {

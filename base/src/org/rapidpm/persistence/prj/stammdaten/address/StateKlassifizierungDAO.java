@@ -3,15 +3,15 @@ package org.rapidpm.persistence.prj.stammdaten.address; /**
  * User: svenruppert
  * Date: 09.11.11
  * Time: 01:06
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
-import org.rapidpm.persistence.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
 
 import javax.persistence.EntityManager;
 
-public class StateKlassifizierungDAO extends BaseDaoFactory.BaseDAO<Long, StateKlassifizierung> {
+public class StateKlassifizierungDAO extends BaseDAO<Long, StateKlassifizierung> {
     private static final Logger logger = Logger.getLogger(StateKlassifizierungDAO.class);
 
 

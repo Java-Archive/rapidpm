@@ -1,15 +1,15 @@
 package org.rapidpm.persistence.prj.bewegungsdaten;
 
-import org.rapidpm.persistence.BaseDaoFactory;
+import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
-import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 /**
- * RapidPM
+ * NeoScio
  * User: Manfred
  * Date: 22.02.2010
  * Time: 18:33:22
@@ -17,7 +17,7 @@ import java.util.List;
  * please contact sven.ruppert@me.com
  */
 
-public class RegistrationDAO extends BaseDaoFactory.BaseDAO<Long, Registration> {
+public class RegistrationDAO extends BaseDAO<Long, Registration> {
     private static final Logger logger = Logger.getLogger(RegistrationDAO.class);
 
     public RegistrationDAO(final EntityManager entityManager) {

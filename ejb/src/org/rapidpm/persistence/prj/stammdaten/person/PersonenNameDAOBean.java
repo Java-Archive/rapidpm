@@ -5,16 +5,16 @@ package org.rapidpm.persistence.prj.stammdaten.person;
  * User: svenruppert
  * Date: 15.07.11
  * Time: 09:04
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
+import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
 import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
-import org.rapidpm.persistence.prj.stammdaten.DaoFactoryBean;
-import org.apache.log4j.Logger;
+import org.rapidpm.persistence.DaoFactoryBean;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;

@@ -3,15 +3,15 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit; /**
  * User: svenruppert
  * Date: 19.12.11
  * Time: 09:09
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
-import org.rapidpm.persistence.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
 
 import javax.persistence.EntityManager;
 
-public class OrganisationseinheitMetaDataDAO extends BaseDaoFactory.BaseDAO<Long, OrganisationseinheitMetaData> {
+public class OrganisationseinheitMetaDataDAO extends BaseDAO<Long, OrganisationseinheitMetaData> {
     private static final Logger logger = Logger.getLogger(OrganisationseinheitMetaDataDAO.class);
 
 

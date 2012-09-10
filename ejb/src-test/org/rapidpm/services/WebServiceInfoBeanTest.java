@@ -1,13 +1,13 @@
 /*
  * Copyright (c) 2011. Diese Quelltexte sind Eigentum der RapidPM - www.rapidpm.org (RapidPM - www.rapidpm.org)
- * Bei Frage wenden Sie sich bitte an sven.ruppert@rapidpm.org
+ * Bei Frage wenden Sie sich bitte an sven.ruppert@neoscio.de
  */
 
 package org.rapidpm.services;
 
-import org.rapidpm.persistence.BaseDAOBeanTest;
-import org.rapidpm.persistence.BaseDaoFactoryBean;
 import org.junit.Test;
+import org.rapidpm.orm.DaoFactoryBean;
+import org.rapidpm.orm.DaoFactoryBeanTest;
 
 import java.util.List;
 
@@ -17,9 +17,9 @@ import java.util.List;
  * Date: 18.01.12
  * Time: 12:31
  */
-public class WebServiceInfoBeanTest extends BaseDAOBeanTest<WebServiceInfoBean> {
+public class WebServiceInfoBeanTest extends DaoFactoryBeanTest<WebServiceInfoBean> {
     public WebServiceInfoBeanTest() {
-        super(WebServiceInfoBean.class, BaseDaoFactoryBean.class);
+        super(WebServiceInfoBean.class, DaoFactoryBean.class);
     }
 
     @Test

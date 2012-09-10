@@ -16,7 +16,7 @@ import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Named;
 
-@Named(value = "logger")
+@Named(value = "LogFactory")
 @RequestScoped
 @Default
 public class LogFactory {

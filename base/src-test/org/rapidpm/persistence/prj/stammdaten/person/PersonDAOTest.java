@@ -1,9 +1,9 @@
 package org.rapidpm.persistence.prj.stammdaten.person;
 
+import org.junit.Test;
 import org.rapidpm.persistence.prj.BaseDAOTest;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
-import org.junit.Test;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class PersonDAOTest extends BaseDAOTest {
      */
     @Test
     public void testLoadPersonByMandantengruppe() throws Exception {
-        final PersonDAO personDAO = daoFactory.getPersonDAO();
+        final PersonDAO personDAO = daoFactoryFactory.getPersonDAO();
         final List<Person> personList = personDAO.loadPersonByMandantengruppe(KIO_OBERBERG);
         assertNotNull(personList);
         assertFalse(personList.isEmpty());
@@ -55,7 +55,7 @@ public class PersonDAOTest extends BaseDAOTest {
      */
     @Test
     public void testLoadPersonByBenutzerId() throws Exception {
-        final PersonDAO dao = daoFactory.getPersonDAO();
+        final PersonDAO dao = daoFactoryFactory.getPersonDAO();
         final Person person = dao.loadPersonByBenutzer(2L);
         assertNotNull(person);
     }

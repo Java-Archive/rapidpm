@@ -1,8 +1,8 @@
 package org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.msg;
 
-import org.rapidpm.persistence.BaseDaoFactory;
-import org.rapidpm.persistence.system.security.Benutzer;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.system.security.Benutzer;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
  *        Time: 16:34:25
  */
 
-public class PersonalMessageDAO extends BaseDaoFactory.BaseDAO<Long, PersonalMessage> {
+public class PersonalMessageDAO extends BaseDAO<Long, PersonalMessage> {
     private static final Logger logger = Logger.getLogger(PersonalMessageDAO.class);
 
     public PersonalMessageDAO(final EntityManager entityManager) {
@@ -65,7 +65,7 @@ public class PersonalMessageDAO extends BaseDaoFactory.BaseDAO<Long, PersonalMes
     //        pmsru.setSubject("Registration : " + mandantengruppe);
     //        pmsru.setUnread(true);
     //        pmsru.setSender(sender);
-    //        pmsru.setEmpfaenger(new BenutzerDAO(entityManager).loadBenutzer(assigne, "RapidPMPortal"));
+    //        pmsru.setEmpfaenger(new BenutzerDAO(entityManager).loadBenutzer(assigne, "NeoScioPortal"));
     //        persist(pmsru);
     //
     //    }
@@ -77,7 +77,7 @@ public class PersonalMessageDAO extends BaseDaoFactory.BaseDAO<Long, PersonalMes
     //        pmsru.setSubject("New Passwdord : " + mandantengruppe);
     //        pmsru.setUnread(true);
     //        pmsru.setSender(sender);
-    //        pmsru.setEmpfaenger(new BenutzerDAO(entityManager).loadBenutzer(assigne, "RapidPMPortal"));
+    //        pmsru.setEmpfaenger(new BenutzerDAO(entityManager).loadBenutzer(assigne, "NeoScioPortal"));
     //        persist(pmsru);
     //    }
     //
@@ -88,7 +88,7 @@ public class PersonalMessageDAO extends BaseDaoFactory.BaseDAO<Long, PersonalMes
     //        pmsru.setSubject("Kontaktanfrage : " + mandantengruppe);
     //        pmsru.setUnread(true);
     //        pmsru.setSender(sender);
-    //        pmsru.setEmpfaenger(new BenutzerDAO(entityManager).loadBenutzer(assigne, "RapidPMPortal"));
+    //        pmsru.setEmpfaenger(new BenutzerDAO(entityManager).loadBenutzer(assigne, "NeoScioPortal"));
     //        persist(pmsru);
     //    }
 

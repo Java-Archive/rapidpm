@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2011. Diese Quelltexte sind Eigentum der RapidPM - www.rapidpm.org (RapidPM - www.rapidpm.org)
- * Bei Frage wenden Sie sich bitte an sven.ruppert@rapidpm.org
+ * Bei Frage wenden Sie sich bitte an sven.ruppert@neoscio.de
  */
 
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
@@ -12,12 +12,12 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
  * To change this template use File | Settings | File Templates.
  */
 
+import org.junit.Test;
 import org.rapidpm.persistence.prj.BaseDAOTest;
 import org.rapidpm.persistence.prj.stammdaten.address.Adresse;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomain;
 import org.rapidpm.ormviews.ViewOrgEinheitHptTaetigkeitsfeld;
 import org.rapidpm.ormviews.ViewOrgEinheitWebDomain;
-import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +30,7 @@ public class OrganisationseinheitDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadViewOrgEinheitWebDomain() throws Exception {
-        final List<ViewOrgEinheitWebDomain> views = daoFactory.getOrganisationseinheitDAO().loadViewOrgEinheitWebDomain("Hochschulsuchmaschine");
+        final List<ViewOrgEinheitWebDomain> views = daoFactoryFactory.getOrganisationseinheitDAO().loadViewOrgEinheitWebDomain("Hochschulsuchmaschine");
         assertNotNull(views);
         assertFalse(views.isEmpty());
         System.out.println("views.size() = " + views.size());
@@ -44,7 +44,7 @@ public class OrganisationseinheitDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadViewOrgEinheitHptTaetigkeitsfeld() throws Exception {
-        final List<ViewOrgEinheitHptTaetigkeitsfeld> views = daoFactory.getOrganisationseinheitDAO().loadViewOrgEinheitHptTaetigkeitsfeld("Hochschulsuchmaschine");
+        final List<ViewOrgEinheitHptTaetigkeitsfeld> views = daoFactoryFactory.getOrganisationseinheitDAO().loadViewOrgEinheitHptTaetigkeitsfeld("Hochschulsuchmaschine");
         assertNotNull(views);
         assertFalse(views.isEmpty());
         System.out.println("views.size() = " + views.size());
@@ -56,7 +56,7 @@ public class OrganisationseinheitDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadOrganisationseinheitenForMandantengruppe() throws Exception {
-        final OrganisationseinheitDAO organisationseinheitDAO = daoFactory.getOrganisationseinheitDAO();
+        final OrganisationseinheitDAO organisationseinheitDAO = daoFactoryFactory.getOrganisationseinheitDAO();
 
         final List<Organisationseinheit> meotec = organisationseinheitDAO.loadOrganisationseinheitenForMandantengruppe("meotec");
 
@@ -81,8 +81,8 @@ public class OrganisationseinheitDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadAllEntitiesFetchAllEager() throws Exception {
-        final List<Organisationseinheit> organisationseinheits = daoFactory.getOrganisationseinheitDAO().loadAllEntities(true);
-        daoFactory.getEntityManager().close();
+        final List<Organisationseinheit> organisationseinheits = daoFactoryFactory.getOrganisationseinheitDAO().loadAllEntities(true);
+        daoFactoryFactory.getEntityManager().close();
         for (final Organisationseinheit organisationseinheit : organisationseinheits) {
             final List<Adresse> adressen = organisationseinheit.getAdressen();
             for (final Adresse adresse : adressen) {
@@ -94,7 +94,7 @@ public class OrganisationseinheitDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadOrganisationseinheitenFor() throws Exception {
-        final OrganisationseinheitDAO organisationseinheitDAO = daoFactory.getOrganisationseinheitDAO();
+        final OrganisationseinheitDAO organisationseinheitDAO = daoFactoryFactory.getOrganisationseinheitDAO();
         final List<Organisationseinheit> organisationseinheitList = organisationseinheitDAO.loadOrganisationseinheitenFor("KIO Oberberg", "Kunststoffverarbeitung");
         assertNotNull(organisationseinheitList);
         assertFalse(organisationseinheitList.isEmpty());
@@ -106,7 +106,7 @@ public class OrganisationseinheitDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadOrganisationseinheitForID() throws Exception {
-        final OrganisationseinheitDAO organisationseinheitDAO = daoFactory.getOrganisationseinheitDAO();
+        final OrganisationseinheitDAO organisationseinheitDAO = daoFactoryFactory.getOrganisationseinheitDAO();
 
         final List<Organisationseinheit> organisationseinheitList = organisationseinheitDAO.loadAllEntities();
         final List<Long> oids = new ArrayList<Long>();

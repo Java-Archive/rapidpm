@@ -32,7 +32,7 @@ public abstract class BaseOrmResult<T> extends LoggingResult implements Serializ
 
     protected List<T> objList = new ArrayList<>();
 
-    public List getGenericObjList() {
+    public List<T> getGenericObjList() {
         return objList;
     }
 

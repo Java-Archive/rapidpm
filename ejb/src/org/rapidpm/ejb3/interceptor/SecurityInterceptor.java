@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2011. Diese Quelltexte sind Eigentum der RapidPM - www.rapidpm.org (RapidPM - www.rapidpm.org)
- * Bei Frage wenden Sie sich bitte an sven.ruppert@rapidpm.org
+ * Bei Frage wenden Sie sich bitte an sven.ruppert@neoscio.de
  */
 
 package org.rapidpm.ejb3.interceptor;
@@ -10,17 +10,17 @@ package org.rapidpm.ejb3.interceptor;
  * User: svenruppert
  * Date: 25.10.11
  * Time: 12:02
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
+import org.apache.log4j.Logger;
 import org.rapidpm.data.LoggingResult;
 import org.rapidpm.exception.RapidPMException;
 import org.rapidpm.logging.LogEventEntryWriterBean;
-import org.rapidpm.persistence.prj.stammdaten.DaoFactoryBean;
-import org.rapidpm.persistence.system.logging.LogLevelEnum;
-import org.rapidpm.persistence.system.logging.LoggingEventEntry;
-import org.rapidpm.persistence.system.security.Benutzer;
-import org.apache.log4j.Logger;
+import org.rapidpm.orm.DaoFactoryBean;
+import org.rapidpm.orm.system.logging.LogLevelEnum;
+import org.rapidpm.orm.system.logging.LoggingEventEntry;
+import org.rapidpm.orm.system.security.Benutzer;
 
 import javax.ejb.EJB;
 import javax.interceptor.AroundInvoke;

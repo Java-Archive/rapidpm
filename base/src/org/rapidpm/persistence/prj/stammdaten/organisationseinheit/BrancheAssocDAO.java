@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
 
-import org.rapidpm.persistence.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.BaseDAO;
 
 import javax.persistence.EntityManager;
 
@@ -17,7 +17,7 @@ import javax.persistence.EntityManager;
  *        Time: 16:33:54
  */
 
-public class BrancheAssocDAO extends BaseDaoFactory.BaseDAO<Long, BrancheAssoc> {
+public class BrancheAssocDAO extends BaseDAO<Long, BrancheAssoc> {
     private static final Logger logger = Logger.getLogger(BrancheAssocDAO.class);
 
     public BrancheAssocDAO(final EntityManager entityManager) {
