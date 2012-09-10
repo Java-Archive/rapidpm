@@ -9,13 +9,13 @@ package org.rapidpm.orm.prj.stammdaten.person;
  *
  */
 
-import org.rapidpm.orm.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.orm.BaseDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-public class NamensKlassifizierungDAO extends BaseDaoFactory.BaseDAO<Long, NamensKlassifizierung> {
+public class NamensKlassifizierungDAO extends BaseDAO<Long, NamensKlassifizierung> {
     private static final Logger logger = Logger.getLogger(NamensKlassifizierungDAO.class);
 
     public NamensKlassifizierungDAO(final EntityManager entityManager) {

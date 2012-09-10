@@ -5,8 +5,8 @@
 
 package org.rapidpm.orm.prj.stammdaten.address;
 
-import org.rapidpm.orm.prj.BaseDAOBeanTest;
 import org.junit.Test;
+import org.rapidpm.orm.prj.BaseDAOBeanTest;
 
 import static org.junit.Assert.assertTrue;
 
@@ -28,12 +28,12 @@ public class AdresseDAOBeanTest extends BaseDAOBeanTest<AdresseDAOBean> {
         adresse.setHausnummer("23");
         adresse.setNotiz("Keine Notiz");
         adresse.setOrtsname("Iserlohn");
-        adresse.setAdressKlassifizierungOID(daoFactory.getAddressKlassifizierungDAO().loadKlassifizierungPrivat().getId());
+        adresse.setAdressKlassifizierungOID(daoFactoryFactory.getAddressKlassifizierungDAO().loadKlassifizierungPrivat().getId());
         adresse.setPlz("58097");
         adresse.setGrosskundenplz(false);
-        adresse.setStateOID(daoFactory.getStateDAO().loadStateForShortname("NRW").getId());
+        adresse.setStateOID(daoFactoryFactory.getStateDAO().loadStateForShortname("NRW").getId());
 
-        daoFactory.new Transaction() {
+        daoFactoryFactory.getAdresseDAO().new Transaction() {
             @Override
             public void doTask() {
                 final AdresseDAOBean.AdresseResult result = daoBean.saveOrUpdateTX("sessionID", -1L, adresse);

@@ -5,21 +5,20 @@
 
 package org.rapidpm.orm.security;
 
+import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.data.LoggingResult;
 import org.rapidpm.ejb3.CRUDExecuter;
 import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
-import org.rapidpm.orm.BaseDaoFactoryBean;
-import org.rapidpm.orm.prj.stammdaten.DaoFactoryBean;
+import org.rapidpm.orm.DaoFactoryBean;
 import org.rapidpm.orm.system.logging.LogLevelEnum;
 import org.rapidpm.orm.system.logging.LoggingEventEntry;
 import org.rapidpm.orm.system.security.Benutzer;
 import org.rapidpm.orm.system.security.BenutzerDAO;
 import org.rapidpm.orm.system.security.Mandantengruppe;
 import org.rapidpm.orm.system.security.berechtigungen.Berechtigung;
-import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;

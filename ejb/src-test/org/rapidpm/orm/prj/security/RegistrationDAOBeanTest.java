@@ -5,9 +5,9 @@
 
 package org.rapidpm.orm.prj.security;
 
+import org.junit.Test;
 import org.rapidpm.orm.prj.BaseDAOBeanTest;
 import org.rapidpm.orm.security.RegistrationDAOBean;
-import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
@@ -40,13 +40,13 @@ public class RegistrationDAOBeanTest extends BaseDAOBeanTest<RegistrationDAOBean
         registration.setTitel("");
         registration.setStrasse("Galmeistraße");
         registration.setHausnr("23");
-        registration.setRegistrationStatusOID(daoFactory.getRegistrationStatusDAO().loadRegistrationStatus_Zur_Pruefung().getId());
-        registration.setTaetigkeitsfeldOID(daoFactory.getTaetigkeitsfeldDAO().loadTaetigkeitsfeldNichtEingeordnet().getId());
-        registration.setAnredeOID(daoFactory.getAnredeDAO().loadAnredeHerr().getId());
-        registration.setMandantengruppeOID(daoFactory.getMandantengruppeDAO().loadMandantengruppe("NeoScioPortal").getId());
-        registration.setBenutzerWebapplikationOID(daoFactory.getBenutzerWebapplikationDAO().loadBenutzerWebapplikation("NeoScioPortal_App").getId());
+        registration.setRegistrationStatusOID(daoFactoryFactory.getRegistrationStatusDAO().loadRegistrationStatus_Zur_Pruefung().getId());
+        registration.setTaetigkeitsfeldOID(daoFactoryFactory.getTaetigkeitsfeldDAO().loadTaetigkeitsfeldNichtEingeordnet().getId());
+        registration.setAnredeOID(daoFactoryFactory.getAnredeDAO().loadAnredeHerr().getId());
+        registration.setMandantengruppeOID(daoFactoryFactory.getMandantengruppeDAO().loadMandantengruppe("NeoScioPortal").getId());
+        registration.setBenutzerWebapplikationOID(daoFactoryFactory.getBenutzerWebapplikationDAO().loadBenutzerWebapplikation("NeoScioPortal_App").getId());
 
-        daoFactory.new Transaction() {
+        daoFactoryFactory.getRegistrationDAO().new Transaction() {
             @Override
             public void doTask() {
                 final RegistrationDAOBean.RegistrationResult result = daoBean.saveOrUpdateTX("sessionID", -1L, registration);

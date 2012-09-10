@@ -1,7 +1,7 @@
 package org.rapidpm.orm.system.security;
 
-import org.rapidpm.orm.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.orm.BaseDAO;
 
 import javax.persistence.EntityManager;
 
@@ -17,7 +17,7 @@ import javax.persistence.EntityManager;
  *        Time: 17:27:05
  */
 
-public class NewPasswdRequestDAO extends BaseDaoFactory.BaseDAO<Long, NewPasswdRequest> {
+public class NewPasswdRequestDAO extends BaseDAO<Long, NewPasswdRequest> {
     private static final Logger logger = Logger.getLogger(NewPasswdRequestDAO.class);
 
     public NewPasswdRequestDAO(final EntityManager entityManager) {

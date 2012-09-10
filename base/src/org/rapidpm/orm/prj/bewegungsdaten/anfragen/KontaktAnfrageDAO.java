@@ -1,7 +1,7 @@
 package org.rapidpm.orm.prj.bewegungsdaten.anfragen;
 
-import org.rapidpm.orm.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.orm.BaseDAO;
 
 import javax.persistence.EntityManager;
 
@@ -17,7 +17,7 @@ import javax.persistence.EntityManager;
  *        Time: 15:29:02
  */
 
-public class KontaktAnfrageDAO extends BaseDaoFactory.BaseDAO<Long, KontaktAnfrage> {
+public class KontaktAnfrageDAO extends BaseDAO<Long, KontaktAnfrage> {
     private static final Logger logger = Logger.getLogger(KontaktAnfrageDAO.class);
 
     public KontaktAnfrageDAO(final EntityManager entityManager) {

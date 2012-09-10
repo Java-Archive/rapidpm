@@ -5,8 +5,8 @@
 
 package org.rapidpm.orm.prj.stammdaten.address;
 
-import org.rapidpm.orm.prj.BaseDAOTest;
 import org.junit.Test;
+import org.rapidpm.orm.prj.BaseDAOTest;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNotNull;
 public class AdresseDAOTest extends BaseDAOTest {
     @Test
     public void testGetAdressenByPerson() throws Exception {
-        final AdresseDAO dao = daoFactory.getAdresseDAO();
+        final AdresseDAO dao = daoFactoryFactory.getAdresseDAO();
         final List<Adresse> adressen = dao.getAdressenForPerson(1L);
         assertNotNull(adressen);
         assertFalse(adressen.isEmpty());

@@ -8,14 +8,14 @@ package org.rapidpm.orm.prj.stammdaten.kommunikation;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
-import org.rapidpm.orm.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.orm.BaseDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-public class KommunikationsServiceUIDDAO extends BaseDaoFactory.BaseDAO<Long, KommunikationsServiceUID> {
+public class KommunikationsServiceUIDDAO extends BaseDAO<Long, KommunikationsServiceUID> {
     private static final Logger logger = Logger.getLogger(KommunikationsServiceUIDDAO.class);
 
 

@@ -8,15 +8,14 @@ package org.rapidpm.ejb3.interceptor;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
+import org.apache.log4j.Logger;
 import org.rapidpm.data.LoggingResult;
 import org.rapidpm.logging.LogEventEntryWriterBean;
-import org.rapidpm.orm.BaseDaoFactoryBean;
-import org.rapidpm.orm.prj.stammdaten.DaoFactoryBean;
+import org.rapidpm.orm.DaoFactoryBean;
 import org.rapidpm.orm.system.logging.LogLevelEnum;
 import org.rapidpm.orm.system.logging.LoggingEventEntry;
 import org.rapidpm.orm.system.logging.LoggingEventParam;
 import org.rapidpm.orm.system.security.Benutzer;
-import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
 import javax.interceptor.AroundInvoke;

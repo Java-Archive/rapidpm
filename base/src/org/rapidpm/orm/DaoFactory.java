@@ -8,9 +8,10 @@ package org.rapidpm.orm;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
-import org.rapidpm.orm.prj.bewegungsdaten.anfragen.KontaktAnfrageDAO;
+import org.apache.log4j.Logger;
 import org.rapidpm.orm.prj.bewegungsdaten.RegistrationDAO;
 import org.rapidpm.orm.prj.bewegungsdaten.RegistrationStatusDAO;
+import org.rapidpm.orm.prj.bewegungsdaten.anfragen.KontaktAnfrageDAO;
 import org.rapidpm.orm.prj.bewegungsdaten.anfragen.ProjektanfrageDAO;
 import org.rapidpm.orm.prj.bewegungsdaten.msgcenter.MessageDAO;
 import org.rapidpm.orm.prj.bewegungsdaten.msgcenter.msg.PersonalMessageDAO;
@@ -44,15 +45,30 @@ import org.rapidpm.orm.rohdaten.OntologieEntryDAO;
 import org.rapidpm.orm.system.logging.LogginEntityActionDAO;
 import org.rapidpm.orm.system.logging.LogginEntityEntryDAO;
 import org.rapidpm.orm.system.logging.LoggingEventEntryDAO;
-import org.apache.log4j.Logger;
 import org.rapidpm.orm.system.security.*;
 import org.rapidpm.orm.system.security.berechtigungen.BerechtigungDAO;
 
-public class DaoFactory extends BaseDaoFactory {
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+public class DaoFactory {
     private static final Logger logger = Logger.getLogger(DaoFactory.class);
+    private BaseDAO.EntityUtils entityUtils;
 
     public DaoFactory(final String persistenceUnitName) {
-        super(persistenceUnitName);
+        final EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
+        this.entityManager = emf.createEntityManager();
+    }
+
+    private EntityManager entityManager;
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
     }
 
     public DaoFactory() {
@@ -355,4 +371,15 @@ public class DaoFactory extends BaseDaoFactory {
         return new ProjektanfrageDAO(getEntityManager());
     }
 
+    public <T> void remove(T entity) {
+        getEntityManager().remove(entity);
+    }
+
+    public <T> void saveOrUpdate(T entity) {
+        getEntityManager().persist(entity);
+    }
+
+    public BaseDAO.EntityUtils getEntityUtils() {
+        return entityUtils;
+    }
 }

@@ -1,7 +1,7 @@
 package org.rapidpm.orm.prj.stammdaten.kommunikation;
 
-import org.rapidpm.orm.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.orm.BaseDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -18,7 +18,7 @@ import javax.persistence.TypedQuery;
  *        Time: 14:21:56
  */
 
-public class KommunikationsServiceKlassifizierungDAO extends BaseDaoFactory.BaseDAO<Long, KommunikationsServiceKlassifizierung> {
+public class KommunikationsServiceKlassifizierungDAO extends BaseDAO<Long, KommunikationsServiceKlassifizierung> {
     private static final Logger logger = Logger.getLogger(KommunikationsServiceKlassifizierungDAO.class);
 
     public KommunikationsServiceKlassifizierungDAO(final EntityManager entityManager) {

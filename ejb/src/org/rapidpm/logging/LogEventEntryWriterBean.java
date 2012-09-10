@@ -1,7 +1,7 @@
 package org.rapidpm.logging;
 
 import org.rapidpm.Constants;
-import org.rapidpm.orm.BaseDaoFactoryBean;
+import org.rapidpm.orm.DaoFactoryBean;
 import org.rapidpm.orm.system.logging.LogLevelEnum;
 import org.rapidpm.orm.system.logging.LoggingEventEntry;
 import org.rapidpm.orm.system.logging.LoggingEventParam;
@@ -29,8 +29,8 @@ public class LogEventEntryWriterBean {
     private final SimpleDateFormat formatDayHour = new SimpleDateFormat(Constants.YYYY_MM_DD_HH, Locale.GERMANY);
     private final SimpleDateFormat formatDayHourMinute = new SimpleDateFormat(Constants.YYYY_MM_DD_HH_MM_SS, Locale.GERMANY);
 
-    @EJB(beanName = "BaseDaoFactoryEJB")
-    private transient BaseDaoFactoryBean daoFactory;
+    @EJB(beanName = "DaoFactoryEJB")
+    private transient DaoFactoryBean daoFactory;
 
 
     public LogEventEntryWriterBean() {

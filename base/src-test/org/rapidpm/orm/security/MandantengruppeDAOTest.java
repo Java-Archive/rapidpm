@@ -1,11 +1,11 @@
 package org.rapidpm.orm.security;
 
-import org.rapidpm.orm.BaseDAOTest;
-import org.rapidpm.orm.system.security.Mandantengruppe;
-import org.rapidpm.orm.system.security.MandantengruppeDAO;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.junit.Test;
+import org.rapidpm.orm.BaseDAOTest;
+import org.rapidpm.orm.system.security.Mandantengruppe;
+import org.rapidpm.orm.system.security.MandantengruppeDAO;
 
 import java.util.List;
 
@@ -38,14 +38,14 @@ public class MandantengruppeDAOTest extends BaseDAOTest {
     public void testAddMandantengruppe() throws Exception {
         final Mandantengruppe m = new Mandantengruppe();
         m.setMandantengruppe("TestMandantengruppe");
-        daoFactory.saveOrUpdateTX(m);
+        daoFactory.getMandantengruppeDAO().saveOrUpdateTX(m);
     }
 
     @Test
     public void testModifyMandantengruppe() throws Exception {
         final Mandantengruppe m = daoFactory.getMandantengruppeDAO().loadMandantengruppe("TestMandantengruppe");
         m.setMandantengruppe("TestMandantengruppe_Modified");
-        daoFactory.saveOrUpdateTX(m);
+        daoFactory.getMandantengruppeDAO().saveOrUpdateTX(m);
 
     }
 

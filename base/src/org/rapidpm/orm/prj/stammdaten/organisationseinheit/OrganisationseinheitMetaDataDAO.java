@@ -6,12 +6,12 @@ package org.rapidpm.orm.prj.stammdaten.organisationseinheit; /**
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
-import org.rapidpm.orm.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.orm.BaseDAO;
 
 import javax.persistence.EntityManager;
 
-public class OrganisationseinheitMetaDataDAO extends BaseDaoFactory.BaseDAO<Long, OrganisationseinheitMetaData> {
+public class OrganisationseinheitMetaDataDAO extends BaseDAO<Long, OrganisationseinheitMetaData> {
     private static final Logger logger = Logger.getLogger(OrganisationseinheitMetaDataDAO.class);
 
 

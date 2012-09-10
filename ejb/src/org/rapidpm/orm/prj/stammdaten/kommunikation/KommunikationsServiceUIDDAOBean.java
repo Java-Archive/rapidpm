@@ -5,14 +5,14 @@
 
 package org.rapidpm.orm.prj.stammdaten.kommunikation;
 
+import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.data.LoggingResult;
 import org.rapidpm.ejb3.CRUDExecuter;
 import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
-import org.rapidpm.orm.prj.stammdaten.DaoFactoryBean;
-import org.apache.log4j.Logger;
+import org.rapidpm.orm.DaoFactoryBean;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;

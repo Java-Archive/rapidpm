@@ -5,9 +5,9 @@
 
 package org.rapidpm.orm.prj.projectmanagement.execution;
 
-import org.rapidpm.orm.BaseDAOBeanTest;
-import org.rapidpm.orm.prj.stammdaten.DaoFactoryBean;
 import org.junit.Test;
+import org.rapidpm.orm.DaoFactoryBean;
+import org.rapidpm.orm.DaoFactoryBeanTest;
 
 import static org.junit.Assert.assertTrue;
 
@@ -17,14 +17,14 @@ import static org.junit.Assert.assertTrue;
  * Date: 05.01.12
  * Time: 10:19
  */
-public class IssueBaseDAOBeanTest extends BaseDAOBeanTest<IssueBaseDAOBean> {
+public class IssueBaseDAOBeanTest extends DaoFactoryBeanTest<IssueBaseDAOBean> {
     public IssueBaseDAOBeanTest() {
         super(IssueBaseDAOBean.class, DaoFactoryBean.class);
     }
 
     @Test
     public void testConnectIssueComment() throws Exception {
-        daoFactory.new Transaction() {
+        daoFactory.getIssueBaseDAO().new Transaction() {
             @Override
             public void doTask() {
                 final IssueBaseDAOBean.IssueBaseResult result = daoBean.connectIssueComment("sessionID", -1L, 1L, 1L);
@@ -35,7 +35,7 @@ public class IssueBaseDAOBeanTest extends BaseDAOBeanTest<IssueBaseDAOBean> {
 
     @Test
     public void testConnectIssueTimeUnitUsed() throws Exception {
-        daoFactory.new Transaction() {
+        daoFactory.getIssueBaseDAO().new Transaction() {
             @Override
             public void doTask() {
                 final IssueBaseDAOBean.IssueBaseResult result = daoBean.connectIssueTimeUnitUsed("sessionID", -1L, 1L, 1L);

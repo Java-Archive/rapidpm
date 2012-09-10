@@ -9,16 +9,16 @@ import org.rapidpm.orm.system.logging.LoggingEventEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractOneToManyConnectExecutor<D extends BaseDaoFactory, E, C, RT extends BaseOrmResult<? extends BaseFlatEntity>> {
+public abstract class AbstractOneToManyConnectExecutor<D extends DaoFactory, E, C, RT extends BaseOrmResult<? extends BaseFlatEntity>> {
 
     //    abstract class OneToManyConnectExecutor<E, C, RT extends BaseOrmResult<? extends BaseFlatEntity>> {
-    private final BaseDaoFactory.BaseDAO<Long, E> entityDAO;
-    private final BaseDaoFactory.BaseDAO<Long, C> entityCollectionDAO;
+    private final BaseDAO<Long, E> entityDAO;
+    private final BaseDAO<Long, C> entityCollectionDAO;
     private final D daoFactory;
 
     public AbstractOneToManyConnectExecutor(final D daoFactory,
-                                            final BaseDaoFactory.BaseDAO<Long, E> entityDAO,
-                                            final BaseDaoFactory.BaseDAO<Long, C> entityCollectionDAO) {
+                                            final BaseDAO<Long, E> entityDAO,
+                                            final BaseDAO<Long, C> entityCollectionDAO) {
         this.entityDAO = entityDAO;
         this.entityCollectionDAO = entityCollectionDAO;
         this.daoFactory = daoFactory;
@@ -44,7 +44,7 @@ public abstract class AbstractOneToManyConnectExecutor<D extends BaseDaoFactory,
                         methodName, sessionID, entityDAO.entityClass.getSimpleName() + " " + entityOID + " wurde erfolgreich mit " +
                         entityCollectionDAO.entityClass.getSimpleName() + " " + entityCollectionOID + " verknüpft"));
             } catch (Exception e) {
-                valid = e instanceof BaseDaoFactory.BaseDAO.AlreadyConnectedException; // QUEST gültig, wenn bereits verknüpft?
+                valid = e instanceof BaseDAO.AlreadyConnectedException; // QUEST gültig, wenn bereits verknüpft?
                 loggingEventEntries.add(logEventEntryWriterBean.createLoggingEventEntry(LogLevelEnum.LOGIKINFO,
                         methodName, sessionID, e.getLocalizedMessage()));
             }

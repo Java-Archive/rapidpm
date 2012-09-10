@@ -7,9 +7,9 @@ package org.rapidpm.orm.prj.projectmanagement.execution.issuetracing;
  * To change this template use File | Settings | File Templates.
  */
 
+import org.junit.Test;
 import org.rapidpm.orm.prj.BaseDAOTest;
 import org.rapidpm.orm.prj.projectmanagement.execution.issuetracking.IssueStatus;
-import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -18,7 +18,7 @@ public class IssueStatusDAOTest extends BaseDAOTest {
 
     @Test
     public void testStatusOpen() throws Exception {
-        final IssueStatus issueStatus = daoFactory.getIssueStatusDAO().loadStatusOpen();
+        final IssueStatus issueStatus = daoFactoryFactory.getIssueStatusDAO().loadStatusOpen();
         assertNotNull(issueStatus);
         assertEquals(issueStatus.getStatusName(), "open");
     }

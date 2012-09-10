@@ -7,8 +7,8 @@ package org.rapidpm.orm.prj.stammdaten.kommunikation;
  * To change this template use File | Settings | File Templates.
  */
 
-import org.rapidpm.orm.prj.BaseDAOTest;
 import org.junit.Test;
+import org.rapidpm.orm.prj.BaseDAOTest;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class KommunikationsServiceDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadServicesForOrganisationseinheit() throws Exception {
-        final KommunikationsServiceDAO dao = daoFactory.getKommunikationsServiceDAO();
+        final KommunikationsServiceDAO dao = daoFactoryFactory.getKommunikationsServiceDAO();
         final List<KommunikationsService> kommunikationsServices = dao.loadServicesForOrganisationseinheit(1l);
         assertFalse(kommunikationsServices.isEmpty());
     }

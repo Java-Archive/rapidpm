@@ -6,12 +6,12 @@ package org.rapidpm.orm.prj.stammdaten.address; /**
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
-import org.rapidpm.orm.BaseDaoFactory;
 import org.apache.log4j.Logger;
+import org.rapidpm.orm.BaseDAO;
 
 import javax.persistence.EntityManager;
 
-public class StateKlassifizierungDAO extends BaseDaoFactory.BaseDAO<Long, StateKlassifizierung> {
+public class StateKlassifizierungDAO extends BaseDAO<Long, StateKlassifizierung> {
     private static final Logger logger = Logger.getLogger(StateKlassifizierungDAO.class);
 
 

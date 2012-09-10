@@ -6,13 +6,13 @@ package org.rapidpm.orm.prj.projectmanagement; /**
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
-import org.rapidpm.orm.BaseDaoFactory;
-import org.rapidpm.orm.prj.projectmanagement.planning.PlannedProjectName;
 import org.apache.log4j.Logger;
+import org.rapidpm.orm.BaseDAO;
+import org.rapidpm.orm.prj.projectmanagement.planning.PlannedProjectName;
 
 import javax.persistence.EntityManager;
 
-public class ProjectNameDAO extends BaseDaoFactory.BaseDAO<Long, PlannedProjectName> {
+public class ProjectNameDAO extends BaseDAO<Long, PlannedProjectName> {
     private static final Logger logger = Logger.getLogger(ProjectNameDAO.class);
 
 

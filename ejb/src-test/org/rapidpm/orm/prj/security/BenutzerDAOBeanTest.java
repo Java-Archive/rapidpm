@@ -5,12 +5,12 @@
 
 package org.rapidpm.orm.prj.security;
 
-import org.rapidpm.orm.BaseDAOBeanTest;
-import org.rapidpm.orm.BaseDaoFactoryBean;
-import org.rapidpm.orm.security.BenutzerDAOBean;
-import org.rapidpm.orm.system.security.Benutzer;
 import org.apache.log4j.BasicConfigurator;
 import org.junit.Test;
+import org.rapidpm.orm.DaoFactoryBean;
+import org.rapidpm.orm.DaoFactoryBeanTest;
+import org.rapidpm.orm.security.BenutzerDAOBean;
+import org.rapidpm.orm.system.security.Benutzer;
 
 import static org.junit.Assert.assertTrue;
 
@@ -20,11 +20,11 @@ import static org.junit.Assert.assertTrue;
  * Date: 15.12.11
  * Time: 14:00
  */
-public class BenutzerDAOBeanTest extends BaseDAOBeanTest<BenutzerDAOBean> {
+public class BenutzerDAOBeanTest extends DaoFactoryBeanTest<BenutzerDAOBean> {
 
 
     public BenutzerDAOBeanTest() {
-        super(BenutzerDAOBean.class, BaseDaoFactoryBean.class);
+        super(BenutzerDAOBean.class, DaoFactoryBean.class);
     }
 
     private Benutzer getTestBenutzer() {
@@ -36,11 +36,11 @@ public class BenutzerDAOBeanTest extends BaseDAOBeanTest<BenutzerDAOBean> {
         BasicConfigurator.configure();
 
         final Benutzer benutzer = getTestBenutzer();
-        daoFactory.new Transaction() {
+        daoFactory.getBenutzerDAO().new Transaction() {
             @Override
             public void doTask() {
                 final BenutzerDAOBean.BenutzerResult result = daoBean.changePasswd("sessionID", -1L, benutzer.getId(), "test");
-                BaseDAOBeanTest.printLog(result);
+                DaoFactoryBeanTest.printLog(result);
                 assertTrue(result.getValid());
             }
         }.execute();
@@ -51,11 +51,11 @@ public class BenutzerDAOBeanTest extends BaseDAOBeanTest<BenutzerDAOBean> {
         BasicConfigurator.configure();
 
         final Benutzer benutzer = getTestBenutzer();
-        daoFactory.new Transaction() {
+        daoFactory.getBenutzerDAO().new Transaction() {
             @Override
             public void doTask() {
                 final BenutzerDAOBean.BenutzerResult result = daoBean.changeLogin("sessionID", -1L, benutzer.getId(), "test.login");
-                BaseDAOBeanTest.printLog(result);
+                DaoFactoryBeanTest.printLog(result);
                 assertTrue(result.getValid());
             }
         }.execute();

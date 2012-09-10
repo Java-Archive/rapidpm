@@ -8,14 +8,14 @@ package org.rapidpm.orm.prj.book;
  * To change this template use File | Settings | File Templates.
  */
 
+import org.apache.log4j.Logger;
+import org.junit.Test;
 import org.rapidpm.orm.prj.BaseDAOTest;
 import org.rapidpm.orm.prj.book.kommentar.BuchAbsatzKommentar;
 import org.rapidpm.orm.prj.book.kommentar.BuchKapitelKommentar;
 import org.rapidpm.orm.prj.book.kommentar.BuchKommentar;
 import org.rapidpm.orm.prj.book.kommentar.BuchSeitenKommentar;
 import org.rapidpm.orm.system.security.Benutzer;
-import org.apache.log4j.Logger;
-import org.junit.Test;
 
 import javax.persistence.EntityTransaction;
 import java.util.ArrayList;
@@ -30,11 +30,11 @@ public class BuchDAOTest extends BaseDAOTest {
         try {
             final EntityTransaction transaction = entityManager.getTransaction();
             transaction.begin();
-            final BuchDAO buchDAO = daoFactory.getBuchDAO();
+            final BuchDAO buchDAO = daoFactoryFactory.getBuchDAO();
 
             final Buch buch = new Buch();
 
-            final Benutzer benutzer = daoFactory.getBenutzerDAO().loadBenutzer("sven.ruppert", "Netzwerk Draht");
+            final Benutzer benutzer = daoFactoryFactory.getBenutzerDAO().loadBenutzer("sven.ruppert", "Netzwerk Draht");
 //            buch.setAutorenliste(new ArrayList<Benutzer>(Arrays.asList(benutzer)));
 //            buch.setLeserliste(new ArrayList<Benutzer>(Arrays.asList(benutzer)));
 

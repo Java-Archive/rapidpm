@@ -7,10 +7,10 @@ package org.rapidpm.orm.prj.projectmanagement.execution.issuetracing;
  * To change this template use File | Settings | File Templates.
  */
 
+import org.junit.Test;
 import org.rapidpm.orm.prj.BaseDAOTest;
 import org.rapidpm.orm.prj.projectmanagement.execution.issuetracking.IssueTimeUnit;
 import org.rapidpm.orm.prj.projectmanagement.execution.issuetracking.IssueTimeUnitDAO;
-import org.junit.Test;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class IssueTimeUnitDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadTimeUnitsFor() throws Exception {
-        final IssueTimeUnitDAO issueTimeUnitDAO = daoFactory.getTimeUnitDAO();
+        final IssueTimeUnitDAO issueTimeUnitDAO = daoFactoryFactory.getTimeUnitDAO();
         List<IssueTimeUnit> issueTimeUnits = issueTimeUnitDAO.loadTimeUnitsFor("NeoScioPortal", "sven.ruppert", null, null, null, null);
         assertNotNull(issueTimeUnits);
         assertEquals(2, issueTimeUnits.size());
