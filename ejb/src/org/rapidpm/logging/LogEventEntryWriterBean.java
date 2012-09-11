@@ -1,11 +1,11 @@
 package org.rapidpm.logging;
 
 import org.rapidpm.Constants;
-import org.rapidpm.orm.DaoFactoryBean;
-import org.rapidpm.orm.system.logging.LogLevelEnum;
-import org.rapidpm.orm.system.logging.LoggingEventEntry;
-import org.rapidpm.orm.system.logging.LoggingEventParam;
-import org.rapidpm.orm.system.security.Benutzer;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.system.logging.LogLevelEnum;
+import org.rapidpm.persistence.system.logging.LoggingEventEntry;
+import org.rapidpm.persistence.system.logging.LoggingEventParam;
+import org.rapidpm.persistence.system.security.Benutzer;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;

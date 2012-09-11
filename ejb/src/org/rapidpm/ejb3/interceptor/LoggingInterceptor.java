@@ -11,11 +11,11 @@ package org.rapidpm.ejb3.interceptor;
 import org.apache.log4j.Logger;
 import org.rapidpm.data.LoggingResult;
 import org.rapidpm.logging.LogEventEntryWriterBean;
-import org.rapidpm.orm.DaoFactoryBean;
-import org.rapidpm.orm.system.logging.LogLevelEnum;
-import org.rapidpm.orm.system.logging.LoggingEventEntry;
-import org.rapidpm.orm.system.logging.LoggingEventParam;
-import org.rapidpm.orm.system.security.Benutzer;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.system.logging.LogLevelEnum;
+import org.rapidpm.persistence.system.logging.LoggingEventEntry;
+import org.rapidpm.persistence.system.logging.LoggingEventParam;
+import org.rapidpm.persistence.system.security.Benutzer;
 
 import javax.ejb.EJB;
 import javax.interceptor.AroundInvoke;

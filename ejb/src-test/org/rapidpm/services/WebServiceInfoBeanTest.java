@@ -6,8 +6,8 @@
 package org.rapidpm.services;
 
 import org.junit.Test;
-import org.rapidpm.orm.DaoFactoryBean;
-import org.rapidpm.orm.DaoFactoryBeanTest;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactoryBeanTest;
 
 import java.util.List;
 

@@ -8,19 +8,20 @@ package org.rapidpm.persistence;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
-import org.rapidpm.persistence.prj.bewegungsdaten.anfragen.KontaktAnfrageDAO;
+import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.bewegungsdaten.RegistrationDAO;
 import org.rapidpm.persistence.prj.bewegungsdaten.RegistrationStatusDAO;
+import org.rapidpm.persistence.prj.bewegungsdaten.anfragen.KontaktAnfrageDAO;
 import org.rapidpm.persistence.prj.bewegungsdaten.anfragen.ProjektanfrageDAO;
 import org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.MessageDAO;
 import org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.msg.PersonalMessageDAO;
-import org.rapidpm.persistence.book.BuchDAO;
-import org.rapidpm.persistence.book.BuchKapitelDAO;
-import org.rapidpm.persistence.book.BuchSeiteDAO;
-import org.rapidpm.persistence.book.BuchSeitenFussnoteDAO;
-import org.rapidpm.persistence.book.kommentar.BuchKapitelKommentarDAO;
-import org.rapidpm.persistence.book.kommentar.BuchKommentarDAO;
-import org.rapidpm.persistence.book.kommentar.BuchSeitenKommentarDAO;
+import org.rapidpm.persistence.prj.book.BuchDAO;
+import org.rapidpm.persistence.prj.book.BuchKapitelDAO;
+import org.rapidpm.persistence.prj.book.BuchSeiteDAO;
+import org.rapidpm.persistence.prj.book.BuchSeitenFussnoteDAO;
+import org.rapidpm.persistence.prj.book.kommentar.BuchKapitelKommentarDAO;
+import org.rapidpm.persistence.prj.book.kommentar.BuchKommentarDAO;
+import org.rapidpm.persistence.prj.book.kommentar.BuchSeitenKommentarDAO;
 import org.rapidpm.persistence.prj.projectmanagement.ProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.ProjectNameDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueCommentDAO;
@@ -44,15 +45,30 @@ import org.rapidpm.persistence.rohdaten.OntologieEntryDAO;
 import org.rapidpm.persistence.system.logging.LogginEntityActionDAO;
 import org.rapidpm.persistence.system.logging.LogginEntityEntryDAO;
 import org.rapidpm.persistence.system.logging.LoggingEventEntryDAO;
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.BerechtigungDAO;
 
-public class DaoFactory extends BaseDaoFactory {
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
+public class DaoFactory {
     private static final Logger logger = Logger.getLogger(DaoFactory.class);
+    private BaseDAO.EntityUtils entityUtils;
 
     public DaoFactory(final String persistenceUnitName) {
-        super(persistenceUnitName);
+        final EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
+        this.entityManager = emf.createEntityManager();
+    }
+
+    private EntityManager entityManager;
+
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
+    public EntityManager getEntityManager() {
+        return this.entityManager;
     }
 
     public DaoFactory() {
@@ -355,4 +371,15 @@ public class DaoFactory extends BaseDaoFactory {
         return new ProjektanfrageDAO(getEntityManager());
     }
 
+    public <T> void remove(T entity) {
+        getEntityManager().remove(entity);
+    }
+
+    public <T> void saveOrUpdate(T entity) {
+        getEntityManager().persist(entity);
+    }
+
+    public BaseDAO.EntityUtils getEntityUtils() {
+        return entityUtils;
+    }
 }

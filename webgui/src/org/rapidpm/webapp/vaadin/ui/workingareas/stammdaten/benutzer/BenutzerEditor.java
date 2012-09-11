@@ -8,12 +8,12 @@ import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.IntegerRangeValidator;
 import com.vaadin.ui.*;
 import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.orm.DaoFactoryBean;
-import org.rapidpm.orm.system.security.Benutzer;
-import org.rapidpm.orm.system.security.BenutzerGruppe;
-import org.rapidpm.orm.system.security.BenutzerWebapplikation;
-import org.rapidpm.orm.system.security.Mandantengruppe;
-import org.rapidpm.orm.system.security.berechtigungen.Berechtigung;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.system.security.Benutzer;
+import org.rapidpm.persistence.system.security.BenutzerGruppe;
+import org.rapidpm.persistence.system.security.BenutzerWebapplikation;
+import org.rapidpm.persistence.system.security.Mandantengruppe;
+import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
 
 import java.util.ArrayList;
 import java.util.Collection;

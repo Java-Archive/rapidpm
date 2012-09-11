@@ -8,10 +8,10 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.*;
 import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.orm.DaoFactoryBean;
-import org.rapidpm.orm.system.security.*;
-import org.rapidpm.orm.system.security.berechtigungen.Berechtigung;
-import org.rapidpm.orm.system.security.berechtigungen.BerechtigungDAO;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.system.security.*;
+import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
+import org.rapidpm.persistence.system.security.berechtigungen.BerechtigungDAO;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
