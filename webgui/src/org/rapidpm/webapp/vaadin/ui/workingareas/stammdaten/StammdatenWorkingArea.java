@@ -12,6 +12,7 @@ import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
 import org.rapidpm.persistence.system.security.berechtigungen.BerechtigungDAO;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.BenutzerEditor;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -65,7 +66,7 @@ public class StammdatenWorkingArea extends HorizontalLayout {
         final Table benutzerTable = new Table("Benutzer", benutzerDS);
         benutzerTable.setWidth(100, Unit.PERCENTAGE);
         benutzerTable.setVisibleColumns(new String[]{"id", "login", "email", "validUntil"});
-        benutzerTable.setColumnHeaders(new String[]{"ID", "Loginname", "E-Mail", "Gültig Bis"});
+        benutzerTable.setColumnHeaders(new String[]{"ID", "Loginname", "E-Mail", "GÃ¼ltig Bis"});
         benutzerTable.setSelectable(true);
 //        benutzerTable.setEditable(true);
         benutzerTable.addGeneratedColumn("validUntil", new Table.ColumnGenerator() {
@@ -79,10 +80,10 @@ public class StammdatenWorkingArea extends HorizontalLayout {
         benutzerTableLayout.addComponent(mandantenSelect);
         benutzerTableLayout.addComponent(benutzerTable);
 
-        final Button removeBenutzerButton = new Button("Benutzer löschen", new Button.ClickListener() {
+        final Button removeBenutzerButton = new Button("Benutzer lÃ¶schen", new Button.ClickListener() {
             @Override
             public void buttonClick(final Button.ClickEvent clickEvent) {
-                // TODO Löschbestätigung
+                // TODO LÃ¶schbestÃ¤tigung
 
                 benutzerTable.removeItem(benutzerTable.getValue());
             }
@@ -106,7 +107,7 @@ public class StammdatenWorkingArea extends HorizontalLayout {
         benutzerButtonsLayout.setSpacing(true);
         benutzerTableLayout.addComponent(benutzerButtonsLayout);
 
-        benutzerButtonsLayout.addComponent(new Button("Benutzer hinzufügen", new Button.ClickListener() {
+        benutzerButtonsLayout.addComponent(new Button("Benutzer hinzufÃ¼gen", new Button.ClickListener() {
             @Override
             public void buttonClick(final Button.ClickEvent clickEvent) {
                 final BeanItem<Benutzer> benutzerBean = benutzerDS.addBean(new Benutzer());

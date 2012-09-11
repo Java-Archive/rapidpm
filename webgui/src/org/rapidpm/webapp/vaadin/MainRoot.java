@@ -32,7 +32,7 @@ public class MainRoot extends BaseRoot {
 
     @Override
     protected void initMenuBar(final MenuBar menuBar) {
-        final ResourceBundle messages = ResourceBundle.getBundle("MessagesBundle", locale);
+        messages = ResourceBundle.getBundle("MessagesBundle", locale);
         final MenuBar.MenuItem stammdatenMenu = menuBar.addItem(messages.getString("masterdata"), null);
         stammdatenMenu.addItem(messages.getString("users"), new MenuBar.Command() {
             @Override

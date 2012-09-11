@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten;
+package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer;
 
 import com.vaadin.data.Validatable;
 import com.vaadin.data.Validator;
@@ -14,6 +14,8 @@ import org.rapidpm.persistence.system.security.BenutzerGruppe;
 import org.rapidpm.persistence.system.security.BenutzerWebapplikation;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
 import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenWorkingArea;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenWorkingAreaBean;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,7 +54,7 @@ public class BenutzerEditor extends FormLayout {
 //        idTextField.setReadOnly(true);
         idTextField.setEnabled(false);
         idTextField.setConverter(Long.class); // vaadin 7
-        idTextField.addValidator(new IntegerRangeValidator("Üngültige ID", 0, Integer.MAX_VALUE));
+        idTextField.addValidator(new IntegerRangeValidator("ÃœngÃ¼ltige ID", 0, Integer.MAX_VALUE));
         addComponent(idTextField);
 
         loginTextField = new TextField("Login");
@@ -66,7 +68,7 @@ public class BenutzerEditor extends FormLayout {
         addComponent(passwdTextField);
 
         emailTextField = new TextField("E-Mail");
-        emailTextField.addValidator(new EmailValidator("Ungültige E-Mail-Adresse"));
+        emailTextField.addValidator(new EmailValidator("UngÃ¼ltige E-Mail-Adresse"));
         emailTextField.setNullRepresentation("@rapidpm.org");
         addComponent(emailTextField);
 
@@ -148,10 +150,10 @@ public class BenutzerEditor extends FormLayout {
                     final Benutzer benutzer = benutzerBean.getBean();
                     baseDaoFactoryBean.saveOrUpdate(benutzer);
                 } else {
-                    Notification.show("Eingaben unvollständig oder ungültig", Notification.TYPE_TRAY_NOTIFICATION);
+                    Notification.show("Eingaben unvollstÃ¤ndig oder ungÃ¼ltig", Notification.TYPE_TRAY_NOTIFICATION);
 //                    getRoot().showNotification();
-                    // ein oder mehrere Eingaben sind ungültig
-//                    getApplication().getMainWindow().showNotification("Eingaben unvollständig oder ungültig", Window.Notification.TYPE_TRAY_NOTIFICATION);
+                    // ein oder mehrere Eingaben sind ungÃ¼ltig
+//                    getApplication().getMainWindow().showNotification("Eingaben unvollstÃ¤ndig oder ungÃ¼ltig", Window.Notification.TYPE_TRAY_NOTIFICATION);
                 }
             }
         }));

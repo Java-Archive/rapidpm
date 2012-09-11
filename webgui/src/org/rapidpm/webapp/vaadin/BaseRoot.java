@@ -13,11 +13,17 @@ import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.WrappedRequest;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.BaseTheme;
+import org.apache.log4j.Logger;
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.system.security.Benutzer;
+import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webapp.vaadin.ui.windows.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -26,7 +32,7 @@ import static org.rapidpm.Constants.MESSAGESBUNDLE;
 
 @Theme("rapidpm")
 public abstract class BaseRoot extends Root {
-//    private static final Logger logger = Logger.getLogger(MainApplicationBean.class);
+    private static final Logger logger = Logger.getLogger(BaseRoot.class);
 
     private static final boolean DEBUG_MODE = false;
     private static final int DEFAULT_WINDOW_WIDTH = 1024;
@@ -44,23 +50,18 @@ public abstract class BaseRoot extends Root {
     private final VerticalLayout hlWorkingAreaContainer = new VerticalLayout();
 
     private final String applicationName;
-    private String currentUser = "";
 
+    protected Benutzer currentUser;
     protected RessourceGroupsBean ressourceGroupsBean = new RessourceGroupsBean();
     protected ProjektBean planningUnitsBean = new ProjektBean(ressourceGroupsBean);
-    protected Locale locale;
+    protected Locale locale = new Locale("de","DE");
     protected ResourceBundle messages;
-
 
     protected BaseRoot(final String applicationName) {
         this.applicationName = applicationName;
         setSizeFull();
     }
 
-    //    public int getWindowWidth() {
-//        return windowWidth;
-//    }
-//
     public void setWindowWidth(final int windowWidth) {
         if (this.windowWidth != windowWidth) {
             this.windowWidth = windowWidth;
@@ -73,48 +74,57 @@ public abstract class BaseRoot extends Root {
 //        return Page.getCurrent().getBrowserWindowWidth()-40;
     }
 
-//    public void addWindowSizeChangeListener(final WindowSizeChangeListener listener) {
-//        windowSizeChangeListeners.add(listener);
-//    }
-//
-//    private void fireWindowSizeChanged() {
-//        final int newMiddleStripeWidth = getMiddleStripeWidth();
-//        for (final WindowSizeChangeListener listener : windowSizeChangeListeners) {
-//            listener.onWindowSizeChanged(windowWidth, newMiddleStripeWidth);
-//        }
-//    }
-
 
     @Override
     public void init(WrappedRequest request) {
-//        getApplication().setRootPreserved(true);
-//        setTheme("chameleon-blue");
-//        setWindowWidth(request.getBrowserDetails().getWebBrowser().getClientWidth());
-        if (DEBUG_MODE) {
-            buildMainLayout();
-        } else {
+        setWindowWidth(request.getBrowserDetails().getWebBrowser().getScreenWidth());
+        if (getApplication().getUser() == null) {
+            if (DEBUG_MODE) {
+                buildMainLayout();
+            } else {
 //            removeAllComponents();
-            VerticalLayout layout = new VerticalLayout();
-            final LoginWindow window = new LoginWindow(this);
-            addWindow(window);
+                VerticalLayout layout = new VerticalLayout();
+                final LoginWindow window = new LoginWindow(this);
+                addWindow(window);
+            }
+        } else {
+            currentUser = (Benutzer) getApplication().getUser();
+            try {
+                authentication(currentUser.getLogin(), currentUser.getPasswd());
+            } catch (Exception e) {
+                logger.error("Erneute Authentifizierung fehlgeschlagen", e.fillInStackTrace());
+            }
         }
     }
 
-    public void authentication(final String login, final String passwd) throws Exception {
-        if (login.equals("RapidPM") && passwd.equals("geheim")) {
+    public void authentication(final String enteredLogin, final String enteredPasswd) throws Exception {
 
-            currentUser = login; //UserObject spaeter
-            //setUser(login); //TODO das UserObject itself.
-            loadProtectedRessources();
-        } else {
-            throw new Exception("Login failed..");
+        final LoginBean bean = EJBFactory.getEjbInstance(LoginBean.class);
+        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final BenutzerDAO benutzerDAO = baseDaoFactoryBean.getBenutzerDAO();
+        final List<Benutzer> benutzer = benutzerDAO.loadBenutzerForLogin(enteredLogin);
+        final String enteredPasswdHashed = hash(enteredPasswd);
+        for (final Benutzer user : benutzer) {
+            final String userLogin = user.getLogin();
+            final String userPasswd = user.getPasswd();
+            if (userLogin.equals(enteredLogin) && userPasswd.equals(enteredPasswdHashed)) {
+                currentUser = user;
+                getApplication().setUser(currentUser);
+                loadProtectedRessources();
+                return;
+            }
         }
+        throw new Exception("Login failed..");
+    }
+
+    private String hash(String enteredPasswd) {
+        return enteredPasswd;        //TODO später gehashtes PW zurückgeben
     }
 
     public void localization(Object value) {
-        switch(value.toString()){
+        switch (value.toString()) {
             case "GERMAN":
-                locale = new Locale("de","DE");
+                locale = new Locale("de", "DE");
                 messages = ResourceBundle.getBundle(MESSAGESBUNDLE, locale);
                 break;
             case "ENGLISH":
@@ -148,12 +158,6 @@ public abstract class BaseRoot extends Root {
 
     public void setWorkingArea(final Component workingArea) {
         workingArea.setWidth(getMiddleStripeWidth(), Sizeable.Unit.PIXELS);
-//        addWindowSizeChangeListener(new WindowSizeChangeListener() {
-//            @Override
-//            public void onWindowSizeChanged(final int newWindowWidth, final int newMiddleStripeWidth) {
-//                workingArea.setWidth(newMiddleStripeWidth, Sizeable.Unit.PIXELS);
-//            }
-//        });
         hlWorkingAreaContainer.removeAllComponents();
         hlWorkingAreaContainer.addComponent(workingArea);
     }
@@ -163,15 +167,10 @@ public abstract class BaseRoot extends Root {
 
         final VerticalLayout mainlayout = new VerticalLayout();
         mainlayout.setSizeFull();
-        //final Window window = new Window(applicationName, mainlayout);
-        //addWindow(window);
 
         final HorizontalLayout gl = new HorizontalLayout();
-        //gl.setSizeFull();
-        //gl.setWidth(windowWidth, Sizeable.Unit.PIXELS);
         gl.setSpacing(true);
         mainlayout.addComponent(gl);
-        //mainlayout.setComponentAlignment(gl, Alignment.TOP_CENTER);
 
 
         //Hpt 3 Spalten
@@ -235,86 +234,14 @@ public abstract class BaseRoot extends Root {
         initMenuBarIntern(menubar);
         hlHeaderBottomLine.addComponent(menubar);
 
-
-        //hlWorkingAreaContainer
-//        final Component demoWorkingArea = createDemoWorkingArea();
         setWorkingArea(new ProjektplanungScreen(messages, planningUnitsBean, ressourceGroupsBean));
         addComponent(mainlayout);
-
-        // vaadin 7
-//        setImmediate(true);
-//        Root.getCurrent().getPage().addListener(new Page.BrowserWindowResizeListener() {
-//            @Override
-//            public void browserWindowResized(final Page.BrowserWindowResizeEvent event) {
-//                final int newWindowWidth = Page.getCurrent().getBrowserWindowWidth();
-//                setWindowWidth(newWindowWidth);
-//                final int newWindowHight = Page.getCurrent().getBrowserWindowHeight();
-//                gl.setWidth(newWindowWidth, Sizeable.Unit.PIXELS);
-//                final int middleStripeWidth = getMiddleStripeWidth();
-//                menubar.setWidth(middleStripeWidth, Sizeable.Unit.PIXELS);
-//                vlMiddle.setWidth(middleStripeWidth, Sizeable.Unit.PIXELS);
-//                vlMiddleInner.setWidth(middleStripeWidth, Sizeable.Unit.PIXELS);
-//                hlHeader.setWidth(middleStripeWidth, Sizeable.Unit.PIXELS);
-//
-//
-//            }
-//        });
-
-//        addWindowSizeChangeListener(new WindowSizeChangeListener() {
-//            @Override
-//            public void onWindowSizeChanged(final int newWindowWidth, final int newMiddleStripeWidth) {
-//                gl.setWidth(newWindowWidth, Sizeable.Unit.PIXELS);
-//                menubar.setWidth(newMiddleStripeWidth, Sizeable.Unit.PIXELS);
-//                vlMiddle.setWidth(newMiddleStripeWidth, Sizeable.Unit.PIXELS);
-//                vlMiddleInner.setWidth(newMiddleStripeWidth, Sizeable.Unit.PIXELS);
-//                hlHeader.setWidth(newMiddleStripeWidth, Sizeable.Unit.PIXELS);
-//            }
-//        });
-
-
-//        Page.getBrowserWindowHeight();
-//        Page.getBrowserWindowWidth()
-//        addWindowSizeChangeListener(new WindowSizeChangeListener() {
-//            @Override
-//            public void onResize(Window.ResizeEvent event) {
-//                setWindowWidth(event.getWidth());
-//            }
-//
-//            @Override
-//            public void onWindowSizeChanged(int newWindowWidth, int newMiddleStripeWidth) {
-//                setWindowWidth(newWindowWidth);
-//            }
-//        });
-//
-
-        //hlBottomLine
-        //        hlBottomLine.setComponentAlignment();
-
-        // Liferay Test
-//        final LiferayIPC liferay = new LiferayIPC();
-//        liferay.addListener("event1", new LiferayIPCEventListener() {
-//            @Override
-//            public void eventReceived(final LiferayIPCEvent event) {
-//                showNotification(event.getSource().toString(), event.getData());
-//            }
-//        });
-//        mainlayout.addComponent(liferay);
-
-        ////final Root root = Root.getCurrent();
-        ////root.removeAllComponents();
-        //removeAllComponents();
-
-
     }
 
     protected abstract void initMenuBar(MenuBar menuBar);
 
     //TODO hier anhand des Users den Context entscheiden
     private void initMenuBarIntern(final MenuBar menuBar) {
-
-
-
-
         initMenuBar(menuBar);
         menuBar.setWidth(getMiddleStripeWidth(), Sizeable.Unit.PIXELS);
     }
@@ -363,8 +290,7 @@ public abstract class BaseRoot extends Root {
 
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-//                getApplication().close();
-                BaseRoot.this.setEnabled(false); // O.o
+                getApplication().close();
             }
         });
         buttonKontakt.setStyleName(BaseTheme.BUTTON_LINK);

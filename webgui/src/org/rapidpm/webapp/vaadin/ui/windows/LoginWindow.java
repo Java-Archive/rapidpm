@@ -8,6 +8,7 @@ package org.rapidpm.webapp.vaadin.ui.windows;
  */
 
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.LoginForm;
 import com.vaadin.ui.Window;
 import org.apache.log4j.Logger;
@@ -39,8 +40,7 @@ public class LoginWindow extends Window {
                     root.authentication(username, password);
                     close();
                 } catch (Exception e) {
-                    //Notification.show(e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
-                    e.printStackTrace();
+                    addComponent(new Label("login gescheitert!"));
                 }
             }
         });
