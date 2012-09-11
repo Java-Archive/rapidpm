@@ -20,3 +20,35 @@ INSERT INTO
                 '2012-09-11',
                 '2013-09-11', 1, 1,1);
 
+
+INSERT INTO
+        ressourcegroup(id, name, costperhour)
+        VALUES (1, 'GF', 125.0);
+
+INSERT INTO
+        ressourcegroup(id, name, costperhour)
+        VALUES (2, 'Multiprojekt Manager', 125.0);
+
+INSERT INTO
+        ressourcegroup(id, name, costperhour)
+        VALUES (3, 'Projektleiter / Scrum Master', 75.0);
+
+INSERT INTO
+        ressourcegroup(id, name, costperhour)
+        VALUES (4, 'Senior Projektmitarbeiter', 65.0);
+
+INSERT INTO
+        ressourcegroup(id, name, costperhour)
+        VALUES (5, 'Junior Projektmitarbeiter', 45.0);
+
+INSERT INTO
+        ressourcegroup(id, name, costperhour)
+        VALUES (6, 'Aushilfe / stud. Projektmitarbeiter', 25.0);
+
+INSERT INTO
+        ressourcegroup(id, name, costperhour)
+        VALUES (6, 'externe Ressource', 90.0);
+
+INSERT INTO
+        ressourcegroup(id, name, costperhour)
+        VALUES (6, 'backoffice', 0.0);
