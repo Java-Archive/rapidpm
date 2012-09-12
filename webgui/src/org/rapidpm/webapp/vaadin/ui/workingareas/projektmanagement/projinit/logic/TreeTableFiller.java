@@ -22,7 +22,7 @@ import java.util.ResourceBundle;
  */
 public class TreeTableFiller {
 
-    private static final int WIDTH = 250;
+    private static final int WIDTH = 200;
     private HierarchicalContainer dataSource;
     private ProjektBean projektBean;
     private RessourceGroupsBean ressourceGroupsBean;
@@ -53,14 +53,20 @@ public class TreeTableFiller {
         }
         treeTable.addListener(new TableItemClickListener(messages, screen));
         treeTable.setContainerDataSource(this.dataSource);
-        final String aufgabe = messages.getString("aufgabe");
-        treeTable.setColumnCollapsible(aufgabe, false);
+        final String aufgabeColumn = messages.getString("aufgabe");
+        for(final Object propertyId : treeTable.getContainerPropertyIds()){
+            if(propertyId.equals(aufgabeColumn)){
+                treeTable.setColumnCollapsible(aufgabeColumn, false);
+                treeTable.setColumnWidth(aufgabeColumn, WIDTH);
+            } else {
+                treeTable.setColumnExpandRatio(propertyId, 1);
+            }
+        }
         treeTable.setFooterVisible(true);
         final Map<RessourceGroup, DaysHoursMinutesItem> werteMap = timesCalculator.getAbsoluteWerte();
         for(final RessourceGroup ressourceGroup : werteMap.keySet()){
             treeTable.setColumnFooter(ressourceGroup.getName(), werteMap.get(ressourceGroup).toString());
         }
-        treeTable.setColumnWidth(aufgabe, WIDTH);
         treeTable.setValue(null);
     }
 }

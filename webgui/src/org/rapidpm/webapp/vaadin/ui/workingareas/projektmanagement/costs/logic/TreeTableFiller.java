@@ -22,7 +22,7 @@ import static org.rapidpm.Constants.EUR;
  */
 public class TreeTableFiller {
 
-    private static final int WIDTH = 250;
+    private static final int WIDTH = 200;
 
     private HierarchicalContainer dataSource;
     private ProjektBean projektBean;
@@ -52,8 +52,15 @@ public class TreeTableFiller {
         costsCalculator.calculate();
         treeTableDataSourceFiller.fill();
         treeTable.setContainerDataSource(this.dataSource);
-        treeTable.setColumnCollapsible(messages.getString("aufgabe"), false);
-        treeTable.setColumnWidth(messages.getString("aufgabe"), WIDTH);
+        final String aufgabeColumn = messages.getString("aufgabe");
+        for(final Object propertyId : treeTable.getContainerPropertyIds()){
+            if(propertyId.equals(aufgabeColumn)){
+                treeTable.setColumnCollapsible(aufgabeColumn, false);
+                treeTable.setColumnWidth(aufgabeColumn, WIDTH);
+            } else {
+                treeTable.setColumnExpandRatio(propertyId, 1);
+            }
+        }
         treeTable.setFooterVisible(true);
         final Map<RessourceGroup, Double> werteMap = costsCalculator.getRessourceGroupsCostsMap();
         for(final RessourceGroup ressourceGroup : werteMap.keySet()){
