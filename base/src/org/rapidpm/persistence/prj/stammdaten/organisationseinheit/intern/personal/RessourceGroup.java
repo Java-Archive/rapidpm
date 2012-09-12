@@ -31,13 +31,22 @@ public class RessourceGroup {
     private Long id;
 
     @Basic private String name;
-    @Basic private String description;
 
+    @Basic private Integer hoursPerWeek;
+    @Basic private Integer weeksPerYear;
+    @Basic private Integer planAnzahl;
+
+    @Basic private Double facturizable;
+    @Basic private Double externalEurosPerHour;
+    @Basic private Double bruttoGehalt;
+
+    /*evtl für spätere Verwendung*/
+    @Basic private String description;
     @Basic private Date validFrom;
     @Basic private Date validUntil;
-
     @Basic private String currency; // USD / EUR / ..
-    @Basic private float costPerHour;
+    /*evtl für spätere Verwendung*/
+
 
     public Long getId() {
         return id;
@@ -87,11 +96,52 @@ public class RessourceGroup {
         this.currency = currency;
     }
 
-    public float getCostPerHour() {
-        return costPerHour;
+    public Double getBruttoGehalt() {
+        return bruttoGehalt;
     }
 
-    public void setCostPerHour(float costPerHour) {
-        this.costPerHour = costPerHour;
+    public void setBruttoGehalt(Double bruttoGehalt) {
+        this.bruttoGehalt = bruttoGehalt;
+    }
+
+    public Integer getHoursPerWeek() {
+        return hoursPerWeek;
+    }
+
+    public void setHoursPerWeek(Integer hoursPerWeek) {
+        this.hoursPerWeek = hoursPerWeek;
+    }
+
+    public Integer getWeeksPerYear() {
+        return weeksPerYear;
+    }
+
+    public void setWeeksPerYear(Integer weeksPerYear) {
+        this.weeksPerYear = weeksPerYear;
+    }
+
+
+    public Double getFacturizable() {
+        return facturizable;
+    }
+
+    public void setFacturizable(Double facturizable) {
+        this.facturizable = facturizable;
+    }
+
+    public Double getExternalEurosPerHour() {
+        return externalEurosPerHour;
+    }
+
+    public void setExternalEurosPerHour(Double externalEurosPerHour) {
+        this.externalEurosPerHour = externalEurosPerHour;
+    }
+
+    public Integer getPlanAnzahl() {
+        return planAnzahl;
+    }
+
+    public void setPlanAnzahl(Integer planAnzahl) {
+        this.planAnzahl = planAnzahl;
     }
 }
