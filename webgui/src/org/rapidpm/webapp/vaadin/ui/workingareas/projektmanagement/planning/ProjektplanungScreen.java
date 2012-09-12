@@ -14,6 +14,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.mode
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -94,6 +95,8 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
             }
 
         });
+        final List<?> ids = (List<?>) projektSelect.getItemIds();
+        projektSelect.setValue(ids.get(0));
         doInternationalization();
 
     }
