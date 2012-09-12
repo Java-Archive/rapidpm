@@ -31,35 +31,35 @@ INSERT INTO
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('Benutzer_id', 1);
 
 INSERT INTO
-        ressourcegroup(id, name, costperhour)
-        VALUES (1, 'GF', 125.0);
+        ressourcegroup(id, name, hoursPerWeek, weeksPerYear, planAnzahl, facturizable, externalEurosPerHour, bruttoGehalt)
+        VALUES (1, 'GF', 40, 50, 1, 0.5, 125.0,200000.0);
 
 INSERT INTO
-        ressourcegroup(id, name, costperhour)
-        VALUES (2, 'Multiprojekt Manager', 125.0);
+        ressourcegroup(id, name, hoursPerWeek, weeksPerYear, planAnzahl, facturizable, externalEurosPerHour, bruttoGehalt)
+        VALUES (2, 'Multiprojekt Manager', 40, 46, 1, 0.5, 125.0,83000.0);
 
 INSERT INTO
-        ressourcegroup(id, name, costperhour)
-        VALUES (3, 'Projektleiter / Scrum Master', 75.0);
+        ressourcegroup(id, name, hoursPerWeek, weeksPerYear, planAnzahl, facturizable, externalEurosPerHour, bruttoGehalt)
+        VALUES (3, 'Projektleiter / Scrum Master', 40, 46, 1, 0.75, 75.0,72000.0);
 
 INSERT INTO
-        ressourcegroup(id, name, costperhour)
-        VALUES (4, 'Senior Projektmitarbeiter', 65.0);
+        ressourcegroup(id, name, hoursPerWeek, weeksPerYear, planAnzahl, facturizable, externalEurosPerHour, bruttoGehalt)
+        VALUES (4, 'Senior Projektmitarbeiter', 40, 46, 1, 0.75, 65.0,72000.0);
 
 INSERT INTO
-        ressourcegroup(id, name, costperhour)
-        VALUES (5, 'Junior Projektmitarbeiter', 45.0);
+        ressourcegroup(id, name, hoursPerWeek, weeksPerYear, planAnzahl, facturizable, externalEurosPerHour, bruttoGehalt)
+        VALUES (5, 'Junior Projektmitarbeiter', 40, 46, 1, 0.75, 45.0,45000.0);
 
 INSERT INTO
-        ressourcegroup(id, name, costperhour)
-        VALUES (6, 'Aushilfe / stud. Projektmitarbeiter', 25.0);
+        ressourcegroup(id, name, hoursPerWeek, weeksPerYear, planAnzahl, facturizable, externalEurosPerHour, bruttoGehalt)
+        VALUES (6, 'Aushilfe / stud. Projektmitarbeiter', 40, 46, 1, 0.75, 25.0,17000.0);
 
 INSERT INTO
-        ressourcegroup(id, name, costperhour)
-        VALUES (7, 'externe Ressource', 90.0);
+        ressourcegroup(id, name, hoursPerWeek, weeksPerYear, planAnzahl, facturizable, externalEurosPerHour, bruttoGehalt)
+        VALUES (7, 'externe Ressource', 40, 46, 1, 0.8, 90.0,125000.0);
 
 INSERT INTO
-        ressourcegroup(id, name, costperhour)
-        VALUES (8, 'backoffice', 0.0);
+        ressourcegroup(id, name, hoursPerWeek, weeksPerYear, planAnzahl, facturizable, externalEurosPerHour, bruttoGehalt)
+        VALUES (8, 'Backoffice', 20, 46, 1, 0.01, 0.0,62000.0);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('RessourceGroup_id', 6);
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('RessourceGroup_id', 8);
