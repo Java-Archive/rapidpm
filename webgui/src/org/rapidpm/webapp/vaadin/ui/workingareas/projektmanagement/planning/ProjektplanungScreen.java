@@ -14,6 +14,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.mode
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -54,24 +55,26 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         setSizeFull();
         setSplitPosition(40, Unit.PERCENTAGE);
 
+        planningUnitGroupPanel = new Panel();
+        treePanel = new Panel();
+        detailPanel = new Panel();
+
         menuLayout = new VerticalLayout();
         menuLayout.setSpacing(true);
-        addComponent(menuLayout);
-
-        planningUnitGroupPanel = new Panel();
         menuLayout.addComponent(planningUnitGroupPanel);
-        treePanel = new Panel();
         menuLayout.addComponent(treePanel);
-        detailPanel = new Panel();
         menuLayout.addComponent(detailPanel);
 
         mainPanel = new Panel();
         ressourcesPanel = new Panel();
+
         mainLayout = new VerticalLayout();
         mainLayout.setMargin(true);
         mainLayout.setSpacing(true);
         mainLayout.addComponent(ressourcesPanel);
         mainLayout.addComponent(mainPanel);
+
+        addComponent(menuLayout);
         addComponent(mainLayout);
 
         final List<String> listenWerteArrayList = projektBean.getProjekt().getPlanningUnitGroupsNames();
@@ -92,6 +95,8 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
             }
 
         });
+        final List<?> ids = (List<?>) projektSelect.getItemIds();
+        projektSelect.setValue(ids.get(0));
         doInternationalization();
 
     }
