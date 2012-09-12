@@ -54,24 +54,26 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         setSizeFull();
         setSplitPosition(40, Unit.PERCENTAGE);
 
+        planningUnitGroupPanel = new Panel();
+        treePanel = new Panel();
+        detailPanel = new Panel();
+
         menuLayout = new VerticalLayout();
         menuLayout.setSpacing(true);
-        addComponent(menuLayout);
-
-        planningUnitGroupPanel = new Panel();
         menuLayout.addComponent(planningUnitGroupPanel);
-        treePanel = new Panel();
         menuLayout.addComponent(treePanel);
-        detailPanel = new Panel();
         menuLayout.addComponent(detailPanel);
 
         mainPanel = new Panel();
         ressourcesPanel = new Panel();
+
         mainLayout = new VerticalLayout();
         mainLayout.setMargin(true);
         mainLayout.setSpacing(true);
         mainLayout.addComponent(ressourcesPanel);
         mainLayout.addComponent(mainPanel);
+
+        addComponent(menuLayout);
         addComponent(mainLayout);
 
         final List<String> listenWerteArrayList = projektBean.getProjekt().getPlanningUnitGroupsNames();
