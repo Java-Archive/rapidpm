@@ -56,10 +56,10 @@ INSERT INTO
 
 INSERT INTO
         ressourcegroup(id, name, costperhour)
-        VALUES (6, 'externe Ressource', 90.0);
+        VALUES (7, 'externe Ressource', 90.0);
 
 INSERT INTO
         ressourcegroup(id, name, costperhour)
-        VALUES (6, 'backoffice', 0.0);
+        VALUES (8, 'backoffice', 0.0);
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('RessourceGroup_id', 6);
