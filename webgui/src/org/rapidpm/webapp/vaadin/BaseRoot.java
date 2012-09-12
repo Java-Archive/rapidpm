@@ -158,6 +158,7 @@ public abstract class BaseRoot extends Root {
 
     public void setWorkingArea(final Component workingArea) {
         workingArea.setSizeFull();
+        hlWorkingAreaContainer.setSizeFull();
         hlWorkingAreaContainer.removeAllComponents();
         hlWorkingAreaContainer.addComponent(workingArea);
     }
