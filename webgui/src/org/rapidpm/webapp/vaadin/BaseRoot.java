@@ -59,7 +59,6 @@ public abstract class BaseRoot extends Root {
 
     protected BaseRoot(final String applicationName) {
         this.applicationName = applicationName;
-        setSizeFull();
     }
 
     public void setWindowWidth(final int windowWidth) {
@@ -77,7 +76,8 @@ public abstract class BaseRoot extends Root {
 
     @Override
     public void init(WrappedRequest request) {
-        setWindowWidth(request.getBrowserDetails().getWebBrowser().getScreenWidth());
+        //setWindowWidth(request.getBrowserDetails().getWebBrowser().getScreenWidth());
+        this.setSizeFull();
         if (getApplication().getUser() == null) {
             if (DEBUG_MODE) {
                 buildMainLayout();
@@ -118,7 +118,7 @@ public abstract class BaseRoot extends Root {
     }
 
     private String hash(String enteredPasswd) {
-        return enteredPasswd;        //TODO später gehashtes PW zurückgeben
+        return enteredPasswd;        //TODO spÃ¤ter gehashtes PW zurÃ¼ckgeben
     }
 
     public void localization(Object value) {
@@ -157,7 +157,8 @@ public abstract class BaseRoot extends Root {
     }
 
     public void setWorkingArea(final Component workingArea) {
-        workingArea.setWidth(getMiddleStripeWidth(), Sizeable.Unit.PIXELS);
+        workingArea.setSizeFull();
+        hlWorkingAreaContainer.setSizeFull();
         hlWorkingAreaContainer.removeAllComponents();
         hlWorkingAreaContainer.addComponent(workingArea);
     }
@@ -168,34 +169,38 @@ public abstract class BaseRoot extends Root {
         final VerticalLayout mainlayout = new VerticalLayout();
         mainlayout.setSizeFull();
 
+        final VerticalLayout vlMiddle = new VerticalLayout();
+        vlMiddle.setSizeFull();
+
         final HorizontalLayout gl = new HorizontalLayout();
+        gl.setSizeFull();
         gl.setSpacing(true);
+        gl.addComponent(vlMiddle);
+        gl.setExpandRatio(vlMiddle, 1.0f);
+        gl.setComponentAlignment(vlMiddle, Alignment.TOP_CENTER);
         mainlayout.addComponent(gl);
 
 
         //Hpt 3 Spalten
         final VerticalLayout vlLeft = new VerticalLayout();
-        vlLeft.setWidth(LEFT_STRIPE_WITH);
-        gl.addComponent(vlLeft);
-        gl.setExpandRatio(vlLeft, 1.0f);
-        gl.setComponentAlignment(vlLeft, Alignment.TOP_LEFT);
+        //vlLeft.setWidth(LEFT_STRIPE_WITH);
+        //gl.addComponent(vlLeft);
+        //gl.setExpandRatio(vlLeft, 1.0f);
+        //gl.setComponentAlignment(vlLeft, Alignment.TOP_LEFT);
+//
 
-        final VerticalLayout vlMiddle = new VerticalLayout();
-        vlMiddle.setWidth(getMiddleStripeWidth(), Sizeable.Unit.PIXELS);
-        gl.addComponent(vlMiddle);
-        gl.setExpandRatio(vlMiddle, 1.0f);
-        gl.setComponentAlignment(vlMiddle, Alignment.TOP_CENTER);
 
-        final VerticalLayout vlRight = new VerticalLayout();
-        vlRight.setWidth(RIGHT_STRIPE_WITH);
-        gl.addComponent(vlRight);
-        gl.setExpandRatio(vlRight, 1.0f);
-        gl.setComponentAlignment(vlRight, Alignment.TOP_RIGHT);
+//
+//        final VerticalLayout vlRight = new VerticalLayout();
+//        vlRight.setWidth(RIGHT_STRIPE_WITH);
+//        gl.addComponent(vlRight);
+//        gl.setExpandRatio(vlRight, 1.0f);
+//        gl.setComponentAlignment(vlRight, Alignment.TOP_RIGHT);
 
 
         //Innere Bereich komplett
         final VerticalLayout vlMiddleInner = new VerticalLayout(); //
-        vlMiddleInner.setWidth(getMiddleStripeWidth(), Sizeable.Unit.PIXELS);
+        vlMiddleInner.setSizeFull();
         vlMiddle.addComponent(vlMiddleInner);
 
         vlMiddleInner.addComponent(hlHeaderLineContainer);
@@ -203,10 +208,11 @@ public abstract class BaseRoot extends Root {
 
         final HorizontalLayout hlHeader = new HorizontalLayout();
         vlMiddleInner.addComponent(hlHeader);
-        hlHeader.setWidth(getMiddleStripeWidth(), Sizeable.Unit.PIXELS);
+        hlHeader.setSizeFull();
 
 
         final HorizontalLayout hlHeaderBottomLine = new HorizontalLayout();
+        hlHeaderBottomLine.setSizeFull();
         vlMiddleInner.addComponent(hlHeaderBottomLine);
 
 //        hlWorkingAreaContainer.setSizeFull();
@@ -243,7 +249,7 @@ public abstract class BaseRoot extends Root {
     //TODO hier anhand des Users den Context entscheiden
     private void initMenuBarIntern(final MenuBar menuBar) {
         initMenuBar(menuBar);
-        menuBar.setWidth(getMiddleStripeWidth(), Sizeable.Unit.PIXELS);
+        menuBar.setSizeFull();
     }
 
     private HorizontalLayout createStdHeaderLine() {

@@ -71,15 +71,20 @@ public class AufwandProjInitScreen extends Screen {
 
         uebersichtTable.setPageLength(4);
         uebersichtTable.setConnectedTable(treeTable);
+        uebersichtTable.setSizeFull();
         treeTable.setConnectedTable(uebersichtTable);
         treeTable.addListener(new TreeTableHeaderClickListener(undoButton));
-        table1layout.addComponent(uebersichtTable);
+        treeTable.setSizeFull();
 
+        table1layout.setMargin(true, false, true, false);
+        table1layout.addComponent(uebersichtTable);
+        table1layout.setSizeFull();
+
+        table2layout.setMargin(true, false, true, false);
         table2layout.addComponent(expandCheckBox);
         table2layout.addComponent(undoButton);
         table2layout.addComponent(treeTable);
-        table1layout.setMargin(true, false, true, false);
-        table2layout.setMargin(true, false, true, false);
+        table2layout.setSizeFull();
 
 
         lowerFormLayout.addComponent(saveButton);

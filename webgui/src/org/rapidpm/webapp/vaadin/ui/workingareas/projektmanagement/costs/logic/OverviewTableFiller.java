@@ -30,11 +30,7 @@ public class OverviewTableFiller {
     private static final String RELATIV = "relativ";
     private static final String ABSOLUT = "absolut";
     private static final String KOSTEN = "kosten";
-    private static final String EXTERN_EUR_PER_H = "Extern € / h";
-    private static final String SUM_IN_EUR = "Summe [€]";
-    private static final String SUM_IN_PERCENT = "Summe [%]";
-    private static final String SUM_IN_DAYSHOURSMINS = "Summe [d:hh:mm]";
-    private static final int WIDTH = 250;
+    private static final int WIDTH = 200;
 
     private MyTable table;
     private RessourceGroupsBean ressourceGroupsBean;
@@ -60,6 +56,7 @@ public class OverviewTableFiller {
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
             final String spaltenName = ressourceGroup.getName();
             table.addContainerProperty(spaltenName, String.class, null);
+            table.setColumnExpandRatio(spaltenName,1);
         }
 
         final TimesCalculator timesCalculator = new TimesCalculator(messages,ressourceGroupsBean, projektBean);

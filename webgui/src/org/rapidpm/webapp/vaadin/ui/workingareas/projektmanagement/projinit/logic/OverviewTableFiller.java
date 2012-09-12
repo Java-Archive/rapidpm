@@ -26,6 +26,7 @@ public class OverviewTableFiller {
 
     private static final String RELATIV = "relativ";
     private static final String ABSOLUT = "absolut";
+    public static final int WIDTH = 200;
 
 
     private MyTable table;
@@ -46,10 +47,11 @@ public class OverviewTableFiller {
         final String angabe = messages.getString("angabe");
         table.addContainerProperty(angabe, String.class, null);
         table.setColumnCollapsible(angabe, false);
-        table.setColumnWidth(angabe, 250);
+        table.setColumnWidth(angabe, WIDTH);
         for (final RessourceGroup ressourceGroup : ressourceGroupsBean.getRessourceGroups()) {
             final String spaltenName = ressourceGroup.getName();
             table.addContainerProperty(spaltenName, String.class, null);
+            table.setColumnExpandRatio(spaltenName,1);
         }
         final TimesCalculator calculator = new TimesCalculator(messages,ressourceGroupsBean, projektBean);
         calculator.calculate();
