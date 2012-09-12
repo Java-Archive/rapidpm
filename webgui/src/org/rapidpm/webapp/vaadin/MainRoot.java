@@ -5,6 +5,7 @@ import com.vaadin.ui.MenuBar;
 import org.rapidpm.webapp.vaadin.ui.workingareas.anfragenmanagement.AnfragenmanagementWorkingArea;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.CostsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.distribution.VertriebScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.offer.OfferScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
@@ -85,6 +86,13 @@ public class MainRoot extends BaseRoot {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
                 setWorkingArea(new VertriebScreen(MainRoot.this));
+            }
+        });
+
+        projektmanagement.addItem(messages.getString("offer"), new MenuBar.Command() {
+            @Override
+            public void menuSelected(final MenuBar.MenuItem menuItem) {
+                setWorkingArea(new OfferScreen(MainRoot.this));
             }
         });
     }
