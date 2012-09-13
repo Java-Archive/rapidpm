@@ -1,7 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 
 
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroup;
 
 /**
  *
@@ -20,7 +20,7 @@ public class PlanningUnitElement {
     private int plannedDays;
     private int plannedHours;
     private int plannedMinutes;
-    private RessourceGroup ressourceGroup;
+    private OldRessourceGroup oldRessourceGroup;
 
     public Long getId() {
         return id;
@@ -54,12 +54,12 @@ public class PlanningUnitElement {
         this.plannedMinutes = plannedMinutes;
     }
 
-    public RessourceGroup getRessourceGroup() {
-        return ressourceGroup;
+    public OldRessourceGroup getOldRessourceGroup() {
+        return oldRessourceGroup;
     }
 
-    public void setRessourceGroup(RessourceGroup ressourceGroup) {
-        this.ressourceGroup = ressourceGroup;
+    public void setOldRessourceGroup(OldRessourceGroup oldRessourceGroup) {
+        this.oldRessourceGroup = oldRessourceGroup;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class PlanningUnitElement {
         if (plannedDays != that.plannedDays) return false;
         if (plannedHours != that.plannedHours) return false;
         if (plannedMinutes != that.plannedMinutes) return false;
-        if (ressourceGroup != null ? !ressourceGroup.equals(that.ressourceGroup) : that.ressourceGroup != null)
+        if (oldRessourceGroup != null ? !oldRessourceGroup.equals(that.oldRessourceGroup) : that.oldRessourceGroup != null)
             return false;
 
         return true;
@@ -84,7 +84,7 @@ public class PlanningUnitElement {
         result = 31 * result + plannedDays;
         result = 31 * result + plannedHours;
         result = 31 * result + plannedMinutes;
-        result = 31 * result + (ressourceGroup != null ? ressourceGroup.hashCode() : 0);
+        result = 31 * result + (oldRessourceGroup != null ? oldRessourceGroup.hashCode() : 0);
         return result;
     }
 
@@ -94,7 +94,7 @@ public class PlanningUnitElement {
                 "plannedDays=" + plannedDays +
                 ", plannedHours=" + plannedHours +
                 ", plannedMinutes=" + plannedMinutes +
-                ", ressourceGroup=" + ressourceGroup.getName() +
+                ", oldRessourceGroup=" + oldRessourceGroup.getName() +
                 '}';
     }
 }

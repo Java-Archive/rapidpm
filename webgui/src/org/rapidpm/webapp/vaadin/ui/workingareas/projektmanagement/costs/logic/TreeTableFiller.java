@@ -3,8 +3,8 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic;
 import com.vaadin.data.util.HierarchicalContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.text.DecimalFormat;
 import java.util.Map;
@@ -26,17 +26,17 @@ public class TreeTableFiller {
 
     private HierarchicalContainer dataSource;
     private ProjektBean projektBean;
-    private RessourceGroupsBean ressourceGroupsBean;
+    private OldRessourceGroupsBean oldRessourceGroupsBean;
     private MyTreeTable treeTable;
     private ResourceBundle messages;
 
     public TreeTableFiller(final ResourceBundle bundle, final ProjektBean projektBean,
-                           final RessourceGroupsBean ressourceGroupsBean,
+                           final OldRessourceGroupsBean oldRessourceGroupsBean,
                            final MyTreeTable treeTable, final HierarchicalContainer dataSource) {
         this.messages = bundle;
         this.dataSource = dataSource;
         this.projektBean = projektBean;
-        this.ressourceGroupsBean = ressourceGroupsBean;
+        this.oldRessourceGroupsBean = oldRessourceGroupsBean;
         this.treeTable = treeTable;
     }
 
@@ -48,7 +48,7 @@ public class TreeTableFiller {
         final CostsCalculator costsCalculator = new CostsCalculator(projektBean, messages);
         final CostsConverterAdder costsConverterAdder = new CostsConverterAdder(messages);
         final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller
-                (messages, ressourceGroupsBean, projektBean, dataSource);
+                (messages, oldRessourceGroupsBean, projektBean, dataSource);
         costsCalculator.calculate();
         treeTableDataSourceFiller.fill();
         treeTable.setContainerDataSource(this.dataSource);
@@ -62,11 +62,11 @@ public class TreeTableFiller {
             }
         }
         treeTable.setFooterVisible(true);
-        final Map<RessourceGroup, Double> werteMap = costsCalculator.getRessourceGroupsCostsMap();
-        for(final RessourceGroup ressourceGroup : werteMap.keySet()){
+        final Map<OldRessourceGroup, Double> werteMap = costsCalculator.getRessourceGroupsCostsMap();
+        for(final OldRessourceGroup oldRessourceGroup : werteMap.keySet()){
 
-            final String ressourceGroupKostenString = format.format(werteMap.get(ressourceGroup))+EUR;
-            treeTable.setColumnFooter(ressourceGroup.getName(), ressourceGroupKostenString);
+            final String ressourceGroupKostenString = format.format(werteMap.get(oldRessourceGroup))+EUR;
+            treeTable.setColumnFooter(oldRessourceGroup.getName(), ressourceGroupKostenString);
         }
         treeTable.setValue(null);
         costsConverterAdder.addConvertersTo(treeTable);

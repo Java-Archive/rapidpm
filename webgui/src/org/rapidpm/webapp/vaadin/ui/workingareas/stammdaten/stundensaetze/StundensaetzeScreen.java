@@ -2,11 +2,17 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze;
 
 import com.vaadin.external.com.ibm.icu.text.DecimalFormat;
 import com.vaadin.ui.*;
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeFieldsCalculator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeTableCreator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.EditGroupValueChangeListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.TableEditFieldFactory;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tasks.AddRowClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tasks.DelRowClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.ButtonComponent;
@@ -15,14 +21,14 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomp
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
-import static org.rapidpm.Constants.*;
+import static org.rapidpm.Constants.DECIMAL_FORMAT;
+import static org.rapidpm.Constants.EUR;
+import static org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeTableCreator.*;
 
 public class StundensaetzeScreen extends Screen {
 
-    private MainRoot root;
-
+    private StundensaetzeScreenBean stundensaetzeScreenBean;
     private FormLayout betriebsFieldsLayout = new FormLayout();
     private TextField betriebsWertField;
     private TextField betriebsstdField;
@@ -42,8 +48,9 @@ public class StundensaetzeScreen extends Screen {
 
     private List<ItemClickDependentComponent> dependentComponents = new ArrayList<>();
 
-    public StundensaetzeScreen(MainRoot root) {
+    public StundensaetzeScreen(final MainRoot root) {
         super(root);
+        stundensaetzeScreenBean = EJBFactory.getEjbInstance(StundensaetzeScreenBean.class);
         saveButton.setVisible(false);
         betriebsstdField = new TextField();
         betriebsWertField = new TextField();
@@ -59,22 +66,19 @@ public class StundensaetzeScreen extends Screen {
 
         // formlayout wird bis zum itemclicklistener durchgereicht, savelayout
         // ebenfalls
-        final StundensaetzeTableCreator creator = new StundensaetzeTableCreator(
-                root, dependentComponents, delRowButton, upperFormLayout, lowerFormLayout,
-                formLayout, saveButton, betriebsWertField, betriebsstdField);
-
-        tabelle = creator.getTabelle();
+        tabelle = new Table();
+        tabellenLayout.setSizeFull();
         tabellenLayout.addComponent(tabelle);
         tabellenLayout.setSpacing(true);
         tabellenLayout.setMargin(false, false, true, false);
 
         optionGroup = new EditOptionButtonGroup(messagesBundle);
-        optionGroup.addListener(new EditGroupValueChangeListener(messagesBundle, formLayout, upperFormLayout,
-                lowerFormLayout, optionGroup, betriebsstdField, betriebsWertField, saveButton, tabelle));
+        optionGroup.addListener(new EditGroupValueChangeListener(this, messagesBundle, formLayout, upperFormLayout,
+                lowerFormLayout, optionGroup, saveButton, tabelle));
         optionGroup.setImmediate(true);
 
         delRowButton.setEnabled(false);
-        delRowButton.addListener(new DelRowClickListener(root, this, delRowButton));
+        delRowButton.addListener(new DelRowClickListener(this, delRowButton));
         tabellenTasksLayout.setWidth("500px");
         tabellenTasksLayout.addComponent(addDeleteRessourceLabel);
         tabellenTasksLayout.addComponent(editModeLabel);
@@ -91,17 +95,42 @@ public class StundensaetzeScreen extends Screen {
         formLayout.addComponent(upperFormLayout);
         formLayout.addComponent(lowerFormLayout);
 
-
-        final StundensaetzeFieldsCalculator calculator = new StundensaetzeFieldsCalculator(
-                tabelle);
-        calculator.compute();
-
-        final DecimalFormat f = new DecimalFormat(DECIMAL_FORMAT);
-        betriebsstdField.setValue(f.format(calculator.getBetriebsStunde()) + EUR);
-        betriebsWertField.setValue(f.format(calculator.getBetriebsWert()) + EUR);
+        //updatet die Table
+        generateTableAndCalculate();
 
         doInternationalization();
         setComponents();
+    }
+
+    public void generateTableAndCalculate() {
+        final DaoFactoryBean baseDaoFactoryBean = stundensaetzeScreenBean.getDaoFactoryBean();
+        final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
+        final List<RessourceGroup> ressourceGroups = ressourceGroupDAO.loadAllEntities();
+        final List<RessourceGroupBean> containerBeans = new ArrayList<>();
+        for(final RessourceGroup ressourceGroup : ressourceGroups){
+            RessourceGroupBean bean = new RessourceGroupBean();
+            bean.setRessourceGroup(ressourceGroup);
+            bean.calculate();
+            containerBeans.add(bean);
+        }
+        final StundensaetzeTableCreator creator = new StundensaetzeTableCreator(
+                this, containerBeans, dependentComponents, delRowButton, upperFormLayout, lowerFormLayout,
+                formLayout, saveButton);
+
+        tabelle.setTableFieldFactory(new TableEditFieldFactory());
+
+        final StundensaetzeCalculator calculator = new StundensaetzeCalculator(tabelle);
+        calculator.calculate();
+
+        final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
+        tabelle.setColumnFooter(SUM_PER_MONTH, format.format(calculator.getSummeProMonat())+ EUR);
+        tabelle.setColumnFooter(SUM_PER_DAY, format.format(calculator.getSummeProTag()) + EUR);
+        tabelle.setColumnFooter(NAME, StundensaetzeCalculator.GESAMTSUMMEN);
+
+        betriebsstdField.setValue(format.format(calculator.getBetriebsStunde()) + EUR);
+        betriebsWertField.setValue(format.format(calculator.getBetriebsWert()) + EUR);
+
+        tabelle.setEditable(false);
     }
 
     @Override
@@ -119,8 +148,8 @@ public class StundensaetzeScreen extends Screen {
     private void setComponents() {
         addComponent(betriebsFieldsLayout);
         addComponent(tabellenTasksLayout);
-        addComponent(tabellenLayout);
         addComponent(formLayout);
+        addComponent(tabellenLayout);
     }
 
     /* getters and setters */
@@ -155,5 +184,9 @@ public class StundensaetzeScreen extends Screen {
 
     public void setFormLayout(VerticalLayout formLayout) {
         this.formLayout = formLayout;
+    }
+
+    public StundensaetzeScreenBean getStundensaetzeScreenBean() {
+        return stundensaetzeScreenBean;
     }
 }

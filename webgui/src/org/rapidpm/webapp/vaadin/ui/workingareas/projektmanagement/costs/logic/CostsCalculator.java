@@ -5,7 +5,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitE
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroup;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ public class CostsCalculator {
 
     private ProjektBean projektBean;
 
-    private final Map<RessourceGroup, Double> ressourceGroupsCostsMap = new HashMap<>();
+    private final Map<OldRessourceGroup, Double> ressourceGroupsCostsMap = new HashMap<>();
     private ResourceBundle messages;
 
     private Double totalCostsExakt = 0.0;
@@ -42,7 +42,7 @@ public class CostsCalculator {
     }
 
     private void calculateTotalCosts() {
-        for (final Map.Entry<RessourceGroup, Double> ressourceGroupDoubleEntry : ressourceGroupsCostsMap.entrySet()) {
+        for (final Map.Entry<OldRessourceGroup, Double> ressourceGroupDoubleEntry : ressourceGroupsCostsMap.entrySet()) {
             totalCostsExakt += ressourceGroupDoubleEntry.getValue();
         }
     }
@@ -69,14 +69,14 @@ public class CostsCalculator {
 
     private void addiereZeileZurRessourceMap(PlanningUnit planningUnit) {
         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-            final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
-            if (!ressourceGroup.getName().equals(messages.getString("aufgabe"))) {
-                final RessourceGroup ressourceGroup1 = ressourceGroup;
+            final OldRessourceGroup oldRessourceGroup = planningUnitElement.getOldRessourceGroup();
+            if (!oldRessourceGroup.getName().equals(messages.getString("aufgabe"))) {
+                final OldRessourceGroup oldRessourceGroup1 = oldRessourceGroup;
                 Double costs = getCosts(planningUnitElement);
-                if (ressourceGroupsCostsMap.containsKey(ressourceGroup1)) {
-                    costs += ressourceGroupsCostsMap.get(ressourceGroup1);
+                if (ressourceGroupsCostsMap.containsKey(oldRessourceGroup1)) {
+                    costs += ressourceGroupsCostsMap.get(oldRessourceGroup1);
                 }
-                ressourceGroupsCostsMap.put(ressourceGroup1, costs);
+                ressourceGroupsCostsMap.put(oldRessourceGroup1, costs);
             }
         }
     }
@@ -86,11 +86,11 @@ public class CostsCalculator {
         final int hours = planningUnitElement.getPlannedHours();
         final double hoursFromMinutes = STD_ANTEILE * planningUnitElement.getPlannedMinutes();
         final Double totalHours = hoursFromDays + hours + hoursFromMinutes;
-        final Double externalEurosPerHour = planningUnitElement.getRessourceGroup().getExternalEurosPerHour();
+        final Double externalEurosPerHour = planningUnitElement.getOldRessourceGroup().getExternalEurosPerHour();
         return totalHours * externalEurosPerHour;
     }
 
-    public Map<RessourceGroup, Double> getRessourceGroupsCostsMap() {
+    public Map<OldRessourceGroup, Double> getRessourceGroupsCostsMap() {
         return ressourceGroupsCostsMap;
     }
 

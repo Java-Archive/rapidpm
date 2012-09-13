@@ -3,7 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas;
 import com.vaadin.ui.VerticalLayout;
 import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.util.ResourceBundle;
 
@@ -17,12 +17,12 @@ import java.util.ResourceBundle;
 public abstract class Screen extends VerticalLayout {
 
     protected ProjektBean projektBean;
-    protected RessourceGroupsBean ressourceGroupsBean;
+    protected OldRessourceGroupsBean oldRessourceGroupsBean;
     protected ResourceBundle messagesBundle;
 
     public Screen(MainRoot root){
         this.projektBean = root.getPlanningUnitsBean();
-        this.ressourceGroupsBean = root.getRessourceGroupsBean();
+        this.oldRessourceGroupsBean = root.getRessourceGroupsBean();
         this.messagesBundle = root.getResourceBundle();
     }
 
@@ -40,12 +40,12 @@ public abstract class Screen extends VerticalLayout {
         this.projektBean = projektBean;
     }
 
-    public RessourceGroupsBean getRessourceGroupsBean() {
-        return ressourceGroupsBean;
+    public OldRessourceGroupsBean getOldRessourceGroupsBean() {
+        return oldRessourceGroupsBean;
     }
 
-    public void setRessourceGroupsBean(RessourceGroupsBean ressourceGroupsBean) {
-        this.ressourceGroupsBean = ressourceGroupsBean;
+    public void setOldRessourceGroupsBean(OldRessourceGroupsBean oldRessourceGroupsBean) {
+        this.oldRessourceGroupsBean = oldRessourceGroupsBean;
     }
 
     public ResourceBundle getMessagesBundle() {

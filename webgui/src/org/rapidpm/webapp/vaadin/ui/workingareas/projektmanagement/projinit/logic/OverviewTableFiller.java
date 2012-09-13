@@ -6,8 +6,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinu
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.text.DecimalFormat;
 import java.util.Map;
@@ -30,15 +30,15 @@ public class OverviewTableFiller {
 
 
     private MyTable table;
-    private RessourceGroupsBean ressourceGroupsBean;
+    private OldRessourceGroupsBean oldRessourceGroupsBean;
     private ProjektBean projektBean;
     private ResourceBundle messages;
 
     public OverviewTableFiller(final ResourceBundle bundle, final MyTable table, final ProjektBean projektBean, 
-                               final RessourceGroupsBean ressourceGroupsBean) {
+                               final OldRessourceGroupsBean oldRessourceGroupsBean) {
         messages = bundle;
         this.table = table;
-        this.ressourceGroupsBean = ressourceGroupsBean;
+        this.oldRessourceGroupsBean = oldRessourceGroupsBean;
         this.projektBean = projektBean;
     }
 
@@ -48,12 +48,12 @@ public class OverviewTableFiller {
         table.addContainerProperty(angabe, String.class, null);
         table.setColumnCollapsible(angabe, false);
         table.setColumnWidth(angabe, WIDTH);
-        for (final RessourceGroup ressourceGroup : ressourceGroupsBean.getRessourceGroups()) {
-            final String spaltenName = ressourceGroup.getName();
+        for (final OldRessourceGroup oldRessourceGroup : oldRessourceGroupsBean.getOldRessourceGroups()) {
+            final String spaltenName = oldRessourceGroup.getName();
             table.addContainerProperty(spaltenName, String.class, null);
             table.setColumnExpandRatio(spaltenName,1);
         }
-        final TimesCalculator calculator = new TimesCalculator(messages,ressourceGroupsBean, projektBean);
+        final TimesCalculator calculator = new TimesCalculator(messages, oldRessourceGroupsBean, projektBean);
         calculator.calculate();
 
 
@@ -64,8 +64,8 @@ public class OverviewTableFiller {
         absolutItemAngabeProperty.setValue(messages.getString("costsinit_sumInDDHHMM"));
         for (final Object spalte : table.getItem(ABSOLUT).getItemPropertyIds()) {
             if (!spalte.equals(angabe)) {
-                final Map<RessourceGroup, DaysHoursMinutesItem> absoluteWerte = calculator.getAbsoluteWerte();
-                for (final Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry : absoluteWerte
+                final Map<OldRessourceGroup, DaysHoursMinutesItem> absoluteWerte = calculator.getAbsoluteWerte();
+                for (final Map.Entry<OldRessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry : absoluteWerte
                         .entrySet()) {
                     final String spaltenNameAusMap = absoluteWerteEntry.getKey().getName();
                     final String spaltenName = spalte.toString();
@@ -86,8 +86,8 @@ public class OverviewTableFiller {
         relativItemAngabeProperty.setValue(messages.getString("costsinit_sumInPercent"));
         for (final Object spalte : relativZeile.getItemPropertyIds()) {
             if (!spalte.equals(angabe)) {
-                final Map<RessourceGroup, Double> relativeWerte = calculator.getRelativeWerte();
-                for (final Map.Entry<RessourceGroup, Double> relativeWerteEntry : relativeWerte.entrySet()) {
+                final Map<OldRessourceGroup, Double> relativeWerte = calculator.getRelativeWerte();
+                for (final Map.Entry<OldRessourceGroup, Double> relativeWerteEntry : relativeWerte.entrySet()) {
                     final String spaltenNameAusMap = relativeWerteEntry.getKey().getName();
                     final String spaltenName = spalte.toString();
                     if (spaltenNameAusMap.equals(spaltenName)) {

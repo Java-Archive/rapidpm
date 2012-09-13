@@ -3,33 +3,38 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.ui.*;
+import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component.Event;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeFieldsCalculator;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeTableCalculator;
+import com.vaadin.ui.Layout;
+import com.vaadin.ui.OptionGroup;
+import com.vaadin.ui.Table;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupBean;
 
 import java.util.ResourceBundle;
 
 public class EditGroupValueChangeListener implements ValueChangeListener {
+
     private OptionGroup editGroup;
     private Button saveButton;
     private Table tabelle;
-    private TextField betriebsstdField;
-    private TextField betriebsfraField;
     private Layout formLayout;
     private Layout upperFormLayout;
     private Layout lowerFormLayout;
     private ResourceBundle messages;
+    private StundensaetzeScreen screen;
 
-    public EditGroupValueChangeListener(final ResourceBundle bundle, final Layout formLayout, final Layout upperFormLayout,
+    public EditGroupValueChangeListener(final StundensaetzeScreen screen, final ResourceBundle bundle,
+                                        final Layout formLayout, final Layout upperFormLayout,
                                         final Layout lowerFormLayout, final OptionGroup group,
-                                        final TextField betriebsstdField, final TextField betriebsfraField,
                                         final Button saveButton, final Table tabelle) {
+        this.screen = screen;
         this.messages = bundle;
-        this.betriebsfraField = betriebsfraField;
-        this.betriebsstdField = betriebsstdField;
         this.editGroup = group;
         this.saveButton = saveButton;
         this.tabelle = tabelle;
@@ -53,6 +58,7 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
                 EditModeGetter.setMode(EditModes.TABLEEDIT);
                 saveButton.setVisible(true);
                 tabelle.setReadOnly(true);
+                tabelle.setTableFieldFactory(new TableEditFieldFactory());
                 tabelle.setSelectable(false);
                 tabelle.setEditable(true);
                 for (final Object listener : saveButton.getListeners(Event.class)) {
@@ -66,21 +72,22 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
                     @Override
                     public void buttonClick(ClickEvent event) {
                         tabelle.commit();
+                        final DaoFactoryBean baseDaoFactoryBean = screen.getStundensaetzeScreenBean().getDaoFactoryBean();
+                        final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
+                        final BeanItemContainer<RessourceGroupBean> container = (BeanItemContainer<RessourceGroupBean>) tabelle
+                                .getContainerDataSource();
+                        for(final RessourceGroupBean bean : container.getItemIds()){
+                            //ressourceGroupDAO.saveOrUpdateTX(bean.getOldRessourceGroup()); TODO RPM-41
+                        }
+                        screen.generateTableAndCalculate();
+
                         saveButton.setVisible(false);
                         EditModeGetter.setMode(EditModes.ROWEDIT);
                         editGroup.setValue(ROWMODE);
                         tabelle.setEditable(false);
                         tabelle.setSelectable(true);
-                        final StundensaetzeTableCalculator calculator = new StundensaetzeTableCalculator(tabelle);
-                        calculator.computeColumns();
-
-                        final StundensaetzeFieldsCalculator fieldsCalculator = new StundensaetzeFieldsCalculator(tabelle);
-                        fieldsCalculator.compute();
-                        betriebsfraField.setValue(fieldsCalculator.getBetriebsFraAsString());
-                        betriebsstdField.setValue(fieldsCalculator.getBetriebsStundeAsString());
                     }
                 });
-
             } else {
                 EditModeGetter.setMode(EditModes.ROWEDIT);
                 tabelle.setReadOnly(false);

@@ -5,6 +5,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import java.io.Serializable;
 import java.util.List;
 
+
 /**
  * RapidPM - www.rapidpm.org
  * User: Marco
@@ -12,16 +13,16 @@ import java.util.List;
  * Time: 09:03
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class RessourceGroupsBeanItemContainer extends BeanItemContainer<RessourceGroup> implements
+public class RessourceGroupBeanContainer extends BeanItemContainer<RessourceGroupBean> implements
         Serializable {
 
-    public RessourceGroupsBeanItemContainer() throws IllegalArgumentException {
-        super(RessourceGroup.class);
+    public RessourceGroupBeanContainer() throws IllegalArgumentException {
+        super(RessourceGroupBean.class);
     }
 
-    public void fill(final List<RessourceGroup> ressourceGroups){
-        for(final RessourceGroup ressourceGroup : ressourceGroups){
-            addBean(ressourceGroup);
+    public void fill(final List<RessourceGroupBean> ressourceGroupBeans){
+        for(final RessourceGroupBean ressourceGroupBean : ressourceGroupBeans){
+            addBean(ressourceGroupBean);
         }
     }
 }

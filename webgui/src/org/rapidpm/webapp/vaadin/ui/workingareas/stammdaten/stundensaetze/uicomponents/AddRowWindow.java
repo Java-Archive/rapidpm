@@ -4,11 +4,11 @@ import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.MainRoot;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
 import java.util.Iterator;
 import java.util.ResourceBundle;
@@ -24,14 +24,12 @@ public class AddRowWindow extends Window {
     private HorizontalLayout horizontalButtonLayout = new HorizontalLayout();
     private Button saveButton = new Button();
     private Button cancelButton = new Button();
-    private Table tabelle;
     private RowFieldGroup fieldGroup;
     private ResourceBundle messages;
 
     public AddRowWindow(final MainRoot root, final StundensaetzeScreen screen) {
         this.root = root;
         messages = screen.getMessagesBundle();
-        tabelle = screen.getTabelle();
         setHeight(HEIGHT);
         setWidth(WIDTH);
         setPositionX(POSITION_X);
@@ -40,7 +38,10 @@ public class AddRowWindow extends Window {
         final RessourceGroup row = new RessourceGroup();
         fieldGroup = new RowFieldGroup(row);
 
-        for (Component comp : fieldGroup.getComponents()) {
+        for (final Component comp : fieldGroup.getComponents()) {
+            final TextField field = (TextField) comp;
+            final String typeNameOfFieldProperty = field.getPropertyDataSource().getType().getSimpleName();
+            field.setValue(DefaultValues.valueOf(typeNameOfFieldProperty).getDefaultValue());
             gridLayout.addComponent(comp);
         }
         addComponent(gridLayout);
@@ -80,18 +81,18 @@ public class AddRowWindow extends Window {
                 if (allFilled) {
                     try {
                         fieldGroup.commit();
-                        final RessourceGroupsBean ressourceGroupsBean = root.getRessourceGroupsBean();
-                        ressourceGroupsBean.getRessourceGroups().add(row);
-                        root.setPlanningUnitsBean(new ProjektBean(ressourceGroupsBean));
+                        final DaoFactoryBean baseDaoFactoryBean = screen.getStundensaetzeScreenBean().getDaoFactoryBean();
+                        final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
+                        //ressourceGroupDAO.saveOrUpdate(row);  TODO RPM-41
                         AddRowWindow.this.close();
-                        root.setWorkingArea(new StundensaetzeScreen(root));
+                        screen.generateTableAndCalculate();
                     } catch (CommitException e) {
                         // don't try to commit or to close window if commit
                         // fails
                     }
 
                 } else {
-                    Label lbl = new Label();
+                    final Label lbl = new Label();
                     lbl.setValue(messages.getString("stdsatz_fillInAllFields"));
                     AddRowWindow.this.addComponent(lbl);
                 }
