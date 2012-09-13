@@ -148,8 +148,8 @@ public class StundensaetzeScreen extends Screen {
     private void setComponents() {
         addComponent(betriebsFieldsLayout);
         addComponent(tabellenTasksLayout);
-        addComponent(tabellenLayout);
         addComponent(formLayout);
+        addComponent(tabellenLayout);
     }
 
     /* getters and setters */
