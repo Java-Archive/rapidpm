@@ -1,33 +1,30 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tasks;
 
-import org.rapidpm.webapp.vaadin.MainRoot;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreenBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.ButtonComponent;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
-
-import java.util.List;
 
 public class DelRowLogic {
     private ButtonComponent button;
     private StundensaetzeScreen screen;
-    private MainRoot root;
 
-    public DelRowLogic(final MainRoot root, final StundensaetzeScreen screen, final ButtonComponent button) {
+    public DelRowLogic(final StundensaetzeScreen screen, final ButtonComponent button) {
         this.screen = screen;
         this.button = button;
-        this.root = root;
     }
 
     public void execute() {
-        final RessourceGroupsBean ressourceGroupsBean = root.getRessourceGroupsBean();
-        final RessourceGroup ressourceGroupFromTable = (RessourceGroup )button.getItemId();
-        final List<RessourceGroup> ressourceGroups = ressourceGroupsBean.getRessourceGroups();
-        ressourceGroups.remove(ressourceGroupFromTable);
-
-        root.setPlanningUnitsBean(new ProjektBean(ressourceGroupsBean));
+        final StundensaetzeScreenBean ressourceGroupsBean = screen.getStundensaetzeScreenBean();
+        final RessourceGroupBean ressourceGroupBeanFromTable = (RessourceGroupBean) button.getItemId();
+        final DaoFactoryBean baseDaoFactoryBean = ressourceGroupsBean.getDaoFactoryBean();
+        final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
+        final RessourceGroup ressourceGroupFromNestedBean = ressourceGroupBeanFromTable.getRessourceGroup();
+        //ressourceGroupDAO.remove(ressourceGroupFromNestedBean);
         screen.getFormLayout().setVisible(false);
-        root.setWorkingArea(new StundensaetzeScreen(root));
+        screen.generateTableAndCalculate();
     }
 }

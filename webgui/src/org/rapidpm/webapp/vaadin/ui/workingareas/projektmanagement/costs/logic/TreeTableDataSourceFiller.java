@@ -8,8 +8,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitE
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroup;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,25 +27,25 @@ import static org.rapidpm.Constants.STD_ANTEILE;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 public class TreeTableDataSourceFiller {
-    private RessourceGroupsBean ressourceGroupsBean;
+    private OldRessourceGroupsBean oldRessourceGroupsBean;
     private ProjektBean projektBean;
-    private List<RessourceGroup> ressourceGroups;
-    private final Map<RessourceGroup, Double> ressourceGroupsCostsMap = new HashMap<>();
+    private List<OldRessourceGroup> oldRessourceGroups;
+    private final Map<OldRessourceGroup, Double> ressourceGroupsCostsMap = new HashMap<>();
     private ResourceBundle messages;
 
     private HierarchicalContainer dataSource;
 
-    public TreeTableDataSourceFiller(final ResourceBundle bundle, final RessourceGroupsBean rBean, final ProjektBean pBean,
+    public TreeTableDataSourceFiller(final ResourceBundle bundle, final OldRessourceGroupsBean rBeanOld, final ProjektBean pBean,
                                      final HierarchicalContainer dSource) {
         messages = bundle;
-        ressourceGroupsBean = rBean;
+        oldRessourceGroupsBean = rBeanOld;
         projektBean = pBean;
         dataSource = dSource;
-        ressourceGroups = ressourceGroupsBean.getRessourceGroups();
+        oldRessourceGroups = oldRessourceGroupsBean.getOldRessourceGroups();
         dataSource.removeAllItems();
         dataSource.addContainerProperty(messages.getString("aufgabe"), String.class, null);
-        for (final RessourceGroup ressourceGroup : ressourceGroups) {
-            dataSource.addContainerProperty(ressourceGroup.getName(), Double.class, "");
+        for (final OldRessourceGroup oldRessourceGroup : oldRessourceGroups) {
+            dataSource.addContainerProperty(oldRessourceGroup.getName(), Double.class, "");
         }
 
 
@@ -64,11 +64,11 @@ public class TreeTableDataSourceFiller {
             planningUnitGroupItem.getItemProperty(messages.getString("aufgabe")).setValue(planningUnitGroupName);
             final List<PlanningUnit> planningUnitList = planningUnitGroup.getPlanningUnitList();
             if (planningUnitList == null || planningUnitList.isEmpty()) {
-                for (final RessourceGroup spalte : ressourceGroups) {
+                for (final OldRessourceGroup spalte : oldRessourceGroups) {
                     final List<PlanningUnitElement> planningUnitElementList = planningUnitGroup.getPlanningUnitElementList();
                     for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
-                        final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
-                        if (ressourceGroup.equals(spalte)) {
+                        final OldRessourceGroup oldRessourceGroup = planningUnitElement.getOldRessourceGroup();
+                        if (oldRessourceGroup.equals(spalte)) {
                             planningUnitGroupItem.getItemProperty(spalte.getName()).setValue(0.0);
                         }
                     }
@@ -89,15 +89,15 @@ public class TreeTableDataSourceFiller {
             if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
                 for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
                     final Double costs = getCosts(planningUnitElement);
-                    final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
-                    planningUnitItem.getItemProperty(ressourceGroup.getName()).setValue(costs);
+                    final OldRessourceGroup oldRessourceGroup = planningUnitElement.getOldRessourceGroup();
+                    planningUnitItem.getItemProperty(oldRessourceGroup.getName()).setValue(costs);
                 }
                 addiereZeileZurRessourceMap(planningUnit);
             } else {
                 computePlanningUnits(planningUnit.getKindPlanningUnits(), planningUnitName);
             }
         }
-        for (final RessourceGroup spalte : ressourceGroups) {
+        for (final OldRessourceGroup spalte : oldRessourceGroups) {
             final Item dataSourceItem = dataSource.getItem(parent);
             final Double newValue = ressourceGroupsCostsMap.get(spalte);
             final Property<?> itemProperty = dataSourceItem.getItemProperty(spalte.getName());
@@ -108,13 +108,13 @@ public class TreeTableDataSourceFiller {
     private void addiereZeileZurRessourceMap(final PlanningUnit planningUnit) {
         final List<PlanningUnitElement> planningUnitElementList = planningUnit.getPlanningUnitElementList();
         for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
-            final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
-            if (!ressourceGroup.getName().equals(messages.getString("aufgabe"))) {
+            final OldRessourceGroup oldRessourceGroup = planningUnitElement.getOldRessourceGroup();
+            if (!oldRessourceGroup.getName().equals(messages.getString("aufgabe"))) {
                 Double costs = getCosts(planningUnitElement);
-                if (ressourceGroupsCostsMap.containsKey(ressourceGroup)) {
-                    costs += ressourceGroupsCostsMap.get(ressourceGroup);
+                if (ressourceGroupsCostsMap.containsKey(oldRessourceGroup)) {
+                    costs += ressourceGroupsCostsMap.get(oldRessourceGroup);
                 }
-                ressourceGroupsCostsMap.put(ressourceGroup, costs);
+                ressourceGroupsCostsMap.put(oldRessourceGroup, costs);
             }
         }
     }
@@ -126,8 +126,8 @@ public class TreeTableDataSourceFiller {
 
         final Double totalHours = hoursFromDays + hours + hoursFromMinutes;
 
-        final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
-        final Double externalEurosPerHour = ressourceGroup.getExternalEurosPerHour();
+        final OldRessourceGroup oldRessourceGroup = planningUnitElement.getOldRessourceGroup();
+        final Double externalEurosPerHour = oldRessourceGroup.getExternalEurosPerHour();
 
         return totalHours * externalEurosPerHour;
     }

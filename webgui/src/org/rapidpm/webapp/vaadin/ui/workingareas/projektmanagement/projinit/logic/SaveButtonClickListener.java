@@ -14,7 +14,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.mode
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.datenmodell.KnotenBlattEnum;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.util.List;
 import java.util.ResourceBundle;
@@ -67,7 +67,7 @@ public class SaveButtonClickListener implements ClickListener {
                 } else {
                     foundPlanningUnit.setPlanningUnitName(planningUnitName);
                     for (final PlanningUnitElement planningUnitElement : foundPlanningUnit.getPlanningUnitElementList()) {
-                        final String planningUnitElementRessourceGroupName = planningUnitElement.getRessourceGroup().getName();
+                        final String planningUnitElementRessourceGroupName = planningUnitElement.getOldRessourceGroup().getName();
                         final Property<?> planningUnitElementCellContent = item.getItemProperty(planningUnitElementRessourceGroupName);
                         final String daysHoursMinutesString = planningUnitElementCellContent.getValue().toString();
                         final String[] daysHoursMinutes = SPLITT_PATTERN.split(daysHoursMinutesString);
@@ -80,14 +80,14 @@ public class SaveButtonClickListener implements ClickListener {
                     }
                 }
             }
-            final RessourceGroupsBean ressourceGroupsBean = screen.getRessourceGroupsBean();
+            final OldRessourceGroupsBean oldRessourceGroupsBean = screen.getOldRessourceGroupsBean();
             final TreeTableFiller filler = new TreeTableFiller(messages, screen, projektBean,
-                    ressourceGroupsBean, screen.getTreeTable(), screen.getDataSource());
+                    oldRessourceGroupsBean, screen.getTreeTable(), screen.getDataSource());
             filler.fill();
 
             final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messages, screen
                     .getUebersichtTable(),
-                    projektBean, ressourceGroupsBean);
+                    projektBean, oldRessourceGroupsBean);
             overviewTableFiller.fill();
 
             screen.fillFields();

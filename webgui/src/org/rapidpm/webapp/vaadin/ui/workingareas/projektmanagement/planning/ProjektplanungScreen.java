@@ -12,9 +12,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logi
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -39,18 +38,18 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
     private final ListSelect projektSelect;
     private final VerticalLayout mainLayout;
     private final ProjektBean projektBean;
-    private final RessourceGroupsBean ressourceGroupsBean;
+    private final OldRessourceGroupsBean oldRessourceGroupsBean;
     private Tree treePanelTree;
     private ResourceBundle messages;
 
 
     public ProjektplanungScreen(ResourceBundle bundle, final ProjektBean cont,
-                                final RessourceGroupsBean ressourceGroupsBean) {
+                                final OldRessourceGroupsBean oldRessourceGroupsBean) {
         this.messages = bundle;
         this.projektBean = cont;
-        this.ressourceGroupsBean = ressourceGroupsBean;
+        this.oldRessourceGroupsBean = oldRessourceGroupsBean;
         final PlanningCalculator calculator = new PlanningCalculator(messages, this.projektBean,
-                this.ressourceGroupsBean);
+                this.oldRessourceGroupsBean);
         calculator.calculate();
         setSizeFull();
         setSplitPosition(40, Unit.PERCENTAGE);
@@ -197,8 +196,8 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         return ressourcesPanel;
     }
 
-    public RessourceGroupsBean getRessourceGroupsBean() {
-        return ressourceGroupsBean;
+    public OldRessourceGroupsBean getOldRessourceGroupsBean() {
+        return oldRessourceGroupsBean;
     }
 
     public ResourceBundle getMessagesBundle() {

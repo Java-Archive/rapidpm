@@ -10,8 +10,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitE
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,26 +31,26 @@ public class TreeTableDataSourceFiller {
 
     private static final Logger logger = Logger.getLogger(TreeTableDataSourceFiller.class);
 
-    private RessourceGroupsBean ressourceGroupsBean;
+    private OldRessourceGroupsBean oldRessourceGroupsBean;
     private ProjektBean projektBean;
-    private List<RessourceGroup> ressourceGroups;
-    private final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
+    private List<OldRessourceGroup> oldRessourceGroups;
+    private final Map<OldRessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
     private ResourceBundle messages;
     private HierarchicalContainer dataSource;
 
-    public TreeTableDataSourceFiller(final ResourceBundle bundle, final RessourceGroupsBean rBean,
+    public TreeTableDataSourceFiller(final ResourceBundle bundle, final OldRessourceGroupsBean rBeanOld,
                                      final ProjektBean pBean, final HierarchicalContainer dSource) {
         this.messages = bundle;
-        ressourceGroupsBean = rBean;
+        oldRessourceGroupsBean = rBeanOld;
         projektBean = pBean;
         dataSource = dSource;
-        ressourceGroups = ressourceGroupsBean.getRessourceGroups();
+        oldRessourceGroups = oldRessourceGroupsBean.getOldRessourceGroups();
 
         dataSource.removeAllItems();
         final String aufgabe = messages.getString("aufgabe");
         dataSource.addContainerProperty(aufgabe, String.class, null);
-        for (final RessourceGroup ressourceGroup : ressourceGroups) {
-            dataSource.addContainerProperty(ressourceGroup.getName(), String.class, "");
+        for (final OldRessourceGroup oldRessourceGroup : oldRessourceGroups) {
+            dataSource.addContainerProperty(oldRessourceGroup.getName(), String.class, "");
         }
 
 
@@ -69,9 +69,9 @@ public class TreeTableDataSourceFiller {
             planningUnitGroupItem.getItemProperty(aufgabe).setValue(planningUnitGroupName);
             final List<PlanningUnit> planningUnitList = planningUnitGroup.getPlanningUnitList();
             if (planningUnitList == null || planningUnitList.isEmpty()) {
-                for (final RessourceGroup spalte : ressourceGroups) {
+                for (final OldRessourceGroup spalte : oldRessourceGroups) {
                     for (final PlanningUnitElement planningUnitElement : planningUnitGroup.getPlanningUnitElementList()) {
-                        if (planningUnitElement.getRessourceGroup().equals(spalte)) {
+                        if (planningUnitElement.getOldRessourceGroup().equals(spalte)) {
                             planningUnitElement.setPlannedDays(0);
                             planningUnitElement.setPlannedHours(0);
                             planningUnitElement.setPlannedMinutes(0);
@@ -99,14 +99,14 @@ public class TreeTableDataSourceFiller {
             if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
                 for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
                     final DaysHoursMinutesItem item = new DaysHoursMinutesItem(planningUnitElement);
-                    planningUnitItem.getItemProperty(planningUnitElement.getRessourceGroup().getName()).setValue(item.toString());
+                    planningUnitItem.getItemProperty(planningUnitElement.getOldRessourceGroup().getName()).setValue(item.toString());
                 }
                 addiereZeileZurRessourceMap(planningUnit);
             } else {
                 computePlanningUnits(kindPlanningUnits, planningUnitName);
             }
         }
-        for (final RessourceGroup spalte : ressourceGroups) {
+        for (final OldRessourceGroup spalte : oldRessourceGroups) {
             final String mapValue = ressourceGroupDaysHoursMinutesItemMap.get(spalte).toString();
             dataSource.getItem(parent).getItemProperty(spalte.getName()).setValue(mapValue);
         }
@@ -114,10 +114,10 @@ public class TreeTableDataSourceFiller {
 
     private void addiereZeileZurRessourceMap(final PlanningUnit planningUnit) {
         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-            final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
+            final OldRessourceGroup oldRessourceGroup = planningUnitElement.getOldRessourceGroup();
             final String aufgabe = messages.getString("aufgabe");
-            if (!ressourceGroup.getName().equals(aufgabe)) {
-//                final RessourceGroup ressourceGroup1 = planningUnitElement.getRessourceGroup();
+            if (!oldRessourceGroup.getName().equals(aufgabe)) {
+//                final OldRessourceGroup ressourceGroup1 = planningUnitElement.getOldRessourceGroup();
                 final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
                 final int plannedDays = planningUnitElement.getPlannedDays();
                 final int plannedHours = planningUnitElement.getPlannedHours();
@@ -125,18 +125,18 @@ public class TreeTableDataSourceFiller {
                 daysHoursMinutesItem.setDays(plannedDays);
                 daysHoursMinutesItem.setHours(plannedHours);
                 daysHoursMinutesItem.setMinutes(plannedMinutes);
-                if (ressourceGroupDaysHoursMinutesItemMap.containsKey(ressourceGroup)) {
+                if (ressourceGroupDaysHoursMinutesItemMap.containsKey(oldRessourceGroup)) {
                     final Integer days = daysHoursMinutesItem.getDays();
                     final Integer hours = daysHoursMinutesItem.getHours();
                     final Integer minutes = daysHoursMinutesItem.getMinutes();
-                    final DaysHoursMinutesItem daysHoursMinutesItemFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup);
+                    final DaysHoursMinutesItem daysHoursMinutesItemFromMap = ressourceGroupDaysHoursMinutesItemMap.get(oldRessourceGroup);
                     daysHoursMinutesItem.setDays(days + daysHoursMinutesItemFromMap.getDays());
                     daysHoursMinutesItem.setHours(hours + daysHoursMinutesItemFromMap
                             .getHours());
                     daysHoursMinutesItem.setMinutes(minutes + daysHoursMinutesItemFromMap.getMinutes());
                 }
                 correctDaysHoursMinutesItem(daysHoursMinutesItem);
-                ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup, daysHoursMinutesItem);
+                ressourceGroupDaysHoursMinutesItemMap.put(oldRessourceGroup, daysHoursMinutesItem);
             }
         }
     }

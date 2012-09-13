@@ -7,8 +7,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculat
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroup;
 
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -25,27 +25,27 @@ public class TreeTableFiller {
     private static final int WIDTH = 200;
     private HierarchicalContainer dataSource;
     private ProjektBean projektBean;
-    private RessourceGroupsBean ressourceGroupsBean;
+    private OldRessourceGroupsBean oldRessourceGroupsBean;
     private MyTreeTable treeTable;
     private AufwandProjInitScreen screen;
     private ResourceBundle messages;
 
     public TreeTableFiller(final ResourceBundle bundle, final AufwandProjInitScreen screen,
                            final ProjektBean projektBean,
-                           final RessourceGroupsBean ressourceGroupsBean, final MyTreeTable treeTable,
+                           final OldRessourceGroupsBean oldRessourceGroupsBean, final MyTreeTable treeTable,
                            final HierarchicalContainer dataSource) {
         this.messages = bundle;
         this.dataSource = dataSource;
         this.projektBean = projektBean;
-        this.ressourceGroupsBean = ressourceGroupsBean;
+        this.oldRessourceGroupsBean = oldRessourceGroupsBean;
         this.treeTable = treeTable;
         this.screen = screen;
     }
 
     public void fill() {
-        final TimesCalculator timesCalculator = new TimesCalculator(messages, ressourceGroupsBean, projektBean);
+        final TimesCalculator timesCalculator = new TimesCalculator(messages, oldRessourceGroupsBean, projektBean);
         final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller
-                (messages, ressourceGroupsBean, projektBean, dataSource);
+                (messages, oldRessourceGroupsBean, projektBean, dataSource);
         timesCalculator.calculate();
         treeTableDataSourceFiller.fill();
         for(final Object listener : treeTable.getListeners(ItemClickEvent.ItemClickListener.class)){
@@ -63,9 +63,9 @@ public class TreeTableFiller {
             }
         }
         treeTable.setFooterVisible(true);
-        final Map<RessourceGroup, DaysHoursMinutesItem> werteMap = timesCalculator.getAbsoluteWerte();
-        for(final RessourceGroup ressourceGroup : werteMap.keySet()){
-            treeTable.setColumnFooter(ressourceGroup.getName(), werteMap.get(ressourceGroup).toString());
+        final Map<OldRessourceGroup, DaysHoursMinutesItem> werteMap = timesCalculator.getAbsoluteWerte();
+        for(final OldRessourceGroup oldRessourceGroup : werteMap.keySet()){
+            treeTable.setColumnFooter(oldRessourceGroup.getName(), werteMap.get(oldRessourceGroup).toString());
         }
         treeTable.setValue(null);
     }

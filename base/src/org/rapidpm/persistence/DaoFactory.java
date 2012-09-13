@@ -32,6 +32,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 import org.rapidpm.persistence.prj.stammdaten.address.*;
 import org.rapidpm.persistence.prj.stammdaten.kommunikation.*;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.*;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.metadata.AusbildungseinheitDAO;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.metadata.VerwaltungseinheitDAO;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.metadata.WirtschaftseinheitDAO;
@@ -263,6 +264,11 @@ public class DaoFactory {
 
     public PersonalMessageDAO getPersonalMessageDAO() {
         return new PersonalMessageDAO(getEntityManager());
+    }
+
+    //pkg intern
+    public RessourceGroupDAO getRessourceGroupDAO(){
+        return new RessourceGroupDAO(getEntityManager());
     }
 
     //pkg organisationseinheiten
