@@ -5,7 +5,7 @@ import com.vaadin.ui.Button;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.TreeTableFiller;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -19,16 +19,16 @@ public class UndoButton extends Button implements Button.ClickListener {
     private MyTreeTable treeTable;
     private HierarchicalContainer dataSource;
     private ProjektBean projektBean;
-    private RessourceGroupsBean ressourceGroupsBean;
+    private OldRessourceGroupsBean oldRessourceGroupsBean;
     private AufwandProjInitScreen screen;
 
     public UndoButton(AufwandProjInitScreen screen, MyTreeTable treeTable, HierarchicalContainer dataSource,
-                      ProjektBean projektBean, RessourceGroupsBean ressourceGroupsBean) {
+                      ProjektBean projektBean, OldRessourceGroupsBean oldRessourceGroupsBean) {
         this.screen = screen;
         this.treeTable = treeTable;
         this.dataSource = dataSource;
         this.projektBean = projektBean;
-        this.ressourceGroupsBean = ressourceGroupsBean;
+        this.oldRessourceGroupsBean = oldRessourceGroupsBean;
         this.addListener(this);
         this.setCaption("remove sortorder");
         this.setStyleName("link");
@@ -37,7 +37,7 @@ public class UndoButton extends Button implements Button.ClickListener {
     @Override
     public void buttonClick(Button.ClickEvent event) {
         final TreeTableFiller treeTableFiller = new TreeTableFiller(screen.getMessagesBundle(), screen,projektBean,
-                ressourceGroupsBean,
+                oldRessourceGroupsBean,
                 treeTable
                 ,dataSource);
         treeTableFiller.fill();

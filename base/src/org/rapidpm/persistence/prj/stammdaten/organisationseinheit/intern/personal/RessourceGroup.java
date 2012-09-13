@@ -144,4 +144,18 @@ public class RessourceGroup {
     public void setPlanAnzahl(Integer planAnzahl) {
         this.planAnzahl = planAnzahl;
     }
+
+    @Override
+    public String toString() {
+        return "RessourceGroup{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", hoursPerWeek=" + hoursPerWeek +
+                ", weeksPerYear=" + weeksPerYear +
+                ", planAnzahl=" + planAnzahl +
+                ", facturizable=" + facturizable +
+                ", externalEurosPerHour=" + externalEurosPerHour +
+                ", bruttoGehalt=" + bruttoGehalt +
+                '}';
+    }
 }

@@ -10,8 +10,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.Proj
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -38,9 +38,9 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
         super(planningUnitGroup.getIssueBase(), screen, screenPanel);
         final ProjektBean projektBean = screen.getProjektBean();
         final Projekt projekt = projektBean.getProjekt();
-        final List<RessourceGroup> ressourceGroupList = projekt.getRessourceGroups();
-        for (final RessourceGroup ressourceGroup : ressourceGroupList) {
-            buildField(ressourceGroup, planningUnitGroup);
+        final List<OldRessourceGroup> oldRessourceGroupList = projekt.getOldRessourceGroups();
+        for (final OldRessourceGroup oldRessourceGroup : oldRessourceGroupList) {
+            buildField(oldRessourceGroup, planningUnitGroup);
         }
         buildForm();
         for (final Object listener : screenPanel.getListeners(MouseEvents.ClickEvent.class)) {
@@ -53,9 +53,9 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
         super(planningUnit.getIssueBase(), screen, screenPanel);
         final ProjektBean projektBean = screen.getProjektBean();
         final Projekt projekt = projektBean.getProjekt();
-        final List<RessourceGroup> ressourceGroupArrayList = projekt.getRessourceGroups();
-        for (final RessourceGroup ressourceGroup : ressourceGroupArrayList) {
-            buildField(ressourceGroup, planningUnit);
+        final List<OldRessourceGroup> oldRessourceGroupArrayList = projekt.getOldRessourceGroups();
+        for (final OldRessourceGroup oldRessourceGroup : oldRessourceGroupArrayList) {
+            buildField(oldRessourceGroup, planningUnit);
         }
         buildForm();
         if (hasChildren) {
@@ -68,8 +68,8 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
                 public void buttonClick(Button.ClickEvent event) {
                     for (final TextField textField : ressourceGroupFields) {
                         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-                            final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
-                            if (ressourceGroup.getName().equals(textField.getCaption())) {
+                            final OldRessourceGroup oldRessourceGroup = planningUnitElement.getOldRessourceGroup();
+                            if (oldRessourceGroup.getName().equals(textField.getCaption())) {
                                 final DaysHoursMinutesItem item = new DaysHoursMinutesItem();
                                 item.setDays(planningUnitElement.getPlannedDays());
                                 item.setHours(planningUnitElement.getPlannedHours());
@@ -102,8 +102,8 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
                             }
                             final List<PlanningUnitElement> planningUnitElementList = planningUnit.getPlanningUnitElementList();
                             for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
-                                final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
-                                if (ressourceGroup.getName().equals(textField.getCaption())) {
+                                final OldRessourceGroup oldRessourceGroup = planningUnitElement.getOldRessourceGroup();
+                                if (oldRessourceGroup.getName().equals(textField.getCaption())) {
                                     final String[] daysHoursMinutes = COMPILE.split(textField.getValue());
                                     planningUnitElement.setPlannedDays(Integer.parseInt(daysHoursMinutes[0]));
                                     planningUnitElement.setPlannedHours(Integer.parseInt(daysHoursMinutes[1]));
@@ -111,9 +111,9 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
                                 }
                             }
                         }
-                        final RessourceGroupsBean ressourceGroupsBean = screen.getRessourceGroupsBean();
+                        final OldRessourceGroupsBean oldRessourceGroupsBean = screen.getOldRessourceGroupsBean();
                         final PlanningCalculator calculator = new PlanningCalculator(screen.getMessagesBundle(),
-                                projektBean, ressourceGroupsBean);
+                                projektBean, oldRessourceGroupsBean);
                         calculator.calculate();
 
                         final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
@@ -137,14 +137,14 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
     }
 
 
-    private void buildField(RessourceGroup ressourceGroup, PlanningUnitGroup planningUnitGroup) {
-        final TextField field = new TextField(ressourceGroup.getName());
+    private void buildField(OldRessourceGroup oldRessourceGroup, PlanningUnitGroup planningUnitGroup) {
+        final TextField field = new TextField(oldRessourceGroup.getName());
         final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
 
         PlanningUnitElement element = new PlanningUnitElement();
         for (final PlanningUnitElement planningUnitElement : planningUnitGroup.getPlanningUnitElementList()) {
-            final String elementRessourceGroupName = planningUnitElement.getRessourceGroup().getName();
-            if (elementRessourceGroupName.equals(ressourceGroup.getName())) {
+            final String elementRessourceGroupName = planningUnitElement.getOldRessourceGroup().getName();
+            if (elementRessourceGroupName.equals(oldRessourceGroup.getName())) {
                 element = planningUnitElement;
             }
         }
@@ -159,13 +159,13 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
         ressourceGroupFields.add(field);
     }
 
-    private void buildField(RessourceGroup ressourceGroup, PlanningUnit planningUnit) {
-        final TextField field = new TextField(ressourceGroup.getName());
+    private void buildField(OldRessourceGroup oldRessourceGroup, PlanningUnit planningUnit) {
+        final TextField field = new TextField(oldRessourceGroup.getName());
         final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
         PlanningUnitElement element = new PlanningUnitElement();
         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-            final String elementRessourceGroupName = planningUnitElement.getRessourceGroup().getName();
-            if (elementRessourceGroupName.equals(ressourceGroup.getName())) {
+            final String elementRessourceGroupName = planningUnitElement.getOldRessourceGroup().getName();
+            if (elementRessourceGroupName.equals(oldRessourceGroup.getName())) {
                 element = planningUnitElement;
             }
         }

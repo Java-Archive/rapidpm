@@ -1,15 +1,15 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell;
 
 import java.io.Serializable;
-import static org.rapidpm.Constants.*;
 
-public class RessourceGroup implements Serializable {
+/**
+ * @deprecated wird noch in einigen Teilen des Programms verwendet, wird aber durch die persistente Entity-Klasse
+ * ersetzt
+ **/
+@Deprecated
+public class OldRessourceGroup implements Serializable {
 
-    public static final String[] COLUMNS = new String[]{"name",
-            "bruttoGehalt", "hoursPerWeek", "weeksPerYear", "hoursPerYear",
-            "facturizable", "eurosPerHour", "externalEurosPerHour",
-            "operativeEurosPerHour", "bruttoPerMonth", "planAnzahl",
-            "sumPerMonth", "sumPerDay"};
+
 
 
     private String name ;
@@ -133,9 +133,9 @@ public class RessourceGroup implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof RessourceGroup)) return false;
+        if (!(o instanceof OldRessourceGroup)) return false;
 
-        RessourceGroup that = (RessourceGroup) o;
+        OldRessourceGroup that = (OldRessourceGroup) o;
 
         if (bruttoGehalt != null ? !bruttoGehalt.equals(that.bruttoGehalt) : that.bruttoGehalt != null) return false;
         if (bruttoPerMonth != null ? !bruttoPerMonth.equals(that.bruttoPerMonth) : that.bruttoPerMonth != null)

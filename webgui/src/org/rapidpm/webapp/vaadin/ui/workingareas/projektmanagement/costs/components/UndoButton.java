@@ -5,7 +5,7 @@ import com.vaadin.ui.Button;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.TreeTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.util.ResourceBundle;
 
@@ -21,25 +21,25 @@ public class UndoButton extends Button implements Button.ClickListener {
     private MyTreeTable treeTable;
     private HierarchicalContainer dataSource;
     private ProjektBean projektBean;
-    private RessourceGroupsBean ressourceGroupsBean;
+    private OldRessourceGroupsBean oldRessourceGroupsBean;
     private ResourceBundle messages;
 
     public UndoButton(ResourceBundle bundle, MyTreeTable treeTable, HierarchicalContainer dataSource,
-                      ProjektBean projektBean, RessourceGroupsBean ressourceGroupsBean){
+                      ProjektBean projektBean, OldRessourceGroupsBean oldRessourceGroupsBean){
         this.setCaption("remove sortorder");
         this.setStyleName("link");
         this.messages = bundle;
         this.treeTable = treeTable;
         this.dataSource = dataSource;
         this.projektBean = projektBean;
-        this.ressourceGroupsBean = ressourceGroupsBean;
+        this.oldRessourceGroupsBean = oldRessourceGroupsBean;
         this.addListener(this);
     }
 
     @Override
     public void buttonClick(ClickEvent event) {
 
-        final TreeTableFiller treeTableFiller = new TreeTableFiller(messages,projektBean,ressourceGroupsBean,
+        final TreeTableFiller treeTableFiller = new TreeTableFiller(messages,projektBean, oldRessourceGroupsBean,
             treeTable, dataSource);
         treeTableFiller.fill();
         treeTable.requestRepaint();

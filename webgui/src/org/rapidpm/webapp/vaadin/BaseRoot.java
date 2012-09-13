@@ -8,7 +8,6 @@ package org.rapidpm.webapp.vaadin;
  */
 
 import com.vaadin.annotations.Theme;
-import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.WrappedRequest;
 import com.vaadin.ui.*;
@@ -21,7 +20,7 @@ import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webapp.vaadin.ui.windows.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.util.List;
 import java.util.Locale;
@@ -52,8 +51,8 @@ public abstract class BaseRoot extends Root {
     private final String applicationName;
 
     protected Benutzer currentUser;
-    protected RessourceGroupsBean ressourceGroupsBean = new RessourceGroupsBean();
-    protected ProjektBean planningUnitsBean = new ProjektBean(ressourceGroupsBean);
+    protected OldRessourceGroupsBean oldRessourceGroupsBean = new OldRessourceGroupsBean();
+    protected ProjektBean planningUnitsBean = new ProjektBean(oldRessourceGroupsBean);
     protected Locale locale = new Locale("de","DE");
     protected ResourceBundle messages;
 
@@ -240,7 +239,7 @@ public abstract class BaseRoot extends Root {
         initMenuBarIntern(menubar);
         hlHeaderBottomLine.addComponent(menubar);
 
-        setWorkingArea(new ProjektplanungScreen(messages, planningUnitsBean, ressourceGroupsBean));
+        setWorkingArea(new ProjektplanungScreen(messages, planningUnitsBean, oldRessourceGroupsBean));
         addComponent(mainlayout);
     }
 

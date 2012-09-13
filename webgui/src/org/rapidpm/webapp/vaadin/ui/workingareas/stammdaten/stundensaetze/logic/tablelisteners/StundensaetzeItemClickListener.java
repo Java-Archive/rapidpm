@@ -1,25 +1,26 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tablelisteners;
 
-import com.vaadin.data.Item;
-import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component.Event;
+import com.vaadin.ui.Layout;
+import com.vaadin.ui.Table;
 import org.apache.log4j.Logger;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeFieldsCalculator;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeTableCalculator;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.EditModeGetter;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.EditModes;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.RowEditFieldFactory;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.ItemClickDependentComponent;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.RowFieldGroup;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
 
 public class StundensaetzeItemClickListener implements ItemClickListener {
 
@@ -33,25 +34,21 @@ public class StundensaetzeItemClickListener implements ItemClickListener {
     private Layout formLayout;
     private Button saveButton;
     private Button deleteButton;
+    private Table tabelle;
+    private StundensaetzeScreen screen;
 
-    private TextField betriebsWertField;
-    private TextField betriebsStdField;
-
-    private Table table;
-
-    public StundensaetzeItemClickListener(final List<ItemClickDependentComponent> components,
-                                          final Button deleteButton, final Layout upperFormLayout, final Layout lowerFormLayout,
-                                          final Layout formLayout, final Button saveButton, final Table tabelle,
-                                          final TextField betriebsWertField, final TextField betriebsStdField) {
+    public StundensaetzeItemClickListener(final StundensaetzeScreen screen, final List<ItemClickDependentComponent>
+                                            components, final Button deleteButton, final Layout upperFormLayout,
+                                          final Layout lowerFormLayout, final Layout formLayout,
+                                          final Button saveButton, final Table tabelle) {
         this.components = components;
         this.deleteButton = deleteButton;
         this.upperFormLayout = upperFormLayout;
         this.lowerFormLayout = lowerFormLayout;
         this.formLayout = formLayout;
         this.saveButton = saveButton;
-        this.betriebsWertField = betriebsWertField;
-        this.betriebsStdField = betriebsStdField;
-        table = tabelle;
+        this.tabelle = tabelle;
+        this.screen = screen;
         informComponents(state);
     }
 
@@ -62,6 +59,7 @@ public class StundensaetzeItemClickListener implements ItemClickListener {
             formLayout.setVisible(true);
             lowerFormLayout.setVisible(true);
             upperFormLayout.setVisible(true);
+            final RowEditFieldFactory fieldFactory = new RowEditFieldFactory(event.getItem());
 
             upperFormLayout.removeAllComponents();
             for (final Object listener : saveButton.getListeners(Event.class)) {
@@ -70,32 +68,24 @@ public class StundensaetzeItemClickListener implements ItemClickListener {
                 }
             }
             deleteButton.setEnabled(true);
-
-            final Item item = event.getItem();
-            final RowFieldGroup fieldGroup = new RowFieldGroup(item);
-            final List<Component> components = fieldGroup.getComponents();
-            for (final Component component : components) {
-                upperFormLayout.addComponent(component);
-            }
-
+            tabelle.setTableFieldFactory(fieldFactory);
+            tabelle.setEditable(true);
             saveButton.addListener(new ClickListener() {
 
                 @Override
                 public void buttonClick(ClickEvent event) {
                     try {
-                        fieldGroup.commit();
-                        final StundensaetzeTableCalculator calculator = new StundensaetzeTableCalculator(table);
-                        calculator.computeColumns();
-
-                        final StundensaetzeFieldsCalculator fieldsCalculator = new StundensaetzeFieldsCalculator(table);
-                        fieldsCalculator.compute();
-                        betriebsWertField.setValue(fieldsCalculator.getBetriebsFraAsString());
-                        betriebsStdField.setValue(fieldsCalculator.getBetriebsStundeAsString());
+                        tabelle.commit();
+                        final DaoFactoryBean baseDaoFactoryBean = screen.getStundensaetzeScreenBean().getDaoFactoryBean();
+                        final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
+                        BeanItemContainer<RessourceGroupBean> container = (BeanItemContainer<RessourceGroupBean>) tabelle.getContainerDataSource();
+                        for(final RessourceGroupBean bean : container.getItemIds()){
+                           // ressourceGroupDAO.saveOrUpdateTX(bean.getOldRessourceGroup());  TODO RPM-41
+                        }
+                        screen.generateTableAndCalculate();
                         upperFormLayout.setVisible(false);
                         saveButton.setVisible(false);
-                    }catch (CommitException e){
-                        logger.info(COMMIT_EXCEPTION_MESSAGE);
-                    }catch(Exception e){
+                    } catch(Exception e){
                         logger.warn("Exception", e);
                     }
                 }

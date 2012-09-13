@@ -14,10 +14,9 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.mode
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.ExpandTableCheckBox;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.util.Date;
-import java.util.ResourceBundle;
 
 import static org.rapidpm.Constants.DATE_FORMAT;
 import static org.rapidpm.Constants.EUR;
@@ -59,17 +58,17 @@ public class CostsScreen extends Screen {
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
 
-        undoButton = new UndoButton(messagesBundle, treeTable, dataSource, projektBean, ressourceGroupsBean);
+        undoButton = new UndoButton(messagesBundle, treeTable, dataSource, projektBean, oldRessourceGroupsBean);
         undoButton.setVisible(false);
 
         expandCheckBox = new ExpandTableCheckBox(treeTable, dataSource);
 
-        final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, projektBean, ressourceGroupsBean,
+        final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, projektBean, oldRessourceGroupsBean,
                 treeTable, dataSource);
         treeTableFiller.fill();
 
         final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable,
-                projektBean, ressourceGroupsBean);
+                projektBean, oldRessourceGroupsBean);
         overviewTableFiller.fill();
 
         uebersichtTable.setPageLength(4);
@@ -124,7 +123,7 @@ public class CostsScreen extends Screen {
     }
 
     private void fillFields() {
-        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle, ressourceGroupsBean, projektBean);
+        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle, oldRessourceGroupsBean, projektBean);
         final CostsCalculator costsCalculator = new CostsCalculator(projektBean, messagesBundle);
         costsCalculator.calculate();
         timesCalculator.calculate();
@@ -254,7 +253,7 @@ public class CostsScreen extends Screen {
         this.dataSource = dataSource;
     }
 
-    public RessourceGroupsBean getRessourceGroupsBean() {
-        return ressourceGroupsBean;
+    public OldRessourceGroupsBean getRessourceGroupsBean() {
+        return oldRessourceGroupsBean;
     }
 }

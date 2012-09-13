@@ -7,28 +7,21 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.ConverterAdder;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-public class StundensaetzeConverterAdder implements ConverterAdder {
+import static org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeTableCreator.*;
 
-    public static final String BRUTTO_GEHALT = "bruttoGehalt";
-    public static final String FACTURIZABLE = "facturizable";
-    public static final String EUROS_PER_HOUR = "eurosPerHour";
-    public static final String EXTERNAL_EUROS_PER_HOUR = "externalEurosPerHour";
-    public static final String OPERATIVE_EUROS_PER_HOUR = "operativeEurosPerHour";
-    public static final String BRUTTO_PER_MONTH = "bruttoPerMonth";
-    public static final String SUM_PER_MONTH = "sumPerMonth";
-    public static final String SUM_PER_DAY = "sumPerDay";
+public class StundensaetzeConverterAdder implements ConverterAdder {
 
     @Override
     public void addConvertersTo(final Table tabelle) {
 
-        tabelle.setConverter(BRUTTO_GEHALT, new StringToNumberConverter() {
+        tabelle.setConverter(NESTED_BEAN_NAME+"."+BRUTTOGEHALT, new StringToNumberConverter() {
             @Override
             protected NumberFormat getFormat(final Locale locale) {
                 return NumberFormat.getCurrencyInstance(locale);
             }
         });
 
-        tabelle.setConverter(FACTURIZABLE, new StringToNumberConverter() {
+        tabelle.setConverter(NESTED_BEAN_NAME+"."+FACTURIZABLE, new StringToNumberConverter() {
             @Override
             protected NumberFormat getFormat(Locale locale) {
                 return NumberFormat.getPercentInstance(locale);
@@ -42,7 +35,7 @@ public class StundensaetzeConverterAdder implements ConverterAdder {
             }
         });
 
-        tabelle.setConverter(EXTERNAL_EUROS_PER_HOUR,
+        tabelle.setConverter(NESTED_BEAN_NAME+"."+EXTERNAL_EUROS_PER_HOUR,
                 new StringToNumberConverter() {
                     @Override
                     protected NumberFormat getFormat(Locale locale) {

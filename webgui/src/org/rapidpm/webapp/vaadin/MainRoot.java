@@ -11,7 +11,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.mode
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenWorkingArea;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -62,7 +62,7 @@ public class MainRoot extends BaseRoot {
         projektmanagement.addItem(messages.getString("projectplanning"), new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new ProjektplanungScreen(messages, planningUnitsBean,ressourceGroupsBean));
+                setWorkingArea(new ProjektplanungScreen(messages, planningUnitsBean, oldRessourceGroupsBean));
             }
         });
 
@@ -102,12 +102,12 @@ public class MainRoot extends BaseRoot {
         return planningUnitsBean;
     }
 
-    public RessourceGroupsBean getRessourceGroupsBean() {
-        return ressourceGroupsBean;
+    public OldRessourceGroupsBean getRessourceGroupsBean() {
+        return oldRessourceGroupsBean;
     }
 
-    public void setRessourceGroupsBean(RessourceGroupsBean ressourceGroupsBean) {
-        this.ressourceGroupsBean = ressourceGroupsBean;
+    public void setRessourceGroupsBean(OldRessourceGroupsBean oldRessourceGroupsBean) {
+        this.oldRessourceGroupsBean = oldRessourceGroupsBean;
     }
 
     public void setPlanningUnitsBean(ProjektBean planningUnitsBean) {

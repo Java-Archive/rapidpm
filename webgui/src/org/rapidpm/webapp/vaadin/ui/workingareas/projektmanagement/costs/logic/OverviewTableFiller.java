@@ -6,8 +6,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinu
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.text.DecimalFormat;
 import java.util.Collection;
@@ -33,16 +33,16 @@ public class OverviewTableFiller {
     private static final int WIDTH = 200;
 
     private MyTable table;
-    private RessourceGroupsBean ressourceGroupsBean;
+    private OldRessourceGroupsBean oldRessourceGroupsBean;
     private ProjektBean projektBean;
     private ResourceBundle messages;
 
 
     public OverviewTableFiller(final ResourceBundle bundle, final MyTable table, final ProjektBean projektBean,
-                               final RessourceGroupsBean ressourceGroupsBean) {
+                               final OldRessourceGroupsBean oldRessourceGroupsBean) {
         this.messages = bundle;
         this.table = table;
-        this.ressourceGroupsBean = ressourceGroupsBean;
+        this.oldRessourceGroupsBean = oldRessourceGroupsBean;
         this.projektBean = projektBean;
     }
 
@@ -52,14 +52,14 @@ public class OverviewTableFiller {
         table.addContainerProperty(angabe, String.class, null);
         table.setColumnCollapsible(angabe, false);
         table.setColumnWidth(angabe, WIDTH);
-        final List<RessourceGroup> ressourceGroups = ressourceGroupsBean.getRessourceGroups();
-        for (final RessourceGroup ressourceGroup : ressourceGroups) {
-            final String spaltenName = ressourceGroup.getName();
+        final List<OldRessourceGroup> oldRessourceGroups = oldRessourceGroupsBean.getOldRessourceGroups();
+        for (final OldRessourceGroup oldRessourceGroup : oldRessourceGroups) {
+            final String spaltenName = oldRessourceGroup.getName();
             table.addContainerProperty(spaltenName, String.class, null);
             table.setColumnExpandRatio(spaltenName,1);
         }
 
-        final TimesCalculator timesCalculator = new TimesCalculator(messages,ressourceGroupsBean, projektBean);
+        final TimesCalculator timesCalculator = new TimesCalculator(messages, oldRessourceGroupsBean, projektBean);
         timesCalculator.calculate();
 
         final CostsCalculator costsCalculator = new CostsCalculator(projektBean,messages);
@@ -76,12 +76,12 @@ public class OverviewTableFiller {
         final Collection<?> itemPropertyIds = externItem.getItemPropertyIds();
         for (final Object spalte : itemPropertyIds) {
             if (!spalte.equals(angabe)) {
-                for (final RessourceGroup ressourceGroup : ressourceGroups) {
+                for (final OldRessourceGroup oldRessourceGroup : oldRessourceGroups) {
                     final String spaltenName = spalte.toString();
-                    final String spaltenNameAusRessourceGroupsBean = ressourceGroup.toString();
+                    final String spaltenNameAusRessourceGroupsBean = oldRessourceGroup.toString();
                     if (spaltenName.equals(spaltenNameAusRessourceGroupsBean)) {
                         final Property<?> externItemSpalteProperty = externItem.getItemProperty(spalte);
-                        final String ressourceGroupsBeanValue = ressourceGroup.getExternalEurosPerHour().toString();
+                        final String ressourceGroupsBeanValue = oldRessourceGroup.getExternalEurosPerHour().toString();
                         externItemSpalteProperty.setValue(ressourceGroupsBeanValue + " " + EUR);
                     }
                 }
@@ -92,10 +92,10 @@ public class OverviewTableFiller {
         absolutItemAngabeProperty.setValue(messages.getString("costsinit_sumInDDHHMM"));
         for (final Object spalte : absolutItem.getItemPropertyIds()) {
             if (!spalte.equals(angabe)) {
-                final Map<RessourceGroup, DaysHoursMinutesItem> absoluteWerte = timesCalculator.getAbsoluteWerte();
-                for (final Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry : absoluteWerte.entrySet()) {
+                final Map<OldRessourceGroup, DaysHoursMinutesItem> absoluteWerte = timesCalculator.getAbsoluteWerte();
+                for (final Map.Entry<OldRessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry : absoluteWerte.entrySet()) {
                     final String spaltenName = spalte.toString();
-                    final RessourceGroup key = absoluteWerteEntry.getKey();
+                    final OldRessourceGroup key = absoluteWerteEntry.getKey();
                     final String spaltenNameAusMap = key.getName();
                     if (spaltenNameAusMap.equals(spaltenName)) {
                         final Property<?> absolutItemSpalteProperty = absolutItem.getItemProperty(spalte);
@@ -111,9 +111,9 @@ public class OverviewTableFiller {
         relativItemAngabeProperty.setValue(messages.getString("costsinit_sumInPercent"));
         for (final Object spalte : relativItem.getItemPropertyIds()) {
             if (!spalte.equals(angabe)) {
-                final Map<RessourceGroup, Double> relativeWerte = timesCalculator.getRelativeWerte();
-                for (final Map.Entry<RessourceGroup, Double> relativeWerteEntry : relativeWerte.entrySet()) {
-                    final RessourceGroup key = relativeWerteEntry.getKey();
+                final Map<OldRessourceGroup, Double> relativeWerte = timesCalculator.getRelativeWerte();
+                for (final Map.Entry<OldRessourceGroup, Double> relativeWerteEntry : relativeWerte.entrySet()) {
+                    final OldRessourceGroup key = relativeWerteEntry.getKey();
                     final String spaltenNameAusMap = key.getName();
                     final String spaltenName = spalte.toString();
                     if (spaltenNameAusMap.equals(spaltenName)) {
@@ -130,10 +130,10 @@ public class OverviewTableFiller {
         kostenItemAngabeProperty.setValue(messages.getString("costsscreen_sumInEuro"));
         for (final Object spalte : kostenItem.getItemPropertyIds()) {
             if (!spalte.equals(angabe)) {
-                final Map<RessourceGroup, Double> kostenMap = costsCalculator.getRessourceGroupsCostsMap();
-                for (final Map.Entry<RessourceGroup, Double> kostenEntry : kostenMap.entrySet()) {
+                final Map<OldRessourceGroup, Double> kostenMap = costsCalculator.getRessourceGroupsCostsMap();
+                for (final Map.Entry<OldRessourceGroup, Double> kostenEntry : kostenMap.entrySet()) {
                     final String spaltenName = spalte.toString();
-                    final RessourceGroup key = kostenEntry.getKey();
+                    final OldRessourceGroup key = kostenEntry.getKey();
                     final String spaltenNameAusMap = key.getName();
                     if (spaltenNameAusMap.equals(spaltenName)) {
                         final Property<?> kostenItemSpalteProperty = kostenItem.getItemProperty(spalte);
