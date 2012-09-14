@@ -26,7 +26,7 @@ import static org.rapidpm.Constants.DATE_FORMAT;
  */
 
 /**
- * Nicht als FieldGroup möglich, da für nicht-primitive Attribute kein entsprechendes Feld erstellt werden kann
+ * Nicht als FieldGroup mÃ¶glich, da fÃ¼r nicht-primitive Attribute kein entsprechendes Feld erstellt werden kann
  */
 public class PlanningDetailsMyFormLayout extends MyFormLayout {
 
@@ -44,7 +44,7 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
     private ProjektplanungScreenBean bean;
 
     public PlanningDetailsMyFormLayout(final IssueBase issueBase, final ProjektplanungScreen screen, final Panel screenPanel) {
-        super(issueBase, screen, screenPanel);
+        super(screen, screenPanel);
         messages = screen.getMessagesBundle();
         bean = screen.getBean();
 

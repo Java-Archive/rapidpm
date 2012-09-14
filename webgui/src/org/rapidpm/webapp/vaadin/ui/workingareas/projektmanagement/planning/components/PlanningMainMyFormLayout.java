@@ -21,7 +21,7 @@ public class PlanningMainMyFormLayout extends MyFormLayout {
     private ResourceBundle messages;
 
     public PlanningMainMyFormLayout(final IssueBase issueBase, final ProjektplanungScreen screen, final Panel screenPanel) {
-        super(issueBase, screen, screenPanel);
+        super(screen, screenPanel);
         this.messages = screen.getMessagesBundle();
         buildDescriptionTextArea(issueBase);
         buildStoryPointsListSelect(issueBase);
