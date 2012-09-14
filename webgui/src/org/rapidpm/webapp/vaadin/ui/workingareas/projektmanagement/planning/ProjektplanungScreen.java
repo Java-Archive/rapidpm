@@ -4,7 +4,12 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.terminal.Resource;
 import com.vaadin.ui.*;
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.persistence.system.security.Benutzer;
+import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
@@ -13,7 +18,9 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logi
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupBean;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -41,6 +48,7 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
     private final OldRessourceGroupsBean oldRessourceGroupsBean;
     private Tree treePanelTree;
     private ResourceBundle messages;
+    private ProjektplanungScreenBean bean;
 
 
     public ProjektplanungScreen(ResourceBundle bundle, final ProjektBean cont,
@@ -48,6 +56,10 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         this.messages = bundle;
         this.projektBean = cont;
         this.oldRessourceGroupsBean = oldRessourceGroupsBean;
+
+        bean = EJBFactory.getEjbInstance(ProjektplanungScreenBean.class);
+
+
         final PlanningCalculator calculator = new PlanningCalculator(messages, this.projektBean,
                 this.oldRessourceGroupsBean);
         calculator.calculate();
@@ -202,5 +214,9 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
 
     public ResourceBundle getMessagesBundle() {
         return messages;
+    }
+
+    public ProjektplanungScreenBean getBean() {
+        return bean;
     }
 }
