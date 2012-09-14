@@ -3,16 +3,16 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.system.security.Benutzer;
+import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssuePrioritiesEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreenBean;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
 import static org.rapidpm.Constants.DATE_FORMAT;
@@ -41,15 +41,21 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
     private DateField resolvedDateField;
     private DateField closedDateField;
     private ResourceBundle messages;
+    private ProjektplanungScreenBean bean;
 
     public PlanningDetailsMyFormLayout(final IssueBase issueBase, final ProjektplanungScreen screen, final Panel screenPanel) {
         super(issueBase, screen, screenPanel);
         messages = screen.getMessagesBundle();
+        bean = screen.getBean();
+
+        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final BenutzerDAO benutzerDAO = baseDaoFactoryBean.getBenutzerDAO();
+        final List<Benutzer> benutzer = benutzerDAO.loadAllEntities();
 
         buildStatusBox(issueBase);
         buildPriorityBox(issueBase);
-        buildReporterBox(issueBase);
-        buildAssigneeBox(issueBase);
+        buildReporterBox(issueBase, benutzer);
+        buildAssigneeBox(issueBase, benutzer);
         buildPlannedDateField(issueBase);
         buildResolvedDateField(issueBase);
         buildClosedDateField(issueBase);
@@ -159,19 +165,23 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
         statusComboBox.setReadOnly(true);
     }
 
-    private void buildReporterBox(IssueBase issueBase) {
-        reporterComboBox = new ComboBox(messages.getString("planning_reporter"), new BeanItemContainer<>(String.class, 
-                Arrays.asList(ProjektBean.issueUsers)));
+    private void buildReporterBox(IssueBase issueBase, List<Benutzer> benutzer) {
+        reporterComboBox = new ComboBox(messages.getString("planning_reporter"), new BeanItemContainer<>(Benutzer.class,
+                benutzer));
+        reporterComboBox.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
+        reporterComboBox.setItemCaptionPropertyId("login");
         reporterComboBox.setNullSelectionAllowed(false);
-        reporterComboBox.select(issueBase.getReporter().getLogin());
+        reporterComboBox.select(benutzer.get(0));
         reporterComboBox.setReadOnly(true);
     }
 
-    private void buildAssigneeBox(IssueBase issueBase) {
-        assigneeComboBox = new ComboBox(messages.getString("planning_assignee"), new BeanItemContainer<>(String.class,
-                Arrays.asList(ProjektBean.issueUsers)));
+    private void buildAssigneeBox(IssueBase issueBase, List<Benutzer> benutzer) {
+        assigneeComboBox = new ComboBox(messages.getString("planning_assignee"), new BeanItemContainer<>(Benutzer.class,
+                benutzer));
+        assigneeComboBox.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
+        assigneeComboBox.setItemCaptionPropertyId("login");
         assigneeComboBox.setNullSelectionAllowed(false);
-        assigneeComboBox.select(issueBase.getAssignee().getLogin());
+        assigneeComboBox.select(benutzer.get(0));
         assigneeComboBox.setReadOnly(true);
     }
 
