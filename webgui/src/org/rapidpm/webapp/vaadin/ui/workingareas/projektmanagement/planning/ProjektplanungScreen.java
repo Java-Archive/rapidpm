@@ -78,6 +78,7 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
 
         mainPanel = new Panel();
         ressourcesPanel = new Panel();
+        ressourcesPanel.setSizeFull();
 
         mainLayout = new VerticalLayout();
         mainLayout.setMargin(true);

@@ -2,10 +2,10 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 
 import com.vaadin.event.MouseEvents;
 import com.vaadin.ui.*;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
 import java.util.Iterator;
+import java.util.ResourceBundle;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -16,22 +16,33 @@ import java.util.Iterator;
  */
 public abstract class MyFormLayout extends VerticalLayout {
 
-    protected Button saveButton = new Button("Save");
-    protected Button cancelButton = new Button("Cancel");
+    protected Button saveButton = new Button();
+    protected Button cancelButton = new Button();
+    protected ResourceBundle messages;
 
     protected FormLayout componentsLayout = new FormLayout();
     protected HorizontalLayout buttonLayout = new HorizontalLayout();
 
-    public MyFormLayout(final IssueBase issueBase, final ProjektplanungScreen screen, final Panel screenPanel){
+    public MyFormLayout(final ProjektplanungScreen screen, final Panel screenPanel){
+        this.setMargin(false);
+        messages = screen.getMessagesBundle();
+        saveButton.setCaption(messages.getString("save"));
+        cancelButton.setCaption(messages.getString("cancel"));
         screenPanel.addListener(new MouseEvents.ClickListener() {
             @Override
             public void click(MouseEvents.ClickEvent event) {
                 final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
                 while(componentIterator.hasNext()){
                     final Component component = componentIterator.next();
-                    if( component instanceof Field){
+
+                    if (component instanceof Table) {
+                        if(!((Table) component).isEditable()){
+                            ((Table) component).setEditable(true);
+                        }
+                    } else if( component instanceof Field){
                         component.setReadOnly(false);
                     }
+
                 }
                 buttonLayout.setVisible(true);
             }
