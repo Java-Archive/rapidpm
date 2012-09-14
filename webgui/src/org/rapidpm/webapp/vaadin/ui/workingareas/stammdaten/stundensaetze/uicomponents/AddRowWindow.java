@@ -4,6 +4,7 @@ import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
@@ -18,9 +19,12 @@ public class AddRowWindow extends Window {
     public static final String WIDTH = "400px";
     public static final int POSITION_X = 50;
     public static final int POSITION_Y = 100;
+
+    private static final Logger logger = Logger.getLogger(AddRowWindow.class);
+
     private MainRoot root;
 
-    private GridLayout gridLayout = new GridLayout(2, 2);
+    private FormLayout formLayout = new FormLayout();
     private HorizontalLayout horizontalButtonLayout = new HorizontalLayout();
     private Button saveButton = new Button();
     private Button cancelButton = new Button();
@@ -38,13 +42,8 @@ public class AddRowWindow extends Window {
         final RessourceGroup row = new RessourceGroup();
         fieldGroup = new RowFieldGroup(row);
 
-        for (final Component comp : fieldGroup.getComponents()) {
-            final TextField field = (TextField) comp;
-            final String typeNameOfFieldProperty = field.getPropertyDataSource().getType().getSimpleName();
-            field.setValue(DefaultValues.valueOf(typeNameOfFieldProperty).getDefaultValue());
-            gridLayout.addComponent(comp);
-        }
-        addComponent(gridLayout);
+        fillFormLayout();
+        addComponent(formLayout);
 
         horizontalButtonLayout.addComponent(saveButton);
         horizontalButtonLayout.addComponent(cancelButton);
@@ -54,6 +53,22 @@ public class AddRowWindow extends Window {
         addListeners(row, root, screen);
         doInternationalization();
 
+    }
+
+    private void fillFormLayout() {
+        final AbstractTextField nameField = fieldGroup.getNameField();
+        formLayout.addComponent(buildFieldWithValue(nameField));
+        formLayout.addComponent(new Label("-----------"));
+        for (AbstractTextField abstractTextField : fieldGroup.getFieldList()) {
+            formLayout.addComponent(buildFieldWithValue(abstractTextField));
+        }
+    }
+
+    private TextField buildFieldWithValue(AbstractTextField abstractTextField) {
+        final TextField field = (TextField) abstractTextField;
+        final String typeNameOfFieldProperty = field.getPropertyDataSource().getType().getSimpleName();
+        field.setValue(DefaultValues.valueOf(typeNameOfFieldProperty).getDefaultValue());
+        return field;
     }
 
     private void doInternationalization() {
@@ -69,12 +84,13 @@ public class AddRowWindow extends Window {
             @Override
             public void buttonClick(ClickEvent event) {
                 boolean allFilled = true;
-                Iterator<Component> it = AddRowWindow.this.gridLayout
+                Iterator<Component> it = AddRowWindow.this.formLayout
                         .getComponentIterator();
                 while (it.hasNext()) {
                     final Component component = it.next();
                     if (component instanceof AbstractField) {
-                        if (((TextField) component).getValue() == null || ((TextField) component).getValue().equals(""))
+                        if (((TextField) component).getValue() == null
+                                || ((TextField) component).getValue().equals(""))
                             allFilled = false;
                     }
                 }
@@ -87,8 +103,7 @@ public class AddRowWindow extends Window {
                         AddRowWindow.this.close();
                         screen.generateTableAndCalculate();
                     } catch (CommitException e) {
-                        // don't try to commit or to close window if commit
-                        // fails
+                        logger.warn(e);
                     }
 
                 } else {
