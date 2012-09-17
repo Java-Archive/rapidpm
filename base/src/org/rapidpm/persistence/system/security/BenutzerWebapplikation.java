@@ -26,7 +26,9 @@ public class BenutzerWebapplikation {
     private static final Logger logger = Logger.getLogger(BenutzerWebapplikation.class);
 
     @Id
-    @TableGenerator(name = "PKGenBenutzerWebapplikation", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "BenutzerWebapplikation_id", valueColumnName = "gen_value", allocationSize = 1)
+    @TableGenerator(name = "PKGenBenutzerWebapplikation", table = "pk_gen",
+            pkColumnName = "gen_key",
+            pkColumnValue = "BenutzerWebapplikation_id", valueColumnName = "gen_value", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.TABLE,
             generator = "PKGenBenutzerWebapplikation")
     private Long id;

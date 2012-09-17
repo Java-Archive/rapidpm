@@ -2871,14 +2871,14 @@
       <column name="klassifizierung_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="state_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="adresse_pkey" columns="id" />
-      <foreign-key name="fk1f8fc88fa3a1db85" columns="klassifizierung_id" ref-table="adressklassifizierung" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk1f8fc88f302c2afb" columns="state_id" ref-table="state" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk1f8fc88f7ae7baf0" columns="klassifizierung_id" ref-table="adressklassifizierung" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk1f8fc88f813c4066" columns="state_id" ref-table="state" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="adresse_postfach" schema="public" catalog="" type="TABLE">
       <column name="adresse_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="postfachliste_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkfd1e1cd0773a19fb" columns="adresse_id" ref-table="adresse" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkfd1e1cd017680452" columns="postfachliste_id" ref-table="postfach" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkfd1e1cd0c49a80a6" columns="adresse_id" ref-table="adresse" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkfd1e1cd076147307" columns="postfachliste_id" ref-table="postfach" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="adresse_postfach_postfachliste_id_key" unique="true" columns="postfachliste_id" />
     </table>
     <table name="adressklassifizierung" schema="public" catalog="" type="TABLE">
@@ -2918,9 +2918,9 @@
       <column name="benutzerwebapplikation_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="mandantengruppe_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <primary-key name="benutzer_pkey" columns="id" />
-      <foreign-key name="fk693f561dc365bb8c" columns="benutzergruppe_id" ref-table="benutzergruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk693f561da63632ec" columns="benutzerwebapplikation_id" ref-table="benutzerwebapplikation" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk693f561dab919ba8" columns="mandantengruppe_id" ref-table="mandantengruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk693f561d10c62237" columns="benutzergruppe_id" ref-table="benutzergruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk693f561de186be97" columns="benutzerwebapplikation_id" ref-table="benutzerwebapplikation" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk693f561da3e0a5d" columns="mandantengruppe_id" ref-table="mandantengruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="benutzer_aud" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -2944,8 +2944,8 @@
     <table name="benutzer_berechtigung" schema="public" catalog="" type="TABLE">
       <column name="benutzer_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="berechtigungen_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fke6ddce79376632cc" columns="benutzer_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fke6ddce798a2246d" columns="berechtigungen_id" ref-table="berechtigung" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fke6ddce791417b5b7" columns="benutzer_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fke6ddce79b4bd2ba2" columns="berechtigungen_id" ref-table="berechtigung" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="benutzer_berechtigung_berechtigungen_id_key" unique="true" columns="berechtigungen_id" />
     </table>
     <table name="benutzer_berechtigung_aud" schema="public" catalog="" type="TABLE">
@@ -3011,8 +3011,8 @@
       <column name="branche_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="brancheklassifizierung_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="brancheassoc_pkey" columns="id" />
-      <foreign-key name="fke89faaf233d11c2a" columns="branche_id" ref-table="branche" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fke89faaf28baaaf6a" columns="brancheklassifizierung_id" ref-table="brancheklassifizierung" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fke89faaf2dfec235f" columns="branche_id" ref-table="branche" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fke89faaf27673b795" columns="brancheklassifizierung_id" ref-table="brancheklassifizierung" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="brancheklassifizierung" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3031,24 +3031,24 @@
       <column name="buch_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="leserliste_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="autorenliste_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk42e3de641c113649" columns="leserliste_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk42e3de643da3d98e" columns="autorenliste_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk42e3de64c8e405b6" columns="buch_id" ref-table="buch" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk42e3de64f8c2b934" columns="leserliste_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk42e3de641a555c79" columns="autorenliste_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk42e3de6467a727ab" columns="buch_id" ref-table="buch" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="buch_benutzer_autorenliste_id_key" unique="true" columns="autorenliste_id" />
       <index name="buch_benutzer_leserliste_id_key" unique="true" columns="leserliste_id" />
     </table>
     <table name="buch_buchkapitel" schema="public" catalog="" type="TABLE">
       <column name="buch_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="buchkapitelliste_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkf9be30dc8e405b6" columns="buch_id" ref-table="buch" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkf9be30d60b7f01f" columns="buchkapitelliste_id" ref-table="buchkapitel" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkf9be30d67a727ab" columns="buch_id" ref-table="buch" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkf9be30da1dda08a" columns="buchkapitelliste_id" ref-table="buchkapitel" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="buch_buchkapitel_buchkapitelliste_id_key" unique="true" columns="buchkapitelliste_id" />
     </table>
     <table name="buch_buchkommentar" schema="public" catalog="" type="TABLE">
       <column name="buch_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="kommentarliste_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkadd159b9c8e405b6" columns="buch_id" ref-table="buch" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkadd159b9f7eb4859" columns="kommentarliste_id" ref-table="buchkommentar" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkadd159b967a727ab" columns="buch_id" ref-table="buch" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkadd159b96eccb044" columns="kommentarliste_id" ref-table="buchkommentar" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="buch_buchkommentar_kommentarliste_id_key" unique="true" columns="kommentarliste_id" />
     </table>
     <table name="buchabsatz" schema="public" catalog="" type="TABLE">
@@ -3061,8 +3061,8 @@
     <table name="buchabsatz_buchabsatzkommentar" schema="public" catalog="" type="TABLE">
       <column name="buchabsatz_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="kommentarliste_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk71f1ee19343fe4b6" columns="buchabsatz_id" ref-table="buchabsatz" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk71f1ee19600a1e64" columns="kommentarliste_id" ref-table="buchabsatzkommentar" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk71f1ee19c2bcfaeb" columns="buchabsatz_id" ref-table="buchabsatz" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk71f1ee199b5aaa0f" columns="kommentarliste_id" ref-table="buchabsatzkommentar" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="buchabsatz_buchabsatzkommentar_kommentarliste_id_key" unique="true" columns="kommentarliste_id" />
     </table>
     <table name="buchabsatzkommentar" schema="public" catalog="" type="TABLE">
@@ -3071,7 +3071,7 @@
       <column name="kommentar" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
       <column name="kommentator_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="buchabsatzkommentar_pkey" columns="id" />
-      <foreign-key name="fkab6fa62b57b8a68c" columns="kommentator_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkab6fa62b346a2977" columns="kommentator_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="buchkapitel" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3084,15 +3084,15 @@
     <table name="buchkapitel_buchkapitelkommentar" schema="public" catalog="" type="TABLE">
       <column name="buchkapitel_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="kommentarliste_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk36340b2fc7e5aa9e" columns="buchkapitel_id" ref-table="buchkapitel" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk36340b2f78b28d61" columns="kommentarliste_id" ref-table="buchkapitelkommentar" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk36340b2f90b5b09" columns="buchkapitel_id" ref-table="buchkapitel" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk36340b2fa7737716" columns="kommentarliste_id" ref-table="buchkapitelkommentar" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="buchkapitel_buchkapitelkommentar_kommentarliste_id_key" unique="true" columns="kommentarliste_id" />
     </table>
     <table name="buchkapitel_buchseite" schema="public" catalog="" type="TABLE">
       <column name="buchkapitel_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="seitenliste_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk18efa05c7e5aa9e" columns="buchkapitel_id" ref-table="buchkapitel" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk18efa05e33ba9ad" columns="seitenliste_id" ref-table="buchseite" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk18efa0590b5b09" columns="buchkapitel_id" ref-table="buchkapitel" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk18efa05f85878d8" columns="seitenliste_id" ref-table="buchseite" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="buchkapitel_buchseite_seitenliste_id_key" unique="true" columns="seitenliste_id" />
     </table>
     <table name="buchkapitelkommentar" schema="public" catalog="" type="TABLE">
@@ -3101,7 +3101,7 @@
       <column name="kommentar" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
       <column name="kommentator_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="buchkapitelkommentar_pkey" columns="id" />
-      <foreign-key name="fk50d85c8457b8a68c" columns="kommentator_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk50d85c84346a2977" columns="kommentator_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="buchkommentar" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3109,7 +3109,7 @@
       <column name="kommentar" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
       <column name="kommentator_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="buchkommentar_pkey" columns="id" />
-      <foreign-key name="fk94b8cda057b8a68c" columns="kommentator_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk94b8cda0346a2977" columns="kommentator_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="buchseite" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3120,22 +3120,22 @@
     <table name="buchseite_buchabsatz" schema="public" catalog="" type="TABLE">
       <column name="buchseite_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="absatzliste_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkf383bafc9ab7ddd1" columns="absatzliste_id" ref-table="buchabsatz" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkf383bafc42430e1e" columns="buchseite_id" ref-table="buchseite" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkf383bafc2934f406" columns="absatzliste_id" ref-table="buchabsatz" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkf383bafc575fdd49" columns="buchseite_id" ref-table="buchseite" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="buchseite_buchabsatz_absatzliste_id_key" unique="true" columns="absatzliste_id" />
     </table>
     <table name="buchseite_buchseitenfussnote" schema="public" catalog="" type="TABLE">
       <column name="buchseite_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="fusnotenliste_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkf5bf216e42430e1e" columns="buchseite_id" ref-table="buchseite" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkf5bf216e76593306" columns="fusnotenliste_id" ref-table="buchseitenfussnote" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkf5bf216e575fdd49" columns="buchseite_id" ref-table="buchseite" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkf5bf216ecb8b443b" columns="fusnotenliste_id" ref-table="buchseitenfussnote" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="buchseite_buchseitenfussnote_fusnotenliste_id_key" unique="true" columns="fusnotenliste_id" />
     </table>
     <table name="buchseite_buchseitenkommentar" schema="public" catalog="" type="TABLE">
       <column name="buchseite_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="kommentarliste_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkf0126aeb42430e1e" columns="buchseite_id" ref-table="buchseite" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkf0126aeb6b4a3213" columns="kommentarliste_id" ref-table="buchseitenkommentar" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkf0126aeb575fdd49" columns="buchseite_id" ref-table="buchseite" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkf0126aeba69abdbe" columns="kommentarliste_id" ref-table="buchseitenkommentar" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="buchseite_buchseitenkommentar_kommentarliste_id_key" unique="true" columns="kommentarliste_id" />
     </table>
     <table name="buchseitenfussnote" schema="public" catalog="" type="TABLE">
@@ -3150,7 +3150,7 @@
       <column name="kommentar" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
       <column name="kommentator_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="buchseitenkommentar_pkey" columns="id" />
-      <foreign-key name="fkb6afb9da57b8a68c" columns="kommentator_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkb6afb9da346a2977" columns="kommentator_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="car" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3202,6 +3202,7 @@
       <column name="duedate_planned" sqlType="timestamp" length="29" precision="6" nullable="true" jdbcType="93" />
       <column name="duedate_resolved" sqlType="timestamp" length="29" precision="6" nullable="true" jdbcType="93" />
       <column name="fakturierbar" sqlType="bool" length="1" precision="0" nullable="false" jdbcType="-7" />
+      <column name="storypoints" sqlType="int4" length="10" precision="0" nullable="true" jdbcType="4" />
       <column name="summary" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
       <column name="text" sqlType="text" length="2147483647" precision="0" nullable="true" jdbcType="12" />
       <column name="version" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
@@ -3211,25 +3212,30 @@
       <column name="issuestatus_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="issuetimeunitestimated_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="issuebase_pkey" columns="id" />
-      <foreign-key name="fk826d2f2a8a79ec60" columns="isssueassignee_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk826d2f2a2ee82aef" columns="issuereporter_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk826d2f2a1e204a4b" columns="issuepriority_id" ref-table="issuepriority" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk826d2f2a526d8fcb" columns="issuestatus_id" ref-table="issuestatus" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk826d2f2a67de9e23" columns="issuetimeunitestimated_id" ref-table="issuetimeunit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk826d2f2a672b6f4b" columns="isssueassignee_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk826d2f2ab99adda" columns="issuereporter_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk826d2f2a8c784780" columns="issuepriority_id" ref-table="issuepriority" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk826d2f2acd9d5640" columns="issuestatus_id" ref-table="issuestatus" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk826d2f2ad6369b58" columns="issuetimeunitestimated_id" ref-table="issuetimeunit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="issuebase_issuecomment" schema="public" catalog="" type="TABLE">
       <column name="issuebase_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="comments_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkc17ea5b2ec00435" columns="issuebase_id" ref-table="issuebase" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkc17ea5b5ab90edb" columns="comments_id" ref-table="issuecomment" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkc17ea5b8b67ada0" columns="issuebase_id" ref-table="issuebase" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkc17ea5b45821706" columns="comments_id" ref-table="issuecomment" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="issuebase_issuecomment_comments_id_key" unique="true" columns="comments_id" />
     </table>
     <table name="issuebase_issuetimeunit" schema="public" catalog="" type="TABLE">
       <column name="issuebase_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="issuetimeunitsused_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk1efbf5752ec00435" columns="issuebase_id" ref-table="issuebase" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk1efbf57590d8042f" columns="issuetimeunitsused_id" ref-table="issuetimeunit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk1efbf5758b67ada0" columns="issuebase_id" ref-table="issuebase" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk1efbf575ff300164" columns="issuetimeunitsused_id" ref-table="issuetimeunit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="issuebase_issuetimeunit_issuetimeunitsused_id_key" unique="true" columns="issuetimeunitsused_id" />
+    </table>
+    <table name="issuebase_testcases" schema="public" catalog="" type="TABLE">
+      <column name="issuebase_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="testcases" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
+      <foreign-key name="fke99d6f1c8b67ada0" columns="issuebase_id" ref-table="issuebase" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="issuecomment" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3237,7 +3243,7 @@
       <column name="txt" sqlType="text" length="2147483647" precision="0" nullable="true" jdbcType="12" />
       <column name="creator_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="issuecomment_pkey" columns="id" />
-      <foreign-key name="fk2c5e3b662b7f423d" columns="creator_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk2c5e3b66830c528" columns="creator_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="issuepriority" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3257,7 +3263,7 @@
       <column name="minutes" sqlType="int4" length="10" precision="0" nullable="false" jdbcType="4" />
       <column name="worker_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="issuetimeunit_pkey" columns="id" />
-      <foreign-key name="fk77fc5ca1a9bd5ab" columns="worker_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk77fc5caf74d5896" columns="worker_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="kommunikationsservice" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3274,14 +3280,14 @@
       <column name="klassifizierung_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="service_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="kommunikationsserviceuid_pkey" columns="id" />
-      <foreign-key name="fkb697cbb8bf436880" columns="service_id" ref-table="kommunikationsservice" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkb697cbb8c64208df" columns="klassifizierung_id" ref-table="kommunikationsserviceklassifizierung" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkb697cbb8f8a0cbab" columns="service_id" ref-table="kommunikationsservice" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkb697cbb853928a54" columns="klassifizierung_id" ref-table="kommunikationsserviceklassifizierung" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="kommunikationsserviceuid_kommunikationsserviceuidpart" schema="public" catalog="" type="TABLE">
       <column name="kommunikationsserviceuid_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="uidparts_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkcba242f2aa434bd7" columns="kommunikationsserviceuid_id" ref-table="kommunikationsserviceuid" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkcba242f219983d72" columns="uidparts_id" ref-table="kommunikationsserviceuidpart" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkcba242f244da94cc" columns="kommunikationsserviceuid_id" ref-table="kommunikationsserviceuid" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkcba242f294c803e7" columns="uidparts_id" ref-table="kommunikationsserviceuidpart" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="kommunikationsserviceuid_kommunikationsserviceu_uidparts_id_key" unique="true" columns="uidparts_id" />
     </table>
     <table name="kommunikationsserviceuidpart" schema="public" catalog="" type="TABLE">
@@ -3290,7 +3296,7 @@
       <column name="uidpart" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
       <column name="klassifizierung_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="kommunikationsserviceuidpart_pkey" columns="id" />
-      <foreign-key name="fkca0107cb2517a1d2" columns="klassifizierung_id" ref-table="kommunikationsserviceuidpartklassifikation" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkca0107cba77c7787" columns="klassifizierung_id" ref-table="kommunikationsserviceuidpartklassifikation" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="kommunikationsserviceuidpartklassifikation" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3317,9 +3323,9 @@
       <column name="benutzerwebapplikation_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="mandantengruppe_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="kontaktanfrage_pkey" columns="id" />
-      <foreign-key name="fk27335186b0243c6e" columns="anrede_id" ref-table="anrede" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk27335186a63632ec" columns="benutzerwebapplikation_id" ref-table="benutzerwebapplikation" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk27335186ab919ba8" columns="mandantengruppe_id" ref-table="mandantengruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk2733518613451d9" columns="anrede_id" ref-table="anrede" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk27335186e186be97" columns="benutzerwebapplikation_id" ref-table="benutzerwebapplikation" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk27335186a3e0a5d" columns="mandantengruppe_id" ref-table="mandantengruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="land" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3340,8 +3346,8 @@
       <column name="action_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="actor_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="loggingentityentry_pkey" columns="id" />
-      <foreign-key name="fk250a419076e6d7d4" columns="actor_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk250a4190af51cdb1" columns="action_id" ref-table="loggingentityaction" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk250a419053985abf" columns="actor_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk250a4190f378e6dc" columns="action_id" ref-table="loggingentityaction" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="loggingevententry" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3353,14 +3359,14 @@
       <column name="timestamp" sqlType="timestamp" length="29" precision="6" nullable="true" jdbcType="93" />
       <column name="benutzer_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="loggingevententry_pkey" columns="id" />
-      <foreign-key name="fk8254b297376632cc" columns="benutzer_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk8254b2971417b5b7" columns="benutzer_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="loggingevententry_loggingeventparam" schema="public" catalog="" type="TABLE">
       <column name="loggingevententry_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="parameter_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <primary-key name="loggingevententry_loggingeventparam_pkey" columns="loggingevententry_id,parameter_id" />
-      <foreign-key name="fk51d8870ac0c2f48f" columns="loggingevententry_id" ref-table="loggingevententry" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk51d8870ae6a95a78" columns="parameter_id" ref-table="loggingeventparam" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk51d8870a37a45c7a" columns="loggingevententry_id" ref-table="loggingevententry" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk51d8870a5d8ac263" columns="parameter_id" ref-table="loggingeventparam" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="loggingevententry_loggingeventparam_parameter_id_key" unique="true" columns="parameter_id" />
     </table>
     <table name="loggingeventparam" schema="public" catalog="" type="TABLE">
@@ -3410,13 +3416,13 @@
       <column name="messagestatus_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="owner_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="message_pkey" columns="id" />
-      <foreign-key name="fk9c2397e72b7f423d" columns="creator_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk9c2397e73c69ee56" columns="owner_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk9c2397e7c365bb8c" columns="benutzergruppe_id" ref-table="benutzergruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk9c2397e7a63632ec" columns="benutzerwebapplikation_id" ref-table="benutzerwebapplikation" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk9c2397e7ab919ba8" columns="mandantengruppe_id" ref-table="mandantengruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk9c2397e72c569cd2" columns="messageklassifizierung_id" ref-table="messageklassifizierung" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk9c2397e744e7f4a2" columns="messagestatus_id" ref-table="messagestatus" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk9c2397e7830c528" columns="creator_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk9c2397e7191b7141" columns="owner_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk9c2397e710c62237" columns="benutzergruppe_id" ref-table="benutzergruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk9c2397e7e186be97" columns="benutzerwebapplikation_id" ref-table="benutzerwebapplikation" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk9c2397e7a3e0a5d" columns="mandantengruppe_id" ref-table="mandantengruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk9c2397e71ea59f07" columns="messageklassifizierung_id" ref-table="messageklassifizierung" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk9c2397e7864b2cd" columns="messagestatus_id" ref-table="messagestatus" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="messageklassifizierung" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3441,33 +3447,33 @@
       <column name="workhoursperweek" sqlType="int4" length="10" precision="0" nullable="false" jdbcType="4" />
       <column name="person_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="mitarbeiter_pkey" columns="id" />
-      <foreign-key name="fkc1bf8784ead92fee" columns="person_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkc1bf87843be94559" columns="person_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="mitarbeiter_mitarbeitercomment" schema="public" catalog="" type="TABLE">
       <column name="mitarbeiter_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="comments_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk2d9e2ad64df12738" columns="mitarbeiter_id" ref-table="mitarbeiter" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk2d9e2ad693bf03a3" columns="comments_id" ref-table="mitarbeitercomment" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk2d9e2ad6a8ed81ed" columns="mitarbeiter_id" ref-table="mitarbeiter" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk2d9e2ad6c13e234e" columns="comments_id" ref-table="mitarbeitercomment" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="mitarbeiter_mitarbeitercomment_comments_id_key" unique="true" columns="comments_id" />
     </table>
     <table name="mitarbeiter_mitarbeitergehalt" schema="public" catalog="" type="TABLE">
       <column name="mitarbeiter_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="mitarbeitergehaltsliste_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkace606c84df12738" columns="mitarbeiter_id" ref-table="mitarbeiter" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkace606c863bdd344" columns="mitarbeitergehaltsliste_id" ref-table="mitarbeitergehalt" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkace606c8a8ed81ed" columns="mitarbeiter_id" ref-table="mitarbeiter" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkace606c8e9569239" columns="mitarbeitergehaltsliste_id" ref-table="mitarbeitergehalt" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="mitarbeiter_mitarbeitergehalt_mitarbeitergehaltsliste_id_key" unique="true" columns="mitarbeitergehaltsliste_id" />
     </table>
     <table name="mitarbeiter_mitarbeiterressourcegroupassoc" schema="public" catalog="" type="TABLE">
       <column name="mitarbeiter_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="mitarbeiterressourcegroupassocliste_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk6a0c15e84df12738" columns="mitarbeiter_id" ref-table="mitarbeiter" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk6a0c15e84b0ea8f" columns="mitarbeiterressourcegroupassocliste_id" ref-table="mitarbeiterressourcegroupassoc" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk6a0c15e8a8ed81ed" columns="mitarbeiter_id" ref-table="mitarbeiter" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk6a0c15e81afee1ba" columns="mitarbeiterressourcegroupassocliste_id" ref-table="mitarbeiterressourcegroupassoc" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="mitarbeiter_mitarbeiterurlaub" schema="public" catalog="" type="TABLE">
       <column name="mitarbeiter_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="mitarbeiterurlaubsliste_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkc582e3884df12738" columns="mitarbeiter_id" ref-table="mitarbeiter" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkc582e388a78a2b44" columns="mitarbeiterurlaubsliste_id" ref-table="mitarbeiterurlaub" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkc582e388a8ed81ed" columns="mitarbeiter_id" ref-table="mitarbeiter" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkc582e3882d22ea39" columns="mitarbeiterurlaubsliste_id" ref-table="mitarbeiterurlaub" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="mitarbeiter_mitarbeiterurlaub_mitarbeiterurlaubsliste_id_key" unique="true" columns="mitarbeiterurlaubsliste_id" />
     </table>
     <table name="mitarbeitercomment" schema="public" catalog="" type="TABLE">
@@ -3490,8 +3496,8 @@
       <column name="mitarbeiter_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="ressourcegroup_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="mitarbeiterressourcegroupassoc_pkey" columns="id" />
-      <foreign-key name="fk36b93dcd4df12738" columns="mitarbeiter_id" ref-table="mitarbeiter" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk36b93dcdd1015e5c" columns="ressourcegroup_id" ref-table="ressourcegroup" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk36b93dcda8ed81ed" columns="mitarbeiter_id" ref-table="mitarbeiter" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk36b93dcdedc10b87" columns="ressourcegroup_id" ref-table="ressourcegroup" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="mitarbeiterurlaub" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3512,20 +3518,20 @@
       <column name="vorname" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
       <column name="mandantengruppe_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <primary-key name="newpasswdrequest_pkey" columns="id" />
-      <foreign-key name="fk6363b871ab919ba8" columns="mandantengruppe_id" ref-table="mandantengruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk6363b871a3e0a5d" columns="mandantengruppe_id" ref-table="mandantengruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="ontologie" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="symbolischername" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
       <column name="mandantengruppe_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="ontologie_pkey" columns="id" />
-      <foreign-key name="fk1fc23ee6ab919ba8" columns="mandantengruppe_id" ref-table="mandantengruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk1fc23ee6a3e0a5d" columns="mandantengruppe_id" ref-table="mandantengruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="ontologie_ontologieentry" schema="public" catalog="" type="TABLE">
       <column name="ontologie_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="entryliste_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk3ba2ffa552446424" columns="ontologie_id" ref-table="ontologie" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk3ba2ffa5663b6267" columns="entryliste_id" ref-table="ontologieentry" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk3ba2ffa56761334f" columns="ontologie_id" ref-table="ontologie" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk3ba2ffa5a728561c" columns="entryliste_id" ref-table="ontologieentry" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="ontologie_ontologieentry_entryliste_id_key" unique="true" columns="entryliste_id" />
     </table>
     <table name="ontologieconnection" schema="public" catalog="" type="TABLE">
@@ -3538,7 +3544,7 @@
       <column name="value" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
       <column name="connection_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="ontologieentry_pkey" columns="id" />
-      <foreign-key name="fkc26f392c6920f44a" columns="connection_id" ref-table="ontologieconnection" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkc26f392cba3109b5" columns="connection_id" ref-table="ontologieconnection" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="organisationseinheit" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3552,52 +3558,52 @@
       <column name="verwaltungseinheit_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="wirtschaftseinheit_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="organisationseinheit_pkey" columns="id" />
-      <foreign-key name="fkc7c7055994694609" columns="ausbildungseinheit_id" ref-table="ausbildungseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkc7c70559e5d38015" columns="gesellschaftsform_id" ref-table="gesellschaftsform" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkc7c70559ab919ba8" columns="mandantengruppe_id" ref-table="mandantengruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkc7c705598c807169" columns="verwaltungseinheit_id" ref-table="verwaltungseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkc7c705591bacd029" columns="wirtschaftseinheit_id" ref-table="wirtschaftseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkc7c70559ef65a0be" columns="ausbildungseinheit_id" ref-table="ausbildungseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkc7c705596259bc8a" columns="gesellschaftsform_id" ref-table="gesellschaftsform" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkc7c70559a3e0a5d" columns="mandantengruppe_id" ref-table="mandantengruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkc7c70559e77ccc1e" columns="verwaltungseinheit_id" ref-table="verwaltungseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkc7c7055976a92ade" columns="wirtschaftseinheit_id" ref-table="wirtschaftseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="organisationseinheit_adresse" schema="public" catalog="" type="TABLE">
       <column name="organisationseinheit_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="adressen_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk9edc0ba977e2ff0b" columns="adressen_id" ref-table="adresse" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk9edc0ba9ea12fca" columns="organisationseinheit_id" ref-table="organisationseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk9edc0ba9c54365b6" columns="adressen_id" ref-table="adresse" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk9edc0ba9f9d446b5" columns="organisationseinheit_id" ref-table="organisationseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="organisationseinheit_adresse_adressen_id_key" unique="true" columns="adressen_id" />
     </table>
     <table name="organisationseinheit_brancheassoc" schema="public" catalog="" type="TABLE">
       <column name="organisationseinheit_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="brancheassocs_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk99e348185b5bb1db" columns="brancheassocs_id" ref-table="brancheassoc" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk99e34818ea12fca" columns="organisationseinheit_id" ref-table="organisationseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk99e34818547de3c6" columns="brancheassocs_id" ref-table="brancheassoc" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk99e34818f9d446b5" columns="organisationseinheit_id" ref-table="organisationseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="organisationseinheit_brancheassoc_brancheassocs_id_key" unique="true" columns="brancheassocs_id" />
     </table>
     <table name="organisationseinheit_kommunikationsserviceuid" schema="public" catalog="" type="TABLE">
       <column name="organisationseinheit_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="kommunikationsserviceuids_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk5dcadfdee1bedcb4" columns="kommunikationsserviceuids_id" ref-table="kommunikationsserviceuid" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk5dcadfdeea12fca" columns="organisationseinheit_id" ref-table="organisationseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk5dcadfde7c5625a9" columns="kommunikationsserviceuids_id" ref-table="kommunikationsserviceuid" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk5dcadfdef9d446b5" columns="organisationseinheit_id" ref-table="organisationseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="organisationseinheit_kommunika_kommunikationsserviceuids_id_key" unique="true" columns="kommunikationsserviceuids_id" />
     </table>
     <table name="organisationseinheit_organisationseinheitmetadata" schema="public" catalog="" type="TABLE">
       <column name="organisationseinheit_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="metadata_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkcd5680eeea12fca" columns="organisationseinheit_id" ref-table="organisationseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkcd5680ee77061483" columns="metadata_id" ref-table="organisationseinheitmetadata" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkcd5680eef9d446b5" columns="organisationseinheit_id" ref-table="organisationseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkcd5680ee7b95106e" columns="metadata_id" ref-table="organisationseinheitmetadata" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="organisationseinheit_organisationseinheitmetada_metadata_id_key" unique="true" columns="metadata_id" />
     </table>
     <table name="organisationseinheit_taetigkeitsfeldassoc" schema="public" catalog="" type="TABLE">
       <column name="organisationseinheit_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="taetigkeitsfeldassocs_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk5a560a50ea12fca" columns="organisationseinheit_id" ref-table="organisationseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk5a560a50839ff64b" columns="taetigkeitsfeldassocs_id" ref-table="taetigkeitsfeldassoc" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk5a560a50f9d446b5" columns="organisationseinheit_id" ref-table="organisationseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk5a560a506ed30d36" columns="taetigkeitsfeldassocs_id" ref-table="taetigkeitsfeldassoc" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="organisationseinheit_taetigkeitsfe_taetigkeitsfeldassocs_id_key" unique="true" columns="taetigkeitsfeldassocs_id" />
     </table>
     <table name="organisationseinheit_webdomain" schema="public" catalog="" type="TABLE">
       <column name="organisationseinheit_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="webdomains_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkf6dbc1b2ea12fca" columns="organisationseinheit_id" ref-table="organisationseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkf6dbc1b2d2709df8" columns="webdomains_id" ref-table="webdomain" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkf6dbc1b2f9d446b5" columns="organisationseinheit_id" ref-table="organisationseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkf6dbc1b22380b363" columns="webdomains_id" ref-table="webdomain" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="organisationseinheit_webdomain_webdomains_id_key" unique="true" columns="webdomains_id" />
     </table>
     <table name="organisationseinheitmetadata" schema="public" catalog="" type="TABLE">
@@ -3612,49 +3618,49 @@
       <column name="anrede_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="geschlecht_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <primary-key name="person_pkey" columns="id" />
-      <foreign-key name="fk8e488775b0243c6e" columns="anrede_id" ref-table="anrede" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk8e4887753475348e" columns="geschlecht_id" ref-table="geschlecht" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk8e48877513451d9" columns="anrede_id" ref-table="anrede" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk8e488775ab569c79" columns="geschlecht_id" ref-table="geschlecht" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="person_adresse" schema="public" catalog="" type="TABLE">
       <column name="person_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="adressen_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk4c37b1c577e2ff0b" columns="adressen_id" ref-table="adresse" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk4c37b1c5ead92fee" columns="person_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk4c37b1c5c54365b6" columns="adressen_id" ref-table="adresse" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk4c37b1c53be94559" columns="person_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="person_adresse_adressen_id_key" unique="true" columns="adressen_id" />
     </table>
     <table name="person_benutzer" schema="public" catalog="" type="TABLE">
       <column name="person_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="benutzer_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkd19493a7376632cc" columns="benutzer_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkd19493a7ead92fee" columns="person_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkd19493a71417b5b7" columns="benutzer_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkd19493a73be94559" columns="person_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="person_benutzer_benutzer_id_key" unique="true" columns="benutzer_id" />
     </table>
     <table name="person_kommunikationsserviceuid" schema="public" catalog="" type="TABLE">
       <column name="person_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="kommunikationsserviceuids_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkca64b542e1bedcb4" columns="kommunikationsserviceuids_id" ref-table="kommunikationsserviceuid" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkca64b542ead92fee" columns="person_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkca64b5427c5625a9" columns="kommunikationsserviceuids_id" ref-table="kommunikationsserviceuid" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkca64b5423be94559" columns="person_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="person_kommunikationsserviceui_kommunikationsserviceuids_id_key" unique="true" columns="kommunikationsserviceuids_id" />
     </table>
     <table name="person_personenname" schema="public" catalog="" type="TABLE">
       <column name="person_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="namen_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk9a544313ead92fee" columns="person_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk9a5443134e452154" columns="namen_id" ref-table="personenname" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk9a5443133be94559" columns="person_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk9a544313926c3a7f" columns="namen_id" ref-table="personenname" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="person_personenname_namen_id_key" unique="true" columns="namen_id" />
     </table>
     <table name="person_titel" schema="public" catalog="" type="TABLE">
       <column name="person_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="titel_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkf5adf01cead92fee" columns="person_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkf5adf01c9f12726" columns="titel_id" ref-table="titel" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkf5adf01c3be94559" columns="person_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkf5adf01c5f23385b" columns="titel_id" ref-table="titel" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="person_titel_titel_id_key" unique="true" columns="titel_id" />
     </table>
     <table name="person_webdomain" schema="public" catalog="" type="TABLE">
       <column name="person_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="webdomains_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkbbe650ceead92fee" columns="person_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkbbe650ced2709df8" columns="webdomains_id" ref-table="webdomain" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkbbe650ce3be94559" columns="person_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkbbe650ce2380b363" columns="webdomains_id" ref-table="webdomain" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="person_webdomain_webdomains_id_key" unique="true" columns="webdomains_id" />
     </table>
     <table name="personalmessage" schema="public" catalog="" type="TABLE">
@@ -3666,8 +3672,8 @@
       <column name="empfaenger_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="sender_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="personalmessage_pkey" columns="id" />
-      <foreign-key name="fka1874d287c81" columns="empfaenger_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fka187db337f94" columns="sender_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fka18729d9ff6c" columns="empfaenger_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fka187b7e5027f" columns="sender_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="personenname" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3675,7 +3681,7 @@
       <column name="reihenfolge" sqlType="int4" length="10" precision="0" nullable="false" jdbcType="4" />
       <column name="namensklassifizierung_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <primary-key name="personenname_pkey" columns="id" />
-      <foreign-key name="fk14cda89b0de8506" columns="namensklassifizierung_id" ref-table="namensklassifizierung" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk14cda895cf98c3b" columns="namensklassifizierung_id" ref-table="namensklassifizierung" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="pk_gen" schema="public" catalog="" type="TABLE">
       <column name="gen_key" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
@@ -3688,7 +3694,7 @@
       <column name="estimatedcosts" sqlType="float4" length="8" precision="8" nullable="false" jdbcType="7" />
       <column name="adresse_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="plannedaccomodation_pkey" columns="id" />
-      <foreign-key name="fkb94fc705773a19fb" columns="adresse_id" ref-table="adresse" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkb94fc705c49a80a6" columns="adresse_id" ref-table="adresse" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="plannedmeeting" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3703,13 +3709,13 @@
       <column name="counter" sqlType="int4" length="10" precision="0" nullable="false" jdbcType="4" />
       <column name="plannedmeeting_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="plannedmeetingressourcegroupassoc_pkey" columns="id" />
-      <foreign-key name="fk8d2f0a7a16fdd3cf" columns="plannedmeeting_id" ref-table="plannedmeeting" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk8d2f0a7a230eaba" columns="plannedmeeting_id" ref-table="plannedmeeting" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="plannedmeetingressourcegroupassoc_ressourcegroup" schema="public" catalog="" type="TABLE">
       <column name="plannedmeetingressourcegroupassoc_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="ressourcegroup_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkfab6c7091d4f47c5" columns="plannedmeetingressourcegroupassoc_id" ref-table="plannedmeetingressourcegroupassoc" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkfab6c709d1015e5c" columns="ressourcegroup_id" ref-table="ressourcegroup" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkfab6c70991383afa" columns="plannedmeetingressourcegroupassoc_id" ref-table="plannedmeetingressourcegroupassoc" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkfab6c709edc10b87" columns="ressourcegroup_id" ref-table="ressourcegroup" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="plannedmeetingressourcegroupassoc_ressour_ressourcegroup_id_key" unique="true" columns="ressourcegroup_id" />
     </table>
     <table name="plannedoffer" schema="public" catalog="" type="TABLE">
@@ -3721,7 +3727,7 @@
       <column name="warrantypercentageaddition" sqlType="float4" length="8" precision="8" nullable="false" jdbcType="7" />
       <column name="responsibleperson_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="plannedoffer_pkey" columns="id" />
-      <foreign-key name="fkadff1718a5595db8" columns="responsibleperson_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkadff1718f6697323" columns="responsibleperson_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="plannedproject" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3732,36 +3738,36 @@
       <column name="mandantengruppe_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="responsibleperson_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="plannedproject_pkey" columns="id" />
-      <foreign-key name="fk747708d5c6a3183e" columns="responsibleperson_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk747708d52b7f423d" columns="creator_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk747708d5ab919ba8" columns="mandantengruppe_id" ref-table="mandantengruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk747708d5a3549b29" columns="responsibleperson_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk747708d5830c528" columns="creator_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk747708d5a3e0a5d" columns="mandantengruppe_id" ref-table="mandantengruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="plannedproject_plannedoffer" schema="public" catalog="" type="TABLE">
       <column name="plannedproject_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="plannedofferlist_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkd15d3a425d53c46" columns="plannedofferlist_id" ref-table="plannedoffer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkd15d3a42c742e370" columns="plannedproject_id" ref-table="plannedproject" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkd15d3a42f8243e7b" columns="plannedofferlist_id" ref-table="plannedoffer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkd15d3a42d8b8f165" columns="plannedproject_id" ref-table="plannedproject" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="plannedproject_plannedoffer_plannedofferlist_id_key" unique="true" columns="plannedofferlist_id" />
     </table>
     <table name="plannedproject_plannedprojectname" schema="public" catalog="" type="TABLE">
       <column name="plannedproject_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="plannedprojectname_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkaa4f20aac742e370" columns="plannedproject_id" ref-table="plannedproject" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkaa4f20aae7ed7cb0" columns="plannedprojectname_id" ref-table="plannedprojectname" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkaa4f20aad8b8f165" columns="plannedproject_id" ref-table="plannedproject" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkaa4f20aa13118825" columns="plannedprojectname_id" ref-table="plannedprojectname" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="plannedproject_plannedprojectname_plannedprojectname_id_key" unique="true" columns="plannedprojectname_id" />
     </table>
     <table name="plannedproject_plannedtravel" schema="public" catalog="" type="TABLE">
       <column name="plannedproject_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="plannedtravellist_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk63795bf4c742e370" columns="plannedproject_id" ref-table="plannedproject" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk63795bf4803287d" columns="plannedtravellist_id" ref-table="plannedtravel" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk63795bf4d8b8f165" columns="plannedproject_id" ref-table="plannedproject" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk63795bf4d9662328" columns="plannedtravellist_id" ref-table="plannedtravel" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="plannedproject_plannedtravel_plannedtravellist_id_key" unique="true" columns="plannedtravellist_id" />
     </table>
     <table name="plannedproject_planningunitgroup" schema="public" catalog="" type="TABLE">
       <column name="plannedproject_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="planningunitgrouplist_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk2adb774c742e370" columns="plannedproject_id" ref-table="plannedproject" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk2adb774ecf240a6" columns="planningunitgrouplist_id" ref-table="planningunitgroup" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk2adb774d8b8f165" columns="plannedproject_id" ref-table="plannedproject" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk2adb774e6147291" columns="planningunitgrouplist_id" ref-table="planningunitgroup" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="plannedproject_planningunitgroup_planningunitgrouplist_id_key" unique="true" columns="planningunitgrouplist_id" />
     </table>
     <table name="plannedprojectname" schema="public" catalog="" type="TABLE">
@@ -3780,15 +3786,15 @@
     <table name="plannedtravel_plannedaccomodation" schema="public" catalog="" type="TABLE">
       <column name="plannedtravel_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="plannedaccomodations_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk5e8fd324b25ba112" columns="plannedaccomodations_id" ref-table="plannedaccomodation" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk5e8fd324baf586db" columns="plannedtravel_id" ref-table="plannedtravel" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk5e8fd3249de4af7d" columns="plannedaccomodations_id" ref-table="plannedaccomodation" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk5e8fd3248c588186" columns="plannedtravel_id" ref-table="plannedtravel" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="plannedtravel_plannedaccomodation_plannedaccomodations_id_key" unique="true" columns="plannedaccomodations_id" />
     </table>
     <table name="plannedtravel_plannedtravelunit" schema="public" catalog="" type="TABLE">
       <column name="plannedtravel_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="plannedtravelunits_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk5201d061baf586db" columns="plannedtravel_id" ref-table="plannedtravel" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk5201d061f1c20dac" columns="plannedtravelunits_id" ref-table="plannedtravelunit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk5201d0618c588186" columns="plannedtravel_id" ref-table="plannedtravel" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk5201d061e81bad7" columns="plannedtravelunits_id" ref-table="plannedtravelunit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="plannedtravel_plannedtravelunit_plannedtravelunits_id_key" unique="true" columns="plannedtravelunits_id" />
     </table>
     <table name="plannedtravelunit" schema="public" catalog="" type="TABLE">
@@ -3801,9 +3807,9 @@
       <column name="startadresse_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="stopadresse_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="plannedtravelunit_pkey" columns="id" />
-      <foreign-key name="fkc63f488271ac4bdd" columns="startadresse_id" ref-table="adresse" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkc63f48827b4f877d" columns="stopadresse_id" ref-table="adresse" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkc63f48825ec79559" columns="plannedvehicletype_id" ref-table="plannedvehicletype" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkc63f4882bf0cb288" columns="startadresse_id" ref-table="adresse" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkc63f4882c8afee28" columns="stopadresse_id" ref-table="adresse" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkc63f4882d9fd8d8e" columns="plannedvehicletype_id" ref-table="plannedvehicletype" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="plannedvehicletype" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3825,8 +3831,8 @@
     <table name="planningunit_planningunitelement" schema="public" catalog="" type="TABLE">
       <column name="planningunit_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="planningunitelementlist_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk8d84a27d8c3249b0" columns="planningunit_id" ref-table="planningunit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk8d84a27d52028786" columns="planningunitelementlist_id" ref-table="planningunitelement" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk8d84a27d384d50e5" columns="planningunit_id" ref-table="planningunit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk8d84a27d8b5feab1" columns="planningunitelementlist_id" ref-table="planningunitelement" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="planningunit_planningunitelement_planningunitelementlist_id_key" unique="true" columns="planningunitelementlist_id" />
     </table>
     <table name="planningunitelement" schema="public" catalog="" type="TABLE">
@@ -3836,7 +3842,7 @@
       <column name="plannedminutes" sqlType="int4" length="10" precision="0" nullable="false" jdbcType="4" />
       <column name="ressourcegroup_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="planningunitelement_pkey" columns="id" />
-      <foreign-key name="fkce8d9d1bd1015e5c" columns="ressourcegroup_id" ref-table="ressourcegroup" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkce8d9d1bedc10b87" columns="ressourcegroup_id" ref-table="ressourcegroup" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="planningunitgroup" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3844,28 +3850,28 @@
       <column name="planningstatus_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="responsibleperson_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="planningunitgroup_pkey" columns="id" />
-      <foreign-key name="fkba02705ea5595db8" columns="responsibleperson_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkba02705ee674c570" columns="planningstatus_id" ref-table="planningstatus" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkba02705ef6697323" columns="responsibleperson_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkba02705ef7ead365" columns="planningstatus_id" ref-table="planningstatus" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="planningunitgroup_plannedmeeting" schema="public" catalog="" type="TABLE">
       <column name="planningunitgroup_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="plannedmeetinglist_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk7dd87df88fa079f1" columns="plannedmeetinglist_id" ref-table="plannedmeeting" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk7dd87df839d22f04" columns="planningunitgroup_id" ref-table="planningunitgroup" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk7dd87df87ad390dc" columns="plannedmeetinglist_id" ref-table="plannedmeeting" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk7dd87df832f460ef" columns="planningunitgroup_id" ref-table="planningunitgroup" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="planningunitgroup_plannedmeeting_plannedmeetinglist_id_key" unique="true" columns="plannedmeetinglist_id" />
     </table>
     <table name="planningunitgroup_plannedtravel" schema="public" catalog="" type="TABLE">
       <column name="planningunitgroup_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="plannedtravellist_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fkf7f05fbd803287d" columns="plannedtravellist_id" ref-table="plannedtravel" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkf7f05fbd39d22f04" columns="planningunitgroup_id" ref-table="planningunitgroup" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkf7f05fbdd9662328" columns="plannedtravellist_id" ref-table="plannedtravel" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkf7f05fbd32f460ef" columns="planningunitgroup_id" ref-table="planningunitgroup" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="planningunitgroup_plannedtravel_plannedtravellist_id_key" unique="true" columns="plannedtravellist_id" />
     </table>
     <table name="planningunitgroup_planningunit" schema="public" catalog="" type="TABLE">
       <column name="planningunitgroup_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="planningunitlist_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk277614e2d38454d2" columns="planningunitlist_id" ref-table="planningunit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk277614e239d22f04" columns="planningunitgroup_id" ref-table="planningunitgroup" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk277614e27f9f5c07" columns="planningunitlist_id" ref-table="planningunit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk277614e232f460ef" columns="planningunitgroup_id" ref-table="planningunitgroup" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="planningunitgroup_planningunit_planningunitlist_id_key" unique="true" columns="planningunitlist_id" />
     </table>
     <table name="position" schema="public" catalog="" type="TABLE">
@@ -3877,8 +3883,8 @@
       <column name="organisationseinheit_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="person_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="position_pkey" columns="id" />
-      <foreign-key name="fk306cfd49ea12fca" columns="organisationseinheit_id" ref-table="organisationseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk306cfd49ead92fee" columns="person_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk306cfd49f9d446b5" columns="organisationseinheit_id" ref-table="organisationseinheit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk306cfd493be94559" columns="person_id" ref-table="person" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="postfach" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3927,11 +3933,11 @@
       <column name="registrationstatus_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="taetigkeitsfeld_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="registration_pkey" columns="id" />
-      <foreign-key name="fkb94f3cd9b0243c6e" columns="anrede_id" ref-table="anrede" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkb94f3cd9a63632ec" columns="benutzerwebapplikation_id" ref-table="benutzerwebapplikation" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkb94f3cd9ab919ba8" columns="mandantengruppe_id" ref-table="mandantengruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkb94f3cd96bb16fba" columns="registrationstatus_id" ref-table="registrationstatus" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fkb94f3cd92ec1372a" columns="taetigkeitsfeld_id" ref-table="taetigkeitsfeld" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkb94f3cd913451d9" columns="anrede_id" ref-table="anrede" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkb94f3cd9e186be97" columns="benutzerwebapplikation_id" ref-table="benutzerwebapplikation" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkb94f3cd9a3e0a5d" columns="mandantengruppe_id" ref-table="mandantengruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkb94f3cd96d9b42af" columns="registrationstatus_id" ref-table="registrationstatus" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkb94f3cd92110395f" columns="taetigkeitsfeld_id" ref-table="taetigkeitsfeld" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="registrationstatus" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3940,12 +3946,17 @@
     </table>
     <table name="ressourcegroup" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <column name="costperhour" sqlType="float4" length="8" precision="8" nullable="false" jdbcType="7" />
+      <column name="bruttogehalt" sqlType="float8" length="17" precision="17" nullable="true" jdbcType="8" />
       <column name="currency" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
       <column name="description" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
+      <column name="externaleurosperhour" sqlType="float8" length="17" precision="17" nullable="true" jdbcType="8" />
+      <column name="facturizable" sqlType="float8" length="17" precision="17" nullable="true" jdbcType="8" />
+      <column name="hoursperweek" sqlType="int4" length="10" precision="0" nullable="true" jdbcType="4" />
       <column name="name" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
+      <column name="plananzahl" sqlType="int4" length="10" precision="0" nullable="true" jdbcType="4" />
       <column name="validfrom" sqlType="timestamp" length="29" precision="6" nullable="true" jdbcType="93" />
       <column name="validuntil" sqlType="timestamp" length="29" precision="6" nullable="true" jdbcType="93" />
+      <column name="weeksperyear" sqlType="int4" length="10" precision="0" nullable="true" jdbcType="4" />
       <primary-key name="ressourcegroup_pkey" columns="id" />
     </table>
     <table name="revinfo" schema="public" catalog="" type="TABLE">
@@ -3960,8 +3971,8 @@
       <column name="land_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="stateklassifizierung_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="state_pkey" columns="id" />
-      <foreign-key name="fk4c7d471eb6176d9" columns="land_id" ref-table="land" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk4c7d47110280479" columns="stateklassifizierung_id" ref-table="stateklassifizierung" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk4c7d4714093880e" columns="land_id" ref-table="land" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk4c7d471bc430bae" columns="stateklassifizierung_id" ref-table="stateklassifizierung" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="stateklassifizierung" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3980,9 +3991,9 @@
       <column name="mandantengruppe_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="taetigkeitsfeld_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="taetigkeitsfeldassoc_pkey" columns="id" />
-      <foreign-key name="fka1d6f32aab919ba8" columns="mandantengruppe_id" ref-table="mandantengruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fka1d6f32a2ec1372a" columns="taetigkeitsfeld_id" ref-table="taetigkeitsfeld" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fka1d6f32aa4428d5f" columns="klassifizierung_id" ref-table="taetigkeitsfeldklassifizierung" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fka1d6f32aa3e0a5d" columns="mandantengruppe_id" ref-table="mandantengruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fka1d6f32a2110395f" columns="taetigkeitsfeld_id" ref-table="taetigkeitsfeld" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fka1d6f32ac1023a8a" columns="klassifizierung_id" ref-table="taetigkeitsfeldklassifizierung" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="taetigkeitsfeldklassifizierung" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -4018,13 +4029,13 @@
       <column name="domainname" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
       <column name="webdomainklassifizierung_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="webdomain_pkey" columns="id" />
-      <foreign-key name="fk1993dd18325fc159" columns="webdomainklassifizierung_id" ref-table="webdomainklassifizierung" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk1993dd18de7ac88e" columns="webdomainklassifizierung_id" ref-table="webdomainklassifizierung" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="webdomain_webdomainmetadata" schema="public" catalog="" type="TABLE">
       <column name="webdomain_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="webdomainmetadatas_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
-      <foreign-key name="fk51d492031ce4a1b" columns="webdomain_id" ref-table="webdomain" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
-      <foreign-key name="fk51d492062061c16" columns="webdomainmetadatas_id" ref-table="webdomainmetadata" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk51d492082de5f86" columns="webdomain_id" ref-table="webdomain" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk51d492038cb9681" columns="webdomainmetadatas_id" ref-table="webdomainmetadata" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="webdomain_webdomainmetadata_webdomainmetadatas_id_key" unique="true" columns="webdomainmetadatas_id" />
     </table>
     <table name="webdomainklassifizierung" schema="public" catalog="" type="TABLE">

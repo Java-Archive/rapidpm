@@ -33,7 +33,8 @@ public class BenutzerGruppe {
     private static final Logger logger = Logger.getLogger(BenutzerGruppe.class);
 
     @Id
-    @TableGenerator(name = "PKGenBenutzerGruppe", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "BenutzerGruppe_id", valueColumnName = "gen_value", allocationSize = 1)
+    @TableGenerator(name = "PKGenBenutzerGruppe", table = "pk_gen",
+            pkColumnName = "gen_key", pkColumnValue = "BenutzerGruppe_id", valueColumnName = "gen_value", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.TABLE,
             generator = "PKGenBenutzerGruppe")
     private Long id;
