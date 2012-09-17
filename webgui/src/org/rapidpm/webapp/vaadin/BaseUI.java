@@ -20,7 +20,6 @@ import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webapp.vaadin.ui.windows.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.util.List;
 import java.util.Locale;
@@ -48,29 +47,10 @@ public abstract class BaseUI extends UI {
     //MessagePanel
     private final VerticalLayout hlWorkingAreaContainer = new VerticalLayout();
 
-    private final String applicationName;
-
     protected Benutzer currentUser;
-    protected OldRessourceGroupsBean oldRessourceGroupsBean;
     protected ProjektBean planningUnitsBean;
     protected Locale locale = new Locale("de","DE");
     protected ResourceBundle messages;
-
-    protected BaseUI(final String applicationName) {
-        this.applicationName = applicationName;
-    }
-
-    public void setWindowWidth(final int windowWidth) {
-        if (this.windowWidth != windowWidth) {
-            this.windowWidth = windowWidth;
-//            fireWindowSizeChanged();
-        }
-    }
-
-    public int getMiddleStripeWidth() {
-        return windowWidth - 40; // REFAC Konstante
-//        return Page.getCurrent().getBrowserWindowWidth()-40;
-    }
 
 
     @Override
@@ -110,8 +90,7 @@ public abstract class BaseUI extends UI {
                 currentUser = user;
                 //getSession().setUser(currentUser);
                 getSession().setAttribute(Benutzer.class, currentUser);
-                oldRessourceGroupsBean = new OldRessourceGroupsBean();
-                planningUnitsBean = new ProjektBean(oldRessourceGroupsBean);
+                planningUnitsBean = new ProjektBean();
                 loadProtectedRessources();
                 return;
             }
@@ -183,23 +162,6 @@ public abstract class BaseUI extends UI {
         mainlayout.addComponent(gl);
 
 
-        //Hpt 3 Spalten
-        final VerticalLayout vlLeft = new VerticalLayout();
-        //vlLeft.setWidth(LEFT_STRIPE_WITH);
-        //gl.addComponent(vlLeft);
-        //gl.setExpandRatio(vlLeft, 1.0f);
-        //gl.setComponentAlignment(vlLeft, Alignment.TOP_LEFT);
-//
-
-
-//
-//        final VerticalLayout vlRight = new VerticalLayout();
-//        vlRight.setWidth(RIGHT_STRIPE_WITH);
-//        gl.addComponent(vlRight);
-//        gl.setExpandRatio(vlRight, 1.0f);
-//        gl.setComponentAlignment(vlRight, Alignment.TOP_RIGHT);
-
-
         //Innere Bereich komplett
         final VerticalLayout vlMiddleInner = new VerticalLayout(); //
         vlMiddleInner.setSizeFull();
@@ -242,7 +204,7 @@ public abstract class BaseUI extends UI {
         initMenuBarIntern(menubar);
         hlHeaderBottomLine.addComponent(menubar);
 
-        setWorkingArea(new ProjektplanungScreen(messages, planningUnitsBean, oldRessourceGroupsBean));
+        setWorkingArea(new ProjektplanungScreen(BaseUI.this));
         addComponent(mainlayout);
     }
 
@@ -340,9 +302,11 @@ public abstract class BaseUI extends UI {
     }
 
 
-//    public static interface WindowSizeChangeListener {
-//        void onWindowSizeChanged(int newWindowWidth, int newMiddleStripeWidth);
-//    }
+    public ResourceBundle getResourceBundle() {
+        return messages;
+    }
 
-
+    public ProjektBean getPlanningUnitsBean() {
+        return planningUnitsBean;
+    }
 }

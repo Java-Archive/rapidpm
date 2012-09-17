@@ -4,21 +4,20 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.HierarchicalContainer;
 import org.apache.log4j.Logger;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitElement;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import static org.rapidpm.Constants.*;
+import static org.rapidpm.Constants.HOURS_DAY;
+import static org.rapidpm.Constants.MINS_HOUR;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -31,25 +30,29 @@ public class TreeTableDataSourceFiller {
 
     private static final Logger logger = Logger.getLogger(TreeTableDataSourceFiller.class);
 
-    private OldRessourceGroupsBean oldRessourceGroupsBean;
+    private ProjektmanagementScreensBean projektmanagementScreensBean;
     private ProjektBean projektBean;
-    private List<OldRessourceGroup> oldRessourceGroups;
-    private final Map<OldRessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
+    private List<RessourceGroup> ressourceGroups;
+    private final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
     private ResourceBundle messages;
     private HierarchicalContainer dataSource;
 
-    public TreeTableDataSourceFiller(final ResourceBundle bundle, final OldRessourceGroupsBean rBeanOld,
+    public TreeTableDataSourceFiller(final ResourceBundle bundle, final ProjektmanagementScreensBean screensBean,
                                      final ProjektBean pBean, final HierarchicalContainer dSource) {
         this.messages = bundle;
-        oldRessourceGroupsBean = rBeanOld;
+        this.projektmanagementScreensBean = screensBean;
         projektBean = pBean;
         dataSource = dSource;
-        oldRessourceGroups = oldRessourceGroupsBean.getOldRessourceGroups();
+
+        final DaoFactoryBean baseDaoFactoryBean = this.projektmanagementScreensBean.getDaoFactoryBean();
+        final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
+        ressourceGroups = ressourceGroupDAO.loadAllEntities();
+
 
         dataSource.removeAllItems();
         final String aufgabe = messages.getString("aufgabe");
         dataSource.addContainerProperty(aufgabe, String.class, null);
-        for (final OldRessourceGroup oldRessourceGroup : oldRessourceGroups) {
+        for (final RessourceGroup oldRessourceGroup : ressourceGroups) {
             dataSource.addContainerProperty(oldRessourceGroup.getName(), String.class, "");
         }
 
@@ -69,9 +72,9 @@ public class TreeTableDataSourceFiller {
             planningUnitGroupItem.getItemProperty(aufgabe).setValue(planningUnitGroupName);
             final List<PlanningUnit> planningUnitList = planningUnitGroup.getPlanningUnitList();
             if (planningUnitList == null || planningUnitList.isEmpty()) {
-                for (final OldRessourceGroup spalte : oldRessourceGroups) {
+                for (final RessourceGroup spalte : ressourceGroups) {
                     for (final PlanningUnitElement planningUnitElement : planningUnitGroup.getPlanningUnitElementList()) {
-                        if (planningUnitElement.getOldRessourceGroup().equals(spalte)) {
+                        if (planningUnitElement.getRessourceGroup().equals(spalte)) {
                             planningUnitElement.setPlannedDays(0);
                             planningUnitElement.setPlannedHours(0);
                             planningUnitElement.setPlannedMinutes(0);
@@ -99,14 +102,14 @@ public class TreeTableDataSourceFiller {
             if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
                 for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
                     final DaysHoursMinutesItem item = new DaysHoursMinutesItem(planningUnitElement);
-                    planningUnitItem.getItemProperty(planningUnitElement.getOldRessourceGroup().getName()).setValue(item.toString());
+                    planningUnitItem.getItemProperty(planningUnitElement.getRessourceGroup().getName()).setValue(item.toString());
                 }
                 addiereZeileZurRessourceMap(planningUnit);
             } else {
                 computePlanningUnits(kindPlanningUnits, planningUnitName);
             }
         }
-        for (final OldRessourceGroup spalte : oldRessourceGroups) {
+        for (final RessourceGroup spalte : ressourceGroups) {
             final String mapValue = ressourceGroupDaysHoursMinutesItemMap.get(spalte).toString();
             dataSource.getItem(parent).getItemProperty(spalte.getName()).setValue(mapValue);
         }
@@ -114,10 +117,10 @@ public class TreeTableDataSourceFiller {
 
     private void addiereZeileZurRessourceMap(final PlanningUnit planningUnit) {
         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-            final OldRessourceGroup oldRessourceGroup = planningUnitElement.getOldRessourceGroup();
+            final RessourceGroup oldRessourceGroup = planningUnitElement.getRessourceGroup();
             final String aufgabe = messages.getString("aufgabe");
             if (!oldRessourceGroup.getName().equals(aufgabe)) {
-//                final OldRessourceGroup ressourceGroup1 = planningUnitElement.getOldRessourceGroup();
+//                final RessourceGroup ressourceGroup1 = planningUnitElement.getRessourceGroup();
                 final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
                 final int plannedDays = planningUnitElement.getPlannedDays();
                 final int plannedHours = planningUnitElement.getPlannedHours();

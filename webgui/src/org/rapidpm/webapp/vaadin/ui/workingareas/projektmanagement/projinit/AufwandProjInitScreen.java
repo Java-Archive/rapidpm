@@ -2,6 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit;
 
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
+import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
@@ -13,11 +14,12 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.comp
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.UndoButton;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.OverviewTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.TreeTableFiller;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.util.Date;
 
 import static org.rapidpm.Constants.DATE_FORMAT;
+
+//import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 
 public class AufwandProjInitScreen extends Screen {
 
@@ -55,15 +57,15 @@ public class AufwandProjInitScreen extends Screen {
         erstelleFelderLayout();
 
         expandCheckBox = new ExpandTableCheckBox(treeTable, dataSource);
-        undoButton = new UndoButton(this, treeTable, dataSource, projektBean, oldRessourceGroupsBean);
+        undoButton = new UndoButton(this, treeTable, dataSource, projektBean);
         undoButton.setVisible(false);
 
         final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, projektBean,
-                oldRessourceGroupsBean, treeTable, dataSource);
+                treeTable, dataSource);
         treeTableFiller.fill();
 
         final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable,
-                projektBean, oldRessourceGroupsBean);
+                projektBean, projektmanagementScreensBean);
         overviewTableFiller.fill();
 
         fillFields();
@@ -111,7 +113,8 @@ public class AufwandProjInitScreen extends Screen {
     }
 
     public void fillFields() {
-        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle, oldRessourceGroupsBean,projektBean);
+        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle, projektmanagementScreensBean,
+                projektBean);
         timesCalculator.calculate();
         manntageField.setReadOnly(false);
         summeField.setReadOnly(false);
@@ -289,7 +292,4 @@ public class AufwandProjInitScreen extends Screen {
         this.dataSource = dataSource;
     }
 
-    public OldRessourceGroupsBean getRessourceGroupsBean() {
-        return oldRessourceGroupsBean;
-    }
 }

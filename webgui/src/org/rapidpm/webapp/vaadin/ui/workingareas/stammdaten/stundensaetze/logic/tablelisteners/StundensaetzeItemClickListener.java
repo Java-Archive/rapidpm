@@ -76,11 +76,11 @@ public class StundensaetzeItemClickListener implements ItemClickListener {
                 public void buttonClick(ClickEvent event) {
                     try {
                         tabelle.commit();
-                        final DaoFactoryBean baseDaoFactoryBean = screen.getStundensaetzeScreenBean().getDaoFactoryBean();
+                        final DaoFactoryBean baseDaoFactoryBean = screen.getStammdatenScreensBean().getDaoFactoryBean();
                         final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
                         BeanItemContainer<RessourceGroupBean> container = (BeanItemContainer<RessourceGroupBean>) tabelle.getContainerDataSource();
                         for(final RessourceGroupBean bean : container.getItemIds()){
-                           // ressourceGroupDAO.saveOrUpdateTX(bean.getOldRessourceGroup());  TODO RPM-41
+                           // ressourceGroupDAO.saveOrUpdateTX(bean.getRessourceGroup());  TODO RPM-41
                         }
                         screen.generateTableAndCalculate();
                         upperFormLayout.setVisible(false);

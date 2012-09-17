@@ -72,12 +72,12 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
                     @Override
                     public void buttonClick(ClickEvent event) {
                         tabelle.commit();
-                        final DaoFactoryBean baseDaoFactoryBean = screen.getStundensaetzeScreenBean().getDaoFactoryBean();
+                        final DaoFactoryBean baseDaoFactoryBean = screen.getStammdatenScreensBean().getDaoFactoryBean();
                         final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
                         final BeanItemContainer<RessourceGroupBean> container = (BeanItemContainer<RessourceGroupBean>) tabelle
                                 .getContainerDataSource();
                         for(final RessourceGroupBean bean : container.getItemIds()){
-                            //ressourceGroupDAO.saveOrUpdateTX(bean.getOldRessourceGroup()); TODO RPM-41
+                            //ressourceGroupDAO.saveOrUpdateTX(bean.getRessourceGroup()); TODO RPM-41
                         }
                         screen.generateTableAndCalculate();
 

@@ -97,7 +97,7 @@ public class AddRowWindow extends Window {
                 if (allFilled) {
                     try {
                         fieldGroup.commit();
-                        final DaoFactoryBean baseDaoFactoryBean = screen.getStundensaetzeScreenBean().getDaoFactoryBean();
+                        final DaoFactoryBean baseDaoFactoryBean = screen.getStammdatenScreensBean().getDaoFactoryBean();
                         final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
                         //ressourceGroupDAO.saveOrUpdate(row);  TODO RPM-41
                         AddRowWindow.this.close();

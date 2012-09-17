@@ -1,8 +1,8 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell;
 
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class Projekt {
     private long projektId;
     private String projektName;
     private List<PlanningUnitGroup> planningUnitGroups = new ArrayList<>();
-    private List<OldRessourceGroup> oldRessourceGroups;
+    private List<RessourceGroup> ressourceGroups;
 
     public PlanningUnitGroup getPlanningUnitGroup(final String itemId) {
         PlanningUnitGroup result = null;
@@ -77,11 +77,11 @@ public class Projekt {
         this.planningUnitGroups = planningUnitGroups;
     }
 
-    public List<OldRessourceGroup> getOldRessourceGroups() {
-        return oldRessourceGroups;
+    public List<RessourceGroup> getRessourceGroups() {
+        return ressourceGroups;
     }
 
-    public void setOldRessourceGroups(List<OldRessourceGroup> oldRessourceGroups) {
-        this.oldRessourceGroups = oldRessourceGroups;
+    public void setRessourceGroups(List<RessourceGroup> ressourceGroups) {
+        this.ressourceGroups = ressourceGroups;
     }
 }

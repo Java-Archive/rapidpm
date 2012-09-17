@@ -2,6 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs;
 
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
+import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
@@ -14,12 +15,13 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.mode
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.ExpandTableCheckBox;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.util.Date;
 
 import static org.rapidpm.Constants.DATE_FORMAT;
 import static org.rapidpm.Constants.EUR;
+
+//import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 
 
 public class CostsScreen extends Screen {
@@ -58,17 +60,17 @@ public class CostsScreen extends Screen {
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
 
-        undoButton = new UndoButton(messagesBundle, treeTable, dataSource, projektBean, oldRessourceGroupsBean);
+        undoButton = new UndoButton(this, treeTable, dataSource, projektBean);
         undoButton.setVisible(false);
 
         expandCheckBox = new ExpandTableCheckBox(treeTable, dataSource);
 
-        final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, projektBean, oldRessourceGroupsBean,
+        final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, projektBean,
                 treeTable, dataSource);
         treeTableFiller.fill();
 
         final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable,
-                projektBean, oldRessourceGroupsBean);
+                projektBean, projektmanagementScreensBean);
         overviewTableFiller.fill();
 
         uebersichtTable.setPageLength(4);
@@ -121,7 +123,7 @@ public class CostsScreen extends Screen {
     }
 
     private void fillFields() {
-        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle, oldRessourceGroupsBean, projektBean);
+        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle, projektmanagementScreensBean, projektBean);
         final CostsCalculator costsCalculator = new CostsCalculator(projektBean, messagesBundle);
         costsCalculator.calculate();
         timesCalculator.calculate();
@@ -249,9 +251,5 @@ public class CostsScreen extends Screen {
 
     public void setDataSource(HierarchicalContainer dataSource) {
         this.dataSource = dataSource;
-    }
-
-    public OldRessourceGroupsBean getRessourceGroupsBean() {
-        return oldRessourceGroupsBean;
     }
 }

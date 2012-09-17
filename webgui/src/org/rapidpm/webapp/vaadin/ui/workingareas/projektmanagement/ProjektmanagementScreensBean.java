@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten;
+package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 
 import org.rapidpm.persistence.DaoFactoryBean;
 
@@ -6,15 +6,9 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Alexander Vos
- * Date: 24.05.12
- * Time: 11:00
- */
-@Stateless(name = "StammdatenWorkingAreaEJB")
+@Stateless(name = "CostsScreenEJB")
 @TransactionManagement
-public class StammdatenWorkingAreaBean {
+public class ProjektmanagementScreensBean {
 
     @EJB(beanName = "DaoFactoryEJB")
     private DaoFactoryBean baseDaoFactoryBean;

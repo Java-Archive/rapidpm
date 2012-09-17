@@ -1,9 +1,10 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -14,33 +15,36 @@ import java.util.ResourceBundle;
 import static org.rapidpm.Constants.*;
 
 /**
- * RapidPM - www.rapidpm.org
- * User: Marco
- * Date: 31.08.12
- * Time: 14:34
- * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
- */
+* RapidPM - www.rapidpm.org
+* User: Marco
+* Date: 31.08.12
+* Time: 14:34
+* This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
+*/
 public class TimesCalculator {
 
-    private OldRessourceGroupsBean oldRessourceGroupsBean;
+    private ProjektmanagementScreensBean projektmanagementScreensBean;
     private ProjektBean projektBean;
-    private List<OldRessourceGroup> oldRessourceGroups;
+    private List<RessourceGroup> ressourceGroups;
     private ResourceBundle messages;
 
-    private Map<OldRessourceGroup, Double> relativeWerte = new HashMap<OldRessourceGroup, Double>();
-    private final Map<OldRessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
+    private Map<RessourceGroup, Double> relativeWerte = new HashMap<>();
+    private final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
     private Integer gesamtSummeInMin;
     private Double mannTageExakt;
 
-    public TimesCalculator(final ResourceBundle bundle, final OldRessourceGroupsBean rBeanOld, final ProjektBean pBean) {
+    public TimesCalculator(final ResourceBundle bundle, final ProjektmanagementScreensBean screenBean,
+                           final ProjektBean pBean) {
         this.messages = bundle;
-        oldRessourceGroupsBean = rBeanOld;
+        projektmanagementScreensBean = screenBean;
         projektBean = pBean;
-        oldRessourceGroups = oldRessourceGroupsBean.getOldRessourceGroups();
+        final DaoFactoryBean baseDaoFactoryBean = this.projektmanagementScreensBean.getDaoFactoryBean();
+        final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
+        ressourceGroups = ressourceGroupDAO.loadAllEntities();
     }
 
     public void calculate() {
-        for (final OldRessourceGroup spalte : this.oldRessourceGroups) {
+        for (final RessourceGroup spalte : this.ressourceGroups) {
             relativeWerte.put(spalte, 0.0);
         }
 
@@ -73,10 +77,10 @@ public class TimesCalculator {
 
     }
 
-    private void addiereZeileZurRessourceMap(final Map<OldRessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap,
+    private void addiereZeileZurRessourceMap(final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap,
                                              final PlanningUnit planningUnit) {
         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-            final OldRessourceGroup oldRessourceGroup = planningUnitElement.getOldRessourceGroup();
+            final RessourceGroup oldRessourceGroup = planningUnitElement.getRessourceGroup();
             final String aufgabe = messages.getString("aufgabe");
             if (!oldRessourceGroup.getName().equals(aufgabe)) {
                 final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
@@ -99,20 +103,20 @@ public class TimesCalculator {
 
     private void calculateTotalsRelative() {
         gesamtSummeInMin = 0;
-        for (final Map.Entry<OldRessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry :
+        for (final Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry :
                 ressourceGroupDaysHoursMinutesItemMap.entrySet()) {
             gesamtSummeInMin += absoluteWerteEntry.getValue().getDays() * MINS_DAY;
             gesamtSummeInMin += absoluteWerteEntry.getValue().getHours() * MINS_HOUR;
             gesamtSummeInMin += absoluteWerteEntry.getValue().getMinutes();
         }
-        for (final Map.Entry<OldRessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry :
+        for (final Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry :
                 ressourceGroupDaysHoursMinutesItemMap.entrySet()) {
-            final OldRessourceGroup absoluterWertOldRessourceGroup = absoluteWerteEntry.getKey();
+            final RessourceGroup absoluterWertRessourceGroup = absoluteWerteEntry.getKey();
 
             Integer absoluterWertWert = absoluteWerteEntry.getValue().getDays() * MINS_DAY;
             absoluterWertWert += absoluteWerteEntry.getValue().getHours() * MINS_HOUR;
             absoluterWertWert += absoluteWerteEntry.getValue().getMinutes();
-            relativeWerte.put(absoluterWertOldRessourceGroup, absoluterWertWert.doubleValue() / gesamtSummeInMin.doubleValue() * 100.0);
+            relativeWerte.put(absoluterWertRessourceGroup, absoluterWertWert.doubleValue() / gesamtSummeInMin.doubleValue() * 100.0);
         }
     }
 
@@ -129,11 +133,11 @@ public class TimesCalculator {
         }
     }
 
-    public Map<OldRessourceGroup, Double> getRelativeWerte() {
+    public Map<RessourceGroup, Double> getRelativeWerte() {
         return relativeWerte;
     }
 
-    public Map<OldRessourceGroup, DaysHoursMinutesItem> getAbsoluteWerte() {
+    public Map<RessourceGroup, DaysHoursMinutesItem> getAbsoluteWerte() {
         return ressourceGroupDaysHoursMinutesItemMap;
     }
 

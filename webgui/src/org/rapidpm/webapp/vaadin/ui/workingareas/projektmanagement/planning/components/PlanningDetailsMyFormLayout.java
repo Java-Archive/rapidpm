@@ -9,8 +9,8 @@ import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssuePrioritiesEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.ProjektmanagementScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreenBean;
 
 import java.util.*;
 
@@ -41,14 +41,14 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
     private DateField resolvedDateField;
     private DateField closedDateField;
     private ResourceBundle messages;
-    private ProjektplanungScreenBean bean;
+    private ProjektmanagementScreensBean projektmanagementScreensBean;
 
     public PlanningDetailsMyFormLayout(final IssueBase issueBase, final ProjektplanungScreen screen, final Panel screenPanel) {
         super(screen, screenPanel);
         messages = screen.getMessagesBundle();
-        bean = screen.getBean();
+        projektmanagementScreensBean = screen.getProjektmanagementScreensBean();
 
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final DaoFactoryBean baseDaoFactoryBean = projektmanagementScreensBean.getDaoFactoryBean();
         final BenutzerDAO benutzerDAO = baseDaoFactoryBean.getBenutzerDAO();
         final List<Benutzer> benutzer = benutzerDAO.loadAllEntities();
 

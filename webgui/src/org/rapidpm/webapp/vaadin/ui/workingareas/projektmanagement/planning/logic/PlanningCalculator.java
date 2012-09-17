@@ -1,18 +1,17 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic;
 
 import org.apache.log4j.Logger;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitElement;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.util.*;
 
-import static org.rapidpm.Constants.*;
+import static org.rapidpm.Constants.HOURS_DAY;
+import static org.rapidpm.Constants.MINS_HOUR;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -27,37 +26,40 @@ public class PlanningCalculator {
     private static final Logger logger = Logger.getLogger(PlanningCalculator.class);
 
     private final ProjektBean projektBean;
-    private final OldRessourceGroupsBean oldRessourceGroupsBean;
-    private List<OldRessourceGroup> oldRessourceGroups;
+    private final ProjektmanagementScreensBean projektmanagementScreensBean;
+    private List<RessourceGroup> ressourceGroups;
     private Projekt projekt;
     private ResourceBundle messages;
 
 
     public PlanningCalculator(final ResourceBundle bundle, final ProjektBean projektBean,
-                              final OldRessourceGroupsBean oldRessourceGroupsBean) {
+                              final ProjektmanagementScreensBean screenBean) {
         this.messages = bundle;
         this.projektBean = projektBean;
-        this.oldRessourceGroupsBean = oldRessourceGroupsBean;
+        this.projektmanagementScreensBean = screenBean;
     }
 
     public void calculate() {
         projekt = projektBean.getProjekt();
-        oldRessourceGroups = oldRessourceGroupsBean.getOldRessourceGroups();
+        final DaoFactoryBean baseDaoFactoryBean = projektmanagementScreensBean.getDaoFactoryBean();
+        final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
+        ressourceGroups = ressourceGroupDAO.loadAllEntities();
+
 
         this.calculatePlanningUnitGroups();
     }
 
     private void calculatePlanningUnitGroups() {
         for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
-            final Map<OldRessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
+            final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
             final List<PlanningUnit> planningUnitGroupPlanningUnitList = planningUnitGroup.getPlanningUnitList();
             if (planningUnitGroupPlanningUnitList == null || planningUnitGroupPlanningUnitList.isEmpty()) {
-                for (final OldRessourceGroup spalte : oldRessourceGroups) {
+                for (final RessourceGroup spalte : ressourceGroups) {
                     final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
                     planningUnitElement.setPlannedDays(0);
                     planningUnitElement.setPlannedHours(0);
                     planningUnitElement.setPlannedMinutes(0);
-                    planningUnitElement.setOldRessourceGroup(spalte);
+                    planningUnitElement.setRessourceGroup(spalte);
                     planningUnitGroup.getPlanningUnitElementList().add(planningUnitElement);
                 }
             } else {
@@ -69,7 +71,7 @@ public class PlanningCalculator {
 
 
     private void calculatePlanningUnits(final List<PlanningUnit> planningUnits, final String parent,
-                                      final Map<OldRessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap) {
+                                      final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap) {
         for (final PlanningUnit planningUnit : planningUnits) {
             final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
             if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
@@ -80,21 +82,21 @@ public class PlanningCalculator {
             }
         }
         boolean parentIsGroup = false;
-        for (final OldRessourceGroup oldRessourceGroup : oldRessourceGroups) {
+        for (final RessourceGroup ressourceGroup : ressourceGroups) {
             for (final PlanningUnitGroup group : projektBean.getProjekt().getPlanningUnitGroups()) {
                 if (group.getPlanningUnitGroupName().equals(parent)) {
                     parentIsGroup = true;
                 }
             }
-            final Integer daysFromMap = ressourceGroupDaysHoursMinutesItemMap.get(oldRessourceGroup).getDays();
-            final Integer hoursFromMap = ressourceGroupDaysHoursMinutesItemMap.get(oldRessourceGroup).getHours();
-            final Integer minutesFromMap = ressourceGroupDaysHoursMinutesItemMap.get(oldRessourceGroup).getMinutes();
+            final Integer daysFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getDays();
+            final Integer hoursFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getHours();
+            final Integer minutesFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getMinutes();
             if (parentIsGroup) {
                 PlanningUnitElement element = new PlanningUnitElement();
                 final List<PlanningUnitElement> planningUnitElementList = projekt.getPlanningUnitGroup(parent)
                         .getPlanningUnitElementList();
                 for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
-                    if (planningUnitElement.getOldRessourceGroup().getName().equals(oldRessourceGroup.getName())) {
+                    if (planningUnitElement.getRessourceGroup().getName().equals(ressourceGroup.getName())) {
                         element = planningUnitElement;
                     }
                 }
@@ -112,7 +114,7 @@ public class PlanningCalculator {
                 PlanningUnitElement element = new PlanningUnitElement();
                 for (final PlanningUnitElement planningUnitElement : planningUnitsResultList.get(0)
                         .getPlanningUnitElementList()) {
-                    if (planningUnitElement.getOldRessourceGroup().getName().equals(oldRessourceGroup.getName())) {
+                    if (planningUnitElement.getRessourceGroup().getName().equals(ressourceGroup.getName())) {
                         element = planningUnitElement;
                     }
                 }
@@ -126,11 +128,11 @@ public class PlanningCalculator {
         }
     }
 
-    private void addiereZeileZurRessourceMap(final Map<OldRessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap,
+    private void addiereZeileZurRessourceMap(final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap,
                                              final PlanningUnit planningUnit) {
         final List<PlanningUnitElement> planningUnitElementList = planningUnit.getPlanningUnitElementList();
         for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
-            final OldRessourceGroup oldRessourceGroup = planningUnitElement.getOldRessourceGroup();
+            final RessourceGroup oldRessourceGroup = planningUnitElement.getRessourceGroup();
             final String aufgabe = messages.getString("aufgabe");
             if (!oldRessourceGroup.getName().equals(aufgabe)) {
                 final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
@@ -173,14 +175,4 @@ public class PlanningCalculator {
         }
     }
 
-
-    @Override
-    public String toString() {
-        return "PlanningCalculator{" +
-                "projektBean=" + projektBean +
-                ", oldRessourceGroupsBean=" + oldRessourceGroupsBean +
-                ", oldRessourceGroups=" + oldRessourceGroups +
-                ", projekt=" + projekt +
-                '}';
-    }
 }

@@ -4,8 +4,8 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningStatus;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.PlannedMeeting;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedTravel;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.person.Person;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,11 +42,11 @@ public class PlanningUnitGroup {
     private List<PlanningUnitElement> planningUnitElementList = new ArrayList<>();
     private IssueBase issueBase;
 
-    public PlanningUnitGroup(final List<OldRessourceGroup> oldRessourceGroups){
-        if(oldRessourceGroups != null){
-            for(final OldRessourceGroup oldRessourceGroup : oldRessourceGroups){
+    public PlanningUnitGroup(final List<RessourceGroup> ressourceGroups){
+        if(ressourceGroups != null){
+            for(final RessourceGroup ressourceGroup : ressourceGroups){
                 final PlanningUnitElement element = new PlanningUnitElement();
-                element.setOldRessourceGroup(oldRessourceGroup);
+                element.setRessourceGroup(ressourceGroup);
                 planningUnitElementList.add(element);
             }
         }
