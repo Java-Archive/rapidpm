@@ -8,3 +8,4 @@ Dependencies: org.rapidpm.base,
  org.rapidpm.poi,
  org.rapidpm.solrj
 
+
