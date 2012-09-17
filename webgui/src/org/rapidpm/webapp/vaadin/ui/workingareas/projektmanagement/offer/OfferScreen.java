@@ -1,6 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.offer;
 
-import org.rapidpm.webapp.vaadin.MainRoot;
+import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 
 /**
@@ -12,8 +12,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
  */
 public class OfferScreen extends Screen {
 
-    public OfferScreen(MainRoot root) {
-        super(root);
+    public OfferScreen(MainUI ui) {
+        super(ui);
     }
 
     @Override

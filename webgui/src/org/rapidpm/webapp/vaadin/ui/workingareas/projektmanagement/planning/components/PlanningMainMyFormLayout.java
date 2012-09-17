@@ -33,7 +33,7 @@ public class PlanningMainMyFormLayout extends MyFormLayout {
         }
         buildForm();
 
-        cancelButton.addListener(new Button.ClickListener() {
+        cancelButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 final String issueText = issueBase.getText();
@@ -58,7 +58,7 @@ public class PlanningMainMyFormLayout extends MyFormLayout {
             }
         });
 
-        saveButton.addListener(new Button.ClickListener() {
+        saveButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 final String descriptionAreaValue = descriptionTextArea.getValue();

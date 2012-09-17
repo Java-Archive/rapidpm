@@ -1,12 +1,11 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze;
 
-import com.vaadin.external.com.ibm.icu.text.DecimalFormat;
 import com.vaadin.ui.*;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
-import org.rapidpm.webapp.vaadin.MainRoot;
+import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeCalculator;
@@ -19,6 +18,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomp
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.EditOptionButtonGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.ItemClickDependentComponent;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,8 +48,8 @@ public class StundensaetzeScreen extends Screen {
 
     private List<ItemClickDependentComponent> dependentComponents = new ArrayList<>();
 
-    public StundensaetzeScreen(final MainRoot root) {
-        super(root);
+    public StundensaetzeScreen(final MainUI ui) {
+        super(ui);
         stundensaetzeScreenBean = EJBFactory.getEjbInstance(StundensaetzeScreenBean.class);
         saveButton.setVisible(false);
         betriebsstdField = new TextField();
@@ -59,7 +59,6 @@ public class StundensaetzeScreen extends Screen {
 
         betriebsFieldsLayout.addComponent(betriebsstdField);
         betriebsFieldsLayout.addComponent(betriebsWertField);
-        betriebsFieldsLayout.setMargin(true, false, true, false);
 
 
         dependentComponents.add(delRowButton);
@@ -70,15 +69,15 @@ public class StundensaetzeScreen extends Screen {
         tabellenLayout.setSizeFull();
         tabellenLayout.addComponent(tabelle);
         tabellenLayout.setSpacing(true);
-        tabellenLayout.setMargin(false, false, true, false);
 
         optionGroup = new EditOptionButtonGroup(messagesBundle);
-        optionGroup.addListener(new EditGroupValueChangeListener(this, messagesBundle, formLayout, upperFormLayout,
+        optionGroup.addValueChangeListener(new EditGroupValueChangeListener(this, messagesBundle, formLayout,
+                upperFormLayout,
                 lowerFormLayout, optionGroup, saveButton, tabelle));
         optionGroup.setImmediate(true);
 
         delRowButton.setEnabled(false);
-        delRowButton.addListener(new DelRowClickListener(this, delRowButton));
+        delRowButton.addClickListener(new DelRowClickListener(this, delRowButton));
         tabellenTasksLayout.setWidth("500px");
         tabellenTasksLayout.addComponent(addDeleteRessourceLabel);
         tabellenTasksLayout.addComponent(editModeLabel);
@@ -88,7 +87,7 @@ public class StundensaetzeScreen extends Screen {
         addDeleteLayout.addComponent(delRowButton);
         tabellenTasksLayout.addComponent(addDeleteLayout);
         tabellenTasksLayout.addComponent(optionGroup);
-        addRowButton.addListener(new AddRowClickListener(root, this));
+        addRowButton.addClickListener(new AddRowClickListener(ui, this));
 
         formLayout.setSpacing(true);
         lowerFormLayout.addComponent(saveButton);

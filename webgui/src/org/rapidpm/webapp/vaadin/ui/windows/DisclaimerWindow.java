@@ -7,7 +7,7 @@ package org.rapidpm.webapp.vaadin.ui.windows;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
-import com.vaadin.terminal.ThemeResource;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Window;
 import org.apache.log4j.Logger;

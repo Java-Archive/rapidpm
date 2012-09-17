@@ -61,7 +61,7 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
         buildClosedDateField(issueBase);
         buildForm();
 
-        cancelButton.addListener(new Button.ClickListener() {
+        cancelButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 final String issueStatusName = issueBase.getIssueStatus().getStatusName();
@@ -88,7 +88,7 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
                 buttonLayout.setVisible(false);
             }
         });
-        saveButton.addListener(new Button.ClickListener() {
+        saveButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 try{

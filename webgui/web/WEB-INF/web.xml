@@ -14,11 +14,11 @@
 
     <servlet>
         <servlet-name>BaseVaadin</servlet-name>
-        <servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
+        <servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
         <!--<servlet-class>org.rapidpm.webapp.vaadin.BaseApplicationServlet</servlet-class>-->
         <init-param>
-            <param-name>root</param-name>
-            <param-value>org.rapidpm.webapp.vaadin.MainRoot</param-value>
+            <param-name>UI</param-name>
+            <param-value>org.rapidpm.webapp.vaadin.MainUI</param-value>
             <!--<param-value>org.rapidpm.webapp.vaadin.MainApplication</param-value>-->
         </init-param>
     </servlet>

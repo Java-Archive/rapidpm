@@ -2,7 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs;
 
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
-import org.rapidpm.webapp.vaadin.MainRoot;
+import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TreeTableHeaderClickListener;
@@ -52,8 +52,8 @@ public class CostsScreen extends Screen {
     private GridLayout upperFormLayout = new GridLayout(2, 10);
     private VerticalLayout lowerFormLayout = new VerticalLayout();
 
-    public CostsScreen(MainRoot root) {
-        super(root);
+    public CostsScreen(MainUI ui) {
+        super(ui);
 
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
@@ -75,14 +75,14 @@ public class CostsScreen extends Screen {
         uebersichtTable.setConnectedTable(treeTable);
         uebersichtTable.setSizeFull();
         treeTable.setConnectedTable(uebersichtTable);
-        treeTable.addListener(new TreeTableHeaderClickListener(undoButton));
+        treeTable.addHeaderClickListener(new TreeTableHeaderClickListener(undoButton));
         treeTable.setSizeFull();
 
-        table1layout.setMargin(true, false, true, false);
+        table1layout.setMargin(true);
         table1layout.addComponent(uebersichtTable);
         table1layout.setSizeFull();
 
-        table2layout.setMargin(true, false, true, false);
+        table2layout.setMargin(true);
         table2layout.addComponent(expandCheckBox);
         table2layout.addComponent(undoButton);
         table2layout.addComponent(treeTable);
@@ -106,7 +106,6 @@ public class CostsScreen extends Screen {
         felderLayout.addComponent(manntageField);
         felderLayout.addComponent(summeInMinField);
         felderLayout.addComponent(kostenField);
-        felderLayout.setMargin(true, false, true, false);
     }
 
     private void erstelleUnterschriftLayout() {
@@ -117,7 +116,6 @@ public class CostsScreen extends Screen {
         unterschriftLayout.setWidth("560px");
         unterschriftLayout.addComponent(vertrieblerField);
         unterschriftLayout.addComponent(datumField);
-        unterschriftLayout.setMargin(true, false, true, false);
 
 
     }

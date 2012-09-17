@@ -64,11 +64,11 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
                 tabelle.setEditable(true);
                 for (final Object listener : saveButton.getListeners(Event.class)) {
                     if (listener instanceof ClickListener) {
-                        saveButton.removeListener((ClickListener) listener);
+                        saveButton.removeClickListener((ClickListener) listener);
                     }
 
                 }
-                saveButton.addListener(new ClickListener() {
+                saveButton.addClickListener(new ClickListener() {
 
                     @Override
                     public void buttonClick(ClickEvent event) {

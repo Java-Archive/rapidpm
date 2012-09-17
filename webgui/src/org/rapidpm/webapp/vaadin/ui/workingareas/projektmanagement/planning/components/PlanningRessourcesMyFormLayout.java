@@ -39,7 +39,7 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
         buildTable();
         buildForm();
         for (final Object listener : screenPanel.getListeners(MouseEvents.ClickEvent.class)) {
-            screenPanel.removeListener((MouseEvents.ClickListener) listener);
+            screenPanel.removeClickListener((MouseEvents.ClickListener) listener);
         }
     }
 
@@ -52,10 +52,10 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
         buildForm();
         if (hasChildren) {
             for (final Object listener : screenPanel.getListeners(MouseEvents.ClickEvent.class)) {
-                screenPanel.removeListener((MouseEvents.ClickListener) listener);
+                screenPanel.removeClickListener((MouseEvents.ClickListener) listener);
             }
         } else {
-            cancelButton.addListener(new Button.ClickListener() {
+            cancelButton.addClickListener(new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
                     buildTable();
@@ -64,7 +64,7 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
                 }
             });
 
-            saveButton.addListener(new Button.ClickListener() {
+            saveButton.addClickListener(new Button.ClickListener() {
 
                 private final Pattern COMPILE = Pattern.compile(DAYSHOURSMINUTES_REGEX);
                 private final Pattern SPLIT = Pattern.compile(":");

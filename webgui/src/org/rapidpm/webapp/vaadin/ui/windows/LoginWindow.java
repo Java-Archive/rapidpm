@@ -12,32 +12,32 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.LoginForm;
 import com.vaadin.ui.Window;
 import org.apache.log4j.Logger;
-import org.rapidpm.webapp.vaadin.BaseRoot;
+import org.rapidpm.webapp.vaadin.BaseUI;
 import org.rapidpm.webapp.vaadin.ui.Languages;
 
 import java.util.Arrays;
 
 public class LoginWindow extends Window {
     private static final Logger logger = Logger.getLogger(LoginWindow.class);
-    private BaseRoot root;
-    public LoginWindow(BaseRoot r) {
+    private BaseUI ui;
+    public LoginWindow(BaseUI r) {
         super("Authentication required !");
         setWidth("300px");
-        this.root = r;
+        this.ui = r;
 //        initUI();
 
         final LoginForm loginForm = new LoginForm();
         final ComboBox languageBox = new ComboBox("Language", Arrays.asList(Languages.values()));
         loginForm.setCaption("Please enter your username and password");
-        loginForm.addListener(new LoginForm.LoginListener() {
+        loginForm.addLoginListener(new LoginForm.LoginListener() {
             @Override
             public void onLogin(final LoginForm.LoginEvent loginEvent) {
-                //final BaseRoot app = (BaseRoot) getRoot();
+                //final BaseUI app = (BaseUI) getRoot();
                 try {
                     final String username = loginEvent.getLoginParameter("username");
                     final String password = loginEvent.getLoginParameter("password");
-                    root.localization(languageBox.getValue());
-                    root.authentication(username, password);
+                    ui.localization(languageBox.getValue());
+                    ui.authentication(username, password);
                     close();
                 } catch (Exception e) {
                     addComponent(new Label("login gescheitert!"));
