@@ -111,19 +111,24 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
 
     private void buildTable() {
         tabelle.removeAllItems();
-        tabelle.setPageLength(1);
+        tabelle.setPageLength(2);
         tabelle.setColumnCollapsingAllowed(true);
         final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
-        final String[] cells = new String[planningUnitElements.size()];
+        //final String[] cells = new String[planningUnitElements.size()];
+        final String[] cells = new String[9];
         Integer counter = 0;
         for (final PlanningUnitElement element : planningUnitElements) {
-            final String spaltenName = element.getOldRessourceGroup().getName();
-            tabelle.addContainerProperty(spaltenName, String.class, null);
-            daysHoursMinutesItem.setDays(element.getPlannedDays());
-            daysHoursMinutesItem.setHours(element.getPlannedHours());
-            daysHoursMinutesItem.setMinutes(element.getPlannedMinutes());
-            cells[counter] = daysHoursMinutesItem.toString();
-            counter++;
+            if(counter <= 8){
+                final String spaltenName = element.getOldRessourceGroup().getName();
+                tabelle.addContainerProperty(spaltenName, String.class, null);
+                daysHoursMinutesItem.setDays(element.getPlannedDays());
+                daysHoursMinutesItem.setHours(element.getPlannedHours());
+                daysHoursMinutesItem.setMinutes(element.getPlannedMinutes());
+                cells[counter] = daysHoursMinutesItem.toString();
+                counter++;
+            } else {
+                break;
+            }
         }
         try{
             final Object itemId = tabelle.addItem(cells, null);

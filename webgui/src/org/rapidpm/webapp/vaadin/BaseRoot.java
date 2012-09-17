@@ -51,8 +51,8 @@ public abstract class BaseRoot extends Root {
     private final String applicationName;
 
     protected Benutzer currentUser;
-    protected OldRessourceGroupsBean oldRessourceGroupsBean = new OldRessourceGroupsBean();
-    protected ProjektBean planningUnitsBean = new ProjektBean(oldRessourceGroupsBean);
+    protected OldRessourceGroupsBean oldRessourceGroupsBean;
+    protected ProjektBean planningUnitsBean;
     protected Locale locale = new Locale("de","DE");
     protected ResourceBundle messages;
 
@@ -109,6 +109,8 @@ public abstract class BaseRoot extends Root {
             if (userLogin.equals(enteredLogin) && userPasswd.equals(enteredPasswdHashed)) {
                 currentUser = user;
                 getApplication().setUser(currentUser);
+                oldRessourceGroupsBean = new OldRessourceGroupsBean();
+                planningUnitsBean = new ProjektBean(oldRessourceGroupsBean);
                 loadProtectedRessources();
                 return;
             }
