@@ -1,9 +1,12 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas;
 
 import com.vaadin.ui.VerticalLayout;
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.webapp.vaadin.BaseUI;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.ProjektmanagementScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenScreensBean;
 
 import java.util.ResourceBundle;
 
@@ -17,12 +20,21 @@ import java.util.ResourceBundle;
 public abstract class Screen extends VerticalLayout {
 
     protected ProjektBean projektBean;
-    protected OldRessourceGroupsBean oldRessourceGroupsBean;
+    protected ProjektmanagementScreensBean projektmanagementScreensBean;
+    protected StammdatenScreensBean stammdatenScreensBean;
     protected ResourceBundle messagesBundle;
 
     public Screen(MainUI ui){
         this.projektBean = ui.getPlanningUnitsBean();
-        this.oldRessourceGroupsBean = ui.getRessourceGroupsBean();
+        projektmanagementScreensBean = EJBFactory.getEjbInstance(ProjektmanagementScreensBean.class);
+        stammdatenScreensBean = EJBFactory.getEjbInstance(StammdatenScreensBean.class);
+        this.messagesBundle = ui.getResourceBundle();
+    }
+
+    public Screen(BaseUI ui){
+        this.projektBean = ui.getPlanningUnitsBean();
+        projektmanagementScreensBean = EJBFactory.getEjbInstance(ProjektmanagementScreensBean.class);
+        stammdatenScreensBean = EJBFactory.getEjbInstance(StammdatenScreensBean.class);
         this.messagesBundle = ui.getResourceBundle();
     }
 
@@ -40,15 +52,15 @@ public abstract class Screen extends VerticalLayout {
         this.projektBean = projektBean;
     }
 
-    public OldRessourceGroupsBean getOldRessourceGroupsBean() {
-        return oldRessourceGroupsBean;
-    }
-
-    public void setOldRessourceGroupsBean(OldRessourceGroupsBean oldRessourceGroupsBean) {
-        this.oldRessourceGroupsBean = oldRessourceGroupsBean;
-    }
-
     public ResourceBundle getMessagesBundle() {
         return messagesBundle;
+    }
+
+    public ProjektmanagementScreensBean getProjektmanagementScreensBean() {
+        return projektmanagementScreensBean;
+    }
+
+    public StammdatenScreensBean getStammdatenScreensBean() {
+        return stammdatenScreensBean;
     }
 }

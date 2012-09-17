@@ -3,14 +3,15 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.event.MouseEvents;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.Table;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -82,8 +83,8 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
                                 }
                                 final List<PlanningUnitElement> planningUnitElementList = planningUnit.getPlanningUnitElementList();
                                 for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
-                                    final OldRessourceGroup oldRessourceGroup = planningUnitElement.getOldRessourceGroup();
-                                    if (oldRessourceGroup.getName().equals(propertyId.toString())) {
+                                    final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
+                                    if (ressourceGroup.getName().equals(propertyId.toString())) {
                                         final String[] daysHoursMinutes = SPLIT.split(cellContent);
                                         planningUnitElement.setPlannedDays(Integer.parseInt(daysHoursMinutes[0]));
                                         planningUnitElement.setPlannedHours(Integer.parseInt(daysHoursMinutes[1]));
@@ -92,9 +93,10 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
                                 }
                             }
                         }
-                        final OldRessourceGroupsBean oldRessourceGroupsBean = screen.getOldRessourceGroupsBean();
+                        final ProjektmanagementScreensBean projektmanagementScreensBean = screen
+                                .getProjektmanagementScreensBean();
                         final PlanningCalculator calculator = new PlanningCalculator(screen.getMessagesBundle(),
-                                projektBean, oldRessourceGroupsBean);
+                                projektBean, projektmanagementScreensBean);
                         calculator.calculate();
 
                         tabelle.setEditable(false);
@@ -115,11 +117,11 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
         tabelle.setColumnCollapsingAllowed(true);
         final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
         //final String[] cells = new String[planningUnitElements.size()];
-        final String[] cells = new String[9];
+        final String[] cells = new String[8];
         Integer counter = 0;
         for (final PlanningUnitElement element : planningUnitElements) {
-            if(counter <= 8){
-                final String spaltenName = element.getOldRessourceGroup().getName();
+            if(counter <= 7){
+                final String spaltenName = element.getRessourceGroup().getName();
                 tabelle.addContainerProperty(spaltenName, String.class, null);
                 daysHoursMinutesItem.setDays(element.getPlannedDays());
                 daysHoursMinutesItem.setHours(element.getPlannedHours());

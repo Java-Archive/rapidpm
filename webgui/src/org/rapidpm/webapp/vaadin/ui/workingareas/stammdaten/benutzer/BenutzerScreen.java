@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten;
+package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
@@ -13,7 +13,10 @@ import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
 import org.rapidpm.persistence.system.security.berechtigungen.BerechtigungDAO;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.BenutzerEditor;
+import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenScreensBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.uicomponents.BenutzerEditor;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,15 +28,19 @@ import java.util.List;
  * Date: 05.04.12
  * Time: 09:43
  */
-public class StammdatenWorkingArea extends HorizontalLayout {
+public class BenutzerScreen extends Screen {
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
-    public StammdatenWorkingArea() {
-        setSizeFull();
-        setSpacing(true);
+    private HorizontalLayout contentLayout = new HorizontalLayout();
 
-        final StammdatenWorkingAreaBean bean = EJBFactory.getEjbInstance(StammdatenWorkingAreaBean.class);
+    public BenutzerScreen(MainUI ui) {
+        super(ui);
+        setSizeFull();
+        contentLayout.setSizeFull();
+        contentLayout.setSpacing(true);
+
+        final StammdatenScreensBean bean = EJBFactory.getEjbInstance(StammdatenScreensBean.class);
         final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final MandantengruppeDAO mandantengruppeDAO = baseDaoFactoryBean.getMandantengruppeDAO();
         final BerechtigungDAO berechtigungDAO = baseDaoFactoryBean.getBerechtigungDAO();
@@ -45,10 +52,9 @@ public class StammdatenWorkingArea extends HorizontalLayout {
         final List<BenutzerWebapplikation> benutzerWebapplikationen = benutzerWebapplikationDAO.loadAllEntities();
         final List<Berechtigung> berechtigungen = berechtigungDAO.loadAllEntities();
         final List<Benutzer> benutzer = benutzerDAO.loadAllEntities();
-
         final VerticalLayout benutzerTableLayout = new VerticalLayout();
         benutzerTableLayout.setSpacing(true);
-        addComponent(benutzerTableLayout);
+        contentLayout.addComponent(benutzerTableLayout);
 
         final ComboBox mandantenBox = new ComboBox("Mandanten", new BeanItemContainer<>(Mandantengruppe.class,
                 mandantengruppen));
@@ -62,7 +68,10 @@ public class StammdatenWorkingArea extends HorizontalLayout {
         benutzerEditor.setBenutzerGruppen(benutzerGruppen);
         benutzerEditor.setBenutzerWebapplikationen(benutzerWebapplikationen);
         benutzerEditor.setBerechtigungen(berechtigungen);
-        addComponent(benutzerEditor);
+        contentLayout.addComponent(benutzerEditor);
+
+        contentLayout.setExpandRatio(benutzerTableLayout, 3);
+        contentLayout.setExpandRatio(benutzerEditor, 1);
 
         final BeanItemContainer<Benutzer> benutzerDS = new BeanItemContainer<>(Benutzer.class, benutzer);
         final Table benutzerTable = new Table("Benutzer", benutzerDS);
@@ -140,6 +149,11 @@ public class StammdatenWorkingArea extends HorizontalLayout {
                 }
             }
         });
+        setComponents();
+    }
+
+    public void setComponents(){
+        addComponent(contentLayout);
     }
 
 /*    public Collection<Benutzer> createDemoData() {
@@ -173,4 +187,9 @@ public class StammdatenWorkingArea extends HorizontalLayout {
 
         return benutzer;
     }*/
+
+    @Override
+    protected void doInternationalization() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

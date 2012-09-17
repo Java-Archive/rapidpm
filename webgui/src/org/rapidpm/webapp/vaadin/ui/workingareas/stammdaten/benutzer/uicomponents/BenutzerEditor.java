@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer;
+package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.uicomponents;
 
 import com.vaadin.data.Validatable;
 import com.vaadin.data.Validator;
@@ -15,8 +15,8 @@ import org.rapidpm.persistence.system.security.BenutzerGruppe;
 import org.rapidpm.persistence.system.security.BenutzerWebapplikation;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
 import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenWorkingArea;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenWorkingAreaBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenScreensBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.BenutzerScreen;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -74,7 +74,7 @@ public class BenutzerEditor extends FormLayout {
         addComponent(emailTextField);
 
         lastLoginDateField = new DateField("Letzter Login");
-        lastLoginDateField.setDateFormat(StammdatenWorkingArea.DATE_FORMAT.toPattern());
+        lastLoginDateField.setDateFormat(BenutzerScreen.DATE_FORMAT.toPattern());
         addComponent(lastLoginDateField);
 
         mandantengruppenSelect = new ComboBox("Mandantengruppe");
@@ -146,7 +146,7 @@ public class BenutzerEditor extends FormLayout {
                     benutzerBean.getItemProperty("berechtigungen").setValue(berechtigungenList);
 
                     // in die DB speichern
-                    final StammdatenWorkingAreaBean bean = EJBFactory.getEjbInstance(StammdatenWorkingAreaBean.class);
+                    final StammdatenScreensBean bean = EJBFactory.getEjbInstance(StammdatenScreensBean.class);
                     final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
                     final Benutzer benutzer = benutzerBean.getBean();
                     baseDaoFactoryBean.saveOrUpdate(benutzer);

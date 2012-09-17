@@ -17,7 +17,7 @@ import javax.ejb.TransactionManagement;
 
 @Stateless(name = "LoginEJB")
 @TransactionManagement
-public class LoginBean {
+public class LoginBean{
 
     @EJB(beanName = "DaoFactoryEJB")
     private DaoFactoryBean baseDaoFactoryBean;

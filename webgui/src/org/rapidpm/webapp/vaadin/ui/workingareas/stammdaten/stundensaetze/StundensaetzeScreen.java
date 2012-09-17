@@ -28,7 +28,6 @@ import static org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze
 
 public class StundensaetzeScreen extends Screen {
 
-    private StundensaetzeScreenBean stundensaetzeScreenBean;
     private FormLayout betriebsFieldsLayout = new FormLayout();
     private TextField betriebsWertField;
     private TextField betriebsstdField;
@@ -50,7 +49,6 @@ public class StundensaetzeScreen extends Screen {
 
     public StundensaetzeScreen(final MainUI ui) {
         super(ui);
-        stundensaetzeScreenBean = EJBFactory.getEjbInstance(StundensaetzeScreenBean.class);
         saveButton.setVisible(false);
         betriebsstdField = new TextField();
         betriebsWertField = new TextField();
@@ -102,7 +100,7 @@ public class StundensaetzeScreen extends Screen {
     }
 
     public void generateTableAndCalculate() {
-        final DaoFactoryBean baseDaoFactoryBean = stundensaetzeScreenBean.getDaoFactoryBean();
+        final DaoFactoryBean baseDaoFactoryBean = stammdatenScreensBean.getDaoFactoryBean();
         final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
         final List<RessourceGroup> ressourceGroups = ressourceGroupDAO.loadAllEntities();
         final List<RessourceGroupBean> containerBeans = new ArrayList<>();
@@ -183,9 +181,5 @@ public class StundensaetzeScreen extends Screen {
 
     public void setFormLayout(VerticalLayout formLayout) {
         this.formLayout = formLayout;
-    }
-
-    public StundensaetzeScreenBean getStundensaetzeScreenBean() {
-        return stundensaetzeScreenBean;
     }
 }

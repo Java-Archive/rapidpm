@@ -1,18 +1,22 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell;
 
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.persistence.system.security.Benutzer;
+import org.rapidpm.webapp.vaadin.LoginBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitElement;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import static org.rapidpm.Constants.HOURS_DAY;
 import static org.rapidpm.Constants.MINS_HOUR;
@@ -34,36 +38,32 @@ public class ProjektBean {
     private int[] storyPoints = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     private final String[] issueStatuses = new String[]{"Open", "Closed", "InProgress", "OnHold", "Resolved"};
     private final String[] issuePriorities = new String[]{"Blocker", "Major", "Minor", "Trivial", "Critical"};
-    //REFAC entfernen
-    public static final String[] issueUsers = new String[]{"franzschumacher", "herbertknoll", "gustavheinrich", "brigitteknauf", "svenjarahmer"};
 
-//    private final IssueStatus openStatus = new IssueStatus();
-//    private final IssueStatus closedStatus = new IssueStatus();
-//    private final IssueStatus resolvedStatus = new IssueStatus();
-//    private final IssueStatus onHoldStatus = new IssueStatus();
-//    private final IssueStatus inProgressStatus = new IssueStatus();
-
-    public ProjektBean(OldRessourceGroupsBean oldRessourceGroupsBean) {
-        addData(oldRessourceGroupsBean);
+    public ProjektBean() {
+        LoginBean loginBean = EJBFactory.getEjbInstance(LoginBean.class);
+        final DaoFactoryBean baseDaoFactoryBean = loginBean.getDaoFactoryBean();
+        final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
+        final List<RessourceGroup> ressourceGroups = ressourceGroupDAO.loadAllEntities();
+        addData(ressourceGroups);
     }
 
     //REFAC auslagern so das der Code schnell entfernt werden kann
-    private void addData(OldRessourceGroupsBean oldRessourceGroupsBean) {
+    private void addData(List<RessourceGroup> ressourceGroups) {
         projekt = new Projekt();
         projekt.setProjektName("Projekt 1");
-        projekt.setOldRessourceGroups(oldRessourceGroupsBean.getOldRessourceGroups());
+        projekt.setRessourceGroups(ressourceGroups);
 
         final ArrayList<PlanningUnitGroup> planningUnitGroups = new ArrayList<>();
-        final PlanningUnitGroup vorbereitungen = new PlanningUnitGroup(oldRessourceGroupsBean.getOldRessourceGroups());
-        final PlanningUnitGroup projektworkshop = new PlanningUnitGroup(oldRessourceGroupsBean.getOldRessourceGroups());
-        final PlanningUnitGroup angebotserstellung = new PlanningUnitGroup(oldRessourceGroupsBean.getOldRessourceGroups());
-        final PlanningUnitGroup realisierungMandantengruppe = new PlanningUnitGroup(oldRessourceGroupsBean.getOldRessourceGroups());
-        final PlanningUnitGroup realisierungDatenKollektieren = new PlanningUnitGroup(oldRessourceGroupsBean.getOldRessourceGroups());
-        final PlanningUnitGroup vorbereitenDesReporting = new PlanningUnitGroup(oldRessourceGroupsBean.getOldRessourceGroups());
-        final PlanningUnitGroup projektmanagement = new PlanningUnitGroup(oldRessourceGroupsBean.getOldRessourceGroups());
-        final PlanningUnitGroup kommunikation = new PlanningUnitGroup(oldRessourceGroupsBean.getOldRessourceGroups());
-        final PlanningUnitGroup abschlussarbeiten = new PlanningUnitGroup(oldRessourceGroupsBean.getOldRessourceGroups());
-        final PlanningUnitGroup schulungen = new PlanningUnitGroup(oldRessourceGroupsBean.getOldRessourceGroups());
+        final PlanningUnitGroup vorbereitungen = new PlanningUnitGroup(ressourceGroups);
+        final PlanningUnitGroup projektworkshop = new PlanningUnitGroup(ressourceGroups);
+        final PlanningUnitGroup angebotserstellung = new PlanningUnitGroup(ressourceGroups);
+        final PlanningUnitGroup realisierungMandantengruppe = new PlanningUnitGroup(ressourceGroups);
+        final PlanningUnitGroup realisierungDatenKollektieren = new PlanningUnitGroup(ressourceGroups);
+        final PlanningUnitGroup vorbereitenDesReporting = new PlanningUnitGroup(ressourceGroups);
+        final PlanningUnitGroup projektmanagement = new PlanningUnitGroup(ressourceGroups);
+        final PlanningUnitGroup kommunikation = new PlanningUnitGroup(ressourceGroups);
+        final PlanningUnitGroup abschlussarbeiten = new PlanningUnitGroup(ressourceGroups);
+        final PlanningUnitGroup schulungen = new PlanningUnitGroup(ressourceGroups);
         vorbereitungen.setPlanningUnitGroupName("Vorbereitungen");
         vorbereitungen.setIssueBase(createIssueBase());
         projektworkshop.setPlanningUnitGroupName("projektworkshop");
@@ -108,13 +108,13 @@ public class ProjektBean {
             planningUnit.setPlanningUnitName(planningUnitName);
             planningUnit.setIssueBase(createIssueBase());
             final ArrayList<PlanningUnitElement> planningUnitElements = new ArrayList<>();
-            for (final OldRessourceGroup oldRessourceGroup : oldRessourceGroupsBean.getOldRessourceGroups())          //für jede zelle
+            for (final RessourceGroup oldRessourceGroup : ressourceGroups)          //für jede zelle
             {
                 final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
                 planningUnitElement.setPlannedDays((int) (Math.random() * MAXDAYS));
                 planningUnitElement.setPlannedHours((int) (Math.random() * HOURS_DAY));
                 planningUnitElement.setPlannedMinutes((int) (Math.random() * MINS_HOUR));
-                planningUnitElement.setOldRessourceGroup(oldRessourceGroup);
+                planningUnitElement.setRessourceGroup(oldRessourceGroup);
                 planningUnitElements.add(planningUnitElement);
             }
             planningUnit.setPlanningUnitElementList(planningUnitElements);
@@ -128,13 +128,13 @@ public class ProjektBean {
                 childPlanningUnit1.setPlanningUnitName("Person A kontaktieren");
                 childPlanningUnit1.setIssueBase(createIssueBase());
                 final ArrayList<PlanningUnitElement> planningUnitElements1 = new ArrayList<>();
-                for (final OldRessourceGroup oldRessourceGroup : oldRessourceGroupsBean.getOldRessourceGroups())          //für jede zelle
+                for (final RessourceGroup oldRessourceGroup : ressourceGroups)          //für jede zelle
                 {
                     PlanningUnitElement planningUnitElement = new PlanningUnitElement();
                     planningUnitElement.setPlannedDays((int) (Math.random() * MAXDAYS));
                     planningUnitElement.setPlannedHours((int) (Math.random() * HOURS_DAY));
                     planningUnitElement.setPlannedMinutes((int) (Math.random() * MINS_HOUR));
-                    planningUnitElement.setOldRessourceGroup(oldRessourceGroup);
+                    planningUnitElement.setRessourceGroup(oldRessourceGroup);
                     planningUnitElements1.add(planningUnitElement);
                 }
                 childPlanningUnit1.setPlanningUnitElementList(planningUnitElements1);
@@ -143,13 +143,13 @@ public class ProjektBean {
                 childPlanningUnit2.setPlanningUnitName("Person B kontaktieren");
                 childPlanningUnit2.setIssueBase(createIssueBase());
                 final ArrayList<PlanningUnitElement> planningUnitElements2 = new ArrayList<>();
-                for (final OldRessourceGroup oldRessourceGroup : oldRessourceGroupsBean.getOldRessourceGroups())          //für jede zelle
+                for (final RessourceGroup oldRessourceGroup : ressourceGroups)          //für jede zelle
                 {
                     PlanningUnitElement planningUnitElement = new PlanningUnitElement();
                     planningUnitElement.setPlannedDays((int) (Math.random() * MAXDAYS));
                     planningUnitElement.setPlannedHours((int) (Math.random() * HOURS_DAY));
                     planningUnitElement.setPlannedMinutes((int) (Math.random() * MINS_HOUR));
-                    planningUnitElement.setOldRessourceGroup(oldRessourceGroup);
+                    planningUnitElement.setRessourceGroup(oldRessourceGroup);
                     planningUnitElements2.add(planningUnitElement);
                 }
                 childPlanningUnit2.setPlanningUnitElementList(planningUnitElements2);
@@ -183,8 +183,6 @@ public class ProjektBean {
         }
         issueStatus.setStatusName(issueStatuses[(int) (Math.random() * (issueStatuses.length))]);
         issuePriority.setPriorityName(issuePriorities[(int) (Math.random() * (issuePriorities.length))]);
-        reporter.setLogin(issueUsers[(int) (Math.random() * (issueUsers.length))]);
-        assignee.setLogin(issueUsers[(int) (Math.random() * (issueUsers.length))]);
         issueBase.setText("Dies ist eine Issue-Beschreibung. Ein weiterer Satz der Beschreibung. " +
                 "Ein weiterer Satz der Beschreibung. Ein weiterer Satz der Beschreibung.");
         issueBase.setStoryPoints(storyPoints);

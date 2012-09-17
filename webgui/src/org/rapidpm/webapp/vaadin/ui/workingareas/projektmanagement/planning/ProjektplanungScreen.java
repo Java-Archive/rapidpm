@@ -4,19 +4,18 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.*;
-import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.webapp.vaadin.BaseUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
+import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
 
 import java.util.List;
-import java.util.ResourceBundle;
 
 /**
  * Created by IntelliJ IDEA.
@@ -24,12 +23,13 @@ import java.util.ResourceBundle;
  * Date: 05.04.12
  * Time: 09:43
  */
-public class ProjektplanungScreen extends HorizontalSplitPanel {
+public class ProjektplanungScreen extends Screen {
 
 
     private static final String NAME = "name";
     private static final String ICON = "icon";
 
+    private HorizontalSplitPanel splitPanel;
     private final VerticalLayout menuLayout;
     private Panel mainPanel;
     private Panel ressourcesPanel;
@@ -38,27 +38,18 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
     private final Panel detailPanel;
     private final ListSelect projektSelect;
     private final VerticalLayout mainLayout;
-    private final ProjektBean projektBean;
-    private final OldRessourceGroupsBean oldRessourceGroupsBean;
     private Tree treePanelTree;
-    private ResourceBundle messages;
-    private ProjektplanungScreenBean bean;
 
 
-    public ProjektplanungScreen(ResourceBundle bundle, final ProjektBean cont,
-                                final OldRessourceGroupsBean oldRessourceGroupsBean) {
-        this.messages = bundle;
-        this.projektBean = cont;
-        this.oldRessourceGroupsBean = oldRessourceGroupsBean;
+    public ProjektplanungScreen(BaseUI ui) {
+        super(ui);
 
-        bean = EJBFactory.getEjbInstance(ProjektplanungScreenBean.class);
-
-
-        final PlanningCalculator calculator = new PlanningCalculator(messages, this.projektBean,
-                this.oldRessourceGroupsBean);
+        final PlanningCalculator calculator = new PlanningCalculator(messagesBundle, this.projektBean,
+                this.projektmanagementScreensBean);
         calculator.calculate();
-        setSizeFull();
-        setSplitPosition(40, Unit.PERCENTAGE);
+        splitPanel = new HorizontalSplitPanel();
+        splitPanel.setSizeFull();
+        splitPanel.setSplitPosition(40, Unit.PERCENTAGE);
 
         planningUnitGroupPanel = new Panel();
         treePanel = new Panel();
@@ -79,8 +70,8 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         mainLayout.addComponent(ressourcesPanel);
         mainLayout.addComponent(mainPanel);
 
-        addComponent(menuLayout);
-        addComponent(mainLayout);
+        splitPanel.addComponent(menuLayout);
+        splitPanel.addComponent(mainLayout);
 
         final List<String> listenWerteArrayList = projektBean.getProjekt().getPlanningUnitGroupsNames();
         projektSelect = new ListSelect(null, listenWerteArrayList);
@@ -103,12 +94,14 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         final List<?> ids = (List<?>) projektSelect.getItemIds();
         projektSelect.setValue(ids.get(0));
         doInternationalization();
+        setComponents();
 
     }
 
-    private void doInternationalization() {
-        planningUnitGroupPanel.setCaption(messages.getString("project"));
-        detailPanel.setCaption(messages.getString("details"));
+    @Override
+    protected void doInternationalization() {
+        planningUnitGroupPanel.setCaption(messagesBundle.getString("project"));
+        detailPanel.setCaption(messagesBundle.getString("details"));
     }
 
     public void fillTreePanel(String planningGroupName) {
@@ -166,6 +159,10 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         }
     }
 
+    public void setComponents() {
+        addComponent(splitPanel);
+    }
+
     public ListSelect getProjektSelect() {
         return projektSelect;
     }
@@ -202,15 +199,5 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         return ressourcesPanel;
     }
 
-    public OldRessourceGroupsBean getOldRessourceGroupsBean() {
-        return oldRessourceGroupsBean;
-    }
 
-    public ResourceBundle getMessagesBundle() {
-        return messages;
-    }
-
-    public ProjektplanungScreenBean getBean() {
-        return bean;
-    }
 }
