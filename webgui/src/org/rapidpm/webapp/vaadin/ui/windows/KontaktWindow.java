@@ -10,7 +10,7 @@ package org.rapidpm.webapp.vaadin.ui.windows;
 import com.vaadin.data.Validatable;
 import com.vaadin.data.Validator;
 import com.vaadin.data.validator.EmailValidator;
-import com.vaadin.terminal.gwt.client.ui.label.ContentMode;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 
@@ -23,7 +23,7 @@ public class KontaktWindow extends Window {
 
     public KontaktWindow() {
         setCaption("Kontaktinfo");
-        final Label kontaktLabel = new Label(KONTAKT_HTML_SNIPPET, ContentMode.XHTML);
+        final Label kontaktLabel = new Label(KONTAKT_HTML_SNIPPET, ContentMode.HTML);
         kontaktLabel.setStyleName("kontakt");
         addComponent(kontaktLabel);
 
@@ -55,12 +55,12 @@ public class KontaktWindow extends Window {
                     // TODO Formular absenden
 //                    getApplication().getMainWindow().showNotification("Kontaktformular abgeschickt",
 //                            "Empfänger: " + emailTextField.getValue(), Notification.TYPE_HUMANIZED_MESSAGE);
-                    Notification.show("Kontaktformular abgeschickt Empfänger: " + emailTextField.getValue(), Notification.TYPE_HUMANIZED_MESSAGE);
+                    Notification.show("Kontaktformular abgeschickt Empfänger: " + emailTextField.getValue());
                     close();
                 } catch (Validator.InvalidValueException e) {
 //                    getApplication().getMainWindow().showNotification("Fehler",
 //                            "Bitte überprüfen Sie Ihre Eingaben", Notification.TYPE_ERROR_MESSAGE);
-                    Notification.show("Bitte überprüfen Sie Ihre Eingaben", Notification.TYPE_ERROR_MESSAGE);
+                    Notification.show("Bitte überprüfen Sie Ihre Eingaben");
                 }
             }
         }));

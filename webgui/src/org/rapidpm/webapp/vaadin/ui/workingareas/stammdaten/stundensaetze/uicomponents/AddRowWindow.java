@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
-import org.rapidpm.webapp.vaadin.MainRoot;
+import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
 
 import java.util.Iterator;
@@ -22,7 +22,7 @@ public class AddRowWindow extends Window {
 
     private static final Logger logger = Logger.getLogger(AddRowWindow.class);
 
-    private MainRoot root;
+    private MainUI ui;
 
     private FormLayout formLayout = new FormLayout();
     private HorizontalLayout horizontalButtonLayout = new HorizontalLayout();
@@ -31,8 +31,8 @@ public class AddRowWindow extends Window {
     private RowFieldGroup fieldGroup;
     private ResourceBundle messages;
 
-    public AddRowWindow(final MainRoot root, final StundensaetzeScreen screen) {
-        this.root = root;
+    public AddRowWindow(final MainUI ui, final StundensaetzeScreen screen) {
+        this.ui = ui;
         messages = screen.getMessagesBundle();
         setHeight(HEIGHT);
         setWidth(WIDTH);
@@ -50,7 +50,7 @@ public class AddRowWindow extends Window {
 
         addComponent(horizontalButtonLayout);
 
-        addListeners(row, root, screen);
+        addListeners(row, ui, screen);
         doInternationalization();
 
     }
@@ -77,9 +77,9 @@ public class AddRowWindow extends Window {
         cancelButton.setCaption(messages.getString("cancel"));
     }
 
-    private void addListeners(final RessourceGroup ressourceGroup, final MainRoot root, final StundensaetzeScreen screen) {
+    private void addListeners(final RessourceGroup ressourceGroup, final MainUI ui, final StundensaetzeScreen screen) {
         final RessourceGroup row = ressourceGroup;
-        saveButton.addListener(new ClickListener() {
+        saveButton.addClickListener(new ClickListener() {
 
             @Override
             public void buttonClick(ClickEvent event) {
@@ -116,7 +116,7 @@ public class AddRowWindow extends Window {
 
         });
 
-        cancelButton.addListener(new ClickListener() {
+        cancelButton.addClickListener(new ClickListener() {
 
             @Override
             public void buttonClick(ClickEvent event) {
@@ -127,6 +127,6 @@ public class AddRowWindow extends Window {
     }
 
     public void show() {
-        root.addWindow(this);
+        ui.addWindow(this);
     }
 }

@@ -41,7 +41,7 @@ public class TableItemClickListener implements ItemClickListener {
         final FieldGroup fieldGroup = new FieldGroup(event.getItem());
         for (final Object listener : screen.getSaveButton().getListeners(Event.class)) {
             if (listener instanceof ClickListener) {
-                screen.getSaveButton().removeListener((ClickListener) listener);
+                screen.getSaveButton().removeClickListener((ClickListener) listener);
             }
 
         }
@@ -90,7 +90,8 @@ public class TableItemClickListener implements ItemClickListener {
             }
         }
 
-        screen.getSaveButton().addListener(new SaveButtonClickListener(messages, fieldGroup, screen, knotenBlattEnum,
+        screen.getSaveButton().addClickListener(new SaveButtonClickListener(messages, fieldGroup, screen,
+                knotenBlattEnum,
                 itemId));
         screen.getFormLayout().setVisible(true);
     }

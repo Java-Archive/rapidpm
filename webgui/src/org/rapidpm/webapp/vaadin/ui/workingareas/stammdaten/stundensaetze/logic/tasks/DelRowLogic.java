@@ -23,7 +23,7 @@ public class DelRowLogic {
         final DaoFactoryBean baseDaoFactoryBean = ressourceGroupsBean.getDaoFactoryBean();
         final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
         final RessourceGroup ressourceGroupFromNestedBean = ressourceGroupBeanFromTable.getRessourceGroup();
-        //ressourceGroupDAO.remove(ressourceGroupFromNestedBean);
+        //ressourceGroupDAO.remove(ressourceGroupFromNestedBean); TODO RPM-41
         screen.getFormLayout().setVisible(false);
         screen.generateTableAndCalculate();
     }

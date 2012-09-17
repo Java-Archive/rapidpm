@@ -6,6 +6,7 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
+import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
@@ -49,11 +50,12 @@ public class StammdatenWorkingArea extends HorizontalLayout {
         benutzerTableLayout.setSpacing(true);
         addComponent(benutzerTableLayout);
 
-        final Select mandantenSelect = new Select("Mandanten", new BeanItemContainer<>(Mandantengruppe.class, mandantengruppen));
-        mandantenSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
-        mandantenSelect.setItemCaptionPropertyId("mandantengruppe");
-        mandantenSelect.setFilteringMode(Select.FILTERINGMODE_CONTAINS);
-        mandantenSelect.setImmediate(true);
+        final ComboBox mandantenBox = new ComboBox("Mandanten", new BeanItemContainer<>(Mandantengruppe.class,
+                mandantengruppen));
+        mandantenBox.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
+        mandantenBox.setItemCaptionPropertyId("mandantengruppe");
+        mandantenBox.setFilteringMode(FilteringMode.CONTAINS);
+        mandantenBox.setImmediate(true);
 
         final BenutzerEditor benutzerEditor = new BenutzerEditor();
         benutzerEditor.setMandantengruppen(mandantengruppen);
@@ -77,7 +79,7 @@ public class StammdatenWorkingArea extends HorizontalLayout {
                 return new Label(lastLogin != null ? DATE_FORMAT.format(lastLogin) : "-");
             }
         });
-        benutzerTableLayout.addComponent(mandantenSelect);
+        benutzerTableLayout.addComponent(mandantenBox);
         benutzerTableLayout.addComponent(benutzerTable);
 
         final Button removeBenutzerButton = new Button("Benutzer lÃ¶schen", new Button.ClickListener() {
@@ -90,7 +92,7 @@ public class StammdatenWorkingArea extends HorizontalLayout {
         });
         removeBenutzerButton.setEnabled(false);
 
-        benutzerTable.addListener(new ItemClickEvent.ItemClickListener() {
+        benutzerTable.addItemClickListener(new ItemClickEvent.ItemClickListener() {
             @Override
             public void itemClick(final ItemClickEvent itemClickEvent) {
                 final BeanItem<Benutzer> item = (BeanItem<Benutzer>) itemClickEvent.getItem();
@@ -117,7 +119,7 @@ public class StammdatenWorkingArea extends HorizontalLayout {
 
         benutzerButtonsLayout.addComponent(removeBenutzerButton);
 
-        mandantenSelect.addListener(new Property.ValueChangeListener() {
+        mandantenBox.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(final Property.ValueChangeEvent valueChangeEvent) {
                 final Mandantengruppe mandantengruppeFilter = (Mandantengruppe) valueChangeEvent.getProperty().getValue();
