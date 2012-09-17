@@ -29,7 +29,7 @@ public class UndoButton extends Button implements Button.ClickListener {
         this.dataSource = dataSource;
         this.projektBean = projektBean;
         this.oldRessourceGroupsBean = oldRessourceGroupsBean;
-        this.addListener(this);
+        this.addClickListener(this);
         this.setCaption("remove sortorder");
         this.setStyleName("link");
     }
@@ -41,7 +41,7 @@ public class UndoButton extends Button implements Button.ClickListener {
                 treeTable
                 ,dataSource);
         treeTableFiller.fill();
-        treeTable.requestRepaint();
+        treeTable.markAsDirty();
 
         this.setVisible(false);
     }

@@ -6,6 +6,7 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.IntegerRangeValidator;
+import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
@@ -41,9 +42,9 @@ public class BenutzerEditor extends FormLayout {
     private final PasswordField passwdTextField;
     private final TextField emailTextField;
     private final DateField lastLoginDateField;
-    private final Select mandantengruppenSelect;
-    private final Select benutzerGruppenSelect;
-    private final Select benutzerWebapplikationenSelect;
+    private final ComboBox mandantengruppenSelect;
+    private final ComboBox benutzerGruppenSelect;
+    private final ComboBox benutzerWebapplikationenSelect;
     private final ListSelect berechtigungenSelect;
 
     public BenutzerEditor() {
@@ -76,29 +77,29 @@ public class BenutzerEditor extends FormLayout {
         lastLoginDateField.setDateFormat(StammdatenWorkingArea.DATE_FORMAT.toPattern());
         addComponent(lastLoginDateField);
 
-        mandantengruppenSelect = new Select("Mandantengruppe");
+        mandantengruppenSelect = new ComboBox("Mandantengruppe");
 //        mandantengruppenSelect.setItemCaptionMode(Select.ITEM_CAPTION_MODE_PROPERTY);
         mandantengruppenSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.ID);
         mandantengruppenSelect.setItemCaptionPropertyId("mandantengruppe");
         mandantengruppenSelect.setNullSelectionAllowed(false);
         mandantengruppenSelect.setRequired(true);
-        mandantengruppenSelect.setFilteringMode(Select.FILTERINGMODE_CONTAINS);
+        mandantengruppenSelect.setFilteringMode(FilteringMode.CONTAINS);
         addComponent(mandantengruppenSelect);
 
-        benutzerGruppenSelect = new Select("Benutzergruppe");
+        benutzerGruppenSelect = new ComboBox("Benutzergruppe");
         benutzerGruppenSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.ID);
         benutzerGruppenSelect.setItemCaptionPropertyId("gruppenname");
         benutzerGruppenSelect.setNullSelectionAllowed(false);
         benutzerGruppenSelect.setRequired(true);
-        benutzerGruppenSelect.setFilteringMode(Select.FILTERINGMODE_CONTAINS);
+        benutzerGruppenSelect.setFilteringMode(FilteringMode.CONTAINS);
         addComponent(benutzerGruppenSelect);
 
-        benutzerWebapplikationenSelect = new Select("Webapplikation");
+        benutzerWebapplikationenSelect = new ComboBox("Webapplikation");
         benutzerWebapplikationenSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.ID);
         benutzerWebapplikationenSelect.setItemCaptionPropertyId("webappName");
         benutzerWebapplikationenSelect.setNullSelectionAllowed(false);
         benutzerWebapplikationenSelect.setRequired(true);
-        benutzerWebapplikationenSelect.setFilteringMode(Select.FILTERINGMODE_CONTAINS);
+        benutzerWebapplikationenSelect.setFilteringMode(FilteringMode.CONTAINS);
         addComponent(benutzerWebapplikationenSelect);
 
         berechtigungenSelect = new ListSelect("Berechtigungen");
@@ -150,7 +151,7 @@ public class BenutzerEditor extends FormLayout {
                     final Benutzer benutzer = benutzerBean.getBean();
                     baseDaoFactoryBean.saveOrUpdate(benutzer);
                 } else {
-                    Notification.show("Eingaben unvollstÃ¤ndig oder ungÃ¼ltig", Notification.TYPE_TRAY_NOTIFICATION);
+                    Notification.show("Eingaben unvollständig oder ungültig");
 //                    getRoot().showNotification();
                     // ein oder mehrere Eingaben sind ungÃ¼ltig
 //                    getApplication().getMainWindow().showNotification("Eingaben unvollstÃ¤ndig oder ungÃ¼ltig", Window.Notification.TYPE_TRAY_NOTIFICATION);

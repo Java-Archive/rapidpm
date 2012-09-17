@@ -1,7 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas;
 
-import com.vaadin.terminal.Resource;
-import com.vaadin.terminal.ThemeResource;
+import com.vaadin.server.Resource;
+import com.vaadin.server.ThemeResource;
 
 /**
  * RapidPM - www.rapidpm.org

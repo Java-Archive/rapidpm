@@ -24,7 +24,7 @@ public class ExpandTableCheckBox extends CheckBox implements Property.ValueChang
         this.treeTable = treeTable;
         this.dataSource = dataSource;
         this.setCaption(CAPTION);
-        addListener((ValueChangeListener)this);
+        addValueChangeListener(this);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ExpandTableCheckBox extends CheckBox implements Property.ValueChang
                 treeTable.setCollapsed(itemId, true);
             }
         }
-        treeTable.requestRepaint();
+        treeTable.markAsDirty();
     }
 
 

@@ -28,7 +28,7 @@ public abstract class MyFormLayout extends VerticalLayout {
         messages = screen.getMessagesBundle();
         saveButton.setCaption(messages.getString("save"));
         cancelButton.setCaption(messages.getString("cancel"));
-        screenPanel.addListener(new MouseEvents.ClickListener() {
+        screenPanel.addClickListener(new MouseEvents.ClickListener() {
             @Override
             public void click(MouseEvents.ClickEvent event) {
                 final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();

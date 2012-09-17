@@ -2,7 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit;
 
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
-import org.rapidpm.webapp.vaadin.MainRoot;
+import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TreeTableHeaderClickListener;
@@ -48,8 +48,8 @@ public class AufwandProjInitScreen extends Screen {
     private GridLayout upperFormLayout = new GridLayout(2, 10);
     private VerticalLayout lowerFormLayout = new VerticalLayout();
 
-    public AufwandProjInitScreen(MainRoot root) {
-        super(root);
+    public AufwandProjInitScreen(MainUI ui) {
+        super(ui);
 
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
@@ -72,14 +72,14 @@ public class AufwandProjInitScreen extends Screen {
         uebersichtTable.setConnectedTable(treeTable);
         uebersichtTable.setSizeFull();
         treeTable.setConnectedTable(uebersichtTable);
-        treeTable.addListener(new TreeTableHeaderClickListener(undoButton));
+        treeTable.addHeaderClickListener(new TreeTableHeaderClickListener(undoButton));
         treeTable.setSizeFull();
 
-        table1layout.setMargin(true, false, true, false);
+        table1layout.setMargin(true);
         table1layout.addComponent(uebersichtTable);
         table1layout.setSizeFull();
 
-        table2layout.setMargin(true, false, true, false);
+        table2layout.setMargin(true);
         table2layout.addComponent(expandCheckBox);
         table2layout.addComponent(undoButton);
         table2layout.addComponent(treeTable);
@@ -138,15 +138,15 @@ public class AufwandProjInitScreen extends Screen {
         layoutLinks.addComponent(kundeField);
         layoutLinks.addComponent(projektField);
         layoutLinks.addComponent(datumField);
-        layoutLinks.setMargin(false,true,false,false);
+        layoutLinks.setMargin(true);
 
         layoutRechts.addComponent(manntageField);
         layoutRechts.addComponent(summeField);
-        layoutRechts.setMargin(false,false,false,true);
+        layoutRechts.setMargin(true);
 
         felderLayout.addComponent(layoutLinks);
         felderLayout.addComponent(layoutRechts);
-        felderLayout.setMargin(true, false, true, false);
+        felderLayout.setMargin(true);
 
     }
 
@@ -158,7 +158,7 @@ public class AufwandProjInitScreen extends Screen {
         unterschriftLayout.addComponent(projektLeiterField);
         unterschriftLayout.addComponent(unterschriftField);
 
-        unterschriftLayout.setMargin(true, false, true, false);
+        unterschriftLayout.setMargin(true);
     }
 
     public void setComponents() {

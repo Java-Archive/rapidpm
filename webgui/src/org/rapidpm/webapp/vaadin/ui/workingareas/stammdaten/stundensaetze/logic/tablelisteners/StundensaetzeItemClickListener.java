@@ -64,13 +64,13 @@ public class StundensaetzeItemClickListener implements ItemClickListener {
             upperFormLayout.removeAllComponents();
             for (final Object listener : saveButton.getListeners(Event.class)) {
                 if (listener instanceof ClickListener) {
-                    saveButton.removeListener((ClickListener) listener);
+                    saveButton.removeClickListener((ClickListener) listener);
                 }
             }
             deleteButton.setEnabled(true);
             tabelle.setTableFieldFactory(fieldFactory);
             tabelle.setEditable(true);
-            saveButton.addListener(new ClickListener() {
+            saveButton.addClickListener(new ClickListener() {
 
                 @Override
                 public void buttonClick(ClickEvent event) {

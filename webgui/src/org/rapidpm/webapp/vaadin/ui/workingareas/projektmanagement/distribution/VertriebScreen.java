@@ -1,7 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.distribution;
 
 import com.vaadin.ui.*;
-import org.rapidpm.webapp.vaadin.MainRoot;
+import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 
 public class VertriebScreen extends Screen {
@@ -18,8 +18,8 @@ public class VertriebScreen extends Screen {
     private VerticalLayout tableLayout = new VerticalLayout();
     private FormLayout bottomLayout;
 
-    public VertriebScreen(MainRoot root) {
-        super(root);
+    public VertriebScreen(MainUI ui) {
+        super(ui);
         erstelleVertrieblerLayout();
         erstelleStandardTableLayout(new Label("Uebersicht"), vertriebsTable, tableLayout);
         erstelleBottomLayout();
@@ -48,7 +48,7 @@ public class VertriebScreen extends Screen {
         bemerkungenArea.setWidth("500px");
         bemerkungenArea.setHeight("300px");
 
-        bottomLayout.setMargin(true, false, true, false);
+        bottomLayout.setMargin(true);
         bottomLayout.addComponent(summeMitAufschlagField);
         bottomLayout.addComponent(summeOhneAufschlagField);
         bottomLayout.addComponent(verhandelterPreisField);
@@ -60,7 +60,6 @@ public class VertriebScreen extends Screen {
         tabelle = new Table();
         layout.addComponent(ueberschrift);
         layout.addComponent(tabelle);
-        layout.setMargin(true, false, true, false);
     }
 
     private void erstelleVertrieblerLayout() {
@@ -69,7 +68,7 @@ public class VertriebScreen extends Screen {
         datumField = new TextField();
         vertrieblerLayout.addComponent(vertrieblerField);
         vertrieblerLayout.addComponent(datumField);
-        vertrieblerLayout.setMargin(true, false, true, false);
+        vertrieblerLayout.setMargin(true);
     }
 
     private void setComponents() {

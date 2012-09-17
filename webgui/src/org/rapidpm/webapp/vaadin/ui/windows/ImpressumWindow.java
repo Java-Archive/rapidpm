@@ -7,7 +7,7 @@ package org.rapidpm.webapp.vaadin.ui.windows;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
-import com.vaadin.terminal.gwt.client.ui.label.ContentMode;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Window;
 import org.apache.log4j.Logger;
@@ -19,7 +19,7 @@ public class ImpressumWindow extends Window {
 
     public ImpressumWindow() {
         setCaption("Impressum");
-        addComponent(new Label(IMPRESSUM_HTML_SNIPPET, ContentMode.XHTML));
+        addComponent(new Label(IMPRESSUM_HTML_SNIPPET, ContentMode.HTML));
     }
 
 

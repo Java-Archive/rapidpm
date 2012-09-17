@@ -33,7 +33,7 @@ public class UndoButton extends Button implements Button.ClickListener {
         this.dataSource = dataSource;
         this.projektBean = projektBean;
         this.oldRessourceGroupsBean = oldRessourceGroupsBean;
-        this.addListener(this);
+        this.addClickListener(this);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class UndoButton extends Button implements Button.ClickListener {
         final TreeTableFiller treeTableFiller = new TreeTableFiller(messages,projektBean, oldRessourceGroupsBean,
             treeTable, dataSource);
         treeTableFiller.fill();
-        treeTable.requestRepaint();
+        treeTable.markAsDirty();
 
         this.setVisible(false);
     }

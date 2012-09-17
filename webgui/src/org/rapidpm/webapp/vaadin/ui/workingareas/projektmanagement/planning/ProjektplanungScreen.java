@@ -2,14 +2,10 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
-import com.vaadin.terminal.Resource;
+import com.vaadin.server.Resource;
 import com.vaadin.ui.*;
 import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.persistence.system.security.Benutzer;
-import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
@@ -18,9 +14,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logi
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.OldRessourceGroupsBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupBean;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -95,7 +89,7 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
         projektSelect.setNullSelectionAllowed(false);
         projektSelect.setImmediate(true);
         planningUnitGroupPanel.getContent().addComponent(projektSelect);
-        projektSelect.addListener(new Property.ValueChangeListener() {
+        projektSelect.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(final Property.ValueChangeEvent valueChangeEvent) {
                 final String value = (String) valueChangeEvent.getProperty().getValue();
@@ -151,7 +145,7 @@ public class ProjektplanungScreen extends HorizontalSplitPanel {
 
             buildTree(planningUnitGroup.getPlanningUnitList(), itemId);
             treePanelTree.expandItemsRecursively(itemId);
-            treePanelTree.addListener(new TreeValueChangeListener(this, projekt));
+            treePanelTree.addValueChangeListener(new TreeValueChangeListener(this, projekt));
             treePanel.addComponent(treePanelTree);
         } //else if (planningGroupName.equals("Technische Planung")) {
         //  showTechnischePlanung();
