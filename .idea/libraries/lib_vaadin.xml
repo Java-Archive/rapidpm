@@ -2,9 +2,11 @@
   <library name="lib-vaadin">
     <CLASSES>
       <root url="file://$PROJECT_DIR$/lib/lib-vaadin" />
+      <root url="file://$PROJECT_DIR$/lib/lib-vaadin" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
+      <root url="file://$PROJECT_DIR$/lib/lib-vaadin" />
       <root url="file://$PROJECT_DIR$/lib/lib-vaadin" />
     </SOURCES>
     <jarDirectory url="file://$PROJECT_DIR$/lib/lib-vaadin" recursive="false" />

@@ -40,7 +40,7 @@
     <option name="hexDump" />
   </component>
   <component name="ProjectKey">
-    <option name="state" value=":ssh:sven.ruppert@dev.neoscio.de:/usr/local/cvsroot|NeoScio_Base/.idea" />
+    <option name="state" value="https://svenruppert@bitbucket.org/rapidpm/rapidpm.git" />
   </component>
   <component name="ProjectResources">
     <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
