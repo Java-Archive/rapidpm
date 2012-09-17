@@ -59,7 +59,6 @@ public class StundensaetzeScreen extends Screen {
 
         betriebsFieldsLayout.addComponent(betriebsstdField);
         betriebsFieldsLayout.addComponent(betriebsWertField);
-        betriebsFieldsLayout.setMargin(true);
 
 
         dependentComponents.add(delRowButton);
@@ -70,8 +69,6 @@ public class StundensaetzeScreen extends Screen {
         tabellenLayout.setSizeFull();
         tabellenLayout.addComponent(tabelle);
         tabellenLayout.setSpacing(true);
-        tabellenLayout.setMargin(true);
-        tabellenLayout.setMargin(true);
 
         optionGroup = new EditOptionButtonGroup(messagesBundle);
         optionGroup.addValueChangeListener(new EditGroupValueChangeListener(this, messagesBundle, formLayout,

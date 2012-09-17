@@ -48,7 +48,6 @@ public class VertriebScreen extends Screen {
         bemerkungenArea.setWidth("500px");
         bemerkungenArea.setHeight("300px");
 
-        bottomLayout.setMargin(true);
         bottomLayout.addComponent(summeMitAufschlagField);
         bottomLayout.addComponent(summeOhneAufschlagField);
         bottomLayout.addComponent(verhandelterPreisField);
@@ -68,7 +67,6 @@ public class VertriebScreen extends Screen {
         datumField = new TextField();
         vertrieblerLayout.addComponent(vertrieblerField);
         vertrieblerLayout.addComponent(datumField);
-        vertrieblerLayout.setMargin(true);
     }
 
     private void setComponents() {

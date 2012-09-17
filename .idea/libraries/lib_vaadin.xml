@@ -1,15 +1,13 @@
 <component name="libraryTable">
   <library name="lib-vaadin">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/lib/lib" />
-      <root url="file://$PROJECT_DIR$/lib/lib" />
+      <root url="file://$PROJECT_DIR$/lib/lib-vaadin" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="file://$PROJECT_DIR$/lib/lib" />
-      <root url="file://$PROJECT_DIR$/lib/lib" />
+      <root url="file://$PROJECT_DIR$/lib/lib-vaadin" />
     </SOURCES>
-    <jarDirectory url="file://$PROJECT_DIR$/lib/lib" recursive="false" />
-    <jarDirectory url="file://$PROJECT_DIR$/lib/lib" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://$PROJECT_DIR$/lib/lib-vaadin" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/lib/lib-vaadin" recursive="false" type="SOURCES" />
   </library>
 </component>

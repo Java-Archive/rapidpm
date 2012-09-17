@@ -75,15 +75,15 @@ public class AufwandProjInitScreen extends Screen {
         treeTable.addHeaderClickListener(new TreeTableHeaderClickListener(undoButton));
         treeTable.setSizeFull();
 
-        table1layout.setMargin(true);
         table1layout.addComponent(uebersichtTable);
         table1layout.setSizeFull();
+        table1layout.setMargin(true);
 
-        table2layout.setMargin(true);
         table2layout.addComponent(expandCheckBox);
         table2layout.addComponent(undoButton);
         table2layout.addComponent(treeTable);
         table2layout.setSizeFull();
+        table2layout.setMargin(true);
 
 
         lowerFormLayout.addComponent(saveButton);
@@ -138,15 +138,12 @@ public class AufwandProjInitScreen extends Screen {
         layoutLinks.addComponent(kundeField);
         layoutLinks.addComponent(projektField);
         layoutLinks.addComponent(datumField);
-        layoutLinks.setMargin(true);
 
         layoutRechts.addComponent(manntageField);
         layoutRechts.addComponent(summeField);
-        layoutRechts.setMargin(true);
 
         felderLayout.addComponent(layoutLinks);
         felderLayout.addComponent(layoutRechts);
-        felderLayout.setMargin(true);
 
     }
 
@@ -157,8 +154,6 @@ public class AufwandProjInitScreen extends Screen {
 
         unterschriftLayout.addComponent(projektLeiterField);
         unterschriftLayout.addComponent(unterschriftField);
-
-        unterschriftLayout.setMargin(true);
     }
 
     public void setComponents() {

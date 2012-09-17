@@ -106,7 +106,6 @@ public class CostsScreen extends Screen {
         felderLayout.addComponent(manntageField);
         felderLayout.addComponent(summeInMinField);
         felderLayout.addComponent(kostenField);
-        felderLayout.setMargin(true);
     }
 
     private void erstelleUnterschriftLayout() {
@@ -117,7 +116,6 @@ public class CostsScreen extends Screen {
         unterschriftLayout.setWidth("560px");
         unterschriftLayout.addComponent(vertrieblerField);
         unterschriftLayout.addComponent(datumField);
-        unterschriftLayout.setMargin(true);
 
 
     }
