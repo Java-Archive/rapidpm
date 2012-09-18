@@ -124,7 +124,20 @@
       <patternset refid="library.patterns"/>
     </fileset>
   </path>
-  
+
+  <!--<path id="library.lib-jason.classpath">-->
+    <!--<fileset dir="${basedir}/lib/lib-jason">-->
+      <!--<patternset refid="library.patterns"/>-->
+    <!--</fileset>-->
+  <!--</path>-->
+  <path id="library.lib-vaadin.classpath">
+    <fileset dir="${basedir}/lib/lib-vaadin">
+      <patternset refid="library.patterns"/>
+    </fileset>
+  </path>
+
+
+
   <path id="library.module-base.classpath">
     <fileset dir="${basedir}/lib/module/org/rapidpm/base/main">
       <patternset refid="library.patterns"/>
@@ -167,7 +180,11 @@
   </path>
   
   <path id="library.module-vaadin.classpath">
-    <pathelement location="${basedir}/lib/module/org/rapidpm/vaadin/main/vaadin-7.0.0.alpha3.jar"/>
+    <pathelement location="${basedir}/lib/module/org/rapidpm/vaadin/main/vaadin-client-compiled-7.0.0.beta1.jar"/>
+    <pathelement location="${basedir}/lib/module/org/rapidpm/vaadin/main/vaadin-server-7.0.0.beta1.jar"/>
+    <pathelement location="${basedir}/lib/module/org/rapidpm/vaadin/main/vaadin-shared-7.0.0.beta1.jar"/>
+    <pathelement location="${basedir}/lib/module/org/rapidpm/vaadin/main/vaadin-theme-compiler-7.0.0.beta1.jar"/>
+    <pathelement location="${basedir}/lib/module/org/rapidpm/vaadin/main/vaadin-themes-7.0.0.beta1.jar"/>
   </path>
   
   <path id="library.module-xmlrpc.classpath">
@@ -511,6 +528,7 @@
     <path refid="library.lib-database-postgresql.classpath"/>
     <path refid="library.lib-hibernate.classpath"/>
     <path refid="library.lib-jee6.classpath"/>
+    <!--<path refid="library.lib-jason.classpath"/>-->
     <path refid="library.module-base.classpath"/>
     <path refid="library.module-commons.classpath"/>
     <path refid="library.module-guava.classpath"/>
@@ -520,6 +538,7 @@
     <path refid="library.module-poi.classpath"/>
     <path refid="library.module-xmlrpc.classpath"/>
     <path refid="library.module-vaadin.classpath"/>
+    <path refid="library.lib-vaadin.classpath"/>
   </path>
   
   <path id="webgui.runtime.production.module.classpath">

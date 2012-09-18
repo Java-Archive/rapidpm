@@ -9,6 +9,7 @@ package org.rapidpm.webapp.vaadin;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.server.WrappedRequest;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.BaseTheme;
@@ -33,11 +34,11 @@ public abstract class BaseUI extends UI {
     private static final Logger logger = Logger.getLogger(BaseUI.class);
 
     private static final boolean DEBUG_MODE = false;
-    private static final int DEFAULT_WINDOW_WIDTH = 1024;
-    private static final String LEFT_STRIPE_WITH = "20px";
-    private static final String RIGHT_STRIPE_WITH = "20px";
+//    private static final int DEFAULT_WINDOW_WIDTH = 1024;
+//    private static final String LEFT_STRIPE_WITH = "20px";
+//    private static final String RIGHT_STRIPE_WITH = "20px";
 
-    private int windowWidth = DEFAULT_WINDOW_WIDTH;
+//    private int windowWidth = DEFAULT_WINDOW_WIDTH;
 //    private final List<WindowSizeChangeListener> windowSizeChangeListeners = new ArrayList<>();
 
     //globale referenzen -> in eine reg oder so..
@@ -54,20 +55,21 @@ public abstract class BaseUI extends UI {
 
 
     @Override
-    public void init(WrappedRequest request) {
+    public void init(final WrappedRequest request) {
         //setWindowWidth(request.getBrowserDetails().getWebBrowser().getScreenWidth());
         this.setSizeFull();
-        if (getSession().getAttribute(Benutzer.class) == null) {
+        final VaadinSession session = getSession();
+        if (session.getAttribute(Benutzer.class) == null) {
             if (DEBUG_MODE) {
                 buildMainLayout();
             } else {
 //            removeAllComponents();
-                VerticalLayout layout = new VerticalLayout();
+//                final VerticalLayout layout = new VerticalLayout();
                 final LoginWindow window = new LoginWindow(this);
                 addWindow(window);
             }
         } else {
-            currentUser = (Benutzer) getSession().getAttribute(Benutzer.class);
+            currentUser = session.getAttribute(Benutzer.class);
             try {
                 authentication(currentUser.getLogin(), currentUser.getPasswd());
             } catch (Exception e) {
@@ -98,11 +100,11 @@ public abstract class BaseUI extends UI {
         throw new Exception("Login failed..");
     }
 
-    private String hash(String enteredPasswd) {
+    private String hash(final String enteredPasswd) {
         return enteredPasswd;        //TODO spÃ¤ter gehashtes PW zurÃ¼ckgeben
     }
 
-    public void localization(Object value) {
+    public void localization(final Object value) {
         switch (value.toString()) {
             case "GERMAN":
                 locale = new Locale("de", "DE");
@@ -191,12 +193,12 @@ public abstract class BaseUI extends UI {
         setHeaderLine(headerLine);
 
         //Header
-        Embedded emLeft = new Embedded("", new ThemeResource(IMAGE_LOGO));
+        final Embedded emLeft = new Embedded("", new ThemeResource(IMAGE_LOGO));
         hlHeader.addComponent(emLeft);
         hlHeader.setComponentAlignment(emLeft, Alignment.TOP_LEFT);
 
         //InfoPanel - MessagePanel
-        Embedded emRight = new Embedded("", new ThemeResource(IMAGE_LOGO));
+        final Embedded emRight = new Embedded("", new ThemeResource(IMAGE_LOGO));
         hlHeader.addComponent(emRight);
         hlHeader.setComponentAlignment(emRight, Alignment.TOP_RIGHT);
 
