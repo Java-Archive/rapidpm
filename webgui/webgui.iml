@@ -17,6 +17,11 @@
         <configuration vaadinUsedWebRootPathUrl="file://$MODULE_DIR$/web" vaadinGWTLocationPath="/prog/gwt-2.5.0.rc1" vaadinVMOptions="-Xss8M -Xmx512M -XX:MaxPermSize=512M" vaadinJavaScriptStyle="Pretty" vaadinCompilerThreads="4" />
       </facet>
     </facet>
+    <facet type="JRebel" name="JRebel">
+      <configuration>
+        <option name="generateRebel" value="false" />
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />

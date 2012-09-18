@@ -8,6 +8,7 @@
           <element id="jpa-descriptors" facet="base/jpa/JPA" />
           <element id="module-output" name="ejb" />
           <element id="module-output" name="webgui" />
+          <element id="file-copy" path="$PROJECT_DIR$/webgui/data/rebel.xml" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="lib-vaadin" />
