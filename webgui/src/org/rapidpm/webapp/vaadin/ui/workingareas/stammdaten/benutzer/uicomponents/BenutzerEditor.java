@@ -5,19 +5,21 @@ import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.validator.EmailValidator;
-import com.vaadin.data.validator.IntegerRangeValidator;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
+import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
-import org.rapidpm.persistence.system.security.Benutzer;
-import org.rapidpm.persistence.system.security.BenutzerGruppe;
-import org.rapidpm.persistence.system.security.BenutzerWebapplikation;
-import org.rapidpm.persistence.system.security.Mandantengruppe;
+import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.BenutzerScreen;
 
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.transaction.UserTransaction;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -32,11 +34,24 @@ public class BenutzerEditor extends FormLayout {
 
     private BeanItem<Benutzer> benutzerBean;
 
+    @Inject
+    @LoggerQualifier
+    private Logger logger;
+
+    @Inject
+    private UserTransaction userTransaction;
+
+
+    //REFAC per CDI ?
+//    @Inject
+//    private StammdatenScreensBean stammdatenScreenBean;
+    private final StammdatenScreensBean stammdatenScreenBean = EJBFactory.getEjbInstance(StammdatenScreensBean.class);
+
     private Collection<Mandantengruppe> mandantengruppen;
     private Collection<BenutzerGruppe> benutzerGruppen;
     private Collection<BenutzerWebapplikation> benutzerWebapplikationen;
     private Collection<Berechtigung> berechtigungen;
-
+//
     private final TextField idTextField;
     private final TextField loginTextField;
     private final PasswordField passwdTextField;
@@ -55,7 +70,7 @@ public class BenutzerEditor extends FormLayout {
 //        idTextField.setReadOnly(true);
         idTextField.setEnabled(false);
         idTextField.setConverter(Long.class); // vaadin 7
-        idTextField.addValidator(new IntegerRangeValidator("ÃœngÃ¼ltige ID", 0, Integer.MAX_VALUE));
+//REFAC        idTextField.addValidator(new IntegerRangeValidator("ungültige ID", 0, Integer.MAX_VALUE));
         addComponent(idTextField);
 
         loginTextField = new TextField("Login");
@@ -69,7 +84,7 @@ public class BenutzerEditor extends FormLayout {
         addComponent(passwdTextField);
 
         emailTextField = new TextField("E-Mail");
-        emailTextField.addValidator(new EmailValidator("UngÃ¼ltige E-Mail-Adresse"));
+        emailTextField.addValidator(new EmailValidator("Ungültige E-Mail-Adresse"));
         emailTextField.setNullRepresentation("@rapidpm.org");
         addComponent(emailTextField);
 
@@ -109,10 +124,17 @@ public class BenutzerEditor extends FormLayout {
         addComponent(berechtigungenSelect);
 
         addComponent(new Button("Speichern", new Button.ClickListener() {
+            private final DaoFactoryBean daoFactoryBean = stammdatenScreenBean.getDaoFactoryBean();
+
             @Override
             public void buttonClick(final Button.ClickEvent clickEvent) {
                 if (benutzerBean == null) {
                     benutzerBean = new BeanItem<>(new Benutzer());
+                } else {
+                    final BenutzerDAO benutzerDAO = daoFactoryBean.getBenutzerDAO();
+                    final EntityManager entityManager = benutzerDAO.getEntityManager();
+                    final Benutzer benutzer = benutzerBean.getBean();
+                    entityManager.refresh(benutzer);
                 }
                 boolean valid = true;
                 for (final Component component : BenutzerEditor.this.components) {
@@ -121,6 +143,7 @@ public class BenutzerEditor extends FormLayout {
                         try {
                             validatable.validate();
                         } catch (Validator.InvalidValueException e) {
+                            logger.log(Priority.WARN, e.getMessage(), e);
                             valid = false;
                         }
                     }
@@ -131,7 +154,8 @@ public class BenutzerEditor extends FormLayout {
                     if (berechtigungenSelectValue instanceof Berechtigung) {
                         berechtigungenList.add((Berechtigung) berechtigungenSelectValue);
                     } else if (berechtigungenSelectValue instanceof Collection) {
-                        berechtigungenList.addAll((Collection<Berechtigung>) berechtigungenSelectValue);
+                        final Collection<Berechtigung> berechtigungsCollection = (Collection<Berechtigung>) berechtigungenSelectValue;
+                        berechtigungenList.addAll(berechtigungsCollection);
                     }
 
                     // Tabelle aktualisieren
@@ -140,16 +164,15 @@ public class BenutzerEditor extends FormLayout {
                     benutzerBean.getItemProperty("passwd").setValue(passwdTextField.getValue());
                     benutzerBean.getItemProperty("email").setValue(emailTextField.getValue());
                     benutzerBean.getItemProperty("lastLogin").setValue(lastLoginDateField.getValue());
+                    //REFAC beheben von detached persistent Beans
                     benutzerBean.getItemProperty("mandantengruppe").setValue(mandantengruppenSelect.getValue());
                     benutzerBean.getItemProperty("benutzerGruppe").setValue(benutzerGruppenSelect.getValue());
                     benutzerBean.getItemProperty("benutzerWebapplikation").setValue(benutzerWebapplikationenSelect.getValue());
                     benutzerBean.getItemProperty("berechtigungen").setValue(berechtigungenList);
 
                     // in die DB speichern
-                    final StammdatenScreensBean bean = EJBFactory.getEjbInstance(StammdatenScreensBean.class);
-                    final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
                     final Benutzer benutzer = benutzerBean.getBean();
-                    baseDaoFactoryBean.saveOrUpdate(benutzer);
+                    daoFactoryBean.saveOrUpdate(benutzer);
                 } else {
                     Notification.show("Eingaben unvollständig oder ungültig");
 //                    getRoot().showNotification();

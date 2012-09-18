@@ -36,7 +36,7 @@ public class DaoFactoryBean extends DaoFactory implements Serializable {
     //    @Resource(shareable = false)
     //    private transient UserTransaction userTransaction;
 
-    @PersistenceContext(unitName = "baseorm", type = PersistenceContextType.TRANSACTION)
+    @PersistenceContext(unitName = "baseorm", type = PersistenceContextType.EXTENDED)
     public void setEntityManager(final EntityManager entityManager) {
         super.setEntityManager(entityManager);
     }
