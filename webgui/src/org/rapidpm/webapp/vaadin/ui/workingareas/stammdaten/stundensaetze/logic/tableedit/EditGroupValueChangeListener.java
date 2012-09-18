@@ -79,7 +79,7 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
                         final BeanItemContainer<RessourceGroupBean> container = (BeanItemContainer<RessourceGroupBean>) tabelle
                                 .getContainerDataSource();
                         for(final RessourceGroupBean bean : container.getItemIds()){
-                            ressourceGroupDAO.saveOrUpdate(bean.getRessourceGroup()); //RPM-41
+                            ressourceGroupDAO.saveOrUpdate(bean.getRessourceGroup());
                         }
                         screen.generateTableAndCalculate();
 

@@ -12,6 +12,7 @@ import com.vaadin.ui.Table;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.EditModeGetter;
@@ -53,7 +54,7 @@ public class StundensaetzeItemClickListener implements ItemClickListener {
     }
 
     @Override
-    public void itemClick(ItemClickEvent event) {
+    public void itemClick(final ItemClickEvent event) {
 
         if (EditModeGetter.getMode() == EditModes.ROWEDIT) {
             formLayout.setVisible(true);
@@ -76,11 +77,14 @@ public class StundensaetzeItemClickListener implements ItemClickListener {
                 public void buttonClick(ClickEvent event) {
                     try {
                         tabelle.commit();
-                        final DaoFactoryBean baseDaoFactoryBean = screen.getStammdatenScreensBean().getDaoFactoryBean();
+                        final StammdatenScreensBean stammdatenScreensBean = screen.getStammdatenScreensBean();
+                        final DaoFactoryBean baseDaoFactoryBean = stammdatenScreensBean.getDaoFactoryBean();
                         final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
-                        BeanItemContainer<RessourceGroupBean> container = (BeanItemContainer<RessourceGroupBean>) tabelle.getContainerDataSource();
+                        final BeanItemContainer<RessourceGroupBean> container =
+                                (BeanItemContainer<RessourceGroupBean>)
+                                tabelle.getContainerDataSource();
                         for(final RessourceGroupBean bean : container.getItemIds()){
-                           // ressourceGroupDAO.saveOrUpdateTX(bean.getRessourceGroup());  TODO RPM-41
+                           ressourceGroupDAO.saveOrUpdate(bean.getRessourceGroup());  //TODO RPM-41
                         }
                         screen.generateTableAndCalculate();
                         upperFormLayout.setVisible(false);
