@@ -12,7 +12,7 @@ import javax.ejb.TransactionManagement;
  * Date: 24.05.12
  * Time: 11:00
  */
-@Stateless(name = "StammdatenWorkingAreaEJB")
+@Stateless(name = "StammdatenScreensEJB")
 @TransactionManagement
 public class StammdatenScreensBean {
 
