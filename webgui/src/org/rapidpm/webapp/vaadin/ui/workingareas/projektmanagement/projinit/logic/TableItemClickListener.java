@@ -52,7 +52,8 @@ public class TableItemClickListener implements ItemClickListener {
         final String aufgabe = dataSource.getItem(itemId).getItemProperty(aufgabeFromBundle).getValue()
                 .toString();
         final ProjektBean projektBean = screen.getProjektBean();
-        final Projekt projekt = projektBean.getProjekt();
+        final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
+        final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
         final List<String> planningUnitGroupsNames = projekt.getPlanningUnitGroupsNames();
 
         foundPlanningUnit = null;

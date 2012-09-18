@@ -131,7 +131,7 @@ public class StundensaetzeScreen extends Screen {
     }
 
     @Override
-    protected void doInternationalization() {
+    public void doInternationalization() {
         betriebsstdField.setCaption(messagesBundle.getString("stdsatz_businesshour"));
         betriebsWertField.setCaption(messagesBundle.getString("stdsatz_businessvalue"));
         saveButton.setCaption(messagesBundle.getString("save"));
@@ -141,8 +141,8 @@ public class StundensaetzeScreen extends Screen {
 
     }
 
-
-    private void setComponents() {
+    @Override
+    public void setComponents() {
         addComponent(betriebsFieldsLayout);
         addComponent(tabellenTasksLayout);
         addComponent(formLayout);

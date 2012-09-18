@@ -3,6 +3,7 @@ package org.rapidpm.webapp.vaadin;
 import com.vaadin.annotations.Theme;
 import com.vaadin.ui.MenuBar;
 import org.rapidpm.webapp.vaadin.ui.workingareas.anfragenmanagement.AnfragenmanagementWorkingArea;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.ProjectAdministrationScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.CostsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.distribution.VertriebScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.offer.OfferScreen;
@@ -87,6 +88,15 @@ public class MainUI extends BaseUI {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
                 setWorkingArea(new OfferScreen(MainUI.this));
+            }
+        });
+
+        projektmanagement.addSeparator();
+
+        projektmanagement.addItem(messages.getString("administrateprojects"), new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                setWorkingArea(new ProjectAdministrationScreen(MainUI.this));
             }
         });
     }

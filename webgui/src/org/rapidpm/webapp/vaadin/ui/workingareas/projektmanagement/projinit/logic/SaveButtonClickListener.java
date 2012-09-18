@@ -46,7 +46,8 @@ public class SaveButtonClickListener implements ClickListener {
         try {
             fieldGroup.commit();
             final ProjektBean projektBean = screen.getProjektBean();
-            final Projekt projekt = projektBean.getProjekt();
+            final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
+            final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
             final Item item = screen.getDataSource().getItem(itemId);
             final String planningUnitName = item.getItemProperty(messages.getString("aufgabe")).getValue().toString();
             if (knotenBlattEnum.equals(KnotenBlattEnum.PLANNING_UNIT_GROUP)) {

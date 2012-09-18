@@ -49,7 +49,8 @@ public class CostsCalculator {
 
 
     private void calculatePlanningUnitGroupsAndTotalsAbsolut() {
-        final Projekt projekt = projektBean.getProjekt();
+        final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
+        final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
         final List<PlanningUnitGroup> planningUnitGroups = projekt.getPlanningUnitGroups();
         for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
             calculatePlanningUnits(planningUnitGroup.getPlanningUnitList());

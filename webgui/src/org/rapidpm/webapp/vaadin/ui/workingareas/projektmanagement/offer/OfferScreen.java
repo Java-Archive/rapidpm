@@ -17,7 +17,12 @@ public class OfferScreen extends Screen {
     }
 
     @Override
-    protected void doInternationalization() {
+    public void doInternationalization() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public void setComponents() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 }

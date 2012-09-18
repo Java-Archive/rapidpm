@@ -54,7 +54,7 @@ public class StundensaetzeTableCreator {
         tabelle.setImmediate(true);
         tabelle.setSelectable(true);
         tabelle.setNullSelectionAllowed(false);
-        tabelle.addListener(new StundensaetzeItemClickListener(screen,
+        tabelle.addItemClickListener(new StundensaetzeItemClickListener(screen,
                 itemClickdependentComponents, deleteButton, upperFormLayout, lowerFormLayout, formLayout,
                 saveButton, tabelle));
         tabelle.setReadOnly(false);

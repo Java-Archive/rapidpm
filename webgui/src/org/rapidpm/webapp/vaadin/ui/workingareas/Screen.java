@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
  * Time: 11:07
  * To change this template use File | Settings | File Templates.
  */
-public abstract class Screen extends VerticalLayout {
+public abstract class Screen extends VerticalLayout implements Internationalizationable,Componentssetable {
 
     protected ProjektBean projektBean;
     protected ProjektmanagementScreensBean projektmanagementScreensBean;
@@ -37,8 +37,6 @@ public abstract class Screen extends VerticalLayout {
         stammdatenScreensBean = EJBFactory.getEjbInstance(StammdatenScreensBean.class);
         this.messagesBundle = ui.getResourceBundle();
     }
-
-    protected abstract void doInternationalization();
 
     public Screen getScreen() {
         return this;

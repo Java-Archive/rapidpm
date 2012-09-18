@@ -28,7 +28,7 @@ public class VertriebScreen extends Screen {
     }
 
     @Override
-    protected void doInternationalization() {
+    public void doInternationalization() {
         vertrieblerField.setCaption(messagesBundle.getString("distri_responsible"));
         datumField.setCaption(messagesBundle.getString("distri_date"));
         summeMitAufschlagField.setCaption(messagesBundle.getString("distri_sumWithAddition"));
@@ -69,7 +69,8 @@ public class VertriebScreen extends Screen {
         vertrieblerLayout.addComponent(datumField);
     }
 
-    private void setComponents() {
+    @Override
+    public void setComponents() {
         addComponent(vertrieblerLayout);
         addComponent(tableLayout);
         addComponent(bottomLayout);
