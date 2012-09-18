@@ -2,6 +2,7 @@ package org.rapidpm.persistence.prj.bewegungsdaten.anfragen;
 
 import org.apache.log4j.Logger;
 import org.rapidpm.logging.LogEventEntryWriterBean;
+import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
 
 import javax.ejb.EJB;
@@ -17,7 +18,7 @@ import javax.inject.Inject;
 @Stateless(name = "ProjektanfrageDAOEJB")
 public class ProjektanfrageDAOBean {
 
-    @Inject
+    @Inject @LoggerQualifier
     private transient Logger logger;
 
     @EJB(beanName = "DaoFactoryEJB")

@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
+import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.book.kommentar.*;
 import org.rapidpm.persistence.system.logging.LogLevelEnum;
@@ -38,7 +39,7 @@ public class BuchManagerBean {
 
     }
 
-    @Inject
+    @Inject @LoggerQualifier
     private transient Logger logger;
 
 

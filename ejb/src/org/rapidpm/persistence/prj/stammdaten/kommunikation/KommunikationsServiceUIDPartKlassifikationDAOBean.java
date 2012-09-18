@@ -6,6 +6,7 @@ import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
 import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
+import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
 
 import javax.ejb.EJB;
@@ -33,7 +34,7 @@ public class KommunikationsServiceUIDPartKlassifikationDAOBean {
     public KommunikationsServiceUIDPartKlassifikationDAOBean() {
     }
 
-    @Inject
+    @Inject @LoggerQualifier
     private transient Logger logger;
 
     @EJB(beanName = "DaoFactoryEJB")

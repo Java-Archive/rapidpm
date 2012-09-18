@@ -6,6 +6,7 @@ import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
 import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
+import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.system.security.BenutzerGruppe;
 import org.rapidpm.persistence.system.security.BenutzerGruppeDAO;
@@ -34,7 +35,7 @@ public class BenutzerGruppeDAOBean {
     public BenutzerGruppeDAOBean() {
     }
 
-    @Inject
+    @Inject @LoggerQualifier
     private transient Logger logger;
 
     @EJB(beanName = "DaoFactoryEJB")
@@ -87,20 +88,20 @@ public class BenutzerGruppeDAOBean {
         return result;
     }
 
-    @WebMethod(operationName = "loadRevisionFor")
-    @Interceptors(LoggingInterceptor.class)
-    public
     @WebResult(name = "BenutzerGruppeResult")
+    @Interceptors(LoggingInterceptor.class)
+    @WebMethod(operationName = "loadRevisionFor")
+    public
     BenutzerGruppeResult loadRevisionFor(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid, @WebParam(name = "oid", mode = WebParam.Mode.IN) final Long oid) {
         final List<BenutzerGruppe> list = getBenutzerGruppeDAO().loadAllRevisionsFor(oid);
         return createResult(list);
     }
 
 
-    @WebMethod(operationName = "loadBenutzerGruppeByName")
-    @Interceptors(LoggingInterceptor.class)
-    public
     @WebResult(name = "BenutzerGruppeResult")
+    @Interceptors(LoggingInterceptor.class)
+    @WebMethod(operationName = "loadBenutzerGruppeByName")
+    public
     BenutzerGruppeResult loadBenutzerGruppeByName(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                                   @WebParam(name = "benutzerGruppenName", mode = WebParam.Mode.IN) final String benutzerGruppenName) {
         final BenutzerGruppe benutzerGruppe = getBenutzerGruppeDAO().loadBenutzerGruppeByName(benutzerGruppenName);
@@ -108,29 +109,29 @@ public class BenutzerGruppeDAOBean {
     }
 
 
+    @WebResult(name = "BenutzerGruppeResult")
+    @WebMethod(operationName = "saveOrUpdateTX")
     @Interceptors(LoggingInterceptor.class)
     public
-    @WebMethod(operationName = "saveOrUpdateTX")
-    @WebResult(name = "BenutzerGruppeResult")
     BenutzerGruppeResult saveOrUpdateTX(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                         @WebParam(name = "entity", mode = WebParam.Mode.IN) final FlatBenutzerGruppe entity) {
         return crudExecuter.saveOrUpdate(sessionid, uid, entity);
 
     }
 
+    @WebResult(name = "BenutzerGruppeResult")
+    @WebMethod(operationName = "removeTX")
     @Interceptors(LoggingInterceptor.class)
     public
-    @WebMethod(operationName = "removeTX")
-    @WebResult(name = "BenutzerGruppeResult")
     BenutzerGruppeResult removeTX(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid, @WebParam(name = "oid", mode = WebParam.Mode.IN) final Long oid) {
         return crudExecuter.remove(sessionid, uid, oid);
 
     }
 
+    @WebResult(name = "BenutzerGruppeResult")
+    @WebMethod(operationName = "findByID")
     @Interceptors(LoggingInterceptor.class)
     public
-    @WebMethod(operationName = "findByID")
-    @WebResult(name = "BenutzerGruppeResult")
     BenutzerGruppeResult findByID(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid, @WebParam(name = "oid", mode = WebParam.Mode.IN) final Long oid) {
         final BenutzerGruppe byID = getBenutzerGruppeDAO().findByID(oid);
         if (byID == null) {
@@ -140,19 +141,19 @@ public class BenutzerGruppeDAOBean {
         }
     }
 
+    @WebResult(name = "BenutzerGruppeResult")
+    @WebMethod(operationName = "loadWithOIDList")
     @Interceptors(LoggingInterceptor.class)
     public
-    @WebMethod(operationName = "loadWithOIDList")
-    @WebResult(name = "BenutzerGruppeResult")
     BenutzerGruppeResult loadWithOIDList(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                          @WebParam(name = "oidliste", mode = WebParam.Mode.IN) final List<Long> oids) {
         return createResult(getBenutzerGruppeDAO().loadWithOIDList(oids));
     }
 
+    @WebResult(name = "BenutzerGruppeResult")
+    @WebMethod(operationName = "loadAllEntities")
     @Interceptors(LoggingInterceptor.class)
     public
-    @WebMethod(operationName = "loadAllEntities")
-    @WebResult(name = "BenutzerGruppeResult")
     BenutzerGruppeResult loadAllEntities(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid) {
         return createResult(getBenutzerGruppeDAO().loadAllEntities());
     }

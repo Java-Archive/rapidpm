@@ -9,13 +9,14 @@ package org.rapidpm.data;
  */
 
 import org.apache.log4j.Logger;
+import org.rapidpm.logging.LoggerQualifier;
 
 import javax.inject.Inject;
 
 public class BaseFlatEntity {
     //private static final Logger logger = Logger.getLogger(BaseFlatEntity.class);
 
-    @Inject
+    @Inject @LoggerQualifier
     private transient Logger logger;
 
     private Long id;

@@ -32,7 +32,7 @@ import java.util.List;
 public class LogginEntityActionDAOBean {
     //private static final Logger logger = Logger.getLogger(LogginEntityActionDAOBean.class);
 
-    @Inject
+    @Inject @LoggerQualifier
     private transient Logger logger;
 
 

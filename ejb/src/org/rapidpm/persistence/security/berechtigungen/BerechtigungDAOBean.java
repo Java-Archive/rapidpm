@@ -6,6 +6,7 @@ import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
 import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
+import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
 import org.rapidpm.persistence.system.security.berechtigungen.BerechtigungDAO;
@@ -34,7 +35,7 @@ public class BerechtigungDAOBean {
     public BerechtigungDAOBean() {
     }
 
-    @Inject
+    @Inject @LoggerQualifier
     private transient Logger logger;
 
     @EJB(beanName = "DaoFactoryEJB")
@@ -90,38 +91,38 @@ public class BerechtigungDAOBean {
     //        return createResult(getEntityDAO().loadBerechtigung(name));
     //    }
 
-    @WebMethod(operationName = "loadRevisionFor")
-    @Interceptors(LoggingInterceptor.class)
-    public
     @WebResult(name = "BerechtigungResult")
+    @Interceptors(LoggingInterceptor.class)
+    @WebMethod(operationName = "loadRevisionFor")
+    public
     BerechtigungResult loadRevisionFor(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid, @WebParam(name = "oid", mode = WebParam.Mode.IN) final Long oid) {
         final List<Berechtigung> list = getEntityDAO().loadAllRevisionsFor(oid);
         return createResult(list);
     }
 
 
+    @WebResult(name = "BerechtigungResult")
+    @WebMethod(operationName = "saveOrUpdateTX")
     @Interceptors(LoggingInterceptor.class)
     public
-    @WebMethod(operationName = "saveOrUpdateTX")
-    @WebResult(name = "BerechtigungResult")
     BerechtigungResult saveOrUpdateTX(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                       @WebParam(name = "entity", mode = WebParam.Mode.IN) final FlatBerechtigung entity) {
 
         return crudExecuter.saveOrUpdate(sessionid, uid, entity);
     }
 
+    @WebResult(name = "BerechtigungResult")
+    @WebMethod(operationName = "removeTX")
     @Interceptors(LoggingInterceptor.class)
     public
-    @WebMethod(operationName = "removeTX")
-    @WebResult(name = "BerechtigungResult")
     BerechtigungResult removeTX(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid, @WebParam(name = "oid", mode = WebParam.Mode.IN) final Long oid) {
         return crudExecuter.remove(sessionid, uid, oid);
     }
 
+    @WebResult(name = "BerechtigungResult")
+    @WebMethod(operationName = "findByID")
     @Interceptors(LoggingInterceptor.class)
     public
-    @WebMethod(operationName = "findByID")
-    @WebResult(name = "BerechtigungResult")
     BerechtigungResult findByID(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid, @WebParam(name = "oid", mode = WebParam.Mode.IN) final Long oid) {
         final Berechtigung byID = getEntityDAO().findByID(oid);
         if (byID == null) {
@@ -131,19 +132,19 @@ public class BerechtigungDAOBean {
         }
     }
 
+    @WebResult(name = "BerechtigungResult")
+    @WebMethod(operationName = "loadWithOIDList")
     @Interceptors(LoggingInterceptor.class)
     public
-    @WebMethod(operationName = "loadWithOIDList")
-    @WebResult(name = "BerechtigungResult")
     BerechtigungResult loadWithOIDList(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                        @WebParam(name = "oidliste", mode = WebParam.Mode.IN) final List<Long> oids) {
         return createResult(getEntityDAO().loadWithOIDList(oids));
     }
 
+    @WebResult(name = "BerechtigungResult")
+    @WebMethod(operationName = "loadAllEntities")
     @Interceptors(LoggingInterceptor.class)
     public
-    @WebMethod(operationName = "loadAllEntities")
-    @WebResult(name = "BerechtigungResult")
     BerechtigungResult loadAllEntities(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid) {
         return createResult(getEntityDAO().loadAllEntities());
     }

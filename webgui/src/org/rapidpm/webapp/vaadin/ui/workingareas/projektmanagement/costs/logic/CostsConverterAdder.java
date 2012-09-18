@@ -3,6 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic;
 import com.vaadin.data.util.converter.StringToNumberConverter;
 import com.vaadin.ui.Table;
 import org.apache.log4j.Logger;
+import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.webapp.vaadin.ui.workingareas.ConverterAdder;
 
 import javax.inject.Inject;
@@ -13,8 +14,9 @@ import java.util.ResourceBundle;
 
 public class CostsConverterAdder implements ConverterAdder {
 
-    @Inject
+    @Inject @LoggerQualifier
     private transient Logger logger;
+
     private ResourceBundle messages;
 
     public CostsConverterAdder(final ResourceBundle bundle) {

@@ -12,6 +12,7 @@ import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
 import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
+import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.ProjectNameDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectName;
@@ -32,7 +33,7 @@ import java.util.List;
 public class ProjectNameDAOBean {
     //private static final Logger logger = Logger.getLogger(ProjectNameDAOBean.class);
 
-    @Inject
+    @Inject @LoggerQualifier
     private transient Logger logger;
 
 

@@ -8,6 +8,16 @@
       </map>
     </option>
   </component>
+  <component name="CodeStyleSettings">
+    <option name="fieldPrefix" value="" />
+    <option name="fieldSuffix" value="" />
+    <option name="localVariablePrefix" value="" />
+    <option name="localVariableSuffix" value="" />
+    <option name="parameterPrefix" value="" />
+    <option name="parameterSuffix" value="" />
+    <option name="staticFieldPrefix" value="" />
+    <option name="staticFieldSuffix" value="" />
+  </component>
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
   </component>

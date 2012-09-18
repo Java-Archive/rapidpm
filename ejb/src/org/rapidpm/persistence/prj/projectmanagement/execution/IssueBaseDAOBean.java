@@ -13,6 +13,7 @@ import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
 import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
+import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.AbstractOneToManyConnectExecutor;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
@@ -24,6 +25,7 @@ import org.rapidpm.persistence.system.security.Benutzer;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -37,7 +39,10 @@ import java.util.List;
 @Stateless(name = "IssueBaseDAOEJB")
 @WebService(name = "IssueBaseDAOWS")
 public class IssueBaseDAOBean {
-    private static final Logger logger = Logger.getLogger(IssueBaseDAOBean.class);
+
+    @Inject
+    @LoggerQualifier
+    private transient Logger logger;
 
     @EJB(beanName = "DaoFactoryEJB")
     private DaoFactoryBean daoFactoryBean;
