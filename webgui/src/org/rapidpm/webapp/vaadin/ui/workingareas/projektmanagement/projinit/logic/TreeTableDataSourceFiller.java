@@ -64,7 +64,8 @@ public class TreeTableDataSourceFiller {
     }
 
     private void computePlanningUnitGroupsAndTotalsAbsolut() {
-        final Projekt projekt = projektBean.getProjekt();
+        final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
+        final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
         for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
             final String planningUnitGroupName = planningUnitGroup.getPlanningUnitGroupName();
             final Item planningUnitGroupItem = dataSource.addItem(planningUnitGroupName);

@@ -58,7 +58,8 @@ public class TimesCalculator {
     }
 
     private void calculatePlanningUnitGroupsAndTotalsAbsolut() {
-        final Projekt projekt = projektBean.getProjekt();
+        final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
+        final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
         for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
             calculatePlanningUnits(planningUnitGroup.getPlanningUnitList());
         }

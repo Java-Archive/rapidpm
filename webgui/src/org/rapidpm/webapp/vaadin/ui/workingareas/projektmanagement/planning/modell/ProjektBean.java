@@ -33,24 +33,28 @@ public class ProjektBean {
 
     private static final int MAXDAYS = 10;
 
-    private Projekt projekt;
+    private List<Projekt> projekte = new ArrayList<>();
+    private Integer currentProjectIndex = 0;
 
     private int[] storyPoints = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
     private final String[] issueStatuses = new String[]{"Open", "Closed", "InProgress", "OnHold", "Resolved"};
     private final String[] issuePriorities = new String[]{"Blocker", "Major", "Minor", "Trivial", "Critical"};
 
-    public ProjektBean() {
+    public ProjektBean(Integer projectCount) {
         LoginBean loginBean = EJBFactory.getEjbInstance(LoginBean.class);
         final DaoFactoryBean baseDaoFactoryBean = loginBean.getDaoFactoryBean();
         final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
         final List<RessourceGroup> ressourceGroups = ressourceGroupDAO.loadAllEntities();
-        addData(ressourceGroups);
+        for(Integer i=0; i<projectCount;i++){
+            addNewProject(ressourceGroups, i);
+        }
     }
 
     //REFAC auslagern so das der Code schnell entfernt werden kann
-    private void addData(List<RessourceGroup> ressourceGroups) {
-        projekt = new Projekt();
-        projekt.setProjektName("Projekt 1");
+    private void addNewProject(List<RessourceGroup> ressourceGroups, Integer projectCount) {
+        Projekt projekt = new Projekt();
+        projekt.setProjektId(projectCount+1);
+        projekt.setProjektName("Projekt "+(projectCount+1));
         projekt.setRessourceGroups(ressourceGroups);
 
         final ArrayList<PlanningUnitGroup> planningUnitGroups = new ArrayList<>();
@@ -162,6 +166,8 @@ public class ProjektBean {
         vorbereitungen.setPlanningUnitList(planningUnitsVorbereitungen);
         projekt.setPlanningUnitGroups(planningUnitGroups);
 
+        projekte.add(projekt);
+
 
     }
 
@@ -197,11 +203,15 @@ public class ProjektBean {
         return issueBase;
     }
 
-    public Projekt getProjekt() {
-        return projekt;
+    public List<Projekt> getProjekte() {
+        return projekte;
     }
 
-    public void setProjekt(Projekt projekt) {
-        this.projekt = projekt;
+    public Integer getCurrentProjectIndex() {
+        return currentProjectIndex;
+    }
+
+    public void setCurrentProjectIndex(Integer currentProjectIndex) {
+        this.currentProjectIndex = currentProjectIndex;
     }
 }

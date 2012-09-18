@@ -73,7 +73,11 @@ public class ProjektplanungScreen extends Screen {
         splitPanel.addComponent(menuLayout);
         splitPanel.addComponent(mainLayout);
 
-        final List<String> listenWerteArrayList = projektBean.getProjekt().getPlanningUnitGroupsNames();
+        final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
+        final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
+        final List<String> listenWerteArrayList = projekt.getPlanningUnitGroupsNames();
+
+        planningUnitGroupPanel.setCaption(projekt.getProjektName());
         projektSelect = new ListSelect(null, listenWerteArrayList);
 
         projektSelect.setNullSelectionAllowed(false);
@@ -86,7 +90,7 @@ public class ProjektplanungScreen extends Screen {
                 treePanel.getContent().removeAllComponents();
                 detailPanel.getContent().removeAllComponents();
                 treePanel.setCaption(value);
-                fillTreePanel(value);
+                fillTreePanel(value, projekt);
                 treePanelTree.select(value);
             }
 
@@ -99,17 +103,15 @@ public class ProjektplanungScreen extends Screen {
     }
 
     @Override
-    protected void doInternationalization() {
-        planningUnitGroupPanel.setCaption(messagesBundle.getString("project"));
+    public void doInternationalization() {
         detailPanel.setCaption(messagesBundle.getString("details"));
     }
 
-    public void fillTreePanel(String planningGroupName) {
+    public void fillTreePanel(String planningGroupName, Projekt projekt) {
 
         treePanel.removeAllComponents();
         treePanelTree = new Tree();
         PlanningUnitGroup planningUnitGroup = null;
-        final Projekt projekt = projektBean.getProjekt();
         for (final PlanningUnitGroup pug : projekt.getPlanningUnitGroups()) {
             if (pug.getPlanningUnitGroupName().equals(planningGroupName)) {
                 planningUnitGroup = pug;
@@ -159,6 +161,7 @@ public class ProjektplanungScreen extends Screen {
         }
     }
 
+    @Override
     public void setComponents() {
         addComponent(splitPanel);
     }

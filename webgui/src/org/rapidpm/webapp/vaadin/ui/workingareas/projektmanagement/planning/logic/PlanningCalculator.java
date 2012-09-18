@@ -40,7 +40,9 @@ public class PlanningCalculator {
     }
 
     public void calculate() {
-        projekt = projektBean.getProjekt();
+
+        final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
+        projekt = projektBean.getProjekte().get(currentProjectIndex);
         final DaoFactoryBean baseDaoFactoryBean = projektmanagementScreensBean.getDaoFactoryBean();
         final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
         ressourceGroups = ressourceGroupDAO.loadAllEntities();
@@ -83,7 +85,9 @@ public class PlanningCalculator {
         }
         boolean parentIsGroup = false;
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
-            for (final PlanningUnitGroup group : projektBean.getProjekt().getPlanningUnitGroups()) {
+            final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
+            final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
+            for (final PlanningUnitGroup group : projekt.getPlanningUnitGroups()) {
                 if (group.getPlanningUnitGroupName().equals(parent)) {
                     parentIsGroup = true;
                 }

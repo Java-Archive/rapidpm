@@ -189,7 +189,7 @@ public class BenutzerScreen extends Screen {
     }*/
 
     @Override
-    protected void doInternationalization() {
+    public void doInternationalization() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 }

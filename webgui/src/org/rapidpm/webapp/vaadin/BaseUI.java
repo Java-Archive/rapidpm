@@ -90,7 +90,7 @@ public abstract class BaseUI extends UI {
                 currentUser = user;
                 //getSession().setUser(currentUser);
                 getSession().setAttribute(Benutzer.class, currentUser);
-                planningUnitsBean = new ProjektBean();
+                planningUnitsBean = new ProjektBean(5);
                 loadProtectedRessources();
                 return;
             }

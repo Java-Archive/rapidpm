@@ -139,6 +139,7 @@ public class CostsScreen extends Screen {
 
     }
 
+    @Override
     public void setComponents() {
         addComponent(felderLayout);
         addComponent(unterschriftLayout);
@@ -222,7 +223,7 @@ public class CostsScreen extends Screen {
     }
 
     @Override
-    protected void doInternationalization() {
+    public void doInternationalization() {
         expandCheckBox.setCaption(messagesBundle.getString("costsinit_expand"));
         saveButton.setCaption(messagesBundle.getString("save"));
         undoButton.setCaption(messagesBundle.getString("costsinit_removesortorder"));

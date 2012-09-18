@@ -2,11 +2,11 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit;
 
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
-import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TreeTableHeaderClickListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.ExpandTableCheckBox;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
@@ -99,7 +99,8 @@ public class AufwandProjInitScreen extends Screen {
 
     }
 
-    protected void doInternationalization() {
+    @Override
+    public void doInternationalization() {
         expandCheckBox.setCaption(messagesBundle.getString("costsinit_expand"));
         saveButton.setCaption(messagesBundle.getString("save"));
         undoButton.setCaption(messagesBundle.getString("costsinit_removesortorder"));
@@ -122,6 +123,9 @@ public class AufwandProjInitScreen extends Screen {
         summeField.setValue(timesCalculator.getGesamtSummeItem().toString());
         manntageField.setReadOnly(true);
         summeField.setReadOnly(true);
+        final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
+        final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
+        projektField.setValue(projekt.getProjektName());
     }
 
     private void erstelleFelderLayout() {
@@ -159,6 +163,7 @@ public class AufwandProjInitScreen extends Screen {
         unterschriftLayout.addComponent(unterschriftField);
     }
 
+    @Override
     public void setComponents() {
         addComponent(felderLayout);
         addComponent(unterschriftLayout);

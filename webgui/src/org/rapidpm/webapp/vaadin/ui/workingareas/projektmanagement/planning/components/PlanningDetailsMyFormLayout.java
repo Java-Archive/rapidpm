@@ -11,6 +11,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.IssuePrioritiesEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.ProjektmanagementScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
 import java.util.*;
 
@@ -92,6 +94,10 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 try{
+
+                    final ProjektBean projektBean = screen.getProjektBean();
+                    final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
+                    final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
                     final String statusBoxValue = statusComboBox.getValue().toString();
                     final String priorityBoxValue = priorityComboBox.getValue().toString();
                     final String reporterBoxValue = reporterComboBox.getValue().toString();
@@ -108,7 +114,7 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
                     issueBase.getDueDate_planned().setTime(plannedDateFieldValueTime);
                     issueBase.getDueDate_resolved().setTime(resolvedDateFieldValueTime);
                     issueBase.getDueDate_closed().setTime(closedDateFieldValueTime);
-                    screen.fillTreePanel(planningUnitGroupListSelection);
+                    screen.fillTreePanel(planningUnitGroupListSelection, projekt);
 
                     while (componentIterator.hasNext()) {
                         final Component component = componentIterator.next();
