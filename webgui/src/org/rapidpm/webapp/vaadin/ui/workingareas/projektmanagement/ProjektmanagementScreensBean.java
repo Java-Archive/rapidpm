@@ -6,7 +6,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 
-@Stateless(name = "CostsScreenEJB")
+@Stateless(name = "ProjektmanagementScreensEJB")
 @TransactionManagement
 public class ProjektmanagementScreensBean {
 

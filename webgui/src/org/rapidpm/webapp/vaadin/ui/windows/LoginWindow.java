@@ -41,7 +41,6 @@ public class LoginWindow extends Window {
                     close();
                 } catch (Exception e) {
                     addComponent(new Label("login gescheitert!"));
-                    e.printStackTrace();
                 }
             }
         });
