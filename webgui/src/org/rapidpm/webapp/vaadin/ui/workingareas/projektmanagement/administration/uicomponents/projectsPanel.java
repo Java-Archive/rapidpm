@@ -29,6 +29,7 @@ public class ProjectsPanel extends Panel implements Internationalizationable, Co
     private ProjektBean projektBean;
     private ChosenProjectPanel formPanel;
     private final MainUI ui;
+    private ProjectAdministrationScreen screen;
 
     private ListSelect projectSelect;
     private Button addProjectButton = new Button();
@@ -36,13 +37,15 @@ public class ProjectsPanel extends Panel implements Internationalizationable, Co
 
     private HorizontalLayout buttonLayout = new HorizontalLayout();
 
-    public ProjectsPanel(MainUI theUi, ResourceBundle messagesBundle, ProjektBean bean,
+    public ProjectsPanel(ProjectAdministrationScreen scr, MainUI theUi, ResourceBundle messagesBundle,
+                         ProjektBean bean,
                          ChosenProjectPanel chosenProjectPanel){
-        super(messagesBundle.getString("projects"));
+        super(messagesBundle.getString("pm_projects"));
         this.messagesBundle = messagesBundle;
         this.projektBean = bean;
         this.formPanel = chosenProjectPanel;
         this.ui = theUi;
+        this.screen = scr;
 
         deleteProjectButton.setVisible(false);
         setSizeFull();
@@ -58,6 +61,14 @@ public class ProjectsPanel extends Panel implements Internationalizationable, Co
                 final List<Projekt> projektList = projektBean.getProjekte();
                 projektList.remove(projekt);
                 ui.setWorkingArea(new ProjectAdministrationScreen(ui));
+            }
+        });
+
+        addProjectButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                final AddProjectWindow addWindow = new AddProjectWindow(ui, screen);
+                addWindow.show();
             }
         });
 

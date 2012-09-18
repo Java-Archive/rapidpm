@@ -26,7 +26,7 @@ public class ProjectAdministrationScreen extends Screen {
         super(ui);
 
         chosenProjectPanel = new ChosenProjectPanel(messagesBundle);
-        projectsPanel = new ProjectsPanel(ui, messagesBundle, projektBean, chosenProjectPanel);
+        projectsPanel = new ProjectsPanel(this, ui, messagesBundle, projektBean, chosenProjectPanel);
         currentProjectPanel = new CurrentProjectPanel(messagesBundle, projektBean);
 
         buildScreen();

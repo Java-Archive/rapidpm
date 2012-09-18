@@ -25,7 +25,7 @@ public class ChosenProjectPanel extends EditablePanel {
 
     public ChosenProjectPanel(ResourceBundle messagesBundle) {
         super(messagesBundle);
-        noSelectionLabel = new Label(messagesBundle.getString("noselection"));
+        noSelectionLabel = new Label(messagesBundle.getString("pm_noselection"));
 
         cancelButton.addClickListener(new Button.ClickListener() {
             @Override
@@ -64,7 +64,7 @@ public class ChosenProjectPanel extends EditablePanel {
 
     @Override
     public void doInternationalization() {
-        setCaption(messagesBundle.getString("editproject"));
+        setCaption(messagesBundle.getString("pm_editproject"));
         saveButton.setCaption(messagesBundle.getString("save"));
         cancelButton.setCaption(messagesBundle.getString("cancel"));
     }

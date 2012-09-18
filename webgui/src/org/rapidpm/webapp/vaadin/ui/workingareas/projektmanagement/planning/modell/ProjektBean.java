@@ -46,15 +46,15 @@ public class ProjektBean {
         final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
         final List<RessourceGroup> ressourceGroups = ressourceGroupDAO.loadAllEntities();
         for(Integer i=0; i<projectCount;i++){
-            addNewProject(ressourceGroups, i);
+            addNewProject(ressourceGroups, "Projekt "+(i+1), (long)(i+1));
         }
     }
 
     //REFAC auslagern so das der Code schnell entfernt werden kann
-    private void addNewProject(List<RessourceGroup> ressourceGroups, Integer projectCount) {
+    public void addNewProject(List<RessourceGroup> ressourceGroups, String projektName, Long projektId) {
         Projekt projekt = new Projekt();
-        projekt.setProjektId(projectCount+1);
-        projekt.setProjektName("Projekt "+(projectCount+1));
+        projekt.setProjektId(projektId);
+        projekt.setProjektName(projektName);
         projekt.setRessourceGroups(ressourceGroups);
 
         final ArrayList<PlanningUnitGroup> planningUnitGroups = new ArrayList<>();

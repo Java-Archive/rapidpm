@@ -36,7 +36,6 @@ public class ProjectsListsValueChangeListener implements Property.ValueChangeLis
             chosenProjectPanel.setFieldGroup(fieldGroup);
             chosenProjectPanel.buildForm();
             chosenProjectPanel.activate(false);
-
         }
     }
 }

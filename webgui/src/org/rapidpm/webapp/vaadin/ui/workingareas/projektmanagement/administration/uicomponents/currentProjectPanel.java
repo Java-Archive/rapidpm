@@ -30,11 +30,11 @@ public class CurrentProjectPanel extends EditablePanel {
     public CurrentProjectPanel(ResourceBundle messagesBundle, ProjektBean projBean){
         super(messagesBundle);
         this.projektBean = projBean;
-        setCaption(messagesBundle.getString("currentproject"));
+        setCaption(messagesBundle.getString("pm_currentproject"));
         removeAllComponents();
         final List<Projekt> projektList = projektBean.getProjekte();
         if(projektList.isEmpty()){
-            addComponent(new Label(messagesBundle.getString("noprojects")));
+            addComponent(new Label(messagesBundle.getString("pm_noprojects")));
         } else {
             currentProjectBox = new ComboBox("", new BeanItemContainer<>(Projekt.class, projektList));
             currentProjectBox.setNullSelectionAllowed(false);
