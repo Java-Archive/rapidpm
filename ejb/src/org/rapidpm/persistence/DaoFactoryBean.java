@@ -1,6 +1,7 @@
 package org.rapidpm.persistence;
 
 import org.apache.log4j.Logger;
+import org.rapidpm.logging.LoggerQualifier;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -25,7 +26,7 @@ import java.io.Serializable;
 @TransactionManagement
 public class DaoFactoryBean extends DaoFactory implements Serializable {
 
-    @Inject
+    @Inject @LoggerQualifier
     private transient Logger logger;
 
 

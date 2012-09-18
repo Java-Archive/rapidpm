@@ -1,7 +1,8 @@
 package org.rapidpm.data;
 
-import org.rapidpm.persistence.system.logging.LoggingEventEntry;
 import org.apache.log4j.Logger;
+import org.rapidpm.logging.LoggerQualifier;
+import org.rapidpm.persistence.system.logging.LoggingEventEntry;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -16,7 +17,8 @@ import java.util.List;
  */
 public class LoggingResult {
     private List<LoggingEventEntry> loggingEventEntries = new ArrayList<>();
-    @Inject
+
+    @Inject @LoggerQualifier
     private transient Logger logger;
 
     public List<LoggingEventEntry> getLoggingEventEntries() {

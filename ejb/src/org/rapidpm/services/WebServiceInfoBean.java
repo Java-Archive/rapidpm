@@ -5,10 +5,11 @@
 
 package org.rapidpm.services;
 
+import org.apache.log4j.Logger;
 import org.rapidpm.Constants;
 import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.lang.PackageClassLoader;
-import org.apache.log4j.Logger;
+import org.rapidpm.logging.LoggerQualifier;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -35,7 +36,7 @@ public class WebServiceInfoBean {
     public WebServiceInfoBean() {
     }
 
-    @Inject
+    @Inject @LoggerQualifier
     private transient Logger logger;
 
     @WebMethod(operationName = "getWebServiceList")

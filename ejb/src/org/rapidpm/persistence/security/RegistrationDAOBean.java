@@ -12,6 +12,7 @@ import org.rapidpm.data.LoggingResult;
 import org.rapidpm.ejb3.CRUDExecuter;
 import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
+import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.bewegungsdaten.Registration;
 import org.rapidpm.persistence.prj.bewegungsdaten.RegistrationDAO;
@@ -46,7 +47,7 @@ import java.util.List;
 public class RegistrationDAOBean {
     //private static final Logger logger = Logger.getLogger(RegistrationDAOBean.class);
 
-    @Inject
+    @Inject @LoggerQualifier
     private transient Logger logger;
 
     @EJB(beanName = "DaoFactoryEJB")

@@ -31,7 +31,7 @@ import java.util.List;
 public class LogginEntityEntryDAOBean {
     //private static final Logger logger = Logger.getLogger(LogginEntityEntryDAOBean.class);
 
-    @Inject
+    @Inject @LoggerQualifier
     private transient Logger logger;
 
     @EJB(beanName = "DaoFactoryEJB")

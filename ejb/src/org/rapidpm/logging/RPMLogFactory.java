@@ -16,13 +16,14 @@ import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.inject.Named;
 
-@Named(value = "LogFactory")
+@Named(value = "RPMLogFactory")
 @RequestScoped
 @Default
-public class LogFactory {
+@LoggerQualifier
+public class RPMLogFactory {
 
 
-    public LogFactory() {
+    public RPMLogFactory() {
     }
 
     @Produces

@@ -17,6 +17,7 @@ import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
 import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
+import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.*;
 import org.rapidpm.persistence.prj.stammdaten.address.Adresse;
 import org.rapidpm.persistence.prj.stammdaten.kommunikation.KommunikationsServiceUID;
@@ -46,7 +47,7 @@ import java.util.List;
 public class OrganisationseinheitDAOBean {
     //private static final Logger logger = Logger.getLogger(OrganisationseinheitDAOBean.class);
 
-    @Inject
+    @Inject @LoggerQualifier
     private transient Logger logger;
 
     @EJB(beanName = "DaoFactoryEJB")

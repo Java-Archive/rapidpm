@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 
 public class BaseDAOTest {
 
-    protected EntityManagerFactory emf = Persistence.createEntityManagerFactory("baseormNeoMetaJDBCbeta");
+    protected EntityManagerFactory emf = Persistence.createEntityManagerFactory("baseormRapidPMJDBCbeta");
     protected EntityManager entityManager = emf.createEntityManager();
     protected DaoFactory daoFactoryFactory = new DaoFactory();
 

@@ -18,6 +18,7 @@ import org.rapidpm.persistence.system.logging.LoggingEventEntry;
 import java.lang.reflect.Field;
 
 public class BaseDAOBeanTest<T> extends BaseDAOTest {
+
     private static final Logger logger = Logger.getLogger(BaseDAOBeanTest.class);
 
     private final Class<T> daoBeanClass;
@@ -57,5 +58,13 @@ public class BaseDAOBeanTest<T> extends BaseDAOTest {
             System.out.println(loggingEventEntry);
         }
 
+    }
+
+    @Override
+    public String toString() {
+        return "BaseDAOBeanTest{" +
+                "daoBeanClass=" + daoBeanClass +
+                ", daoBean=" + daoBean +
+                '}';
     }
 }
