@@ -100,7 +100,7 @@ public class ProjektBean {
         planningUnitGroups.add(abschlussarbeiten);
         planningUnitGroups.add(schulungen);
 
-        for (PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
+        for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
             planningUnitGroup.setPlanningUnitList(new ArrayList<PlanningUnit>());
         }
         //--PlanningUnitGroup: Vorbereitungen mit PlanningUnits füllen (welche mit PlanningUnitElements gefüllt werden)

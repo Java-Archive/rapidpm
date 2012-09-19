@@ -99,7 +99,7 @@ public class AddRowWindow extends Window {
                         fieldGroup.commit();
                         final DaoFactoryBean baseDaoFactoryBean = screen.getStammdatenScreensBean().getDaoFactoryBean();
                         final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
-                        //ressourceGroupDAO.saveOrUpdate(row);  TODO RPM-41
+                        ressourceGroupDAO.saveOrUpdate(row);
                         AddRowWindow.this.close();
                         screen.generateTableAndCalculate();
                     } catch (CommitException e) {
