@@ -49,7 +49,6 @@ public abstract class BaseUI extends UI {
     private final VerticalLayout hlWorkingAreaContainer = new VerticalLayout();
 
     protected Benutzer currentUser;
-    protected ProjektBean planningUnitsBean;
     protected Locale locale = new Locale("de","DE");
     protected ResourceBundle messages;
 
@@ -92,7 +91,6 @@ public abstract class BaseUI extends UI {
                 currentUser = user;
                 //getSession().setUser(currentUser);
                 getSession().setAttribute(Benutzer.class, currentUser);
-                planningUnitsBean = new ProjektBean(5);
                 loadProtectedRessources();
                 return;
             }
@@ -306,9 +304,5 @@ public abstract class BaseUI extends UI {
 
     public ResourceBundle getResourceBundle() {
         return messages;
-    }
-
-    public ProjektBean getPlanningUnitsBean() {
-        return planningUnitsBean;
     }
 }

@@ -5,9 +5,13 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.HierarchicalContainer;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.*;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.ProjektmanagementScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
@@ -52,8 +56,8 @@ public class TreeTableDataSourceFiller {
         dataSource.removeAllItems();
         final String aufgabe = messages.getString("aufgabe");
         dataSource.addContainerProperty(aufgabe, String.class, null);
-        for (final RessourceGroup oldRessourceGroup : ressourceGroups) {
-            dataSource.addContainerProperty(oldRessourceGroup.getName(), String.class, "");
+        for (final RessourceGroup ressourceGroup : ressourceGroups) {
+            dataSource.addContainerProperty(ressourceGroup.getName(), String.class, "");
         }
 
 
@@ -118,9 +122,9 @@ public class TreeTableDataSourceFiller {
 
     private void addiereZeileZurRessourceMap(final PlanningUnit planningUnit) {
         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-            final RessourceGroup oldRessourceGroup = planningUnitElement.getRessourceGroup();
+            final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
             final String aufgabe = messages.getString("aufgabe");
-            if (!oldRessourceGroup.getName().equals(aufgabe)) {
+            if (!ressourceGroup.getName().equals(aufgabe)) {
 //                final RessourceGroup ressourceGroup1 = planningUnitElement.getRessourceGroup();
                 final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
                 final int plannedDays = planningUnitElement.getPlannedDays();
@@ -129,18 +133,18 @@ public class TreeTableDataSourceFiller {
                 daysHoursMinutesItem.setDays(plannedDays);
                 daysHoursMinutesItem.setHours(plannedHours);
                 daysHoursMinutesItem.setMinutes(plannedMinutes);
-                if (ressourceGroupDaysHoursMinutesItemMap.containsKey(oldRessourceGroup)) {
+                if (ressourceGroupDaysHoursMinutesItemMap.containsKey(ressourceGroup)) {
                     final Integer days = daysHoursMinutesItem.getDays();
                     final Integer hours = daysHoursMinutesItem.getHours();
                     final Integer minutes = daysHoursMinutesItem.getMinutes();
-                    final DaysHoursMinutesItem daysHoursMinutesItemFromMap = ressourceGroupDaysHoursMinutesItemMap.get(oldRessourceGroup);
+                    final DaysHoursMinutesItem daysHoursMinutesItemFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup);
                     daysHoursMinutesItem.setDays(days + daysHoursMinutesItemFromMap.getDays());
                     daysHoursMinutesItem.setHours(hours + daysHoursMinutesItemFromMap
                             .getHours());
                     daysHoursMinutesItem.setMinutes(minutes + daysHoursMinutesItemFromMap.getMinutes());
                 }
                 correctDaysHoursMinutesItem(daysHoursMinutesItem);
-                ressourceGroupDaysHoursMinutesItemMap.put(oldRessourceGroup, daysHoursMinutesItem);
+                ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup, daysHoursMinutesItem);
             }
         }
     }

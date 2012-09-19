@@ -7,8 +7,12 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.*;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.ProjektmanagementScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
@@ -119,13 +123,13 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
         //final String[] cells = new String[planningUnitElements.size()];
         final String[] cells = new String[8];
         Integer counter = 0;
-        for (final PlanningUnitElement element : planningUnitElements) {
+        for (final PlanningUnitElement elementOld : planningUnitElements) {
             if(counter <= 7){
-                final String spaltenName = element.getRessourceGroup().getName();
+                final String spaltenName = elementOld.getRessourceGroup().getName();
                 tabelle.addContainerProperty(spaltenName, String.class, null);
-                daysHoursMinutesItem.setDays(element.getPlannedDays());
-                daysHoursMinutesItem.setHours(element.getPlannedHours());
-                daysHoursMinutesItem.setMinutes(element.getPlannedMinutes());
+                daysHoursMinutesItem.setDays(elementOld.getPlannedDays());
+                daysHoursMinutesItem.setHours(elementOld.getPlannedHours());
+                daysHoursMinutesItem.setMinutes(elementOld.getPlannedMinutes());
                 cells[counter] = daysHoursMinutesItem.toString();
                 counter++;
             } else {

@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning;
 
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.PlannedMeeting;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedTravel;
 import org.rapidpm.persistence.prj.stammdaten.person.Person;
@@ -45,8 +46,11 @@ public class PlanningUnitGroup {
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private Person responsiblePerson;
 
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    private IssueBase issueBase;
+
     @Basic
-    private String planningUnitName;
+    private String planningUnitGroupName;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private List<PlanningUnit> planningUnitList;
@@ -86,12 +90,12 @@ public class PlanningUnitGroup {
         this.responsiblePerson = responsiblePerson;
     }
 
-    public String getPlanningUnitName() {
-        return planningUnitName;
+    public String getPlanningUnitGroupName() {
+        return planningUnitGroupName;
     }
 
-    public void setPlanningUnitName(String planningUnitName) {
-        this.planningUnitName = planningUnitName;
+    public void setPlanningUnitGroupName(String planningUnitName) {
+        this.planningUnitGroupName = planningUnitName;
     }
 
     public List<PlanningUnit> getPlanningUnitList() {
@@ -108,5 +112,33 @@ public class PlanningUnitGroup {
 
     public void setPlannedMeetingList(List<PlannedMeeting> plannedMeetingList) {
         this.plannedMeetingList = plannedMeetingList;
+    }
+
+    public IssueBase getIssueBase() {
+        return issueBase;
+    }
+
+    public void setIssueBase(IssueBase issueBase) {
+        this.issueBase = issueBase;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PlanningUnitGroup that = (PlanningUnitGroup) o;
+
+        if (!id.equals(that.id)) return false;
+        if (!planningUnitGroupName.equals(that.planningUnitGroupName)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + planningUnitGroupName.hashCode();
+        return result;
     }
 }

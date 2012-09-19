@@ -1,9 +1,9 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic;
 
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitElement;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
@@ -69,11 +69,11 @@ public class CostsCalculator {
     }
 
     private void addiereZeileZurRessourceMap(PlanningUnit planningUnit) {
-        for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-            final RessourceGroup oldRessourceGroup = planningUnitElement.getRessourceGroup();
+        for (final PlanningUnitElement oldPlanningUnitElement : planningUnit.getPlanningUnitElementList()) {
+            final RessourceGroup oldRessourceGroup = oldPlanningUnitElement.getRessourceGroup();
             if (!oldRessourceGroup.getName().equals(messages.getString("aufgabe"))) {
                 final RessourceGroup oldRessourceGroup1 = oldRessourceGroup;
-                Double costs = getCosts(planningUnitElement);
+                Double costs = getCosts(oldPlanningUnitElement);
                 if (ressourceGroupsCostsMap.containsKey(oldRessourceGroup1)) {
                     costs += ressourceGroupsCostsMap.get(oldRessourceGroup1);
                 }
@@ -82,12 +82,12 @@ public class CostsCalculator {
         }
     }
 
-    private Double getCosts(PlanningUnitElement planningUnitElement) {
-        final int hoursFromDays = HOURS_DAY * planningUnitElement.getPlannedDays();
-        final int hours = planningUnitElement.getPlannedHours();
-        final double hoursFromMinutes = STD_ANTEILE * planningUnitElement.getPlannedMinutes();
+    private Double getCosts(PlanningUnitElement oldPlanningUnitElement) {
+        final int hoursFromDays = HOURS_DAY * oldPlanningUnitElement.getPlannedDays();
+        final int hours = oldPlanningUnitElement.getPlannedHours();
+        final double hoursFromMinutes = STD_ANTEILE * oldPlanningUnitElement.getPlannedMinutes();
         final Double totalHours = hoursFromDays + hours + hoursFromMinutes;
-        final Double externalEurosPerHour = planningUnitElement.getRessourceGroup().getExternalEurosPerHour();
+        final Double externalEurosPerHour = oldPlanningUnitElement.getRessourceGroup().getExternalEurosPerHour();
         return totalHours * externalEurosPerHour;
     }
 

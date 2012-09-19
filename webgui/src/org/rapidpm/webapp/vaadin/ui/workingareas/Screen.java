@@ -25,14 +25,12 @@ public abstract class Screen extends VerticalLayout implements Internationalizat
     protected ResourceBundle messagesBundle;
 
     public Screen(MainUI ui){
-        this.projektBean = ui.getPlanningUnitsBean();
         projektmanagementScreensBean = EJBFactory.getEjbInstance(ProjektmanagementScreensBean.class);
         stammdatenScreensBean = EJBFactory.getEjbInstance(StammdatenScreensBean.class);
         this.messagesBundle = ui.getResourceBundle();
     }
 
     public Screen(BaseUI ui){
-        this.projektBean = ui.getPlanningUnitsBean();
         projektmanagementScreensBean = EJBFactory.getEjbInstance(ProjektmanagementScreensBean.class);
         stammdatenScreensBean = EJBFactory.getEjbInstance(StammdatenScreensBean.class);
         this.messagesBundle = ui.getResourceBundle();

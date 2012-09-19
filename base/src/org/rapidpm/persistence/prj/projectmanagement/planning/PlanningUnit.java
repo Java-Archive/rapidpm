@@ -1,5 +1,7 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning;
 
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -22,10 +24,16 @@ public class PlanningUnit {
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenPlanningUnit")
     private Long id;
 
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    private List<PlanningUnit> kindPlanningUnits;
+
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    private IssueBase issueBase;
+
     @Basic private int orderNumber;
 
     @Basic
-    private String planningUnitElementName;
+    private String planningUnitName;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private List<PlanningUnitElement> planningUnitElementList;
@@ -46,12 +54,12 @@ public class PlanningUnit {
         this.orderNumber = orderNumber;
     }
 
-    public String getPlanningUnitElementName() {
-        return planningUnitElementName;
+    public String getPlanningUnitName() {
+        return planningUnitName;
     }
 
-    public void setPlanningUnitElementName(String planningUnitElementName) {
-        this.planningUnitElementName = planningUnitElementName;
+    public void setPlanningUnitName(String planningUnitName) {
+        this.planningUnitName = planningUnitName;
     }
 
     public List<PlanningUnitElement> getPlanningUnitElementList() {
@@ -60,5 +68,41 @@ public class PlanningUnit {
 
     public void setPlanningUnitElementList(List<PlanningUnitElement> planningUnitElementList) {
         this.planningUnitElementList = planningUnitElementList;
+    }
+
+    public List<PlanningUnit> getKindPlanningUnits() {
+        return kindPlanningUnits;
+    }
+
+    public void setKindPlanningUnits(List<PlanningUnit> kindPlanningUnits) {
+        this.kindPlanningUnits = kindPlanningUnits;
+    }
+
+    public IssueBase getIssueBase() {
+        return issueBase;
+    }
+
+    public void setIssueBase(IssueBase issueBase) {
+        this.issueBase = issueBase;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PlanningUnit that = (PlanningUnit) o;
+
+        if (!id.equals(that.id)) return false;
+        if (!planningUnitName.equals(that.planningUnitName)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + planningUnitName.hashCode();
+        return result;
     }
 }

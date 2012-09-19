@@ -1,8 +1,8 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell;
 
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
 
 import java.util.ArrayList;
 import java.util.List;
