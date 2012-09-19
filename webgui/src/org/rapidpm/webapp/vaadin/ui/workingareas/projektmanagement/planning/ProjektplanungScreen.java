@@ -2,6 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.Resource;
 import com.vaadin.ui.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
@@ -10,6 +11,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.PlanningUnitGroupPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
@@ -33,7 +35,7 @@ public class ProjektplanungScreen extends Screen {
     private final VerticalLayout menuLayout;
     private Panel mainPanel;
     private Panel ressourcesPanel;
-    private final Panel planningUnitGroupPanel;
+    private final PlanningUnitGroupPanel planningUnitGroupPanel;
     private final Panel treePanel;
     private final Panel detailPanel;
     private final ListSelect projektSelect;
@@ -46,20 +48,16 @@ public class ProjektplanungScreen extends Screen {
 
         final PlanningCalculator calculator = new PlanningCalculator(messagesBundle, this.projektBean,
                 this.projektmanagementScreensBean);
-        calculator.calculate();
+//        calculator.calculate();
         splitPanel = new HorizontalSplitPanel();
         splitPanel.setSizeFull();
         splitPanel.setSplitPosition(40, Unit.PERCENTAGE);
 
-        planningUnitGroupPanel = new Panel();
+
         treePanel = new Panel();
         detailPanel = new Panel();
 
-        menuLayout = new VerticalLayout();
-        menuLayout.setSpacing(true);
-        menuLayout.addComponent(planningUnitGroupPanel);
-        menuLayout.addComponent(treePanel);
-        menuLayout.addComponent(detailPanel);
+
 
         mainPanel = new Panel();
         ressourcesPanel = new Panel();
@@ -70,33 +68,52 @@ public class ProjektplanungScreen extends Screen {
         mainLayout.addComponent(ressourcesPanel);
         mainLayout.addComponent(mainPanel);
 
-        splitPanel.addComponent(menuLayout);
-        splitPanel.addComponent(mainLayout);
+
+
 
         final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
         final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
-        final List<String> listenWerteArrayList = projekt.getPlanningUnitGroupsNames();
+        //final List<String> listenWerteArrayList = projekt.getPlanningUnitGroupsNames();
 
-        planningUnitGroupPanel.setCaption(projekt.getProjektName());
-        projektSelect = new ListSelect(null, listenWerteArrayList);
+
+        //projektSelect = new ListSelect(null, listenWerteArrayList);
+        projektSelect = new ListSelect(null, new BeanItemContainer<>(PlanningUnitGroup.class,
+                projekt.getPlanningUnitGroups()));
+        projektSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
+        projektSelect.setItemCaptionPropertyId(PlanningUnitGroup.NAME);
+
+        menuLayout = new VerticalLayout();
+        menuLayout.setSpacing(true);
+
+
+        splitPanel.addComponent(menuLayout);
+        splitPanel.addComponent(mainLayout);
 
         projektSelect.setNullSelectionAllowed(false);
         projektSelect.setImmediate(true);
-        planningUnitGroupPanel.getContent().addComponent(projektSelect);
+
+        final List<?> ids = (List<?>) projektSelect.getItemIds();
+        projektSelect.setValue(ids.get(0));
+        planningUnitGroupPanel = new PlanningUnitGroupPanel(ui, this, projekt, projektSelect);
+
         projektSelect.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(final Property.ValueChangeEvent valueChangeEvent) {
-                final String value = (String) valueChangeEvent.getProperty().getValue();
+                final PlanningUnitGroup selectedPlanningUnitGroup = (PlanningUnitGroup) valueChangeEvent.getProperty().getValue();
                 treePanel.getContent().removeAllComponents();
                 detailPanel.getContent().removeAllComponents();
-                treePanel.setCaption(value);
-                fillTreePanel(value, projekt);
-                treePanelTree.select(value);
+                final String planningUnitGroupName = selectedPlanningUnitGroup.getPlanningUnitGroupName();
+                treePanel.setCaption(planningUnitGroupName);
+                fillTreePanel(planningUnitGroupName, projekt);
+                treePanelTree.select(planningUnitGroupName);
+                planningUnitGroupPanel.setSelectedPlanningUnitGroup(selectedPlanningUnitGroup);
             }
 
         });
-        final List<?> ids = (List<?>) projektSelect.getItemIds();
-        projektSelect.setValue(ids.get(0));
+
+        menuLayout.addComponent(planningUnitGroupPanel);
+        menuLayout.addComponent(treePanel);
+        menuLayout.addComponent(detailPanel);
         doInternationalization();
         setComponents();
 

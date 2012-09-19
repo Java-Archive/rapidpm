@@ -32,6 +32,9 @@ import java.util.List;
 
 public class PlanningUnitGroup {
 
+    public static final String NAME = "planningUnitGroupName";
+    public static final String ID = "id";
+
     private Long id;
     private List<PlannedTravel> plannedTravelList;
     private PlanningStatus planningStatus;
@@ -41,6 +44,7 @@ public class PlanningUnitGroup {
     private List<PlannedMeeting> plannedMeetingList;
     private List<PlanningUnitElement> planningUnitElementList = new ArrayList<>();
     private IssueBase issueBase;
+
 
     public PlanningUnitGroup(final List<RessourceGroup> ressourceGroups){
         if(ressourceGroups != null){
@@ -124,16 +128,14 @@ public class PlanningUnitGroup {
 
         PlanningUnitGroup that = (PlanningUnitGroup) o;
 
-        if (!planningUnitGroupName.equals(that.planningUnitGroupName)) return false;
+        if (!id.equals(that.id)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + planningUnitGroupName.hashCode();
-        return result;
+        return id.hashCode();
     }
 
     @Override

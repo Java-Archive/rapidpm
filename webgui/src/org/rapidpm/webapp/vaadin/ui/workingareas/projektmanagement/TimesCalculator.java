@@ -61,7 +61,11 @@ public class TimesCalculator {
         final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
         final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
         for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
-            calculatePlanningUnits(planningUnitGroup.getPlanningUnitList());
+            if(planningUnitGroup.getPlanningUnitList() == null){
+               addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, null);
+            } else {
+                calculatePlanningUnits(planningUnitGroup.getPlanningUnitList());
+            }
         }
     }
 
@@ -80,26 +84,33 @@ public class TimesCalculator {
 
     private void addiereZeileZurRessourceMap(final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap,
                                              final PlanningUnit planningUnit) {
-        for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-            final RessourceGroup oldRessourceGroup = planningUnitElement.getRessourceGroup();
-            final String aufgabe = messages.getString("aufgabe");
-            if (!oldRessourceGroup.getName().equals(aufgabe)) {
-                final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
-                daysHoursMinutesItem.setDays(planningUnitElement.getPlannedDays());
-                daysHoursMinutesItem.setHours(planningUnitElement.getPlannedHours());
-                daysHoursMinutesItem.setMinutes(planningUnitElement.getPlannedMinutes());
-                if (ressourceGroupDaysHoursMinutesItemMap.containsKey(oldRessourceGroup)) {
-                    final int days = daysHoursMinutesItem.getDays() + ressourceGroupDaysHoursMinutesItemMap.get(oldRessourceGroup).getDays();
-                    final int hours = daysHoursMinutesItem.getHours() + ressourceGroupDaysHoursMinutesItemMap.get(oldRessourceGroup).getHours();
-                    final int minutes = daysHoursMinutesItem.getMinutes() + ressourceGroupDaysHoursMinutesItemMap.get(oldRessourceGroup).getMinutes();
-                    daysHoursMinutesItem.setDays(days);
-                    daysHoursMinutesItem.setHours(hours);
-                    daysHoursMinutesItem.setMinutes(minutes);
+        if(planningUnit == null){
+            for (final PlanningUnitElement planningUnitElement : planningUnitGroup.getPlanningUnitElementList()) {
+                final RessourceGroup oldRessourceGroup = planningUnitElement.getRessourceGroup();
+            }
+        } else {
+            for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+                final RessourceGroup oldRessourceGroup = planningUnitElement.getRessourceGroup();
+                final String aufgabe = messages.getString("aufgabe");
+                if (!oldRessourceGroup.getName().equals(aufgabe)) {
+                    final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
+                    daysHoursMinutesItem.setDays(planningUnitElement.getPlannedDays());
+                    daysHoursMinutesItem.setHours(planningUnitElement.getPlannedHours());
+                    daysHoursMinutesItem.setMinutes(planningUnitElement.getPlannedMinutes());
+                    if (ressourceGroupDaysHoursMinutesItemMap.containsKey(oldRessourceGroup)) {
+                        final int days = daysHoursMinutesItem.getDays() + ressourceGroupDaysHoursMinutesItemMap.get(oldRessourceGroup).getDays();
+                        final int hours = daysHoursMinutesItem.getHours() + ressourceGroupDaysHoursMinutesItemMap.get(oldRessourceGroup).getHours();
+                        final int minutes = daysHoursMinutesItem.getMinutes() + ressourceGroupDaysHoursMinutesItemMap.get(oldRessourceGroup).getMinutes();
+                        daysHoursMinutesItem.setDays(days);
+                        daysHoursMinutesItem.setHours(hours);
+                        daysHoursMinutesItem.setMinutes(minutes);
+                    }
+                    correctDaysHoursMinutesItem(daysHoursMinutesItem);
+                    ressourceGroupDaysHoursMinutesItemMap.put(oldRessourceGroup, daysHoursMinutesItem);
                 }
-                correctDaysHoursMinutesItem(daysHoursMinutesItem);
-                ressourceGroupDaysHoursMinutesItemMap.put(oldRessourceGroup, daysHoursMinutesItem);
             }
         }
+
     }
 
     private void calculateTotalsRelative() {

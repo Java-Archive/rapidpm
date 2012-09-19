@@ -1,4 +1,4 @@
 .idea/workspace.xml
 out/*
 webgui/web/VAADIN/widgetsets/*
-
+webgui/src/rebel.xml
