@@ -1,13 +1,11 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze;
 
 import com.vaadin.ui.*;
-import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeTableCreator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.EditGroupValueChangeListener;
@@ -103,12 +101,9 @@ public class StundensaetzeScreen extends Screen {
         final DaoFactoryBean baseDaoFactoryBean = stammdatenScreensBean.getDaoFactoryBean();
         final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
         final List<RessourceGroup> ressourceGroups = ressourceGroupDAO.loadAllEntities();
-        final List<RessourceGroupBean> containerBeans = new ArrayList<>();
+        final List<RessourceGroup> containerBeans = new ArrayList<>();
         for(final RessourceGroup ressourceGroup : ressourceGroups){
-            RessourceGroupBean bean = new RessourceGroupBean();
-            bean.setRessourceGroup(ressourceGroup);
-            bean.calculate();
-            containerBeans.add(bean);
+            containerBeans.add(ressourceGroup);
         }
         final StundensaetzeTableCreator creator = new StundensaetzeTableCreator(
                 this, containerBeans, dependentComponents, delRowButton, upperFormLayout, lowerFormLayout,
@@ -120,9 +115,9 @@ public class StundensaetzeScreen extends Screen {
         calculator.calculate();
 
         final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
-        tabelle.setColumnFooter(SUM_PER_MONTH, format.format(calculator.getSummeProMonat())+ EUR);
-        tabelle.setColumnFooter(SUM_PER_DAY, format.format(calculator.getSummeProTag()) + EUR);
-        tabelle.setColumnFooter(NAME, StundensaetzeCalculator.GESAMTSUMMEN);
+        tabelle.setColumnFooter(RessourceGroup.SUM_PER_MONTH, format.format(calculator.getSummeProMonat())+ EUR);
+        tabelle.setColumnFooter(RessourceGroup.SUM_PER_DAY, format.format(calculator.getSummeProTag()) + EUR);
+        tabelle.setColumnFooter(RessourceGroup.NAME, StundensaetzeCalculator.GESAMTSUMMEN);
 
         betriebsstdField.setValue(format.format(calculator.getBetriebsStunde()) + EUR);
         betriebsWertField.setValue(format.format(calculator.getBetriebsWert()) + EUR);

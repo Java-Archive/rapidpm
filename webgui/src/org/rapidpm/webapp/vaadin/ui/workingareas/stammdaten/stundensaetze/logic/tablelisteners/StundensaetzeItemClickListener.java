@@ -11,10 +11,10 @@ import com.vaadin.ui.Layout;
 import com.vaadin.ui.Table;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.EditModeGetter;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.EditModes;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.RowEditFieldFactory;
@@ -80,11 +80,11 @@ public class StundensaetzeItemClickListener implements ItemClickListener {
                         final StammdatenScreensBean stammdatenScreensBean = screen.getStammdatenScreensBean();
                         final DaoFactoryBean baseDaoFactoryBean = stammdatenScreensBean.getDaoFactoryBean();
                         final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
-                        final BeanItemContainer<RessourceGroupBean> container =
-                                (BeanItemContainer<RessourceGroupBean>)
+                        final BeanItemContainer<RessourceGroup> container =
+                                (BeanItemContainer<RessourceGroup>)
                                 tabelle.getContainerDataSource();
-                        for(final RessourceGroupBean bean : container.getItemIds()){
-                           ressourceGroupDAO.saveOrUpdate(bean.getRessourceGroup());  //TODO RPM-41
+                        for(final RessourceGroup bean : container.getItemIds()){
+                           ressourceGroupDAO.saveOrUpdate(bean);
                         }
                         screen.generateTableAndCalculate();
                         upperFormLayout.setVisible(false);

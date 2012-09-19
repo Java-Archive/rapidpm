@@ -10,7 +10,7 @@ import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.person
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeTableCreator.*;
+import static org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup.*;
 
 public class RowFieldGroup extends FieldGroup {
 

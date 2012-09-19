@@ -1,5 +1,7 @@
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal;
 
+import org.rapidpm.Constants;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -24,6 +26,20 @@ import java.util.Date;
 @Entity
 public class RessourceGroup {
 
+    public static final String NAME = "name";
+    public static final String BRUTTOGEHALT = "bruttoGehalt";
+    public static final String HOURS_PER_WEEK = "hoursPerWeek";
+    public static final String WEEKS_PER_YEAR = "weeksPerYear";
+    public static final String FACTURIZABLE = "facturizable";
+    public static final String EXTERNAL_EUROS_PER_HOUR = "externalEurosPerHour";
+    public static final String PLAN_ANZAHL = "planAnzahl";
+    public static final String HOURS_PER_YEAR = "transientHoursPerYear";
+    public static final String EUROS_PER_HOUR = "transientEurosPerHour";
+    public static final String OPERATIVE_EUROS_PER_HOUR = "transientOperativeEurosPerHour";
+    public static final String BRUTTO_PER_MONTH = "transientBruttoPerMonth";
+    public static final String SUM_PER_MONTH = "transientSumPerMonth";
+    public static final String SUM_PER_DAY = "transientSumPerDay";
+
     @Id
     @TableGenerator(name = "PKGenRessourceGroup", table = "pk_gen", pkColumnName = "gen_key",
             pkColumnValue = "RessourceGroup_id", valueColumnName = "gen_value", allocationSize = 1)
@@ -41,12 +57,18 @@ public class RessourceGroup {
     @Basic private Double bruttoGehalt;
 
     /*evtl für spätere Verwendung*/
-    @Basic private String description;
-    @Basic private Date validFrom;
-    @Basic private Date validUntil;
-    @Basic private String currency; // USD / EUR / ..
+    //@Basic private String description;
+    //@Basic private Date validFrom;
+    //@Basic private Date validUntil;
+    //@Basic private String currency; // USD / EUR / ..
     /*evtl für spätere Verwendung*/
 
+    @Transient private Integer transientHoursPerYear;
+    @Transient private Double transientEurosPerHour;
+    @Transient private Double transientOperativeEurosPerHour;
+    @Transient private Double transientBruttoPerMonth;
+    @Transient private Double transientSumPerMonth;
+    @Transient private Double transientSumPerDay;
 
     public Long getId() {
         return id;
@@ -64,37 +86,37 @@ public class RessourceGroup {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Date getValidFrom() {
-        return validFrom;
-    }
-
-    public void setValidFrom(Date validFrom) {
-        this.validFrom = validFrom;
-    }
-
-    public Date getValidUntil() {
-        return validUntil;
-    }
-
-    public void setValidUntil(Date validUntil) {
-        this.validUntil = validUntil;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
+//    public String getDescription() {
+//        return description;
+//    }
+//
+//    public void setDescription(String description) {
+//        this.description = description;
+//    }
+//
+//    public Date getValidFrom() {
+//        return validFrom;
+//    }
+//
+//    public void setValidFrom(Date validFrom) {
+//        this.validFrom = validFrom;
+//    }
+//
+//    public Date getValidUntil() {
+//        return validUntil;
+//    }
+//
+//    public void setValidUntil(Date validUntil) {
+//        this.validUntil = validUntil;
+//    }
+//
+//    public String getCurrency() {
+//        return currency;
+//    }
+//
+//    public void setCurrency(String currency) {
+//        this.currency = currency;
+//    }
 
     public Double getBruttoGehalt() {
         return bruttoGehalt;
@@ -143,6 +165,60 @@ public class RessourceGroup {
 
     public void setPlanAnzahl(Integer planAnzahl) {
         this.planAnzahl = planAnzahl;
+    }
+
+    public Integer getTransientHoursPerYear() {
+        transientHoursPerYear = hoursPerWeek * weeksPerYear;
+        return transientHoursPerYear;
+    }
+
+    public void setTransientHoursPerYear(Integer transientHoursPerYear) {
+        this.transientHoursPerYear = transientHoursPerYear;
+    }
+
+    public Double getTransientEurosPerHour() {
+        transientEurosPerHour = bruttoGehalt / (getTransientHoursPerYear() * facturizable);
+        return transientEurosPerHour;
+    }
+
+    public void setTransientEurosPerHour(Double transientEurosPerHour) {
+        this.transientEurosPerHour = transientEurosPerHour;
+    }
+
+    public Double getTransientOperativeEurosPerHour() {
+        transientOperativeEurosPerHour = externalEurosPerHour - getTransientEurosPerHour();
+        return transientOperativeEurosPerHour;
+    }
+
+    public void setTransientOperativeEurosPerHour(Double transientOperativeEurosPerHour) {
+        this.transientOperativeEurosPerHour = transientOperativeEurosPerHour;
+    }
+
+    public Double getTransientBruttoPerMonth() {
+        transientBruttoPerMonth = bruttoGehalt / Constants.MONTHS_PER_YEAR;
+        return transientBruttoPerMonth;
+    }
+
+    public void setTransientBruttoPerMonth(Double transientBruttoPerMonth) {
+        this.transientBruttoPerMonth = transientBruttoPerMonth;
+    }
+
+    public Double getTransientSumPerMonth() {
+        transientSumPerMonth = getTransientBruttoPerMonth() * planAnzahl;
+        return transientSumPerMonth;
+    }
+
+    public void setTransientSumPerMonth(Double transientSumPerMonth) {
+        this.transientSumPerMonth = transientSumPerMonth;
+    }
+
+    public Double getTransientSumPerDay() {
+        transientSumPerDay = getTransientSumPerMonth() / Constants.STD_WORKING_DAYS_PER_MONTH;
+        return transientSumPerDay;
+    }
+
+    public void setTransientSumPerDay(Double transientSumPerDay) {
+        this.transientSumPerDay = transientSumPerDay;
     }
 
     @Override
