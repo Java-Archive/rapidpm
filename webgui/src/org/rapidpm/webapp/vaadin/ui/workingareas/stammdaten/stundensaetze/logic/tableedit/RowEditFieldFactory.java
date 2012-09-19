@@ -7,7 +7,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.TableFieldFactory;
 import com.vaadin.ui.TextField;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupBean;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -26,9 +26,9 @@ public class RowEditFieldFactory implements TableFieldFactory {
 
     @Override
     public Field<?> createField(Container container, Object itemId, Object propertyId, Component uiContext) {
-        if((((RessourceGroupBean)itemId)).equals(((BeanItem<RessourceGroupBean>)item).getBean())){
+        if((((RessourceGroup)itemId)).equals(((BeanItem<RessourceGroup>)item).getBean())){
             final String spaltenName = propertyId.toString();
-            if(spaltenName.startsWith("ressourceGroup")){
+            if(!spaltenName.startsWith("transient")){
                 final TextField field = new TextField();
                 final String cellValue = container.getItem(itemId).getItemProperty(propertyId).getValue().toString();
                 field.setValue(cellValue);

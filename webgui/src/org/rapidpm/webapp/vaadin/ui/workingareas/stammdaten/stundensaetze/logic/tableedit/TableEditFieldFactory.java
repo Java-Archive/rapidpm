@@ -17,7 +17,8 @@ public class TableEditFieldFactory implements TableFieldFactory {
 
     @Override
     public Field<?> createField(Container container, Object itemId, Object propertyId, Component uiContext) {
-            if(propertyId.toString().startsWith("ressourceGroup")){
+        final String spaltenName = propertyId.toString();
+        if(!spaltenName.startsWith("transient")){
                 final TextField field = new TextField();
                 final String cellValue = container.getItem(itemId).getItemProperty(propertyId).getValue().toString();
                 field.setValue(cellValue);

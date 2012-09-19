@@ -1,6 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell;
 
 import com.vaadin.data.util.BeanItemContainer;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,15 +14,15 @@ import java.util.List;
  * Time: 09:03
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class RessourceGroupBeanContainer extends BeanItemContainer<RessourceGroupBean> implements
+public class RessourceGroupContainer extends BeanItemContainer<RessourceGroup> implements
         Serializable {
 
-    public RessourceGroupBeanContainer() throws IllegalArgumentException {
-        super(RessourceGroupBean.class);
+    public RessourceGroupContainer() throws IllegalArgumentException {
+        super(RessourceGroup.class);
     }
 
-    public void fill(final List<RessourceGroupBean> ressourceGroupBeans){
-        for(final RessourceGroupBean ressourceGroupBean : ressourceGroupBeans){
+    public void fill(final List<RessourceGroup> ressourceGroupBeans){
+        for(final RessourceGroup ressourceGroupBean : ressourceGroupBeans){
             addBean(ressourceGroupBean);
         }
     }

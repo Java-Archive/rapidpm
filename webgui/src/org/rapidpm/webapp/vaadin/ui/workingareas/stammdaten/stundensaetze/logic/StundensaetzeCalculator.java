@@ -2,7 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Table;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupBean;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import static org.rapidpm.Constants.WORKINGHOURS_DAY;
 public class StundensaetzeCalculator {
     public static final String GESAMTSUMMEN = "Gesamtsummen:";
 
-    private List<RessourceGroupBean> containerBeans;
+    private List<RessourceGroup> containerBeans;
 
     private Double sumPerMonthTotal = 0.0;
     private Double sumPerDayTotal = 0.0;
@@ -22,17 +22,17 @@ public class StundensaetzeCalculator {
 
     public StundensaetzeCalculator(final Table tabelle) {
         containerBeans = new ArrayList<>();
-        final BeanItemContainer<RessourceGroupBean> nestedBeanContainer = (BeanItemContainer<RessourceGroupBean>)tabelle
+        final BeanItemContainer<RessourceGroup> beanItemContainer = (BeanItemContainer<RessourceGroup>)tabelle
                 .getContainerDataSource();
-        for(final RessourceGroupBean ressourceGroupBean : nestedBeanContainer.getItemIds()){
-            containerBeans.add(ressourceGroupBean);
+        for(final RessourceGroup ressourceGroup : beanItemContainer.getItemIds()){
+            containerBeans.add(ressourceGroup);
         }
     }
 
     public void calculate() {
-        for (final RessourceGroupBean ressourceGroupBean : containerBeans) {
-            sumPerMonthTotal += ressourceGroupBean.getSumPerMonth();
-            sumPerDayTotal += ressourceGroupBean.getSumPerDay();
+        for (final RessourceGroup ressourceGroupBean : containerBeans) {
+            sumPerMonthTotal += ressourceGroupBean.getTransientSumPerMonth();
+            sumPerDayTotal += ressourceGroupBean.getTransientSumPerDay();
         }
         betriebsStunde = sumPerDayTotal / WORKINGHOURS_DAY;
         betriebsWert = sumPerDayTotal / KONSTANTE;

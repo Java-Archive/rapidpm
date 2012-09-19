@@ -7,21 +7,21 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.ConverterAdder;
 import java.text.NumberFormat;
 import java.util.Locale;
 
-import static org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeTableCreator.*;
+import static org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup.*;
 
 public class StundensaetzeConverterAdder implements ConverterAdder {
 
     @Override
     public void addConvertersTo(final Table tabelle) {
 
-        tabelle.setConverter(NESTED_BEAN_NAME+"."+BRUTTOGEHALT, new StringToNumberConverter() {
+        tabelle.setConverter(BRUTTOGEHALT, new StringToNumberConverter() {
             @Override
             protected NumberFormat getFormat(final Locale locale) {
                 return NumberFormat.getCurrencyInstance(locale);
             }
         });
 
-        tabelle.setConverter(NESTED_BEAN_NAME+"."+FACTURIZABLE, new StringToNumberConverter() {
+        tabelle.setConverter(FACTURIZABLE, new StringToNumberConverter() {
             @Override
             protected NumberFormat getFormat(Locale locale) {
                 return NumberFormat.getPercentInstance(locale);
@@ -35,7 +35,7 @@ public class StundensaetzeConverterAdder implements ConverterAdder {
             }
         });
 
-        tabelle.setConverter(NESTED_BEAN_NAME+"."+EXTERNAL_EUROS_PER_HOUR,
+        tabelle.setConverter(EXTERNAL_EUROS_PER_HOUR,
                 new StringToNumberConverter() {
                     @Override
                     protected NumberFormat getFormat(Locale locale) {

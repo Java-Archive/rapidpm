@@ -12,10 +12,10 @@ import com.vaadin.ui.Layout;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.Table;
 import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupBean;
 
 import java.util.ResourceBundle;
 
@@ -76,10 +76,10 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
                         final StammdatenScreensBean screenBean = screen.getStammdatenScreensBean();
                         final DaoFactoryBean baseDaoFactoryBean = screenBean.getDaoFactoryBean();
                         final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
-                        final BeanItemContainer<RessourceGroupBean> container = (BeanItemContainer<RessourceGroupBean>) tabelle
+                        final BeanItemContainer<RessourceGroup> container = (BeanItemContainer<RessourceGroup>) tabelle
                                 .getContainerDataSource();
-                        for(final RessourceGroupBean bean : container.getItemIds()){
-                            ressourceGroupDAO.saveOrUpdate(bean.getRessourceGroup());
+                        for(final RessourceGroup bean : container.getItemIds()){
+                            ressourceGroupDAO.saveOrUpdate(bean);
                         }
                         screen.generateTableAndCalculate();
 
