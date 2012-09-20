@@ -21,8 +21,8 @@ public class MitarbeiterRessourceGroupAssoc {
             generator = "PKGenMitarbeiterRessourceGroupAssoc")
     private Long id;
 
-    private Date startDate;
-    private Date stopDate;
+    @Basic private Date startDate;
+    @Basic private Date stopDate;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private RessourceGroup ressourceGroup;

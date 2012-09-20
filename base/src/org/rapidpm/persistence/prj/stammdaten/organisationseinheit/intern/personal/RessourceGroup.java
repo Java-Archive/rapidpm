@@ -50,11 +50,12 @@ public class RessourceGroup {
 
     @Basic private Integer hoursPerWeek;
     @Basic private Integer weeksPerYear;
-    @Basic private Integer planAnzahl;
+    @Basic private Integer planAnzahl;  //REFAC sind bewegungsdaten der Organisationseinheit
 
     @Basic private Double facturizable;
-    @Basic private Double externalEurosPerHour;
-    @Basic private Double bruttoGehalt;
+    @Basic private Double externalEurosPerHour;   //REFAC sind Bewegungsdaten d OrgEinheit
+    @Basic private Double bruttoGehalt;  //REFAC evtl umbenennen in MaxMonatsKosten
+    @Basic private String currency; // USD / EUR / ..
 
     /*evtl für spätere Verwendung*/
     //@Basic private String description;
