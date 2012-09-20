@@ -3,7 +3,6 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ty
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnit;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.apache.log4j.Logger;
 
@@ -57,26 +56,23 @@ public class IssueBase {
     @Basic
     private Integer storyPoints;
 
-    @Basic
-    private boolean fakturierbar;  //TODO notwendig an der Stelle hier ?
-
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private IssuePriority issuePriority;
 
     @OneToOne(cascade = CascadeType.REFRESH)
     private IssueStatus issueStatus;
 
-    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.EAGER)
-    private IssueTimeUnit issueTimeUnitEstimated;
+    //@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    //private IssueTimeUnit issueTimeUnitEstimated;
 
-    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY)
-    private List<IssueTimeUnit> issueTimeUnitsUsed;
+    //@OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    //private List<IssueTimeUnit> issueTimeUnitsUsed;
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private Benutzer issueReporter;
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    private Benutzer isssueAssignee;
+    private Benutzer issueAssignee;
 
 //    @Basic
 //    private float euro; //Stundensaetze und Co koennen hinterlegt werden.. Reporting
@@ -103,10 +99,10 @@ public class IssueBase {
 //        sb.append(", fakturierbar=").append(fakturierbar);
         sb.append(", issuePriority=").append(issuePriority);
         sb.append(", issueStatus=").append(issueStatus);
-        sb.append(", issueTimeUnitEstimated=").append(issueTimeUnitEstimated);
-        sb.append(", issueTimeUnitsUsed=").append(issueTimeUnitsUsed);
+        //sb.append(", issueTimeUnitEstimated=").append(issueTimeUnitEstimated);
+        //sb.append(", issueTimeUnitsUsed=").append(issueTimeUnitsUsed);
         sb.append(", reporter=").append(issueReporter);
-        sb.append(", assignee=").append(isssueAssignee);
+        sb.append(", assignee=").append(issueAssignee);
         //        sb.append(", mandantengruppe=").append(mandantengruppe);
         //sb.append(", euro=").append(euro);
         sb.append(", version=").append(version);
@@ -132,10 +128,7 @@ public class IssueBase {
 //        if (Float.compare(issueBase.euro, euro) != 0) {
 //            return false;
 //        }
-        if (fakturierbar != issueBase.fakturierbar) {
-            return false;
-        }
-        if (isssueAssignee != null ? !isssueAssignee.equals(issueBase.isssueAssignee) : issueBase.isssueAssignee != null) {
+        if (issueAssignee != null ? !issueAssignee.equals(issueBase.issueAssignee) : issueBase.issueAssignee != null) {
             return false;
         }
         if (dueDate_closed != null ? !dueDate_closed.equals(issueBase.dueDate_closed) : issueBase.dueDate_closed != null) {
@@ -173,11 +166,11 @@ public class IssueBase {
     }
 
     public Benutzer getAssignee() {
-        return isssueAssignee;
+        return issueAssignee;
     }
 
     public void setAssignee(final Benutzer assignee) {
-        this.isssueAssignee = assignee;
+        this.issueAssignee = assignee;
     }
 
     public List<IssueComment> getComments() {
@@ -220,14 +213,6 @@ public class IssueBase {
 //        this.euro = euro;
 //    }
 
-    public boolean isFakturierbar() {
-        return fakturierbar;
-    }
-
-    public void setFakturierbar(final boolean fakturierbar) {
-        this.fakturierbar = fakturierbar;
-    }
-
     public Long getId() {
         return id;
     }
@@ -252,21 +237,21 @@ public class IssueBase {
         this.issueStatus = issueStatus;
     }
 
-    public IssueTimeUnit getIssueTimeUnitEstimated() {
-        return issueTimeUnitEstimated;
-    }
-
-    public void setIssueTimeUnitEstimated(final IssueTimeUnit issueTimeUnitEstimated) {
-        this.issueTimeUnitEstimated = issueTimeUnitEstimated;
-    }
-
-    public List<IssueTimeUnit> getIssueTimeUnitsUsed() {
-        return issueTimeUnitsUsed;
-    }
-
-    public void setIssueTimeUnitsUsed(final List<IssueTimeUnit> issueTimeUnitsUsed) {
-        this.issueTimeUnitsUsed = issueTimeUnitsUsed;
-    }
+//    public IssueTimeUnit getIssueTimeUnitEstimated() {
+//        return issueTimeUnitEstimated;
+//    }
+//
+//    public void setIssueTimeUnitEstimated(final IssueTimeUnit issueTimeUnitEstimated) {
+//        this.issueTimeUnitEstimated = issueTimeUnitEstimated;
+//    }
+//
+//    public List<IssueTimeUnit> getIssueTimeUnitsUsed() {
+//        return issueTimeUnitsUsed;
+//    }
+//
+//    public void setIssueTimeUnitsUsed(final List<IssueTimeUnit> issueTimeUnitsUsed) {
+//        this.issueTimeUnitsUsed = issueTimeUnitsUsed;
+//    }
 
 
     public Benutzer getReporter() {

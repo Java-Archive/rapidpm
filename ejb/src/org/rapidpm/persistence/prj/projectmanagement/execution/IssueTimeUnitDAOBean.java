@@ -144,7 +144,8 @@ public class IssueTimeUnitDAOBean {
         final IssueTimeUnitResult result;
         final IssueBase issueBase = daoFactoryBean.getIssueBaseDAO().findByID(issueOID);
         if (issueBase != null) {
-            result = createResult(issueBase.getIssueTimeUnitsUsed());
+            //result = createResult(issueBase.getIssueTimeUnitsUsed());
+            result = null;
             result.setValid(true);
         } else {
             result = createResult();
