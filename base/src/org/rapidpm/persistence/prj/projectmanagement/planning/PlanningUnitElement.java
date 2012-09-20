@@ -27,7 +27,7 @@ public class PlanningUnitElement {
     @Basic private int plannedHours;
     @Basic private int plannedMinutes;
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private RessourceGroup ressourceGroup;
 
     public Long getId() {

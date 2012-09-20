@@ -1,6 +1,5 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tablelisteners;
 
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.Button;
@@ -10,10 +9,6 @@ import com.vaadin.ui.Component.Event;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Table;
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.DaoFactoryBean;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.EditModeGetter;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.EditModes;
@@ -77,15 +72,15 @@ public class StundensaetzeItemClickListener implements ItemClickListener {
                 public void buttonClick(ClickEvent event) {
                     try {
                         tabelle.commit();
-                        final StammdatenScreensBean stammdatenScreensBean = screen.getStammdatenScreensBean();
-                        final DaoFactoryBean baseDaoFactoryBean = stammdatenScreensBean.getDaoFactoryBean();
-                        final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
-                        final BeanItemContainer<RessourceGroup> container =
-                                (BeanItemContainer<RessourceGroup>)
-                                tabelle.getContainerDataSource();
-                        for(final RessourceGroup bean : container.getItemIds()){
-                           ressourceGroupDAO.saveOrUpdate(bean);
-                        }
+                        //final StammdatenScreensBean stammdatenScreensBean = screen.getStammdatenScreensBean();
+                        //final DaoFactoryBean baseDaoFactoryBean = stammdatenScreensBean.getDaoFactoryBean();
+                        //final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
+                        //final BeanItemContainer<RessourceGroup> container =
+                        //        (BeanItemContainer<RessourceGroup>)
+                        //        tabelle.getContainerDataSource();
+                        //for(final RessourceGroup bean : container.getItemIds()){
+                        //   ressourceGroupDAO.saveOrUpdate(bean);
+                        //}
                         screen.generateTableAndCalculate();
                         upperFormLayout.setVisible(false);
                         saveButton.setVisible(false);

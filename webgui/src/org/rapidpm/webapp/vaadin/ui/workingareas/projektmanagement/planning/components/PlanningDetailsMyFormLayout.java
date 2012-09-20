@@ -5,6 +5,8 @@ import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
@@ -12,8 +14,6 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.IssuePrioritiesEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.ProjektmanagementScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
 import java.util.*;
 
@@ -96,9 +96,11 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
             public void buttonClick(Button.ClickEvent event) {
                 try{
 
-                    final ProjektBean projektBean = screen.getProjektBean();
-                    final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
-                    final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
+
+                    final DaoFactoryBean daoFactoryBean = projektmanagementScreensBean.getDaoFactoryBean();
+                    final PlannedProjectDAO plannedProjectDAO = daoFactoryBean.getPlannedProjectDAO();
+                    final PlannedProject plannedProject = plannedProjectDAO.loadAllEntities().get(0);
+
                     final String statusBoxValue = statusComboBox.getValue().toString();
                     final String priorityBoxValue = priorityComboBox.getValue().toString();
                     final String reporterBoxValue = reporterComboBox.getValue().toString();
@@ -115,7 +117,7 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
                     issueBase.getDueDate_planned().setTime(plannedDateFieldValueTime);
                     issueBase.getDueDate_resolved().setTime(resolvedDateFieldValueTime);
                     issueBase.getDueDate_closed().setTime(closedDateFieldValueTime);
-                    screen.fillTreePanel(selectedPlanningUnit, projekt);
+                    screen.fillTreePanel(selectedPlanningUnit, plannedProject);
 
                     while (componentIterator.hasNext()) {
                         final Component component = componentIterator.next();

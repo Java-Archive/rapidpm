@@ -56,10 +56,10 @@ public class PlanningUnit {
     @Basic
     private String planningUnitName;
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private PlanningUnit parent;
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PlanningUnitElement> planningUnitElementList;
 
     public Long getId() {

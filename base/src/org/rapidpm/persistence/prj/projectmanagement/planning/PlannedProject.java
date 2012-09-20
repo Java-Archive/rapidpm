@@ -29,7 +29,7 @@ public class PlannedProject {
     @Basic
     private String projektName;
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PlanningUnit> planningUnits;
 
     @Basic

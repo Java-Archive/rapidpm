@@ -3,16 +3,21 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.BaseUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.PlanningUnitBeanItemContainer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -37,6 +42,7 @@ public class ProjektplanungScreen extends Screen {
     private final ListSelect projektSelect;
     private final VerticalLayout mainLayout;
     private Tree treePanelTree;
+    private ProjektPlanungScreenBean projektplanungScreenBean;
     private final PlanningUnitBeanItemContainer container = new PlanningUnitBeanItemContainer();
 
 
@@ -72,11 +78,19 @@ public class ProjektplanungScreen extends Screen {
         splitPanel.addComponent(menuLayout);
         splitPanel.addComponent(mainLayout);
 
-        final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
-        final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
-        final List<PlanningUnit> planningUnitList = projekt.getPlanningUnits();
+        projektplanungScreenBean = EJBFactory.getEjbInstance(ProjektPlanungScreenBean.class);
+        final DaoFactoryBean daoFactoryBean = projektplanungScreenBean.getDaoFactoryBean();
+        final PlannedProjectDAO plannedProjectDAO = daoFactoryBean.getPlannedProjectDAO();
+        final PlannedProject plannedProject = plannedProjectDAO.loadAllEntities().get(0);
+        final List<PlanningUnit> planningUnitList = plannedProject.getPlanningUnits();
 
-        planningUnitPanel.setCaption(projekt.getProjektName());
+        for(PlanningUnit planningUnit : planningUnitList){
+            if(planningUnit.getParent() != null){    //keine "PlanningUnitGroup"
+               planningUnitList.remove(planningUnit);
+            }
+        }
+
+        planningUnitPanel.setCaption(plannedProject.getProjektName());
         projektSelect = new ListSelect(null, new BeanItemContainer<>(PlanningUnit.class,planningUnitList));
 
         projektSelect.setNullSelectionAllowed(false);
@@ -91,7 +105,7 @@ public class ProjektplanungScreen extends Screen {
                 treePanel.getContent().removeAllComponents();
                 detailPanel.getContent().removeAllComponents();
                 treePanel.setCaption(value.getPlanningUnitName());
-                fillTreePanel(value, projekt);
+                fillTreePanel(value, plannedProject);
                 treePanelTree.select(value);
             }
 
@@ -108,7 +122,7 @@ public class ProjektplanungScreen extends Screen {
         detailPanel.setCaption(messagesBundle.getString("details"));
     }
 
-    public void fillTreePanel(PlanningUnit selectedPlanningUnit, Projekt projekt) {
+    public void fillTreePanel(PlanningUnit selectedPlanningUnit, PlannedProject projekt) {
 
         treePanel.removeAllComponents();
         treePanelTree = new Tree();
@@ -117,7 +131,7 @@ public class ProjektplanungScreen extends Screen {
         if (selectedPlanningUnit != null) {
             treePanelTree.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
             treePanelTree.setItemCaptionPropertyId(PlanningUnit.NAME);
-            treePanelTree.setItemIconPropertyId(ICON);
+            //treePanelTree.setItemIconPropertyId(ICON);
             treePanelTree.setImmediate(true);
             container.addBean(selectedPlanningUnit);
             final IssueBase issueBase = selectedPlanningUnit.getIssueBase();
@@ -132,6 +146,9 @@ public class ProjektplanungScreen extends Screen {
             buildTree(selectedPlanningUnit.getKindPlanningUnits(), selectedPlanningUnit);
             treePanelTree.expandItemsRecursively(selectedPlanningUnit);
             treePanelTree.addValueChangeListener(new TreeValueChangeListener(this, projekt));
+            treePanelTree.setContainerDataSource(container);
+            final Iterator iterator = treePanelTree.rootItemIds().iterator();
+            treePanelTree.expandItemsRecursively(iterator.next());
             treePanel.addComponent(treePanelTree);
         }
     }

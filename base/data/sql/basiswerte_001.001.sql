@@ -204,25 +204,7 @@ INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_id', 7);
 INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
 VALUES (1, 1);
 
-INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
-VALUES (1, 2);
-
-INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
-VALUES (1, 3);
-
-INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
-VALUES (1, 4);
-
-INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
-VALUES (1, 5);
-
-INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
-VALUES (1, 6);
-
-INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
-VALUES (1, 7);
-
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlannedProject_PlanningUnit_id', 7);
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlannedProject_PlanningUnit_id', 1);
 
 INSERT INTO planningunit_planningunit(planningunit_id,kindplanningunits_id)
 VALUES (1, 2);
