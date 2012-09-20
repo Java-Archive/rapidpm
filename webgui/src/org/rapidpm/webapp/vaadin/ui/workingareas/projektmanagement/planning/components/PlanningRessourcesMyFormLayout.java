@@ -9,7 +9,6 @@ import com.vaadin.ui.Table;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.ProjektmanagementScreensBean;
@@ -37,10 +36,10 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
     private Table tabelle = new Table();
     private List<PlanningUnitElement> planningUnitElements;
 
-    public PlanningRessourcesMyFormLayout(final PlanningUnitGroup planningUnitGroup, final ProjektplanungScreen screen,
+    public PlanningRessourcesMyFormLayout(final PlanningUnit planningUnit, final ProjektplanungScreen screen,
                                           final Panel screenPanel) {
         super(screen, screenPanel);
-        planningUnitElements = planningUnitGroup.getPlanningUnitElementList();
+        planningUnitElements = planningUnit.getPlanningUnitElementList();
         buildTable();
         buildForm();
         for (final Object listener : screenPanel.getListeners(MouseEvents.ClickEvent.class)) {

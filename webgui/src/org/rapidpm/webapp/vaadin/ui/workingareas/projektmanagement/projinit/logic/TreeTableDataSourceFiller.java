@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
@@ -64,33 +63,33 @@ public class TreeTableDataSourceFiller {
     }
 
     public void fill() {
-        computePlanningUnitGroupsAndTotalsAbsolut();
+        computePlanningUnitsAndTotalsAbsolut();
     }
 
-    private void computePlanningUnitGroupsAndTotalsAbsolut() {
+    private void computePlanningUnitsAndTotalsAbsolut() {
         final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
         final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
-        for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
-            final String planningUnitGroupName = planningUnitGroup.getPlanningUnitGroupName();
-            final Item planningUnitGroupItem = dataSource.addItem(planningUnitGroupName);
+        for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
+            final String planningUnitName = planningUnit.getPlanningUnitName();
+            final Item planningUnitItem = dataSource.addItem(planningUnitName);
             final String aufgabe = messages.getString("aufgabe");
-            planningUnitGroupItem.getItemProperty(aufgabe).setValue(planningUnitGroupName);
-            final List<PlanningUnit> planningUnitList = planningUnitGroup.getPlanningUnitList();
+            planningUnitItem.getItemProperty(aufgabe).setValue(planningUnitName);
+            final List<PlanningUnit> planningUnitList = planningUnit.getKindPlanningUnits();
             if (planningUnitList == null || planningUnitList.isEmpty()) {
                 for (final RessourceGroup spalte : ressourceGroups) {
-                    for (final PlanningUnitElement planningUnitElement : planningUnitGroup.getPlanningUnitElementList()) {
+                    for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
                         if (planningUnitElement.getRessourceGroup().equals(spalte)) {
                             planningUnitElement.setPlannedDays(0);
                             planningUnitElement.setPlannedHours(0);
                             planningUnitElement.setPlannedMinutes(0);
                             final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem(planningUnitElement);
-                            final Property<?> itemProperty = planningUnitGroupItem.getItemProperty(spalte.getName());
+                            final Property<?> itemProperty = planningUnitItem.getItemProperty(spalte.getName());
                             itemProperty.setValue(daysHoursMinutesItem.toString());
                         }
                     }
                 }
             } else {
-                computePlanningUnits(planningUnitList, planningUnitGroupName);
+                computePlanningUnits(planningUnitList, planningUnitName);
             }
         }
     }
@@ -125,7 +124,6 @@ public class TreeTableDataSourceFiller {
             final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
             final String aufgabe = messages.getString("aufgabe");
             if (!ressourceGroup.getName().equals(aufgabe)) {
-//                final RessourceGroup ressourceGroup1 = planningUnitElement.getRessourceGroup();
                 final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
                 final int plannedDays = planningUnitElement.getPlannedDays();
                 final int plannedHours = planningUnitElement.getPlannedHours();

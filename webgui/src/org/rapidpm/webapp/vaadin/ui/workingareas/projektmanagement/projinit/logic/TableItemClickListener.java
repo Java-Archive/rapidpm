@@ -10,7 +10,6 @@ import com.vaadin.ui.Field;
 import com.vaadin.ui.GridLayout;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesFieldValidator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
@@ -54,18 +53,18 @@ public class TableItemClickListener implements ItemClickListener {
         final ProjektBean projektBean = screen.getProjektBean();
         final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
         final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
-        final List<String> planningUnitGroupsNames = projekt.getPlanningUnitGroupsNames();
+        final List<String> planningUnitsNames = projekt.getPlanningUnitsNames();
 
         foundPlanningUnit = null;
-        if (planningUnitGroupsNames.contains(aufgabe)) {
+        if (planningUnitsNames.contains(aufgabe)) {
             knotenBlattEnum = KnotenBlattEnum.PLANNING_UNIT_GROUP;
             buildRequiredFields(formUnterlayout, fieldGroup);
         } else {
-            final List<PlanningUnitGroup> planningUnitGroups = projekt.getPlanningUnitGroups();
+            final List<PlanningUnit> planningUnits = projekt.getPlanningUnits();
             //PlanningUnit planningUnit = null;
-            for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
+            for (final PlanningUnit planningUnit : planningUnits) {
                 if (foundPlanningUnit == null) {
-                    getPlanningUnit(planningUnitGroup.getPlanningUnitList(), itemId.toString());
+                    getPlanningUnit(planningUnit.getKindPlanningUnits(), itemId.toString());
                 }
             }
             if (foundPlanningUnit != null) {

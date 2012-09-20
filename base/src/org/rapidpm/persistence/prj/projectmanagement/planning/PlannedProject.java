@@ -7,6 +7,7 @@ import org.rapidpm.persistence.system.security.Mandantengruppe;
 import org.apache.log4j.Logger;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,6 +25,12 @@ public class PlannedProject {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<PlannedProjectName> plannedProjectName;
+
+    @Basic
+    private String projektName;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<PlanningUnit> planningUnits;
 
     @Basic
     private boolean active;
@@ -46,9 +53,6 @@ public class PlannedProject {
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private List<PlannedOffer> plannedOfferList;
-
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    private List<PlanningUnitGroup> planningUnitGroupList;
 
     @Override
     public String toString() {
@@ -185,5 +189,21 @@ public class PlannedProject {
 
     public void setResponsiblePerson(final Benutzer responsiblePerson) {
         this.responsiblePerson = responsiblePerson;
+    }
+
+    public List<PlanningUnit> getPlanningUnits() {
+        return planningUnits;
+    }
+
+    public void setPlanningUnits(List<PlanningUnit> planningUnits) {
+        this.planningUnits = planningUnits;
+    }
+
+    public String getProjektName() {
+        return projektName;
+    }
+
+    public void setProjektName(String projektName) {
+        this.projektName = projektName;
     }
 }

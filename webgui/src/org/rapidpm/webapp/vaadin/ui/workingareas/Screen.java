@@ -34,6 +34,7 @@ public abstract class Screen extends VerticalLayout implements Internationalizat
         projektmanagementScreensBean = EJBFactory.getEjbInstance(ProjektmanagementScreensBean.class);
         stammdatenScreensBean = EJBFactory.getEjbInstance(StammdatenScreensBean.class);
         this.messagesBundle = ui.getResourceBundle();
+        this.projektBean = ui.getProjektBean();
     }
 
     public Screen getScreen() {

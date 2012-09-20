@@ -53,6 +53,10 @@ public abstract class BaseUI extends UI {
     protected ResourceBundle messages;
 
 
+
+    protected ProjektBean projektBean = new ProjektBean(5);
+
+
     @Override
     public void init(final WrappedRequest request) {
         //setWindowWidth(request.getBrowserDetails().getWebBrowser().getScreenWidth());
@@ -304,5 +308,13 @@ public abstract class BaseUI extends UI {
 
     public ResourceBundle getResourceBundle() {
         return messages;
+    }
+
+    public ProjektBean getProjektBean() {
+        return projektBean;
+    }
+
+    public void setProjektBean(ProjektBean projektBean) {
+        this.projektBean = projektBean;
     }
 }

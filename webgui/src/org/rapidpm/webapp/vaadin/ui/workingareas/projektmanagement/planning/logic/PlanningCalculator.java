@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
@@ -52,24 +51,24 @@ public class PlanningCalculator {
         ressourceGroups = ressourceGroupDAO.loadAllEntities();
 
 
-        this.calculatePlanningUnitGroups();
+        this.calculatePlanningUnits();
     }
 
-    private void calculatePlanningUnitGroups() {
-        for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
+    private void calculatePlanningUnits() {
+        for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
             final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
-            final List<PlanningUnit> planningUnitGroupPlanningUnitList = planningUnitGroup.getPlanningUnitList();
-            if (planningUnitGroupPlanningUnitList == null || planningUnitGroupPlanningUnitList.isEmpty()) {
+            final List<PlanningUnit> planningUnitPlanningUnitList = planningUnit.getKindPlanningUnits();
+            if (planningUnitPlanningUnitList == null || planningUnitPlanningUnitList.isEmpty()) {
                 for (final RessourceGroup spalte : ressourceGroups) {
                     final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
                     planningUnitElement.setPlannedDays(0);
                     planningUnitElement.setPlannedHours(0);
                     planningUnitElement.setPlannedMinutes(0);
                     planningUnitElement.setRessourceGroup(spalte);
-                    planningUnitGroup.getPlanningUnitElementList().add(planningUnitElement);
+                    planningUnit.getPlanningUnitElementList().add(planningUnitElement);
                 }
             } else {
-                this.calculatePlanningUnits(planningUnitGroupPlanningUnitList, planningUnitGroup.getPlanningUnitGroupName(),
+                this.calculatePlanningUnits(planningUnitPlanningUnitList, planningUnit.getPlanningUnitName(),
                         ressourceGroupDaysHoursMinutesItemMap);
             }
         }
@@ -91,8 +90,8 @@ public class PlanningCalculator {
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
             final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
             final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
-            for (final PlanningUnitGroup group : projekt.getPlanningUnitGroups()) {
-                if (group.getPlanningUnitGroupName().equals(parent)) {
+            for (final PlanningUnit group : projekt.getPlanningUnits()) {
+                if (group.getPlanningUnitName().equals(parent)) {
                     parentIsGroup = true;
                 }
             }
@@ -101,7 +100,7 @@ public class PlanningCalculator {
             final Integer minutesFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getMinutes();
             if (parentIsGroup) {
                 PlanningUnitElement elementOld = new PlanningUnitElement();
-                final List<PlanningUnitElement> planningUnitElementList = projekt.getPlanningUnitGroup(parent)
+                final List<PlanningUnitElement> planningUnitElementList = projekt.getPlanningUnit(parent)
                         .getPlanningUnitElementList();
                 for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
                     if (planningUnitElement.getRessourceGroup().getName().equals(ressourceGroup.getName())) {
@@ -115,8 +114,8 @@ public class PlanningCalculator {
                 planningUnitElement.setPlannedMinutes(minutesFromMap);
             } else {
                 final ArrayList<PlanningUnit> planningUnitsResultList = new ArrayList<>();
-                for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
-                    projekt.findPlanningUnitAndWriteReferenceInList(planningUnitGroup.getPlanningUnitList(), parent,
+                for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
+                    projekt.findPlanningUnitAndWriteReferenceInList(planningUnit.getKindPlanningUnits(), parent,
                             planningUnitsResultList);
                 }
                 PlanningUnitElement elementOld = new PlanningUnitElement();

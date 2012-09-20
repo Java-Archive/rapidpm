@@ -6,7 +6,6 @@ import com.vaadin.data.util.HierarchicalContainer;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.ProjektmanagementScreensBean;
@@ -58,30 +57,30 @@ public class TreeTableDataSourceFiller {
     }
 
     public void fill() {
-        computePlanningUnitGroupsAndTotalsAbsolut();
+        computePlanningUnitsAndTotalsAbsolut();
     }
 
-    private void computePlanningUnitGroupsAndTotalsAbsolut() {
+    private void computePlanningUnitsAndTotalsAbsolut() {
         final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
         final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
-        final List<PlanningUnitGroup> planningUnitGroups = projekt.getPlanningUnitGroups();
-        for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
-            final String planningUnitGroupName = planningUnitGroup.getPlanningUnitGroupName();
-            final Item planningUnitGroupItem = dataSource.addItem(planningUnitGroupName);
-            planningUnitGroupItem.getItemProperty(messages.getString("aufgabe")).setValue(planningUnitGroupName);
-            final List<PlanningUnit> planningUnitList = planningUnitGroup.getPlanningUnitList();
+        final List<PlanningUnit> planningUnits = projekt.getPlanningUnits();
+        for (final PlanningUnit planningUnit : planningUnits) {
+            final String planningUnitName = planningUnit.getPlanningUnitName();
+            final Item planningUnitItem = dataSource.addItem(planningUnitName);
+            planningUnitItem.getItemProperty(messages.getString("aufgabe")).setValue(planningUnitName);
+            final List<PlanningUnit> planningUnitList = planningUnit.getKindPlanningUnits();
             if (planningUnitList == null || planningUnitList.isEmpty()) {
                 for (final RessourceGroup spalte : ressourceGroups) {
-                    final List<PlanningUnitElement> planningUnitElementList = planningUnitGroup.getPlanningUnitElementList();
+                    final List<PlanningUnitElement> planningUnitElementList = planningUnit.getPlanningUnitElementList();
                     for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
                         final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
                         if (ressourceGroup.equals(spalte)) {
-                            planningUnitGroupItem.getItemProperty(spalte.getName()).setValue(0.0);
+                            planningUnitItem.getItemProperty(spalte.getName()).setValue(0.0);
                         }
                     }
                 }
             } else {
-                computePlanningUnits(planningUnitList, planningUnitGroupName);
+                computePlanningUnits(planningUnitList, planningUnitName);
             }
         }
     }

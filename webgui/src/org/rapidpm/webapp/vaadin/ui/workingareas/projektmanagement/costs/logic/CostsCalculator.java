@@ -2,7 +2,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic;
 
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
@@ -37,7 +36,7 @@ public class CostsCalculator {
     }
 
     public void calculate() {
-        calculatePlanningUnitGroupsAndTotalsAbsolut();
+        calculatePlanningUnitsAndTotalsAbsolut();
         calculateTotalCosts();
     }
 
@@ -48,12 +47,12 @@ public class CostsCalculator {
     }
 
 
-    private void calculatePlanningUnitGroupsAndTotalsAbsolut() {
+    private void calculatePlanningUnitsAndTotalsAbsolut() {
         final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
         final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
-        final List<PlanningUnitGroup> planningUnitGroups = projekt.getPlanningUnitGroups();
-        for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
-            calculatePlanningUnits(planningUnitGroup.getPlanningUnitList());
+        final List<PlanningUnit> planningUnits = projekt.getPlanningUnits();
+        for (final PlanningUnit planningUnit : planningUnits) {
+            calculatePlanningUnits(planningUnit.getKindPlanningUnits());
         }
     }
 

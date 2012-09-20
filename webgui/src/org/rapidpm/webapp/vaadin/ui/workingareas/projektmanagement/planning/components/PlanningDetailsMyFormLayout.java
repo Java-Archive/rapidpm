@@ -5,6 +5,7 @@ import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssuePrioritiesEnum;
@@ -105,7 +106,7 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
                     final long plannedDateFieldValueTime = plannedDateField.getValue().getTime();
                     final long resolvedDateFieldValueTime = resolvedDateField.getValue().getTime();
                     final long closedDateFieldValueTime = closedDateField.getValue().getTime();
-                    final String planningUnitGroupListSelection = screen.getProjektSelect().getValue().toString();
+                    final PlanningUnit selectedPlanningUnit = (PlanningUnit) screen.getProjektSelect().getValue();
                     final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
                     issueBase.getIssueStatus().setStatusName(statusBoxValue);
                     issueBase.getIssuePriority().setPriorityName(priorityBoxValue);
@@ -114,7 +115,7 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
                     issueBase.getDueDate_planned().setTime(plannedDateFieldValueTime);
                     issueBase.getDueDate_resolved().setTime(resolvedDateFieldValueTime);
                     issueBase.getDueDate_closed().setTime(closedDateFieldValueTime);
-                    screen.fillTreePanel(planningUnitGroupListSelection, projekt);
+                    screen.fillTreePanel(selectedPlanningUnit, projekt);
 
                     while (componentIterator.hasNext()) {
                         final Component component = componentIterator.next();

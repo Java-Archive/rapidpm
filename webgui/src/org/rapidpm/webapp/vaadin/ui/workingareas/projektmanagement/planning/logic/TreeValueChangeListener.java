@@ -8,7 +8,6 @@ import com.vaadin.ui.VerticalLayout;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.PlanningDetailsMyFormLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.PlanningMainMyFormLayout;
@@ -61,14 +60,14 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                 final ArrayList<PlanningUnit> planningUnitList = new ArrayList<>();
 
                 boolean isGroup = false;
-                for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
-                    if (planningUnitGroup.getPlanningUnitGroupName().equals(itemName)) {
+                for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
+                    if (planningUnit.getPlanningUnitName().equals(itemName)) {
                         isGroup = true;
-                        final IssueBase issueBase = planningUnitGroup.getIssueBase();
+                        final IssueBase issueBase = planningUnit.getIssueBase();
                         final VerticalLayout detailsPanelComponentsLayout = new PlanningDetailsMyFormLayout(issueBase,
                                 screen, detailPanel);
                         final VerticalLayout mainPanelLayout = new PlanningMainMyFormLayout(issueBase, screen, mainPanel);
-                        final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesMyFormLayout(planningUnitGroup,
+                        final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesMyFormLayout(planningUnit,
                                 screen, ressourcesPanel);
                         detailPanel.addComponent(detailsPanelComponentsLayout);
                         mainPanel.addComponent(mainPanelLayout);
@@ -77,8 +76,8 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                     }
                 }
                 if (!isGroup) {
-                    for (final PlanningUnitGroup planningUnitGroup2 : projekt.getPlanningUnitGroups()) {
-                        projekt.findPlanningUnitAndWriteReferenceInList(planningUnitGroup2.getPlanningUnitList(), itemName,
+                    for (final PlanningUnit planningUnit2 : projekt.getPlanningUnits()) {
+                        projekt.findPlanningUnitAndWriteReferenceInList(planningUnit2.getKindPlanningUnits(), itemName,
                                 planningUnitList);
                     }
                     final PlanningUnit selectedPlanningUnit = planningUnitList.get(0);
