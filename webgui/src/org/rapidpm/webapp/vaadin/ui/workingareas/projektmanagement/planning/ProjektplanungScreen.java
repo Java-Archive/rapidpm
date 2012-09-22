@@ -84,12 +84,6 @@ public class ProjektplanungScreen extends Screen {
         final PlannedProject plannedProject = plannedProjectDAO.loadAllEntities().get(0);
         final List<PlanningUnit> planningUnitList = plannedProject.getPlanningUnits();
 
-        for(PlanningUnit planningUnit : planningUnitList){
-            if(planningUnit.getParent() != null){    //keine "PlanningUnitGroup"
-               planningUnitList.remove(planningUnit);
-            }
-        }
-
         planningUnitPanel.setCaption(plannedProject.getProjektName());
         projektSelect = new ListSelect(null, new BeanItemContainer<>(PlanningUnit.class,planningUnitList));
 

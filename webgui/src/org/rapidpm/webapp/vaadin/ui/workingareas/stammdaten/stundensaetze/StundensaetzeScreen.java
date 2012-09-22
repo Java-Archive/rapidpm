@@ -1,6 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze;
 
 import com.vaadin.ui.*;
+import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
@@ -22,7 +23,6 @@ import java.util.List;
 
 import static org.rapidpm.Constants.DECIMAL_FORMAT;
 import static org.rapidpm.Constants.EUR;
-import static org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeTableCreator.*;
 
 public class StundensaetzeScreen extends Screen {
 
@@ -41,6 +41,7 @@ public class StundensaetzeScreen extends Screen {
     private HorizontalLayout lowerFormLayout = new HorizontalLayout();
     private Button saveButton = new Button();
     private OptionGroup optionGroup;
+    private StundensaetzeScreenBean screenBean;
 
 
     private List<ItemClickDependentComponent> dependentComponents = new ArrayList<>();
@@ -62,6 +63,7 @@ public class StundensaetzeScreen extends Screen {
         // formlayout wird bis zum itemclicklistener durchgereicht, savelayout
         // ebenfalls
         tabelle = new Table();
+        tabelle.setImmediate(true);
         tabellenLayout.setSizeFull();
         tabellenLayout.addComponent(tabelle);
         tabellenLayout.setSpacing(true);
@@ -98,7 +100,8 @@ public class StundensaetzeScreen extends Screen {
     }
 
     public void generateTableAndCalculate() {
-        final DaoFactoryBean baseDaoFactoryBean = stammdatenScreensBean.getDaoFactoryBean();
+        screenBean = EJBFactory.getEjbInstance(StundensaetzeScreenBean.class);
+        final DaoFactoryBean baseDaoFactoryBean = screenBean.getDaoFactoryBean();
         final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
         final List<RessourceGroup> ressourceGroups = ressourceGroupDAO.loadAllEntities();
         final List<RessourceGroup> containerBeans = new ArrayList<>();
@@ -176,5 +179,9 @@ public class StundensaetzeScreen extends Screen {
 
     public void setFormLayout(VerticalLayout formLayout) {
         this.formLayout = formLayout;
+    }
+
+    public StundensaetzeScreenBean getScreenBean() {
+        return screenBean;
     }
 }

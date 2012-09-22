@@ -91,20 +91,30 @@ public class PlanningCalculator {
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
             //final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
             //final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
-            final Integer daysFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getDays();
-            final Integer hoursFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getHours();
-            final Integer minutesFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getMinutes();
-                PlanningUnitElement element = new PlanningUnitElement();
-                for (final PlanningUnitElement planningUnitElement : parent.getPlanningUnitElementList()) {
-                    if (planningUnitElement.getRessourceGroup().equals(ressourceGroup)) {
-                        element = planningUnitElement;
-                    }
+            Integer daysFromMap;
+            Integer hoursFromMap;
+            Integer minutesFromMap;
+            try{
+                daysFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getDays();
+                hoursFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getHours();
+                minutesFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getMinutes();
+            }catch(NullPointerException e){
+                daysFromMap = 0;
+                hoursFromMap = 0;
+                minutesFromMap = 0;
+            }
+
+            PlanningUnitElement element = new PlanningUnitElement();
+            for (final PlanningUnitElement planningUnitElement : parent.getPlanningUnitElementList()) {
+                if (planningUnitElement.getRessourceGroup().equals(ressourceGroup)) {
+                    element = planningUnitElement;
                 }
-                final int index = parent.getPlanningUnitElementList().indexOf(element);
-                final PlanningUnitElement planningUnitElement = parent.getPlanningUnitElementList().get(index);
-                planningUnitElement.setPlannedDays(daysFromMap);
-                planningUnitElement.setPlannedHours(hoursFromMap);
-                planningUnitElement.setPlannedMinutes(minutesFromMap);
+            }
+            final int index = parent.getPlanningUnitElementList().indexOf(element);
+            final PlanningUnitElement planningUnitElement = parent.getPlanningUnitElementList().get(index);
+            planningUnitElement.setPlannedDays(daysFromMap);
+            planningUnitElement.setPlannedHours(hoursFromMap);
+            planningUnitElement.setPlannedMinutes(minutesFromMap);
         }
     }
 

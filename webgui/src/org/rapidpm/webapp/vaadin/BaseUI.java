@@ -208,7 +208,7 @@ public abstract class BaseUI extends UI {
         initMenuBarIntern(menubar);
         hlHeaderBottomLine.addComponent(menubar);
 
-        setWorkingArea(new ProjektplanungScreen(BaseUI.this));
+        //setWorkingArea(new ProjektplanungScreen(BaseUI.this));
         addComponent(mainlayout);
     }
 

@@ -18,8 +18,8 @@ public class RowFieldGroup extends FieldGroup {
     private List<AbstractTextField> fieldList = new ArrayList<>();
     private AbstractTextField nameField;
 
-    public RowFieldGroup(RessourceGroup row) {
-        setItemDataSource(new BeanItem<>(row));
+    public RowFieldGroup() {
+        setItemDataSource(new BeanItem<>(new RessourceGroup()));
         buildForm();
     }
 

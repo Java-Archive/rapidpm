@@ -1,10 +1,12 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents;
 
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import org.apache.log4j.Logger;
+import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
@@ -30,17 +32,23 @@ public class AddRowWindow extends Window {
     private Button cancelButton = new Button();
     private RowFieldGroup fieldGroup;
     private ResourceBundle messages;
+    private StundensaetzeScreen screen;
+    private AddRowWindowBean addRowWindowBean;
 
     public AddRowWindow(final MainUI ui, final StundensaetzeScreen screen) {
         this.ui = ui;
+        this.screen = screen;
         messages = screen.getMessagesBundle();
         setHeight(HEIGHT);
         setWidth(WIDTH);
         setPositionX(POSITION_X);
         setPositionY(POSITION_Y);
 
-        final RessourceGroup row = new RessourceGroup();
-        fieldGroup = new RowFieldGroup(row);
+        addRowWindowBean = EJBFactory.getEjbInstance(AddRowWindowBean.class);
+        final DaoFactoryBean baseDaoFactoryBean = addRowWindowBean.getDaoFactoryBean();
+        final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
+
+        fieldGroup = new RowFieldGroup();
 
         fillFormLayout();
         addComponent(formLayout);
@@ -50,7 +58,7 @@ public class AddRowWindow extends Window {
 
         addComponent(horizontalButtonLayout);
 
-        addListeners(row, ui, screen);
+        addListeners(baseDaoFactoryBean, ui, screen);
         doInternationalization();
 
     }
@@ -77,8 +85,8 @@ public class AddRowWindow extends Window {
         cancelButton.setCaption(messages.getString("cancel"));
     }
 
-    private void addListeners(final RessourceGroup ressourceGroup, final MainUI ui, final StundensaetzeScreen screen) {
-        final RessourceGroup row = ressourceGroup;
+    private void addListeners(final DaoFactoryBean baseDaoFactoryBean, final MainUI ui,
+                              final StundensaetzeScreen screen) {
         saveButton.addClickListener(new ClickListener() {
 
             @Override
@@ -96,12 +104,25 @@ public class AddRowWindow extends Window {
                 }
                 if (allFilled) {
                     try {
+                        final Table tabelle = screen.getTabelle();
                         fieldGroup.commit();
-                        final DaoFactoryBean baseDaoFactoryBean = screen.getStammdatenScreensBean().getDaoFactoryBean();
+                        //RessourceGroupBeanItem mit der neuen (transienten) RessourceGroup
+                        final BeanItem<RessourceGroup> beanItem = (BeanItem)fieldGroup.getItemDataSource();
+                        //Bean aus dem BeanItem
+                        final RessourceGroup ressourceGroup = beanItem.getBean();
                         final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
-                        ressourceGroupDAO.saveOrUpdate(row);
+
+                        //transiente RessourceGroup in DB speichern
+                        baseDaoFactoryBean.saveOrUpdate(ressourceGroup);
+
+                        //persistente RessourceGroup aus DB holen
+                        final RessourceGroup ressourceGroupFromDB = ressourceGroupDAO.loadRessourceGroupByName
+                                (ressourceGroup.getName());
+
+                        //tabelle aktualisieren
+                        tabelle.addItem(ressourceGroupFromDB);
+
                         AddRowWindow.this.close();
-                        screen.generateTableAndCalculate();
                     } catch (CommitException e) {
                         logger.warn(e);
                     }

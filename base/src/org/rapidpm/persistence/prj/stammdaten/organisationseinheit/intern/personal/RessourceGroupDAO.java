@@ -26,10 +26,9 @@ public class RessourceGroupDAO extends BaseDAO<Long, RessourceGroup> {
         return entityManager.createQuery("from RessourceGroup b", RessourceGroup.class).getResultList();
     }
 
-    public RessourceGroup loadRessourceGroup(final String login, final String mandantengruppe) {
-        final TypedQuery<RessourceGroup> typedQuery = entityManager.createQuery("from RessourceGroup b " + "where b.login=:login " + "and b.mandantengruppe.mandantengruppe=:mandantengruppe", RessourceGroup.class).setParameter("login", login).setParameter(
-                "mandantengruppe",
-                mandantengruppe);
+    public RessourceGroup loadRessourceGroupByName(final String name) {
+        final TypedQuery<RessourceGroup> typedQuery = entityManager.createQuery("from RessourceGroup b " + "where b" +
+                ".name=:name ", RessourceGroup.class).setParameter("name", name);
         final RessourceGroup singleResultOrNull = getSingleResultOrNull(typedQuery);
         return singleResultOrNull;
         //        return createWhereClause()
@@ -371,55 +370,7 @@ public class RessourceGroupDAO extends BaseDAO<Long, RessourceGroup> {
     }
 
 
-    public boolean checkIfRessourceGroupLoginIsAvailable(final String wishedLogin, final String mandantengruppe) {
-        //        boolean loginAvailable = false;
-        final RessourceGroup benutzer = loadRessourceGroup(wishedLogin, mandantengruppe);
-        if (benutzer == null) {
-            //prüefe ob registration vorhanden..
-            //            final String sql = "select id from registration r \n" +
-            //                    "where r.mandantengruppe_id=(" + SQLCreator.mandantengruppeID(mandantengruppe) + ")" +
-            //                    "and r.login = '" + wishedLogin + "'";
-            //            final RessourceGroup registration = createQuery(sql).findUnique();
-//            final RegistrationDAO registrationDAO = new RegistrationDAO(entityManager);
-//            return registrationDAO.checkIfLoginIsAvailable(wishedLogin, mandantengruppe);
-            return true;
-        } else {
-            logger.info("Login wird schon aktiv verwendet : " + wishedLogin + " / " + mandantengruppe);
-            return false;
-        }
 
-        //        final ObjectSet<RessourceGroup> objSetOne = entityManager.query(new Predicate<RessourceGroup>() {
-        //            @Override
-        //            public boolean match(final RessourceGroup benutzer) {
-        //                final boolean b1 = benutzer.getLogin().equals(wishedLogin);
-        //                final boolean b2 = benutzer.getMandantengruppe().getMandantengruppe().equals(mandantengruppe);
-        //                return b1 && b2;
-        //            }
-        //        });
-        //        final int i = objSetOne.size();
-        //        if (i == 0) {
-        //            final ObjectSet<Registration> objSetTwo = entityManager.query(new Predicate<Registration>() {
-        //                @Override
-        //                public boolean match(final Registration registration) {
-        //                    final boolean b1 = registration.getMandantengruppe().getMandantengruppe().equals(mandantengruppe);
-        //                    final boolean b2 = registration.getLogin().equals(wishedLogin);
-        //                    return b1 && b2;
-        //                }
-        //            });
-        //            final int j = objSetTwo.size();
-        //            if (j == 0) {
-        //                //alles ok registrieren
-        //                logger.info("WishedLogin ist frei..." + wishedLogin);
-        //                loginAvailable = true;
-        //            } else {
-        //                //Login schon vorhanden
-        //                logger.info("Login ist noch frei wurde aber schon in einem Request angefragt.. " + wishedLogin + " / " + mandantengruppe);
-        //            }
-        //        } else {
-        //            logger.info("Login wird schon aktiv verwendet : " + wishedLogin + " / " + mandantengruppe);
-        //        }
-        //        return loginAvailable;
-    }
 
     public RessourceGroup loadRessourceGroupByEmail(final String email) {
         final TypedQuery<RessourceGroup> typedQuery = entityManager.createQuery(
