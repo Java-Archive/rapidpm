@@ -383,11 +383,19 @@ public class DaoFactory {
     }
 
     public <T> void remove(T entity) {
-        getEntityManager().remove(entity);
+        T theentity = this.getEntityManager().merge(entity);
+        this.getEntityManager().remove(theentity);
     }
 
     public <T> void saveOrUpdate(T entity) {
-        getEntityManager().persist(entity);
+        if (logger.isInfoEnabled()) {
+            logger.info("saveOrUpdateTX entity " + entity);
+        }
+        if (entity == null) {
+            getEntityManager().persist(entity);
+        } else {
+            getEntityManager().merge(entity);
+        }
     }
 
     public BaseDAO.EntityUtils getEntityUtils() {

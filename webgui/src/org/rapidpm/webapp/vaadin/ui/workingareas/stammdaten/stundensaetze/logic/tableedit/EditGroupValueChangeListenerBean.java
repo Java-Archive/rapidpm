@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents;
+package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit;
 
 import org.rapidpm.persistence.DaoFactoryBean;
 
@@ -12,9 +12,9 @@ import javax.ejb.TransactionManagement;
  * Date: 24.05.12
  * Time: 11:00
  */
-@Stateless(name = "StundensaetzeAddBeanEJB")
+@Stateless(name = "StundensaetzeUpdateEJB")
 @TransactionManagement
-public class AddRowWindowBean {
+public class EditGroupValueChangeListenerBean {
 
     @EJB(beanName = "DaoFactoryEJB")
     private DaoFactoryBean baseDaoFactoryBean;

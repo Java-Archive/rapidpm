@@ -145,7 +145,8 @@ public class BaseDAO<K extends Number, E> implements Serializable {
                     logger.info("Obj ist keine Entity..");
                 }
             } else {
-                getEntityManager().remove(entity);
+                T theentity = this.getEntityManager().merge(entity);
+                this.getEntityManager().remove(theentity);
             }
         }
     }

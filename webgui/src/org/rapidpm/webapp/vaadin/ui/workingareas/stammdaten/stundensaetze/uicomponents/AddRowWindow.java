@@ -32,12 +32,10 @@ public class AddRowWindow extends Window {
     private Button cancelButton = new Button();
     private RowFieldGroup fieldGroup;
     private ResourceBundle messages;
-    private StundensaetzeScreen screen;
     private AddRowWindowBean addRowWindowBean;
 
     public AddRowWindow(final MainUI ui, final StundensaetzeScreen screen) {
         this.ui = ui;
-        this.screen = screen;
         messages = screen.getMessagesBundle();
         setHeight(HEIGHT);
         setWidth(WIDTH);
@@ -46,7 +44,6 @@ public class AddRowWindow extends Window {
 
         addRowWindowBean = EJBFactory.getEjbInstance(AddRowWindowBean.class);
         final DaoFactoryBean baseDaoFactoryBean = addRowWindowBean.getDaoFactoryBean();
-        final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
 
         fieldGroup = new RowFieldGroup();
 
@@ -115,12 +112,7 @@ public class AddRowWindow extends Window {
                         //transiente RessourceGroup in DB speichern
                         baseDaoFactoryBean.saveOrUpdate(ressourceGroup);
 
-                        //persistente RessourceGroup aus DB holen
-                        final RessourceGroup ressourceGroupFromDB = ressourceGroupDAO.loadRessourceGroupByName
-                                (ressourceGroup.getName());
-
-                        //tabelle aktualisieren
-                        tabelle.addItem(ressourceGroupFromDB);
+                        screen.generateTableAndCalculate();
 
                         AddRowWindow.this.close();
                     } catch (CommitException e) {

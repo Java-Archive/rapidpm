@@ -3,15 +3,10 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Component.Event;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Table;
 import org.apache.log4j.Logger;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.EditModeGetter;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.EditModes;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.RowEditFieldFactory;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.ItemClickDependentComponent;
 
@@ -25,71 +20,37 @@ public class StundensaetzeItemClickListener implements ItemClickListener {
     private List<ItemClickDependentComponent> components = new ArrayList<ItemClickDependentComponent>();
 
     private boolean state = false;
-    private Layout upperFormLayout;
-    private Layout lowerFormLayout;
-    private Layout formLayout;
-    private Button saveButton;
+    private Layout saveButtonLayout;
     private Button deleteButton;
     private Table tabelle;
-    private StundensaetzeScreen screen;
 
-    public StundensaetzeItemClickListener(final StundensaetzeScreen screen, final List<ItemClickDependentComponent>
-                                            components, final Button deleteButton, final Layout upperFormLayout,
-                                          final Layout lowerFormLayout, final Layout formLayout,
-                                          final Button saveButton, final Table tabelle) {
+    public StundensaetzeItemClickListener(final List<ItemClickDependentComponent> components,
+                                          final Button deleteButton, final Layout saveButtonLayout,
+                                          final Table tabelle) {
         this.components = components;
         this.deleteButton = deleteButton;
-        this.upperFormLayout = upperFormLayout;
-        this.lowerFormLayout = lowerFormLayout;
-        this.formLayout = formLayout;
-        this.saveButton = saveButton;
+        this.saveButtonLayout = saveButtonLayout;
         this.tabelle = tabelle;
-        this.screen = screen;
         informComponents(state);
     }
 
     @Override
     public void itemClick(final ItemClickEvent event) {
-
-        if (EditModeGetter.getMode() == EditModes.ROWEDIT) {
-            formLayout.setVisible(true);
-            lowerFormLayout.setVisible(true);
-            upperFormLayout.setVisible(true);
+        tabelle.setEditable(true);
+        final RessourceGroup selectedRessourceGroup = (RessourceGroup) event.getItemId();
+            saveButtonLayout.setVisible(true);
             final RowEditFieldFactory fieldFactory = new RowEditFieldFactory(event.getItem());
-
-            upperFormLayout.removeAllComponents();
-            for (final Object listener : saveButton.getListeners(Event.class)) {
-                if (listener instanceof ClickListener) {
-                    saveButton.removeClickListener((ClickListener) listener);
-                }
-            }
             deleteButton.setEnabled(true);
             tabelle.setTableFieldFactory(fieldFactory);
-            tabelle.setEditable(true);
-            saveButton.addClickListener(new ClickListener() {
-
-                @Override
-                public void buttonClick(ClickEvent event) {
-                    try {
-                        tabelle.commit();
-                        //screen.generateTableAndCalculate();
-                        upperFormLayout.setVisible(false);
-                        saveButton.setVisible(false);
-                    } catch(Exception e){
-                        logger.warn("Exception", e);
-                    }
-                }
-            });
-            saveButton.setVisible(true);
-            if (event.getItemId() == null)
+            if (selectedRessourceGroup == null)
                 state = false;
             else {
-                final Object itemId = event.getItemId();
+                final Object itemId = selectedRessourceGroup;
                 informComponents(itemId);
                 state = true;
             }
             informComponents(state);
-        }
+
     }
 
     private void informComponents(boolean state) {

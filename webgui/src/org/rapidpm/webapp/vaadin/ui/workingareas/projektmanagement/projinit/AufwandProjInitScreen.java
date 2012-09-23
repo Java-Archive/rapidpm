@@ -102,7 +102,7 @@ public class AufwandProjInitScreen extends Screen {
     @Override
     public void doInternationalization() {
         expandCheckBox.setCaption(messagesBundle.getString("costsinit_expand"));
-        saveButton.setCaption(messagesBundle.getString("save"));
+        saveButton.setCaption(messagesBundle.getString("saveOrUpdate"));
         undoButton.setCaption(messagesBundle.getString("costsinit_removesortorder"));
         kundeField.setCaption(messagesBundle.getString("initscreen_customer"));
         projektField.setCaption(messagesBundle.getString("initscreen_project"));
