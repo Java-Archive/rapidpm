@@ -5,7 +5,6 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.data.util.converter.Converter;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
@@ -20,11 +19,9 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.uicomponents.BenutzerEditor;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -38,7 +35,7 @@ public class BenutzerScreen extends Screen {
 
     private HorizontalLayout contentLayout = new HorizontalLayout();
 
-    public BenutzerScreen(MainUI ui) {
+    public BenutzerScreen(final MainUI ui) {
         super(ui);
         setSizeFull();
         contentLayout.setSizeFull();
@@ -102,9 +99,19 @@ public class BenutzerScreen extends Screen {
         final Button removeBenutzerButton = new Button("Benutzer lÃ¶schen", new Button.ClickListener() {
             @Override
             public void buttonClick(final Button.ClickEvent clickEvent) {
-                // TODO LÃ¶schbestÃ¤tigung
+                final Benutzer currentUser = (Benutzer) getSession().getAttribute(Benutzer.class);
+                final Object tableItemId = benutzerTable.getValue();
+                final BeanItem<Benutzer> beanItem = (BeanItem<Benutzer>) benutzerTable.getItem(tableItemId);
+                final Benutzer selectedBenutzer = beanItem.getBean();
 
-                benutzerTable.removeItem(benutzerTable.getValue());
+                final boolean isUserDeletingHimself = currentUser.getLogin().equals(selectedBenutzer.getLogin());
+
+                if(!isUserDeletingHimself){
+                    final StammdatenScreensBean stammdatenScreenBean = EJBFactory.getEjbInstance(StammdatenScreensBean.class);
+                    final DaoFactoryBean daoFactoryBean = stammdatenScreenBean.getDaoFactoryBean();
+                    daoFactoryBean.remove(selectedBenutzer);
+                    benutzerTable.removeItem(tableItemId);
+                }
             }
         });
         removeBenutzerButton.setEnabled(false);
@@ -129,7 +136,7 @@ public class BenutzerScreen extends Screen {
                 final BeanItem<Benutzer> item = (BeanItem<Benutzer>) itemClickEvent.getItem();
                 if (!benutzerTable.isSelected(itemClickEvent.getItemId())) {
                     Integer failedLogins = (Integer) item.getItemProperty("failedLogins").getValue();
-                    boolean isResetable =  failedLogins > 3;
+                    boolean isResetable =  failedLogins >= 3;
                     benutzerEditor.setBenutzerBean(item);
                     removeBenutzerButton.setEnabled(true);
                     resetFailedLoginsButton.setEnabled(isResetable);
