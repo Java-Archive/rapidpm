@@ -1,9 +1,11 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.uicomponents;
 
+import com.vaadin.data.Property;
 import com.vaadin.data.Validatable;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
@@ -22,6 +24,7 @@ import javax.persistence.EntityManager;
 import javax.transaction.UserTransaction;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -56,11 +59,15 @@ public class BenutzerEditor extends FormLayout {
     private final TextField loginTextField;
     private final PasswordField passwdTextField;
     private final TextField emailTextField;
+    private final DateField validFromDateField;
+    private final DateField validUntilDateFiled;
     private final DateField lastLoginDateField;
     private final ComboBox mandantengruppenSelect;
     private final ComboBox benutzerGruppenSelect;
     private final ComboBox benutzerWebapplikationenSelect;
     private final ListSelect berechtigungenSelect;
+    private final CheckBox isActiveCheckbox;
+    private final CheckBox isHiddenCheckBox;
 
     public BenutzerEditor() {
         setCaption("Benutzer-Editor");
@@ -87,6 +94,14 @@ public class BenutzerEditor extends FormLayout {
         emailTextField.addValidator(new EmailValidator("Ungültige E-Mail-Adresse"));
         emailTextField.setNullRepresentation("@rapidpm.org");
         addComponent(emailTextField);
+
+        validFromDateField = new DateField("Gültig von:");
+        validFromDateField.setConverter(Date.class);
+        addComponent(validFromDateField);
+
+        validUntilDateFiled = new DateField("Gültig bis:");
+        validUntilDateFiled.setDateFormat(BenutzerScreen.DATE_FORMAT.toPattern());
+        addComponent(validUntilDateFiled);
 
         lastLoginDateField = new DateField("Letzter Login");
         lastLoginDateField.setDateFormat(BenutzerScreen.DATE_FORMAT.toPattern());
@@ -122,6 +137,12 @@ public class BenutzerEditor extends FormLayout {
         berechtigungenSelect.setItemCaptionPropertyId("name");
         berechtigungenSelect.setMultiSelect(true);
         addComponent(berechtigungenSelect);
+
+        isActiveCheckbox = new CheckBox("Aktiv:");
+        addComponent(isActiveCheckbox);
+
+        isHiddenCheckBox = new CheckBox("Versteckt:");
+        addComponent(isHiddenCheckBox);
 
         addComponent(new Button("Speichern", new Button.ClickListener() {
             private final DaoFactoryBean daoFactoryBean = stammdatenScreenBean.getDaoFactoryBean();
@@ -160,6 +181,8 @@ public class BenutzerEditor extends FormLayout {
 
                     // Tabelle aktualisieren
 //                    benutzerBean.getItemProperty("id").setValue(Long.parseLong(idTextField.getValue().toString())); // ID wird von der DB verwaltet
+                    benutzerBean.getItemProperty("validFrom").setValue(validFromDateField.getValue());
+                    benutzerBean.getItemProperty("validUntil").setValue(validUntilDateFiled.getValue());
                     benutzerBean.getItemProperty("login").setValue(loginTextField.getValue());
                     benutzerBean.getItemProperty("passwd").setValue(passwdTextField.getValue());
                     benutzerBean.getItemProperty("email").setValue(emailTextField.getValue());
@@ -169,6 +192,8 @@ public class BenutzerEditor extends FormLayout {
                     benutzerBean.getItemProperty("benutzerGruppe").setValue(benutzerGruppenSelect.getValue());
                     benutzerBean.getItemProperty("benutzerWebapplikation").setValue(benutzerWebapplikationenSelect.getValue());
                     benutzerBean.getItemProperty("berechtigungen").setValue(berechtigungenList);
+                    benutzerBean.getItemProperty("active").setValue(isActiveCheckbox.getValue());
+                    benutzerBean.getItemProperty("hidden").setValue(isHiddenCheckBox.getValue());
 
                     // in die DB speichern
                     final Benutzer benutzer = benutzerBean.getBean();
@@ -181,6 +206,7 @@ public class BenutzerEditor extends FormLayout {
                 }
             }
         }));
+
     }
 
     public Benutzer getBenutzer() {
@@ -199,6 +225,8 @@ public class BenutzerEditor extends FormLayout {
         loginTextField.setValue(benutzer.getLogin());
         passwdTextField.setValue(benutzer.getPasswd());
         emailTextField.setValue(benutzer.getEmail());
+        validFromDateField.setValue(benutzer.getValidFrom());
+        validUntilDateFiled.setValue((benutzer.getValidUntil()));
         lastLoginDateField.setValue(benutzer.getLastLogin());
         mandantengruppenSelect.select(benutzer.getMandantengruppe());
         benutzerGruppenSelect.select(benutzer.getBenutzerGruppe());
@@ -209,6 +237,8 @@ public class BenutzerEditor extends FormLayout {
                 berechtigungenSelect.select(berechtigung);
             }
         }
+        isActiveCheckbox.setValue(benutzer.getActive());
+        isHiddenCheckBox.setValue(benutzer.getHidden());
     }
 
 
@@ -231,5 +261,4 @@ public class BenutzerEditor extends FormLayout {
         this.berechtigungen = berechtigungen;
         this.berechtigungenSelect.setContainerDataSource(new BeanItemContainer<>(Berechtigung.class, berechtigungen));
     }
-
 }

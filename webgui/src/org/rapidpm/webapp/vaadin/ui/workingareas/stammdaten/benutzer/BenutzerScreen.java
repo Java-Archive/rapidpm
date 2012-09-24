@@ -5,6 +5,7 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.data.util.converter.Converter;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
@@ -14,13 +15,16 @@ import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
 import org.rapidpm.persistence.system.security.berechtigungen.BerechtigungDAO;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.workingareas.FormattedDateStringToDateConverter;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.uicomponents.BenutzerEditor;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by IntelliJ IDEA.
@@ -69,25 +73,29 @@ public class BenutzerScreen extends Screen {
         benutzerEditor.setBenutzerWebapplikationen(benutzerWebapplikationen);
         benutzerEditor.setBerechtigungen(berechtigungen);
         contentLayout.addComponent(benutzerEditor);
-
         contentLayout.setExpandRatio(benutzerTableLayout, 3);
         contentLayout.setExpandRatio(benutzerEditor, 1);
 
         final BeanItemContainer<Benutzer> benutzerDS = new BeanItemContainer<>(Benutzer.class, benutzer);
         final Table benutzerTable = new Table("Benutzer", benutzerDS);
         benutzerTable.setWidth(100, Unit.PERCENTAGE);
-        benutzerTable.setVisibleColumns(new String[]{"id", "login", "email", "validUntil"});
-        benutzerTable.setColumnHeaders(new String[]{"ID", "Loginname", "E-Mail", "GÃ¼ltig Bis"});
+        benutzerTable.setVisibleColumns(new String[]{"id", "login", "email", "validFrom", "validUntil",
+                "failedLogins"});
+        benutzerTable.setColumnHeaders(new String[]{"ID", "Loginname", "E-Mail", "Gültig von", "Gültig bis",
+                "Fehlgeschlagene Logins"});
         benutzerTable.setSelectable(true);
+        benutzerTable.setConverter("validFrom", new FormattedDateStringToDateConverter(DATE_FORMAT));
+        benutzerTable.setConverter("validUntil", new FormattedDateStringToDateConverter(DATE_FORMAT));
+
 //        benutzerTable.setEditable(true);
-        benutzerTable.addGeneratedColumn("validUntil", new Table.ColumnGenerator() {
-            @Override
-            public Object generateCell(final Table table, final Object o, final Object o1) {
-                final Benutzer b = (Benutzer) o;
-                final Date lastLogin = b.getLastLogin();
-                return new Label(lastLogin != null ? DATE_FORMAT.format(lastLogin) : "-");
-            }
-        });
+//        benutzerTable.addGeneratedColumn("validUntil", new Table.ColumnGenerator() {
+//            @Override
+//            public Object generateCell(final Table table, final Object o, final Object o1) {
+//                final Benutzer b = (Benutzer) o;
+//                final Date lastLogin = b.getLastLogin();
+//                return new Label(lastLogin != null ? DATE_FORMAT.format(lastLogin) : "-");
+//            }
+//        });
         benutzerTableLayout.addComponent(mandantenBox);
         benutzerTableLayout.addComponent(benutzerTable);
 
@@ -101,18 +109,36 @@ public class BenutzerScreen extends Screen {
         });
         removeBenutzerButton.setEnabled(false);
 
+        final Button resetFailedLoginsButton = new Button("Loginversuche zurücsetzen", new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                final Object tableItemId = benutzerTable.getValue();
+                final BeanItem<Benutzer> beanItem = (BeanItem<Benutzer>) benutzerTable.getItem(tableItemId);
+                beanItem.getItemProperty("failedLogins").setValue(0);
+                final Benutzer selectedBenutzer = beanItem.getBean();
+                final StammdatenScreensBean stammdatenScreenBean = EJBFactory.getEjbInstance(StammdatenScreensBean.class);
+                final DaoFactoryBean daoFactoryBean = stammdatenScreenBean.getDaoFactoryBean();
+                daoFactoryBean.saveOrUpdate(selectedBenutzer);
+            }
+        });
+        resetFailedLoginsButton.setEnabled(false);
+
         benutzerTable.addItemClickListener(new ItemClickEvent.ItemClickListener() {
             @Override
             public void itemClick(final ItemClickEvent itemClickEvent) {
                 final BeanItem<Benutzer> item = (BeanItem<Benutzer>) itemClickEvent.getItem();
                 if (!benutzerTable.isSelected(itemClickEvent.getItemId())) {
+                    Integer failedLogins = (Integer) item.getItemProperty("failedLogins").getValue();
+                    boolean isResetable =  failedLogins > 3;
                     benutzerEditor.setBenutzerBean(item);
                     removeBenutzerButton.setEnabled(true);
+                    resetFailedLoginsButton.setEnabled(isResetable);
                 } else {
                     removeBenutzerButton.setEnabled(false);
                 }
             }
         });
+
 
         final HorizontalLayout benutzerButtonsLayout = new HorizontalLayout();
         benutzerButtonsLayout.setSpacing(true);
@@ -127,6 +153,8 @@ public class BenutzerScreen extends Screen {
         }));
 
         benutzerButtonsLayout.addComponent(removeBenutzerButton);
+        benutzerButtonsLayout.addComponent(resetFailedLoginsButton);
+
 
         mandantenBox.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
