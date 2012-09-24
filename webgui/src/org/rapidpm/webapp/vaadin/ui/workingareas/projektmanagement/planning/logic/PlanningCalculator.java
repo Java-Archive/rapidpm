@@ -45,9 +45,9 @@ public class PlanningCalculator {
 
     public void calculate() {
         planningCalculatorBean = EJBFactory.getEjbInstance(PlanningCalculatorBean.class);
-        DaoFactoryBean daoFactoryBean = planningCalculatorBean.getDaoFactoryBean();
-        PlannedProjectDAO plannedProjectDAO = daoFactoryBean.getPlannedProjectDAO();
-        List<PlannedProject> plannedProjects = plannedProjectDAO.loadPlannedProjects();
+        final DaoFactoryBean daoFactoryBean = planningCalculatorBean.getDaoFactoryBean();
+        final PlannedProjectDAO plannedProjectDAO = daoFactoryBean.getPlannedProjectDAO();
+        final List<PlannedProject> plannedProjects = plannedProjectDAO.loadAllEntities();
         projekt = plannedProjects.get(0);
         final RessourceGroupDAO ressourceGroupDAO = daoFactoryBean.getRessourceGroupDAO();
         ressourceGroups = ressourceGroupDAO.loadAllEntities();
