@@ -5,18 +5,17 @@ import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssuePrioritiesEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditablePanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 
 /**
  * Created with IntelliJ IDEA.
- * User: User
+ * User: Alvin Schiller
  * Date: 25.09.12
  * Time: 12:01
  * To change this template use File | Settings | File Templates.
  */
-public class IssueDetailsPanel extends Panel implements Internationalizationable{
-
-    final private String ICON = "icon";
+public class IssueDetailsPanel extends ComponentEditablePanel implements Internationalizationable{
 
     private IssueOverviewScreen screen;
 
@@ -25,60 +24,68 @@ public class IssueDetailsPanel extends Panel implements Internationalizationable
     private ComboBox prioritySelect;
     private ComboBox assigneeSelect;
     private Label reporterLabel;
-    private HorizontalLayout selectLayoutH;
+    private FormLayout componentsLayout;
 
     private TextArea descriptionTextArea;
 
 
 
     public IssueDetailsPanel(IssueOverviewScreen screen) {
+        super(screen);
         this.screen = screen;
         this.setSizeFull();
-        buildComponents();
         doInternationalization();
     }
 
 
-    private void buildComponents() {
+    @Override
+    protected FormLayout buildForm() {
+        componentsLayout = new FormLayout();
+
+        headerLabel = new Label();
+
         statusSelect = new ComboBox();
         for (IssueStatusEnum statusEnum : IssueStatusEnum.values()) {
             statusSelect.addItem(statusEnum);
             statusSelect.setItemIcon(statusEnum, statusEnum.getIcon());
         }
+        statusSelect.select(IssueStatusEnum.values()[0]);
         statusSelect.setTextInputAllowed(false);
         statusSelect.setNullSelectionAllowed(false);
-        addComponent(statusSelect);
+        statusSelect.setReadOnly(true);
+        componentsLayout.addComponent(statusSelect);
 
         prioritySelect = new ComboBox();
         for (IssuePrioritiesEnum prioritiesEnum : IssuePrioritiesEnum.values()) {
             prioritySelect.addItem(prioritiesEnum);
             prioritySelect.setItemIcon(prioritiesEnum, prioritiesEnum.getIcon());
         }
+        prioritySelect.select(IssuePrioritiesEnum.values()[0]);
         prioritySelect.setTextInputAllowed(false);
         prioritySelect.setNullSelectionAllowed(false);
-        addComponent(prioritySelect);
+        prioritySelect.setReadOnly(true);
+        componentsLayout.addComponent(prioritySelect);
 
         reporterLabel = new Label("sven.ruppert");
         reporterLabel.setValue("sven.ruppert");
-        addComponent(reporterLabel);
+        componentsLayout.addComponent(reporterLabel);
 
         assigneeSelect = new ComboBox();
         assigneeSelect.addItem("sven.ruppert");
+        assigneeSelect.select("sven.ruppert");
         assigneeSelect.setTextInputAllowed(false);
         assigneeSelect.setNullSelectionAllowed(false);
-        addComponent(assigneeSelect);
-
-
-        selectLayoutH = new HorizontalLayout();
+        assigneeSelect.setReadOnly(true);
+        componentsLayout.addComponent(assigneeSelect);
 
         descriptionTextArea = new TextArea();
         descriptionTextArea.setWidth("100%");
-        addComponent(descriptionTextArea);
+        descriptionTextArea.setReadOnly(true);
+        componentsLayout.addComponent(descriptionTextArea);
+
+        return componentsLayout;
     }
 
-    public TextArea getDescriptionTextArea() {
-        return descriptionTextArea;
-    }
 
     @Override
     public void doInternationalization() {
@@ -88,4 +95,14 @@ public class IssueDetailsPanel extends Panel implements Internationalizationable
         reporterLabel.setCaption(screen.getMessagesBundle().getString("issue_reporter"));
         descriptionTextArea.setCaption(screen.getMessagesBundle().getString("issue_description"));
     }
+
+
+    public TextArea getDescriptionTextArea() {
+        return descriptionTextArea;
+    }
+
+    public Label getHeaderLabel() {
+        return headerLabel;
+    }
+
 }

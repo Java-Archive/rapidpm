@@ -6,7 +6,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uic
 
 /**
  * Created with IntelliJ IDEA.
- * User: User
+ * User: Alvin Schiller
  * Date: 25.09.12
  * Time: 11:37
  * To change this template use File | Settings | File Templates.
@@ -21,8 +21,10 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
 
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
-        if (event.getProperty().getValue() != null) {
-            detailsPanel.getDescriptionTextArea().setValue(event.getProperty().getValue());
+        Object value = event.getProperty().getValue();
+        if (value != null) {
+            detailsPanel.getDescriptionTextArea().setValue(value);
+            detailsPanel.getHeaderLabel().setValue(value);
         }
     }
 }

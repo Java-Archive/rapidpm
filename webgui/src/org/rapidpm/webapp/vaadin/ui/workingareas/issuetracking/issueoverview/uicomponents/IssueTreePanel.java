@@ -7,7 +7,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.log
 
 /**
  * Created with IntelliJ IDEA.
- * User: User
+ * User: Alvin Schiller
  * Date: 20.09.12
  * Time: 15:56
  * To change this template use File | Settings | File Templates.
