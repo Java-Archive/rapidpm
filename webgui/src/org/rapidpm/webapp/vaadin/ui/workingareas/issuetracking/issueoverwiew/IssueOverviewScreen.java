@@ -27,7 +27,7 @@ public class IssueOverviewScreen extends Screen{
     public IssueOverviewScreen(MainUI ui) {
         super(ui);
         hSplitPanel = new HorizontalSplitPanel();
-        hSplitPanel.setSplitPosition(40, Unit.PERCENTAGE);
+        hSplitPanel.setSplitPosition(30, Unit.PERCENTAGE);
         hSplitPanel.setSizeFull();
         treePanel = new Panel();
         treePanel.setHeight("200px");
@@ -40,13 +40,29 @@ public class IssueOverviewScreen extends Screen{
     }
 
     private void fillTreeWithIssues() {
+//        Object item = issueTree.addItem();
+//        Object item2 = issueTree.addItem();
+//        issueTree.setChildrenAllowed(item, true);
+//        issueTree.setParent(item2, item);
 
+
+
+        Object itemId;
+        Object oldItemId = issueTree.addItem("First");
+        for (int i = 10; i < 16 ; i++) {
+            itemId = issueTree.addItem(i);
+            issueTree.setChildrenAllowed(oldItemId, true);
+            issueTree.setParent(itemId, oldItemId);
+
+            oldItemId = itemId;
+        }
     }
 
     @Override
     public void setComponents() {
 
         treePanel.addComponent(issueTree);
+        fillTreeWithIssues();
         hSplitPanel.addComponent(treePanel);
         buttonLayout.addComponent(saveButton);
         buttonLayout.addComponent(cancelButton);

@@ -15,6 +15,6 @@ public class IssueHeader extends HorizontalLayout {
     private Label lblProject;
 
     public IssueHeader() {
-        lblProject = new Label("Was geht ab!");
+        lblProject = new Label();
     }
 }
