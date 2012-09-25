@@ -1,0 +1,28 @@
+package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic;
+
+import com.vaadin.data.Property;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsPanel;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTreePanel;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: User
+ * Date: 25.09.12
+ * Time: 11:37
+ * To change this template use File | Settings | File Templates.
+ */
+public class TreeValueChangeListener implements Property.ValueChangeListener {
+
+    private IssueDetailsPanel detailsPanel;
+
+    public TreeValueChangeListener(IssueDetailsPanel detailsPanel) {
+        this.detailsPanel = detailsPanel;
+    }
+
+    @Override
+    public void valueChange(Property.ValueChangeEvent event) {
+        if (event.getProperty().getValue() != null) {
+            detailsPanel.getDescriptionTextArea().setValue(event.getProperty().getValue());
+        }
+    }
+}
