@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -100,7 +101,7 @@ public class BaseDAO<K extends Number, E> implements Serializable {
     }
 
     public AuditReader getAuditReader() {
-        return AuditReaderFactory.get(getEntityManager());
+        return AuditReaderFactory.get(entityManager);
     }
 
     public EntityUtils getEntityUtils() {
@@ -117,8 +118,9 @@ public class BaseDAO<K extends Number, E> implements Serializable {
                 logger.info("Entity war null....");
             }
         } else {
-            final Class<? extends Object> aClass = entity.getClass();
+            final Class<?> aClass = entity.getClass();
             final Entity annotation = aClass.getAnnotation(Entity.class);
+            //noinspection VariableNotUsedInsideIf
             if (annotation == null) {
                 if (logger.isInfoEnabled()) {
                     logger.info("Obj ist keine Entity.." + entity);
@@ -138,14 +140,16 @@ public class BaseDAO<K extends Number, E> implements Serializable {
                 logger.info("Entity war null....");
             }
         } else {
-            final Class<? extends Object> aClass = entity.getClass();
+            final Class<?> aClass = entity.getClass();
             final Entity annotation = aClass.getAnnotation(Entity.class);
+            //noinspection VariableNotUsedInsideIf
             if (annotation == null) {
                 if (logger.isInfoEnabled()) {
                     logger.info("Obj ist keine Entity..");
                 }
             } else {
-                getEntityManager().remove(entity);
+                final T theentity = this.entityManager.merge(entity);
+                this.entityManager.remove(theentity);
             }
         }
     }
@@ -162,14 +166,16 @@ public class BaseDAO<K extends Number, E> implements Serializable {
         } else {
             final Long oid = entityUtils.getOIDFromEntity(entity);
             if (oid == null || oid == -1L) {
-                getEntityManager().persist(entity);
+                entityManager.persist(entity);
             } else {
-                getEntityManager().merge(entity);
+                entityManager.merge(entity);
             }
         }
     }
 
     public <T> void saveOrUpdateTX(final T entity) {
+        Integer i = null;
+        i++;
         if (logger.isInfoEnabled()) {
             logger.info("saveOrUpdateTX entity " + entity);
         }
@@ -210,6 +216,9 @@ public class BaseDAO<K extends Number, E> implements Serializable {
     }
 
     private class SimpleRemoveTransaction<T> {
+        private SimpleRemoveTransaction() {
+        }
+
         public void remove(final T entity) {
             new Transaction() {
 
@@ -223,6 +232,9 @@ public class BaseDAO<K extends Number, E> implements Serializable {
     }
 
     private class SimplePersistTransaction<T> {
+        private SimplePersistTransaction() {
+        }
+
         public void persist(final T entity) {
             new Transaction() {
 
@@ -236,6 +248,9 @@ public class BaseDAO<K extends Number, E> implements Serializable {
     }
 
     private class SimpleMergeTransaction<T> {
+        private SimpleMergeTransaction() {
+        }
+
         public void persist(final T entity) {
             new Transaction() {
 
@@ -251,6 +266,9 @@ public class BaseDAO<K extends Number, E> implements Serializable {
     @TransactionAttribute(value = TransactionAttributeType.REQUIRES_NEW)
     public abstract class Transaction {
         private final EntityTransaction transaction = entityManager.getTransaction();
+
+        protected Transaction() {
+        }
 
         public abstract void doTask();
 
@@ -276,7 +294,10 @@ public class BaseDAO<K extends Number, E> implements Serializable {
     }
 
 
-    public static class EntityUtils<T> {
+    public static class EntityUtils {
+
+        public EntityUtils() {
+        }
 
         public <T> Long getOIDFromEntity(final T entity) {
             Long oid = -1L;
@@ -315,31 +336,12 @@ public class BaseDAO<K extends Number, E> implements Serializable {
     }
 
 
-//    public static abstract class BaseDAO<K extends Number, E extends Object> {
-//        private static final Logger logger = Logger.getLogger(BaseDAO.class);
-//        /**
-//         * Die Aktion ist in einer Transaktion gekapselt.
-//         * Liefert true zurück wenn der Forgang erfolgreich absolviert wurde.
-//         *
-//         * @param entity die zu löschende Entität
-//         * @return true wenn alles OK ist sonst false
-//         */
-//        public boolean remove(final E entity) {
-//            if (entity == null) {
-//                return false;
-//            }
-//            entityManager.remove(entity);
-//            return true;
-//        }
-
-
-    //    /**
-    //     * Liefert die Entität passend zum PKey
-    //     *
-    //     * @param id PKey der Entität
-    //     *
-    //     * @return Die Entität oder null falls nichts gefunden wurde.
-    //     */
+    /**
+     * Liefert die Entität passend zum PKey
+     *
+     * @param id PKey der Entität
+     * @return Die Entität oder null falls nichts gefunden wurde.
+     */
     public E findByID(final Long id) {
         final TypedQuery<E> query = entityManager.createQuery("from " + entityClass.getName() + " e where e.id=:id", entityClass);
         final TypedQuery<E> typedQuery = query.setParameter("id", id);
@@ -350,7 +352,11 @@ public class BaseDAO<K extends Number, E> implements Serializable {
         final AuditReader reader = AuditReaderFactory.get(entityManager);
         final AuditQueryCreator queryCreator = reader.createQuery();
         final AuditQuery auditQuery = queryCreator.forRevisionsOfEntity(entityClass, true, false).add(AuditEntity.id().eq(oid));
-        return auditQuery.getResultList();
+        if (auditQuery == null) {
+            return Collections.emptyList();
+        } else {
+            return auditQuery.getResultList();
+        }
     }
 
     //TODO die Abfrage fehlt noch..
@@ -358,6 +364,9 @@ public class BaseDAO<K extends Number, E> implements Serializable {
         private E entity;
         private int revision;
         private int revisionType;
+
+        public RevisionEntity() {
+        }
 
         @Override
         public String toString() {
