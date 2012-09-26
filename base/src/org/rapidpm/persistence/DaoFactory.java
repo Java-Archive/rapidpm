@@ -391,10 +391,11 @@ public class DaoFactory {
         if (logger.isInfoEnabled()) {
             logger.info("saveOrUpdateTX entity " + entity);
         }
-        if (entity == null) {
-            getEntityManager().persist(entity);
-        } else {
+        if (entity != null) {
             getEntityManager().merge(entity);
+        }
+        else{
+            logger.warn("entity was null.");
         }
     }
 
