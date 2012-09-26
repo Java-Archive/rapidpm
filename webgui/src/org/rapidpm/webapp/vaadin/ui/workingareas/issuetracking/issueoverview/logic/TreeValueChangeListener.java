@@ -23,7 +23,9 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
     public void valueChange(Property.ValueChangeEvent event) {
         Object value = event.getProperty().getValue();
         if (value != null) {
+            detailsPanel.getDescriptionTextArea().setReadOnly(false);
             detailsPanel.getDescriptionTextArea().setValue(value);
+            detailsPanel.getDescriptionTextArea().setReadOnly(true);
             detailsPanel.getHeaderLabel().setValue(value);
         }
     }

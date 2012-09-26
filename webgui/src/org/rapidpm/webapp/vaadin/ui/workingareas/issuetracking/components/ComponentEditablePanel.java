@@ -19,7 +19,7 @@ public abstract class ComponentEditablePanel extends Panel{
     protected Button cancelButton;
     protected ResourceBundle messages;
 
-    protected FormLayout componentsLayout;
+    protected AbstractOrderedLayout componentsLayout;
     protected HorizontalLayout buttonLayout;
 
     public ComponentEditablePanel(final Screen screen){
@@ -34,20 +34,7 @@ public abstract class ComponentEditablePanel extends Panel{
         cancelButton = new Button();
         cancelButton.setCaption(messages.getString("cancel"));
         cancelButton.addClickListener(addCancelButtonClickListener(this));
-        this.addClickListener(new MouseEvents.ClickListener() {
-
-            @Override
-            public void click(MouseEvents.ClickEvent event) {
-                final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
-                while (componentIterator.hasNext()) {
-                    final Component component = componentIterator.next();
-                    if (component instanceof Field) {
-                        component.setReadOnly(false);
-                    }
-                }
-                buttonLayout.setVisible(true);
-            }
-        });
+        this.addClickListener(new PanelMouseClickListener());
 
         buttonLayout.addComponent(saveButton);
         buttonLayout.addComponent(cancelButton);
@@ -57,7 +44,7 @@ public abstract class ComponentEditablePanel extends Panel{
     }
 
 
-    protected abstract FormLayout buildForm();
+    protected abstract AbstractOrderedLayout buildForm();
 
     protected Button.ClickListener addSaveButtonClickListener(ComponentEditablePanel panel) {
         return new CancelButtonStandardClickListener();
@@ -69,15 +56,42 @@ public abstract class ComponentEditablePanel extends Panel{
 
 
 
+    private class PanelMouseClickListener implements MouseEvents.ClickListener {
+
+            @Override
+            public void click(MouseEvents.ClickEvent event) {
+                iterateLayout(componentsLayout);
+            }
+
+            private void iterateLayout(AbstractOrderedLayout layout) {
+                final Iterator<Component> componentIterator = layout.getComponentIterator();
+                while (componentIterator.hasNext()) {
+                    final Component component = componentIterator.next();
+                    if (component instanceof AbstractOrderedLayout) {
+                        iterateLayout((AbstractOrderedLayout) component);
+                    } else if (component instanceof Field) {
+                        component.setReadOnly(false);
+                    }
+                }
+                buttonLayout.setVisible(true);
+            }
+    }
+
 
     private class CancelButtonStandardClickListener implements Button.ClickListener {
 
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
+            iterateLayout(componentsLayout);
+        }
+
+        private void iterateLayout(AbstractOrderedLayout layout) {
+            final Iterator<Component> componentIterator = layout.getComponentIterator();
             while (componentIterator.hasNext()) {
                 final Component component = componentIterator.next();
-                if (component instanceof Field) {
+                if (component instanceof AbstractOrderedLayout) {
+                    iterateLayout((AbstractOrderedLayout) component);
+                } else if (component instanceof Field) {
                     component.setReadOnly(true);
                 }
             }

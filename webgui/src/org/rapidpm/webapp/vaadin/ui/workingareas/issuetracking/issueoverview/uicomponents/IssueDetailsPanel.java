@@ -1,12 +1,15 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents;
 
 import com.vaadin.data.Item;
+import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssuePrioritiesEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditablePanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
+
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,7 +27,11 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
     private ComboBox prioritySelect;
     private ComboBox assigneeSelect;
     private Label reporterLabel;
-    private FormLayout componentsLayout;
+    private DateField plannedDateField;
+    private DateField resolvedDateField;
+    private DateField closedDateField;
+
+    private VerticalLayout componentsLayout;
 
     private TextArea descriptionTextArea;
 
@@ -39,8 +46,12 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
 
 
     @Override
-    protected FormLayout buildForm() {
-        componentsLayout = new FormLayout();
+    protected AbstractOrderedLayout buildForm() {
+        componentsLayout = new VerticalLayout();
+
+        FormLayout dateLayout = new FormLayout();
+        FormLayout detailLayout = new FormLayout();
+        HorizontalLayout horLayout = new HorizontalLayout();
 
         headerLabel = new Label();
 
@@ -53,7 +64,7 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
         statusSelect.setTextInputAllowed(false);
         statusSelect.setNullSelectionAllowed(false);
         statusSelect.setReadOnly(true);
-        componentsLayout.addComponent(statusSelect);
+        detailLayout.addComponent(statusSelect);
 
         prioritySelect = new ComboBox();
         for (IssuePrioritiesEnum prioritiesEnum : IssuePrioritiesEnum.values()) {
@@ -64,11 +75,11 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
         prioritySelect.setTextInputAllowed(false);
         prioritySelect.setNullSelectionAllowed(false);
         prioritySelect.setReadOnly(true);
-        componentsLayout.addComponent(prioritySelect);
+        detailLayout.addComponent(prioritySelect);
 
         reporterLabel = new Label("sven.ruppert");
-        reporterLabel.setValue("sven.ruppert");
-        componentsLayout.addComponent(reporterLabel);
+        reporterLabel.setValue(" sven.ruppert");
+        detailLayout.addComponent(reporterLabel);
 
         assigneeSelect = new ComboBox();
         assigneeSelect.addItem("sven.ruppert");
@@ -76,12 +87,36 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
         assigneeSelect.setTextInputAllowed(false);
         assigneeSelect.setNullSelectionAllowed(false);
         assigneeSelect.setReadOnly(true);
-        componentsLayout.addComponent(assigneeSelect);
+        detailLayout.addComponent(assigneeSelect);
+
+        plannedDateField = new DateField();
+        plannedDateField.setResolution(Resolution.DAY);
+        plannedDateField.setValue(new Date());
+        plannedDateField.setReadOnly(true);
+        dateLayout.addComponent(plannedDateField);
+
+        resolvedDateField = new DateField();
+        resolvedDateField.setResolution(Resolution.DAY);
+        resolvedDateField.setValue(new Date());
+        resolvedDateField.setReadOnly(true);
+        dateLayout.addComponent(resolvedDateField);
+
+        closedDateField = new DateField();
+        closedDateField.setResolution(Resolution.DAY);
+        closedDateField.setValue(new Date());
+        closedDateField.setReadOnly(true);
+        dateLayout.addComponent(closedDateField);
+
+        horLayout.addComponent(detailLayout);
+        horLayout.addComponent(dateLayout);
+        componentsLayout.addComponent(horLayout);
 
         descriptionTextArea = new TextArea();
         descriptionTextArea.setWidth("100%");
         descriptionTextArea.setReadOnly(true);
         componentsLayout.addComponent(descriptionTextArea);
+
+
 
         return componentsLayout;
     }
@@ -93,6 +128,9 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
         prioritySelect.setCaption(screen.getMessagesBundle().getString("issue_priority"));
         assigneeSelect.setCaption(screen.getMessagesBundle().getString("issue_assignee"));
         reporterLabel.setCaption(screen.getMessagesBundle().getString("issue_reporter"));
+        plannedDateField.setCaption(screen.getMessagesBundle().getString("issue_planned"));
+        resolvedDateField.setCaption(screen.getMessagesBundle().getString("issue_resolved"));
+        closedDateField.setCaption(screen.getMessagesBundle().getString("issue_closed"));
         descriptionTextArea.setCaption(screen.getMessagesBundle().getString("issue_description"));
     }
 
