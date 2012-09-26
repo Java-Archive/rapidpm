@@ -7,9 +7,8 @@ import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import org.apache.log4j.Logger;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitElement;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.ProjektmanagementScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
@@ -51,16 +50,16 @@ public class SaveButtonClickListener implements ClickListener {
             final Item item = screen.getDataSource().getItem(itemId);
             final String planningUnitName = item.getItemProperty(messages.getString("aufgabe")).getValue().toString();
             if (knotenBlattEnum.equals(KnotenBlattEnum.PLANNING_UNIT_GROUP)) {
-                for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
-                    if (planningUnitGroup.getPlanningUnitGroupName().equals(itemId)) {
-                        planningUnitGroup.setPlanningUnitGroupName(planningUnitName);
+                for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
+                    if (planningUnit.getPlanningUnitName().equals(itemId)) {
+                        planningUnit.setPlanningUnitName(planningUnitName);
                     }
                 }
             } else {
-                final List<PlanningUnitGroup> planningUnitGroups = projekt.getPlanningUnitGroups();
-                for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
+                final List<PlanningUnit> planningUnits = projekt.getPlanningUnits();
+                for (final PlanningUnit planningUnit : planningUnits) {
                     if (foundPlanningUnit == null) {
-                        getPlanningUnit(planningUnitGroup.getPlanningUnitList(), itemId.toString());
+                        getPlanningUnit(planningUnit.getKindPlanningUnits(), itemId.toString());
                     }
                 }
                 if (knotenBlattEnum.equals(KnotenBlattEnum.PLANNING_UNIT_KNOTEN)) {

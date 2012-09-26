@@ -69,7 +69,7 @@ public class IssueBaseDAOBean {
             typeObj.setDueDate_planned(flatTypeEntity.getDueDate_planned());
             typeObj.setDueDate_resolved(flatTypeEntity.getDueDate_resolved());
 
-            typeObj.setFakturierbar(flatTypeEntity.getFakturierbar());
+//            typeObj.setFakturierbar(flatTypeEntity.getFakturierbar());
 
             typeObj.setId(flatTypeEntity.getId());
 
@@ -79,11 +79,11 @@ public class IssueBaseDAOBean {
             final Long issueStatusOID = flatTypeEntity.getIssueStatusOID();
             typeObj.setIssueStatus(daoFactoryBean.getIssueStatusDAO().findByID(issueStatusOID));
 
-            final Long issueTimeUnitEstimatedOID = flatTypeEntity.getIssueTimeUnitEstimatedOID();
-            typeObj.setIssueTimeUnitEstimated(daoFactoryBean.getIssueTimeUnitDAO().findByID(issueTimeUnitEstimatedOID));
-
-            final List<Long> issueTimeUnitsUsedOIDs = flatTypeEntity.getIssueTimeUnitsUsedOIDs();
-            typeObj.setIssueTimeUnitsUsed(daoFactoryBean.getIssueTimeUnitDAO().loadWithOIDList(issueTimeUnitsUsedOIDs));
+//            final Long issueTimeUnitEstimatedOID = flatTypeEntity.getIssueTimeUnitEstimatedOID();
+//            typeObj.setIssueTimeUnitEstimated(daoFactoryBean.getIssueTimeUnitDAO().findByID(issueTimeUnitEstimatedOID));
+//
+//            final List<Long> issueTimeUnitsUsedOIDs = flatTypeEntity.getIssueTimeUnitsUsedOIDs();
+//            typeObj.setIssueTimeUnitsUsed(daoFactoryBean.getIssueTimeUnitDAO().loadWithOIDList(issueTimeUnitsUsedOIDs));
 
             typeObj.setReporter(daoFactoryBean.getBenutzerDAO().findByID(flatTypeEntity.getIssueReporterOID()));
             typeObj.setSummary(flatTypeEntity.getSummary());
@@ -288,7 +288,7 @@ public class IssueBaseDAOBean {
 
             @Override
             public List<IssueTimeUnit> getCollection(final IssueBase issueBase) {
-                return issueBase.getIssueTimeUnitsUsed();
+                return null;//issueBase.getIssueTimeUnitsUsed();
             }
 
             @Override
@@ -331,17 +331,17 @@ public class IssueBaseDAOBean {
         ft.setIssuePriorityOID(t.getIssuePriority().getId());
         ft.setIssueStatusOID(t.getIssuePriority().getId());
 
-        final IssueTimeUnit issueTimeUnitEstimated = t.getIssueTimeUnitEstimated();
-        if (issueTimeUnitEstimated != null) {
-            ft.setIssueTimeUnitEstimatedOID(issueTimeUnitEstimated.getId());
-        }
-        final List<IssueTimeUnit> issueTimeUnitsUsed = t.getIssueTimeUnitsUsed();
-        if (issueTimeUnitsUsed != null) {
-            ft.setIssueTimeUnitsUsedOIDs(new ArrayList<Long>());
-            for (final IssueTimeUnit issueTimeUnit : issueTimeUnitsUsed) {
-                ft.getIssueTimeUnitsUsedOIDs().add(issueTimeUnit.getId());
-            }
-        }
+//        final IssueTimeUnit issueTimeUnitEstimated = t.getIssueTimeUnitEstimated();
+//        if (issueTimeUnitEstimated != null) {
+//            ft.setIssueTimeUnitEstimatedOID(issueTimeUnitEstimated.getId());
+//        }
+//        final List<IssueTimeUnit> issueTimeUnitsUsed = t.getIssueTimeUnitsUsed();
+//        if (issueTimeUnitsUsed != null) {
+//            ft.setIssueTimeUnitsUsedOIDs(new ArrayList<Long>());
+//            for (final IssueTimeUnit issueTimeUnit : issueTimeUnitsUsed) {
+//                ft.getIssueTimeUnitsUsedOIDs().add(issueTimeUnit.getId());
+//            }
+//        }
 
         final Benutzer reporter = t.getReporter();
         if (reporter != null) {

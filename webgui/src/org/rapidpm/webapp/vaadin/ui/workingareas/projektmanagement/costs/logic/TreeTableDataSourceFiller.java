@@ -4,11 +4,10 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.HierarchicalContainer;
 import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitElement;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.ProjektmanagementScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
@@ -50,38 +49,38 @@ public class TreeTableDataSourceFiller {
 
         dataSource.removeAllItems();
         dataSource.addContainerProperty(messages.getString("aufgabe"), String.class, null);
-        for (final RessourceGroup oldRessourceGroup : ressourceGroups) {
-            dataSource.addContainerProperty(oldRessourceGroup.getName(), Double.class, "");
+        for (final RessourceGroup ressourceGroup : ressourceGroups) {
+            dataSource.addContainerProperty(ressourceGroup.getName(), Double.class, "");
         }
 
 
     }
 
     public void fill() {
-        computePlanningUnitGroupsAndTotalsAbsolut();
+        computePlanningUnitsAndTotalsAbsolut();
     }
 
-    private void computePlanningUnitGroupsAndTotalsAbsolut() {
+    private void computePlanningUnitsAndTotalsAbsolut() {
         final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
         final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
-        final List<PlanningUnitGroup> planningUnitGroups = projekt.getPlanningUnitGroups();
-        for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
-            final String planningUnitGroupName = planningUnitGroup.getPlanningUnitGroupName();
-            final Item planningUnitGroupItem = dataSource.addItem(planningUnitGroupName);
-            planningUnitGroupItem.getItemProperty(messages.getString("aufgabe")).setValue(planningUnitGroupName);
-            final List<PlanningUnit> planningUnitList = planningUnitGroup.getPlanningUnitList();
+        final List<PlanningUnit> planningUnits = projekt.getPlanningUnits();
+        for (final PlanningUnit planningUnit : planningUnits) {
+            final String planningUnitName = planningUnit.getPlanningUnitName();
+            final Item planningUnitItem = dataSource.addItem(planningUnitName);
+            planningUnitItem.getItemProperty(messages.getString("aufgabe")).setValue(planningUnitName);
+            final List<PlanningUnit> planningUnitList = planningUnit.getKindPlanningUnits();
             if (planningUnitList == null || planningUnitList.isEmpty()) {
                 for (final RessourceGroup spalte : ressourceGroups) {
-                    final List<PlanningUnitElement> planningUnitElementList = planningUnitGroup.getPlanningUnitElementList();
+                    final List<PlanningUnitElement> planningUnitElementList = planningUnit.getPlanningUnitElementList();
                     for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
-                        final RessourceGroup oldRessourceGroup = planningUnitElement.getRessourceGroup();
-                        if (oldRessourceGroup.equals(spalte)) {
-                            planningUnitGroupItem.getItemProperty(spalte.getName()).setValue(0.0);
+                        final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
+                        if (ressourceGroup.equals(spalte)) {
+                            planningUnitItem.getItemProperty(spalte.getName()).setValue(0.0);
                         }
                     }
                 }
             } else {
-                computePlanningUnits(planningUnitList, planningUnitGroupName);
+                computePlanningUnits(planningUnitList, planningUnitName);
             }
         }
     }
@@ -96,8 +95,8 @@ public class TreeTableDataSourceFiller {
             if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
                 for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
                     final Double costs = getCosts(planningUnitElement);
-                    final RessourceGroup oldRessourceGroup = planningUnitElement.getRessourceGroup();
-                    planningUnitItem.getItemProperty(oldRessourceGroup.getName()).setValue(costs);
+                    final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
+                    planningUnitItem.getItemProperty(ressourceGroup.getName()).setValue(costs);
                 }
                 addiereZeileZurRessourceMap(planningUnit);
             } else {
@@ -115,13 +114,13 @@ public class TreeTableDataSourceFiller {
     private void addiereZeileZurRessourceMap(final PlanningUnit planningUnit) {
         final List<PlanningUnitElement> planningUnitElementList = planningUnit.getPlanningUnitElementList();
         for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
-            final RessourceGroup oldRessourceGroup = planningUnitElement.getRessourceGroup();
-            if (!oldRessourceGroup.getName().equals(messages.getString("aufgabe"))) {
+            final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
+            if (!ressourceGroup.getName().equals(messages.getString("aufgabe"))) {
                 Double costs = getCosts(planningUnitElement);
-                if (ressourceGroupsCostsMap.containsKey(oldRessourceGroup)) {
-                    costs += ressourceGroupsCostsMap.get(oldRessourceGroup);
+                if (ressourceGroupsCostsMap.containsKey(ressourceGroup)) {
+                    costs += ressourceGroupsCostsMap.get(ressourceGroup);
                 }
-                ressourceGroupsCostsMap.put(oldRessourceGroup, costs);
+                ressourceGroupsCostsMap.put(ressourceGroup, costs);
             }
         }
     }
@@ -133,8 +132,8 @@ public class TreeTableDataSourceFiller {
 
         final Double totalHours = hoursFromDays + hours + hoursFromMinutes;
 
-        final RessourceGroup oldRessourceGroup = planningUnitElement.getRessourceGroup();
-        final Double externalEurosPerHour = oldRessourceGroup.getExternalEurosPerHour();
+        final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
+        final Double externalEurosPerHour = ressourceGroup.getExternalEurosPerHour();
 
         return totalHours * externalEurosPerHour;
     }

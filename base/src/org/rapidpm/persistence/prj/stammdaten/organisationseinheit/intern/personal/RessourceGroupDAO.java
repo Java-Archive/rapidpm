@@ -26,25 +26,4 @@ public class RessourceGroupDAO extends BaseDAO<Long, RessourceGroup> {
         final RessourceGroup singleResultOrNull = getSingleResultOrNull(typedQuery);
         return singleResultOrNull;
     }
-
-
-
-
-
-
-
-
-
-    public RessourceGroup loadRessourceGroup(final String login, final String passwd, final Long webappOID) {
-        RessourceGroup benutzer = null;
-        if (login == null || login.isEmpty() || passwd == null || passwd.isEmpty()) {
-            logger.warn("Login oder Passwd ist null, lade anonymen RessourceGroup");
-            benutzer = loadAnonymousRessourceGroup(webappOID);
-        } else {
-            final TypedQuery<RessourceGroup> typedQuery1 = entityManager.createQuery("from RessourceGroup b where b.login=:login and b.hidden=false and b.active=true and b.passwd=:passwd " + "and b.benutzerWebapplikation.id=:webappOID", RessourceGroup.class);
-            final TypedQuery<RessourceGroup> typedQuery = typedQuery1.setParameter("login", login).setParameter("passwd", passwd).setParameter("webappOID", webappOID);
-
-            benutzer = getSingleResultOrNull(typedQuery);
-            if (benutzer == null) {
-                benutzer = loadAnonymousRessourceGroup(webappOID);
 }

@@ -29,6 +29,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.Iss
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatusDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnitDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.stammdaten.address.*;
 import org.rapidpm.persistence.prj.stammdaten.kommunikation.*;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.*;
@@ -105,6 +106,10 @@ public class DaoFactory {
 
     public MandantengruppeDAO getMandantengruppeDAO() {
         return new MandantengruppeDAO(getEntityManager());
+    }
+
+    public PlannedProjectDAO getPlannedProjectDAO() {
+        return new PlannedProjectDAO(getEntityManager());
     }
 
 
@@ -378,11 +383,20 @@ public class DaoFactory {
     }
 
     public <T> void remove(T entity) {
-        getEntityManager().remove(entity);
+        T theentity = this.getEntityManager().merge(entity);
+        this.getEntityManager().remove(theentity);
     }
 
     public <T> void saveOrUpdate(T entity) {
-        getEntityManager().persist(entity);
+        if (logger.isInfoEnabled()) {
+            logger.info("saveOrUpdateTX entity " + entity);
+        }
+        if (entity != null) {
+            getEntityManager().merge(entity);
+        }
+        else{
+            logger.warn("entity was null.");
+        }
     }
 
     public BaseDAO.EntityUtils getEntityUtils() {

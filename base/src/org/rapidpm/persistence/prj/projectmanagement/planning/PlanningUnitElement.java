@@ -27,7 +27,7 @@ public class PlanningUnitElement {
     @Basic private int plannedHours;
     @Basic private int plannedMinutes;
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private RessourceGroup ressourceGroup;
 
     public Long getId() {
@@ -68,5 +68,25 @@ public class PlanningUnitElement {
 
     public void setRessourceGroup(RessourceGroup ressourceGroup) {
         this.ressourceGroup = ressourceGroup;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PlanningUnitElement that = (PlanningUnitElement) o;
+
+        if (!id.equals(that.id)) return false;
+        if (!ressourceGroup.equals(that.ressourceGroup)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + ressourceGroup.hashCode();
+        return result;
     }
 }

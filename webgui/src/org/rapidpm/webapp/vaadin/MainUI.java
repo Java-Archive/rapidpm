@@ -28,6 +28,7 @@ public class MainUI extends BaseUI {
 
     @Override
     protected void initMenuBar(final MenuBar menuBar) {
+
         messages = ResourceBundle.getBundle("MessagesBundle", locale);
         final MenuBar.MenuItem stammdatenMenu = menuBar.addItem(messages.getString("masterdata"), null);
         stammdatenMenu.addItem(messages.getString("users"), new MenuBar.Command() {
@@ -35,7 +36,7 @@ public class MainUI extends BaseUI {
             public void menuSelected(final MenuBar.MenuItem menuItem) {
                 setWorkingArea(new BenutzerScreen(MainUI.this));
             }
-        });
+        }).setEnabled(false);
 
         stammdatenMenu.addItem(messages.getString("hourlyrates"), new MenuBar.Command() {
             @Override
@@ -49,9 +50,10 @@ public class MainUI extends BaseUI {
             public void menuSelected(final MenuBar.MenuItem menuItem) {
                 setWorkingArea(new AnfragenmanagementWorkingArea());
             }
-        });
+        }).setEnabled(false);
         final MenuBar.MenuItem projektmanagement = menuBar.addItem(messages.getString("projectmanagement"), null,
                 null);
+        projektmanagement.setEnabled(false);
 
 
         projektmanagement.addItem(messages.getString("projectplanning"), new MenuBar.Command() {
@@ -59,7 +61,7 @@ public class MainUI extends BaseUI {
             public void menuSelected(final MenuBar.MenuItem menuItem) {
                 setWorkingArea(new ProjektplanungScreen(MainUI.this));
             }
-        });
+        }).setEnabled(false);
 
 
         projektmanagement.addItem(messages.getString("projectinit"), new MenuBar.Command() {
@@ -67,14 +69,14 @@ public class MainUI extends BaseUI {
             public void menuSelected(final MenuBar.MenuItem menuItem) {
                 setWorkingArea(new AufwandProjInitScreen(MainUI.this));
             }
-        });
+        }).setEnabled(false);
 
         projektmanagement.addItem(messages.getString("costs"), new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
                 setWorkingArea(new CostsScreen(MainUI.this));
             }
-        });
+        }).setEnabled(false);
 
 
         projektmanagement.addItem(messages.getString("distribution"), new MenuBar.Command() {
@@ -82,14 +84,14 @@ public class MainUI extends BaseUI {
             public void menuSelected(final MenuBar.MenuItem menuItem) {
                 setWorkingArea(new VertriebScreen(MainUI.this));
             }
-        });
+        }).setEnabled(false);
 
         projektmanagement.addItem(messages.getString("offer"), new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
                 setWorkingArea(new OfferScreen(MainUI.this));
             }
-        });
+        }).setEnabled(false);
 
         projektmanagement.addSeparator();
 
@@ -98,7 +100,9 @@ public class MainUI extends BaseUI {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 setWorkingArea(new ProjectAdministrationScreen(MainUI.this));
             }
-        });
+        }).setEnabled(false);
+
+        setWorkingArea(new StundensaetzeScreen(this));
     }
 
     public Locale getLocale(){

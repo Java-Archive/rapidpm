@@ -225,7 +225,7 @@ public class CostsScreen extends Screen {
     @Override
     public void doInternationalization() {
         expandCheckBox.setCaption(messagesBundle.getString("costsinit_expand"));
-        saveButton.setCaption(messagesBundle.getString("save"));
+        saveButton.setCaption(messagesBundle.getString("saveOrUpdate"));
         undoButton.setCaption(messagesBundle.getString("costsinit_removesortorder"));
         datumField.setCaption(messagesBundle.getString("costsinit_date"));
         manntageField.setCaption(messagesBundle.getString("costsinit_manday"));

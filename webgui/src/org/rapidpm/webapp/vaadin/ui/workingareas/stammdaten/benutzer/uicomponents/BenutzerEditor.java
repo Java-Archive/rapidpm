@@ -48,7 +48,8 @@ public class BenutzerEditor extends FormLayout {
     //REFAC per CDI ?
 //    @Inject
 //    private StammdatenScreensBean stammdatenScreenBean;
-    private final StammdatenScreensBean stammdatenScreenBean = EJBFactory.getEjbInstance(StammdatenScreensBean.class);
+    private final StammdatenScreensBean stammdatenScreenBean = EJBFactory.getEjbInstance(StammdatenScreensBean
+ .class);
 
     private Collection<Mandantengruppe> mandantengruppen;
     private Collection<BenutzerGruppe> benutzerGruppen;
