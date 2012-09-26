@@ -1,8 +1,8 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic;
 
 import com.vaadin.data.Property;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsPanel;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTreePanel;
+import com.vaadin.ui.Panel;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueedit.uicomponents.IssueDetailsPanel;
 
 /**
  * Created with IntelliJ IDEA.

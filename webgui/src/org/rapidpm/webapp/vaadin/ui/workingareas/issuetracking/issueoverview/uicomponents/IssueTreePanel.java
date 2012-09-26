@@ -2,6 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.ui
 
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueedit.uicomponents.IssueDetailsPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeValueChangeListener;
 
 

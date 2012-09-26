@@ -4,7 +4,8 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsPanel;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueedit.uicomponents.IssueDetailsPanel;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTablePanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTreePanel;
 
 
@@ -20,6 +21,7 @@ public class IssueOverviewScreen extends Screen{
     private HorizontalSplitPanel hSplitPanel;
     private IssueTreePanel treePanel;
     private IssueDetailsPanel detailsPanel;
+    private IssueTablePanel tablePanel;
 
     private Button saveButton;
     private Button cancelButton;
@@ -31,7 +33,8 @@ public class IssueOverviewScreen extends Screen{
         hSplitPanel = new HorizontalSplitPanel();
         hSplitPanel.setSplitPosition(30, Unit.PERCENTAGE);
         hSplitPanel.setSizeFull();
-        detailsPanel = new IssueDetailsPanel(this);
+        //detailsPanel = new IssueDetailsPanel(this);
+        tablePanel = new IssueTablePanel(this);
         treePanel = new IssueTreePanel(detailsPanel);
         saveButton = new Button();
         cancelButton = new Button();
@@ -44,7 +47,7 @@ public class IssueOverviewScreen extends Screen{
     @Override
     public void setComponents() {
         hSplitPanel.addComponent(treePanel);
-        hSplitPanel.addComponent(detailsPanel);
+        hSplitPanel.addComponent(tablePanel);//detailsPanel);
         addComponent(hSplitPanel);
     }
 

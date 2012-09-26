@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents;
+package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueedit.uicomponents;
 
 import com.vaadin.data.Item;
 import com.vaadin.shared.ui.datefield.Resolution;
