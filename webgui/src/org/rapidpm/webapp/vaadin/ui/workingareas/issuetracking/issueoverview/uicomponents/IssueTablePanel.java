@@ -1,11 +1,14 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents;
 
 
+import com.vaadin.data.Item;
 import com.vaadin.ui.*;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.windows.KontaktWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditablePanel;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueedit.IssueEditWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,7 +21,6 @@ public class IssueTablePanel extends ComponentEditablePanel {
 
     private IssueOverviewScreen screen;
 
-    private Button editButton;
     private Table issueTable;
 
     public IssueTablePanel(IssueOverviewScreen screen) {
@@ -27,19 +29,9 @@ public class IssueTablePanel extends ComponentEditablePanel {
         this.setSizeFull();
     }
 
-
     @Override
     protected AbstractOrderedLayout buildForm() {
-        FormLayout layout = new FormLayout();
-
-        editButton = new Button("Ticket Editieren");
-        editButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                UI.getCurrent().addWindow(new IssueEditWindow(screen));
-            }
-        });
-        layout.addComponent(editButton);
+        VerticalLayout componentsLayout = new VerticalLayout();
 
         issueTable = new Table();
         issueTable.setColumnCollapsingAllowed(true);
@@ -52,8 +44,16 @@ public class IssueTablePanel extends ComponentEditablePanel {
             issueTable.addContainerProperty(name, String.class, "");
         }
 
-        layout.addComponent(issueTable);
+        for (int i=0; i<5;i++) {
+            issueTable.addItem(new Object[] {"RPM-" + 1 + i, "Be", "Ko"}, i);
+        }
 
-        return layout;
+        componentsLayout.addComponent(issueTable);
+
+        return componentsLayout;
+    }
+
+    public void setPropertiesFromIssueList(List<IssueBase> issue) {
+
     }
 }

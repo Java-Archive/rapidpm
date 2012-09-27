@@ -35,6 +35,7 @@
     <orderEntry type="library" exported="" name="module-vaadin" level="project" />
     <orderEntry type="library" name="lib-vaadin" level="project" />
     <orderEntry type="library" name="lib-jason" level="project" />
+    <orderEntry type="module" module-name="base" />
   </component>
 </module>
 

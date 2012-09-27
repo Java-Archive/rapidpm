@@ -1,8 +1,8 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueedit.uicomponents;
+package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents;
 
-import com.vaadin.data.Item;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.*;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssuePrioritiesEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
@@ -20,7 +20,7 @@ import java.util.Date;
  */
 public class IssueDetailsPanel extends ComponentEditablePanel implements Internationalizationable{
 
-    private IssueOverviewScreen screen;
+    final private IssueOverviewScreen screen;
 
     private Label headerLabel;
     private ComboBox statusSelect;
@@ -31,11 +31,13 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
     private DateField resolvedDateField;
     private DateField closedDateField;
 
-    private VerticalLayout componentsLayout;
-
     private TextArea descriptionTextArea;
+    private TabSheet tabSheet;
+    private TabSheet.Tab tabComments;
+    private TabSheet.Tab tabTestcases;
+    private TabSheet.Tab tabStory;
 
-
+    private VerticalLayout componentsLayout;
 
     public IssueDetailsPanel(IssueOverviewScreen screen) {
         super(screen);
@@ -116,7 +118,25 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
         descriptionTextArea.setReadOnly(true);
         componentsLayout.addComponent(descriptionTextArea);
 
+        tabSheet = new TabSheet();
+        tabSheet.setSizeFull();
 
+        Panel commentsPanel = new Panel();
+        commentsPanel.addComponent(new Label("Fill with Comments"));
+        commentsPanel.addComponent(new Label("Fill with Comments"));
+        commentsPanel.addComponent(new Label("Fill with Comments"));
+        commentsPanel.addComponent(new Label("Fill with Comments"));
+        tabComments = tabSheet.addTab(commentsPanel);
+
+        Panel testcasePanel = new Panel();
+        testcasePanel.addComponent(new Label("Fill with TestCases"));
+        tabTestcases = tabSheet.addTab(testcasePanel);
+
+        Panel storyPanel = new Panel();
+        storyPanel.addComponent(new Label("Fill with Story"));
+        tabStory = tabSheet.addTab(storyPanel);
+
+        componentsLayout.addComponent(tabSheet);
 
         return componentsLayout;
     }
@@ -132,15 +152,13 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
         resolvedDateField.setCaption(screen.getMessagesBundle().getString("issue_resolved"));
         closedDateField.setCaption(screen.getMessagesBundle().getString("issue_closed"));
         descriptionTextArea.setCaption(screen.getMessagesBundle().getString("issue_description"));
+        tabComments.setCaption(screen.getMessagesBundle().getString("issue_comments"));
+        tabTestcases.setCaption(screen.getMessagesBundle().getString("issue_testcases"));
+        tabStory.setCaption(screen.getMessagesBundle().getString("issue_story"));
     }
 
+    public void setPropertiesFromIssue(IssueBase issue) {
 
-    public TextArea getDescriptionTextArea() {
-        return descriptionTextArea;
-    }
-
-    public Label getHeaderLabel() {
-        return headerLabel;
     }
 
 }

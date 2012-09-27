@@ -1,8 +1,8 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic;
 
 import com.vaadin.data.Property;
-import com.vaadin.ui.Panel;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueedit.uicomponents.IssueDetailsPanel;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsPanel;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTabSheet;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,20 +13,20 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueedit.uicompo
  */
 public class TreeValueChangeListener implements Property.ValueChangeListener {
 
-    private IssueDetailsPanel detailsPanel;
+    private IssueTabSheet issueTabSheet;
 
-    public TreeValueChangeListener(IssueDetailsPanel detailsPanel) {
-        this.detailsPanel = detailsPanel;
+    public TreeValueChangeListener(IssueTabSheet issueTabSheet) {
+        this.issueTabSheet = issueTabSheet;
     }
 
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
         Object value = event.getProperty().getValue();
         if (value != null) {
-            detailsPanel.getDescriptionTextArea().setReadOnly(false);
-            detailsPanel.getDescriptionTextArea().setValue(value);
-            detailsPanel.getDescriptionTextArea().setReadOnly(true);
-            detailsPanel.getHeaderLabel().setValue(value);
+//            detailsPanel.getDescriptionTextArea().setReadOnly(false);
+//            detailsPanel.getDescriptionTextArea().setValue(value);
+//            detailsPanel.getDescriptionTextArea().setReadOnly(true);
+//            detailsPanel.getHeaderLabel().setValue(value);
         }
     }
 }
