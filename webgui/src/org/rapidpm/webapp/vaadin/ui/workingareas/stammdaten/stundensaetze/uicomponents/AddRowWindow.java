@@ -8,6 +8,7 @@ import com.vaadin.ui.Button.ClickListener;
 import org.apache.log4j.Logger;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.MainUI;
@@ -112,6 +113,17 @@ public class AddRowWindow extends Window {
                         //transiente RessourceGroup in DB speichern
                         baseDaoFactoryBean.saveOrUpdate(ressourceGroup);
 
+
+                        final int planningUnitCount = baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities().size();
+                        for(int i = 0; i < planningUnitCount; i++){
+                            PlanningUnitElement planningUnitElement = new PlanningUnitElement();
+                            planningUnitElement.setId(null);
+                            planningUnitElement.setPlannedDays(0);
+                            planningUnitElement.setPlannedHours(0);
+                            planningUnitElement.setPlannedMinutes(0);
+                            planningUnitElement.setRessourceGroup(ressourceGroup);
+                            baseDaoFactoryBean.saveOrUpdate(planningUnitElement);
+                        }
                         screen.generateTableAndCalculate();
 
                         AddRowWindow.this.close();

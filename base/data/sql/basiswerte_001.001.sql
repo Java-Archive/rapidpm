@@ -125,31 +125,31 @@ INSERT INTO
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('IssueStatus_id', 5);
 
 INSERT INTO
-        issuebase(id,storypoints,issueassignee_id,issuepriority_id,issuereporter_id,issuestatus_id)
+        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
         VALUES (1,6,1,1,1,1);
 
 INSERT INTO
-        issuebase(id,storypoints,issueassignee_id,issuepriority_id,issuereporter_id,issuestatus_id)
+        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
         VALUES (2,6,1,4,1,1);
 
 INSERT INTO
-        issuebase(id,storypoints,issueassignee_id,issuepriority_id,issuereporter_id,issuestatus_id)
+        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
         VALUES (3,3,1,3,1,2);
 
 INSERT INTO
-        issuebase(id,storypoints,issueassignee_id,issuepriority_id,issuereporter_id,issuestatus_id)
+        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
         VALUES (4,5,1,3,1,3);
 
 INSERT INTO
-        issuebase(id,storypoints,issueassignee_id,issuepriority_id,issuereporter_id,issuestatus_id)
+        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
         VALUES (5,3,1,2,1,4);
 
 INSERT INTO
-        issuebase(id,storypoints,issueassignee_id,issuepriority_id,issuereporter_id,issuestatus_id)
+        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
         VALUES (6,1,1,1,1,3);
 
 INSERT INTO
-        issuebase(id,storypoints,issueassignee_id,issuepriority_id,issuereporter_id,issuestatus_id)
+        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
         VALUES (7,8,1,4,1,2);
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('IssueBase_id', 7);

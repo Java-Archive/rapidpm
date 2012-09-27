@@ -30,6 +30,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.Iss
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnitDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitDAO;
 import org.rapidpm.persistence.prj.stammdaten.address.*;
 import org.rapidpm.persistence.prj.stammdaten.kommunikation.*;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.*;
@@ -362,6 +363,10 @@ public class DaoFactory {
 
     public WebDomainMetaDataDAO getWebDomainMetaDataDAO() {
         return new WebDomainMetaDataDAO(getEntityManager());
+    }
+
+    public PlanningUnitDAO getPlanningUnitDAO(){
+        return new PlanningUnitDAO(getEntityManager());
     }
 
 

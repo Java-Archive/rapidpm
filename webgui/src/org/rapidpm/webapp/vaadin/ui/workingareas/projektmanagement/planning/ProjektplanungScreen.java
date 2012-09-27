@@ -2,21 +2,23 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.BaseUI;
+import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.PlanningUnitBeanItemContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,10 +29,6 @@ import java.util.List;
  * Time: 09:43
  */
 public class ProjektplanungScreen extends Screen {
-
-
-    private static final String NAME = "name";
-    private static final String ICON = "icon";
 
     private HorizontalSplitPanel splitPanel;
     private final VerticalLayout menuLayout;
@@ -46,7 +44,7 @@ public class ProjektplanungScreen extends Screen {
     private final PlanningUnitBeanItemContainer container = new PlanningUnitBeanItemContainer();
 
 
-    public ProjektplanungScreen(BaseUI ui) {
+    public ProjektplanungScreen(MainUI ui) {
         super(ui);
 
         final PlanningCalculator calculator = new PlanningCalculator(messagesBundle, this.projektBean,
@@ -125,12 +123,8 @@ public class ProjektplanungScreen extends Screen {
         if (selectedPlanningUnit != null) {
             treePanelTree.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
             treePanelTree.setItemCaptionPropertyId(PlanningUnit.NAME);
-            //treePanelTree.setItemIconPropertyId(ICON);
             treePanelTree.setImmediate(true);
             container.addBean(selectedPlanningUnit);
-            final IssueBase issueBase = selectedPlanningUnit.getIssueBase();
-            final String issueStatusName = issueBase.getIssueStatus().getStatusName();
-            //planningUnitItem.getItemProperty(ICON).setValue(IssueStatusEnum.valueOf(issueStatusName).getIcon());
 //            if (selectedPlanningUnit.getKindPlanningUnits() != null && !selectedPlanningUnit.getKindPlanningUnits().isEmpty()) {
 //                treePanelTree.setChildrenAllowed(itemId, true);
 //            } else {
@@ -143,6 +137,14 @@ public class ProjektplanungScreen extends Screen {
             treePanelTree.setContainerDataSource(container);
             final Iterator iterator = treePanelTree.rootItemIds().iterator();
             treePanelTree.expandItemsRecursively(iterator.next());
+            //TODO Ordner in Constants, Filename in db
+            for(final Object itemId : treePanelTree.getVisibleItemIds()){
+                final PlanningUnit planningUnit = (PlanningUnit) itemId;
+                final IssueBase planningUnitIssueBase = planningUnit.getIssueBase();
+                final IssueStatus issueStatus = planningUnitIssueBase.getStatus();
+                final String iconPfad = ("images/status_"+issueStatus.getStatusName()+".gif").toLowerCase();
+                treePanelTree.setItemIcon(itemId, new ThemeResource(iconPfad));
+            }
             treePanel.addComponent(treePanelTree);
         }
     }
@@ -150,10 +152,6 @@ public class ProjektplanungScreen extends Screen {
     private void buildTree(List<PlanningUnit> planningUnits, PlanningUnit parentUnit) {
         for (final PlanningUnit planningUnit : planningUnits) {
             container.addBean(planningUnit);
-            //treePanelTree.getItem(itemId).getItemProperty(NAME).setValue(planningUnit.getPlanningUnitName());
-            //final String issueStatusName = planningUnit.getIssueBase().getIssueStatus().getStatusName();
-            //treePanelTree.getItem(itemId).getItemProperty(ICON).setValue(IssueStatusEnum.valueOf(issueStatusName)
-            //        .getIcon());
             container.setParent(planningUnit, parentUnit);
             if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
                 //treePanelTree.setChildrenAllowed(itemId, false);

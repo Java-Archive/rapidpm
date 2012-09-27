@@ -17,7 +17,7 @@ public enum IssueStatusEnum {
         InProgress("status_inprogress.gif"),
         Resolved("status_resolved.gif"),
         Closed("status_closed.gif"),
-        OnHold("status_information.gif");
+        OnHold("status_onhold.gif");
 
         private final Resource icon;
 

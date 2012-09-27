@@ -24,6 +24,21 @@ import java.util.List;
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
 public class IssueBase {
+
+    public static final String SUMMARY ="summary";
+    public static final String TEXT = "text";
+    public static final String STORYPOINTS = "storyPoints";
+    public static final String DATE_PLANNED = "dueDate_planned";
+    public static final String DATE_RESOLVED = "dueDate_resolved";
+    public static final String DATE_CLOSED = "dueDate_closed";
+    public static final String PRIORITY = "priority";
+    public static final String STATUS = "status";
+    public static final String REPORTER ="reporter";
+    public static final String ASSIGNEE = "assignee";
+    public static final String VERSION = "version";
+    public static final String COMMENTS = "comments";
+    public static final String TESTCASES ="testcases";
+
     private static final Logger logger = Logger.getLogger(IssueBase.class);
 
     //TODO TestCases definieren - Klasse erzeugen
@@ -57,10 +72,10 @@ public class IssueBase {
     private Integer storyPoints;
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    private IssuePriority issuePriority;
+    private IssuePriority priority;
 
     @OneToOne(cascade = CascadeType.REFRESH)
-    private IssueStatus issueStatus;
+    private IssueStatus status;
 
     //@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     //private IssueTimeUnit issueTimeUnitEstimated;
@@ -69,10 +84,10 @@ public class IssueBase {
     //private List<IssueTimeUnit> issueTimeUnitsUsed;
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    private Benutzer issueReporter;
+    private Benutzer reporter;
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    private Benutzer issueAssignee;
+    private Benutzer assignee;
 
 //    @Basic
 //    private float euro; //Stundensaetze und Co koennen hinterlegt werden.. Reporting
@@ -97,12 +112,12 @@ public class IssueBase {
         sb.append(", summary='").append(summary).append('\'');
         sb.append(", text='").append(text).append('\'');
 //        sb.append(", fakturierbar=").append(fakturierbar);
-        sb.append(", issuePriority=").append(issuePriority);
-        sb.append(", issueStatus=").append(issueStatus);
+        sb.append(", issuePriority=").append(priority);
+        sb.append(", issueStatus=").append(status);
         //sb.append(", issueTimeUnitEstimated=").append(issueTimeUnitEstimated);
         //sb.append(", issueTimeUnitsUsed=").append(issueTimeUnitsUsed);
-        sb.append(", reporter=").append(issueReporter);
-        sb.append(", assignee=").append(issueAssignee);
+        sb.append(", reporter=").append(reporter);
+        sb.append(", assignee=").append(assignee);
         //        sb.append(", mandantengruppe=").append(mandantengruppe);
         //sb.append(", euro=").append(euro);
         sb.append(", version=").append(version);
@@ -115,62 +130,28 @@ public class IssueBase {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof IssueBase)) {
-            return false;
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-        final IssueBase issueBase = (IssueBase) o;
+        IssueBase issueBase = (IssueBase) o;
 
-//        if (Float.compare(issueBase.euro, euro) != 0) {
-//            return false;
-//        }
-        if (issueAssignee != null ? !issueAssignee.equals(issueBase.issueAssignee) : issueBase.issueAssignee != null) {
-            return false;
-        }
-        if (dueDate_closed != null ? !dueDate_closed.equals(issueBase.dueDate_closed) : issueBase.dueDate_closed != null) {
-            return false;
-        }
-        if (dueDate_planned != null ? !dueDate_planned.equals(issueBase.dueDate_planned) : issueBase.dueDate_planned != null) {
-            return false;
-        }
-        if (dueDate_resolved != null ? !dueDate_resolved.equals(issueBase.dueDate_resolved) : issueBase.dueDate_resolved != null) {
-            return false;
-        }
-        if (id != null ? !id.equals(issueBase.id) : issueBase.id != null) {
-            return false;
-        }
-        if (issuePriority != null ? !issuePriority.equals(issueBase.issuePriority) : issueBase.issuePriority != null) {
-            return false;
-        }
-        if (issueStatus != null ? !issueStatus.equals(issueBase.issueStatus) : issueBase.issueStatus != null) {
-            return false;
-        }
-        if (issueReporter != null ? !issueReporter.equals(issueBase.issueReporter) : issueBase.issueReporter != null) {
-            return false;
-        }
-        if (summary != null ? !summary.equals(issueBase.summary) : issueBase.summary != null) {
-            return false;
-        }
-        if (text != null ? !text.equals(issueBase.text) : issueBase.text != null) {
-            return false;
-        }
-        if (version != null ? !version.equals(issueBase.version) : issueBase.version != null) {
-            return false;
-        }
+        if (id != null ? !id.equals(issueBase.id) : issueBase.id != null) return false;
 
         return true;
     }
 
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
+
     public Benutzer getAssignee() {
-        return issueAssignee;
+        return assignee;
     }
 
     public void setAssignee(final Benutzer assignee) {
-        this.issueAssignee = assignee;
+        this.assignee = assignee;
     }
 
     public List<IssueComment> getComments() {
@@ -221,20 +202,20 @@ public class IssueBase {
         this.id = id;
     }
 
-    public IssuePriority getIssuePriority() {
-        return issuePriority;
+    public IssuePriority getPriority() {
+        return priority;
     }
 
-    public void setIssuePriority(final IssuePriority issuePriority) {
-        this.issuePriority = issuePriority;
+    public void setPriority(final IssuePriority issuePriority) {
+        this.priority = issuePriority;
     }
 
-    public IssueStatus getIssueStatus() {
-        return issueStatus;
+    public IssueStatus getStatus() {
+        return status;
     }
 
-    public void setIssueStatus(final IssueStatus issueStatus) {
-        this.issueStatus = issueStatus;
+    public void setStatus(final IssueStatus issueStatus) {
+        this.status = issueStatus;
     }
 
 //    public IssueTimeUnit getIssueTimeUnitEstimated() {
@@ -255,11 +236,11 @@ public class IssueBase {
 
 
     public Benutzer getReporter() {
-        return issueReporter;
+        return reporter;
     }
 
     public void setReporter(final Benutzer reporter) {
-        this.issueReporter = reporter;
+        this.reporter = reporter;
     }
 
     public String getSummary() {

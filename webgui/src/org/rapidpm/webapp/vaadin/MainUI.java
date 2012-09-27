@@ -36,7 +36,7 @@ public class MainUI extends BaseUI {
             public void menuSelected(final MenuBar.MenuItem menuItem) {
                 setWorkingArea(new BenutzerScreen(MainUI.this));
             }
-        }).setEnabled(false);
+        });
 
         stammdatenMenu.addItem(messages.getString("hourlyrates"), new MenuBar.Command() {
             @Override
@@ -53,7 +53,6 @@ public class MainUI extends BaseUI {
         }).setEnabled(false);
         final MenuBar.MenuItem projektmanagement = menuBar.addItem(messages.getString("projectmanagement"), null,
                 null);
-        projektmanagement.setEnabled(false);
 
 
         projektmanagement.addItem(messages.getString("projectplanning"), new MenuBar.Command() {
@@ -61,7 +60,7 @@ public class MainUI extends BaseUI {
             public void menuSelected(final MenuBar.MenuItem menuItem) {
                 setWorkingArea(new ProjektplanungScreen(MainUI.this));
             }
-        }).setEnabled(false);
+        });
 
 
         projektmanagement.addItem(messages.getString("projectinit"), new MenuBar.Command() {
@@ -103,6 +102,7 @@ public class MainUI extends BaseUI {
         }).setEnabled(false);
 
         setWorkingArea(new StundensaetzeScreen(this));
+
     }
 
     public Locale getLocale(){

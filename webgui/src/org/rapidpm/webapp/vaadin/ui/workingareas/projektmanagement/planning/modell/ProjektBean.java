@@ -196,8 +196,8 @@ public class ProjektBean {
         issueBase.setText("Dies ist eine Issue-Beschreibung. Ein weiterer Satz der Beschreibung. " +
                 "Ein weiterer Satz der Beschreibung. Ein weiterer Satz der Beschreibung.");
         issueBase.setStoryPoints(storyPoints);
-        issueBase.setIssueStatus(issueStatus);
-        issueBase.setIssuePriority(issuePriority);
+        issueBase.setStatus(issueStatus);
+        issueBase.setPriority(issuePriority);
         issueBase.setReporter(reporter);
         issueBase.setAssignee(assignee);
         issueBase.setDueDate_planned(plannedDate);

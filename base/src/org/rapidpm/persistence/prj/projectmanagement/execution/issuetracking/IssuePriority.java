@@ -20,6 +20,8 @@ import javax.persistence.*;
 public class IssuePriority {
     //    private String name;
 
+    public static final String NAME = "priorityName";
+
     public IssuePriority() {
     }
     public IssuePriority(final int prio, final String priorityName) {
@@ -61,5 +63,29 @@ public class IssuePriority {
 
     public void setPriorityName(String name) {
         this.priorityName = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IssuePriority that = (IssuePriority) o;
+
+        if (priorityName != null ? !priorityName.equals(that.priorityName) : that.priorityName != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return priorityName != null ? priorityName.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "IssuePriority{" +
+                "priorityName='" + priorityName + '\'' +
+                '}';
     }
 }
