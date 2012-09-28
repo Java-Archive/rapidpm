@@ -33,8 +33,8 @@ public class UndoButton extends Button implements Button.ClickListener {
 
     @Override
     public void buttonClick(Button.ClickEvent event) {
-        final TreeTableFiller treeTableFiller = new TreeTableFiller(screen.getMessagesBundle(), screen,projektBean,
-                treeTable,dataSource);
+        final TreeTableFiller treeTableFiller = new TreeTableFiller(screen.getMessagesBundle(), screen, treeTable,
+                dataSource);
         treeTableFiller.fill();
         treeTable.markAsDirty();
 

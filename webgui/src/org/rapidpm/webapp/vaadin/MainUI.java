@@ -68,14 +68,14 @@ public class MainUI extends BaseUI {
             public void menuSelected(final MenuBar.MenuItem menuItem) {
                 setWorkingArea(new AufwandProjInitScreen(MainUI.this));
             }
-        }).setEnabled(false);
+        });
 
         projektmanagement.addItem(messages.getString("costs"), new MenuBar.Command() {
             @Override
             public void menuSelected(final MenuBar.MenuItem menuItem) {
                 setWorkingArea(new CostsScreen(MainUI.this));
             }
-        }).setEnabled(false);
+        });
 
 
         projektmanagement.addItem(messages.getString("distribution"), new MenuBar.Command() {

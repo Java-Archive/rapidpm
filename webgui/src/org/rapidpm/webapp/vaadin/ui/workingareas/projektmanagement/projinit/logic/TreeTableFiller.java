@@ -4,9 +4,7 @@ import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.event.ItemClickEvent;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.ProjektmanagementScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
 
@@ -24,33 +22,28 @@ public class TreeTableFiller {
 
     private static final int WIDTH = 200;
     private HierarchicalContainer dataSource;
-    private ProjektBean projektBean;
-    private ProjektmanagementScreensBean projektmanagementScreensBean;
     private MyTreeTable treeTable;
     private AufwandProjInitScreen screen;
     private ResourceBundle messages;
 
     public TreeTableFiller(final ResourceBundle bundle, final AufwandProjInitScreen screen,
-                           final ProjektBean projektBean, final MyTreeTable treeTable,
-                           final HierarchicalContainer dataSource) {
+                           final MyTreeTable treeTable, final HierarchicalContainer dataSource) {
         this.messages = bundle;
         this.dataSource = dataSource;
-        this.projektBean = projektBean;
         this.treeTable = treeTable;
         this.screen = screen;
-        projektmanagementScreensBean = this.screen.getProjektmanagementScreensBean();
     }
 
     public void fill() {
-        final TimesCalculator timesCalculator = new TimesCalculator(messages, projektmanagementScreensBean, projektBean);
-        final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller
-                (messages, projektmanagementScreensBean, projektBean, dataSource);
+        final TimesCalculator timesCalculator = new TimesCalculator(messages);
+        final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(messages, dataSource);
         timesCalculator.calculate();
         treeTableDataSourceFiller.fill();
         for(final Object listener : treeTable.getListeners(ItemClickEvent.ItemClickListener.class)){
             treeTable.removeItemClickListener((ItemClickEvent.ItemClickListener)listener);
         }
-        treeTable.addItemClickListener(new TableItemClickListener(messages, screen));
+        //treeTable.addItemClickListener(new TableItemClickListener(messages, screen));
+        //TODO TableItemClickListener anpassen
         treeTable.setContainerDataSource(this.dataSource);
         final String aufgabeColumn = messages.getString("aufgabe");
         for(final Object propertyId : treeTable.getContainerPropertyIds()){

@@ -9,16 +9,19 @@ import com.vaadin.ui.Component.Event;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.GridLayout;
 import org.apache.log4j.Logger;
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesFieldValidator;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.datenmodell.KnotenBlattEnum;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.ResourceBundle;
 
+//TODO under construction!
 public class TableItemClickListener implements ItemClickListener {
 
     private static final Logger logger = Logger.getLogger(TableItemClickListener.class);
@@ -28,10 +31,12 @@ public class TableItemClickListener implements ItemClickListener {
 
     private PlanningUnit foundPlanningUnit = null;
     private ResourceBundle messages;
+    private TableItemClickListenerBean bean;
 
     public TableItemClickListener(final ResourceBundle bundle, final AufwandProjInitScreen screen) {
         this.messages = bundle;
         this.screen = screen;
+        bean = EJBFactory.getEjbInstance(TableItemClickListenerBean.class);
     }
 
     @Override
@@ -50,17 +55,23 @@ public class TableItemClickListener implements ItemClickListener {
         final String aufgabeFromBundle = messages.getString("aufgabe");
         final String aufgabe = dataSource.getItem(itemId).getItemProperty(aufgabeFromBundle).getValue()
                 .toString();
-        final ProjektBean projektBean = screen.getProjektBean();
-        final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
-        final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
-        final List<String> planningUnitsNames = projekt.getPlanningUnitsNames();
+        //final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
+        //final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
+        final PlannedProject projekt = bean.getDaoFactoryBean().getPlannedProjectDAO().loadAllEntities().get(0);
+        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final EntityManager entityManager = baseDaoFactoryBean.getPlanningUnitDAO().getEntityManager();
+        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
+            entityManager.refresh(planningUnit);
+        }
+        final List<PlanningUnit> planningUnits = baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities();
 
         foundPlanningUnit = null;
-        if (planningUnitsNames.contains(aufgabe)) {
+        //if (planningUnitsNames.contains(aufgabe)) {
+        if (true) {
             knotenBlattEnum = KnotenBlattEnum.PLANNING_UNIT_GROUP;
             buildRequiredFields(formUnterlayout, fieldGroup);
         } else {
-            final List<PlanningUnit> planningUnits = projekt.getPlanningUnits();
+            final List<PlanningUnit> planningUnits1 = projekt.getPlanningUnits();
             //PlanningUnit planningUnit = null;
             for (final PlanningUnit planningUnit : planningUnits) {
                 if (foundPlanningUnit == null) {

@@ -2,15 +2,14 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
+import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.ProjektmanagementScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 
+import javax.persistence.EntityManager;
 import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.List;
@@ -37,20 +36,20 @@ public class OverviewTableFiller {
 
     private MyTable table;
     private List<RessourceGroup> ressourceGroups;
-    private ProjektBean projektBean;
-    private ProjektmanagementScreensBean screenBean;
     private ResourceBundle messages;
+    private OverviewTableFillerBean bean;
 
 
-    public OverviewTableFiller(final ResourceBundle bundle, final MyTable table, final ProjektBean projektBean,
-                               final ProjektmanagementScreensBean screenBean) {
+    public OverviewTableFiller(final ResourceBundle bundle, final MyTable table) {
         this.messages = bundle;
         this.table = table;
-        this.projektBean = projektBean;
-        this.screenBean = screenBean;
-        final DaoFactoryBean baseDaoFactoryBean = this.screenBean.getDaoFactoryBean();
-        final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
-        ressourceGroups = ressourceGroupDAO.loadAllEntities();
+        bean = EJBFactory.getEjbInstance(OverviewTableFillerBean.class);
+        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final EntityManager entityManager = baseDaoFactoryBean.getRessourceGroupDAO().getEntityManager();
+        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
+            entityManager.refresh(ressourceGroup);
+        }
+        ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
     }
 
     public void fill() {
@@ -65,10 +64,10 @@ public class OverviewTableFiller {
             table.setColumnExpandRatio(spaltenName,1);
         }
 
-        final TimesCalculator timesCalculator = new TimesCalculator(messages, screenBean, projektBean);
+        final TimesCalculator timesCalculator = new TimesCalculator(messages);
         timesCalculator.calculate();
 
-        final CostsCalculator costsCalculator = new CostsCalculator(projektBean,messages);
+        final CostsCalculator costsCalculator = new CostsCalculator(messages);
         costsCalculator.calculate();
 
         final Item externItem = table.addItem(EXTERN);

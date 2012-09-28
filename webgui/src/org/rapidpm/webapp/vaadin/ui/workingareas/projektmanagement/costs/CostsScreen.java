@@ -45,9 +45,6 @@ public class CostsScreen extends Screen {
     private MyTreeTable treeTable = new MyTreeTable();
     private MyTable uebersichtTable = new MyTable();
 
-    private static final String COLUMN_WIDTH = "350px";
-    private static final String ABSOLUTE_WIDTH = "700px";
-
     private VerticalLayout table1layout = new VerticalLayout();
     private VerticalLayout table2layout = new VerticalLayout();
     private VerticalLayout formLayout = new VerticalLayout();
@@ -69,8 +66,7 @@ public class CostsScreen extends Screen {
                 treeTable, dataSource);
         treeTableFiller.fill();
 
-        final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable,
-                projektBean, projektmanagementScreensBean);
+        final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable);
         overviewTableFiller.fill();
 
         uebersichtTable.setPageLength(4);
@@ -123,8 +119,8 @@ public class CostsScreen extends Screen {
     }
 
     private void fillFields() {
-        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle, projektmanagementScreensBean, projektBean);
-        final CostsCalculator costsCalculator = new CostsCalculator(projektBean, messagesBundle);
+        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle);
+        final CostsCalculator costsCalculator = new CostsCalculator(messagesBundle);
         costsCalculator.calculate();
         timesCalculator.calculate();
         summeInMinField = new TextField();
@@ -225,7 +221,7 @@ public class CostsScreen extends Screen {
     @Override
     public void doInternationalization() {
         expandCheckBox.setCaption(messagesBundle.getString("costsinit_expand"));
-        saveButton.setCaption(messagesBundle.getString("saveOrUpdate"));
+        saveButton.setCaption(messagesBundle.getString("save"));
         undoButton.setCaption(messagesBundle.getString("costsinit_removesortorder"));
         datumField.setCaption(messagesBundle.getString("costsinit_date"));
         manntageField.setCaption(messagesBundle.getString("costsinit_manday"));

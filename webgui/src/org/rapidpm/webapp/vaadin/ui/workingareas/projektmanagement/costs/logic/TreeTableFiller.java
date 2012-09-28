@@ -48,10 +48,9 @@ public class TreeTableFiller {
             treeTable.setConverter(id, null);
         }
         final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
-        final CostsCalculator costsCalculator = new CostsCalculator(projektBean, messages);
+        final CostsCalculator costsCalculator = new CostsCalculator(messages);
         final CostsConverterAdder costsConverterAdder = new CostsConverterAdder(messages);
-        final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller
-                (messages, projektmanagementScreensBean, projektBean, dataSource);
+        final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(messages, dataSource);
         costsCalculator.calculate();
         treeTableDataSourceFiller.fill();
         treeTable.setContainerDataSource(this.dataSource);

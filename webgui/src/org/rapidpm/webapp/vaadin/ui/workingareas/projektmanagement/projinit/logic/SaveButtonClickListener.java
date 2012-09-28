@@ -9,7 +9,6 @@ import com.vaadin.ui.Button.ClickListener;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.ProjektmanagementScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
@@ -80,14 +79,11 @@ public class SaveButtonClickListener implements ClickListener {
                     }
                 }
             }
-            final ProjektmanagementScreensBean projektmanagementScreensBean = screen.getProjektmanagementScreensBean();
-            final TreeTableFiller filler = new TreeTableFiller(messages, screen, projektBean,
-                    screen.getTreeTable(), screen.getDataSource());
+            final TreeTableFiller filler = new TreeTableFiller(messages, screen, screen.getTreeTable(),
+                    screen.getDataSource());
             filler.fill();
 
-            final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messages, screen
-                    .getUebersichtTable(),
-                    projektBean, projektmanagementScreensBean);
+            final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messages, screen.getUebersichtTable());
             overviewTableFiller.fill();
 
             screen.fillFields();
