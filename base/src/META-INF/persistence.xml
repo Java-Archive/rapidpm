@@ -2,7 +2,7 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
 
     <persistence-unit name="baseorm" transaction-type="JTA">
-        <jta-data-source>java:/jboss/datasources/RapidPMDS</jta-data-source>
+        <jta-data-source>java:/jboss/datasources/RapidPMDS2</jta-data-source>
         <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
         <!--<validation-mode>NONE</validation-mode>-->
 
