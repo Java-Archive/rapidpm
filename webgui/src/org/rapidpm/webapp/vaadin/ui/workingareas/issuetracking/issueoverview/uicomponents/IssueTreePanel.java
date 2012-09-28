@@ -5,7 +5,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeValueChangeListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeItemClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.DummyProjectData;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
@@ -26,10 +26,10 @@ public class IssueTreePanel extends Panel{
 
     public IssueTreePanel(IssueTabSheet issueTabSheet) {
         this.setSizeFull();
-        issueTree = new Tree("The Planets and Major Moons");
+        issueTree = new Tree("IssueTree");
         issueTree.setImmediate(true);
         if (issueTabSheet != null)
-            issueTree.addValueChangeListener(new TreeValueChangeListener(issueTabSheet));
+            issueTree.addItemClickListener(new TreeItemClickListener(issueTabSheet));
         fillTree();
         addComponent(issueTree);
     }
@@ -37,7 +37,6 @@ public class IssueTreePanel extends Panel{
     private void fillTree() {
         issueTree.addContainerProperty(CAPTION_PROPERTY, String.class, null);
         issueTree.setItemCaptionPropertyId(CAPTION_PROPERTY);
-        issueTree.setImmediate(true);
 
         Item itemParent = null;
         Item item = null;

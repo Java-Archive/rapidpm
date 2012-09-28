@@ -1,15 +1,20 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents;
 
+import com.vaadin.data.Item;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.*;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssuePrioritiesEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditablePanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.DummyProjectData;
 
 import java.util.Date;
+import java.util.Iterator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,6 +26,7 @@ import java.util.Date;
 public class IssueDetailsPanel extends ComponentEditablePanel implements Internationalizationable{
 
     final private IssueOverviewScreen screen;
+    private final static Integer[] storyPoints = new Integer[] {1,2,3,4,5,6,7,8,9,10};
 
     private Label headerLabel;
     private ComboBox statusSelect;
@@ -30,6 +36,7 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
     private DateField plannedDateField;
     private DateField resolvedDateField;
     private DateField closedDateField;
+    private ComboBox storyPointSelect;
 
     private TextArea descriptionTextArea;
     private TabSheet tabSheet;
@@ -56,24 +63,32 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
         HorizontalLayout horLayout = new HorizontalLayout();
 
         headerLabel = new Label();
+        addComponent(headerLabel);
 
         statusSelect = new ComboBox();
-        for (IssueStatusEnum statusEnum : IssueStatusEnum.values()) {
-            statusSelect.addItem(statusEnum);
-            statusSelect.setItemIcon(statusEnum, statusEnum.getIcon());
+        statusSelect.addContainerProperty(DummyProjectData.PROPERTY_NAME, String.class, null);
+        statusSelect.setItemCaptionPropertyId(DummyProjectData.PROPERTY_NAME);
+        Item item;
+        for (IssueStatus status : DummyProjectData.getStatusList()) {
+            item = statusSelect.addItem(status);
+            item.getItemProperty(DummyProjectData.PROPERTY_NAME).setValue(status.getStatusName());
+            statusSelect.setItemIcon(status, IssueStatusEnum.valueOf(status.getStatusName()).getIcon());
         }
-        statusSelect.select(IssueStatusEnum.values()[0]);
+        //statusSelect.select();
         statusSelect.setTextInputAllowed(false);
         statusSelect.setNullSelectionAllowed(false);
         statusSelect.setReadOnly(true);
         detailLayout.addComponent(statusSelect);
 
         prioritySelect = new ComboBox();
-        for (IssuePrioritiesEnum prioritiesEnum : IssuePrioritiesEnum.values()) {
-            prioritySelect.addItem(prioritiesEnum);
-            prioritySelect.setItemIcon(prioritiesEnum, prioritiesEnum.getIcon());
+        prioritySelect.addContainerProperty(DummyProjectData.PROPERTY_NAME, String.class, null);
+        prioritySelect.setItemCaptionPropertyId(DummyProjectData.PROPERTY_NAME);
+        for (IssuePriority priority : DummyProjectData.getPriorityList()) {
+            item = prioritySelect.addItem(priority);
+            item.getItemProperty(DummyProjectData.PROPERTY_NAME).setValue(priority.getPriorityName());
+            prioritySelect.setItemIcon(priority, IssuePrioritiesEnum.valueOf(priority.getPriorityName()).getIcon());
         }
-        prioritySelect.select(IssuePrioritiesEnum.values()[0]);
+        //prioritySelect.select(DummyProjectData.getPriorityList().get(0));
         prioritySelect.setTextInputAllowed(false);
         prioritySelect.setNullSelectionAllowed(false);
         prioritySelect.setReadOnly(true);
@@ -108,6 +123,16 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
         closedDateField.setValue(new Date());
         closedDateField.setReadOnly(true);
         dateLayout.addComponent(closedDateField);
+
+        storyPointSelect = new ComboBox();
+        for (Integer storyPoint : storyPoints) {
+            storyPointSelect.addItem(storyPoint);
+        }
+        storyPointSelect.select(storyPoints[0]);
+        storyPointSelect.setTextInputAllowed(false);
+        storyPointSelect.setNullSelectionAllowed(false);
+        storyPointSelect.setReadOnly(true);
+        dateLayout.addComponent(storyPointSelect);
 
         horLayout.addComponent(detailLayout);
         horLayout.addComponent(dateLayout);
@@ -151,6 +176,7 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
         plannedDateField.setCaption(screen.getMessagesBundle().getString("issue_planned"));
         resolvedDateField.setCaption(screen.getMessagesBundle().getString("issue_resolved"));
         closedDateField.setCaption(screen.getMessagesBundle().getString("issue_closed"));
+        storyPointSelect.setCaption(screen.getMessagesBundle().getString("issue_storypoints"));
         descriptionTextArea.setCaption(screen.getMessagesBundle().getString("issue_description"));
         tabComments.setCaption(screen.getMessagesBundle().getString("issue_comments"));
         tabTestcases.setCaption(screen.getMessagesBundle().getString("issue_testcases"));
@@ -158,7 +184,20 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
     }
 
     public void setPropertiesFromIssue(IssueBase issue) {
+        setLayoutReadOnly(false);
 
+        headerLabel.setValue(issue.getSummary());
+        statusSelect.select(issue.getIssueStatus());
+        prioritySelect.select(issue.getIssuePriority());
+        //assigneeSelect.setValue(issue.getAssignee().getLogin());
+        //reporterLabel.setValue(issue.getReporter().getLogin());
+        plannedDateField.setValue(issue.getDueDate_planned());
+        resolvedDateField.setValue(issue.getDueDate_resolved());
+        closedDateField.setValue(issue.getDueDate_closed());
+        storyPointSelect.select(issue.getStoryPoints());
+        descriptionTextArea.setValue(issue.getText());
+
+        setLayoutReadOnly(true);
     }
 
 }

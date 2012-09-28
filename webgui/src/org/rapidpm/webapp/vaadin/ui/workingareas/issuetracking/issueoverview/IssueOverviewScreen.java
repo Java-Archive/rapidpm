@@ -46,7 +46,7 @@ public class IssueOverviewScreen extends Screen{
     @Override
     public void setComponents() {
         hSplitPanel.addComponent(treePanel);
-        hSplitPanel.addComponent(issueTabSheet);//detailsPanel);
+        hSplitPanel.addComponent(issueTabSheet);
         addComponent(hSplitPanel);
     }
 

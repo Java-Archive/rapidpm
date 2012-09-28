@@ -12,7 +12,6 @@ import com.vaadin.server.ThemeResource;
  */
 public enum IssueStatusEnum {
 
-
         Open("status_open.gif"),
         InProgress("status_inprogress.gif"),
         Resolved("status_resolved.gif"),
@@ -28,5 +27,4 @@ public enum IssueStatusEnum {
         public Resource getIcon() {
             return icon;
         }
-
 }

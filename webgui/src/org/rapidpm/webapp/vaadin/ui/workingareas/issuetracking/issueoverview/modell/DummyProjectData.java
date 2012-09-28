@@ -2,6 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.mo
 
 import com.vaadin.data.util.BeanItemContainer;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
@@ -19,7 +20,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class DummyProjectData {
-    public static final String PROPERTY_NAME = "planningUnitName";
+    public static final String PROPERTY_NAME = "caption";
     private static final Projekt project = new ProjektBean(1).getProjekte().get(0);
 
     public  static Projekt getProject() {
@@ -40,5 +41,25 @@ public class DummyProjectData {
         final BeanItemContainer<PlanningUnit> planningUnitBeanItemContainer
                 = new BeanItemContainer<PlanningUnit>(PlanningUnit.class,  planningUnits);
         return planningUnitBeanItemContainer;
+    }
+
+    public static List<IssueStatus> getStatusList() {
+        List<IssueStatus> statusList = new ArrayList<>();
+        statusList.add(new IssueStatus("Open"));
+        statusList.add(new IssueStatus("InProgress"));
+        statusList.add(new IssueStatus("Resolved"));
+        statusList.add(new IssueStatus("Closed"));
+        statusList.add(new IssueStatus("OnHold"));
+        return statusList;
+    }
+
+    public static List<IssuePriority> getPriorityList() {
+        List<IssuePriority> priorityList = new ArrayList<>();
+        priorityList.add(new IssuePriority(0 , "Trivial"));
+        priorityList.add(new IssuePriority(0, "Minor"));
+        priorityList.add(new IssuePriority(0, "Major"));
+        priorityList.add(new IssuePriority(0, "Critical"));
+        priorityList.add(new IssuePriority(0, "Blocker"));
+        return priorityList;
     }
 }

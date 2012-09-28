@@ -62,4 +62,26 @@ public class IssuePriority {
     public void setPriorityName(String name) {
         this.priorityName = name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IssuePriority that = (IssuePriority) o;
+
+        if (prio != that.prio) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (priorityName != null ? !priorityName.equals(that.priorityName) : that.priorityName != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + prio;
+        result = 31 * result + (priorityName != null ? priorityName.hashCode() : 0);
+        return result;
+    }
 }

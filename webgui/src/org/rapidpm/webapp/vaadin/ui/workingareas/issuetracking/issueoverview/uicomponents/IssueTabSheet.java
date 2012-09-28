@@ -21,6 +21,7 @@ public class IssueTabSheet extends TabSheet implements Internationalizationable{
     public IssueTabSheet(final IssueOverviewScreen screen) {
         this.screen = screen;
         this.setSizeFull();
+        this.setImmediate(true);
         setComponents();
         doInternationalization();
     }
@@ -32,13 +33,14 @@ public class IssueTabSheet extends TabSheet implements Internationalizationable{
         detailsTab = this.addTab(detailsPanel);
     }
 
-    public boolean isTableTabHidden() {
-        return !tableTab.isVisible();
+    public boolean isTableTabDisabled() {
+        return !tableTab.isEnabled();
     }
 
-    public void hideTableTab(boolean value) {
-        tableTab.setVisible(!value);
+    public void disableTableTab(boolean value) {
         tableTab.setEnabled(!value);
+        if (value) this.setSelectedTab(detailsTab);
+        else  this.setSelectedTab(tableTab);
     }
 
     @Override
@@ -47,5 +49,12 @@ public class IssueTabSheet extends TabSheet implements Internationalizationable{
         detailsTab.setCaption(screen.getMessagesBundle().getString("issue_detail"));
     }
 
+    public IssueDetailsPanel getDetailsPanel() {
+        return detailsPanel;
+    }
+
+    public IssueTablePanel getTablePanel() {
+        return tablePanel;
+    }
 
 }

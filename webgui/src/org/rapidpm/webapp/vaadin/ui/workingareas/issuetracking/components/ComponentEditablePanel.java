@@ -54,26 +54,28 @@ public abstract class ComponentEditablePanel extends Panel{
         return new CancelButtonStandardClickListener();
     }
 
+    public void setLayoutReadOnly(boolean readOnly) {
+        iterateLayoutReadOnly(readOnly, componentsLayout);
+    }
 
+    private void iterateLayoutReadOnly(boolean readOnly, AbstractOrderedLayout layout) {
+        final Iterator<Component> componentIterator = layout.getComponentIterator();
+        while (componentIterator.hasNext()) {
+            final Component component = componentIterator.next();
+            if (component instanceof AbstractOrderedLayout) {
+                iterateLayoutReadOnly(readOnly, (AbstractOrderedLayout) component);
+            } else if (component instanceof Field) {
+                component.setReadOnly(readOnly);
+            }
+        }
+        buttonLayout.setVisible(!readOnly);
+    }
 
     private class PanelMouseClickListener implements MouseEvents.ClickListener {
 
             @Override
             public void click(MouseEvents.ClickEvent event) {
-                iterateLayout(componentsLayout);
-            }
-
-            private void iterateLayout(AbstractOrderedLayout layout) {
-                final Iterator<Component> componentIterator = layout.getComponentIterator();
-                while (componentIterator.hasNext()) {
-                    final Component component = componentIterator.next();
-                    if (component instanceof AbstractOrderedLayout) {
-                        iterateLayout((AbstractOrderedLayout) component);
-                    } else if (component instanceof Field) {
-                        component.setReadOnly(false);
-                    }
-                }
-                buttonLayout.setVisible(true);
+                setLayoutReadOnly(false);
             }
     }
 
@@ -82,20 +84,7 @@ public abstract class ComponentEditablePanel extends Panel{
 
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            iterateLayout(componentsLayout);
-        }
-
-        private void iterateLayout(AbstractOrderedLayout layout) {
-            final Iterator<Component> componentIterator = layout.getComponentIterator();
-            while (componentIterator.hasNext()) {
-                final Component component = componentIterator.next();
-                if (component instanceof AbstractOrderedLayout) {
-                    iterateLayout((AbstractOrderedLayout) component);
-                } else if (component instanceof Field) {
-                    component.setReadOnly(true);
-                }
-            }
-            buttonLayout.setVisible(false);
+            setLayoutReadOnly(true);
         }
     }
 

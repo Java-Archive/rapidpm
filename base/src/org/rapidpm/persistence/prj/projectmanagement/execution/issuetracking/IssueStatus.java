@@ -54,4 +54,24 @@ public class IssueStatus {
     public void setStatusName(String name) {
         this.statusName = name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IssueStatus that = (IssueStatus) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (statusName != null ? !statusName.equals(that.statusName) : that.statusName != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (statusName != null ? statusName.hashCode() : 0);
+        return result;
+    }
 }
