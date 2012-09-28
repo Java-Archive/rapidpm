@@ -62,7 +62,7 @@ INSERT INTO
         ressourcegroup(id, name, hoursPerWeek, weeksPerYear, planAnzahl, facturizable, externalEurosPerHour, bruttoGehalt)
         VALUES (8, 'Backoffice', 20, 46, 1, 0.01, 0.0,62000.0);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('RessourceGroup_id', 8);
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('RessourceGroup_id', 9);
 
 
 
@@ -394,7 +394,7 @@ VALUES (55, 4, 5, 20, 7);
 INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
 VALUES (56, 5, 10, 30, 8);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnitElement_id', 56);
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnitElement_id', 57);
 
 INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
 VALUES (1, 1);
