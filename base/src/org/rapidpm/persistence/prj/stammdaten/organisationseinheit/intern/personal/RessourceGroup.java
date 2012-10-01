@@ -71,9 +71,6 @@ public class RessourceGroup {
     @Transient private Double transientSumPerMonth;
     @Transient private Double transientSumPerDay;
 
-    @OneToMany(cascade=CascadeType.ALL)
-    private List<PlanningUnitElement> planningUnitElements;
-
     public Long getId() {
         return id;
     }
@@ -223,14 +220,6 @@ public class RessourceGroup {
 
     public void setTransientSumPerDay(Double transientSumPerDay) {
         this.transientSumPerDay = transientSumPerDay;
-    }
-
-    public List<PlanningUnitElement> getPlanningUnitElements() {
-        return planningUnitElements;
-    }
-
-    public void setPlanningUnitElements(List<PlanningUnitElement> planningUnitElements) {
-        this.planningUnitElements = planningUnitElements;
     }
 
     @Override

@@ -14,7 +14,6 @@ import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.person
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -111,22 +110,28 @@ public class AddRowWindow extends Window {
                         //Bean aus dem BeanItem
                         final RessourceGroup ressourceGroup = beanItem.getBean();
 
+                        baseDaoFactoryBean.saveOrUpdate(ressourceGroup);
+//                        baseDaoFactoryBean.getEntityManager().refresh(ressourceGroup);
+//                        final RessourceGroup group = baseDaoFactoryBean.getRessourceGroupDAO().loadRessourceGroupByName
+//                                (ressourceGroup
+//                                .getName
+//                                ());
+                        RessourceGroup group = baseDaoFactoryBean.getRessourceGroupDAO().loadRessourceGroupByName
+                                (ressourceGroup.getName());
+
+
                         final List<PlanningUnit> planningUnits = baseDaoFactoryBean.getPlanningUnitDAO()
                                 .loadAllEntities();
-                        final List<PlanningUnitElement> planningUnitElements = new ArrayList<>();
+
                         for(final PlanningUnit planningUnit : planningUnits){
-                            PlanningUnitElement planningUnitElement = new PlanningUnitElement();
+                            final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
                             planningUnitElement.setPlannedDays(0);
                             planningUnitElement.setPlannedHours(0);
                             planningUnitElement.setPlannedMinutes(0);
-                            planningUnitElement.setRessourceGroup(ressourceGroup);
+                            planningUnitElement.setRessourceGroup(group);
                             planningUnit.getPlanningUnitElementList().add(planningUnitElement);
-                            planningUnitElements.add(planningUnitElement);
+                            baseDaoFactoryBean.saveOrUpdate(planningUnit);
                         }
-                        ressourceGroup.setPlanningUnitElements(planningUnitElements);
-
-                        //transiente RessourceGroup in DB speichern
-                        baseDaoFactoryBean.saveOrUpdate(ressourceGroup);
 
 
 //                        final int planningUnitCount = baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities().size();

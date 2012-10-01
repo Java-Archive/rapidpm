@@ -1,6 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tasks;
 
 
+import com.vaadin.ui.Notification;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
@@ -21,7 +22,7 @@ public class DelRowLogic {
 
     public void execute() {
 
-
+        try{
         //Bean aus dem BeanItem
         final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final RessourceGroup ressourceGroup = (RessourceGroup) button.getItemId();
@@ -31,5 +32,8 @@ public class DelRowLogic {
 
         screen.generateTableAndCalculate();
         screen.getSaveButtonLayout().setVisible(false);
+        }catch(Exception e){
+            Notification.show("Ressource wird in Projekt(en) verwandt. Kann nicht gelöscht werden.");
+        }
     }
 }

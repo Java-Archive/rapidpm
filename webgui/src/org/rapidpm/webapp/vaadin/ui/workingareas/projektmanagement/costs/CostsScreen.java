@@ -11,6 +11,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.compone
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.CostsCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.OverviewTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.TreeTableFiller;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.PlanningUnitBeanItemContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.ExpandTableCheckBox;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
@@ -57,13 +58,12 @@ public class CostsScreen extends Screen {
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
 
-        undoButton = new UndoButton(this, treeTable, dataSource, projektBean);
+        undoButton = new UndoButton(this, treeTable, dataSource);
         undoButton.setVisible(false);
 
         expandCheckBox = new ExpandTableCheckBox(treeTable, dataSource);
 
-        final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, projektBean,
-                treeTable, dataSource);
+        final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, treeTable, dataSource);
         treeTableFiller.fill();
 
         final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable);
@@ -114,8 +114,6 @@ public class CostsScreen extends Screen {
         unterschriftLayout.setWidth("560px");
         unterschriftLayout.addComponent(vertrieblerField);
         unterschriftLayout.addComponent(datumField);
-
-
     }
 
     private void fillFields() {
@@ -132,7 +130,6 @@ public class CostsScreen extends Screen {
         kostenField.setReadOnly(true);
         manntageField.setReadOnly(true);
         summeInMinField.setReadOnly(true);
-
     }
 
     @Override
@@ -144,6 +141,17 @@ public class CostsScreen extends Screen {
         addComponent(formLayout);
     }
 
+    @Override
+    public void doInternationalization() {
+        expandCheckBox.setCaption(messagesBundle.getString("costsinit_expand"));
+        saveButton.setCaption(messagesBundle.getString("save"));
+        undoButton.setCaption(messagesBundle.getString("costsinit_removesortorder"));
+        datumField.setCaption(messagesBundle.getString("costsinit_date"));
+        manntageField.setCaption(messagesBundle.getString("costsinit_manday"));
+        vertrieblerField.setCaption(messagesBundle.getString("costsscreen_responsible"));
+        kostenField.setCaption(messagesBundle.getString("costsscreen_costs"));
+        summeInMinField.setCaption(messagesBundle.getString("costsinit_sumInDDHHMM"));
+    }
 
     public DateField getDatumField() {
         return datumField;
@@ -216,18 +224,6 @@ public class CostsScreen extends Screen {
 
     public void setUebersichtTable(MyTable uebersichtTable) {
         this.uebersichtTable = uebersichtTable;
-    }
-
-    @Override
-    public void doInternationalization() {
-        expandCheckBox.setCaption(messagesBundle.getString("costsinit_expand"));
-        saveButton.setCaption(messagesBundle.getString("save"));
-        undoButton.setCaption(messagesBundle.getString("costsinit_removesortorder"));
-        datumField.setCaption(messagesBundle.getString("costsinit_date"));
-        manntageField.setCaption(messagesBundle.getString("costsinit_manday"));
-        vertrieblerField.setCaption(messagesBundle.getString("costsscreen_responsible"));
-        kostenField.setCaption(messagesBundle.getString("costsscreen_costs"));
-        summeInMinField.setCaption(messagesBundle.getString("costsinit_sumInDDHHMM"));
     }
 
     public ProjektBean getProjektBean() {

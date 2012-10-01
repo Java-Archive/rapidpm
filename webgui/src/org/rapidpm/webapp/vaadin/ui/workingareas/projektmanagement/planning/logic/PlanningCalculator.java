@@ -9,8 +9,6 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.ProjektmanagementScreensBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,17 +30,14 @@ public class PlanningCalculator {
 
     private static final Logger logger = Logger.getLogger(PlanningCalculator.class);
 
-    private final ProjektmanagementScreensBean projektmanagementScreensBean;
     private List<RessourceGroup> ressourceGroups;
     private PlannedProject projekt;
     private ResourceBundle messages;
     private PlanningCalculatorBean planningCalculatorBean;
 
 
-    public PlanningCalculator(final ResourceBundle bundle, final ProjektBean projektBean,
-                              final ProjektmanagementScreensBean screenBean) {
+    public PlanningCalculator(final ResourceBundle bundle) {
         this.messages = bundle;
-        this.projektmanagementScreensBean = screenBean;
     }
 
     public void calculate() {

@@ -15,15 +15,12 @@ import java.util.Collection;
  */
 public class ExpandTableCheckBox extends CheckBox implements Property.ValueChangeListener{
 
-    private static final String CAPTION = "alle Knoten aufklappen";
-
     private MyTreeTable treeTable;
     private HierarchicalContainer dataSource;
 
     public ExpandTableCheckBox(MyTreeTable treeTable, HierarchicalContainer dataSource){
         this.treeTable = treeTable;
         this.dataSource = dataSource;
-        this.setCaption(CAPTION);
         addValueChangeListener(this);
     }
 

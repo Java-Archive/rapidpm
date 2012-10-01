@@ -2,9 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic;
 
 import com.vaadin.data.util.HierarchicalContainer;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.ProjektmanagementScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.CostsScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
 
 import java.text.DecimalFormat;
@@ -26,21 +24,16 @@ public class TreeTableFiller {
     private static final int WIDTH = 200;
 
     private HierarchicalContainer dataSource;
-    private ProjektBean projektBean;
     private CostsScreen screen;
     private MyTreeTable treeTable;
     private ResourceBundle messages;
-    private ProjektmanagementScreensBean projektmanagementScreensBean;
 
-    public TreeTableFiller(final ResourceBundle bundle, final CostsScreen screen,
-                           final ProjektBean projektBean, final MyTreeTable treeTable,
+    public TreeTableFiller(final ResourceBundle bundle, final CostsScreen screen, final MyTreeTable treeTable,
                            final HierarchicalContainer dataSource) {
         this.messages = bundle;
         this.dataSource = dataSource;
-        this.projektBean = projektBean;
         this.treeTable = treeTable;
         this.screen = screen;
-        projektmanagementScreensBean = this.screen.getProjektmanagementScreensBean();
     }
 
     public void fill() {

@@ -47,8 +47,7 @@ public class ProjektplanungScreen extends Screen {
     public ProjektplanungScreen(MainUI ui) {
         super(ui);
 
-        final PlanningCalculator calculator = new PlanningCalculator(messagesBundle, this.projektBean,
-                this.projektmanagementScreensBean);
+        final PlanningCalculator calculator = new PlanningCalculator(messagesBundle);
         calculator.calculate();
         splitPanel = new HorizontalSplitPanel();
         splitPanel.setSizeFull();
