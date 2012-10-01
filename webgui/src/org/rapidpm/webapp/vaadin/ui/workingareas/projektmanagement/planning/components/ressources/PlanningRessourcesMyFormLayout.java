@@ -8,6 +8,8 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import org.apache.log4j.Logger;
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
@@ -16,13 +18,11 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.Proj
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.MyFormLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
 
-import java.util.HashMap;
+import javax.persistence.EntityManager;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import static org.rapidpm.Constants.*;
-import static org.rapidpm.Constants.HOURS_DAY;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -36,8 +36,9 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
     private static final Logger logger = Logger.getLogger(PlanningRessourcesMyFormLayout.class);
 
     private Table tabelle = new Table();
-    private Map<String, String> ressourceGroupStringMap;
+
     private List<PlanningUnitElement> planningUnitElements;
+    private PlanningRessourcesMyFormLayoutBean bean;
 
     public PlanningRessourcesMyFormLayout(final PlanningUnit planningUnit, final ProjektplanungScreen screen,
                                           final Panel screenPanel) {
@@ -50,19 +51,23 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
         }
     }
 
-    public PlanningRessourcesMyFormLayout(final PlanningUnit planningUnit, final ProjektplanungScreen screen,
+    public PlanningRessourcesMyFormLayout(final PlanningUnit thePlanningUnit, final ProjektplanungScreen screen,
                                           final Panel screenPanel, boolean hasChildren) {
         super(screen, screenPanel);
+        bean = EJBFactory.getEjbInstance(PlanningRessourcesMyFormLayoutBean.class);
+        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        EntityManager entityManager = baseDaoFactoryBean.getPlanningUnitElementDAO().getEntityManager();
+        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+            entityManager.refresh(planningUnitElement);
+        }
+        entityManager = baseDaoFactoryBean.getPlanningUnitDAO().getEntityManager();
+        for(final PlanningUnit planningUnit1 : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
+            entityManager.refresh(planningUnit1);
+        }
+        final PlanningUnit planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().loadPlanningUnitByName
+                (thePlanningUnit.getPlanningUnitName());
         planningUnitElements = planningUnit.getPlanningUnitElementList();
         buildTable();
-        ressourceGroupStringMap = new HashMap<>();
-        for (final Object spalte2 : tabelle.getContainerPropertyIds()) {
-            for(final Object zeile2 : tabelle.getItemIds()) {
-                final String cellContent2 = tabelle.getItem(zeile2).getItemProperty(spalte2)
-                        .getValue().toString();
-                ressourceGroupStringMap.put(spalte2.toString(), cellContent2);
-            }
-        }
         buildForm();
         if (hasChildren) {
             for (final Object listener : screenPanel.getListeners(MouseEvents.ClickEvent.class)) {
@@ -85,19 +90,14 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
 
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    try{
-
-
-                        System.out.println("before: "+ressourceGroupStringMap);
-
-
+                    try {
 
                         tabelle.commit();
                         for (final Object spalte : tabelle.getContainerPropertyIds()) {
-                            for(final Object zeile : tabelle.getItemIds()){
+                            for (final Object zeile : tabelle.getItemIds()) {
                                 final String cellContent = tabelle.getItem(zeile).getItemProperty(spalte)
                                         .getValue().toString();
-                                if(!COMPILE.matcher(cellContent).matches()){
+                                if (!COMPILE.matcher(cellContent).matches()) {
                                     throw new FieldGroup.CommitException();
                                 }
                                 final List<PlanningUnitElement> planningUnitElementList = planningUnit.getPlanningUnitElementList();
@@ -105,81 +105,26 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
                                     final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
                                     if (ressourceGroup.getName().equals(spalte.toString())) {
                                         final String[] daysHoursMinutes = SPLIT.split(cellContent);
-                                        if( !(ressourceGroupStringMap.get(spalte).equals(cellContent)) ){
-                                            final int plannedDays = Integer.parseInt(daysHoursMinutes[0]);
-                                            final int plannedHours = Integer.parseInt(daysHoursMinutes[1]);
-                                            final int plannedMinutes = Integer.parseInt(daysHoursMinutes[2]);
-                                            planningUnitElement.setPlannedDays(plannedDays);
-                                            planningUnitElement.setPlannedHours(plannedHours);
-                                            planningUnitElement.setPlannedMinutes(plannedMinutes);
-                                            final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
-                                            final String[] cellContentBeforeSave = SPLIT.split
-                                                    (ressourceGroupStringMap.get(ressourceGroup.getName()));
-                                            final int plannedDaysBefore = Integer.parseInt(cellContentBeforeSave[0]);
-                                            final int plannedHoursBefore = Integer.parseInt(cellContentBeforeSave[1]);
-                                            final int plannedMinutesBefore = Integer.parseInt(cellContentBeforeSave[2]);
-                                            if(plannedDaysBefore == plannedDays){
-                                                daysHoursMinutesItem.setDays(0);
-                                            } else {
-                                                daysHoursMinutesItem.setDays(plannedDays);
-                                            }
-                                            if(plannedHoursBefore == plannedHours){
-                                                daysHoursMinutesItem.setHours(0);
-                                            } else {
-                                                daysHoursMinutesItem.setHours(plannedHours);
-                                            }if(plannedMinutesBefore == plannedMinutes){
-                                                daysHoursMinutesItem.setMinutes(0);
-                                            } else {
-                                                daysHoursMinutesItem.setMinutes(plannedMinutes);
-                                            }
-                                            correctDaysHoursMinutesItem(daysHoursMinutesItem);
-                                            saveTimesRecursively(daysHoursMinutesItem, planningUnit.getParent(), spalte);
-                                        }
-
+                                        planningUnitElement.setPlannedDays(Integer.parseInt(daysHoursMinutes[0]));
+                                        planningUnitElement.setPlannedHours(Integer.parseInt(daysHoursMinutes[1]));
+                                        planningUnitElement.setPlannedMinutes(Integer.parseInt(daysHoursMinutes[2]));
+                                        baseDaoFactoryBean.saveOrUpdate(planningUnitElement);
                                     }
                                 }
                             }
                         }
-                        final PlanningCalculator calculator = new PlanningCalculator(screen.getMessagesBundle());
-                        calculator.calculate();
-                        tabelle.setEditable(false);
-                        buttonLayout.setVisible(false);
+                        //PlanningCalculator calculator = new PlanningCalculator(messages);
+                        //calculator.calculate();
                         screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
-                    }catch (CommitException e){
+                    } catch (CommitException e) {
                         logger.info(COMMIT_EXCEPTION_MESSAGE);
                         Notification.show("Eingabe nach Schema [d]d:hh:mm");
-                    }catch(Exception e){
-                        logger.warn("Exception",e);
+                    } catch (Exception e) {
+                        logger.warn("Exception", e);
                     }
                 }
             });
         }
-    }
-
-    private void saveTimesRecursively(DaysHoursMinutesItem daysHoursMinutesItem, PlanningUnit planningUnit, Object propertyId) {
-        final DaysHoursMinutesItem newItem = new DaysHoursMinutesItem();
-        if(planningUnit != null){
-            for(final PlanningUnit kindPlanningUnit : planningUnit.getKindPlanningUnits()){
-                for (final PlanningUnitElement planningUnitElement : kindPlanningUnit.getPlanningUnitElementList()) {
-                    final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
-                    if (ressourceGroup.getName().equals(propertyId.toString())) {
-                        final int plannedDays =  planningUnitElement.getPlannedDays() + daysHoursMinutesItem.getDays();
-                        final int plannedHours = planningUnitElement.getPlannedHours() + daysHoursMinutesItem.getHours();
-                        final int plannedMinutes = planningUnitElement.getPlannedHours() + daysHoursMinutesItem.getMinutes();
-                        newItem.setDays(newItem.getDays() + plannedDays);
-                        newItem.setHours(newItem.getHours() + plannedHours);
-                        newItem.setMinutes(newItem.getMinutes() + plannedMinutes);
-                        correctDaysHoursMinutesItem(newItem);
-                    }
-                    planningUnitElement.setPlannedDays(newItem.getDays());
-                    planningUnitElement.setPlannedHours(newItem.getHours());
-                    planningUnitElement.setPlannedMinutes(newItem.getMinutes());
-                }
-                saveTimesRecursively(newItem, planningUnit.getParent(), propertyId);
-            }
-
-        }
-
     }
 
     private void buildTable() {
@@ -198,12 +143,12 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
             cells[counter] = daysHoursMinutesItem.toString();
             counter++;
         }
-        try{
+        try {
             final Object itemId = tabelle.addItem(cells, null);
-            if(itemId == null){
+            if (itemId == null) {
                 throw new NullPointerException();
             }
-        } catch(NullPointerException e){
+        } catch (NullPointerException e) {
             logger.warn("tabelle konnte nicht erstellt werden");
         }
     }
@@ -213,16 +158,4 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
         componentsLayout.addComponent(tabelle);
     }
 
-    private void correctDaysHoursMinutesItem(final DaysHoursMinutesItem item) {
-        final int hours = item.getMinutes() / MINS_HOUR;
-        if (hours > 0) {
-            item.setHours(item.getHours() + hours);
-            item.setMinutes(item.getMinutes() - (hours * MINS_HOUR));
-        }
-        final int days = item.getHours() / HOURS_DAY;
-        if (days > 0) {
-            item.setDays(item.getDays() + days);
-            item.setHours(item.getHours() - (days * HOURS_DAY));
-        }
-    }
 }

@@ -9,9 +9,9 @@ import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.webapp.vaadin.BaseUI;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
@@ -19,6 +19,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logi
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.PlanningUnitBeanItemContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
+import javax.persistence.EntityManager;
 import java.util.Iterator;
 import java.util.List;
 
@@ -46,6 +47,10 @@ public class ProjektplanungScreen extends Screen {
 
     public ProjektplanungScreen(MainUI ui) {
         super(ui);
+
+        projektplanungScreenBean = EJBFactory.getEjbInstance(ProjektPlanungScreenBean.class);
+        final DaoFactoryBean daoFactoryBean = projektplanungScreenBean.getDaoFactoryBean();
+        final PlannedProject plannedProject = daoFactoryBean.getPlannedProjectDAO().loadAllEntities().get(0);
 
         final PlanningCalculator calculator = new PlanningCalculator(messagesBundle);
         calculator.calculate();
@@ -75,10 +80,7 @@ public class ProjektplanungScreen extends Screen {
         splitPanel.addComponent(menuLayout);
         splitPanel.addComponent(mainLayout);
 
-        projektplanungScreenBean = EJBFactory.getEjbInstance(ProjektPlanungScreenBean.class);
-        final DaoFactoryBean daoFactoryBean = projektplanungScreenBean.getDaoFactoryBean();
-        final PlannedProjectDAO plannedProjectDAO = daoFactoryBean.getPlannedProjectDAO();
-        final PlannedProject plannedProject = plannedProjectDAO.loadAllEntities().get(0);
+
         final List<PlanningUnit> planningUnitList = plannedProject.getPlanningUnits();
 
         planningUnitPanel.setCaption(plannedProject.getProjektName());

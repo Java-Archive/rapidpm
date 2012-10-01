@@ -4,12 +4,12 @@ import org.apache.log4j.Logger;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 
+import javax.persistence.EntityManager;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,25 +38,32 @@ public class PlanningCalculator {
 
     public PlanningCalculator(final ResourceBundle bundle) {
         this.messages = bundle;
+        planningCalculatorBean = EJBFactory.getEjbInstance(PlanningCalculatorBean.class);
+        final DaoFactoryBean daoFactoryBean = planningCalculatorBean.getDaoFactoryBean();
+
+        EntityManager entityManager = daoFactoryBean.getEntityManager();
+        for(final PlannedProject plannedProject : daoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+            entityManager.refresh(plannedProject);
+        }
+        for(final PlanningUnitElement planningUnitElement : daoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+            entityManager.refresh(planningUnitElement);
+        }
+
+        final List<PlannedProject> plannedProjects = daoFactoryBean.getPlannedProjectDAO().loadAllEntities();
+        projekt = plannedProjects.get(0);
+        ressourceGroups = daoFactoryBean.getRessourceGroupDAO().loadAllEntities();
     }
 
     public void calculate() {
-        planningCalculatorBean = EJBFactory.getEjbInstance(PlanningCalculatorBean.class);
-        final DaoFactoryBean daoFactoryBean = planningCalculatorBean.getDaoFactoryBean();
-        final PlannedProjectDAO plannedProjectDAO = daoFactoryBean.getPlannedProjectDAO();
-        final List<PlannedProject> plannedProjects = plannedProjectDAO.loadAllEntities();
-        projekt = plannedProjects.get(0);
-        ressourceGroups = daoFactoryBean.getRessourceGroupDAO().loadAllEntities();
-
-
-        this.calculatePlanningUnits();
+        calculatePlanningUnits();
+        planningCalculatorBean.getDaoFactoryBean().saveOrUpdate(projekt);
     }
 
     private void calculatePlanningUnits() {
         for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
             final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
-            final List<PlanningUnit> planningUnitPlanningUnitList = planningUnit.getKindPlanningUnits();
-            if (planningUnitPlanningUnitList == null || planningUnitPlanningUnitList.isEmpty()) {
+            final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
+            if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
                 for (final RessourceGroup spalte : ressourceGroups) {
                     final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
                     planningUnitElement.setPlannedDays(0);
@@ -66,7 +73,7 @@ public class PlanningCalculator {
                     planningUnit.getPlanningUnitElementList().add(planningUnitElement);
                 }
             } else {
-                this.calculatePlanningUnits(planningUnitPlanningUnitList, planningUnit,
+                this.calculatePlanningUnits(kindPlanningUnits, planningUnit,
                         ressourceGroupDaysHoursMinutesItemMap);
             }
         }
@@ -111,7 +118,9 @@ public class PlanningCalculator {
             planningUnitElement.setPlannedDays(daysFromMap);
             planningUnitElement.setPlannedHours(hoursFromMap);
             planningUnitElement.setPlannedMinutes(minutesFromMap);
+            planningCalculatorBean.getDaoFactoryBean().saveOrUpdate(planningUnitElement);
         }
+        System.out.println(ressourceGroupDaysHoursMinutesItemMap.toString());
     }
 
     private void addiereZeileZurRessourceMap(final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap,

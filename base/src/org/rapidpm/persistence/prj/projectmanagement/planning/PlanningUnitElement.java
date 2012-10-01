@@ -27,7 +27,7 @@ public class PlanningUnitElement {
     @Basic private int plannedHours;
     @Basic private int plannedMinutes;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private RessourceGroup ressourceGroup;
 
     public Long getId() {
