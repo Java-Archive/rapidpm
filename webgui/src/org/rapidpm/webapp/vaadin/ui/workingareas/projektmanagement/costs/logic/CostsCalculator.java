@@ -1,11 +1,13 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic;
 
 import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 
+import javax.persistence.EntityManager;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -27,11 +29,15 @@ public class CostsCalculator {
     private final Map<RessourceGroup, Double> ressourceGroupsCostsMap = new HashMap<>();
     private ResourceBundle messages;
     private CostsCalcutorBean bean;
+    private PlannedProject projekt;
 
     private Double totalCostsExakt = 0.0;
 
     public CostsCalculator(ResourceBundle bundle) {
         bean = EJBFactory.getEjbInstance(CostsCalcutorBean.class);
+        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        refreshEntities(baseDaoFactoryBean);
+        projekt = baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities().get(0);
         messages = bundle;
     }
 
@@ -49,7 +55,6 @@ public class CostsCalculator {
 
     private void calculatePlanningUnitsAndTotalsAbsolut() {
         //final Integer currentProjectIndex = bean.getCurrentProjectIndex();
-        final PlannedProject projekt = bean.getDaoFactoryBean().getPlannedProjectDAO().loadAllEntities().get(0);
         final List<PlanningUnit> planningUnits = projekt.getPlanningUnits();
         for (final PlanningUnit planningUnit : planningUnits) {
             calculatePlanningUnits(planningUnit.getKindPlanningUnits());
@@ -101,5 +106,18 @@ public class CostsCalculator {
     public String getTotalCostsGerundet() {
         final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
         return format.format(totalCostsExakt);
+    }
+
+    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
+        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+            entityManager.refresh(plannedProject);
+        }
+        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+            entityManager.refresh(planningUnitElement);
+        }
+        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
+            entityManager.refresh(ressourceGroup);
+        }
     }
 }

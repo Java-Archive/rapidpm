@@ -4,6 +4,8 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
@@ -40,10 +42,7 @@ public class OverviewTableFiller {
         this.table = table;
         bean = EJBFactory.getEjbInstance(OverviewTableFillerBean.class);
         final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        final EntityManager entityManager = baseDaoFactoryBean.getRessourceGroupDAO().getEntityManager();
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
+        refreshEntities(baseDaoFactoryBean);
         ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
 
 }
@@ -79,11 +78,8 @@ public class OverviewTableFiller {
                         final String absoluteWerteMapValue = absoluteWerte.get(absoluteWerteEntry.getKey()).toString();
                         table.getItem(ABSOLUT).getItemProperty(spalte).setValue(absoluteWerteMapValue);
                     }
-
                 }
-
             }
-
         }
 
         final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
@@ -102,6 +98,19 @@ public class OverviewTableFiller {
                     }
                 }
             }
+        }
+    }
+
+    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
+        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+            entityManager.refresh(plannedProject);
+        }
+        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+            entityManager.refresh(planningUnitElement);
+        }
+        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
+            entityManager.refresh(ressourceGroup);
         }
     }
 }

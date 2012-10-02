@@ -8,14 +8,18 @@ import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.person
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.ButtonComponent;
 
+import java.util.ResourceBundle;
+
 public class DelRowLogic {
     private ButtonComponent button;
     private StundensaetzeScreen screen;
     private DelRowLogicBean bean;
+    private ResourceBundle messages;
 
-    public DelRowLogic(final StundensaetzeScreen screen, final ButtonComponent button) {
+    public DelRowLogic(final StundensaetzeScreen screen, final ButtonComponent button, final ResourceBundle messages) {
         this.screen = screen;
         this.button = button;
+        this.messages = messages;
         bean = EJBFactory.getEjbInstance(DelRowLogicBean.class);
 
     }
@@ -33,7 +37,7 @@ public class DelRowLogic {
         screen.generateTableAndCalculate();
         screen.getSaveButtonLayout().setVisible(false);
         }catch(Exception e){
-            Notification.show("Ressource wird in Projekt(en) verwandt. Kann nicht gelöscht werden.");
+            Notification.show(messages.getString("stdsatz_nodelete"));
         }
     }
 }

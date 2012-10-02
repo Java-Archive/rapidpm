@@ -13,16 +13,17 @@ import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.MyFormLayout;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import static org.rapidpm.Constants.*;
+import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
+import static org.rapidpm.Constants.DAYSHOURSMINUTES_REGEX;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -40,29 +41,19 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
     private List<PlanningUnitElement> planningUnitElements;
     private PlanningRessourcesMyFormLayoutBean bean;
 
-    public PlanningRessourcesMyFormLayout(final PlanningUnit planningUnit, final ProjektplanungScreen screen,
-                                          final Panel screenPanel) {
-        super(screen, screenPanel);
-        planningUnitElements = planningUnit.getPlanningUnitElementList();
-        buildTable();
-        buildForm();
-        for (final Object listener : screenPanel.getListeners(MouseEvents.ClickEvent.class)) {
-            screenPanel.removeClickListener((MouseEvents.ClickListener) listener);
-        }
-    }
-
     public PlanningRessourcesMyFormLayout(final PlanningUnit thePlanningUnit, final ProjektplanungScreen screen,
                                           final Panel screenPanel, boolean hasChildren) {
         super(screen, screenPanel);
         bean = EJBFactory.getEjbInstance(PlanningRessourcesMyFormLayoutBean.class);
         final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        EntityManager entityManager = baseDaoFactoryBean.getPlanningUnitElementDAO().getEntityManager();
+        final EntityManager planningUnitElementEntityManager = baseDaoFactoryBean.getPlanningUnitElementDAO().getEntityManager();
+        final EntityManager planningUnitEntityManager = baseDaoFactoryBean.getPlanningUnitDAO().getEntityManager();
         for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
+            planningUnitElementEntityManager.refresh(planningUnitElement);
         }
-        entityManager = baseDaoFactoryBean.getPlanningUnitDAO().getEntityManager();
-        for(final PlanningUnit planningUnit1 : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
-            entityManager.refresh(planningUnit1);
+
+        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
+            planningUnitEntityManager.refresh(planningUnit);
         }
         final PlanningUnit planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().loadPlanningUnitByName
                 (thePlanningUnit.getPlanningUnitName());
@@ -113,12 +104,10 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
                                 }
                             }
                         }
-                        //PlanningCalculator calculator = new PlanningCalculator(messages);
-                        //calculator.calculate();
                         screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
                     } catch (CommitException e) {
                         logger.info(COMMIT_EXCEPTION_MESSAGE);
-                        Notification.show("Eingabe nach Schema [d]d:hh:mm");
+                        Notification.show(messages.getString("planning_ressourcespattern"));
                     } catch (Exception e) {
                         logger.warn("Exception", e);
                     }
@@ -128,6 +117,20 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
     }
 
     private void buildTable() {
+        final RessourceGroupDAO ressourceGroupDAO = bean.getDaoFactoryBean().getRessourceGroupDAO();
+        final EntityManager ressourceGroupEntityManager = ressourceGroupDAO.getEntityManager();
+        for(final RessourceGroup ressourceGroup : ressourceGroupDAO.loadAllEntities()){
+            ressourceGroupEntityManager.refresh(ressourceGroup);
+        }
+
+        final List<RessourceGroup> ressourceGroups = ressourceGroupDAO.loadAllEntities();
+        final String[] spaltenNamen = new String[ressourceGroups.size()];
+        Integer index = 0;
+        for(final RessourceGroup ressourceGroup : ressourceGroups){
+            spaltenNamen[index] = ressourceGroup.getName();
+            index++;
+        }
+
         tabelle.removeAllItems();
         tabelle.setPageLength(2);
         tabelle.setColumnCollapsingAllowed(true);
@@ -145,6 +148,7 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
         }
         try {
             final Object itemId = tabelle.addItem(cells, null);
+            tabelle.setVisibleColumns(spaltenNamen);
             if (itemId == null) {
                 throw new NullPointerException();
             }

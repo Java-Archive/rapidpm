@@ -41,7 +41,7 @@ public class PlanningCalculator {
         planningCalculatorBean = EJBFactory.getEjbInstance(PlanningCalculatorBean.class);
         final DaoFactoryBean daoFactoryBean = planningCalculatorBean.getDaoFactoryBean();
 
-        EntityManager entityManager = daoFactoryBean.getEntityManager();
+        final EntityManager entityManager = daoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : daoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);
         }

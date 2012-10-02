@@ -66,9 +66,8 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
                         new BeanItemContainer<>(IssuePriority.class, priorities),IssuePriority.NAME);
                     bind(box, propertyId);
                     for(final Object itemId : box.getItemIds()){
-                        IssuePriority priority = (IssuePriority) itemId;
-                        String resourcePfad = "images/priority_"+priority.getPriorityName()+".gif";
-                        resourcePfad = resourcePfad.toLowerCase();
+                        final IssuePriority priority = (IssuePriority) itemId;
+                        final String resourcePfad = ("images/priority_"+priority.getPriorityName()+".gif").toLowerCase();
                         box.setItemIcon(itemId, new ThemeResource(resourcePfad));
                     }
                     priorityBox = box;
@@ -79,9 +78,8 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
                             new BeanItemContainer<>(IssueStatus.class, statusList), IssueStatus.NAME);
                     bind(box, propertyId);
                     for(final Object itemId : box.getItemIds()){
-                        IssueStatus status = (IssueStatus) itemId;
-                        String resourcePfad = "images/status_"+status.getStatusName()+".gif";
-                        resourcePfad = resourcePfad.toLowerCase();
+                        final IssueStatus status = (IssueStatus) itemId;
+                        final String resourcePfad = ("images/status_"+status.getStatusName()+".gif").toLowerCase();
                         box.setItemIcon(itemId, new ThemeResource(resourcePfad));
                     }
                     statusBox = box;
@@ -127,7 +125,6 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
 
     public AbstractSelect generateBox(String caption, BeanItemContainer container, String itemCaptionPropertyId){
         final AbstractSelect box = new ComboBox(caption,container);
-        //((ComboBox)box).setItemIconPropertyId(ICON);
         box.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
         box.setItemCaptionPropertyId(itemCaptionPropertyId);
         return box;
@@ -146,55 +143,27 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
         return statusBox;
     }
 
-    public void setStatusBox(AbstractSelect statusBox) {
-        this.statusBox = statusBox;
-    }
-
     public AbstractSelect getPriorityBox() {
         return priorityBox;
-    }
-
-    public void setPriorityBox(AbstractSelect priorityBox) {
-        this.priorityBox = priorityBox;
     }
 
     public AbstractSelect getReporterBox() {
         return reporterBox;
     }
 
-    public void setReporterBox(AbstractSelect reporterBox) {
-        this.reporterBox = reporterBox;
-    }
-
     public AbstractSelect getAssigneeBox() {
         return assigneeBox;
-    }
-
-    public void setAssigneeBox(AbstractSelect assigneeBox) {
-        this.assigneeBox = assigneeBox;
     }
 
     public DateField getPlannedField() {
         return plannedField;
     }
 
-    public void setPlannedField(DateField plannedField) {
-        this.plannedField = plannedField;
-    }
-
     public DateField getResolvedField() {
         return resolvedField;
     }
 
-    public void setResolvedField(DateField resolvedField) {
-        this.resolvedField = resolvedField;
-    }
-
     public DateField getClosedField() {
         return closedField;
-    }
-
-    public void setClosedField(DateField closedField) {
-        this.closedField = closedField;
     }
 }

@@ -1,26 +1,17 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details;
 
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.persistence.system.security.Benutzer;
-import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webapp.vaadin.MainUI;
-import org.rapidpm.webapp.vaadin.ui.workingareas.IssuePrioritiesEnum;
-import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.MyFormLayout;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ResourceBundle;
 
 import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
-import static org.rapidpm.Constants.DATE_FORMAT;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -30,23 +21,12 @@ import static org.rapidpm.Constants.DATE_FORMAT;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 
-/**
- * Nicht als FieldGroup mÃ¶glich, da fÃ¼r nicht-primitive Attribute kein entsprechendes Feld erstellt werden kann
- */
 public class PlanningDetailsMyFormLayout extends MyFormLayout {
 
     private static final Logger logger = Logger.getLogger(PlanningDetailsMyFormLayout.class);
-    private static final String ICON = "icon";
 
     private List<AbstractField> fieldList;
     private PlanningDetailsFieldGroup fieldGroup;
-    private ComboBox statusComboBox;
-    private ComboBox priorityComboBox;
-    private ComboBox reporterComboBox;
-    private ComboBox assigneeComboBox;
-    private DateField plannedDateField;
-    private DateField resolvedDateField;
-    private DateField closedDateField;
     private ResourceBundle messages;
 
     public PlanningDetailsMyFormLayout(final IssueBase issueBase, final ProjektplanungScreen screen, final Panel screenPanel) {

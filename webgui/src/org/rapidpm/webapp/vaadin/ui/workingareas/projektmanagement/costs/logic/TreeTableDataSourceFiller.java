@@ -37,21 +37,17 @@ public class TreeTableDataSourceFiller {
     public TreeTableDataSourceFiller(final ResourceBundle bundle, final HierarchicalContainer dSource) {
         messages = bundle;
         dataSource = dSource;
+
         bean = EJBFactory.getEjbInstance(TreeTableDataSourceFillerBean.class);
         final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        final EntityManager entityManager = baseDaoFactoryBean.getRessourceGroupDAO().getEntityManager();
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
-        ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
+        refreshEntities(baseDaoFactoryBean);
 
+        ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
         dataSource.removeAllItems();
         dataSource.addContainerProperty(messages.getString("aufgabe"), String.class, null);
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
             dataSource.addContainerProperty(ressourceGroup.getName(), Double.class, "");
         }
-
-
 
     }
 
@@ -136,6 +132,19 @@ public class TreeTableDataSourceFiller {
         final Double externalEurosPerHour = ressourceGroup.getExternalEurosPerHour();
 
         return totalHours * externalEurosPerHour;
+    }
+
+    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
+        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+            entityManager.refresh(plannedProject);
+        }
+        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+            entityManager.refresh(planningUnitElement);
+        }
+        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
+            entityManager.refresh(ressourceGroup);
+        }
     }
 
 }

@@ -7,13 +7,17 @@ import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import org.apache.log4j.Logger;
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.datenmodell.KnotenBlattEnum;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
@@ -29,6 +33,8 @@ public class SaveButtonClickListener implements ClickListener {
     private Object itemId;
     private PlanningUnit foundPlanningUnit = null;
     private ResourceBundle messages;
+    private SaveButtonClickListenerBean bean;
+    private DaoFactoryBean baseDaoFactoryBean;
 
     public SaveButtonClickListener(final ResourceBundle bundle, final FieldGroup fieldGroup,
                                    final AufwandProjInitScreen screen, final KnotenBlattEnum knotenBlattEnum, final Object itemId) {
@@ -37,57 +43,42 @@ public class SaveButtonClickListener implements ClickListener {
         this.screen = screen;
         this.knotenBlattEnum = knotenBlattEnum;
         this.itemId = itemId;
+
+        bean = EJBFactory.getEjbInstance(SaveButtonClickListenerBean.class);
+        baseDaoFactoryBean = bean.getDaoFactoryBean();
+        refreshEntities(baseDaoFactoryBean);
     }
 
     @Override
     public void buttonClick(ClickEvent event) {
         try {
-            fieldGroup.commit();
-            final ProjektBean projektBean = screen.getProjektBean();
-            final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
-            final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
             final Item item = screen.getDataSource().getItem(itemId);
-            final String planningUnitName = item.getItemProperty(messages.getString("aufgabe")).getValue().toString();
-            if (knotenBlattEnum.equals(KnotenBlattEnum.PLANNING_UNIT_GROUP)) {
-                for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
-                    if (planningUnit.getPlanningUnitName().equals(itemId)) {
-                        planningUnit.setPlanningUnitName(planningUnitName);
-                    }
-                }
+            final String planningUnitNameBeforeCommit = item.getItemProperty(messages.getString("aufgabe")).getValue().toString();
+            foundPlanningUnit = baseDaoFactoryBean.getPlanningUnitDAO().loadPlanningUnitByName(planningUnitNameBeforeCommit);
+
+            fieldGroup.commit();
+            final String planningUnitNameAfterCommit = item.getItemProperty(messages.getString("aufgabe")).getValue().toString();
+            if (knotenBlattEnum.equals(KnotenBlattEnum.KNOTEN)) {
+                foundPlanningUnit.setPlanningUnitName(planningUnitNameAfterCommit);
             } else {
-                final List<PlanningUnit> planningUnits = projekt.getPlanningUnits();
-                for (final PlanningUnit planningUnit : planningUnits) {
-                    if (foundPlanningUnit == null) {
-                        getPlanningUnit(planningUnit.getKindPlanningUnits(), itemId.toString());
-                    }
-                }
-                if (knotenBlattEnum.equals(KnotenBlattEnum.PLANNING_UNIT_KNOTEN)) {
-                    foundPlanningUnit.setPlanningUnitName(planningUnitName);
-                } else {
-                    foundPlanningUnit.setPlanningUnitName(planningUnitName);
-                    for (final PlanningUnitElement planningUnitElement : foundPlanningUnit.getPlanningUnitElementList()) {
-                        final String planningUnitElementRessourceGroupName = planningUnitElement.getRessourceGroup().getName();
-                        final Property<?> planningUnitElementCellContent = item.getItemProperty(planningUnitElementRessourceGroupName);
-                        final String daysHoursMinutesString = planningUnitElementCellContent.getValue().toString();
-                        final String[] daysHoursMinutes = SPLITT_PATTERN.split(daysHoursMinutesString);
-                        final int plannedDays = Integer.parseInt(daysHoursMinutes[0]);
-                        final int plannedHours = Integer.parseInt(daysHoursMinutes[1]);
-                        final int plannedMinutes = Integer.parseInt(daysHoursMinutes[2]);
-                        planningUnitElement.setPlannedDays(plannedDays);
-                        planningUnitElement.setPlannedHours(plannedHours);
-                        planningUnitElement.setPlannedMinutes(plannedMinutes);
-                    }
+                foundPlanningUnit.setPlanningUnitName(planningUnitNameAfterCommit);
+                for (final PlanningUnitElement planningUnitElement : foundPlanningUnit.getPlanningUnitElementList()) {
+                    final String planningUnitElementRessourceGroupName = planningUnitElement.getRessourceGroup().getName();
+                    final Property<?> planningUnitElementCellContent = item.getItemProperty(planningUnitElementRessourceGroupName);
+                    final String daysHoursMinutesString = planningUnitElementCellContent.getValue().toString();
+                    final String[] daysHoursMinutes = SPLITT_PATTERN.split(daysHoursMinutesString);
+                    final int plannedDays = Integer.parseInt(daysHoursMinutes[0]);
+                    final int plannedHours = Integer.parseInt(daysHoursMinutes[1]);
+                    final int plannedMinutes = Integer.parseInt(daysHoursMinutes[2]);
+                    planningUnitElement.setPlannedDays(plannedDays);
+                    planningUnitElement.setPlannedHours(plannedHours);
+                    planningUnitElement.setPlannedMinutes(plannedMinutes);
+                    baseDaoFactoryBean.saveOrUpdate(planningUnitElement);
                 }
             }
-            final TreeTableFiller filler = new TreeTableFiller(messages, screen, screen.getTreeTable(),
-                    screen.getDataSource());
-            filler.fill();
-
-            final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messages, screen.getUebersichtTable());
-            overviewTableFiller.fill();
-
-            screen.fillFields();
-            screen.getFormLayout().setVisible(false);
+            baseDaoFactoryBean.saveOrUpdate(foundPlanningUnit);
+            final MainUI ui = screen.getUi();
+            ui.setWorkingArea(new AufwandProjInitScreen(ui));
         }catch (CommitException e){
             logger.info(COMMIT_EXCEPTION_MESSAGE);
         }catch(Exception e){
@@ -105,6 +96,19 @@ public class SaveButtonClickListener implements ClickListener {
                     getPlanningUnit(kindPlanningUnits, itemId);
                 }
             }
+        }
+    }
+
+    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
+        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+            entityManager.refresh(plannedProject);
+        }
+        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+            entityManager.refresh(planningUnitElement);
+        }
+        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
+            entityManager.refresh(ressourceGroup);
         }
     }
 

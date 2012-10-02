@@ -6,8 +6,8 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 
+import javax.persistence.EntityManager;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -38,8 +38,8 @@ public class TimesCalculator {
         this.messages = bundle;
         bean = EJBFactory.getEjbInstance(TimesCalculatorBean.class);
         final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
-        ressourceGroups = ressourceGroupDAO.loadAllEntities();
+        refreshEntities(baseDaoFactoryBean);
+        ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
     }
 
     public void calculate() {
@@ -160,5 +160,18 @@ public class TimesCalculator {
     public String getMannTageGerundet() {
         final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
         return format.format(mannTageExakt);
+    }
+
+    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
+        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+            entityManager.refresh(plannedProject);
+        }
+        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+            entityManager.refresh(planningUnitElement);
+        }
+        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
+            entityManager.refresh(ressourceGroup);
+        }
     }
 }

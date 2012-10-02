@@ -27,8 +27,35 @@ INSERT INTO
         VALUES (1, true , 'sven.ruppert@rapidpm.org', 0, false , '2012-09-11', 'sven.ruppert', 'geheim',
                 '2012-09-11',
                 '2013-09-11', 1, 1,1);
+ 
+INSERT INTO
+        benutzer(
+                id, active, email, failedlogins, hidden, lastlogin, login, passwd,
+                validfrom, validuntil, benutzergruppe_id, benutzerwebapplikation_id,
+                mandantengruppe_id)
+        VALUES (2, true , 'daniel.macdonald@rapidpm.org', 0, false , '2012-09-11', 'daniel.macdonald', 'geheim',
+                '2012-09-11',
+                '2013-09-11', 1, 1,1);
+          
+INSERT INTO
+        benutzer(
+                id, active, email, failedlogins, hidden, lastlogin, login, passwd,
+                validfrom, validuntil, benutzergruppe_id, benutzerwebapplikation_id,
+                mandantengruppe_id)
+        VALUES (3, true , 'alvin.schiller@rapidpm.org', 0, false , '2012-09-11', 'alvin.schiller', 'geheim',
+                '2012-09-11',
+                '2013-09-11', 1, 1,1);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('Benutzer_id', 1);
+INSERT INTO
+        benutzer(
+                id, active, email, failedlogins, hidden, lastlogin, login, passwd,
+                validfrom, validuntil, benutzergruppe_id, benutzerwebapplikation_id,
+                mandantengruppe_id)
+        VALUES (4, true , 'marco.ebbinghaus@rapidpm.org', 0, false , '2012-09-11', 'marco.ebbinghaus', 'geheim',
+                '2012-09-11',
+                '2013-09-11', 1, 1,1);
+
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('Benutzer_id', 5);
 
 INSERT INTO
         ressourcegroup(id, name, hoursPerWeek, weeksPerYear, planAnzahl, facturizable, externalEurosPerHour, bruttoGehalt)

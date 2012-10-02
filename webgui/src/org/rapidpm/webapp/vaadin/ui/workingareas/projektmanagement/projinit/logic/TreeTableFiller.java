@@ -42,8 +42,7 @@ public class TreeTableFiller {
         for(final Object listener : treeTable.getListeners(ItemClickEvent.ItemClickListener.class)){
             treeTable.removeItemClickListener((ItemClickEvent.ItemClickListener)listener);
         }
-        //treeTable.addItemClickListener(new TableItemClickListener(messages, screen));
-        //TODO TableItemClickListener anpassen
+        treeTable.addItemClickListener(new TableItemClickListener(messages, screen));
         treeTable.setContainerDataSource(this.dataSource);
         final String aufgabeColumn = messages.getString("aufgabe");
         for(final Object propertyId : treeTable.getContainerPropertyIds()){
