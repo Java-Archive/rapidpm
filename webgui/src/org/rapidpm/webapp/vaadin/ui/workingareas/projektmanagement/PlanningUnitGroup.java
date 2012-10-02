@@ -124,15 +124,17 @@ public class PlanningUnitGroup {
 
         PlanningUnitGroup that = (PlanningUnitGroup) o;
 
-        if (!planningUnitGroupName.equals(that.planningUnitGroupName)) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (planningUnitGroupName != null ? !planningUnitGroupName.equals(that.planningUnitGroupName) : that.planningUnitGroupName != null)
+            return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + planningUnitGroupName.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (planningUnitGroupName != null ? planningUnitGroupName.hashCode() : 0);
         return result;
     }
 

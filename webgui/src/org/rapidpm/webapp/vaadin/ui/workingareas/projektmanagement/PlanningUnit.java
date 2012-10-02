@@ -79,14 +79,18 @@ public class PlanningUnit {
 
         PlanningUnit that = (PlanningUnit) o;
 
-        if (!id.equals(that.id)) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (planningUnitName != null ? !planningUnitName.equals(that.planningUnitName) : that.planningUnitName != null)
+            return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (planningUnitName != null ? planningUnitName.hashCode() : 0);
+        return result;
     }
 
     @Override

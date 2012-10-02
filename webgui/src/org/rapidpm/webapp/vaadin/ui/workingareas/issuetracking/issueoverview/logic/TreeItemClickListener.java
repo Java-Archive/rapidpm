@@ -29,10 +29,11 @@ public class TreeItemClickListener implements ItemClickEvent.ItemClickListener {
     @Override
     public void itemClick(ItemClickEvent event) {
         final Tree tree = (Tree) event.getSource();
+        Object item = event.getItemId();
 
-        if (!tree.hasChildren(event.getItemId())) {
+        if (!tree.hasChildren(item)) {
             issueTabSheet.disableTableTab(true);
-
+            tree.getItem(item);
             List<IssueBase> issueList = new ArrayList<>();
             for (PlanningUnit planningUnit : DummyProjectData.getPlannungUnitGroups().get(0).getPlanningUnitList()) {
                 issueList.add(planningUnit.getIssueBase());

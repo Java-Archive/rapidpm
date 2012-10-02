@@ -40,47 +40,42 @@ public class IssueTreePanel extends Panel{
 
         Item itemParent = null;
         Item item = null;
-        String captionParent;
-        String captionChild;
         for (PlanningUnitGroup planningUnitGroup : DummyProjectData.getPlannungUnitGroups()) {
-            captionParent = planningUnitGroup.getPlanningUnitGroupName();
-            itemParent = issueTree.addItem(captionParent);
-            itemParent.getItemProperty(CAPTION_PROPERTY).setValue(captionParent);
+            itemParent = issueTree.addItem(planningUnitGroup);
+            itemParent.getItemProperty(CAPTION_PROPERTY).setValue(planningUnitGroup.getPlanningUnitGroupName());
             if (planningUnitGroup.getPlanningUnitList().isEmpty()) {
-                issueTree.setChildrenAllowed(captionParent, false);
+                issueTree.setChildrenAllowed(planningUnitGroup, false);
             } else {
-                issueTree.setChildrenAllowed(itemParent, true);
+                issueTree.setChildrenAllowed(planningUnitGroup, true);
                 for (PlanningUnit planningUnit : planningUnitGroup.getPlanningUnitList()) {
-                    captionChild = planningUnit.getPlanningUnitName();
-                    item = issueTree.addItem(captionChild);
-                    item.getItemProperty(CAPTION_PROPERTY).setValue(captionChild);
-                    issueTree.setParent(captionChild, captionParent);
+                    item = issueTree.addItem(planningUnit);
+                    item.getItemProperty(CAPTION_PROPERTY).setValue(planningUnit.getPlanningUnitName());
+                    issueTree.setParent(planningUnit, planningUnitGroup);
                     if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
-                        issueTree.setChildrenAllowed(item, false);
+                        issueTree.setChildrenAllowed(planningUnit, false);
                     } else {
-                        issueTree.setChildrenAllowed(item, true);
+                        issueTree.setChildrenAllowed(planningUnit, true);
                         iteratePlanningUnits(planningUnit);
                     }
                 }
             }
+            issueTree.expandItemsRecursively(planningUnitGroup);
         }
 
-            issueTree.expandItemsRecursively(itemParent);
+
     }
 
     private void iteratePlanningUnits(PlanningUnit parentPlanningUnit) {
 
         Item item;
-        String caption;
         for (PlanningUnit planningUnit : parentPlanningUnit.getKindPlanningUnits()) {
-            caption = planningUnit.getPlanningUnitName();
-            item = issueTree.addItem(caption);
+            item = issueTree.addItem(planningUnit);
             item.getItemProperty(CAPTION_PROPERTY).setValue(planningUnit.getPlanningUnitName());
-            issueTree.setParent(caption, parentPlanningUnit.getPlanningUnitName());
+            issueTree.setParent(planningUnit, parentPlanningUnit);
             if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
-                issueTree.setChildrenAllowed(item, false);
+                issueTree.setChildrenAllowed(planningUnit, false);
             } else {
-                issueTree.setChildrenAllowed(item, true);
+                issueTree.setChildrenAllowed(planningUnit, true);
                 iteratePlanningUnits(planningUnit);
             }
         }
