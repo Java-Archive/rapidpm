@@ -5,6 +5,8 @@ import com.vaadin.ui.*;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
@@ -44,9 +46,8 @@ public class AufwandProjInitScreen extends Screen {
     private MyTreeTable treeTable = new MyTreeTable();
     private MyTable uebersichtTable = new MyTable();
     private AufwandProjInitScreenBean bean;
+    private DaoFactoryBean baseDaoFactoryBean;
 
-    //private static final String TABLELAYOUT_WIDTH = "900px";
-    private static final String COLUMN_WIDTH = "350px";
     private static final String ABSOLUTE_WIDTH = "700px";
 
     private HorizontalLayout felderLayout = new HorizontalLayout();
@@ -61,8 +62,8 @@ public class AufwandProjInitScreen extends Screen {
         super(ui);
 
         bean = EJBFactory.getEjbInstance(AufwandProjInitScreenBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-
+        baseDaoFactoryBean = bean.getDaoFactoryBean();
+        refreshEntities(baseDaoFactoryBean);
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
 
@@ -180,6 +181,21 @@ public class AufwandProjInitScreen extends Screen {
         addComponent(formLayout);
     }
 
+    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
+        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+            entityManager.refresh(plannedProject);
+        }
+        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+            entityManager.refresh(planningUnitElement);
+        }
+        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
+            entityManager.refresh(planningUnit);
+        }
+        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
+            entityManager.refresh(ressourceGroup);
+        }
+    }
 
     public TextField getKundeField() {
         return kundeField;

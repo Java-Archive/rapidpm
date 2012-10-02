@@ -50,7 +50,8 @@ public class MainUI extends BaseUI {
             public void menuSelected(final MenuBar.MenuItem menuItem) {
                 setWorkingArea(new AnfragenmanagementWorkingArea());
             }
-        }).setEnabled(false);
+        });
+
         final MenuBar.MenuItem projektmanagement = menuBar.addItem(messages.getString("projectmanagement"), null,
                 null);
 
@@ -101,7 +102,7 @@ public class MainUI extends BaseUI {
             }
         }).setEnabled(false);
 
-        setWorkingArea(new StundensaetzeScreen(this));
+        setWorkingArea(new ProjektplanungScreen(this));
 
     }
 

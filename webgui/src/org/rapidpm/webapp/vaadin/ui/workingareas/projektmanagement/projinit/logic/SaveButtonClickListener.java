@@ -18,7 +18,6 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.Aufw
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.datenmodell.KnotenBlattEnum;
 
 import javax.persistence.EntityManager;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
@@ -86,19 +85,6 @@ public class SaveButtonClickListener implements ClickListener {
         }
     }
 
-    private void getPlanningUnit(final List<PlanningUnit> planningUnits, final String itemId) {
-        for (final PlanningUnit planningUnit : planningUnits) {
-            if (planningUnit.getPlanningUnitName().equals(itemId)) {
-                foundPlanningUnit = planningUnit;
-            } else {
-                final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
-                if (kindPlanningUnits != null && !kindPlanningUnits.isEmpty()) {
-                    getPlanningUnit(kindPlanningUnits, itemId);
-                }
-            }
-        }
-    }
-
     private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
@@ -106,6 +92,9 @@ public class SaveButtonClickListener implements ClickListener {
         }
         for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
             entityManager.refresh(planningUnitElement);
+        }
+        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
+            entityManager.refresh(planningUnit);
         }
         for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
             entityManager.refresh(ressourceGroup);

@@ -42,6 +42,7 @@ public class ProjektplanungScreen extends Screen {
     private final VerticalLayout mainLayout;
     private Tree treePanelTree;
     private ProjektPlanungScreenBean projektplanungScreenBean;
+    private DaoFactoryBean baseDaoFactoryBean;
     private final PlanningUnitBeanItemContainer container = new PlanningUnitBeanItemContainer();
 
 
@@ -49,8 +50,9 @@ public class ProjektplanungScreen extends Screen {
         super(ui);
 
         projektplanungScreenBean = EJBFactory.getEjbInstance(ProjektPlanungScreenBean.class);
-        final DaoFactoryBean daoFactoryBean = projektplanungScreenBean.getDaoFactoryBean();
-        final PlannedProject plannedProject = daoFactoryBean.getPlannedProjectDAO().loadAllEntities().get(0);
+        baseDaoFactoryBean = projektplanungScreenBean.getDaoFactoryBean();
+        refreshEntities(baseDaoFactoryBean);
+        final PlannedProject plannedProject = baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities().get(0);
 
         final PlanningCalculator calculator = new PlanningCalculator(messagesBundle);
         calculator.calculate();
@@ -165,6 +167,22 @@ public class ProjektplanungScreen extends Screen {
     @Override
     public void setComponents() {
         addComponent(splitPanel);
+    }
+
+    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
+        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+            entityManager.refresh(plannedProject);
+        }
+        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+            entityManager.refresh(planningUnitElement);
+        }
+        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
+            entityManager.refresh(planningUnit);
+        }
+        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
+            entityManager.refresh(ressourceGroup);
+        }
     }
 
     public ListSelect getProjektSelect() {
