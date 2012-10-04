@@ -11,6 +11,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 
 import javax.persistence.EntityManager;
 import java.util.HashMap;
@@ -37,8 +38,11 @@ public class TreeTableDataSourceFiller {
     private final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
     private ResourceBundle messages;
     private HierarchicalContainer dataSource;
+    private AufwandProjInitScreen screen;
 
-    public TreeTableDataSourceFiller(final ResourceBundle bundle, final HierarchicalContainer dSource) {
+    public TreeTableDataSourceFiller(final AufwandProjInitScreen screen, final ResourceBundle bundle,
+                                     final HierarchicalContainer dSource) {
+        this.screen = screen;
         this.messages = bundle;
         dataSource = dSource;
 
@@ -65,7 +69,7 @@ public class TreeTableDataSourceFiller {
     private void computePlanningUnitsAndTotalsAbsolut() {
         //final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
         //final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
-        final PlannedProject projekt = bean.getDaoFactoryBean().getPlannedProjectDAO().loadAllEntities().get(0);
+        final PlannedProject projekt = screen.getUi().getCurrentProject();
         final List<PlanningUnit> planningUnits = projekt.getPlanningUnits();
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();

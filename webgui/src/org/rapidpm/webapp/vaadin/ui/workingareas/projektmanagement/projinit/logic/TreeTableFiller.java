@@ -36,7 +36,8 @@ public class TreeTableFiller {
 
     public void fill() {
         final TimesCalculator timesCalculator = new TimesCalculator(messages);
-        final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(messages, dataSource);
+        final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(screen, messages,
+                dataSource);
         timesCalculator.calculate();
         treeTableDataSourceFiller.fill();
         for(final Object listener : treeTable.getListeners(ItemClickEvent.ItemClickListener.class)){

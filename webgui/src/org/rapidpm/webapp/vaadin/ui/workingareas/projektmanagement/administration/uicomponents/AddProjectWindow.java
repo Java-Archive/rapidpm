@@ -1,19 +1,20 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents;
 
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
+import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.MainUI;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.ProjektmanagementScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.ProjectAdministrationScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
+import javax.persistence.EntityManager;
 import java.util.Iterator;
-import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -40,18 +41,21 @@ public class AddProjectWindow extends Window{
     private Button cancelButton = new Button();
     private ProjektFieldGroup fieldGroup;
     private ResourceBundle messages;
-    public ProjectAdministrationScreen screen;
+    private AddProjectWindowBean bean;
 
-    public AddProjectWindow(final MainUI ui, final ProjectAdministrationScreen screen) {
+    public AddProjectWindow(final MainUI ui, ResourceBundle messages) {
         this.ui = ui;
-        this.screen = screen;
-        messages = screen.getMessagesBundle();
+        this.messages = messages;
         setHeight(HEIGHT);
         setWidth(WIDTH);
         setPositionX(POSITION_X);
         setPositionY(POSITION_Y);
 
-        final Projekt projekt = new Projekt();
+        bean = EJBFactory.getEjbInstance(AddProjectWindowBean.class);
+        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        refreshEntities(baseDaoFactoryBean);
+
+        final PlannedProject projekt = new PlannedProject();
         fieldGroup = new ProjektFieldGroup(projekt);
 
         fillFormLayout();
@@ -62,14 +66,19 @@ public class AddProjectWindow extends Window{
 
         addComponent(horizontalButtonLayout);
 
-        addListeners(projekt, ui);
+        addListeners(baseDaoFactoryBean, projekt, ui);
         doInternationalization();
 
     }
 
     private void fillFormLayout() {
+        final TextField idField = new TextField(PlannedProject.ID);
+        idField.setValue("autom.");
+        idField.setRequired(true);
+        idField.setEnabled(false);
+        formLayout.addComponent(idField);
         for (final Object propertyId : fieldGroup.getBoundPropertyIds()) {
-            TextField field = (TextField)fieldGroup.getField(propertyId);
+            final TextField field = (TextField)fieldGroup.getField(propertyId);
             field.setReadOnly(false);
             formLayout.addComponent(field);
         }
@@ -77,12 +86,12 @@ public class AddProjectWindow extends Window{
 
     private void doInternationalization() {
         this.setCaption(messages.getString("pm_addproject"));
-        saveButton.setCaption(messages.getString("saveOrUpdate"));
+        saveButton.setCaption(messages.getString("save"));
         cancelButton.setCaption(messages.getString("cancel"));
     }
 
-    private void addListeners(Projekt proj, final MainUI ui) {
-        final Projekt projekt = proj;
+    private void addListeners(final DaoFactoryBean baseDaoFactoryBean, PlannedProject proj, final MainUI ui) {
+        final PlannedProject projekt = proj;
         saveButton.addClickListener(new Button.ClickListener() {
 
             @Override
@@ -101,12 +110,9 @@ public class AddProjectWindow extends Window{
                 if (allFilled) {
                     try {
                         fieldGroup.commit();
-                        final ProjektBean projektBean = screen.getProjektBean();
-                        final ProjektmanagementScreensBean projektmanagementScreensBean = screen.getProjektmanagementScreensBean();
-                        final DaoFactoryBean baseDaoFactoryBean = projektmanagementScreensBean.getDaoFactoryBean();
-                        final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
-                        final List<RessourceGroup> ressourceGroups = ressourceGroupDAO.loadAllEntities();
-                        projektBean.addNewProject(ressourceGroups, projekt.getProjektName(), projekt.getProjektId());
+                        final BeanItem<PlannedProject> beanItem = (BeanItem<PlannedProject>) fieldGroup
+                                .getItemDataSource();
+                        baseDaoFactoryBean.saveOrUpdate(beanItem.getBean());
                         AddProjectWindow.this.close();
                         ui.setWorkingArea(new ProjectAdministrationScreen(ui));
                     } catch (FieldGroup.CommitException e) {
@@ -135,5 +141,21 @@ public class AddProjectWindow extends Window{
 
     public void show() {
         ui.addWindow(this);
+    }
+
+    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
+        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+            entityManager.refresh(plannedProject);
+        }
+        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
+            entityManager.refresh(planningUnit);
+        }
+        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+            entityManager.refresh(planningUnitElement);
+        }
+        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
+            entityManager.refresh(ressourceGroup);
+        }
     }
 }

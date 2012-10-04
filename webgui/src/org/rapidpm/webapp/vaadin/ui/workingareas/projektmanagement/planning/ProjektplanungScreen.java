@@ -43,7 +43,7 @@ public class ProjektplanungScreen extends Screen {
     private Tree treePanelTree;
     private ProjektPlanungScreenBean projektplanungScreenBean;
     private DaoFactoryBean baseDaoFactoryBean;
-    private final PlanningUnitBeanItemContainer container = new PlanningUnitBeanItemContainer();
+    private PlanningUnitBeanItemContainer container;
 
 
     public ProjektplanungScreen(MainUI ui) {
@@ -52,7 +52,7 @@ public class ProjektplanungScreen extends Screen {
         projektplanungScreenBean = EJBFactory.getEjbInstance(ProjektPlanungScreenBean.class);
         baseDaoFactoryBean = projektplanungScreenBean.getDaoFactoryBean();
         refreshEntities(baseDaoFactoryBean);
-        final PlannedProject plannedProject = baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities().get(0);
+        final PlannedProject plannedProject = ui.getCurrentProject();
 
         final PlanningCalculator calculator = new PlanningCalculator(messagesBundle);
         calculator.calculate();
@@ -106,10 +106,11 @@ public class ProjektplanungScreen extends Screen {
 
         });
         final List<?> ids = (List<?>) projektSelect.getItemIds();
-        projektSelect.setValue(ids.get(0));
+        if (ids != null && !ids.isEmpty()){
+            projektSelect.setValue(ids.get(0));
+        }
         doInternationalization();
         setComponents();
-
     }
 
     @Override
@@ -121,7 +122,7 @@ public class ProjektplanungScreen extends Screen {
 
         treePanel.removeAllComponents();
         treePanelTree = new Tree();
-
+        container = new PlanningUnitBeanItemContainer();
 
         if (selectedPlanningUnit != null) {
             treePanelTree.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
@@ -139,7 +140,9 @@ public class ProjektplanungScreen extends Screen {
             treePanelTree.addValueChangeListener(new TreeValueChangeListener(this, projekt));
             treePanelTree.setContainerDataSource(container);
             final Iterator iterator = treePanelTree.rootItemIds().iterator();
-            treePanelTree.expandItemsRecursively(iterator.next());
+            while (iterator.hasNext()){
+                treePanelTree.expandItemsRecursively(iterator.next());
+            }
             //TODO Ordner in Constants, Filename in db
             for(final Object itemId : treePanelTree.getVisibleItemIds()){
                 final PlanningUnit planningUnit = (PlanningUnit) itemId;

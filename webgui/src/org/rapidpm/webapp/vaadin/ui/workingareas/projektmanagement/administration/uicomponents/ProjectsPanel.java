@@ -2,19 +2,21 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administrati
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Componentssetable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.ProjectAdministrationScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.logic.ProjectsListsValueChangeListener;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import static org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents
-        .ProjektFieldGroup.*;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -26,10 +28,10 @@ import static org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.admini
 public class ProjectsPanel extends Panel implements Internationalizationable, Componentssetable {
 
     private ResourceBundle messagesBundle;
-    private ProjektBean projektBean;
     private ChosenProjectPanel formPanel;
     private final MainUI ui;
-    private ProjectAdministrationScreen screen;
+    private ProjectsPanelBean bean;
+
 
     private ListSelect projectSelect;
     private Button addProjectButton = new Button();
@@ -37,19 +39,21 @@ public class ProjectsPanel extends Panel implements Internationalizationable, Co
 
     private HorizontalLayout buttonLayout = new HorizontalLayout();
 
-    public ProjectsPanel(ProjectAdministrationScreen scr, MainUI theUi, ResourceBundle messagesBundle,
-                         ProjektBean bean,
-                         ChosenProjectPanel chosenProjectPanel){
-        super(messagesBundle.getString("pm_projects"));
-        this.messagesBundle = messagesBundle;
-        this.projektBean = bean;
+    public ProjectsPanel(MainUI theUi, ResourceBundle messages, ChosenProjectPanel chosenProjectPanel){
+        super(messages.getString("pm_projects"));
+        this.messagesBundle = messages;
         this.formPanel = chosenProjectPanel;
         this.ui = theUi;
-        this.screen = scr;
+
+        bean = EJBFactory.getEjbInstance(ProjectsPanelBean.class);
+        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        refreshEntities(baseDaoFactoryBean);
+
+        final List<PlannedProject> projects = baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities();
 
         deleteProjectButton.setVisible(false);
         setSizeFull();
-        fillListSelect();
+        fillListSelect(projects);
 
         buttonLayout.addComponent(addProjectButton);
         buttonLayout.addComponent(deleteProjectButton);
@@ -57,9 +61,9 @@ public class ProjectsPanel extends Panel implements Internationalizationable, Co
         deleteProjectButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                final Projekt projekt = (Projekt)projectSelect.getValue();
-                final List<Projekt> projektList = projektBean.getProjekte();
-                projektList.remove(projekt);
+                final PlannedProject projekt = (PlannedProject)projectSelect.getValue();
+                projects.remove(projekt);
+                baseDaoFactoryBean.remove(projekt);
                 ui.setWorkingArea(new ProjectAdministrationScreen(ui));
             }
         });
@@ -67,7 +71,7 @@ public class ProjectsPanel extends Panel implements Internationalizationable, Co
         addProjectButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                final AddProjectWindow addWindow = new AddProjectWindow(ui, screen);
+                final AddProjectWindow addWindow = new AddProjectWindow(ui, messagesBundle);
                 addWindow.show();
             }
         });
@@ -76,11 +80,11 @@ public class ProjectsPanel extends Panel implements Internationalizationable, Co
         setComponents();
     }
 
-    private void fillListSelect() {
-        projectSelect = new ListSelect("Projekte", new BeanItemContainer<>(Projekt.class,
-                projektBean.getProjekte()));
+    private void fillListSelect(List<PlannedProject> projects) {
+        projectSelect = new ListSelect("Projekte", new BeanItemContainer<>(PlannedProject.class,
+                projects));
         projectSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
-        projectSelect.setItemCaptionPropertyId(PROJEKT_NAME);
+        projectSelect.setItemCaptionPropertyId(PlannedProject.NAME);
         projectSelect.setImmediate(true);
         projectSelect.setMultiSelect(false);
         projectSelect.setNullSelectionAllowed(false);
@@ -102,5 +106,21 @@ public class ProjectsPanel extends Panel implements Internationalizationable, Co
 
     public Button getDeleteProjectButton() {
         return deleteProjectButton;
+    }
+
+    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
+        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+            entityManager.refresh(plannedProject);
+        }
+        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
+            entityManager.refresh(planningUnit);
+        }
+        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+            entityManager.refresh(planningUnitElement);
+        }
+        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
+            entityManager.refresh(ressourceGroup);
+        }
     }
 }

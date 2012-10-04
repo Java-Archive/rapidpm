@@ -100,7 +100,7 @@ public class MainUI extends BaseUI {
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 setWorkingArea(new ProjectAdministrationScreen(MainUI.this));
             }
-        }).setEnabled(false);
+        });
 
         setWorkingArea(new ProjektplanungScreen(this));
 

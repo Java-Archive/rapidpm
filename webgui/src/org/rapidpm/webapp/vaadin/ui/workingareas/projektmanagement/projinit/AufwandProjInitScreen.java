@@ -133,7 +133,7 @@ public class AufwandProjInitScreen extends Screen {
         summeField.setReadOnly(true);
         //final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
         //final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
-        final PlannedProject projekt = bean.getDaoFactoryBean().getPlannedProjectDAO().loadAllEntities().get(0);
+        final PlannedProject projekt = getUi().getCurrentProject();
         projektField.setValue(projekt.getProjektName());
     }
 

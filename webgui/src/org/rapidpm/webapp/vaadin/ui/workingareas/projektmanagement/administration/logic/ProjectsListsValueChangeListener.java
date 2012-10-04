@@ -1,11 +1,12 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.logic;
 
 import com.vaadin.data.Property;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.FormLayout;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents.ChosenProjectPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents.ProjectsPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents.ProjektFieldGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -28,7 +29,7 @@ public class ProjectsListsValueChangeListener implements Property.ValueChangeLis
     public void valueChange(Property.ValueChangeEvent event) {
         final Button deleteButton = projectsPanel.getDeleteProjectButton();
         final FormLayout formLayout = chosenProjectPanel.getFormLayout();
-        final Projekt chosenProjekt = (Projekt) event.getProperty().getValue();
+        final PlannedProject chosenProjekt = (PlannedProject) event.getProperty().getValue();
         if(event.getProperty().getValue() != null){
             deleteButton.setVisible(true);
             formLayout.removeAllComponents();

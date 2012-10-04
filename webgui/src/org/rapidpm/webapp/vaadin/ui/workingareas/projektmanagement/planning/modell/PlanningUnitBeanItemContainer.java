@@ -2,7 +2,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.mod
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.server.Resource;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 
 import java.util.ArrayList;
@@ -16,9 +15,6 @@ import java.util.Collection;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 public class PlanningUnitBeanItemContainer extends BeanItemContainer<PlanningUnit> implements Container.Hierarchical{
-
-    private static final String ICON = "icon";
-    private Resource icon;
 
     public PlanningUnitBeanItemContainer() {
         super(PlanningUnit.class);
@@ -67,9 +63,5 @@ public class PlanningUnitBeanItemContainer extends BeanItemContainer<PlanningUni
     public boolean setParent(Object planningUnit, Object newParentId){
         ((PlanningUnit)planningUnit).setParent((PlanningUnit)newParentId);
         return true;
-    }
-
-    public Resource getIcon() {
-        return icon;
     }
 }

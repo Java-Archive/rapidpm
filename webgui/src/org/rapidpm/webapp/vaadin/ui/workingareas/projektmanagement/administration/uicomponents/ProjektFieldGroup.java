@@ -3,7 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administrati
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.AbstractTextField;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -14,10 +14,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.mode
  */
 public class ProjektFieldGroup extends FieldGroup {
 
-    public static final String PROJEKT_ID = "projektId";
-    public static final String PROJEKT_NAME = "projektName";
-
-    public ProjektFieldGroup(Projekt projekt) {
+    public ProjektFieldGroup(PlannedProject projekt) {
         setItemDataSource(new BeanItem<>(projekt));
         buildForm();
     }
@@ -25,11 +22,16 @@ public class ProjektFieldGroup extends FieldGroup {
     private void buildForm() {
         for (final Object propertyId : getUnboundPropertyIds()) {
             final String spaltenName = propertyId.toString();
-            if(spaltenName.equals(PROJEKT_ID) || spaltenName.equals(PROJEKT_NAME)){
+            if(spaltenName.equals(PlannedProject.ID) ){
+//                final TextField field = build(PlannedProject.ID, String.class, TextField.class);
+//                field.setNullRepresentation("");
+//                field.setRequired(true);
+//                field.setValue("autom.");
+//                field.setEnabled(false);
+            } else if (spaltenName.equals(PlannedProject.NAME)){
                 final AbstractTextField field = (AbstractTextField) buildAndBind(propertyId);
                 field.setNullRepresentation("");
                 field.setRequired(true);
-                field.setReadOnly(true);
             }
         }
     }

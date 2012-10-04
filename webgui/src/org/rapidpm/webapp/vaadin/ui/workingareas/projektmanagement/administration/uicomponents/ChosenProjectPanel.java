@@ -1,12 +1,16 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents;
 
 import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Field;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Label;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.ProjectAdministrationScreen;
 
 import java.util.ResourceBundle;
-import static org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents
-        .ProjektFieldGroup.*;
 /**
  * RapidPM - www.rapidpm.org
  * User: Marco
@@ -23,7 +27,7 @@ public class ChosenProjectPanel extends EditablePanel {
 
     private Label noSelectionLabel;
 
-    public ChosenProjectPanel(ResourceBundle messagesBundle) {
+    public ChosenProjectPanel(final MainUI ui, ResourceBundle messagesBundle) {
         super(messagesBundle);
         noSelectionLabel = new Label(messagesBundle.getString("pm_noselection"));
 
@@ -41,6 +45,7 @@ public class ChosenProjectPanel extends EditablePanel {
                 try {
                     fieldGroup.commit();
                     activate(false);
+                    ui.setWorkingArea(new ProjectAdministrationScreen(ui));
                 } catch (FieldGroup.CommitException e) {
                     logger.warn("Commit Failed", e);
                 }
@@ -65,7 +70,7 @@ public class ChosenProjectPanel extends EditablePanel {
     @Override
     public void doInternationalization() {
         setCaption(messagesBundle.getString("pm_editproject"));
-        saveButton.setCaption(messagesBundle.getString("saveOrUpdate"));
+        saveButton.setCaption(messagesBundle.getString("save"));
         cancelButton.setCaption(messagesBundle.getString("cancel"));
     }
 
@@ -84,14 +89,13 @@ public class ChosenProjectPanel extends EditablePanel {
     public void buildForm() {
         noSelectionLabel.setVisible(false);
         formLayout.removeAllComponents();
-        formLayout.addComponent(fieldGroup.getField(PROJEKT_ID));
-        formLayout.addComponent(fieldGroup.getField(PROJEKT_NAME));
+        formLayout.addComponent(fieldGroup.getField(PlannedProject.NAME));
     }
 
     @Override
     public void activate(boolean b){
         for(Object propertyId : fieldGroup.getBoundPropertyIds()){
-            if(!propertyId.equals(PROJEKT_ID)){
+            if(!propertyId.equals(PlannedProject.ID)){
                 final Field field = fieldGroup.getField(propertyId);
                 field.setReadOnly(!b);
             }

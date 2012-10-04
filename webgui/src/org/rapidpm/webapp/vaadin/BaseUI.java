@@ -16,6 +16,7 @@ import com.vaadin.ui.themes.BaseTheme;
 import org.apache.log4j.Logger;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webapp.vaadin.ui.windows.*;
@@ -49,6 +50,7 @@ public abstract class BaseUI extends UI {
     private final VerticalLayout hlWorkingAreaContainer = new VerticalLayout();
 
     protected Benutzer currentUser;
+    protected PlannedProject currentProject;
     protected Locale locale = new Locale("de","DE");
     protected ResourceBundle messages;
 
@@ -59,7 +61,7 @@ public abstract class BaseUI extends UI {
 
     @Override
     public void init(final WrappedRequest request) {
-        //setWindowWidth(request.getBrowserDetails().getWebBrowser().getScreenWidth());
+        loadFirstProject();
         this.setSizeFull();
         final VaadinSession session = getSession();
         if (session.getAttribute(Benutzer.class) == null) {
@@ -81,6 +83,18 @@ public abstract class BaseUI extends UI {
         }
     }
 
+    private void loadFirstProject() {
+        final LoginBean bean = EJBFactory.getEjbInstance(LoginBean.class);
+        final VaadinSession session = this.getSession();
+        final List<PlannedProject> projects = bean.getDaoFactoryBean().getPlannedProjectDAO().loadAllEntities();
+        if(projects == null || projects.isEmpty()){
+            session.setAttribute(PlannedProject.class, null);
+        } else {
+            session.setAttribute(PlannedProject.class, projects.get(0));
+        }
+        currentProject = session.getAttribute(PlannedProject.class);
+    }
+
     public void authentication(final String enteredLogin, final String enteredPasswd) throws Exception {
 
         final LoginBean bean = EJBFactory.getEjbInstance(LoginBean.class);
@@ -93,7 +107,6 @@ public abstract class BaseUI extends UI {
             final String userPasswd = user.getPasswd();
             if (userLogin.equals(enteredLogin) && userPasswd.equals(enteredPasswdHashed)) {
                 currentUser = user;
-                //getSession().setUser(currentUser);
                 getSession().setAttribute(Benutzer.class, currentUser);
                 loadProtectedRessources();
                 return;
@@ -316,5 +329,10 @@ public abstract class BaseUI extends UI {
 
     public void setProjektBean(ProjektBean projektBean) {
         this.projektBean = projektBean;
+    }
+
+    public PlannedProject getCurrentProject() {
+        currentProject = getSession().getAttribute(PlannedProject.class);
+        return currentProject;
     }
 }
