@@ -7,6 +7,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeItemClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.DummyProjectData;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeContainerPlanningUnits;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
 
@@ -26,101 +27,60 @@ public class IssueTreePanel extends Panel{
 
     public IssueTreePanel(IssueTabSheet issueTabSheet) {
         this.setSizeFull();
-        issueTree = new Tree("IssueTree");
+        issueTree = new Tree("IssueTree", new TreeContainerPlanningUnits());
         issueTree.setImmediate(true);
         if (issueTabSheet != null)
             issueTree.addItemClickListener(new TreeItemClickListener(issueTabSheet));
-        fillTree();
+        //fillTree();
+        issueTree.setItemCaptionPropertyId(TreeContainerPlanningUnits.PROPERTY_CAPTION);
+        for (Object id : issueTree.rootItemIds())
+            issueTree.expandItemsRecursively(id);
         addComponent(issueTree);
     }
 
-    private void fillTree() {
-        issueTree.addContainerProperty(CAPTION_PROPERTY, String.class, null);
-        issueTree.setItemCaptionPropertyId(CAPTION_PROPERTY);
-
-        Item itemParent = null;
-        Item item = null;
-        for (PlanningUnitGroup planningUnitGroup : DummyProjectData.getPlannungUnitGroups()) {
-            itemParent = issueTree.addItem(planningUnitGroup);
-            itemParent.getItemProperty(CAPTION_PROPERTY).setValue(planningUnitGroup.getPlanningUnitGroupName());
-            if (planningUnitGroup.getPlanningUnitList().isEmpty()) {
-                issueTree.setChildrenAllowed(planningUnitGroup, false);
-            } else {
-                issueTree.setChildrenAllowed(planningUnitGroup, true);
-                for (PlanningUnit planningUnit : planningUnitGroup.getPlanningUnitList()) {
-                    item = issueTree.addItem(planningUnit);
-                    item.getItemProperty(CAPTION_PROPERTY).setValue(planningUnit.getPlanningUnitName());
-                    issueTree.setParent(planningUnit, planningUnitGroup);
-                    if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
-                        issueTree.setChildrenAllowed(planningUnit, false);
-                    } else {
-                        issueTree.setChildrenAllowed(planningUnit, true);
-                        iteratePlanningUnits(planningUnit);
-                    }
-                }
-            }
-            issueTree.expandItemsRecursively(planningUnitGroup);
-        }
-
-
-    }
-
-    private void iteratePlanningUnits(PlanningUnit parentPlanningUnit) {
-
-        Item item;
-        for (PlanningUnit planningUnit : parentPlanningUnit.getKindPlanningUnits()) {
-            item = issueTree.addItem(planningUnit);
-            item.getItemProperty(CAPTION_PROPERTY).setValue(planningUnit.getPlanningUnitName());
-            issueTree.setParent(planningUnit, parentPlanningUnit);
-            if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
-                issueTree.setChildrenAllowed(planningUnit, false);
-            } else {
-                issueTree.setChildrenAllowed(planningUnit, true);
-                iteratePlanningUnits(planningUnit);
-            }
-        }
-    }
-
 //    private void fillTree() {
-//        final Object[][] planets = new Object[][]{
-//                new Object[]{"Mercury"},
-//                new Object[]{"Venus"},
-//                new Object[]{"Earth", "The Moon"},
-//                new Object[]{"Mars", "Phobos", "Deimos"},
-//                new Object[]{"Jupiter", "Io", "Europa", "Ganymedes",
-//                        "Callisto"},
-//                new Object[]{"Saturn",  "Titan", "Tethys", "Dione",
-//                        "Rhea", "Iapetus"},
-//                new Object[]{"Uranus",  "Miranda", "Ariel", "Umbriel",
-//                        "Titania", "Oberon"},
-//                new Object[]{"Neptune", "Triton", "Proteus", "Nereid",
-//                        "Larissa"}};
+//        issueTree.addContainerProperty(CAPTION_PROPERTY, String.class, null);
+//        issueTree.setItemCaptionPropertyId(CAPTION_PROPERTY);
 //
-///* Add planets as root items in the tree. */
-//        for (int i=0; i<planets.length; i++) {
-//            String planet = (String) (planets[i][0]);
-//            issueTree.addItem(planet);
-//
-//            if (planets[i].length == 1) {
-//                // The planet has no moons so make it a leaf.
-//                issueTree.setChildrenAllowed(planet, false);
+//        Item itemParent = null;
+//        Item item = null;
+//        for (PlanningUnitGroup planningUnitGroup : DummyProjectData.getPlannungUnitGroups()) {
+//            itemParent = issueTree.addItem(planningUnitGroup);
+//            itemParent.getItemProperty(CAPTION_PROPERTY).setValue(planningUnitGroup.getPlanningUnitGroupName());
+//            if (planningUnitGroup.getPlanningUnitList().isEmpty()) {
+//                issueTree.setChildrenAllowed(planningUnitGroup, false);
 //            } else {
-//                // Add children (moons) under the planets.
-//                for (int j=1; j<planets[i].length; j++) {
-//                    String moon = (String) planets[i][j];
-//
-//                    // Add the item as a regular item.
-//                    issueTree.addItem(moon);
-//
-//                    // Set it to be a child.
-//                    issueTree.setParent(moon, planet);
-//
-//                    // Make the moons look like leaves.
-//                    issueTree.setChildrenAllowed(moon, false);
+//                issueTree.setChildrenAllowed(planningUnitGroup, true);
+//                for (PlanningUnit planningUnit : planningUnitGroup.getPlanningUnitList()) {
+//                    item = issueTree.addItem(planningUnit);
+//                    item.getItemProperty(CAPTION_PROPERTY).setValue(planningUnit.getPlanningUnitName());
+//                    issueTree.setParent(planningUnit, planningUnitGroup);
+//                    if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
+//                        issueTree.setChildrenAllowed(planningUnit, false);
+//                    } else {
+//                        issueTree.setChildrenAllowed(planningUnit, true);
+//                        iteratePlanningUnits(planningUnit);
+//                    }
 //                }
+//            }
+//            issueTree.expandItemsRecursively(planningUnitGroup);
+//        }
 //
-//                // Expand the subtree.
-//                issueTree.expandItemsRecursively(planet);
+//
+//    }
+//
+//    private void iteratePlanningUnits(PlanningUnit parentPlanningUnit) {
+//
+//        Item item;
+//        for (PlanningUnit planningUnit : parentPlanningUnit.getKindPlanningUnits()) {
+//            item = issueTree.addItem(planningUnit);
+//            item.getItemProperty(CAPTION_PROPERTY).setValue(planningUnit.getPlanningUnitName());
+//            issueTree.setParent(planningUnit, parentPlanningUnit);
+//            if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
+//                issueTree.setChildrenAllowed(planningUnit, false);
+//            } else {
+//                issueTree.setChildrenAllowed(planningUnit, true);
+//                iteratePlanningUnits(planningUnit);
 //            }
 //        }
 //    }

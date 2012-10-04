@@ -1,12 +1,15 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic;
 
+import com.vaadin.data.Item;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Tree;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.DummyProjectData;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeContainerPlanningUnits;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTabSheet;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,23 +32,36 @@ public class TreeItemClickListener implements ItemClickEvent.ItemClickListener {
     @Override
     public void itemClick(ItemClickEvent event) {
         final Tree tree = (Tree) event.getSource();
-        Object item = event.getItemId();
+        Object itemId = event.getItemId();
+        Item item;
 
-        if (!tree.hasChildren(item)) {
+        //item = tree.getItem(itemId);
+
+//            List<IssueBase> issueList = new ArrayList<>();
+//            for (PlanningUnit planningUnit : DummyProjectData.getPlannungUnitGroups().get(0).getPlanningUnitList()) {
+//                issueList.add(planningUnit.getIssueBase());
+//            }
+
+
+        //issueList.get(3);
+
+        PlanningUnit punit = (PlanningUnit)tree.getContainerProperty(itemId, TreeContainerPlanningUnits.PROPERTY_PLANNINGUNIT).getValue();
+        issueTabSheet.getDetailsPanel().setPropertiesFromIssue(punit.getIssueBase());
+
+        List<IssueBase> issues = new ArrayList<>();
+
+        if (!tree.hasChildren(itemId)) {
             issueTabSheet.disableTableTab(true);
-            tree.getItem(item);
-            List<IssueBase> issueList = new ArrayList<>();
-            for (PlanningUnit planningUnit : DummyProjectData.getPlannungUnitGroups().get(0).getPlanningUnitList()) {
-                issueList.add(planningUnit.getIssueBase());
-            }
 
-            IssueDetailsPanel det = issueTabSheet.getDetailsPanel();
-            IssueBase issue = issueList.get(3);
 
-            det.setPropertiesFromIssue(issue);
         }
         else {
             issueTabSheet.disableTableTab(false);
+            for (PlanningUnit childUnit : punit.getKindPlanningUnits()) {
+                issues.add(childUnit.getIssueBase());
+            }
+            issueTabSheet.getTablePanel().setPropertiesFromIssueList(issues);
+
         }
     }
 }

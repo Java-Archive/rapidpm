@@ -14,7 +14,6 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.Iss
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.DummyProjectData;
 
 import java.util.Date;
-import java.util.Iterator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -66,12 +65,12 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
         addComponent(headerLabel);
 
         statusSelect = new ComboBox();
-        statusSelect.addContainerProperty(DummyProjectData.PROPERTY_NAME, String.class, null);
-        statusSelect.setItemCaptionPropertyId(DummyProjectData.PROPERTY_NAME);
+        statusSelect.addContainerProperty(DummyProjectData.PROPERTY_CAPTION, String.class, null);
+        statusSelect.setItemCaptionPropertyId(DummyProjectData.PROPERTY_CAPTION);
         Item item;
         for (IssueStatus status : DummyProjectData.getStatusList()) {
             item = statusSelect.addItem(status);
-            item.getItemProperty(DummyProjectData.PROPERTY_NAME).setValue(status.getStatusName());
+            item.getItemProperty(DummyProjectData.PROPERTY_CAPTION).setValue(status.getStatusName());
             statusSelect.setItemIcon(status, IssueStatusEnum.valueOf(status.getStatusName()).getIcon());
         }
         //statusSelect.select();
@@ -81,11 +80,11 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
         detailLayout.addComponent(statusSelect);
 
         prioritySelect = new ComboBox();
-        prioritySelect.addContainerProperty(DummyProjectData.PROPERTY_NAME, String.class, null);
-        prioritySelect.setItemCaptionPropertyId(DummyProjectData.PROPERTY_NAME);
+        prioritySelect.addContainerProperty(DummyProjectData.PROPERTY_CAPTION, String.class, null);
+        prioritySelect.setItemCaptionPropertyId(DummyProjectData.PROPERTY_CAPTION);
         for (IssuePriority priority : DummyProjectData.getPriorityList()) {
             item = prioritySelect.addItem(priority);
-            item.getItemProperty(DummyProjectData.PROPERTY_NAME).setValue(priority.getPriorityName());
+            item.getItemProperty(DummyProjectData.PROPERTY_CAPTION).setValue(priority.getPriorityName());
             prioritySelect.setItemIcon(priority, IssuePrioritiesEnum.valueOf(priority.getPriorityName()).getIcon());
         }
         //prioritySelect.select(DummyProjectData.getPriorityList().get(0));

@@ -20,27 +20,41 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class DummyProjectData {
-    public static final String PROPERTY_NAME = "caption";
+
+    public final static String PROPERTY_CAPTION = "caption";
     private static final Projekt project = new ProjektBean(1).getProjekte().get(0);
 
-    public  static Projekt getProject() {
-        return project;
-    }
+//    public  static Projekt getProject() {
+//        return project;
+//    }
 
-    public static List<PlanningUnitGroup> getPlannungUnitGroups() {
-        return project.getPlanningUnitGroups();
-    }
+//    public static List<PlanningUnitGroup> getPlannungUnitGroups() {
+//        return project.getPlanningUnitGroups();
+//    }
 
-    public static BeanItemContainer<PlanningUnit> getPlanningUnitContainer() {
+//    public static BeanItemContainer<PlanningUnit> getPlanningUnitContainer() {
+//
+//        List<PlanningUnit> planningUnits = new ArrayList<>();
+//        for (PlanningUnitGroup pug : project.getPlanningUnitGroups()) {
+//            planningUnits.addAll(pug.getPlanningUnitList());
+//        }
+//
+//        final BeanItemContainer<PlanningUnit> planningUnitBeanItemContainer
+//                = new BeanItemContainer<PlanningUnit>(PlanningUnit.class,  planningUnits);
+//        return planningUnitBeanItemContainer;
+//    }
 
-        List<PlanningUnit> planningUnits = new ArrayList<>();
+    public static List<PlanningUnit> getPlanningUnitList() {
+        List<PlanningUnit> planningUnitList = new ArrayList<>();
+        PlanningUnit planningUnit;
         for (PlanningUnitGroup pug : project.getPlanningUnitGroups()) {
-            planningUnits.addAll(pug.getPlanningUnitList());
+            planningUnit = new PlanningUnit();
+            planningUnit.setPlanningUnitName(pug.getPlanningUnitGroupName());
+            planningUnit.setIssueBase(pug.getIssueBase());
+            planningUnit.setKindPlanningUnits(pug.getPlanningUnitList());
+            planningUnitList.add(planningUnit);
         }
-
-        final BeanItemContainer<PlanningUnit> planningUnitBeanItemContainer
-                = new BeanItemContainer<PlanningUnit>(PlanningUnit.class,  planningUnits);
-        return planningUnitBeanItemContainer;
+        return planningUnitList;
     }
 
     public static List<IssueStatus> getStatusList() {

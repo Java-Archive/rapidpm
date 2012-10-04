@@ -19,6 +19,10 @@ import java.util.List;
  */
 public class IssueTablePanel extends ComponentEditablePanel {
 
+    private final static String CAPTION = "caption";
+    private final static String STATUS = "status";
+    private final static String PRIORITY = "priority";
+
     private IssueOverviewScreen screen;
 
     private Table issueTable;
@@ -39,13 +43,15 @@ public class IssueTablePanel extends ComponentEditablePanel {
         issueTable.setImmediate(true);
         issueTable.setSelectable(true);
 
-        String[] headerNames = new String[] {"ID", "Bezeichnung", "Komponente"};
+
+        String[] headerNames = new String[] {CAPTION, STATUS, PRIORITY};
         for (String name : headerNames) {
             issueTable.addContainerProperty(name, String.class, "");
         }
+        issueTable.setItemCaptionPropertyId(CAPTION);
 
         for (int i=0; i<5;i++) {
-            issueTable.addItem(new Object[] {"RPM-" + 1 + i, "Be", "Ko"}, i);
+            issueTable.addItem(new Object[] {"RPM-" + 1 + i, "St", "Prio"}, i);
         }
 
         componentsLayout.addComponent(issueTable);
@@ -53,7 +59,13 @@ public class IssueTablePanel extends ComponentEditablePanel {
         return componentsLayout;
     }
 
-    public void setPropertiesFromIssueList(List<IssueBase> issue) {
-
+    public void setPropertiesFromIssueList(List<IssueBase> issues) {
+        issueTable.removeAllItems();
+        int i = 0;
+        for (IssueBase issue : issues) {
+            issueTable.addItem(new Object[] {"RPM-" + i, issue.getIssueStatus().getStatusName(),
+                    issue.getIssuePriority().getPriorityName()}, i);
+            i++;
+        }
     }
 }
