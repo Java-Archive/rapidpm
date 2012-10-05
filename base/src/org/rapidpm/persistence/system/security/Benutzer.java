@@ -91,9 +91,6 @@ public class Benutzer {
     private List<Berechtigung> berechtigungen;
 
 
-    public Benutzer() {
-    }
-
     public Long getId() {
         return id;
     }

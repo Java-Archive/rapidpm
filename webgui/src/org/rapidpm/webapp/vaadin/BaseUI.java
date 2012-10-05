@@ -20,8 +20,6 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webapp.vaadin.ui.windows.*;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
 import java.util.List;
 import java.util.Locale;
@@ -53,10 +51,6 @@ public abstract class BaseUI extends UI {
     protected PlannedProject currentProject;
     protected Locale locale = new Locale("de","DE");
     protected ResourceBundle messages;
-
-
-
-    protected ProjektBean projektBean = new ProjektBean(5);
 
 
     @Override
@@ -116,7 +110,7 @@ public abstract class BaseUI extends UI {
     }
 
     private String hash(final String enteredPasswd) {
-        return enteredPasswd;        //TODO spÃ¤ter gehashtes PW zurÃ¼ckgeben
+        return enteredPasswd;        //TODO später gehashtes PW zurückgeben
     }
 
     public void localization(final Object value) {
@@ -321,14 +315,6 @@ public abstract class BaseUI extends UI {
 
     public ResourceBundle getResourceBundle() {
         return messages;
-    }
-
-    public ProjektBean getProjektBean() {
-        return projektBean;
-    }
-
-    public void setProjektBean(ProjektBean projektBean) {
-        this.projektBean = projektBean;
     }
 
     public PlannedProject getCurrentProject() {

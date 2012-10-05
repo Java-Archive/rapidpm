@@ -1,11 +1,9 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.uicomponents;
 
-import com.vaadin.data.Property;
 import com.vaadin.data.Validatable;
 import com.vaadin.data.Validator;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.data.validator.AbstractValidator;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
@@ -16,16 +14,14 @@ import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenScreensBean;
+import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.BenutzerScreen;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.UserTransaction;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -33,7 +29,7 @@ import java.util.List;
  * Date: 05.04.12
  * Time: 12:01
  */
-public class BenutzerEditor extends FormLayout {
+public class BenutzerEditor extends FormLayout implements Internationalizationable{
 
     private BeanItem<Benutzer> benutzerBean;
 
@@ -48,32 +44,36 @@ public class BenutzerEditor extends FormLayout {
     //REFAC per CDI ?
 //    @Inject
 //    private StammdatenScreensBean stammdatenScreenBean;
-    private final StammdatenScreensBean stammdatenScreenBean = EJBFactory.getEjbInstance(StammdatenScreensBean
- .class);
+    private final BenutzerEditorBean bean = EJBFactory.getEjbInstance(BenutzerEditorBean.class);
 
     private Collection<Mandantengruppe> mandantengruppen;
     private Collection<BenutzerGruppe> benutzerGruppen;
     private Collection<BenutzerWebapplikation> benutzerWebapplikationen;
     private Collection<Berechtigung> berechtigungen;
 //
-    private final TextField idTextField;
-    private final TextField loginTextField;
-    private final PasswordField passwdTextField;
-    private final TextField emailTextField;
-    private final DateField validFromDateField;
-    private final DateField validUntilDateFiled;
-    private final DateField lastLoginDateField;
-    private final ComboBox mandantengruppenSelect;
-    private final ComboBox benutzerGruppenSelect;
-    private final ComboBox benutzerWebapplikationenSelect;
-    private final ListSelect berechtigungenSelect;
-    private final CheckBox isActiveCheckbox;
-    private final CheckBox isHiddenCheckBox;
+    private TextField idTextField;
+    private TextField loginTextField;
+    private PasswordField passwdTextField;
+    private TextField emailTextField;
+    private DateField validFromDateField;
+    private DateField validUntilDateFiled;
+    private DateField lastLoginDateField;
+    private ComboBox mandantengruppenSelect;
+    private ComboBox benutzerGruppenSelect;
+    private ComboBox benutzerWebapplikationenSelect;
+    private ListSelect berechtigungenSelect;
+    private CheckBox isActiveCheckbox;
+    private CheckBox isHiddenCheckBox;
+    private Button saveButton;
 
-    public BenutzerEditor() {
-        setCaption("Benutzer-Editor");
+    private BenutzerScreen screen;
+    private ResourceBundle messages;
 
-        idTextField = new TextField("ID");
+    public BenutzerEditor(BenutzerScreen theScreen) {
+        this.screen = theScreen;
+        this.messages = screen.getMessagesBundle();
+        setVisible(false);
+        idTextField = new TextField();
         idTextField.setRequired(false);
 //        idTextField.setReadOnly(true);
         idTextField.setEnabled(false);
@@ -81,34 +81,34 @@ public class BenutzerEditor extends FormLayout {
 //REFAC        idTextField.addValidator(new IntegerRangeValidator("ungültige ID", 0, Integer.MAX_VALUE));
         addComponent(idTextField);
 
-        loginTextField = new TextField("Login");
+        loginTextField = new TextField();
         loginTextField.setRequired(true);
         loginTextField.setNullRepresentation("");
         addComponent(loginTextField);
 
-        passwdTextField = new PasswordField("Passwort");
+        passwdTextField = new PasswordField();
         passwdTextField.setRequired(true);
         passwdTextField.setNullRepresentation("");
         addComponent(passwdTextField);
 
-        emailTextField = new TextField("E-Mail");
+        emailTextField = new TextField();
         emailTextField.addValidator(new EmailValidator("Ungültige E-Mail-Adresse"));
         emailTextField.setNullRepresentation("@rapidpm.org");
         addComponent(emailTextField);
 
-        validFromDateField = new DateField("Gültig von:");
+        validFromDateField = new DateField();
         validFromDateField.setConverter(Date.class);
         addComponent(validFromDateField);
 
-        validUntilDateFiled = new DateField("Gültig bis:");
+        validUntilDateFiled = new DateField();
         validUntilDateFiled.setDateFormat(BenutzerScreen.DATE_FORMAT.toPattern());
         addComponent(validUntilDateFiled);
 
-        lastLoginDateField = new DateField("Letzter Login");
+        lastLoginDateField = new DateField();
         lastLoginDateField.setDateFormat(BenutzerScreen.DATE_FORMAT.toPattern());
         addComponent(lastLoginDateField);
 
-        mandantengruppenSelect = new ComboBox("Mandantengruppe");
+        mandantengruppenSelect = new ComboBox();
 //        mandantengruppenSelect.setItemCaptionMode(Select.ITEM_CAPTION_MODE_PROPERTY);
         mandantengruppenSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.ID);
         mandantengruppenSelect.setItemCaptionPropertyId("mandantengruppe");
@@ -117,7 +117,7 @@ public class BenutzerEditor extends FormLayout {
         mandantengruppenSelect.setFilteringMode(FilteringMode.CONTAINS);
         addComponent(mandantengruppenSelect);
 
-        benutzerGruppenSelect = new ComboBox("Benutzergruppe");
+        benutzerGruppenSelect = new ComboBox();
         benutzerGruppenSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.ID);
         benutzerGruppenSelect.setItemCaptionPropertyId("gruppenname");
         benutzerGruppenSelect.setNullSelectionAllowed(false);
@@ -125,7 +125,7 @@ public class BenutzerEditor extends FormLayout {
         benutzerGruppenSelect.setFilteringMode(FilteringMode.CONTAINS);
         addComponent(benutzerGruppenSelect);
 
-        benutzerWebapplikationenSelect = new ComboBox("Webapplikation");
+        benutzerWebapplikationenSelect = new ComboBox();
         benutzerWebapplikationenSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.ID);
         benutzerWebapplikationenSelect.setItemCaptionPropertyId("webappName");
         benutzerWebapplikationenSelect.setNullSelectionAllowed(false);
@@ -133,20 +133,21 @@ public class BenutzerEditor extends FormLayout {
         benutzerWebapplikationenSelect.setFilteringMode(FilteringMode.CONTAINS);
         addComponent(benutzerWebapplikationenSelect);
 
-        berechtigungenSelect = new ListSelect("Berechtigungen");
+        berechtigungenSelect = new ListSelect();
         berechtigungenSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.ID);
         berechtigungenSelect.setItemCaptionPropertyId("name");
         berechtigungenSelect.setMultiSelect(true);
         addComponent(berechtigungenSelect);
 
-        isActiveCheckbox = new CheckBox("Aktiv:");
+        isActiveCheckbox = new CheckBox();
         addComponent(isActiveCheckbox);
 
-        isHiddenCheckBox = new CheckBox("Versteckt:");
+        isHiddenCheckBox = new CheckBox();
         addComponent(isHiddenCheckBox);
 
-        addComponent(new Button("Speichern", new Button.ClickListener() {
-            private final DaoFactoryBean daoFactoryBean = stammdatenScreenBean.getDaoFactoryBean();
+        saveButton = new Button();
+        saveButton.addClickListener(new Button.ClickListener() {
+            private final DaoFactoryBean daoFactoryBean = bean.getDaoFactoryBean();
 
             @Override
             public void buttonClick(final Button.ClickEvent clickEvent) {
@@ -154,9 +155,7 @@ public class BenutzerEditor extends FormLayout {
                     benutzerBean = new BeanItem<>(new Benutzer());
                 } else {
                     final BenutzerDAO benutzerDAO = daoFactoryBean.getBenutzerDAO();
-                    final EntityManager entityManager = benutzerDAO.getEntityManager();
                     final Benutzer benutzer = benutzerBean.getBean();
-                    entityManager.refresh(benutzer);
                 }
                 boolean valid = true;
                 for (final Component component : BenutzerEditor.this.components) {
@@ -165,7 +164,6 @@ public class BenutzerEditor extends FormLayout {
                         try {
                             validatable.validate();
                         } catch (Validator.InvalidValueException e) {
-                            logger.log(Priority.WARN, e.getMessage(), e);
                             valid = false;
                         }
                     }
@@ -199,14 +197,18 @@ public class BenutzerEditor extends FormLayout {
                     // in die DB speichern
                     final Benutzer benutzer = benutzerBean.getBean();
                     daoFactoryBean.saveOrUpdate(benutzer);
+
+                    final MainUI ui = screen.getUi();
+                    ui.setWorkingArea(new BenutzerScreen(ui));
+                    setVisible(false);
                 } else {
-                    Notification.show("Eingaben unvollständig oder ungültig");
-//                    getRoot().showNotification();
-                    // ein oder mehrere Eingaben sind ungÃ¼ltig
-//                    getApplication().getMainWindow().showNotification("Eingaben unvollstÃ¤ndig oder ungÃ¼ltig", Window.Notification.TYPE_TRAY_NOTIFICATION);
+                    Notification.show(messages.getString("incompletedata"));
                 }
             }
-        }));
+        });
+        addComponent(saveButton);
+
+        doInternationalization();
 
     }
 
@@ -261,5 +263,24 @@ public class BenutzerEditor extends FormLayout {
     public void setBerechtigungen(final Collection<Berechtigung> berechtigungen) {
         this.berechtigungen = berechtigungen;
         this.berechtigungenSelect.setContainerDataSource(new BeanItemContainer<>(Berechtigung.class, berechtigungen));
+    }
+
+    @Override
+    public void doInternationalization() {
+        isActiveCheckbox.setCaption(messages.getString("users_active"));
+        isHiddenCheckBox.setCaption(messages.getString("users_hidden"));
+        saveButton.setCaption(messages.getString("save"));
+        berechtigungenSelect.setCaption(messages.getString("users_permissions"));
+        benutzerWebapplikationenSelect.setCaption(messages.getString("users_webapp"));
+        benutzerGruppenSelect.setCaption(messages.getString("users_usergroups"));
+        mandantengruppenSelect.setCaption(messages.getString("users_mandantgroups"));
+        lastLoginDateField.setCaption(messages.getString("users_lastlogin"));
+        validFromDateField.setCaption(messages.getString("users_validfrom"));
+        validUntilDateFiled.setCaption(messages.getString("users_validuntil"));
+        emailTextField.setCaption(messages.getString("users_email"));
+        passwdTextField.setCaption(messages.getString("users_password"));
+        loginTextField.setCaption(messages.getString("users_login"));
+        idTextField.setCaption(messages.getString("users_id"));
+        setCaption(messages.getString("users_usereditor"));
     }
 }

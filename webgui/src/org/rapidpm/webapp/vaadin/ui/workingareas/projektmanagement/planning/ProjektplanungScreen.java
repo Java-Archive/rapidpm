@@ -4,6 +4,7 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
+import org.rapidpm.Constants;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
@@ -17,7 +18,6 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.PlanningUnitBeanItemContainer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
 import javax.persistence.EntityManager;
 import java.util.Iterator;
@@ -129,12 +129,6 @@ public class ProjektplanungScreen extends Screen {
             treePanelTree.setItemCaptionPropertyId(PlanningUnit.NAME);
             treePanelTree.setImmediate(true);
             container.addBean(selectedPlanningUnit);
-//            if (selectedPlanningUnit.getKindPlanningUnits() != null && !selectedPlanningUnit.getKindPlanningUnits().isEmpty()) {
-//                treePanelTree.setChildrenAllowed(itemId, true);
-//            } else {
-//                treePanelTree.setChildrenAllowed(itemId, false);
-//            }
-
             buildTree(selectedPlanningUnit.getKindPlanningUnits(), selectedPlanningUnit);
             treePanelTree.expandItemsRecursively(selectedPlanningUnit);
             treePanelTree.addValueChangeListener(new TreeValueChangeListener(this, projekt));
@@ -143,12 +137,11 @@ public class ProjektplanungScreen extends Screen {
             while (iterator.hasNext()){
                 treePanelTree.expandItemsRecursively(iterator.next());
             }
-            //TODO Ordner in Constants, Filename in db
             for(final Object itemId : treePanelTree.getVisibleItemIds()){
                 final PlanningUnit planningUnit = (PlanningUnit) itemId;
                 final IssueBase planningUnitIssueBase = planningUnit.getIssueBase();
                 final IssueStatus issueStatus = planningUnitIssueBase.getStatus();
-                final String iconPfad = ("images/status_"+issueStatus.getStatusName()+".gif").toLowerCase();
+                final String iconPfad = (Constants.IMAGES_DIRECTION + issueStatus.getStatusFileName());
                 treePanelTree.setItemIcon(itemId, new ThemeResource(iconPfad));
             }
             treePanel.addComponent(treePanelTree);
@@ -160,7 +153,6 @@ public class ProjektplanungScreen extends Screen {
             container.addBean(planningUnit);
             container.setParent(planningUnit, parentUnit);
             if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
-                //treePanelTree.setChildrenAllowed(itemId, false);
             } else {
                 buildTree(planningUnit.getKindPlanningUnits(), planningUnit);
             }
@@ -206,10 +198,6 @@ public class ProjektplanungScreen extends Screen {
 
     public Panel getTreePanel() {
         return treePanel;
-    }
-
-    public ProjektBean getProjektBean() {
-        return projektBean;
     }
 
     public VerticalLayout getMainLayout() {

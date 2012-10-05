@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten;
+package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.uicomponents;
 
 import org.rapidpm.persistence.DaoFactoryBean;
 
@@ -12,9 +12,9 @@ import javax.ejb.TransactionManagement;
  * Date: 24.05.12
  * Time: 11:00
  */
-@Stateless(name = "StammdatenScreensEJB")
+@Stateless(name = "BenutzerEditorEJB")
 @TransactionManagement
-public class StammdatenScreensBean {
+public class BenutzerEditorBean {
 
     @EJB(beanName = "DaoFactoryEJB")
     private DaoFactoryBean baseDaoFactoryBean;
