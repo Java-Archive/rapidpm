@@ -24,7 +24,16 @@ INSERT INTO
                 id, active, email, failedlogins, hidden, lastlogin, login, passwd,
                 validfrom, validuntil, benutzergruppe_id, benutzerwebapplikation_id,
                 mandantengruppe_id)
-        VALUES (1, true , 'sven.ruppert@rapidpm.org', 0, false , '2012-09-11', 'sven.ruppert', 'geheim',
+        VALUES (1, true , 'nobody@rapidpm.org', 0, false , '2012-09-11', '<not assigned>', 'geheim',
+                '2012-09-11',
+                '2013-09-11', 1, 1,1);
+
+INSERT INTO
+        benutzer(
+                id, active, email, failedlogins, hidden, lastlogin, login, passwd,
+                validfrom, validuntil, benutzergruppe_id, benutzerwebapplikation_id,
+                mandantengruppe_id)
+        VALUES (2, true , 'sven.ruppert@rapidpm.org', 0, false , '2012-09-11', 'sven.ruppert', 'geheim',
                 '2012-09-11',
                 '2013-09-11', 1, 1,1);
  
@@ -33,7 +42,7 @@ INSERT INTO
                 id, active, email, failedlogins, hidden, lastlogin, login, passwd,
                 validfrom, validuntil, benutzergruppe_id, benutzerwebapplikation_id,
                 mandantengruppe_id)
-        VALUES (2, true , 'daniel.macdonald@rapidpm.org', 0, false , '2012-09-11', 'daniel.macdonald', 'geheim',
+        VALUES (3, true , 'daniel.macdonald@rapidpm.org', 0, false , '2012-09-11', 'daniel.macdonald', 'geheim',
                 '2012-09-11',
                 '2013-09-11', 1, 1,1);
           
@@ -42,7 +51,7 @@ INSERT INTO
                 id, active, email, failedlogins, hidden, lastlogin, login, passwd,
                 validfrom, validuntil, benutzergruppe_id, benutzerwebapplikation_id,
                 mandantengruppe_id)
-        VALUES (3, true , 'alvin.schiller@rapidpm.org', 0, false , '2012-09-11', 'alvin.schiller', 'geheim',
+        VALUES (4, true , 'alvin.schiller@rapidpm.org', 0, false , '2012-09-11', 'alvin.schiller', 'geheim',
                 '2012-09-11',
                 '2013-09-11', 1, 1,1);
 
@@ -51,11 +60,11 @@ INSERT INTO
                 id, active, email, failedlogins, hidden, lastlogin, login, passwd,
                 validfrom, validuntil, benutzergruppe_id, benutzerwebapplikation_id,
                 mandantengruppe_id)
-        VALUES (4, true , 'marco.ebbinghaus@rapidpm.org', 0, false , '2012-09-11', 'marco.ebbinghaus', 'geheim',
+        VALUES (5, true , 'marco.ebbinghaus@rapidpm.org', 0, false , '2012-09-11', 'marco.ebbinghaus', 'geheim',
                 '2012-09-11',
                 '2013-09-11', 1, 1,1);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('Benutzer_id', 5);
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('Benutzer_id', 6);
 
 INSERT INTO
         ressourcegroup(id, name, hoursPerWeek, weeksPerYear, planAnzahl, facturizable, externalEurosPerHour, bruttoGehalt)
@@ -264,7 +273,7 @@ INSERT INTO planningunit(id,ordernumber,planningunitname,issuebase_id,parent_id,
 VALUES (7,7,'Gesprächsbestätigung',7,1,1,2);
 
 INSERT INTO planningunit(id,ordernumber,planningunitname,issuebase_id,parent_id,planningstatus_id,responsibleperson_id)
-VALUES (8,8,'Vorbereitungen',8,null,1,1);
+VALUES (8,8,'Vorbereitungsarbeiten',8,null,1,1);
 
 INSERT INTO planningunit(id,ordernumber,planningunitname,issuebase_id,parent_id,planningstatus_id,responsibleperson_id)
 VALUES (9,9,'Vorbereitung der Maschinen',9,8,1,1);
