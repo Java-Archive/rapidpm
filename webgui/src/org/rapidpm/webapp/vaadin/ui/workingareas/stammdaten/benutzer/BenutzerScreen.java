@@ -115,13 +115,20 @@ public class BenutzerScreen extends Screen {
                 if(!isUserDeletingHimself){
                     final BenutzerScreenBean stammdatenScreenBean = EJBFactory.getEjbInstance(BenutzerScreenBean.class);
                     final DaoFactoryBean daoFactoryBean = stammdatenScreenBean.getDaoFactoryBean();
-                    benutzerTable.removeItem(tableItemId);
-                    benutzerEditor.setVisible(false);
                     final List<Benutzer> benutzerFromDB = daoFactoryBean.getBenutzerDAO().loadBenutzerForLogin
                             (selectedBenutzer.getLogin());
                     if(benutzerFromDB != null && !benutzerFromDB.isEmpty()){
-                        daoFactoryBean.remove(selectedBenutzer);
+                        try{
+                            daoFactoryBean.remove(selectedBenutzer);
+                            benutzerTable.removeItem(tableItemId);
+                            benutzerEditor.setVisible(false);
+                        } catch (Exception e){
+                            Notification.show(messagesBundle.getString("users_userinuse"));
+                        }
+
                     } else {
+                        benutzerTable.removeItem(tableItemId);
+                        benutzerEditor.setVisible(false);
                         logger.warn(selectedBenutzer.toString() + "war nur transient vorhanden");
                     }
 

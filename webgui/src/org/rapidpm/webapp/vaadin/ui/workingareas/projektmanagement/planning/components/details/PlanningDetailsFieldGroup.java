@@ -13,8 +13,13 @@ import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.system.security.Benutzer;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -43,17 +48,18 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
 
     private ResourceBundle messages;
     private PlanningDetailsFieldGroupBean bean;
+    private DaoFactoryBean baseDaoFactoryBean;
 
     public PlanningDetailsFieldGroup(ResourceBundle messages, IssueBase issueBase) {
         setItemDataSource(new BeanItem<>(issueBase));
         this.messages = messages;
-
+        bean = EJBFactory.getEjbInstance(PlanningDetailsFieldGroupBean.class);
+        baseDaoFactoryBean = bean.getDaoFactoryBean();
         buildForm();
     }
 
     private void buildForm() {
-        bean = EJBFactory.getEjbInstance(PlanningDetailsFieldGroupBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        refreshEntities(baseDaoFactoryBean);
         final List<IssuePriority> priorities = baseDaoFactoryBean.getIssuePriorityDAO().loadAllEntities();
         final List<IssueStatus> statusList = baseDaoFactoryBean.getIssueStatusDAO().loadAllEntities();
         final List<Benutzer> users = baseDaoFactoryBean.getBenutzerDAO().loadAllEntities();
@@ -134,6 +140,25 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
     public DateField generateDateField(String caption){
         final DateField dateField = new DateField(caption);
         return dateField;
+    }
+
+    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
+        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+            entityManager.refresh(plannedProject);
+        }
+        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+            entityManager.refresh(planningUnitElement);
+        }
+        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
+            entityManager.refresh(planningUnit);
+        }
+        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
+            entityManager.refresh(ressourceGroup);
+        }
+        for(final Benutzer benutzer : baseDaoFactoryBean.getBenutzerDAO().loadAllEntities()){
+            entityManager.refresh(benutzer);
+        }
     }
 
     public List<AbstractField> getFieldList() {
