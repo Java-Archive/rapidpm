@@ -35,12 +35,16 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 
     private void setComponents(final IssueTabSheet issueTabSheet) {
         buttonLayout = new HorizontalLayout();
+        buttonLayout.setSpacing(true);
 
         addButton = new Button();
         buttonLayout.addComponent(addButton);
 
         deleteButton = new Button();
         buttonLayout.addComponent(deleteButton);
+
+        if (addButton.getWidth() > deleteButton.getWidth()) deleteButton.setWidth(addButton.getWidth(), Unit.PIXELS);
+        else addButton.setWidth(deleteButton.getWidth(), Unit.PIXELS);
 
         addComponent(buttonLayout);
 

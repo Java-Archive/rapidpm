@@ -1,6 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components;
 
-import com.vaadin.event.MouseEvents;
+import com.vaadin.event.LayoutEvents;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 
@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
  * Time: 15:13
  * To change this template use File | Settings | File Templates.
  */
-public abstract class ComponentEditablePanel extends Panel{
+public abstract class ComponentEditableVLayout extends VerticalLayout{
     protected Button saveButton;
     protected Button cancelButton;
     protected ResourceBundle messages;
@@ -22,8 +22,10 @@ public abstract class ComponentEditablePanel extends Panel{
     protected AbstractOrderedLayout componentsLayout;
     protected HorizontalLayout buttonLayout;
 
-    public ComponentEditablePanel(final Screen screen){
-        this.setSizeFull();
+    public ComponentEditableVLayout(final Screen screen){
+        setSizeFull();
+        setMargin(true);
+        setSpacing(true);
         componentsLayout = buildForm();
         componentsLayout.setSizeFull();
         buttonLayout = new HorizontalLayout();
@@ -36,7 +38,7 @@ public abstract class ComponentEditablePanel extends Panel{
         cancelButton = new Button();
         cancelButton.setCaption(messages.getString("cancel"));
         cancelButton.addClickListener(addCancelButtonClickListener(this));
-        this.addClickListener(new PanelMouseClickListener());
+        this.addLayoutClickListener(new LayoutMouseClickListener());
 
         buttonLayout.addComponent(saveButton);
         buttonLayout.addComponent(cancelButton);
@@ -48,11 +50,11 @@ public abstract class ComponentEditablePanel extends Panel{
 
     protected abstract AbstractOrderedLayout buildForm();
 
-    protected Button.ClickListener addSaveButtonClickListener(ComponentEditablePanel panel) {
+    protected Button.ClickListener addSaveButtonClickListener(ComponentEditableVLayout layout) {
         return new CancelButtonStandardClickListener();
     }
 
-    protected Button.ClickListener addCancelButtonClickListener(ComponentEditablePanel panel) {
+    protected Button.ClickListener addCancelButtonClickListener(ComponentEditableVLayout layout) {
         return new CancelButtonStandardClickListener();
     }
 
@@ -73,12 +75,12 @@ public abstract class ComponentEditablePanel extends Panel{
         buttonLayout.setVisible(!readOnly);
     }
 
-    private class PanelMouseClickListener implements MouseEvents.ClickListener {
+    private class LayoutMouseClickListener implements LayoutEvents.LayoutClickListener {
 
-            @Override
-            public void click(MouseEvents.ClickEvent event) {
-                setLayoutReadOnly(false);
-            }
+        @Override
+        public void layoutClick(LayoutEvents.LayoutClickEvent event) {
+            setLayoutReadOnly(false);
+        }
     }
 
 

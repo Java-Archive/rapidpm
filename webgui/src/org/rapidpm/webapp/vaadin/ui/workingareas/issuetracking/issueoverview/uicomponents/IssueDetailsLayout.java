@@ -9,7 +9,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssuePrioritiesEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditablePanel;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditableVLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.DummyProjectData;
 
@@ -22,7 +22,7 @@ import java.util.Date;
  * Time: 12:01
  * To change this template use File | Settings | File Templates.
  */
-public class IssueDetailsPanel extends ComponentEditablePanel implements Internationalizationable{
+public class IssueDetailsLayout extends ComponentEditableVLayout implements Internationalizationable{
 
     final private IssueOverviewScreen screen;
 
@@ -46,10 +46,9 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
 
     private VerticalLayout componentsLayout;
 
-    public IssueDetailsPanel(IssueOverviewScreen screen) {
+    public IssueDetailsLayout(IssueOverviewScreen screen) {
         super(screen);
         this.screen = screen;
-        this.setSizeFull();
         doInternationalization();
     }
 
@@ -166,20 +165,23 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
         tabSheet = new TabSheet();
         tabSheet.setSizeFull();
 
-        Panel commentsPanel = new Panel();
-        commentsPanel.addComponent(new Label("Fill with Comments"));
-        commentsPanel.addComponent(new Label("Fill with Comments"));
-        commentsPanel.addComponent(new Label("Fill with Comments"));
-        commentsPanel.addComponent(new Label("Fill with Comments"));
-        tabComments = tabSheet.addTab(commentsPanel);
+        VerticalLayout commentsLayout = new VerticalLayout();
+        commentsLayout.setMargin(true);
+        commentsLayout.addComponent(new Label("Fill with Comments"));
+        commentsLayout.addComponent(new Label("Fill with Comments"));
+        commentsLayout.addComponent(new Label("Fill with Comments"));
+        commentsLayout.addComponent(new Label("Fill with Comments"));
+        tabComments = tabSheet.addTab(commentsLayout);
 
-        Panel testcasePanel = new Panel();
-        testcasePanel.addComponent(new Label("Fill with TestCases"));
-        tabTestcases = tabSheet.addTab(testcasePanel);
+        VerticalLayout testcaseLayout = new VerticalLayout();
+        testcaseLayout.setMargin(true);
+        testcaseLayout.addComponent(new Label("Fill with TestCases"));
+        tabTestcases = tabSheet.addTab(testcaseLayout);
 
-        Panel storyPanel = new Panel();
-        storyPanel.addComponent(new Label("Fill with Story"));
-        tabStory = tabSheet.addTab(storyPanel);
+        VerticalLayout storyLayout = new VerticalLayout();
+        storyLayout.setMargin(true);
+        storyLayout.addComponent(new Label("Fill with Story"));
+        tabStory = tabSheet.addTab(storyLayout);
 
         componentsLayout.addComponent(tabSheet);
 

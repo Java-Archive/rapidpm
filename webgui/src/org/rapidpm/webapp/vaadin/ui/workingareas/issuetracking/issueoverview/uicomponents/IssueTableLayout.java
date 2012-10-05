@@ -1,11 +1,9 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents;
 
 
-import com.vaadin.data.Item;
 import com.vaadin.ui.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-import org.rapidpm.webapp.vaadin.ui.windows.KontaktWindow;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditablePanel;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditableVLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 
 import java.util.List;
@@ -17,7 +15,7 @@ import java.util.List;
  * Time: 15:58
  * To change this template use File | Settings | File Templates.
  */
-public class IssueTablePanel extends ComponentEditablePanel {
+public class IssueTableLayout extends ComponentEditableVLayout {
 
     private final static String CAPTION = "caption";
     private final static String STATUS = "status";
@@ -27,10 +25,9 @@ public class IssueTablePanel extends ComponentEditablePanel {
 
     private Table issueTable;
 
-    public IssueTablePanel(IssueOverviewScreen screen) {
+    public IssueTableLayout(IssueOverviewScreen screen) {
         super(screen);
         this.screen = screen;
-        this.setSizeFull();
     }
 
     @Override

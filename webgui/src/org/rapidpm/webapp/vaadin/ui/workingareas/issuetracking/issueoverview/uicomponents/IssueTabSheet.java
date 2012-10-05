@@ -13,8 +13,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.Iss
  */
 public class IssueTabSheet extends TabSheet implements Internationalizationable{
     final private IssueOverviewScreen screen;
-    private IssueDetailsPanel detailsPanel;
-    private IssueTablePanel tablePanel;
+    private IssueDetailsLayout detailsLayout;
+    private IssueTableLayout tableLayout;
     private Tab detailsTab;
     private Tab tableTab;
 
@@ -27,10 +27,10 @@ public class IssueTabSheet extends TabSheet implements Internationalizationable{
     }
 
     private void setComponents() {
-        tablePanel = new IssueTablePanel(screen);
-        detailsPanel = new IssueDetailsPanel(screen);
-        tableTab = this.addTab(tablePanel);
-        detailsTab = this.addTab(detailsPanel);
+        tableLayout = new IssueTableLayout(screen);
+        detailsLayout = new IssueDetailsLayout(screen);
+        tableTab = this.addTab(tableLayout);
+        detailsTab = this.addTab(detailsLayout);
     }
 
     public boolean isTableTabDisabled() {
@@ -49,12 +49,12 @@ public class IssueTabSheet extends TabSheet implements Internationalizationable{
         detailsTab.setCaption(screen.getMessagesBundle().getString("issue_detail"));
     }
 
-    public IssueDetailsPanel getDetailsPanel() {
-        return detailsPanel;
+    public IssueDetailsLayout getDetailsLayout() {
+        return detailsLayout;
     }
 
-    public IssueTablePanel getTablePanel() {
-        return tablePanel;
+    public IssueTableLayout getTableLayout() {
+        return tableLayout;
     }
 
 }
