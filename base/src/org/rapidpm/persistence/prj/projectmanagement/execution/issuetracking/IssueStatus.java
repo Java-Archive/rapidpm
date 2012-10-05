@@ -30,6 +30,9 @@ public class IssueStatus {
     @Basic
     private String statusName;
 
+    @Basic
+    private String statusFileName;
+
     public IssueStatus() {
     }
 
@@ -56,6 +59,14 @@ public class IssueStatus {
 
     public void setStatusName(String name) {
         this.statusName = name;
+    }
+
+    public String getStatusFileName() {
+        return statusFileName;
+    }
+
+    public void setStatusFileName(String statusFileName) {
+        this.statusFileName = statusFileName;
     }
 
     @Override

@@ -112,6 +112,8 @@ public class Constants {
 
     public static final String IMAGE_LOGO = "images/logo_sru.png";
 
+    public static final String IMAGES_DIRECTION = "images/";
+
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
     public static final String DAYSHOURSMINUTES_REGEX = "[0-9]{1,}:[012]{1}[0-9]{1}:[012345]{1}[0-9]{1}";

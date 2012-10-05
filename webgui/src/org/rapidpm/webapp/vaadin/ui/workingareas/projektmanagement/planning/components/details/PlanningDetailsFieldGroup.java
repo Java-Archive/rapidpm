@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import static org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase.*;
+import static org.rapidpm.Constants.*;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -67,7 +68,7 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
                     bind(box, propertyId);
                     for(final Object itemId : box.getItemIds()){
                         final IssuePriority priority = (IssuePriority) itemId;
-                        final String resourcePfad = ("images/priority_"+priority.getPriorityName()+".gif").toLowerCase();
+                        final String resourcePfad = (IMAGES_DIRECTION + priority.getPriorityFileName());
                         box.setItemIcon(itemId, new ThemeResource(resourcePfad));
                     }
                     priorityBox = box;
@@ -79,7 +80,7 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
                     bind(box, propertyId);
                     for(final Object itemId : box.getItemIds()){
                         final IssueStatus status = (IssueStatus) itemId;
-                        final String resourcePfad = ("images/status_"+status.getStatusName()+".gif").toLowerCase();
+                        final String resourcePfad = (IMAGES_DIRECTION + status.getStatusFileName());
                         box.setItemIcon(itemId, new ThemeResource(resourcePfad));
                     }
                     statusBox = box;

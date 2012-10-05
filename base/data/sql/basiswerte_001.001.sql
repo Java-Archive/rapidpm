@@ -126,46 +126,46 @@ INSERT INTO
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningStatus_id', 1);
 
 INSERT INTO
-        issuepriority(id, prio, priorityname)
-        VALUES (1, 1 ,'Minor');
+        issuepriority(id, prio, priorityname, priorityfilename)
+        VALUES (1, 1 ,'Minor', 'priority_minor.gif');
 
 INSERT INTO
-        issuepriority(id, prio, priorityname)
-        VALUES (2, 2 ,'Trivial');
+        issuepriority(id, prio, priorityname, priorityfilename)
+        VALUES (2, 2 ,'Trivial', 'priority_trivial.gif');
 
 INSERT INTO
-        issuepriority(id, prio, priorityname)
-        VALUES (3, 3 ,'Major');
+        issuepriority(id, prio, priorityname, priorityfilename)
+        VALUES (3, 3 ,'Major', 'priority_major.gif');
 
 INSERT INTO
-        issuepriority(id, prio, priorityname)
-        VALUES (4, 4 ,'Critical');
+        issuepriority(id, prio, priorityname, priorityfilename)
+        VALUES (4, 4 ,'Critical', 'priority_critical.gif');
 
 INSERT INTO
-        issuepriority(id, prio, priorityname)
-        VALUES (5, 5 ,'Blocker');
+        issuepriority(id, prio, priorityname, priorityfilename)
+        VALUES (5, 5 ,'Blocker', 'priority_blocker.gif');
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('IssuePriority_id', 5);
 
 INSERT INTO
-        issuestatus(id, statusname)
-        VALUES (1, 'OnHold');
+        issuestatus(id, statusname, statusfilename)
+        VALUES (1, 'OnHold', 'status_onhold.gif');
 
 INSERT INTO
-        issuestatus(id, statusname)
-        VALUES (2, 'Closed');
+        issuestatus(id, statusname, statusfilename)
+        VALUES (2, 'Closed', 'status_closed.gif');
 
 INSERT INTO
-        issuestatus(id, statusname)
-        VALUES (3, 'Resolved');
+        issuestatus(id, statusname, statusfilename)
+        VALUES (3, 'Resolved', 'status_resolved.gif');
 
 INSERT INTO
-        issuestatus(id, statusname)
-        VALUES (4, 'InProgress');
+        issuestatus(id, statusname, statusfilename)
+        VALUES (4, 'InProgress', 'status_inprogress.gif');
 
 INSERT INTO
-        issuestatus(id, statusname)
-        VALUES (5, 'Open');
+        issuestatus(id, statusname, statusfilename)
+        VALUES (5, 'Open', 'status_open.gif');
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('IssueStatus_id', 5);
 

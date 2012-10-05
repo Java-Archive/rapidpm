@@ -49,6 +49,9 @@ public class IssuePriority {
     @Basic
     private String priorityName;
 
+    @Basic
+    private String priorityFileName;
+
     public int getPrio() {
         return prio;
     }
@@ -63,6 +66,14 @@ public class IssuePriority {
 
     public void setPriorityName(String name) {
         this.priorityName = name;
+    }
+
+    public String getPriorityFileName() {
+        return priorityFileName;
+    }
+
+    public void setPriorityFileName(String priorityFileName) {
+        this.priorityFileName = priorityFileName;
     }
 
     @Override
