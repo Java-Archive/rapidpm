@@ -23,7 +23,9 @@ public abstract class ComponentEditablePanel extends Panel{
     protected HorizontalLayout buttonLayout;
 
     public ComponentEditablePanel(final Screen screen){
+        this.setSizeFull();
         componentsLayout = buildForm();
+        componentsLayout.setSizeFull();
         buttonLayout = new HorizontalLayout();
         messages = screen.getMessagesBundle();
 

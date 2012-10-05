@@ -24,25 +24,6 @@ public class DummyProjectData {
     public final static String PROPERTY_CAPTION = "caption";
     private static final Projekt project = new ProjektBean(1).getProjekte().get(0);
 
-//    public  static Projekt getProject() {
-//        return project;
-//    }
-
-//    public static List<PlanningUnitGroup> getPlannungUnitGroups() {
-//        return project.getPlanningUnitGroups();
-//    }
-
-//    public static BeanItemContainer<PlanningUnit> getPlanningUnitContainer() {
-//
-//        List<PlanningUnit> planningUnits = new ArrayList<>();
-//        for (PlanningUnitGroup pug : project.getPlanningUnitGroups()) {
-//            planningUnits.addAll(pug.getPlanningUnitList());
-//        }
-//
-//        final BeanItemContainer<PlanningUnit> planningUnitBeanItemContainer
-//                = new BeanItemContainer<PlanningUnit>(PlanningUnit.class,  planningUnits);
-//        return planningUnitBeanItemContainer;
-//    }
 
     public static List<PlanningUnit> getPlanningUnitList() {
         List<PlanningUnit> planningUnitList = new ArrayList<>();
@@ -57,6 +38,17 @@ public class DummyProjectData {
         return planningUnitList;
     }
 
+    public static List<String> getTypeList() {
+        List<String> statusList = new ArrayList<>();
+        statusList.add("Bug");
+        statusList.add("Task");
+        statusList.add("Improvement");
+        statusList.add("New Function");
+        statusList.add("Epic");
+        statusList.add("Story");
+        return statusList;
+    }
+
     public static List<IssueStatus> getStatusList() {
         List<IssueStatus> statusList = new ArrayList<>();
         statusList.add(new IssueStatus("Open"));
@@ -69,11 +61,19 @@ public class DummyProjectData {
 
     public static List<IssuePriority> getPriorityList() {
         List<IssuePriority> priorityList = new ArrayList<>();
-        priorityList.add(new IssuePriority(0 , "Trivial"));
+        priorityList.add(new IssuePriority(0, "Trivial"));
         priorityList.add(new IssuePriority(0, "Minor"));
         priorityList.add(new IssuePriority(0, "Major"));
         priorityList.add(new IssuePriority(0, "Critical"));
         priorityList.add(new IssuePriority(0, "Blocker"));
         return priorityList;
+    }
+
+    public static Integer[] getStoryPointArray() {
+        return new Integer[] {1,2,3,4,5,6,7,8,9,10};
+    }
+
+    public static String[] getVersionArray() {
+        return new String[] {"1.0", "2.0"};
     }
 }

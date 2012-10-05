@@ -25,9 +25,9 @@ import java.util.Date;
 public class IssueDetailsPanel extends ComponentEditablePanel implements Internationalizationable{
 
     final private IssueOverviewScreen screen;
-    private final static Integer[] storyPoints = new Integer[] {1,2,3,4,5,6,7,8,9,10};
 
     private Label headerLabel;
+    private ComboBox typeSelect;
     private ComboBox statusSelect;
     private ComboBox prioritySelect;
     private ComboBox assigneeSelect;
@@ -36,6 +36,7 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
     private DateField resolvedDateField;
     private DateField closedDateField;
     private ComboBox storyPointSelect;
+    private ComboBox versionSelect;
 
     private TextArea descriptionTextArea;
     private TabSheet tabSheet;
@@ -61,19 +62,32 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
         FormLayout detailLayout = new FormLayout();
         HorizontalLayout horLayout = new HorizontalLayout();
 
+
+
         headerLabel = new Label();
         addComponent(headerLabel);
+
+        typeSelect = new ComboBox();
+        typeSelect.addContainerProperty(DummyProjectData.PROPERTY_CAPTION, String.class, null);
+        typeSelect.setItemCaptionPropertyId(DummyProjectData.PROPERTY_CAPTION);
+        Item item;
+        for (String type : DummyProjectData.getTypeList()) {
+            item = typeSelect.addItem(type);
+            item.getItemProperty(DummyProjectData.PROPERTY_CAPTION).setValue(type);
+        }
+        typeSelect.setTextInputAllowed(false);
+        typeSelect.setNullSelectionAllowed(false);
+        typeSelect.setReadOnly(true);
+        detailLayout.addComponent(typeSelect);
 
         statusSelect = new ComboBox();
         statusSelect.addContainerProperty(DummyProjectData.PROPERTY_CAPTION, String.class, null);
         statusSelect.setItemCaptionPropertyId(DummyProjectData.PROPERTY_CAPTION);
-        Item item;
         for (IssueStatus status : DummyProjectData.getStatusList()) {
             item = statusSelect.addItem(status);
             item.getItemProperty(DummyProjectData.PROPERTY_CAPTION).setValue(status.getStatusName());
             statusSelect.setItemIcon(status, IssueStatusEnum.valueOf(status.getStatusName()).getIcon());
         }
-        //statusSelect.select();
         statusSelect.setTextInputAllowed(false);
         statusSelect.setNullSelectionAllowed(false);
         statusSelect.setReadOnly(true);
@@ -87,7 +101,6 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
             item.getItemProperty(DummyProjectData.PROPERTY_CAPTION).setValue(priority.getPriorityName());
             prioritySelect.setItemIcon(priority, IssuePrioritiesEnum.valueOf(priority.getPriorityName()).getIcon());
         }
-        //prioritySelect.select(DummyProjectData.getPriorityList().get(0));
         prioritySelect.setTextInputAllowed(false);
         prioritySelect.setNullSelectionAllowed(false);
         prioritySelect.setReadOnly(true);
@@ -124,14 +137,22 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
         dateLayout.addComponent(closedDateField);
 
         storyPointSelect = new ComboBox();
-        for (Integer storyPoint : storyPoints) {
+        for (Integer storyPoint : DummyProjectData.getStoryPointArray()) {
             storyPointSelect.addItem(storyPoint);
         }
-        storyPointSelect.select(storyPoints[0]);
         storyPointSelect.setTextInputAllowed(false);
         storyPointSelect.setNullSelectionAllowed(false);
         storyPointSelect.setReadOnly(true);
         dateLayout.addComponent(storyPointSelect);
+
+        versionSelect = new ComboBox();
+        for (String version : DummyProjectData.getVersionArray()) {
+            versionSelect.addItem(version);
+        }
+        versionSelect.setTextInputAllowed(false);
+        versionSelect.setNullSelectionAllowed(true);
+        versionSelect.setReadOnly(true);
+        dateLayout.addComponent(versionSelect);
 
         horLayout.addComponent(detailLayout);
         horLayout.addComponent(dateLayout);
@@ -168,6 +189,7 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
 
     @Override
     public void doInternationalization() {
+        typeSelect.setCaption(screen.getMessagesBundle().getString("issue_type"));
         statusSelect.setCaption(screen.getMessagesBundle().getString("issue_status"));
         prioritySelect.setCaption(screen.getMessagesBundle().getString("issue_priority"));
         assigneeSelect.setCaption(screen.getMessagesBundle().getString("issue_assignee"));
@@ -176,6 +198,7 @@ public class IssueDetailsPanel extends ComponentEditablePanel implements Interna
         resolvedDateField.setCaption(screen.getMessagesBundle().getString("issue_resolved"));
         closedDateField.setCaption(screen.getMessagesBundle().getString("issue_closed"));
         storyPointSelect.setCaption(screen.getMessagesBundle().getString("issue_storypoints"));
+        versionSelect.setCaption(screen.getMessagesBundle().getString("issue_version"));
         descriptionTextArea.setCaption(screen.getMessagesBundle().getString("issue_description"));
         tabComments.setCaption(screen.getMessagesBundle().getString("issue_comments"));
         tabTestcases.setCaption(screen.getMessagesBundle().getString("issue_testcases"));

@@ -4,10 +4,8 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTabSheet;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTablePanel;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTreePanel;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTreeLayout;
 
 
 /**
@@ -20,7 +18,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uic
 public class IssueOverviewScreen extends Screen{
 
     private HorizontalSplitPanel hSplitPanel;
-    private IssueTreePanel treePanel;
+    private IssueTreeLayout treeLayout;
     private IssueTabSheet issueTabSheet;
 
     private Button saveButton;
@@ -30,11 +28,12 @@ public class IssueOverviewScreen extends Screen{
 
     public IssueOverviewScreen(MainUI ui) {
         super(ui);
+        this.setSizeFull();
         hSplitPanel = new HorizontalSplitPanel();
         hSplitPanel.setSplitPosition(30, Unit.PERCENTAGE);
         hSplitPanel.setSizeFull();
         issueTabSheet = new IssueTabSheet(this);
-        treePanel = new IssueTreePanel(issueTabSheet);
+        treeLayout = new IssueTreeLayout(this, issueTabSheet);
         saveButton = new Button();
         cancelButton = new Button();
         buttonLayout = new HorizontalLayout();
@@ -45,8 +44,8 @@ public class IssueOverviewScreen extends Screen{
 
     @Override
     public void setComponents() {
-        hSplitPanel.addComponent(treePanel);
-        hSplitPanel.addComponent(issueTabSheet);
+        hSplitPanel.setFirstComponent(treeLayout);
+        hSplitPanel.setSecondComponent(issueTabSheet);
         addComponent(hSplitPanel);
     }
 
