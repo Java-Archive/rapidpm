@@ -170,4 +170,12 @@ public class PlannedProject {
     public void setProjektName(String projektName) {
         this.projektName = projektName;
     }
+
+    public List<PlannedOffer> getPlannedOfferList() {
+        return plannedOfferList;
+    }
+
+    public void setPlannedOfferList(List<PlannedOffer> plannedOfferList) {
+        this.plannedOfferList = plannedOfferList;
+    }
 }

@@ -57,8 +57,6 @@ public class TimesCalculator {
     }
 
     private void calculatePlanningUnitsAndTotalsAbsolut() {
-        //final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
-        //final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
         final PlannedProject projekt = bean.getDaoFactoryBean().getPlannedProjectDAO().loadAllEntities().get(0);
         for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
             calculatePlanningUnits(planningUnit.getKindPlanningUnits());
@@ -96,7 +94,7 @@ public class TimesCalculator {
                     daysHoursMinutesItem.setHours(hours);
                     daysHoursMinutesItem.setMinutes(minutes);
                 }
-                correctDaysHoursMinutesItem(daysHoursMinutesItem);
+                DaysHoursMinutesItem.correctDaysHoursMinutesItem(daysHoursMinutesItem);
                 ressourceGroupDaysHoursMinutesItemMap.put(oldRessourceGroup, daysHoursMinutesItem);
             }
         }
@@ -121,18 +119,18 @@ public class TimesCalculator {
         }
     }
 
-    private void correctDaysHoursMinutesItem(final DaysHoursMinutesItem item) {
-        final int hours = item.getMinutes() / MINS_HOUR;
-        if (hours > 0) {
-            item.setHours(item.getHours() + hours);
-            item.setMinutes(item.getMinutes() - (hours * MINS_HOUR));
-        }
-        final int days = item.getHours() / HOURS_DAY;
-        if (days > 0) {
-            item.setDays(item.getDays() + days);
-            item.setHours(item.getHours() - (days * HOURS_DAY));
-        }
-    }
+//    private void correctDaysHoursMinutesItem(final DaysHoursMinutesItem item) {
+//        final int hours = item.getMinutes() / MINS_HOUR;
+//        if (hours > 0) {
+//            item.setHours(item.getHours() + hours);
+//            item.setMinutes(item.getMinutes() - (hours * MINS_HOUR));
+//        }
+//        final int days = item.getHours() / HOURS_DAY;
+//        if (days > 0) {
+//            item.setDays(item.getDays() + days);
+//            item.setHours(item.getHours() - (days * HOURS_DAY));
+//        }
+//    }
 
     public Map<RessourceGroup, Double> getRelativeWerte() {
         return relativeWerte;
@@ -149,7 +147,7 @@ public class TimesCalculator {
     public DaysHoursMinutesItem getGesamtSummeItem() {
         final DaysHoursMinutesItem item = new DaysHoursMinutesItem();
         item.setMinutes(gesamtSummeInMin);
-        correctDaysHoursMinutesItem(item);
+        DaysHoursMinutesItem.correctDaysHoursMinutesItem(item);
         return item;
     }
 

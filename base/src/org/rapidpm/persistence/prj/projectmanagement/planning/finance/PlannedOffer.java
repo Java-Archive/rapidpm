@@ -1,6 +1,7 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning.finance;
 
 import org.rapidpm.persistence.prj.stammdaten.person.Person;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -24,14 +25,20 @@ public class PlannedOffer {
     private Long id;
 
     @Basic private Date planningDate;
+    @Basic private String name;
+    @Basic private float percent;
+    @Basic private double eurosPerHour;
+    @Basic private boolean deleteable;
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private Person responsiblePerson;
 
-    @Basic private float riskPercentageAddition;           //Risikoaufschlag
-    @Basic private float verhandlungsPercentageAddition;   //VerhandlungsAufschlag
-    @Basic private float warrantyPercentageAddition;       //Gewaehrleistungsaufschlag
-    @Basic private float operativePercentageAddition;      //operatives Ergebnis geplant.
+    @Transient private DaysHoursMinutesItem daysHoursMinutesItem;
+    @Transient private float percentageAllocationWithDistributionSpread;
+    @Transient private float percentageAllocationWithoutDistributionSpread;
+    @Transient private double costs;
+
+
 
     public Long getId() {
         return id;
@@ -57,35 +64,67 @@ public class PlannedOffer {
         this.responsiblePerson = responsiblePerson;
     }
 
-    public float getRiskPercentageAddition() {
-        return riskPercentageAddition;
+    public DaysHoursMinutesItem getDaysHoursMinutesItem() {
+        return daysHoursMinutesItem;
     }
 
-    public void setRiskPercentageAddition(float riskPercentageAddition) {
-        this.riskPercentageAddition = riskPercentageAddition;
+    public void setDaysHoursMinutesItem(DaysHoursMinutesItem daysHoursMinutesItem) {
+        this.daysHoursMinutesItem = daysHoursMinutesItem;
     }
 
-    public float getVerhandlungsPercentageAddition() {
-        return verhandlungsPercentageAddition;
+    public double getEurosPerHour() {
+        return eurosPerHour;
     }
 
-    public void setVerhandlungsPercentageAddition(float verhandlungsPercentageAddition) {
-        this.verhandlungsPercentageAddition = verhandlungsPercentageAddition;
+    public void setEurosPerHour(double eurosPerHour) {
+        this.eurosPerHour = eurosPerHour;
     }
 
-    public float getWarrantyPercentageAddition() {
-        return warrantyPercentageAddition;
+    public float getPercentageAllocationWithDistributionSpread() {
+        return percentageAllocationWithDistributionSpread;
     }
 
-    public void setWarrantyPercentageAddition(float warrantyPercentageAddition) {
-        this.warrantyPercentageAddition = warrantyPercentageAddition;
+    public void setPercentageAllocationWithDistributionSpread(float percentageAllocationWithDistributionSpread) {
+        this.percentageAllocationWithDistributionSpread = percentageAllocationWithDistributionSpread;
     }
 
-    public float getOperativePercentageAddition() {
-        return operativePercentageAddition;
+    public float getPercentageAllocationWithoutDistributionSpread() {
+        return percentageAllocationWithoutDistributionSpread;
     }
 
-    public void setOperativePercentageAddition(float operativePercentageAddition) {
-        this.operativePercentageAddition = operativePercentageAddition;
+    public void setPercentageAllocationWithoutDistributionSpread(float percentageAllocationWithoutDistributionSpread) {
+        this.percentageAllocationWithoutDistributionSpread = percentageAllocationWithoutDistributionSpread;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public float getPercent() {
+        return percent;
+    }
+
+    public void setPercent(float percent) {
+        this.percent = percent;
+    }
+
+    public boolean isDeleteable() {
+        return deleteable;
+    }
+
+    public void setDeleteable(boolean deleteable) {
+        this.deleteable = deleteable;
+    }
+
+    public double getCosts() {
+        return costs;
+    }
+
+    public void setCosts(double costs) {
+        this.costs = costs;
     }
 }

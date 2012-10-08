@@ -1,10 +1,23 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.distribution;
 
 import com.vaadin.ui.*;
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
+import org.rapidpm.persistence.prj.projectmanagement.planning.finance.PlannedOffer;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.distribution.datenmodell.PlannedOfferContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.distribution.logic.PlannedOfferCalculator;
 
-public class VertriebScreen extends Screen {
+import javax.persistence.EntityManager;
+import java.util.List;
+
+public class DistributionScreen extends Screen {
     private TextField vertrieblerField;
     private TextField datumField;
     private TextField summeMitAufschlagField;
@@ -13,13 +26,27 @@ public class VertriebScreen extends Screen {
     private TextArea bemerkungenArea;
 
     private Table vertriebsTable;
+    private PlannedOfferContainer container;
 
     private FormLayout vertrieblerLayout = new FormLayout();
     private VerticalLayout tableLayout = new VerticalLayout();
     private FormLayout bottomLayout;
+    
+    private DistributionScreenBean bean;
+    private DaoFactoryBean baseDaoFactoryBean;
+    private PlannedOfferCalculator calculator;
 
-    public VertriebScreen(MainUI ui) {
+    public DistributionScreen(MainUI ui) {
         super(ui);
+        
+        bean = EJBFactory.getEjbInstance(DistributionScreenBean.class);
+        baseDaoFactoryBean = bean.getDaoFactoryBean();
+        refreshEntities(baseDaoFactoryBean);
+
+
+
+
+        
         erstelleVertrieblerLayout();
         erstelleStandardTableLayout(new Label("Uebersicht"), vertriebsTable, tableLayout);
         erstelleBottomLayout();
@@ -40,8 +67,10 @@ public class VertriebScreen extends Screen {
     private void erstelleBottomLayout() {
         bottomLayout = new FormLayout();
         summeMitAufschlagField = new TextField();
+        summeMitAufschlagField.setValue(String.valueOf(calculator.getSumWithDistributionSpread()));
         summeMitAufschlagField.setEnabled(false);
         summeOhneAufschlagField = new TextField();
+        summeOhneAufschlagField.setValue(String.valueOf(calculator.getSumWithoutDistributionSpread()));
         summeOhneAufschlagField.setEnabled(false);
         verhandelterPreisField = new TextField();
         bemerkungenArea = new TextArea();
@@ -56,7 +85,15 @@ public class VertriebScreen extends Screen {
     }
 
     private void erstelleStandardTableLayout(Label ueberschrift, Table tabelle, Layout layout) {
+        final PlannedProject project = ui.getCurrentProject();
+        calculator = new PlannedOfferCalculator(project, messagesBundle);
+        calculator.calculate();
+
         tabelle = new Table();
+        container = new PlannedOfferContainer();
+        container.fill(project.getPlannedOfferList());
+        tabelle.setContainerDataSource(container);
+
         layout.addComponent(ueberschrift);
         layout.addComponent(tabelle);
     }
@@ -74,6 +111,28 @@ public class VertriebScreen extends Screen {
         addComponent(vertrieblerLayout);
         addComponent(tableLayout);
         addComponent(bottomLayout);
+    }
+
+    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
+        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+            entityManager.refresh(plannedProject);
+        }
+        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+            entityManager.refresh(planningUnitElement);
+        }
+        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
+            entityManager.refresh(planningUnit);
+        }
+        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
+            entityManager.refresh(ressourceGroup);
+        }
+        for(final Benutzer benutzer : baseDaoFactoryBean.getBenutzerDAO().loadAllEntities()){
+            entityManager.refresh(benutzer);
+        }
+        for(final PlannedOffer plannedOffer : baseDaoFactoryBean.getPlannedOfferDAO().loadAllEntities()){
+            entityManager.refresh(plannedOffer);
+        }
     }
 
 
@@ -140,5 +199,7 @@ public class VertriebScreen extends Screen {
     public void setTableLayout(VerticalLayout tableLayout) {
         this.tableLayout = tableLayout;
     }
+    
+    
 
 }
