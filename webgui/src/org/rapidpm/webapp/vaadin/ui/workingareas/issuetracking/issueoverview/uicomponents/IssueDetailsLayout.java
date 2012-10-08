@@ -11,8 +11,11 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.IssuePrioritiesEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditableVLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DetailsCancelButtonClickListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DetailsSaveButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.DummyProjectData;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -188,6 +191,16 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         return componentsLayout;
     }
 
+    @Override
+    protected Button.ClickListener addSaveButtonClickListener() {
+        return new DetailsSaveButtonClickListener(this);
+    }
+
+    @Override
+    protected Button.ClickListener addCancelButtonClickListener() {
+        return new DetailsCancelButtonClickListener(this);   //To change body of overridden methods use File |
+        // Settings | File Templates.
+    }
 
     @Override
     public void doInternationalization() {

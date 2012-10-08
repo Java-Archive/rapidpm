@@ -3,8 +3,10 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.ui
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.AddButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeItemClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeContainerPlanningUnits;
+
 
 
 /**
@@ -38,6 +40,7 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         buttonLayout.setSpacing(true);
 
         addButton = new Button();
+        addButton.addClickListener(new AddButtonClickListener(screen, issueTree));
         buttonLayout.addComponent(addButton);
 
         deleteButton = new Button();

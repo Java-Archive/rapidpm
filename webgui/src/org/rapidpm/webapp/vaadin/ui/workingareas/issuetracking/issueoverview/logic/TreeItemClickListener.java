@@ -30,17 +30,6 @@ public class TreeItemClickListener implements ItemClickEvent.ItemClickListener {
     public void itemClick(ItemClickEvent event) {
         final Tree tree = (Tree) event.getSource();
         Object itemId = event.getItemId();
-        Item item;
-
-        //item = tree.getItem(itemId);
-
-//            List<IssueBase> issueList = new ArrayList<>();
-//            for (PlanningUnit planningUnit : DummyProjectData.getPlannungUnitGroups().get(0).getPlanningUnitList()) {
-//                issueList.add(planningUnit.getIssueBase());
-//            }
-
-
-        //issueList.get(3);
 
         PlanningUnit punit = (PlanningUnit)tree.getContainerProperty(itemId, TreeContainerPlanningUnits.PROPERTY_PLANNINGUNIT).getValue();
         issueTabSheet.getDetailsLayout().setPropertiesFromIssue(punit.getIssueBase());

@@ -1,10 +1,13 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents;
 
 
+import com.vaadin.event.LayoutEvents;
 import com.vaadin.ui.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditableVLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DetailsCancelButtonClickListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DetailsSaveButtonClickListener;
 
 import java.util.List;
 
@@ -56,6 +59,16 @@ public class IssueTableLayout extends ComponentEditableVLayout {
         return componentsLayout;
     }
 
+    @Override
+    protected Button.ClickListener addSaveButtonClickListener() {
+        return new StandardClickListener();
+    }
+
+    @Override
+    protected Button.ClickListener addCancelButtonClickListener() {
+        return new StandardClickListener();
+    }
+
     public void setPropertiesFromIssueList(List<IssueBase> issues) {
         issueTable.removeAllItems();
         int i = 0;
@@ -63,6 +76,14 @@ public class IssueTableLayout extends ComponentEditableVLayout {
             issueTable.addItem(new Object[] {"RPM-" + i, issue.getIssueStatus().getStatusName(),
                     issue.getIssuePriority().getPriorityName()}, i);
             i++;
+        }
+    }
+
+    private class StandardClickListener implements Button.ClickListener {
+
+        @Override
+        public void buttonClick(Button.ClickEvent event) {
+            setLayoutReadOnly(true);
         }
     }
 }

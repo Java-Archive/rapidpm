@@ -33,11 +33,11 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
 
         saveButton = new Button();
         saveButton.setCaption(messages.getString("save"));
-        saveButton.addClickListener(addSaveButtonClickListener(this));
+        saveButton.addClickListener(addSaveButtonClickListener());
 
         cancelButton = new Button();
         cancelButton.setCaption(messages.getString("cancel"));
-        cancelButton.addClickListener(addCancelButtonClickListener(this));
+        cancelButton.addClickListener(addCancelButtonClickListener());
         this.addLayoutClickListener(new LayoutMouseClickListener());
 
         buttonLayout.addComponent(saveButton);
@@ -50,13 +50,9 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
 
     protected abstract AbstractOrderedLayout buildForm();
 
-    protected Button.ClickListener addSaveButtonClickListener(ComponentEditableVLayout layout) {
-        return new CancelButtonStandardClickListener();
-    }
+    abstract protected Button.ClickListener addSaveButtonClickListener();
 
-    protected Button.ClickListener addCancelButtonClickListener(ComponentEditableVLayout layout) {
-        return new CancelButtonStandardClickListener();
-    }
+    abstract protected Button.ClickListener addCancelButtonClickListener();
 
     public void setLayoutReadOnly(boolean readOnly) {
         iterateLayoutReadOnly(readOnly, componentsLayout);
@@ -80,15 +76,6 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
         @Override
         public void layoutClick(LayoutEvents.LayoutClickEvent event) {
             setLayoutReadOnly(false);
-        }
-    }
-
-
-    private class CancelButtonStandardClickListener implements Button.ClickListener {
-
-        @Override
-        public void buttonClick(Button.ClickEvent event) {
-            setLayoutReadOnly(true);
         }
     }
 
