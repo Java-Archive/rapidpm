@@ -49,7 +49,7 @@ public class EntityTestSuite {
 
     public void testEntityFactory(final EntityFactory<?> entityFactory) {
         if (logger.isDebugEnabled()) {
-            logger.debug("==== save ====");
+            logger.debug("==== saveOrUpdate ====");
         }
         for (int i = 0; i < TEST_COUNT; i++) {
             final Object obj = entityFactory.createRandomEntity();
@@ -97,7 +97,7 @@ public class EntityTestSuite {
             transaction.commit();
             cleanStack.push(new ClassId(obj.getClass(), getOIDFromEntity(obj)));
             if (logger.isDebugEnabled()) {
-                logger.debug("save: " + obj);
+                logger.debug("saveOrUpdate: " + obj);
             }
         } catch (RollbackException e) {
             errorList.add(new ErrorObject(obj, e));

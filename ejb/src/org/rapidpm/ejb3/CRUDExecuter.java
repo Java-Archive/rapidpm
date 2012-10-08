@@ -89,7 +89,7 @@ public abstract class CRUDExecuter<FT extends BaseFlatEntity, T, RT extends Base
 
             final DaoFactory daoFactoryFactoryBean = getDaoFactoryBean();
             daoFactoryFactoryBean.saveOrUpdate(entity);
-            final LoggingEventEntry eventEntry = getLogger().createLoggingEventEntry(LogLevelEnum.LOGIKINFO, "saveOrUpdateTX", sessionid, "save OK");
+            final LoggingEventEntry eventEntry = getLogger().createLoggingEventEntry(LogLevelEnum.LOGIKINFO, "saveOrUpdateTX", sessionid, "saveOrUpdate OK");
             result.getLoggingEventEntries().add(eventEntry);
             result.setValid(true);
 

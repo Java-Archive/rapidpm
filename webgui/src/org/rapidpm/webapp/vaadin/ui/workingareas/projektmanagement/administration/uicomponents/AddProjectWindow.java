@@ -77,7 +77,7 @@ public class AddProjectWindow extends Window{
 
     private void doInternationalization() {
         this.setCaption(messages.getString("pm_addproject"));
-        saveButton.setCaption(messages.getString("save"));
+        saveButton.setCaption(messages.getString("saveOrUpdate"));
         cancelButton.setCaption(messages.getString("cancel"));
     }
 

@@ -1,7 +1,11 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit;
 
 public enum EditModes {
-    TABLEEDIT,
-    UNDEFINED,
-    ROWEDIT;
+    TABLEEDIT("stdsatz_tablemode"),
+    UNDEFINED(""),
+    ROWEDIT("stdsatz_rowmode");
+
+    private EditModes(String s){
+
+    }
 }

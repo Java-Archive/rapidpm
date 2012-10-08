@@ -1,11 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell;
 
-import com.vaadin.data.Item;
 import com.vaadin.data.util.HierarchicalContainer;
-
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
-
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 
 
 /**

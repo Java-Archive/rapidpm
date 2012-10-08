@@ -1,13 +1,9 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic;
 
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Layout;
 import com.vaadin.ui.Table;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.datenmodell.RessourceGroupContainer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tablelisteners.StundensaetzeItemClickListener;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.ItemClickDependentComponent;
 
 import java.util.List;
 import java.util.Locale;
@@ -19,10 +15,7 @@ public class StundensaetzeTableCreator {
     private Table tabelle;
 
     public StundensaetzeTableCreator(
-            final StundensaetzeScreen screen, final List<RessourceGroup> containerBeans,
-            final List<ItemClickDependentComponent> itemClickdependentComponents, final Button deleteButton,
-            final Layout upperFormLayout, final Layout lowerFormLayout, final Layout formLayout,
-            final Button saveButton) {
+            final StundensaetzeScreen screen, final List<RessourceGroup> containerBeans) {
         final RessourceGroupContainer dataSource = new RessourceGroupContainer();
         final ResourceBundle messages = screen.getMessagesBundle();
         dataSource.fill(containerBeans);
@@ -35,9 +28,7 @@ public class StundensaetzeTableCreator {
         tabelle.setImmediate(true);
         tabelle.setSelectable(true);
         tabelle.setNullSelectionAllowed(false);
-        tabelle.addItemClickListener(new StundensaetzeItemClickListener(screen,
-                itemClickdependentComponents, deleteButton, upperFormLayout, lowerFormLayout, formLayout,
-                saveButton, tabelle));
+
         tabelle.setReadOnly(false);
 
         tabelle.setContainerDataSource(dataSource);

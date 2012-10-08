@@ -1,5 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Marco

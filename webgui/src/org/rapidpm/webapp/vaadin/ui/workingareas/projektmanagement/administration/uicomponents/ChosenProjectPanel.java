@@ -65,7 +65,7 @@ public class ChosenProjectPanel extends EditablePanel {
     @Override
     public void doInternationalization() {
         setCaption(messagesBundle.getString("pm_editproject"));
-        saveButton.setCaption(messagesBundle.getString("save"));
+        saveButton.setCaption(messagesBundle.getString("saveOrUpdate"));
         cancelButton.setCaption(messagesBundle.getString("cancel"));
     }
 

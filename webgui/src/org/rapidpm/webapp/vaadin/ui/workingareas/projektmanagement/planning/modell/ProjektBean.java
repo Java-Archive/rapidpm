@@ -5,13 +5,12 @@ import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.LoginBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitElement;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +32,8 @@ public class ProjektBean {
 
     private static final int MAXDAYS = 10;
 
+    private static long elementId;
+
     private List<Projekt> projekte = new ArrayList<>();
     private Integer currentProjectIndex = 0;
 
@@ -41,6 +42,7 @@ public class ProjektBean {
     private final String[] issuePriorities = new String[]{"Blocker", "Major", "Minor", "Trivial", "Critical"};
 
     public ProjektBean(Integer projectCount) {
+        elementId = 0L;
         LoginBean loginBean = EJBFactory.getEjbInstance(LoginBean.class);
         final DaoFactoryBean baseDaoFactoryBean = loginBean.getDaoFactoryBean();
         final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
@@ -55,55 +57,54 @@ public class ProjektBean {
         Projekt projekt = new Projekt();
         projekt.setProjektId(projektId);
         projekt.setProjektName(projektName);
-        projekt.setRessourceGroups(ressourceGroups);
 
-        final ArrayList<PlanningUnitGroup> planningUnitGroups = new ArrayList<>();
-        final PlanningUnitGroup vorbereitungen = new PlanningUnitGroup(ressourceGroups);
-        final PlanningUnitGroup projektworkshop = new PlanningUnitGroup(ressourceGroups);
-        final PlanningUnitGroup angebotserstellung = new PlanningUnitGroup(ressourceGroups);
-        final PlanningUnitGroup realisierungMandantengruppe = new PlanningUnitGroup(ressourceGroups);
-        final PlanningUnitGroup realisierungDatenKollektieren = new PlanningUnitGroup(ressourceGroups);
-        final PlanningUnitGroup vorbereitenDesReporting = new PlanningUnitGroup(ressourceGroups);
-        final PlanningUnitGroup projektmanagement = new PlanningUnitGroup(ressourceGroups);
-        final PlanningUnitGroup kommunikation = new PlanningUnitGroup(ressourceGroups);
-        final PlanningUnitGroup abschlussarbeiten = new PlanningUnitGroup(ressourceGroups);
-        final PlanningUnitGroup schulungen = new PlanningUnitGroup(ressourceGroups);
-        vorbereitungen.setPlanningUnitGroupName("Vorbereitungen");
+        final ArrayList<PlanningUnit> planningUnits = new ArrayList<>();
+        final PlanningUnit vorbereitungen = new PlanningUnit();
+        final PlanningUnit projektworkshop = new PlanningUnit();
+        final PlanningUnit angebotserstellung = new PlanningUnit();
+        final PlanningUnit realisierungMandantengruppe = new PlanningUnit();
+        final PlanningUnit realisierungDatenKollektieren = new PlanningUnit();
+        final PlanningUnit vorbereitenDesReporting = new PlanningUnit();
+        final PlanningUnit projektmanagement = new PlanningUnit();
+        final PlanningUnit kommunikation = new PlanningUnit();
+        final PlanningUnit abschlussarbeiten = new PlanningUnit();
+        final PlanningUnit schulungen = new PlanningUnit();
+        vorbereitungen.setPlanningUnitName("Vorbereitungen");
         vorbereitungen.setIssueBase(createIssueBase());
-        projektworkshop.setPlanningUnitGroupName("projektworkshop");
+        projektworkshop.setPlanningUnitName("projektworkshop");
         projektworkshop.setIssueBase(createIssueBase());
-        angebotserstellung.setPlanningUnitGroupName("angebotserstellung");
+        angebotserstellung.setPlanningUnitName("angebotserstellung");
         angebotserstellung.setIssueBase(createIssueBase());
-        realisierungMandantengruppe.setPlanningUnitGroupName("Realisierung Mandantengruppe");
+        realisierungMandantengruppe.setPlanningUnitName("Realisierung Mandantengruppe");
         realisierungMandantengruppe.setIssueBase(createIssueBase());
-        realisierungDatenKollektieren.setPlanningUnitGroupName("Realisierung / Daten kollektieren");
+        realisierungDatenKollektieren.setPlanningUnitName("Realisierung / Daten kollektieren");
         realisierungDatenKollektieren.setIssueBase(createIssueBase());
-        vorbereitenDesReporting.setPlanningUnitGroupName("Vorbereiten des Reporting");
+        vorbereitenDesReporting.setPlanningUnitName("Vorbereiten des Reporting");
         vorbereitenDesReporting.setIssueBase(createIssueBase());
-        projektmanagement.setPlanningUnitGroupName("Projektmanagement");
+        projektmanagement.setPlanningUnitName("Projektmanagement");
         projektmanagement.setIssueBase(createIssueBase());
-        kommunikation.setPlanningUnitGroupName("Kommunikation");
+        kommunikation.setPlanningUnitName("Kommunikation");
         kommunikation.setIssueBase(createIssueBase());
-        abschlussarbeiten.setPlanningUnitGroupName("abschlussarbeiten");
+        abschlussarbeiten.setPlanningUnitName("abschlussarbeiten");
         abschlussarbeiten.setIssueBase(createIssueBase());
-        schulungen.setPlanningUnitGroupName("schulungen");
+        schulungen.setPlanningUnitName("schulungen");
         schulungen.setIssueBase(createIssueBase());
 
-        planningUnitGroups.add(vorbereitungen);
-        planningUnitGroups.add(projektworkshop);
-        planningUnitGroups.add(angebotserstellung);
-        planningUnitGroups.add(realisierungMandantengruppe);
-        planningUnitGroups.add(realisierungDatenKollektieren);
-        planningUnitGroups.add(vorbereitenDesReporting);
-        planningUnitGroups.add(projektmanagement);
-        planningUnitGroups.add(kommunikation);
-        planningUnitGroups.add(abschlussarbeiten);
-        planningUnitGroups.add(schulungen);
+        planningUnits.add(vorbereitungen);
+        planningUnits.add(projektworkshop);
+        planningUnits.add(angebotserstellung);
+        planningUnits.add(realisierungMandantengruppe);
+        planningUnits.add(realisierungDatenKollektieren);
+        planningUnits.add(vorbereitenDesReporting);
+        planningUnits.add(projektmanagement);
+        planningUnits.add(kommunikation);
+        planningUnits.add(abschlussarbeiten);
+        planningUnits.add(schulungen);
 
-        for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
-            planningUnitGroup.setPlanningUnitList(new ArrayList<PlanningUnit>());
+        for (final PlanningUnit planningUnit : planningUnits) {
+            planningUnit.setKindPlanningUnits(new ArrayList<PlanningUnit>());
         }
-        //--PlanningUnitGroup: Vorbereitungen mit PlanningUnits füllen (welche mit PlanningUnitElements gefüllt werden)
+        //--PlanningUnit: Vorbereitungen mit PlanningUnits füllen (welche mit PlanningUnitElements gefüllt werden)
         final ArrayList<PlanningUnit> planningUnitsVorbereitungen = new ArrayList<>();
 
         String[] planningUnitsArray = {"Erstkontakt vor Ort", "Gesprächsvorbereitung", "Präsentation", "Gesprächsbestätigung"};
@@ -112,13 +113,14 @@ public class ProjektBean {
             planningUnit.setPlanningUnitName(planningUnitName);
             planningUnit.setIssueBase(createIssueBase());
             final ArrayList<PlanningUnitElement> planningUnitElements = new ArrayList<>();
-            for (final RessourceGroup oldRessourceGroup : ressourceGroups)          //für jede zelle
+            for (final RessourceGroup ressourceGroup : ressourceGroups)          //für jede zelle
             {
                 final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
                 planningUnitElement.setPlannedDays((int) (Math.random() * MAXDAYS));
                 planningUnitElement.setPlannedHours((int) (Math.random() * HOURS_DAY));
                 planningUnitElement.setPlannedMinutes((int) (Math.random() * MINS_HOUR));
-                planningUnitElement.setRessourceGroup(oldRessourceGroup);
+                planningUnitElement.setRessourceGroup(ressourceGroup);
+                planningUnitElement.setId(elementId++);
                 planningUnitElements.add(planningUnitElement);
             }
             planningUnit.setPlanningUnitElementList(planningUnitElements);
@@ -132,13 +134,14 @@ public class ProjektBean {
                 childPlanningUnit1.setPlanningUnitName("Person A kontaktieren");
                 childPlanningUnit1.setIssueBase(createIssueBase());
                 final ArrayList<PlanningUnitElement> planningUnitElements1 = new ArrayList<>();
-                for (final RessourceGroup oldRessourceGroup : ressourceGroups)          //für jede zelle
+                for (final RessourceGroup ressourceGroup : ressourceGroups)          //für jede zelle
                 {
                     PlanningUnitElement planningUnitElement = new PlanningUnitElement();
                     planningUnitElement.setPlannedDays((int) (Math.random() * MAXDAYS));
                     planningUnitElement.setPlannedHours((int) (Math.random() * HOURS_DAY));
                     planningUnitElement.setPlannedMinutes((int) (Math.random() * MINS_HOUR));
-                    planningUnitElement.setRessourceGroup(oldRessourceGroup);
+                    planningUnitElement.setRessourceGroup(ressourceGroup);
+                    planningUnitElement.setId(elementId++);
                     planningUnitElements1.add(planningUnitElement);
                 }
                 childPlanningUnit1.setPlanningUnitElementList(planningUnitElements1);
@@ -147,13 +150,14 @@ public class ProjektBean {
                 childPlanningUnit2.setPlanningUnitName("Person B kontaktieren");
                 childPlanningUnit2.setIssueBase(createIssueBase());
                 final ArrayList<PlanningUnitElement> planningUnitElements2 = new ArrayList<>();
-                for (final RessourceGroup oldRessourceGroup : ressourceGroups)          //für jede zelle
+                for (final RessourceGroup ressourceGroup : ressourceGroups)          //für jede zelle
                 {
                     PlanningUnitElement planningUnitElement = new PlanningUnitElement();
                     planningUnitElement.setPlannedDays((int) (Math.random() * MAXDAYS));
                     planningUnitElement.setPlannedHours((int) (Math.random() * HOURS_DAY));
                     planningUnitElement.setPlannedMinutes((int) (Math.random() * MINS_HOUR));
-                    planningUnitElement.setRessourceGroup(oldRessourceGroup);
+                    planningUnitElement.setRessourceGroup(ressourceGroup);
+                    planningUnitElement.setId(elementId++);
                     planningUnitElements2.add(planningUnitElement);
                 }
                 childPlanningUnit2.setPlanningUnitElementList(planningUnitElements2);
@@ -163,8 +167,8 @@ public class ProjektBean {
 
             }
         }
-        vorbereitungen.setPlanningUnitList(planningUnitsVorbereitungen);
-        projekt.setPlanningUnitGroups(planningUnitGroups);
+        vorbereitungen.setKindPlanningUnits(planningUnitsVorbereitungen);
+        projekt.setPlanningUnits(planningUnits);
 
         projekte.add(projekt);
 

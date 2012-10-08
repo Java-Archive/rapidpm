@@ -1,8 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell;
 
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,14 +15,13 @@ import java.util.List;
 public class Projekt {
     private long projektId;
     private String projektName;
-    private List<PlanningUnitGroup> planningUnitGroups = new ArrayList<>();
-    private List<RessourceGroup> ressourceGroups;
+    private List<PlanningUnit> planningUnits = new ArrayList<>();
 
-    public PlanningUnitGroup getPlanningUnitGroup(final String itemId) {
-        PlanningUnitGroup result = null;
-        for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
-            if (planningUnitGroup.getPlanningUnitGroupName().equals(itemId)) {
-                result = planningUnitGroup;
+    public PlanningUnit getPlanningUnit(final String itemId) {
+        PlanningUnit result = null;
+        for (final PlanningUnit planningUnit : planningUnits) {
+            if (planningUnit.getPlanningUnitName().equals(itemId)) {
+                result = planningUnit;
             }
         }
         return result;
@@ -61,27 +58,19 @@ public class Projekt {
         this.projektName = projektName;
     }
 
-    public List<PlanningUnitGroup> getPlanningUnitGroups() {
-        return planningUnitGroups;
+    public List<PlanningUnit> getPlanningUnits() {
+        return planningUnits;
     }
 
-    public List<String> getPlanningUnitGroupsNames() {
+    public List<String> getPlanningUnitsNames() {
         final List<String> result = new ArrayList<>();
-        for (final PlanningUnitGroup planningUnitGroup : planningUnitGroups) {
-            result.add(planningUnitGroup.getPlanningUnitGroupName());
+        for (final PlanningUnit planningUnit : planningUnits) {
+            result.add(planningUnit.getPlanningUnitName());
         }
         return result;
     }
 
-    public void setPlanningUnitGroups(final ArrayList<PlanningUnitGroup> planningUnitGroups) {
-        this.planningUnitGroups = planningUnitGroups;
-    }
-
-    public List<RessourceGroup> getRessourceGroups() {
-        return ressourceGroups;
-    }
-
-    public void setRessourceGroups(List<RessourceGroup> ressourceGroups) {
-        this.ressourceGroups = ressourceGroups;
+    public void setPlanningUnits(final ArrayList<PlanningUnit> planningUnits) {
+        this.planningUnits = planningUnits;
     }
 }

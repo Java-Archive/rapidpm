@@ -125,7 +125,7 @@ public class RegistrationStatusDAOBean {
                                             @WebParam(name = "entity", mode = WebParam.Mode.IN) final FlatRegistrationsStatus entity) {
         //        final RegistrationStatusResult result = new RegistrationStatusResult();
         //        daoFactoryBean.saveOrUpdate(entity);
-        //        final LoggingEventEntry eventEntry = logEventEntryWriterBean.createLoggingEventEntry(LogLevelEnum.LOGIKINFO, "saveOrUpdateTX", sessionid, "save OK");
+        //        final LoggingEventEntry eventEntry = logEventEntryWriterBean.createLoggingEventEntry(LogLevelEnum.LOGIKINFO, "saveOrUpdateTX", sessionid, "saveOrUpdate OK");
         //        result.getLoggingEventEntries().add(eventEntry);
         //        return result;
         return executer.saveOrUpdate(sessionid, uid, entity);

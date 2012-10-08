@@ -1,6 +1,8 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 
 import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
@@ -48,7 +50,7 @@ public class TimesCalculator {
             relativeWerte.put(spalte, 0.0);
         }
 
-        calculatePlanningUnitGroupsAndTotalsAbsolut();
+        calculatePlanningUnitsAndTotalsAbsolut();
         calculateTotalsRelative();
         calculateMannTage();
     }
@@ -57,11 +59,11 @@ public class TimesCalculator {
         mannTageExakt = gesamtSummeInMin / MINS_HOUR.doubleValue() / WORKINGHOURS_DAY.doubleValue();
     }
 
-    private void calculatePlanningUnitGroupsAndTotalsAbsolut() {
+    private void calculatePlanningUnitsAndTotalsAbsolut() {
         final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
         final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
-        for (final PlanningUnitGroup planningUnitGroup : projekt.getPlanningUnitGroups()) {
-            calculatePlanningUnits(planningUnitGroup.getPlanningUnitList());
+        for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
+            calculatePlanningUnits(planningUnit.getKindPlanningUnits());
         }
     }
 

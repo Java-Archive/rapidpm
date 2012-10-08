@@ -49,9 +49,12 @@ public abstract class BaseUI extends UI {
     private final VerticalLayout hlWorkingAreaContainer = new VerticalLayout();
 
     protected Benutzer currentUser;
-    protected ProjektBean planningUnitsBean;
     protected Locale locale = new Locale("de","DE");
     protected ResourceBundle messages;
+
+
+
+    protected ProjektBean projektBean = new ProjektBean(5);
 
 
     @Override
@@ -92,7 +95,6 @@ public abstract class BaseUI extends UI {
                 currentUser = user;
                 //getSession().setUser(currentUser);
                 getSession().setAttribute(Benutzer.class, currentUser);
-                planningUnitsBean = new ProjektBean(5);
                 loadProtectedRessources();
                 return;
             }
@@ -206,7 +208,7 @@ public abstract class BaseUI extends UI {
         initMenuBarIntern(menubar);
         hlHeaderBottomLine.addComponent(menubar);
 
-        setWorkingArea(new ProjektplanungScreen(BaseUI.this));
+        //setWorkingArea(new ProjektplanungScreen(BaseUI.this));
         addComponent(mainlayout);
     }
 
@@ -308,7 +310,11 @@ public abstract class BaseUI extends UI {
         return messages;
     }
 
-    public ProjektBean getPlanningUnitsBean() {
-        return planningUnitsBean;
+    public ProjektBean getProjektBean() {
+        return projektBean;
+    }
+
+    public void setProjektBean(ProjektBean projektBean) {
+        this.projektBean = projektBean;
     }
 }

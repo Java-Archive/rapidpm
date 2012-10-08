@@ -3,9 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.mo
 import com.vaadin.data.util.BeanItemContainer;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnit;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.PlanningUnitGroup;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
@@ -26,16 +24,7 @@ public class DummyProjectData {
 
 
     public static List<PlanningUnit> getPlanningUnitList() {
-        List<PlanningUnit> planningUnitList = new ArrayList<>();
-        PlanningUnit planningUnit;
-        for (PlanningUnitGroup pug : project.getPlanningUnitGroups()) {
-            planningUnit = new PlanningUnit();
-            planningUnit.setPlanningUnitName(pug.getPlanningUnitGroupName());
-            planningUnit.setIssueBase(pug.getIssueBase());
-            planningUnit.setKindPlanningUnits(pug.getPlanningUnitList());
-            planningUnitList.add(planningUnit);
-        }
-        return planningUnitList;
+        return project.getPlanningUnits();
     }
 
     public static List<String> getTypeList() {
