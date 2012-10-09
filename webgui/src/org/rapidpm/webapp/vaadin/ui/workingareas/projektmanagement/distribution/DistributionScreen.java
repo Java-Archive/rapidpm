@@ -1,5 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.distribution;
 
+import com.vaadin.data.util.converter.StringToNumberConverter;
 import com.vaadin.ui.*;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
@@ -13,9 +14,17 @@ import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.distribution.datenmodell.PlannedOfferContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.distribution.logic.PlannedOfferCalculator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.distribution.logic.PlannedOfferConverterAdder;
 
 import javax.persistence.EntityManager;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
+import static org.rapidpm.Constants.DECIMAL_FORMAT;
+import static org.rapidpm.Constants.EUR;
 
 public class DistributionScreen extends Screen {
     private TextField vertrieblerField;
@@ -43,9 +52,6 @@ public class DistributionScreen extends Screen {
         baseDaoFactoryBean = bean.getDaoFactoryBean();
         refreshEntities(baseDaoFactoryBean);
 
-
-
-
         
         erstelleVertrieblerLayout();
         erstelleStandardTableLayout(new Label("Uebersicht"), vertriebsTable, tableLayout);
@@ -65,13 +71,14 @@ public class DistributionScreen extends Screen {
     }
 
     private void erstelleBottomLayout() {
+        final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
         bottomLayout = new FormLayout();
         summeMitAufschlagField = new TextField();
-        summeMitAufschlagField.setValue(String.valueOf(calculator.getSumWithDistributionSpread()));
-        summeMitAufschlagField.setEnabled(false);
+        summeMitAufschlagField.setValue(format.format(calculator.getSumWithDistributionSpread()) + EUR);
+        summeMitAufschlagField.setReadOnly(true);
         summeOhneAufschlagField = new TextField();
-        summeOhneAufschlagField.setValue(String.valueOf(calculator.getSumWithoutDistributionSpread()));
-        summeOhneAufschlagField.setEnabled(false);
+        summeOhneAufschlagField.setValue(format.format(calculator.getSumWithoutDistributionSpread()) + EUR);
+        summeOhneAufschlagField.setReadOnly(true);
         verhandelterPreisField = new TextField();
         bemerkungenArea = new TextArea();
         bemerkungenArea.setWidth("500px");
@@ -93,6 +100,32 @@ public class DistributionScreen extends Screen {
         container = new PlannedOfferContainer();
         container.fill(project.getPlannedOfferList());
         tabelle.setContainerDataSource(container);
+
+        final List<String> visibleColumns = new ArrayList<>();
+        visibleColumns.add(PlannedOffer.NAME);
+        visibleColumns.add(PlannedOffer.PERCENT);
+        visibleColumns.add(PlannedOffer.DAYS_HOURS_MINS);
+        visibleColumns.add(PlannedOffer.EUROS_PER_HOUR);
+        visibleColumns.add(PlannedOffer.COSTS);
+        visibleColumns.add(PlannedOffer.PERCENT_WITH);
+        visibleColumns.add(PlannedOffer.PERCENT_WITHOUT);
+
+        final List<String> columnOrder = new ArrayList<>();
+        columnOrder.add(messagesBundle.getString("distri_name"));
+        columnOrder.add(messagesBundle.getString("distri_percent"));
+        columnOrder.add(messagesBundle.getString("distri_dhhmm"));
+        columnOrder.add(messagesBundle.getString("distri_eurosperhour"));
+        columnOrder.add(messagesBundle.getString("distri_sum"));
+        columnOrder.add(messagesBundle.getString("distri_percentwith"));
+        columnOrder.add(messagesBundle.getString("distri_percentwithout"));
+
+        tabelle.setVisibleColumns(visibleColumns.toArray());
+        final String[] columnHeaders = new String[columnOrder.size()];
+        columnOrder.toArray(columnHeaders);
+        tabelle.setColumnHeaders(columnHeaders);
+
+        final PlannedOfferConverterAdder converterAdder = new PlannedOfferConverterAdder();
+        converterAdder.addConvertersTo(tabelle);
 
         layout.addComponent(ueberschrift);
         layout.addComponent(tabelle);

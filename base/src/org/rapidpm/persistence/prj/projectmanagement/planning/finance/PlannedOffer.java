@@ -17,6 +17,17 @@ import java.util.Date;
 @Entity
 public class PlannedOffer {
 
+    public static final String DATE = "planningDate";
+    public static final String NAME = "name";
+    public static final String PERCENT = "percent";
+    public static final String EUROS_PER_HOUR = "eurosPerHour";
+    public static final String DELETEABLE = "deleteable";
+    public static final String RESPONSIBLE ="responsiblePerson";
+    public static final String DAYS_HOURS_MINS = "daysHoursMinutesItem";
+    public static final String PERCENT_WITH = "percentageAllocationWithDistributionSpread";
+    public static final String PERCENT_WITHOUT = "percentageAllocationWithoutDistributionSpread";
+    public static final String COSTS = "costs";
+
     @Id
     @TableGenerator(name = "PKGenPlannedOffer", table = "pk_gen", pkColumnName = "gen_key",
             pkColumnValue = "PlannedOffer_id", valueColumnName = "gen_value", allocationSize = 1)

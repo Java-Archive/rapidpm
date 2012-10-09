@@ -7,10 +7,11 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Alexander Vos
- * Date: 24.05.12
- * Time: 11:00
+ * RapidPM - www.rapidpm.org
+ * User: Marco
+ * Date: 08.10.12
+ * Time: 10:45
+ * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 @Stateless(name = "PlannedOfferCalculatorEJB")
 @TransactionManagement
