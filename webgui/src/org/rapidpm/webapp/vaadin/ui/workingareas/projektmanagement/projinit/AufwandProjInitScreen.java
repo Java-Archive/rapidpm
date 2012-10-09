@@ -128,7 +128,9 @@ public class AufwandProjInitScreen extends Screen {
         summeField.setValue(timesCalculator.getGesamtSummeItem().toString());
         manntageField.setReadOnly(true);
         summeField.setReadOnly(true);
-        final PlannedProject projekt = getUi().getCurrentProject();
+        final PlannedProject projectFromSession = ui.getCurrentProject();
+        final PlannedProject projekt = baseDaoFactoryBean.getPlannedProjectDAO().findByID
+                (projectFromSession.getId());
         projektField.setValue(projekt.getProjektName());
     }
 

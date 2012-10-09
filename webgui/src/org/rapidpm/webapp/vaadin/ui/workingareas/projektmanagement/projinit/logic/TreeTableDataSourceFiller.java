@@ -65,8 +65,10 @@ public class TreeTableDataSourceFiller {
     }
 
     private void computePlanningUnitsAndTotalsAbsolut() {
-        final PlannedProject projekt = screen.getUi().getCurrentProject();
-        final List<PlanningUnit> planningUnits = projekt.getPlanningUnits();
+        final PlannedProject projectFromSession = screen.getUi().getCurrentProject();
+        final PlannedProject projectFromDB = bean.getDaoFactoryBean().getPlannedProjectDAO().findByID
+                (projectFromSession.getId());
+        final List<PlanningUnit> planningUnits = projectFromDB.getPlanningUnits();
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);

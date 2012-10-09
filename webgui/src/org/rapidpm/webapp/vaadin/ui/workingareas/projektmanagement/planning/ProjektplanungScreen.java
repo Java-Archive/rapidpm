@@ -53,7 +53,9 @@ public class ProjektplanungScreen extends Screen {
         projektplanungScreenBean = EJBFactory.getEjbInstance(ProjektPlanungScreenBean.class);
         baseDaoFactoryBean = projektplanungScreenBean.getDaoFactoryBean();
         refreshEntities(baseDaoFactoryBean);
-        final PlannedProject plannedProject = ui.getCurrentProject();
+        final PlannedProject projectFromSession = ui.getCurrentProject();
+        final PlannedProject projectFromDB = baseDaoFactoryBean.getPlannedProjectDAO().findByID
+                (projectFromSession.getId());
 
         final PlanningCalculator calculator = new PlanningCalculator(messagesBundle);
         calculator.calculate();
@@ -84,9 +86,9 @@ public class ProjektplanungScreen extends Screen {
         splitPanel.addComponent(mainLayout);
 
 
-        final List<PlanningUnit> planningUnitList = plannedProject.getPlanningUnits();
+        final List<PlanningUnit> planningUnitList = projectFromDB.getPlanningUnits();
 
-        planningUnitPanel.setCaption(plannedProject.getProjektName());
+        planningUnitPanel.setCaption(projectFromDB.getProjektName());
         projektSelect = new ListSelect(null, new BeanItemContainer<>(PlanningUnit.class,planningUnitList));
 
         projektSelect.setNullSelectionAllowed(false);
@@ -101,7 +103,7 @@ public class ProjektplanungScreen extends Screen {
                 treePanel.getContent().removeAllComponents();
                 detailPanel.getContent().removeAllComponents();
                 treePanel.setCaption(value.getPlanningUnitName());
-                fillTreePanel(value, plannedProject);
+                fillTreePanel(value, projectFromDB);
                 treePanelTree.select(value);
             }
 
