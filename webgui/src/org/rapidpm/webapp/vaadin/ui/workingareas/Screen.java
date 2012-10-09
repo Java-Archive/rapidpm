@@ -17,7 +17,7 @@ public abstract class Screen extends VerticalLayout implements Internationalizat
     protected ResourceBundle messagesBundle;
     protected MainUI ui;
 
-    public Screen(MainUI ui){
+    public Screen(final MainUI ui){
         this.messagesBundle = ui.getResourceBundle();
         this.ui = ui;
     }

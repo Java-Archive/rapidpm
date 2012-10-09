@@ -58,8 +58,6 @@ public class TreeTableDataSourceFiller {
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
             dataSource.addContainerProperty(ressourceGroup.getName(), String.class, "");
         }
-
-
     }
 
     public void fill() {
@@ -67,8 +65,6 @@ public class TreeTableDataSourceFiller {
     }
 
     private void computePlanningUnitsAndTotalsAbsolut() {
-        //final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
-        //final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
         final PlannedProject projekt = screen.getUi().getCurrentProject();
         final List<PlanningUnit> planningUnits = projekt.getPlanningUnits();
         for (final PlanningUnit planningUnit : planningUnits) {
@@ -162,7 +158,7 @@ public class TreeTableDataSourceFiller {
         }
     }
 
-    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);

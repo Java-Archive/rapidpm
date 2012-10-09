@@ -57,8 +57,6 @@ public class TimesCalculator {
     }
 
     private void calculatePlanningUnitsAndTotalsAbsolut() {
-        //final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
-        //final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
         final PlannedProject projekt = bean.getDaoFactoryBean().getPlannedProjectDAO().loadAllEntities().get(0);
         for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
             calculatePlanningUnits(planningUnit.getKindPlanningUnits());
@@ -162,7 +160,7 @@ public class TimesCalculator {
         return format.format(mannTageExakt);
     }
 
-    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);

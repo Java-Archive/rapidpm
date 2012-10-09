@@ -39,7 +39,7 @@ public class ProjectsPanel extends Panel implements Internationalizationable, Co
 
     private HorizontalLayout buttonLayout = new HorizontalLayout();
 
-    public ProjectsPanel(MainUI theUi, ResourceBundle messages, ChosenProjectPanel chosenProjectPanel){
+    public ProjectsPanel(final MainUI theUi, final ResourceBundle messages, final ChosenProjectPanel chosenProjectPanel){
         super(messages.getString("pm_projects"));
         this.messagesBundle = messages;
         this.formPanel = chosenProjectPanel;
@@ -80,7 +80,7 @@ public class ProjectsPanel extends Panel implements Internationalizationable, Co
         setComponents();
     }
 
-    private void fillListSelect(List<PlannedProject> projects) {
+    private void fillListSelect(final List<PlannedProject> projects) {
         projectSelect = new ListSelect("Projekte", new BeanItemContainer<>(PlannedProject.class,
                 projects));
         projectSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
@@ -108,7 +108,7 @@ public class ProjectsPanel extends Panel implements Internationalizationable, Co
         return deleteProjectButton;
     }
 
-    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);

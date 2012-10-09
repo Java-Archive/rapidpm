@@ -18,7 +18,7 @@ public class ExpandTableCheckBox extends CheckBox implements Property.ValueChang
     private MyTreeTable treeTable;
     private HierarchicalContainer dataSource;
 
-    public ExpandTableCheckBox(MyTreeTable treeTable, HierarchicalContainer dataSource){
+    public ExpandTableCheckBox(final MyTreeTable treeTable, final HierarchicalContainer dataSource){
         this.treeTable = treeTable;
         this.dataSource = dataSource;
         addValueChangeListener(this);

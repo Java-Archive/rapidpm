@@ -2,7 +2,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
@@ -28,10 +27,9 @@ public class PlanningInformationFieldGroup extends FieldGroup {
 
     private ResourceBundle messages;
 
-    public PlanningInformationFieldGroup(ResourceBundle messages, IssueBase issueBase) {
+    public PlanningInformationFieldGroup(final ResourceBundle messages, final IssueBase issueBase) {
         setItemDataSource(new BeanItem<>(issueBase));
         this.messages = messages;
-
         buildForm();
     }
 
@@ -59,22 +57,9 @@ public class PlanningInformationFieldGroup extends FieldGroup {
         }
     }
 
-    public AbstractSelect generateBox(String caption, BeanItemContainer container, String itemCaptionPropertyId){
-        final AbstractSelect box = new ComboBox(caption,container);
-        //((ComboBox)box).setItemIconPropertyId(ICON);
-        box.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
-        box.setItemCaptionPropertyId(itemCaptionPropertyId);
-        return box;
-    }
-
     public AbstractTextField generateField(String caption){
         final AbstractTextField textField = new TextField(caption);
         return textField;
-    }
-
-    public DateField generateDateField(String caption){
-        final DateField dateField = new DateField(caption);
-        return dateField;
     }
 
     public TextArea generateTextArea(String caption){

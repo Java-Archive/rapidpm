@@ -15,7 +15,7 @@ import java.util.List;
 
 public class StundensaetzeItemClickListener implements ItemClickListener {
 
-    private Logger logger = Logger.getLogger(StundensaetzeItemClickListener.class);
+    private final Logger logger = Logger.getLogger(StundensaetzeItemClickListener.class);
 
     private List<ItemClickDependentComponent> components = new ArrayList<ItemClickDependentComponent>();
 
@@ -53,13 +53,13 @@ public class StundensaetzeItemClickListener implements ItemClickListener {
 
     }
 
-    private void informComponents(boolean state) {
+    private void informComponents(final boolean state) {
         for (final ItemClickDependentComponent component : components) {
             component.getState(state);
         }
     }
 
-    private void informComponents(Object itemId) {
+    private void informComponents(final Object itemId) {
         for (final ItemClickDependentComponent component : components) {
             component.setItemId(itemId);
         }

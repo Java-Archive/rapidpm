@@ -21,7 +21,7 @@ public class VertriebScreen extends Screen {
     public VertriebScreen(MainUI ui) {
         super(ui);
         erstelleVertrieblerLayout();
-        erstelleStandardTableLayout(new Label("Uebersicht"), vertriebsTable, tableLayout);
+        erstelleStandardTableLayout(new Label("Uebersicht"));
         erstelleBottomLayout();
         setComponents();
         doInternationalization();
@@ -55,10 +55,10 @@ public class VertriebScreen extends Screen {
         bottomLayout.addComponent(bemerkungenArea);
     }
 
-    private void erstelleStandardTableLayout(Label ueberschrift, Table tabelle, Layout layout) {
-        tabelle = new Table();
-        layout.addComponent(ueberschrift);
-        layout.addComponent(tabelle);
+    private void erstelleStandardTableLayout(Label ueberschrift) {
+        vertriebsTable = new Table();
+        tableLayout.addComponent(ueberschrift);
+        tableLayout.addComponent(vertriebsTable);
     }
 
     private void erstelleVertrieblerLayout() {

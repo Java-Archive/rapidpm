@@ -20,13 +20,13 @@ public class ProjectsListsValueChangeListener implements Property.ValueChangeLis
     private ChosenProjectPanel chosenProjectPanel;
     private ProjectsPanel projectsPanel;
 
-    public ProjectsListsValueChangeListener(ProjectsPanel projectsPanel, ChosenProjectPanel formPanel) {
+    public ProjectsListsValueChangeListener(final ProjectsPanel projectsPanel, final ChosenProjectPanel formPanel) {
         this.chosenProjectPanel = formPanel;
         this.projectsPanel = projectsPanel;
     }
 
     @Override
-    public void valueChange(Property.ValueChangeEvent event) {
+    public void valueChange(final Property.ValueChangeEvent event) {
         final Button deleteButton = projectsPanel.getDeleteProjectButton();
         final FormLayout formLayout = chosenProjectPanel.getFormLayout();
         final PlannedProject chosenProjekt = (PlannedProject) event.getProperty().getValue();

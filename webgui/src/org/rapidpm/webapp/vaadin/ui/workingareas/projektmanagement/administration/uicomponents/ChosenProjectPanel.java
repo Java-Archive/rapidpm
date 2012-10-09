@@ -27,7 +27,7 @@ public class ChosenProjectPanel extends EditablePanel {
 
     private Label noSelectionLabel;
 
-    public ChosenProjectPanel(final MainUI ui, ResourceBundle messagesBundle) {
+    public ChosenProjectPanel(final MainUI ui, final ResourceBundle messagesBundle) {
         super(messagesBundle);
         noSelectionLabel = new Label(messagesBundle.getString("pm_noselection"));
 

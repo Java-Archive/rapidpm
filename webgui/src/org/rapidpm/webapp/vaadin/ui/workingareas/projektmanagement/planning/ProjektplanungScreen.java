@@ -119,7 +119,7 @@ public class ProjektplanungScreen extends Screen {
         detailPanel.setCaption(messagesBundle.getString("details"));
     }
 
-    public void fillTreePanel(PlanningUnit selectedPlanningUnit, PlannedProject projekt) {
+    public void fillTreePanel(final PlanningUnit selectedPlanningUnit, final PlannedProject projekt) {
 
         treePanel.removeAllComponents();
         treePanelTree = new Tree();
@@ -142,14 +142,14 @@ public class ProjektplanungScreen extends Screen {
                 final PlanningUnit planningUnit = (PlanningUnit) itemId;
                 final IssueBase planningUnitIssueBase = planningUnit.getIssueBase();
                 final IssueStatus issueStatus = planningUnitIssueBase.getStatus();
-                final String iconPfad = (Constants.IMAGES_DIRECTION + issueStatus.getStatusFileName());
+                final String iconPfad = (Constants.IMAGES_DIRECTORY + issueStatus.getStatusFileName());
                 treePanelTree.setItemIcon(itemId, new ThemeResource(iconPfad));
             }
             treePanel.addComponent(treePanelTree);
         }
     }
 
-    private void buildTree(List<PlanningUnit> planningUnits, PlanningUnit parentUnit) {
+    private void buildTree(final List<PlanningUnit> planningUnits, final PlanningUnit parentUnit) {
         for (final PlanningUnit planningUnit : planningUnits) {
             container.addBean(planningUnit);
             container.setParent(planningUnit, parentUnit);
@@ -165,7 +165,7 @@ public class ProjektplanungScreen extends Screen {
         addComponent(splitPanel);
     }
 
-    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);

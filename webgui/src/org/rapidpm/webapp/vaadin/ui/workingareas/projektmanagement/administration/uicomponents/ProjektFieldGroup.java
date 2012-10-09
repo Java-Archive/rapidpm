@@ -14,7 +14,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
  */
 public class ProjektFieldGroup extends FieldGroup {
 
-    public ProjektFieldGroup(PlannedProject projekt) {
+    public ProjektFieldGroup(final PlannedProject projekt) {
         setItemDataSource(new BeanItem<>(projekt));
         buildForm();
     }

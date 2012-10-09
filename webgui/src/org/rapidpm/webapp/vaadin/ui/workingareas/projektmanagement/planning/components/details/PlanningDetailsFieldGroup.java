@@ -50,7 +50,7 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
     private PlanningDetailsFieldGroupBean bean;
     private DaoFactoryBean baseDaoFactoryBean;
 
-    public PlanningDetailsFieldGroup(ResourceBundle messages, IssueBase issueBase) {
+    public PlanningDetailsFieldGroup(final ResourceBundle messages, final IssueBase issueBase) {
         setItemDataSource(new BeanItem<>(issueBase));
         this.messages = messages;
         bean = EJBFactory.getEjbInstance(PlanningDetailsFieldGroupBean.class);
@@ -74,7 +74,7 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
                     bind(box, propertyId);
                     for(final Object itemId : box.getItemIds()){
                         final IssuePriority priority = (IssuePriority) itemId;
-                        final String resourcePfad = (IMAGES_DIRECTION + priority.getPriorityFileName());
+                        final String resourcePfad = (IMAGES_DIRECTORY + priority.getPriorityFileName());
                         box.setItemIcon(itemId, new ThemeResource(resourcePfad));
                     }
                     priorityBox = box;
@@ -86,7 +86,7 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
                     bind(box, propertyId);
                     for(final Object itemId : box.getItemIds()){
                         final IssueStatus status = (IssueStatus) itemId;
-                        final String resourcePfad = (IMAGES_DIRECTION + status.getStatusFileName());
+                        final String resourcePfad = (IMAGES_DIRECTORY + status.getStatusFileName());
                         box.setItemIcon(itemId, new ThemeResource(resourcePfad));
                     }
                     statusBox = box;
@@ -130,19 +130,19 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
         }
     }
 
-    public AbstractSelect generateBox(String caption, BeanItemContainer container, String itemCaptionPropertyId){
+    public AbstractSelect generateBox(final String caption, final BeanItemContainer container, final String itemCaptionPropertyId){
         final AbstractSelect box = new ComboBox(caption,container);
         box.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
         box.setItemCaptionPropertyId(itemCaptionPropertyId);
         return box;
     }
 
-    public DateField generateDateField(String caption){
+    public DateField generateDateField(final String caption){
         final DateField dateField = new DateField(caption);
         return dateField;
     }
 
-    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);

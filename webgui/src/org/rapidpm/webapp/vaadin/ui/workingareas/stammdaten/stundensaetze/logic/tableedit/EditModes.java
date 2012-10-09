@@ -5,7 +5,7 @@ public enum EditModes {
     UNDEFINED(""),
     ROWEDIT("stdsatz_rowmode");
 
-    private EditModes(String s){
+    private EditModes(final String s){
 
     }
 }

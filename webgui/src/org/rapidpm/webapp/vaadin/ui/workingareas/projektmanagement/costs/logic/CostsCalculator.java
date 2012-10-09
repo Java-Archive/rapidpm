@@ -33,7 +33,7 @@ public class CostsCalculator {
 
     private Double totalCostsExakt = 0.0;
 
-    public CostsCalculator(ResourceBundle bundle) {
+    public CostsCalculator(final ResourceBundle bundle) {
         bean = EJBFactory.getEjbInstance(CostsCalcutorBean.class);
         final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         refreshEntities(baseDaoFactoryBean);
@@ -62,7 +62,7 @@ public class CostsCalculator {
     }
 
 
-    private void calculatePlanningUnits(List<PlanningUnit> planningUnits) {
+    private void calculatePlanningUnits(final List<PlanningUnit> planningUnits) {
         for (final PlanningUnit planningUnit : planningUnits) {
             if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
                 addiereZeileZurRessourceMap(planningUnit);
@@ -72,7 +72,7 @@ public class CostsCalculator {
         }
     }
 
-    private void addiereZeileZurRessourceMap(PlanningUnit planningUnit) {
+    private void addiereZeileZurRessourceMap(final PlanningUnit planningUnit) {
         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
             final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
             if (!ressourceGroup.getName().equals(messages.getString("aufgabe"))) {
@@ -86,7 +86,7 @@ public class CostsCalculator {
         }
     }
 
-    private Double getCosts(PlanningUnitElement planningUnitElement) {
+    private Double getCosts(final PlanningUnitElement planningUnitElement) {
         final int hoursFromDays = HOURS_DAY * planningUnitElement.getPlannedDays();
         final int hours = planningUnitElement.getPlannedHours();
         final double hoursFromMinutes = STD_ANTEILE * planningUnitElement.getPlannedMinutes();
@@ -108,7 +108,7 @@ public class CostsCalculator {
         return format.format(totalCostsExakt);
     }
 
-    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);

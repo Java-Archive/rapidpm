@@ -18,7 +18,7 @@ public class UndoButton extends Button implements Button.ClickListener {
     private HierarchicalContainer dataSource;
     private AufwandProjInitScreen screen;
 
-    public UndoButton(AufwandProjInitScreen screen, MyTreeTable treeTable, HierarchicalContainer dataSource) {
+    public UndoButton(final AufwandProjInitScreen screen, final MyTreeTable treeTable, final HierarchicalContainer dataSource) {
         this.screen = screen;
         this.treeTable = treeTable;
         this.dataSource = dataSource;

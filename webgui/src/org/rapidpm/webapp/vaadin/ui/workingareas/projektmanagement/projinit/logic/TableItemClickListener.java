@@ -95,7 +95,7 @@ public class TableItemClickListener implements ItemClickListener {
         screen.getFormLayout().setVisible(true);
     }
 
-    private void buildRequiredFields(GridLayout formUnterlayout, FieldGroup fieldGroup) {
+    private void buildRequiredFields(final GridLayout formUnterlayout, final FieldGroup fieldGroup) {
         for (final Object prop : fieldGroup.getUnboundPropertyIds()) {
             final String aufgabe = messages.getString("aufgabe");
             if (prop.equals(aufgabe))
@@ -106,20 +106,7 @@ public class TableItemClickListener implements ItemClickListener {
         }
     }
 
-//    private void getPlanningUnit(final List<PlanningUnit> planningUnits, final String itemId) {
-//        for (final PlanningUnit planningUnit : planningUnits) {
-//            if (planningUnit.getPlanningUnitName().equals(itemId)) {
-//                foundPlanningUnit = planningUnit;
-//            } else {
-//                final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
-//                if ((kindPlanningUnits != null) && !kindPlanningUnits.isEmpty()) {
-//                    getPlanningUnit(kindPlanningUnits, itemId);
-//                }
-//            }
-//        }
-//    }
-
-    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);

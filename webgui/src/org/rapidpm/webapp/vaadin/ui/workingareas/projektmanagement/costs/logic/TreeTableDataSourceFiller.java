@@ -86,7 +86,7 @@ public class TreeTableDataSourceFiller {
     }
 
 
-    private void computePlanningUnits(List<PlanningUnit> planningUnits, String parent) {
+    private void computePlanningUnits(final List<PlanningUnit> planningUnits, final String parent) {
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
@@ -138,7 +138,7 @@ public class TreeTableDataSourceFiller {
         return totalHours * externalEurosPerHour;
     }
 
-    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);

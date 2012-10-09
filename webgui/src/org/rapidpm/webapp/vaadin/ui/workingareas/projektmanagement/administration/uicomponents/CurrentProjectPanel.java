@@ -33,9 +33,9 @@ public class CurrentProjectPanel extends EditablePanel {
     private CurrentProjectPanelBean bean;
 
 
-    public CurrentProjectPanel(ResourceBundle messagesBundle, ProjectAdministrationScreen screen){
+    public CurrentProjectPanel(final ResourceBundle messagesBundle, final ProjectAdministrationScreen theScreen){
         super(messagesBundle);
-        this.screen = screen;
+        this.screen = theScreen;
         bean = EJBFactory.getEjbInstance(CurrentProjectPanelBean.class);
         final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         refreshEntities(baseDaoFactoryBean);
@@ -96,7 +96,7 @@ public class CurrentProjectPanel extends EditablePanel {
         addComponent(buttonsLayout);
     }
 
-    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);

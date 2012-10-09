@@ -71,7 +71,7 @@ public class AddRowWindow extends Window {
         }
     }
 
-    private TextField buildFieldWithValue(AbstractTextField abstractTextField) {
+    private TextField buildFieldWithValue(final AbstractTextField abstractTextField) {
         final TextField field = (TextField) abstractTextField;
         final String typeNameOfFieldProperty = field.getPropertyDataSource().getType().getSimpleName();
         field.setValue(DefaultValues.valueOf(typeNameOfFieldProperty).getDefaultValue());
@@ -116,7 +116,7 @@ public class AddRowWindow extends Window {
 //                                (ressourceGroup
 //                                .getName
 //                                ());
-                        RessourceGroup group = baseDaoFactoryBean.getRessourceGroupDAO().loadRessourceGroupByName
+                        final RessourceGroup group = baseDaoFactoryBean.getRessourceGroupDAO().loadRessourceGroupByName
                                 (ressourceGroup.getName());
 
 

@@ -23,7 +23,7 @@ public abstract class EditablePanel extends Panel implements Internationalizatio
     protected HorizontalLayout buttonsLayout = new HorizontalLayout();
     protected ResourceBundle messagesBundle;
 
-    public EditablePanel(ResourceBundle messagesBundle){
+    public EditablePanel(final ResourceBundle messagesBundle){
         this.messagesBundle = messagesBundle;
 
         addClickListener(new MouseEvents.ClickListener() {
@@ -32,9 +32,6 @@ public abstract class EditablePanel extends Panel implements Internationalizatio
                 activate(true);
             }
         });
-
-
-
     }
 
     public abstract void activate(boolean b);
