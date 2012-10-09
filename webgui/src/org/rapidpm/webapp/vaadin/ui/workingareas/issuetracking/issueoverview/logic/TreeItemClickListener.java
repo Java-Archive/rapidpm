@@ -31,17 +31,15 @@ public class TreeItemClickListener implements ItemClickEvent.ItemClickListener {
         final Tree tree = (Tree) event.getSource();
         Object itemId = event.getItemId();
 
-        PlanningUnit punit = (PlanningUnit)tree.getContainerProperty(itemId, TreeContainerPlanningUnits.PROPERTY_PLANNINGUNIT).getValue();
+        PlanningUnit punit = (PlanningUnit)tree.getContainerProperty(itemId,
+                TreeContainerPlanningUnits.PROPERTY_PLANNINGUNIT).getValue();
         issueTabSheet.getDetailsLayout().setPropertiesFromIssue(punit.getIssueBase());
-
-        List<IssueBase> issues = new ArrayList<>();
 
         if (!tree.hasChildren(itemId)) {
             issueTabSheet.disableTableTab(true);
-
-
         }
         else {
+            List<IssueBase> issues = new ArrayList<>();
             issueTabSheet.disableTableTab(false);
             for (PlanningUnit childUnit : punit.getKindPlanningUnits()) {
                 issues.add(childUnit.getIssueBase());

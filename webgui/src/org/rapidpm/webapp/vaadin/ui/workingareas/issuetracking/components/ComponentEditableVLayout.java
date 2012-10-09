@@ -30,14 +30,12 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
         componentsLayout.setSizeFull();
         buttonLayout = new HorizontalLayout();
         messages = screen.getMessagesBundle();
-
         saveButton = new Button();
         saveButton.setCaption(messages.getString("save"));
-        saveButton.addClickListener(addSaveButtonClickListener());
+
 
         cancelButton = new Button();
         cancelButton.setCaption(messages.getString("cancel"));
-        cancelButton.addClickListener(addCancelButtonClickListener());
         this.addLayoutClickListener(new LayoutMouseClickListener());
 
         buttonLayout.addComponent(saveButton);
@@ -50,9 +48,14 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
 
     protected abstract AbstractOrderedLayout buildForm();
 
-    abstract protected Button.ClickListener addSaveButtonClickListener();
+    public void addSaveButtonClickListener(Button.ClickListener listener) {
+        saveButton.addClickListener(listener);
+    }
 
-    abstract protected Button.ClickListener addCancelButtonClickListener();
+    public void addCancelButtonClickListener(Button.ClickListener listener) {
+        cancelButton.addClickListener(listener);
+    }
+
 
     public void setLayoutReadOnly(boolean readOnly) {
         iterateLayoutReadOnly(readOnly, componentsLayout);

@@ -20,10 +20,15 @@ import java.util.List;
 public class DummyProjectData {
 
     public final static String PROPERTY_CAPTION = "caption";
-    private static final Projekt project = new ProjektBean(1).getProjekte().get(0);
+    private static Projekt project = new ProjektBean(1).getProjekte().get(0);
 
+
+    public static void resetProjekt() {
+        project = new ProjektBean(1).getProjekte().get(0);
+    }
 
     public static List<PlanningUnit> getPlanningUnitList() {
+        resetProjekt();
         return project.getPlanningUnits();
     }
 

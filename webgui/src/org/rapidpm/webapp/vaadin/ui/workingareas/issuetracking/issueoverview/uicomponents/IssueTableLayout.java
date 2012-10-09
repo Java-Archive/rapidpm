@@ -6,8 +6,6 @@ import com.vaadin.ui.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditableVLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DetailsCancelButtonClickListener;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DetailsSaveButtonClickListener;
 
 import java.util.List;
 
@@ -31,6 +29,8 @@ public class IssueTableLayout extends ComponentEditableVLayout {
     public IssueTableLayout(IssueOverviewScreen screen) {
         super(screen);
         this.screen = screen;
+        addSaveButtonClickListener(new StandardClickListener());
+        addCancelButtonClickListener(new StandardClickListener());
     }
 
     @Override
@@ -57,16 +57,6 @@ public class IssueTableLayout extends ComponentEditableVLayout {
         componentsLayout.addComponent(issueTable);
 
         return componentsLayout;
-    }
-
-    @Override
-    protected Button.ClickListener addSaveButtonClickListener() {
-        return new StandardClickListener();
-    }
-
-    @Override
-    protected Button.ClickListener addCancelButtonClickListener() {
-        return new StandardClickListener();
     }
 
     public void setPropertiesFromIssueList(List<IssueBase> issues) {

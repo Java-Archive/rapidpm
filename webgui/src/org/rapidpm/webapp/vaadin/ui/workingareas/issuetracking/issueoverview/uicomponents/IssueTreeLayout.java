@@ -4,9 +4,12 @@ import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.AddButtonClickListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DeleteButtonClickListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeActivateOnValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeItemClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeContainerPlanningUnits;
 
+import java.util.ArrayList;
 
 
 /**
@@ -40,10 +43,11 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         buttonLayout.setSpacing(true);
 
         addButton = new Button();
-        addButton.addClickListener(new AddButtonClickListener(screen, issueTree));
+        addButton.setEnabled(false);
         buttonLayout.addComponent(addButton);
 
         deleteButton = new Button();
+        deleteButton.setEnabled(false);
         buttonLayout.addComponent(deleteButton);
 
         if (addButton.getWidth() > deleteButton.getWidth()) deleteButton.setWidth(addButton.getWidth(), Unit.PIXELS);
@@ -53,12 +57,18 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 
         issueTree = new Tree("IssueTree", new TreeContainerPlanningUnits());
         issueTree.setImmediate(true);
-        if (issueTabSheet != null)
+        if (issueTabSheet != null) {
             issueTree.addItemClickListener(new TreeItemClickListener(issueTabSheet));
+            issueTree.addValueChangeListener(new TreeActivateOnValueChangeListener(new Button[]{deleteButton,
+                    addButton}));
+        }
         issueTree.setItemCaptionPropertyId(TreeContainerPlanningUnits.PROPERTY_CAPTION);
         for (Object id : issueTree.rootItemIds())
             issueTree.expandItemsRecursively(id);
         addComponent(issueTree);
+
+        addButton.addClickListener(new AddButtonClickListener(screen, issueTree));
+        deleteButton.addClickListener(new DeleteButtonClickListener(screen, issueTree));
     }
 
     @Override

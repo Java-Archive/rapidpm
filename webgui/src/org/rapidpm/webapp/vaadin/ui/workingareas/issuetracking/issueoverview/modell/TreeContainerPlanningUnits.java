@@ -3,6 +3,8 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.mo
 import com.vaadin.data.util.HierarchicalContainer;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 
+import java.util.List;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -53,5 +55,4 @@ public class TreeContainerPlanningUnits extends HierarchicalContainer {
             }
         }
     }
-
 }

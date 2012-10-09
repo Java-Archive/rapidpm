@@ -49,6 +49,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
     private VerticalLayout componentsLayout;
 
+    private IssueBase issue;
+
     public IssueDetailsLayout(IssueOverviewScreen screen) {
         super(screen);
         this.screen = screen;
@@ -192,17 +194,6 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     }
 
     @Override
-    protected Button.ClickListener addSaveButtonClickListener() {
-        return new DetailsSaveButtonClickListener(this);
-    }
-
-    @Override
-    protected Button.ClickListener addCancelButtonClickListener() {
-        return new DetailsCancelButtonClickListener(this);   //To change body of overridden methods use File |
-        // Settings | File Templates.
-    }
-
-    @Override
     public void doInternationalization() {
         typeSelect.setCaption(screen.getMessagesBundle().getString("issue_type"));
         statusSelect.setCaption(screen.getMessagesBundle().getString("issue_status"));
@@ -221,6 +212,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     }
 
     public void setPropertiesFromIssue(IssueBase issue) {
+        this.issue = issue;
         setLayoutReadOnly(false);
 
         headerLabel.setValue(issue.getSummary());
@@ -235,6 +227,24 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         descriptionTextArea.setValue(issue.getText());
 
         setLayoutReadOnly(true);
+    }
+
+    public IssueBase setIssueProperties(boolean newIssue) {
+        if (newIssue)
+            this.issue = new IssueBase();
+
+        issue.setSummary(headerLabel.getValue());
+        issue.setIssueStatus((IssueStatus) statusSelect.getValue());
+        issue.setIssuePriority((IssuePriority) prioritySelect.getValue());
+        //assigneeSelect.setValue(issue.getAssignee().getLogin());
+        //reporterLabel.setValue(issue.getReporter().getLogin());
+        issue.setDueDate_planned(plannedDateField.getValue());
+        issue.setDueDate_resolved(resolvedDateField.getValue());
+        issue.setDueDate_closed(closedDateField.getValue());
+        issue.setStoryPoints((Integer) storyPointSelect.getValue());
+        issue.setText(descriptionTextArea.getValue());
+
+        return issue;
     }
 
 }
