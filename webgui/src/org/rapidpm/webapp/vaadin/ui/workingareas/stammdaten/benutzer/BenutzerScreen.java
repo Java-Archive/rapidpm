@@ -8,6 +8,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
+import org.apache.log4j.Logger;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.system.security.*;
@@ -16,10 +17,10 @@ import org.rapidpm.persistence.system.security.berechtigungen.BerechtigungDAO;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.FormattedDateStringToDateConverter;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenScreensBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.uicomponents.BenutzerEditor;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -31,9 +32,17 @@ import java.util.List;
  */
 public class BenutzerScreen extends Screen {
 
+    private Logger logger = Logger.getLogger(BenutzerScreen.class);
+
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
     private HorizontalLayout contentLayout = new HorizontalLayout();
+    private BenutzerEditor benutzerEditor;
+    private ComboBox mandantenBox;
+    private Button removeButton;
+    private Button addButton;
+    private Button resetButton;
+    private Table benutzerTable;
 
     public BenutzerScreen(final MainUI ui) {
         super(ui);
@@ -41,7 +50,7 @@ public class BenutzerScreen extends Screen {
         contentLayout.setSizeFull();
         contentLayout.setSpacing(true);
 
-        final StammdatenScreensBean bean = EJBFactory.getEjbInstance(StammdatenScreensBean.class);
+        final BenutzerScreenBean bean = EJBFactory.getEjbInstance(BenutzerScreenBean.class);
         final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final MandantengruppeDAO mandantengruppeDAO = baseDaoFactoryBean.getMandantengruppeDAO();
         final BerechtigungDAO berechtigungDAO = baseDaoFactoryBean.getBerechtigungDAO();
@@ -57,14 +66,18 @@ public class BenutzerScreen extends Screen {
         benutzerTableLayout.setSpacing(true);
         contentLayout.addComponent(benutzerTableLayout);
 
-        final ComboBox mandantenBox = new ComboBox("Mandanten", new BeanItemContainer<>(Mandantengruppe.class,
+        mandantenBox = new ComboBox();
+        mandantenBox.setContainerDataSource(new BeanItemContainer<>(Mandantengruppe.class,
                 mandantengruppen));
         mandantenBox.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
         mandantenBox.setItemCaptionPropertyId("mandantengruppe");
         mandantenBox.setFilteringMode(FilteringMode.CONTAINS);
         mandantenBox.setImmediate(true);
+        mandantenBox.setTextInputAllowed(false);
+        mandantenBox.setNullSelectionAllowed(false);
+        mandantenBox.select(mandantengruppen.get(0));
 
-        final BenutzerEditor benutzerEditor = new BenutzerEditor();
+        benutzerEditor = new BenutzerEditor(this);
         benutzerEditor.setMandantengruppen(mandantengruppen);
         benutzerEditor.setBenutzerGruppen(benutzerGruppen);
         benutzerEditor.setBenutzerWebapplikationen(benutzerWebapplikationen);
@@ -74,7 +87,9 @@ public class BenutzerScreen extends Screen {
         contentLayout.setExpandRatio(benutzerEditor, 1);
 
         final BeanItemContainer<Benutzer> benutzerDS = new BeanItemContainer<>(Benutzer.class, benutzer);
-        final Table benutzerTable = new Table("Benutzer", benutzerDS);
+        benutzerTable = new Table();
+        benutzerTable.setImmediate(true);
+        benutzerTable.setContainerDataSource(benutzerDS);
         benutzerTable.setWidth(100, Unit.PERCENTAGE);
         benutzerTable.setVisibleColumns(new String[]{"id", "login", "email", "validFrom", "validUntil",
                 "failedLogins"});
@@ -83,20 +98,11 @@ public class BenutzerScreen extends Screen {
         benutzerTable.setSelectable(true);
         benutzerTable.setConverter("validFrom", new FormattedDateStringToDateConverter(DATE_FORMAT));
         benutzerTable.setConverter("validUntil", new FormattedDateStringToDateConverter(DATE_FORMAT));
-
-//        benutzerTable.setEditable(true);
-//        benutzerTable.addGeneratedColumn("validUntil", new Table.ColumnGenerator() {
-//            @Override
-//            public Object generateCell(final Table table, final Object o, final Object o1) {
-//                final Benutzer b = (Benutzer) o;
-//                final Date lastLogin = b.getLastLogin();
-//                return new Label(lastLogin != null ? DATE_FORMAT.format(lastLogin) : "-");
-//            }
-//        });
         benutzerTableLayout.addComponent(mandantenBox);
         benutzerTableLayout.addComponent(benutzerTable);
 
-        final Button removeBenutzerButton = new Button("Benutzer lÃ¶schen", new Button.ClickListener() {
+        removeButton = new Button();
+        removeButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(final Button.ClickEvent clickEvent) {
                 final Benutzer currentUser = (Benutzer) getSession().getAttribute(Benutzer.class);
@@ -107,28 +113,44 @@ public class BenutzerScreen extends Screen {
                 final boolean isUserDeletingHimself = currentUser.getLogin().equals(selectedBenutzer.getLogin());
 
                 if(!isUserDeletingHimself){
-                    final StammdatenScreensBean stammdatenScreenBean = EJBFactory.getEjbInstance(StammdatenScreensBean.class);
+                    final BenutzerScreenBean stammdatenScreenBean = EJBFactory.getEjbInstance(BenutzerScreenBean.class);
                     final DaoFactoryBean daoFactoryBean = stammdatenScreenBean.getDaoFactoryBean();
-                    daoFactoryBean.remove(selectedBenutzer);
-                    benutzerTable.removeItem(tableItemId);
+                    final List<Benutzer> benutzerFromDB = daoFactoryBean.getBenutzerDAO().loadBenutzerForLogin
+                            (selectedBenutzer.getLogin());
+                    if(benutzerFromDB != null && !benutzerFromDB.isEmpty()){
+                        try{
+                            daoFactoryBean.remove(selectedBenutzer);
+                            benutzerTable.removeItem(tableItemId);
+                            benutzerEditor.setVisible(false);
+                        } catch (Exception e){
+                            Notification.show(messagesBundle.getString("users_userinuse"));
+                        }
+
+                    } else {
+                        benutzerTable.removeItem(tableItemId);
+                        benutzerEditor.setVisible(false);
+                        logger.warn(selectedBenutzer.toString() + "war nur transient vorhanden");
+                    }
+
                 }
             }
         });
-        removeBenutzerButton.setEnabled(false);
+        removeButton.setEnabled(false);
 
-        final Button resetFailedLoginsButton = new Button("Loginversuche zurücsetzen", new Button.ClickListener() {
+        resetButton = new Button();
+        resetButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 final Object tableItemId = benutzerTable.getValue();
                 final BeanItem<Benutzer> beanItem = (BeanItem<Benutzer>) benutzerTable.getItem(tableItemId);
                 beanItem.getItemProperty("failedLogins").setValue(0);
                 final Benutzer selectedBenutzer = beanItem.getBean();
-                final StammdatenScreensBean stammdatenScreenBean = EJBFactory.getEjbInstance(StammdatenScreensBean.class);
+                final BenutzerScreenBean stammdatenScreenBean = EJBFactory.getEjbInstance(BenutzerScreenBean.class);
                 final DaoFactoryBean daoFactoryBean = stammdatenScreenBean.getDaoFactoryBean();
                 daoFactoryBean.saveOrUpdate(selectedBenutzer);
             }
         });
-        resetFailedLoginsButton.setEnabled(false);
+        resetButton.setEnabled(false);
 
         benutzerTable.addItemClickListener(new ItemClickEvent.ItemClickListener() {
             @Override
@@ -138,10 +160,12 @@ public class BenutzerScreen extends Screen {
                     Integer failedLogins = (Integer) item.getItemProperty("failedLogins").getValue();
                     boolean isResetable =  failedLogins >= 3;
                     benutzerEditor.setBenutzerBean(item);
-                    removeBenutzerButton.setEnabled(true);
-                    resetFailedLoginsButton.setEnabled(isResetable);
+                    benutzerEditor.setVisible(true);
+                    removeButton.setEnabled(true);
+                    resetButton.setEnabled(isResetable);
                 } else {
-                    removeBenutzerButton.setEnabled(false);
+                    removeButton.setEnabled(false);
+                    benutzerEditor.setVisible(false);
                 }
             }
         });
@@ -151,17 +175,28 @@ public class BenutzerScreen extends Screen {
         benutzerButtonsLayout.setSpacing(true);
         benutzerTableLayout.addComponent(benutzerButtonsLayout);
 
-        benutzerButtonsLayout.addComponent(new Button("Benutzer hinzufÃ¼gen", new Button.ClickListener() {
+        addButton = new Button();
+        addButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(final Button.ClickEvent clickEvent) {
-                final BeanItem<Benutzer> benutzerBean = benutzerDS.addBean(new Benutzer());
-                benutzerEditor.setBenutzerBean(benutzerBean);
+                final Benutzer neuerBenutzer = new Benutzer();
+                neuerBenutzer.setLogin(messagesBundle.getString("new"));
+                neuerBenutzer.setActive(true);
+                neuerBenutzer.setBenutzerGruppe(benutzerGruppen.get(0));
+                neuerBenutzer.setBenutzerWebapplikation(benutzerWebapplikationen.get(0));
+                neuerBenutzer.setEmail(messagesBundle.getString("new")+"@rapidpm.org");
+                neuerBenutzer.setFailedLogins(0);
+                neuerBenutzer.setMandantengruppe(mandantengruppen.get(0));
+                neuerBenutzer.setValidFrom(new Date());
+                final BeanItem<Benutzer> benutzerBean = benutzerDS.addBean(neuerBenutzer);
+                benutzerTable.setValue(null);
+                benutzerEditor.setVisible(false);
             }
-        }));
+        });
 
-        benutzerButtonsLayout.addComponent(removeBenutzerButton);
-        benutzerButtonsLayout.addComponent(resetFailedLoginsButton);
-
+        benutzerButtonsLayout.addComponent(addButton);
+        benutzerButtonsLayout.addComponent(removeButton);
+        benutzerButtonsLayout.addComponent(resetButton);
 
         mandantenBox.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
@@ -185,46 +220,19 @@ public class BenutzerScreen extends Screen {
             }
         });
         setComponents();
+        doInternationalization();
     }
 
     public void setComponents(){
         addComponent(contentLayout);
     }
 
-/*    public Collection<Benutzer> createDemoData() {
-        final ArrayList<Benutzer> benutzer = new ArrayList<>();
-
-        final Mandantengruppe mandantengruppeA = new Mandantengruppe(1L, "Mandant A");
-        final Mandantengruppe mandantengruppeB = new Mandantengruppe(2L, "Mandant B");
-        final Mandantengruppe mandantengruppeC = new Mandantengruppe(3L, "Mandant C");
-
-        final Berechtigung berechtigungLesen = new Berechtigung(1L, "Lesen");
-        final Berechtigung berechtigungSchreiben = new Berechtigung(2L, "Schreiben");
-
-        final Benutzer ruppert = new Benutzer(1L, "sven.ruppert", "ruppert", "sven.ruppert@neoscio.de");
-        ruppert.setMandantengruppe(mandantengruppeA);
-        ruppert.addBerechtigungen(berechtigungLesen, berechtigungSchreiben);
-        benutzer.add(ruppert);
-
-        final Benutzer vos = new Benutzer(2L, "alexander.vos", "vos", "alexander.vos@neoscio.de");
-        vos.setMandantengruppe(mandantengruppeA);
-        vos.addBerechtigungen(berechtigungLesen);
-        benutzer.add(vos);
-
-        final Benutzer gast = new Benutzer(3L, "gast", "gast", "gast@neoscio.de");
-        gast.setMandantengruppe(mandantengruppeB);
-        benutzer.add(gast);
-
-        final Benutzer benutzerc = new Benutzer(3L, "Benutzer C", "benutzerc", "benutzerc@neoscio.de");
-        benutzerc.setMandantengruppe(mandantengruppeC);
-        benutzerc.addBerechtigungen(berechtigungLesen);
-        benutzer.add(benutzerc);
-
-        return benutzer;
-    }*/
-
     @Override
     public void doInternationalization() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        resetButton.setCaption(messagesBundle.getString("users_reset"));
+        removeButton.setCaption(messagesBundle.getString("users_remove"));
+        addButton.setCaption(messagesBundle.getString("users_add"));
+        benutzerTable.setCaption(messagesBundle.getString("users_users"));
+        benutzerEditor.doInternationalization();
     }
 }

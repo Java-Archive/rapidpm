@@ -10,11 +10,9 @@ import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.PlanningDetailsMyFormLayout;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.PlanningMainMyFormLayout;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.PlanningRessourcesMyFormLayout;
-
-import java.util.ArrayList;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsMyFormLayout;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.information.PlanningInformationMyFormLayout;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.ressources.PlanningRessourcesMyFormLayout;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,11 +27,9 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
     private static final Logger logger = Logger.getLogger(TreeValueChangeListener.class);
 
     private ProjektplanungScreen screen;
-    private PlannedProject projekt;
 
     public TreeValueChangeListener(final ProjektplanungScreen screen, final PlannedProject projekt) {
         this.screen = screen;
-        this.projekt = projekt;
     }
 
     @Override
@@ -57,18 +53,15 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                 detailPanel.addComponent(new Label(selectedPlanningUnit.getPlanningUnitName()));
                 mainPanel.setCaption(selectedPlanningUnit.getPlanningUnitName());
                 ressourcesPanel.setCaption(RESSOURCE_GROUPS);
-
-                final ArrayList<PlanningUnit> planningUnitList = new ArrayList<>();
-
-                    final VerticalLayout detailsPanelComponentsLayout = new PlanningDetailsMyFormLayout
-                            (selectedPlanningUnit.getIssueBase(), screen, detailPanel);
-                    final VerticalLayout mainPanelLayout = new PlanningMainMyFormLayout(selectedPlanningUnit.getIssueBase(),
-                            screen, mainPanel);
-                    final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesMyFormLayout(selectedPlanningUnit,
-                            screen, ressourcesPanel, hasChildren);
-                    detailPanel.addComponent(detailsPanelComponentsLayout);
-                    mainPanel.addComponent(mainPanelLayout);
-                    ressourcesPanel.addComponent(ressourcesPanelLayout);
+                final VerticalLayout detailsPanelComponentsLayout = new PlanningDetailsMyFormLayout
+                        (selectedPlanningUnit.getIssueBase(), screen, detailPanel);
+                final VerticalLayout mainPanelLayout = new PlanningInformationMyFormLayout(selectedPlanningUnit.getIssueBase(),
+                        screen, mainPanel);
+                final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesMyFormLayout(selectedPlanningUnit,
+                        screen, ressourcesPanel, hasChildren);
+                detailPanel.addComponent(detailsPanelComponentsLayout);
+                mainPanel.addComponent(mainPanelLayout);
+                ressourcesPanel.addComponent(ressourcesPanelLayout);
                 
             } else {
                 logger.warn("nullselection");

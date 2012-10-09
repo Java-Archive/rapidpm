@@ -8,12 +8,14 @@ import com.vaadin.ui.Button.ClickListener;
 import org.apache.log4j.Logger;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddRowWindow extends Window {
@@ -69,7 +71,7 @@ public class AddRowWindow extends Window {
         }
     }
 
-    private TextField buildFieldWithValue(AbstractTextField abstractTextField) {
+    private TextField buildFieldWithValue(final AbstractTextField abstractTextField) {
         final TextField field = (TextField) abstractTextField;
         final String typeNameOfFieldProperty = field.getPropertyDataSource().getType().getSimpleName();
         field.setValue(DefaultValues.valueOf(typeNameOfFieldProperty).getDefaultValue());
@@ -107,11 +109,41 @@ public class AddRowWindow extends Window {
                         final BeanItem<RessourceGroup> beanItem = (BeanItem)fieldGroup.getItemDataSource();
                         //Bean aus dem BeanItem
                         final RessourceGroup ressourceGroup = beanItem.getBean();
-                        final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
 
-                        //transiente RessourceGroup in DB speichern
                         baseDaoFactoryBean.saveOrUpdate(ressourceGroup);
+//                        baseDaoFactoryBean.getEntityManager().refresh(ressourceGroup);
+//                        final RessourceGroup group = baseDaoFactoryBean.getRessourceGroupDAO().loadRessourceGroupByName
+//                                (ressourceGroup
+//                                .getName
+//                                ());
+                        final RessourceGroup group = baseDaoFactoryBean.getRessourceGroupDAO().loadRessourceGroupByName
+                                (ressourceGroup.getName());
 
+
+                        final List<PlanningUnit> planningUnits = baseDaoFactoryBean.getPlanningUnitDAO()
+                                .loadAllEntities();
+
+                        for(final PlanningUnit planningUnit : planningUnits){
+                            final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
+                            planningUnitElement.setPlannedDays(0);
+                            planningUnitElement.setPlannedHours(0);
+                            planningUnitElement.setPlannedMinutes(0);
+                            planningUnitElement.setRessourceGroup(group);
+                            planningUnit.getPlanningUnitElementList().add(planningUnitElement);
+                            baseDaoFactoryBean.saveOrUpdate(planningUnit);
+                        }
+
+
+//                        final int planningUnitCount = baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities().size();
+//                        for(int i = 0; i < planningUnitCount; i++){
+//                            PlanningUnitElement planningUnitElement = new PlanningUnitElement();
+//                            planningUnitElement.setId(null);
+//                            planningUnitElement.setPlannedDays(0);
+//                            planningUnitElement.setPlannedHours(0);
+//                            planningUnitElement.setPlannedMinutes(0);
+//                            planningUnitElement.setRessourceGroup(ressourceGroup);
+//                            baseDaoFactoryBean.saveOrUpdate(planningUnitElement);
+//                        }
                         screen.generateTableAndCalculate();
 
                         AddRowWindow.this.close();

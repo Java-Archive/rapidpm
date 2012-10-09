@@ -1,11 +1,12 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.logic;
 
 import com.vaadin.data.Property;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.FormLayout;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents.ChosenProjectPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents.ProjectsPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents.ProjektFieldGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -19,16 +20,16 @@ public class ProjectsListsValueChangeListener implements Property.ValueChangeLis
     private ChosenProjectPanel chosenProjectPanel;
     private ProjectsPanel projectsPanel;
 
-    public ProjectsListsValueChangeListener(ProjectsPanel projectsPanel, ChosenProjectPanel formPanel) {
+    public ProjectsListsValueChangeListener(final ProjectsPanel projectsPanel, final ChosenProjectPanel formPanel) {
         this.chosenProjectPanel = formPanel;
         this.projectsPanel = projectsPanel;
     }
 
     @Override
-    public void valueChange(Property.ValueChangeEvent event) {
+    public void valueChange(final Property.ValueChangeEvent event) {
         final Button deleteButton = projectsPanel.getDeleteProjectButton();
         final FormLayout formLayout = chosenProjectPanel.getFormLayout();
-        final Projekt chosenProjekt = (Projekt) event.getProperty().getValue();
+        final PlannedProject chosenProjekt = (PlannedProject) event.getProperty().getValue();
         if(event.getProperty().getValue() != null){
             deleteButton.setVisible(true);
             formLayout.removeAllComponents();

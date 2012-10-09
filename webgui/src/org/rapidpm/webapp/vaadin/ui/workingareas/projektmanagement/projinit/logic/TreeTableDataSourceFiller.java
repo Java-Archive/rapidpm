@@ -4,16 +4,16 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.HierarchicalContainer;
 import org.apache.log4j.Logger;
+import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.ProjektmanagementScreensBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 
+import javax.persistence.EntityManager;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,24 +33,24 @@ public class TreeTableDataSourceFiller {
 
     private static final Logger logger = Logger.getLogger(TreeTableDataSourceFiller.class);
 
-    private ProjektmanagementScreensBean projektmanagementScreensBean;
-    private ProjektBean projektBean;
+    private TreeTableDataSourceFillerBean bean;
     private List<RessourceGroup> ressourceGroups;
     private final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
     private ResourceBundle messages;
     private HierarchicalContainer dataSource;
+    private AufwandProjInitScreen screen;
 
-    public TreeTableDataSourceFiller(final ResourceBundle bundle, final ProjektmanagementScreensBean screensBean,
-                                     final ProjektBean pBean, final HierarchicalContainer dSource) {
+    public TreeTableDataSourceFiller(final AufwandProjInitScreen screen, final ResourceBundle bundle,
+                                     final HierarchicalContainer dSource) {
+        this.screen = screen;
         this.messages = bundle;
-        this.projektmanagementScreensBean = screensBean;
-        projektBean = pBean;
         dataSource = dSource;
 
-        final DaoFactoryBean baseDaoFactoryBean = this.projektmanagementScreensBean.getDaoFactoryBean();
-        final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
-        ressourceGroups = ressourceGroupDAO.loadAllEntities();
+        bean = EJBFactory.getEjbInstance(TreeTableDataSourceFillerBean.class);
+        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        refreshEntities(baseDaoFactoryBean);
 
+        ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
 
         dataSource.removeAllItems();
         final String aufgabe = messages.getString("aufgabe");
@@ -58,8 +58,6 @@ public class TreeTableDataSourceFiller {
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
             dataSource.addContainerProperty(ressourceGroup.getName(), String.class, "");
         }
-
-
     }
 
     public void fill() {
@@ -67,9 +65,11 @@ public class TreeTableDataSourceFiller {
     }
 
     private void computePlanningUnitsAndTotalsAbsolut() {
-        final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
-        final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
-        for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
+        final PlannedProject projectFromSession = screen.getUi().getCurrentProject();
+        final PlannedProject projectFromDB = bean.getDaoFactoryBean().getPlannedProjectDAO().findByID
+                (projectFromSession.getId());
+        final List<PlanningUnit> planningUnits = projectFromDB.getPlanningUnits();
+        for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
             final String aufgabe = messages.getString("aufgabe");
@@ -157,6 +157,19 @@ public class TreeTableDataSourceFiller {
         if (days > 0) {
             item.setDays(item.getDays() + days);
             item.setHours(item.getHours() - (days * HOURS_DAY));
+        }
+    }
+
+    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
+        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
+        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+            entityManager.refresh(plannedProject);
+        }
+        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+            entityManager.refresh(planningUnitElement);
+        }
+        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
+            entityManager.refresh(ressourceGroup);
         }
     }
 }

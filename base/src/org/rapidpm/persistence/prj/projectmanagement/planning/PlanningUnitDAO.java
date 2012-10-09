@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.rapidpm.persistence.BaseDAO;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -17,6 +18,13 @@ public class PlanningUnitDAO extends BaseDAO<Long, PlanningUnit> {
 
     public PlanningUnitDAO(final EntityManager entityManager) {
         super(entityManager, PlanningUnit.class);
+    }
+
+    public PlanningUnit loadPlanningUnitByName(final String planningUnitName) {
+        final TypedQuery<PlanningUnit> typedQuery = entityManager.createQuery("from PlanningUnit pu "
+                + "where pu.planningUnitName=:planningUnitName ", PlanningUnit.class).setParameter("planningUnitName", planningUnitName);
+        final PlanningUnit singleResultOrNull = getSingleResultOrNull(typedQuery);
+        return singleResultOrNull;
     }
 
 

@@ -1,17 +1,22 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents;
 
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Label;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.ProjectAdministrationScreen;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import static org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents.ProjektFieldGroup.PROJEKT_NAME;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -24,25 +29,33 @@ public class CurrentProjectPanel extends EditablePanel {
 
 
     private ComboBox currentProjectBox;
-    private ProjektBean projektBean;
+    private ProjectAdministrationScreen screen;
+    private CurrentProjectPanelBean bean;
 
 
-    public CurrentProjectPanel(ResourceBundle messagesBundle, ProjektBean projBean){
+    public CurrentProjectPanel(final ResourceBundle messagesBundle, final ProjectAdministrationScreen theScreen){
         super(messagesBundle);
-        this.projektBean = projBean;
+        this.screen = theScreen;
+        bean = EJBFactory.getEjbInstance(CurrentProjectPanelBean.class);
+        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        refreshEntities(baseDaoFactoryBean);
+
         setCaption(messagesBundle.getString("pm_currentproject"));
         removeAllComponents();
-        final List<Projekt> projektList = projektBean.getProjekte();
-        if(projektList.isEmpty()){
+        final List<PlannedProject> projects = baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities();
+        if(projects.isEmpty()){
             addComponent(new Label(messagesBundle.getString("pm_noprojects")));
         } else {
-            currentProjectBox = new ComboBox("", new BeanItemContainer<>(Projekt.class, projektList));
+            currentProjectBox = new ComboBox("", new BeanItemContainer<>(PlannedProject.class, projects));
             currentProjectBox.setNullSelectionAllowed(false);
             currentProjectBox.setTextInputAllowed(false);
             currentProjectBox.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
-            currentProjectBox.setItemCaptionPropertyId(PROJEKT_NAME);
-            final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
-            currentProjectBox.setValue(projektList.get(currentProjectIndex));
+            currentProjectBox.setItemCaptionPropertyId(PlannedProject.NAME);
+            final VaadinSession session = screen.getUi().getSession();
+            final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
+            if(currentProject != null){
+                currentProjectBox.select(currentProject);
+            }
             buttonsLayout.addComponent(saveButton);
             buttonsLayout.addComponent(cancelButton);
             activate(false);
@@ -56,7 +69,7 @@ public class CurrentProjectPanel extends EditablePanel {
             saveButton.addClickListener(new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    projektBean.setCurrentProjectIndex(projektList.indexOf(currentProjectBox.getValue()));
+                    session.setAttribute(PlannedProject.class, (PlannedProject)currentProjectBox.getValue());
                     activate(false);
                 }
             });
@@ -81,5 +94,21 @@ public class CurrentProjectPanel extends EditablePanel {
     public void setComponents() {
         addComponent(currentProjectBox);
         addComponent(buttonsLayout);
+    }
+
+    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
+        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
+        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+            entityManager.refresh(plannedProject);
+        }
+        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
+            entityManager.refresh(planningUnit);
+        }
+        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+            entityManager.refresh(planningUnitElement);
+        }
+        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
+            entityManager.refresh(ressourceGroup);
+        }
     }
 }

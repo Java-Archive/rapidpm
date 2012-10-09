@@ -11,6 +11,7 @@ import org.hibernate.envers.query.AuditEntity;
 import org.hibernate.envers.query.AuditQuery;
 import org.hibernate.envers.query.AuditQueryCreator;
 import org.jboss.logging.Logger;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;

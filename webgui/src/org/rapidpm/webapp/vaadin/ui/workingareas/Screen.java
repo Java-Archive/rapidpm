@@ -1,12 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas;
 
 import com.vaadin.ui.VerticalLayout;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.webapp.vaadin.BaseUI;
 import org.rapidpm.webapp.vaadin.MainUI;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.ProjektmanagementScreensBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.StammdatenScreensBean;
 
 import java.util.ResourceBundle;
 
@@ -19,45 +14,23 @@ import java.util.ResourceBundle;
  */
 public abstract class Screen extends VerticalLayout implements Internationalizationable,Componentssetable {
 
-    protected ProjektBean projektBean;
-    protected ProjektmanagementScreensBean projektmanagementScreensBean;
-    protected StammdatenScreensBean stammdatenScreensBean;
     protected ResourceBundle messagesBundle;
+    protected MainUI ui;
 
-    public Screen(MainUI ui){
-        projektmanagementScreensBean = EJBFactory.getEjbInstance(ProjektmanagementScreensBean.class);
-        stammdatenScreensBean = EJBFactory.getEjbInstance(StammdatenScreensBean.class);
+    public Screen(final MainUI ui){
         this.messagesBundle = ui.getResourceBundle();
-    }
-
-    public Screen(BaseUI ui){
-        projektmanagementScreensBean = EJBFactory.getEjbInstance(ProjektmanagementScreensBean.class);
-        stammdatenScreensBean = EJBFactory.getEjbInstance(StammdatenScreensBean.class);
-        this.messagesBundle = ui.getResourceBundle();
-        this.projektBean = ui.getProjektBean();
+        this.ui = ui;
     }
 
     public Screen getScreen() {
         return this;
     }
 
-    public ProjektBean getProjektBean() {
-        return projektBean;
-    }
-
-    public void setProjektBean(ProjektBean projektBean) {
-        this.projektBean = projektBean;
-    }
-
     public ResourceBundle getMessagesBundle() {
         return messagesBundle;
     }
 
-    public ProjektmanagementScreensBean getProjektmanagementScreensBean() {
-        return projektmanagementScreensBean;
-    }
-
-    public StammdatenScreensBean getStammdatenScreensBean() {
-        return stammdatenScreensBean;
+    public MainUI getUi() {
+        return ui;
     }
 }
