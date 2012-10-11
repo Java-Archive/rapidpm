@@ -11,11 +11,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.IssuePrioritiesEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditableVLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DetailsCancelButtonClickListener;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DetailsSaveButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.DummyProjectData;
 
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -29,7 +26,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
     final private IssueOverviewScreen screen;
 
-    private Label headerLabel;
+    private TextField headerTextField;
     private ComboBox typeSelect;
     private ComboBox statusSelect;
     private ComboBox prioritySelect;
@@ -68,8 +65,10 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
 
 
-        headerLabel = new Label();
-        addComponent(headerLabel);
+        headerTextField = new TextField();
+        headerTextField.setWidth("100%");
+        headerTextField.setReadOnly(true);
+        componentsLayout.addComponent(headerTextField);
 
         typeSelect = new ComboBox();
         typeSelect.addContainerProperty(DummyProjectData.PROPERTY_CAPTION, String.class, null);
@@ -215,7 +214,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         this.issue = issue;
         setLayoutReadOnly(false);
 
-        headerLabel.setValue(issue.getSummary());
+        headerTextField.setValue("Hier steht der Name");//issue.getSummary());
         statusSelect.select(issue.getIssueStatus());
         prioritySelect.select(issue.getIssuePriority());
         //assigneeSelect.setValue(issue.getAssignee().getLogin());
@@ -233,7 +232,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         if (newIssue)
             this.issue = new IssueBase();
 
-        issue.setSummary(headerLabel.getValue());
+        issue.setSummary(headerTextField.getValue());
         issue.setIssueStatus((IssueStatus) statusSelect.getValue());
         issue.setIssuePriority((IssuePriority) prioritySelect.getValue());
         //assigneeSelect.setValue(issue.getAssignee().getLogin());

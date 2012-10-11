@@ -39,7 +39,6 @@ public class IssueDeleteWindow extends Window implements Internationalizationabl
 
     private void setComponentens() {
         deleteLabel = new Label();
-        deleteLabel.setContentMode(ContentMode.PREFORMATTED);
         deleteLabel.setWidth("100%");
         addComponent(deleteLabel);
 
@@ -67,8 +66,10 @@ public class IssueDeleteWindow extends Window implements Internationalizationabl
     @Override
     public void doInternationalization() {
         setCaption(screen.getMessagesBundle().getString("issue_deletewindow"));
-        deleteLabel.setCaption(screen.getMessagesBundle().getString("issue_delete_question") + "\n"
-                + issueTree.getItemCaption(issueTree.getValue()));
+
+        deleteLabel.setCaption(screen.getMessagesBundle().getString("issue_delete_question"));
+        deleteLabel.setValue(issueTree.getItemCaption(issueTree.getValue()));
+
         yesButton.setCaption(screen.getMessagesBundle().getString("yes"));
         noButton.setCaption(screen.getMessagesBundle().getString("no"));
     }

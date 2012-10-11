@@ -1,7 +1,10 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic;
 
 import com.vaadin.data.Item;
+import com.vaadin.data.Property;
 import com.vaadin.event.ItemClickEvent;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Tree;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
@@ -18,24 +21,33 @@ import java.util.List;
  * Time: 11:37
  * To change this template use File | Settings | File Templates.
  */
-public class TreeItemClickListener implements ItemClickEvent.ItemClickListener {
+public class TreeItemClickValueChangeListener implements ItemClickEvent.ItemClickListener, Tree.ValueChangeListener {
 
     private final IssueTabSheet issueTabSheet;
+    private final Tree issueTree;
 
-    public TreeItemClickListener(final IssueTabSheet issueTabSheet) {
+    public TreeItemClickValueChangeListener(final IssueTabSheet issueTabSheet, final Tree issueTree) {
         this.issueTabSheet = issueTabSheet;
+        this.issueTree = issueTree;
     }
 
     @Override
     public void itemClick(ItemClickEvent event) {
-        final Tree tree = (Tree) event.getSource();
-        Object itemId = event.getItemId();
+        changeDetails(event.getItemId());
+    }
 
-        PlanningUnit punit = (PlanningUnit)tree.getContainerProperty(itemId,
+    @Override
+    public void valueChange(Property.ValueChangeEvent event) {
+        if (event.getProperty().getValue() != null)
+            changeDetails(event.getProperty().getValue());
+    }
+
+    private void changeDetails(Object itemId) {
+        PlanningUnit punit = (PlanningUnit)issueTree.getContainerProperty(itemId,
                 TreeContainerPlanningUnits.PROPERTY_PLANNINGUNIT).getValue();
         issueTabSheet.getDetailsLayout().setPropertiesFromIssue(punit.getIssueBase());
 
-        if (!tree.hasChildren(itemId)) {
+        if (!issueTree.hasChildren(itemId)) {
             issueTabSheet.disableTableTab(true);
         }
         else {
@@ -45,7 +57,7 @@ public class TreeItemClickListener implements ItemClickEvent.ItemClickListener {
                 issues.add(childUnit.getIssueBase());
             }
             issueTabSheet.getTableLayout().setPropertiesFromIssueList(issues);
-
         }
     }
+
 }
