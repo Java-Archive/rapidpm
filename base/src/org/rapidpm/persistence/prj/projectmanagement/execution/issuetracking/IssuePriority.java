@@ -20,6 +20,8 @@ import javax.persistence.*;
 public class IssuePriority {
     //    private String name;
 
+    public static final String NAME = "priorityName";
+
     public IssuePriority() {
     }
     public IssuePriority(final int prio, final String priorityName) {
@@ -47,6 +49,9 @@ public class IssuePriority {
     @Basic
     private String priorityName;
 
+    @Basic
+    private String priorityFileName;
+
     public int getPrio() {
         return prio;
     }
@@ -63,6 +68,14 @@ public class IssuePriority {
         this.priorityName = name;
     }
 
+    public String getPriorityFileName() {
+        return priorityFileName;
+    }
+
+    public void setPriorityFileName(String priorityFileName) {
+        this.priorityFileName = priorityFileName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -70,8 +83,6 @@ public class IssuePriority {
 
         IssuePriority that = (IssuePriority) o;
 
-        if (prio != that.prio) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (priorityName != null ? !priorityName.equals(that.priorityName) : that.priorityName != null) return false;
 
         return true;
@@ -79,9 +90,13 @@ public class IssuePriority {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + prio;
-        result = 31 * result + (priorityName != null ? priorityName.hashCode() : 0);
-        return result;
+        return priorityName != null ? priorityName.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "IssuePriority{" +
+                "priorityName='" + priorityName + '\'' +
+                '}';
     }
 }

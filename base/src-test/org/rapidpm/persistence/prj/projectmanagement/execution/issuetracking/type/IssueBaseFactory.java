@@ -31,8 +31,8 @@ public class IssueBaseFactory extends EntityFactory<IssueBase> {
         issueBase.setDueDate_resolved(RND.nextDate());
 //        issueBase.setEuro(RND.nextInt(500, 10000));
 //        issueBase.setFakturierbar(RND.nextBoolean());
-        issueBase.setIssuePriority(new IssuePriorityFactory().createRandomEntity());
-        issueBase.setIssueStatus(new IssueStatusFactory().createRandomEntity());
+        issueBase.setPriority(new IssuePriorityFactory().createRandomEntity());
+        issueBase.setStatus(new IssueStatusFactory().createRandomEntity());
         //issueBase.setIssueTimeUnitEstimated(new IssueTimeUnitFactory().createRandomEntity());
         //issueBase.setIssueTimeUnitsUsed(new ArrayList<IssueTimeUnit>() {{
 //            final IssueTimeUnitFactory factory = new IssueTimeUnitFactory();

@@ -2,12 +2,16 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit;
 
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TreeTableHeaderClickListener;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.ExpandTableCheckBox;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
@@ -15,6 +19,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.comp
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.OverviewTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.TreeTableFiller;
 
+import javax.persistence.EntityManager;
 import java.util.Date;
 
 import static org.rapidpm.Constants.DATE_FORMAT;
@@ -37,9 +42,9 @@ public class AufwandProjInitScreen extends Screen {
     private HierarchicalContainer dataSource = new HierarchicalContainer();
     private MyTreeTable treeTable = new MyTreeTable();
     private MyTable uebersichtTable = new MyTable();
+    private AufwandProjInitScreenBean bean;
+    private DaoFactoryBean baseDaoFactoryBean;
 
-    //private static final String TABLELAYOUT_WIDTH = "900px";
-    private static final String COLUMN_WIDTH = "350px";
     private static final String ABSOLUTE_WIDTH = "700px";
 
     private HorizontalLayout felderLayout = new HorizontalLayout();
@@ -50,22 +55,23 @@ public class AufwandProjInitScreen extends Screen {
     private GridLayout upperFormLayout = new GridLayout(2, 10);
     private VerticalLayout lowerFormLayout = new VerticalLayout();
 
-    public AufwandProjInitScreen(MainUI ui) {
+    public AufwandProjInitScreen(final MainUI ui) {
         super(ui);
 
+        bean = EJBFactory.getEjbInstance(AufwandProjInitScreenBean.class);
+        baseDaoFactoryBean = bean.getDaoFactoryBean();
+        refreshEntities(baseDaoFactoryBean);
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
 
         expandCheckBox = new ExpandTableCheckBox(treeTable, dataSource);
-        undoButton = new UndoButton(this, treeTable, dataSource, projektBean);
+        undoButton = new UndoButton(this, treeTable, dataSource);
         undoButton.setVisible(false);
 
-        final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, projektBean,
-                treeTable, dataSource);
+        final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, treeTable, dataSource);
         treeTableFiller.fill();
 
-        final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable,
-                projektBean, projektmanagementScreensBean);
+        final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable);
         overviewTableFiller.fill();
 
         fillFields();
@@ -102,7 +108,7 @@ public class AufwandProjInitScreen extends Screen {
     @Override
     public void doInternationalization() {
         expandCheckBox.setCaption(messagesBundle.getString("costsinit_expand"));
-        saveButton.setCaption(messagesBundle.getString("saveOrUpdate"));
+        saveButton.setCaption(messagesBundle.getString("save"));
         undoButton.setCaption(messagesBundle.getString("costsinit_removesortorder"));
         kundeField.setCaption(messagesBundle.getString("initscreen_customer"));
         projektField.setCaption(messagesBundle.getString("initscreen_project"));
@@ -114,8 +120,7 @@ public class AufwandProjInitScreen extends Screen {
     }
 
     public void fillFields() {
-        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle, projektmanagementScreensBean,
-                projektBean);
+        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle);
         timesCalculator.calculate();
         manntageField.setReadOnly(false);
         summeField.setReadOnly(false);
@@ -123,8 +128,9 @@ public class AufwandProjInitScreen extends Screen {
         summeField.setValue(timesCalculator.getGesamtSummeItem().toString());
         manntageField.setReadOnly(true);
         summeField.setReadOnly(true);
-        final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
-        final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
+        final PlannedProject projectFromSession = ui.getCurrentProject();
+        final PlannedProject projekt = baseDaoFactoryBean.getPlannedProjectDAO().findByID
+                (projectFromSession.getId());
         projektField.setValue(projekt.getProjektName());
     }
 
@@ -138,8 +144,6 @@ public class AufwandProjInitScreen extends Screen {
         datumField.setDateFormat(DATE_FORMAT.toPattern());
         manntageField = new TextField();
         summeField = new TextField();
-        // Horizontallayout (700px) beinhaltet 2 VerticalLayouts(jew. 350px)
-        // beinhalten jeweils x horizontallayouts (sizefull)
         felderLayout.setWidth(ABSOLUTE_WIDTH);
 
         layoutLinks.addComponent(kundeField);
@@ -172,6 +176,21 @@ public class AufwandProjInitScreen extends Screen {
         addComponent(formLayout);
     }
 
+    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
+        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
+        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+            entityManager.refresh(plannedProject);
+        }
+        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+            entityManager.refresh(planningUnitElement);
+        }
+        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
+            entityManager.refresh(planningUnit);
+        }
+        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
+            entityManager.refresh(ressourceGroup);
+        }
+    }
 
     public TextField getKundeField() {
         return kundeField;
@@ -275,10 +294,6 @@ public class AufwandProjInitScreen extends Screen {
 
     public void setUebersichtTable(MyTable uebersichtTable) {
         this.uebersichtTable = uebersichtTable;
-    }
-
-    public ProjektBean getProjektBean() {
-        return projektBean;
     }
 
     public HierarchicalContainer getDataSource() {

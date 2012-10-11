@@ -1,9 +1,10 @@
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal;
 
 import org.rapidpm.Constants;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.List;
 
 /**
  *

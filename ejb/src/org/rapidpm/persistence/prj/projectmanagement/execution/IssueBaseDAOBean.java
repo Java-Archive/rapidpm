@@ -74,10 +74,10 @@ public class IssueBaseDAOBean {
             typeObj.setId(flatTypeEntity.getId());
 
             final Long issuePriorityOID = flatTypeEntity.getIssuePriorityOID();
-            typeObj.setIssuePriority(daoFactoryBean.getIssuePriorityDAO().findByID(issuePriorityOID));
+            typeObj.setPriority(daoFactoryBean.getIssuePriorityDAO().findByID(issuePriorityOID));
 
             final Long issueStatusOID = flatTypeEntity.getIssueStatusOID();
-            typeObj.setIssueStatus(daoFactoryBean.getIssueStatusDAO().findByID(issueStatusOID));
+            typeObj.setStatus(daoFactoryBean.getIssueStatusDAO().findByID(issueStatusOID));
 
 //            final Long issueTimeUnitEstimatedOID = flatTypeEntity.getIssueTimeUnitEstimatedOID();
 //            typeObj.setIssueTimeUnitEstimated(daoFactoryBean.getIssueTimeUnitDAO().findByID(issueTimeUnitEstimatedOID));
@@ -231,25 +231,25 @@ public class IssueBaseDAOBean {
         return createResult(getEntityDAO().loadAllEntities());
     }
 
-    @Interceptors(LoggingInterceptor.class)
-    public
-    @WebMethod(operationName = "loadAllIssuesForBenutzer")
-    @WebResult(name = "IssueBaseResult")
-    IssueBaseResult loadAllEntities(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid,
-                                    @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
-                                    @WebParam(name = "assignee") final String assignee) {
-        return createResult(getEntityDAO().loadAllIssuesForBenutzer(assignee));
-    }
-
-    @Interceptors(LoggingInterceptor.class)
-    public
-    @WebMethod(operationName = "loadAllIssuesForBenutzerOID")
-    @WebResult(name = "IssueBaseResult")
-    IssueBaseResult loadAllEntities(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid,
-                                    @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
-                                    @WebParam(name = "issueAssigneeOID") final Long assigneeOID) {
-        return createResult(getEntityDAO().loadAllIssuesForBenutzer(assigneeOID));
-    }
+//    @Interceptors(LoggingInterceptor.class)
+//    public
+//    @WebMethod(operationName = "loadAllIssuesForBenutzer")
+//    @WebResult(name = "IssueBaseResult")
+//    IssueBaseResult loadAllEntities(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid,
+//                                    @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
+//                                    @WebParam(name = "assignee") final String assignee) {
+//        return createResult(getEntityDAO().loadAllIssuesForBenutzer(assignee));
+//    }
+//
+//    @Interceptors(LoggingInterceptor.class)
+//    public
+//    @WebMethod(operationName = "loadAllIssuesForBenutzerOID")
+//    @WebResult(name = "IssueBaseResult")
+//    IssueBaseResult loadAllEntities(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid,
+//                                    @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
+//                                    @WebParam(name = "issueAssigneeOID") final Long assigneeOID) {
+//        return createResult(getEntityDAO().loadAllIssuesForBenutzer(assigneeOID));
+//    }
 
     @Interceptors(LoggingInterceptor.class)
     public
@@ -328,8 +328,8 @@ public class IssueBaseDAOBean {
         ft.setDueDate_planned(t.getDueDate_planned());
         ft.setDueDate_resolved(t.getDueDate_resolved());
         ft.setFakturierbar(false);
-        ft.setIssuePriorityOID(t.getIssuePriority().getId());
-        ft.setIssueStatusOID(t.getIssuePriority().getId());
+        ft.setIssuePriorityOID(t.getPriority().getId());
+        ft.setIssueStatusOID(t.getPriority().getId());
 
 //        final IssueTimeUnit issueTimeUnitEstimated = t.getIssueTimeUnitEstimated();
 //        if (issueTimeUnitEstimated != null) {

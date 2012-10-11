@@ -7,10 +7,7 @@ package org.rapidpm.webapp.vaadin.ui.windows;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.LoginForm;
-import com.vaadin.ui.Window;
+import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.BaseUI;
 import org.rapidpm.webapp.vaadin.ui.Languages;
@@ -40,8 +37,7 @@ public class LoginWindow extends Window {
                     ui.authentication(username, password);
                     close();
                 } catch (Exception e) {
-                    addComponent(new Label("login gescheitert!"));
-                    e.printStackTrace();
+                    Notification.show("Login failed...");
                 }
             }
         });

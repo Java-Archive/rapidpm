@@ -26,7 +26,7 @@ public abstract class MyFormLayout extends VerticalLayout {
     public MyFormLayout(final ProjektplanungScreen screen, final Panel screenPanel){
         this.setMargin(false);
         messages = screen.getMessagesBundle();
-        saveButton.setCaption(messages.getString("saveOrUpdate"));
+        saveButton.setCaption(messages.getString("save"));
         cancelButton.setCaption(messages.getString("cancel"));
         screenPanel.addClickListener(new MouseEvents.ClickListener() {
             @Override

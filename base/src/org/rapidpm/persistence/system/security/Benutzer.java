@@ -31,6 +31,14 @@ import java.util.List;
 @Entity
 @Audited
 public class Benutzer {
+
+    public static final String ID ="id";
+    public static final String HIDDEN = "hidden";
+    public static final String LOGIN = "login";
+    public static final String EMAIL = "email";
+    public static final String PASSWD = "passwd";
+    public static final String LASTLOGIN = "lastLogin";
+
     private static final Logger logger = Logger.getLogger(Benutzer.class);
 
     @Id
@@ -82,9 +90,6 @@ public class Benutzer {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Berechtigung> berechtigungen;
 
-
-    public Benutzer() {
-    }
 
     public Long getId() {
         return id;
@@ -187,106 +192,33 @@ public class Benutzer {
         this.berechtigungen = berechtigungen;
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (!(o instanceof Benutzer)) return false;
-//
-//        Benutzer benutzer = (Benutzer) o;
-//
-//        if (!active.equals(benutzer.active)) return false;
-//        if (benutzerGruppe != null ? !benutzerGruppe.equals(benutzer.benutzerGruppe) : benutzer.benutzerGruppe != null)
-//            return false;
-//        if (benutzerWebapplikation != null ? !benutzerWebapplikation.equals(benutzer.benutzerWebapplikation) : benutzer.benutzerWebapplikation != null)
-//            return false;
-//        if (!berechtigungen.equals(benutzer.berechtigungen)) return false;
-//        if (!hidden.equals(benutzer.hidden)) return false;
-//        if (id != null ? !id.equals(benutzer.id) : benutzer.id != null) return false;
-//        if (!login.equals(benutzer.login)) return false;
-//        if (!mandantengruppe.equals(benutzer.mandantengruppe)) return false;
-//        if (!passwd.equals(benutzer.passwd)) return false;
-//        if (!validFrom.equals(benutzer.validFrom)) return false;
-//        if (!validUntil.equals(benutzer.validUntil)) return false;
-//
-//        return true;
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        int result = id != null ? id.hashCode() : 0;
-//        result = 31 * result + hidden.hashCode();
-//        result = 31 * result + login.hashCode();
-//        result = 31 * result + passwd.hashCode();
-//        result = 31 * result + active.hashCode();
-//        result = 31 * result + validFrom.hashCode();
-//        result = 31 * result + validUntil.hashCode();
-//        result = 31 * result + mandantengruppe.hashCode();
-//        result = 31 * result + berechtigungen.hashCode();
-//        return result;
-//    }
-
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Benutzer)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Benutzer benutzer = (Benutzer) o;
 
-        if (id != null ? !id.equals(benutzer.id) : benutzer.id != null) return false;
-        if (login != null ? !login.equals(benutzer.login) : benutzer.login != null) return false;
-        if (email != null ? !email.equals(benutzer.email) : benutzer.email != null) return false;
-
-        if (passwd != null ? !passwd.equals(benutzer.passwd) : benutzer.passwd != null) return false;
-        if (active != null ? !active.equals(benutzer.active) : benutzer.active != null) return false;
-        if (benutzerGruppe != null ? !benutzerGruppe.equals(benutzer.benutzerGruppe) : benutzer.benutzerGruppe != null)
-            return false;
-        if (benutzerWebapplikation != null ? !benutzerWebapplikation.equals(benutzer.benutzerWebapplikation) : benutzer.benutzerWebapplikation != null)
-            return false;
-        if (berechtigungen != null ? !berechtigungen.equals(benutzer.berechtigungen) : benutzer.berechtigungen != null)
-            return false;
-        if (failedLogins != null ? !failedLogins.equals(benutzer.failedLogins) : benutzer.failedLogins != null)
-            return false;
-        if (hidden != null ? !hidden.equals(benutzer.hidden) : benutzer.hidden != null) return false;
-        if (lastLogin != null ? !lastLogin.equals(benutzer.lastLogin) : benutzer.lastLogin != null) return false;
-        if (mandantengruppe != null ? !mandantengruppe.equals(benutzer.mandantengruppe) : benutzer.mandantengruppe != null)
-            return false;
-        if (validFrom != null ? !validFrom.equals(benutzer.validFrom) : benutzer.validFrom != null) return false;
-        if (validUntil != null ? !validUntil.equals(benutzer.validUntil) : benutzer.validUntil != null) return false;
+        if (!login.equals(benutzer.login)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        return result;
+        return login.hashCode();
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Benutzer");
-        sb.append("{active=").append(active);
-        sb.append(", id=").append(id);
-        sb.append(", hidden=").append(hidden);
-        sb.append(", login='").append(login).append('\'');
-        sb.append(", email='").append(email).append('\'');
-        sb.append(", passwd='").append(passwd).append('\'');
-        sb.append(", lastLogin=").append(lastLogin);
-        sb.append(", failedLogins=").append(failedLogins);
-        sb.append(", validFrom=").append(validFrom);
-        sb.append(", validUntil=").append(validUntil);
-        sb.append(", mandantengruppe=").append(mandantengruppe != null ? mandantengruppe.getId() : "");
-        sb.append(", benutzerGruppe=").append(benutzerGruppe != null ? benutzerGruppe.getId() : "");
-        sb.append(", benutzerWebapplikation=").append(benutzerWebapplikation != null ? benutzerWebapplikation.getId() : "");
-        sb.append(", berechtigungen=").append(berechtigungen);
-        sb.append('}');
-        return sb.toString();
+        return "Benutzer{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                '}';
     }
 
-
-    //    public List<SearchQuery> getSearchQueries(){
+//    public List<SearchQuery> getSearchQueries(){
     //        return searchQueries;
     //    }
     //

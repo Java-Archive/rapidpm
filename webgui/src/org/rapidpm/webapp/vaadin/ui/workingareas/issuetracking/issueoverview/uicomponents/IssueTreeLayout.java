@@ -53,7 +53,7 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 
         addComponent(buttonLayout);
 
-        issueTree = new Tree("IssueTree", new TreeContainerPlanningUnits());
+        issueTree = new Tree("IssueTree", new TreeContainerPlanningUnits(screen.getCurrentProject()));
         issueTree.setImmediate(true);
         if (issueTabSheet != null) {
             TreeItemClickValueChangeListener listener = new TreeItemClickValueChangeListener(issueTabSheet, issueTree);

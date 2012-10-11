@@ -1,19 +1,25 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents;
 
 import com.vaadin.data.Item;
+import com.vaadin.server.Resource;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.*;
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
-import org.rapidpm.webapp.vaadin.ui.workingareas.IssuePrioritiesEnum;
-import org.rapidpm.webapp.vaadin.ui.workingareas.IssueStatusEnum;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditableVLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.DummyProjectData;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsFieldGroupBean;
 
+import javax.swing.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,8 +29,6 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  */
 public class IssueDetailsLayout extends ComponentEditableVLayout implements Internationalizationable{
-
-    final private IssueOverviewScreen screen;
 
     private TextField headerTextField;
     private ComboBox typeSelect;
@@ -48,15 +52,18 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
     private IssueBase issue;
 
+
     public IssueDetailsLayout(IssueOverviewScreen screen) {
         super(screen);
-        this.screen = screen;
         doInternationalization();
     }
 
 
     @Override
     protected AbstractOrderedLayout buildForm() {
+        final List<IssueStatus> statusList = screen.getBaseDaoFactoryBean().getIssueStatusDAO().loadAllEntities();
+        final List<IssuePriority> priorityList =  screen.getBaseDaoFactoryBean().getIssuePriorityDAO().loadAllEntities();
+        final List<Benutzer> userList =  screen.getBaseDaoFactoryBean().getBenutzerDAO().loadAllEntities();
         componentsLayout = new VerticalLayout();
 
         FormLayout dateLayout = new FormLayout();
@@ -86,10 +93,10 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         statusSelect = new ComboBox();
         statusSelect.addContainerProperty(DummyProjectData.PROPERTY_CAPTION, String.class, null);
         statusSelect.setItemCaptionPropertyId(DummyProjectData.PROPERTY_CAPTION);
-        for (IssueStatus status : DummyProjectData.getStatusList()) {
+        for (IssueStatus status : statusList) {
             item = statusSelect.addItem(status);
             item.getItemProperty(DummyProjectData.PROPERTY_CAPTION).setValue(status.getStatusName());
-            statusSelect.setItemIcon(status, IssueStatusEnum.valueOf(status.getStatusName()).getIcon());
+            statusSelect.setItemIcon(status, new ThemeResource("images/" + status.getStatusFileName()));
         }
         statusSelect.setTextInputAllowed(false);
         statusSelect.setNullSelectionAllowed(false);
@@ -99,10 +106,10 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         prioritySelect = new ComboBox();
         prioritySelect.addContainerProperty(DummyProjectData.PROPERTY_CAPTION, String.class, null);
         prioritySelect.setItemCaptionPropertyId(DummyProjectData.PROPERTY_CAPTION);
-        for (IssuePriority priority : DummyProjectData.getPriorityList()) {
+        for (IssuePriority priority : priorityList) {
             item = prioritySelect.addItem(priority);
             item.getItemProperty(DummyProjectData.PROPERTY_CAPTION).setValue(priority.getPriorityName());
-            prioritySelect.setItemIcon(priority, IssuePrioritiesEnum.valueOf(priority.getPriorityName()).getIcon());
+            prioritySelect.setItemIcon(priority, new ThemeResource("images/" + priority.getPriorityFileName()));
         }
         prioritySelect.setTextInputAllowed(false);
         prioritySelect.setNullSelectionAllowed(false);
@@ -110,12 +117,17 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         detailLayout.addComponent(prioritySelect);
 
         reporterLabel = new Label("sven.ruppert");
-        reporterLabel.setValue(" sven.ruppert");
+        reporterLabel.setValue("sven.ruppert");
         detailLayout.addComponent(reporterLabel);
 
         assigneeSelect = new ComboBox();
-        assigneeSelect.addItem("sven.ruppert");
-        assigneeSelect.select("sven.ruppert");
+        assigneeSelect.addContainerProperty(DummyProjectData.PROPERTY_CAPTION, String.class, null);
+        assigneeSelect.setItemCaptionPropertyId(DummyProjectData.PROPERTY_CAPTION);
+        for (Benutzer user : userList) {
+            item = assigneeSelect.addItem(user);
+            item.getItemProperty(DummyProjectData.PROPERTY_CAPTION).setValue(user.getLogin());
+        }
+        assigneeSelect.select(userList.get(0));
         assigneeSelect.setTextInputAllowed(false);
         assigneeSelect.setNullSelectionAllowed(false);
         assigneeSelect.setReadOnly(true);
@@ -214,10 +226,10 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         this.issue = issue;
         setLayoutReadOnly(false);
 
-        headerTextField.setValue("Hier steht der Name");//issue.getSummary());
-        statusSelect.select(issue.getIssueStatus());
-        prioritySelect.select(issue.getIssuePriority());
-        //assigneeSelect.setValue(issue.getAssignee().getLogin());
+        headerTextField.setValue(issue.getSummary() + "Hier steht der Name");
+        statusSelect.select(issue.getStatus());
+        prioritySelect.select(issue.getPriority());
+        assigneeSelect.setValue(issue.getAssignee());
         //reporterLabel.setValue(issue.getReporter().getLogin());
         plannedDateField.setValue(issue.getDueDate_planned());
         resolvedDateField.setValue(issue.getDueDate_resolved());
@@ -233,9 +245,9 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             this.issue = new IssueBase();
 
         issue.setSummary(headerTextField.getValue());
-        issue.setIssueStatus((IssueStatus) statusSelect.getValue());
-        issue.setIssuePriority((IssuePriority) prioritySelect.getValue());
-        //assigneeSelect.setValue(issue.getAssignee().getLogin());
+        issue.setStatus((IssueStatus) statusSelect.getValue());
+        issue.setPriority((IssuePriority) prioritySelect.getValue());
+        issue.setAssignee((Benutzer) assigneeSelect.getValue());
         //reporterLabel.setValue(issue.getReporter().getLogin());
         issue.setDueDate_planned(plannedDateField.getValue());
         issue.setDueDate_resolved(resolvedDateField.getValue());

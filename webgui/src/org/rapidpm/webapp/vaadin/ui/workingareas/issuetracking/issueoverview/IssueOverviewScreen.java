@@ -2,10 +2,14 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview;
 
 
 import com.vaadin.ui.*;
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTabSheet;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTreeLayout;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsFieldGroupBean;
 
 
 /**
@@ -25,20 +29,28 @@ public class IssueOverviewScreen extends Screen{
     private Button cancelButton;
     private HorizontalLayout buttonLayout;
 
+    private DaoFactoryBean baseDaoFactoryBean;
 
     public IssueOverviewScreen(MainUI ui) {
         super(ui);
+        baseDaoFactoryBean = EJBFactory.getEjbInstance(IssueOverviewScreenBean.class).getDaoFactoryBean();
         this.setSizeFull();
         hSplitPanel = new HorizontalSplitPanel();
         hSplitPanel.setSplitPosition(30, Unit.PERCENTAGE);
         hSplitPanel.setSizeFull();
         issueTabSheet = new IssueTabSheet(this);
         treeLayout = new IssueTreeLayout(this, issueTabSheet);
-        saveButton = new Button();
-        cancelButton = new Button();
-        buttonLayout = new HorizontalLayout();
         doInternationalization();
         setComponents();
+    }
+
+    public DaoFactoryBean getBaseDaoFactoryBean() {
+        return baseDaoFactoryBean;
+    }
+
+    public PlannedProject getCurrentProject() {
+        return baseDaoFactoryBean.getPlannedProjectDAO().findByID
+                (ui.getCurrentProject().getId());
     }
 
 
@@ -51,7 +63,5 @@ public class IssueOverviewScreen extends Screen{
 
     @Override
     public void doInternationalization() {
-        saveButton.setCaption(messagesBundle.getString("save"));
-        cancelButton.setCaption(messagesBundle.getString("cancel"));
     }
 }

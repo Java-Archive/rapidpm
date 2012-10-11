@@ -1,6 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell;
 
 import com.vaadin.data.util.HierarchicalContainer;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 
 import java.util.List;
@@ -17,8 +18,10 @@ public class TreeContainerPlanningUnits extends HierarchicalContainer {
 
     public final static String PROPERTY_CAPTION = "caption";
     public final static String PROPERTY_PLANNINGUNIT = "planningUnit";
+    private final PlannedProject currentProject;
 
-    public TreeContainerPlanningUnits() {
+    public TreeContainerPlanningUnits(final PlannedProject currentProject) {
+        this.currentProject = currentProject;
         this.addContainerProperty(PROPERTY_CAPTION, String.class, null);
         this.addContainerProperty(PROPERTY_PLANNINGUNIT, PlanningUnit.class, null);
         filltree();
@@ -26,7 +29,7 @@ public class TreeContainerPlanningUnits extends HierarchicalContainer {
 
     private void filltree() {
         Object itemId;
-        for (PlanningUnit planningUnit : DummyProjectData.getPlanningUnitList()) {
+        for (PlanningUnit planningUnit : currentProject.getPlanningUnits()) {
             itemId = addItem();
             this.getContainerProperty(itemId, PROPERTY_CAPTION).setValue(planningUnit.getPlanningUnitName());
             this.getContainerProperty(itemId, PROPERTY_PLANNINGUNIT).setValue(planningUnit);

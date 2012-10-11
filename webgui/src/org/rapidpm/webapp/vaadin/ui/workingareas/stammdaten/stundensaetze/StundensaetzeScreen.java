@@ -73,7 +73,7 @@ public class StundensaetzeScreen extends Screen {
         optionGroup.setImmediate(true);
 
         delRowButton.setEnabled(false);
-        delRowButton.addClickListener(new DelRowClickListener(this, delRowButton));
+        delRowButton.addClickListener(new DelRowClickListener(this, delRowButton, messagesBundle));
         tabellenTasksLayout.setWidth("500px");
         tabellenTasksLayout.addComponent(addDeleteRessourceLabel);
         tabellenTasksLayout.addComponent(editModeLabel);

@@ -1,13 +1,13 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 
+import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.Projekt;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.ProjektBean;
 
+import javax.persistence.EntityManager;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -25,8 +25,6 @@ import static org.rapidpm.Constants.*;
 */
 public class TimesCalculator {
 
-    private ProjektmanagementScreensBean projektmanagementScreensBean;
-    private ProjektBean projektBean;
     private List<RessourceGroup> ressourceGroups;
     private ResourceBundle messages;
 
@@ -34,15 +32,14 @@ public class TimesCalculator {
     private final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
     private Integer gesamtSummeInMin;
     private Double mannTageExakt;
+    private TimesCalculatorBean bean;
 
-    public TimesCalculator(final ResourceBundle bundle, final ProjektmanagementScreensBean screenBean,
-                           final ProjektBean pBean) {
+    public TimesCalculator(final ResourceBundle bundle) {
         this.messages = bundle;
-        projektmanagementScreensBean = screenBean;
-        projektBean = pBean;
-        final DaoFactoryBean baseDaoFactoryBean = this.projektmanagementScreensBean.getDaoFactoryBean();
-        final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
-        ressourceGroups = ressourceGroupDAO.loadAllEntities();
+        bean = EJBFactory.getEjbInstance(TimesCalculatorBean.class);
+        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        refreshEntities(baseDaoFactoryBean);
+        ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
     }
 
     public void calculate() {
@@ -60,8 +57,7 @@ public class TimesCalculator {
     }
 
     private void calculatePlanningUnitsAndTotalsAbsolut() {
-        final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
-        final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
+        final PlannedProject projekt = bean.getDaoFactoryBean().getPlannedProjectDAO().loadAllEntities().get(0);
         for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
             calculatePlanningUnits(planningUnit.getKindPlanningUnits());
         }
@@ -162,5 +158,18 @@ public class TimesCalculator {
     public String getMannTageGerundet() {
         final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
         return format.format(mannTageExakt);
+    }
+
+    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
+        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
+        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+            entityManager.refresh(plannedProject);
+        }
+        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+            entityManager.refresh(planningUnitElement);
+        }
+        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
+            entityManager.refresh(ressourceGroup);
+        }
     }
 }

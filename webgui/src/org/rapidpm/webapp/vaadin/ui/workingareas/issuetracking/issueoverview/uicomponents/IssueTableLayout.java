@@ -22,13 +22,10 @@ public class IssueTableLayout extends ComponentEditableVLayout {
     private final static String STATUS = "status";
     private final static String PRIORITY = "priority";
 
-    private IssueOverviewScreen screen;
-
     private Table issueTable;
 
     public IssueTableLayout(IssueOverviewScreen screen) {
         super(screen);
-        this.screen = screen;
         addSaveButtonClickListener(new StandardClickListener());
         addCancelButtonClickListener(new StandardClickListener());
     }
@@ -63,8 +60,8 @@ public class IssueTableLayout extends ComponentEditableVLayout {
         issueTable.removeAllItems();
         int i = 0;
         for (IssueBase issue : issues) {
-            issueTable.addItem(new Object[] {"RPM-" + i, issue.getIssueStatus().getStatusName(),
-                    issue.getIssuePriority().getPriorityName()}, i);
+            issueTable.addItem(new Object[] {"RPM-" + i, issue.getStatus().getStatusName(),
+                    issue.getPriority().getPriorityName()}, i);
             i++;
         }
     }

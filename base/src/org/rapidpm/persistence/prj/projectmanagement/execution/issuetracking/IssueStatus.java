@@ -19,6 +19,9 @@ import javax.persistence.*;
 @Entity
 public class IssueStatus {
 
+    public static final String NAME = "statusName";
+    public static final String ID = "id";
+
     @Id
     @TableGenerator(name = "PKGenIssueStatus", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "IssueStatus_id", valueColumnName = "gen_value", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenIssueStatus")
@@ -26,6 +29,9 @@ public class IssueStatus {
 
     @Basic
     private String statusName;
+
+    @Basic
+    private String statusFileName;
 
     public IssueStatus() {
     }
@@ -55,6 +61,14 @@ public class IssueStatus {
         this.statusName = name;
     }
 
+    public String getStatusFileName() {
+        return statusFileName;
+    }
+
+    public void setStatusFileName(String statusFileName) {
+        this.statusFileName = statusFileName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -62,7 +76,6 @@ public class IssueStatus {
 
         IssueStatus that = (IssueStatus) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (statusName != null ? !statusName.equals(that.statusName) : that.statusName != null) return false;
 
         return true;
@@ -70,8 +83,6 @@ public class IssueStatus {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (statusName != null ? statusName.hashCode() : 0);
-        return result;
+        return statusName != null ? statusName.hashCode() : 0;
     }
 }

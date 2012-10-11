@@ -3,6 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components;
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 
 import java.util.Iterator;
 import java.util.ResourceBundle;
@@ -21,15 +22,17 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
 
     protected AbstractOrderedLayout componentsLayout;
     protected HorizontalLayout buttonLayout;
+    protected final IssueOverviewScreen screen;
 
-    public ComponentEditableVLayout(final Screen screen){
+    public ComponentEditableVLayout(final IssueOverviewScreen screen){
+        this.screen = screen;
+        messages = screen.getMessagesBundle();
         setSizeFull();
         setMargin(true);
         setSpacing(true);
         componentsLayout = buildForm();
         componentsLayout.setSizeFull();
         buttonLayout = new HorizontalLayout();
-        messages = screen.getMessagesBundle();
         saveButton = new Button();
         saveButton.setCaption(messages.getString("save"));
 

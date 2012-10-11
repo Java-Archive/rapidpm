@@ -9,7 +9,7 @@ public class AddRowClickListener implements ClickListener {
     private MainUI ui;
     private StundensaetzeScreen screen;
 
-    public AddRowClickListener(MainUI ui, StundensaetzeScreen screen) {
+    public AddRowClickListener(final MainUI ui, final StundensaetzeScreen screen) {
         this.ui = ui;
         this.screen = screen;
     }

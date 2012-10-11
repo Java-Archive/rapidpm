@@ -20,12 +20,13 @@ public class RowEditFieldFactory implements TableFieldFactory {
 
     private Item item;
 
-    public RowEditFieldFactory(Item item){
+    public RowEditFieldFactory(final Item item){
         this.item = item;
     }
 
     @Override
-    public Field<?> createField(Container container, Object itemId, Object propertyId, Component uiContext) {
+    public Field<?> createField(final Container container, final Object itemId, final Object propertyId,
+                                final Component uiContext) {
         if((((RessourceGroup)itemId)).equals(((BeanItem<RessourceGroup>)item).getBean())){
             final String spaltenName = propertyId.toString();
             if(!spaltenName.startsWith("transient")){
