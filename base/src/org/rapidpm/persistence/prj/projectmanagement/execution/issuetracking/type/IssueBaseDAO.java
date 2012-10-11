@@ -2,13 +2,9 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ty
 
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.BaseDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import java.util.Date;
-import java.util.List;
 
 /**
  * RapidPM - www.rapidpm.org
