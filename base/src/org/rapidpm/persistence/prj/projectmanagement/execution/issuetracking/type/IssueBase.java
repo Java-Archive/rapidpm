@@ -3,6 +3,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ty
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueType;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.apache.log4j.Logger;
 
@@ -38,6 +39,7 @@ public class IssueBase {
     public static final String VERSION = "version";
     public static final String COMMENTS = "comments";
     public static final String TESTCASES ="testcases";
+    public static final String TYPE ="type";
 
     private static final Logger logger = Logger.getLogger(IssueBase.class);
 
@@ -77,6 +79,9 @@ public class IssueBase {
     @OneToOne(cascade = CascadeType.REFRESH)
     private IssueStatus status;
 
+    @OneToOne(cascade = CascadeType.REFRESH)
+    private IssueType type;
+
     //@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     //private IssueTimeUnit issueTimeUnitEstimated;
 
@@ -105,46 +110,6 @@ public class IssueBase {
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private List<IssueComment> comments;
 
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("IssueBase");
-        sb.append("{id=").append(id);
-        sb.append(", summary='").append(summary).append('\'');
-        sb.append(", text='").append(text).append('\'');
-//        sb.append(", fakturierbar=").append(fakturierbar);
-        sb.append(", issuePriority=").append(priority);
-        sb.append(", issueStatus=").append(status);
-        //sb.append(", issueTimeUnitEstimated=").append(issueTimeUnitEstimated);
-        //sb.append(", issueTimeUnitsUsed=").append(issueTimeUnitsUsed);
-        sb.append(", reporter=").append(reporter);
-        sb.append(", assignee=").append(assignee);
-        //        sb.append(", mandantengruppe=").append(mandantengruppe);
-        //sb.append(", euro=").append(euro);
-        sb.append(", version=").append(version);
-        sb.append(", dueDate_planned=").append(dueDate_planned);
-        sb.append(", dueDate_resolved=").append(dueDate_resolved);
-        sb.append(", dueDate_closed=").append(dueDate_closed);
-        sb.append(", comments=").append(comments);
-        sb.append('}');
-        return sb.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        IssueBase issueBase = (IssueBase) o;
-
-        if (id != null ? !id.equals(issueBase.id) : issueBase.id != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
 
     public Benutzer getAssignee() {
         return assignee;
@@ -218,7 +183,15 @@ public class IssueBase {
         this.status = issueStatus;
     }
 
-//    public IssueTimeUnit getIssueTimeUnitEstimated() {
+    public IssueType getType() {
+        return type;
+    }
+
+    public void setType(final IssueType type) {
+        this.type = type;
+    }
+
+    //    public IssueTimeUnit getIssueTimeUnitEstimated() {
 //        return issueTimeUnitEstimated;
 //    }
 //
@@ -274,4 +247,40 @@ public class IssueBase {
         this.storyPoints = storyPoints;
     }
 
+    @Override
+    public String toString() {
+        return "IssueBase{" +
+                "testcases=" + testcases +
+                ", summary='" + summary + '\'' +
+                ", text='" + text + '\'' +
+                ", storyPoints=" + storyPoints +
+                ", priority=" + priority +
+                ", status=" + status +
+                ", type=" + type +
+                ", reporter=" + reporter +
+                ", assignee=" + assignee +
+                ", version='" + version + '\'' +
+                ", dueDate_planned=" + dueDate_planned +
+                ", dueDate_resolved=" + dueDate_resolved +
+                ", dueDate_closed=" + dueDate_closed +
+                ", comments=" + comments +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IssueBase issueBase = (IssueBase) o;
+
+        if (id != null ? !id.equals(issueBase.id) : issueBase.id != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

@@ -68,14 +68,11 @@ public class IssueComment {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("IssueComment");
-        sb.append("{created=").append(created);
-        sb.append(", id=").append(id);
-        sb.append(", txt='").append(txt).append('\'');
-        sb.append(", creator=").append(creator);
-        sb.append('}');
-        return sb.toString();
+        return "IssueComment{" +
+                "txt='" + txt + '\'' +
+                ", creator=" + creator +
+                ", created=" + created +
+                '}';
     }
 
     public Date getCreated() {

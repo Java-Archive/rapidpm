@@ -1,9 +1,6 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.TableGenerator;
+import javax.persistence.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,6 +9,7 @@ import javax.persistence.TableGenerator;
  * Time: 08:22
  * To change this template use File | Settings | File Templates.
  */
+@Entity
 public class IssueType {
 
     public static final String NAME = "typeName";
@@ -23,7 +21,11 @@ public class IssueType {
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenIssueType")
     private Long id;
 
+    @Basic
     private String typeName;
+
+    public IssueType() {
+    }
 
     public IssueType(final String typeName) {
         this.typeName = typeName;
