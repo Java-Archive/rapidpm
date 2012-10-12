@@ -382,8 +382,8 @@ public class OrganisationseinheitDAOBean {
                                              @WebParam(name = "positionOID", mode = WebParam.Mode.IN) final Long positionOID) {
         final Organisationseinheit organisationseinheit = getEntityDAO().findByID(organisationseinheitOID);
         if (organisationseinheit != null) {
-            throw new RuntimeException("not yet implemented.. AbstractOneToOneConnectExecutor<BaseDAO,Person, Organisationseinheit,OrganisationseinheitResult>");
-//            return new AbstractOneToOneConnectExecutor<BaseDAO,Person, Organisationseinheit,OrganisationseinheitResult>(
+            throw new RuntimeException("not yet implemented.. AbstractOneToOneConnectExecutor<DAO,Person, Organisationseinheit,OrganisationseinheitResult>");
+//            return new AbstractOneToOneConnectExecutor<DAO,Person, Organisationseinheit,OrganisationseinheitResult>(
 //                    daoFactoryBean, daoFactoryBean.getPersonDAO(), getEntityDAO()) {
 //
 //                @Override
@@ -396,7 +396,7 @@ public class OrganisationseinheitDAOBean {
 //                    return null;  //To change body of implemented methods use File | Settings | File Templates.
 //                }
 //            }.execute("connectPerson", logEventEntryWriterBean, sessionid, personOID, positionOID);
-//            return new AbstractOneToManyConnectExecutor<BaseDAO,Person, Organisationseinheit,OrganisationseinheitResult>(
+//            return new AbstractOneToManyConnectExecutor<DAO,Person, Organisationseinheit,OrganisationseinheitResult>(
 //                    daoFactoryBean.getPersonDAO(), daoFactoryBean.getPositionDAO()) {
 //
 //                @Override
@@ -463,7 +463,7 @@ public class OrganisationseinheitDAOBean {
         final FlatOrganisationseinheit ft = new FlatOrganisationseinheit();
         ft.setActive(o.isActive());
 
-        final BaseDAO.EntityUtils entityUtils = daoFactoryBean.getEntityUtils();
+        final DAO.EntityUtils entityUtils = daoFactoryBean.getEntityUtils();
         ft.setAdressenOIDs(entityUtils.getOIDs(o.getAdressen()));
 
         final Ausbildungseinheit ausbildungseinheit = o.getAusbildungseinheit();

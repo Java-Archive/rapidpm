@@ -1,6 +1,6 @@
 package org.rapidpm.persistence.rohdaten;
 
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 
@@ -11,7 +11,7 @@ import javax.persistence.EntityManager;
  * Time: 5:35 PM
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
-public class OntologieConnectionDAO extends BaseDAO<Long, OntologieConnection> {
+public class OntologieConnectionDAO extends DAO<Long, OntologieConnection> {
     public OntologieConnectionDAO(final EntityManager entityManager) {
         super(entityManager, OntologieConnection.class);
     }

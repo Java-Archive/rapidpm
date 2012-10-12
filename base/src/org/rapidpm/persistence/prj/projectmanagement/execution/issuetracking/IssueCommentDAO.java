@@ -7,11 +7,11 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking; /
  */
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 
-public class IssueCommentDAO extends BaseDAO<Long, IssueComment> {
+public class IssueCommentDAO extends DAO<Long, IssueComment> {
     private static final Logger logger = Logger.getLogger(IssueCommentDAO.class);
 
 

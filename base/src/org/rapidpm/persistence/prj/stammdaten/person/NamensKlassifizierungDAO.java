@@ -10,12 +10,12 @@ package org.rapidpm.persistence.prj.stammdaten.person;
  */
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-public class NamensKlassifizierungDAO extends BaseDAO<Long, NamensKlassifizierung> {
+public class NamensKlassifizierungDAO extends DAO<Long, NamensKlassifizierung> {
     private static final Logger logger = Logger.getLogger(NamensKlassifizierungDAO.class);
 
     public NamensKlassifizierungDAO(final EntityManager entityManager) {

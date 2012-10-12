@@ -7,11 +7,11 @@ package org.rapidpm.persistence.prj.stammdaten.web; /**
  */
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 
-public class WebDomainMetaDataDAO extends BaseDAO<Long, WebDomainMetaData> {
+public class WebDomainMetaDataDAO extends DAO<Long, WebDomainMetaData> {
     private static final Logger logger = Logger.getLogger(WebDomainMetaDataDAO.class);
 
 

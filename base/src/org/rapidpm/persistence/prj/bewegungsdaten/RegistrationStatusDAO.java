@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.prj.bewegungsdaten;
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -14,7 +14,7 @@ import javax.persistence.TypedQuery;
  * This Source Code is part of the RapidPM - www.rapidpm.org project.
  * please contact sven.ruppert@me.com
  */
-public class RegistrationStatusDAO extends BaseDAO<Long, RegistrationStatus> {
+public class RegistrationStatusDAO extends DAO<Long, RegistrationStatus> {
     private static final Logger logger = Logger.getLogger(RegistrationStatusDAO.class);
 
     //    public List<RegistrationStatus> loadAllEntities() {

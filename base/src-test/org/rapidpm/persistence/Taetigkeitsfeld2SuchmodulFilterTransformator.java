@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
  * Nur einmalig f Transformation
  */
 @Deprecated
-public class Taetigkeitsfeld2SuchmodulFilterTransformator extends BaseDAOTest {
+public class Taetigkeitsfeld2SuchmodulFilterTransformator extends DAOTest {
     private static final Logger logger = Logger.getLogger(Taetigkeitsfeld2SuchmodulFilterTransformator.class);
 
 //    @Test

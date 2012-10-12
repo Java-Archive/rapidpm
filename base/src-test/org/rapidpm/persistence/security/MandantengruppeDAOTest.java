@@ -3,7 +3,7 @@ package org.rapidpm.persistence.security;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.junit.Test;
-import org.rapidpm.persistence.BaseDAOTest;
+import org.rapidpm.persistence.DAOTest;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
 import org.rapidpm.persistence.system.security.MandantengruppeDAO;
 
@@ -19,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
  * @version 1.0
  * @since <pre>02/26/2010</pre>
  */
-public class MandantengruppeDAOTest extends BaseDAOTest {
+public class MandantengruppeDAOTest extends DAOTest {
 
 //    public static Test suite() {
 //        return new TestSuite(MandantengruppeDAOTest.class);

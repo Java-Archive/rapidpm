@@ -26,6 +26,7 @@ import org.rapidpm.persistence.prj.projectmanagement.ProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.ProjectNameDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElementDAO;
@@ -208,8 +209,8 @@ public class DaoFactory {
 
     //IssueTracking
 
-    public IssueBaseDAO getIssueBaseDAO() {
-        return new IssueBaseDAO(getEntityManager());
+    public IssueDAO getIssueBaseDAO() {
+        return new IssueDAO(getEntityManager());
     }
 
     public IssueCommentDAO getIssueCommentDAO() {
@@ -410,7 +411,7 @@ public class DaoFactory {
         }
     }
 
-    public BaseDAO.EntityUtils getEntityUtils() {
+    public DAO.EntityUtils getEntityUtils() {
         return entityUtils;
     }
 }

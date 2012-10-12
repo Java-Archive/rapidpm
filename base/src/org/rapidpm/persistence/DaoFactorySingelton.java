@@ -25,7 +25,7 @@ public class DaoFactorySingelton {
 
     private DaoFactorySingelton() {
         //        final EbeanServer em = EbeanServerFactory.create(new ConfigDevelop());
-        //        daoFactory = new BaseDAO(em);
+        //        daoFactory = new DAO(em);
 
     }
 }

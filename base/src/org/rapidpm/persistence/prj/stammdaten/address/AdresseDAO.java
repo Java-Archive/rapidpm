@@ -10,12 +10,12 @@ package org.rapidpm.persistence.prj.stammdaten.address;
  */
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-public class AdresseDAO extends BaseDAO<Long, Adresse> {
+public class AdresseDAO extends DAO<Long, Adresse> {
     private static final Logger logger = Logger.getLogger(AdresseDAO.class);
 
     public AdresseDAO(final EntityManager entityManager) {

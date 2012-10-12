@@ -14,11 +14,11 @@ package org.rapidpm.persistence.prj.stammdaten.kommunikation;
  */
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 
-public class KommunikationsServiceUIDPartDAO extends BaseDAO<Long, KommunikationsServiceUIDPart> {
+public class KommunikationsServiceUIDPartDAO extends DAO<Long, KommunikationsServiceUIDPart> {
     private static final Logger logger = Logger.getLogger(KommunikationsServiceUIDPartDAO.class);
 
 

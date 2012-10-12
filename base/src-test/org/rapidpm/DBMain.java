@@ -9,7 +9,7 @@ package org.rapidpm;
  */
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
@@ -54,7 +54,7 @@ public class DBMain {
 
     }
 
-//    private static void convertBranche(final BaseDAO daoFactory, final Connection conn) throws SQLException {
+//    private static void convertBranche(final DAO daoFactory, final Connection conn) throws SQLException {
 //        final Statement statement = conn.createStatement();
 //        final ResultSet resultSet = statement.executeQuery("select * from branche");
 //        while (resultSet.next()) {
@@ -67,7 +67,7 @@ public class DBMain {
 //        }
 //    }
 
-//    private static void convertSearchQuery(final BaseDAO DAO, final Connection conn) throws SQLException {
+//    private static void convertSearchQuery(final DAO DAO, final Connection conn) throws SQLException {
     //        final Statement statement = conn.createStatement();
     //        final SearchQueryDAO searchQueryDAO = DAO.getSearchQueryDAO();
     //        final ResultSet resultSet = statement.executeQuery("select * from search_query");
@@ -93,7 +93,7 @@ public class DBMain {
 //    }
 
     //TODO noch nicht vollständig - Benutzermapping noch falsch bzw mehrdeutig
-    private static void convertSearchQueries(BaseDAO DAO, Connection conn) throws SQLException {
+    private static void convertSearchQueries(DAO DAO, Connection conn) throws SQLException {
         //        final Statement statement = conn.createStatement();
         //        final BenutzerDAO benutzerDAO = DAO.getBenutzerDAO();
         //        final SearchQueryDAO searchQueryDAO = DAO.getSearchQueryDAO();

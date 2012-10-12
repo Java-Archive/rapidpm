@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.rohdaten;
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
 
 import javax.persistence.EntityManager;
@@ -20,7 +20,7 @@ import java.util.List;
  *        Time: 00:25:37
  */
 
-public class OntologieDAO extends BaseDAO<Long, Ontologie> {
+public class OntologieDAO extends DAO<Long, Ontologie> {
     private static final Logger logger = Logger.getLogger(OntologieDAO.class);
 
     public OntologieDAO(final EntityManager entityManager) {

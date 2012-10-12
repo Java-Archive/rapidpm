@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -18,7 +18,7 @@ import javax.persistence.TypedQuery;
  *        Time: 08:24:08
  */
 
-public class TaetigkeitsfeldKlassifizierungDAO extends BaseDAO<Long, TaetigkeitsfeldKlassifizierung> {
+public class TaetigkeitsfeldKlassifizierungDAO extends DAO<Long, TaetigkeitsfeldKlassifizierung> {
     private static final Logger logger = Logger.getLogger(TaetigkeitsfeldKlassifizierungDAO.class);
 
     public TaetigkeitsfeldKlassifizierungDAO(final EntityManager entityManager) {

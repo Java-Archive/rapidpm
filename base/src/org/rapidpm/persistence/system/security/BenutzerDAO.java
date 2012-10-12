@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.system.security;
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -15,7 +15,7 @@ import java.util.List;
  * This Source Code is part of the RapidPM - www.rapidpm.org project.
  * please contact sven.ruppert@me.com
  */
-public class BenutzerDAO extends BaseDAO<Long, Benutzer> {
+public class BenutzerDAO extends DAO<Long, Benutzer> {
     private static final Logger logger = Logger.getLogger(BenutzerDAO.class);
 
     public BenutzerDAO(final EntityManager entityManager) {

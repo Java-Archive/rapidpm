@@ -7,13 +7,13 @@ package org.rapidpm.persistence.rohdaten;
  * To change this template use File | Settings | File Templates.
  */
 
-import org.rapidpm.persistence.BaseDAOTest;
+import org.rapidpm.persistence.DAOTest;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class OntologieConnectionDAOTest extends BaseDAOTest {
+public class OntologieConnectionDAOTest extends DAOTest {
 
     @Test
     public void testLoadOntologieConnection() throws Exception {

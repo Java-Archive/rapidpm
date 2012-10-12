@@ -39,25 +39,25 @@ import java.util.Set;
  */
 
 @SuppressWarnings("EjbInterceptorInspection")
-public class BaseDAO<K extends Number, E> implements Serializable {
-    private static final Logger logger = Logger.getLogger(BaseDAO.class);
+public class DAO<K extends Number, E> implements Serializable {
+    private static final Logger logger = Logger.getLogger(DAO.class);
 
 //    @Inject()
 //    private LogFactory loggerFactory
 
-//    public BaseDAO(final String persistenceUnitName) {
+//    public DAO(final String persistenceUnitName) {
 //        final EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
 //        this.em = emf.createEntityManager();
 //    }
 
-    protected BaseDAO(final AuditReader auditReader, final EntityManager em, final Class<E> entityClass) {
+    protected DAO(final AuditReader auditReader, final EntityManager em, final Class<E> entityClass) {
         this.auditReader = auditReader;
         this.entityManager = em;
         this.entityClass = entityClass;
     }
 
 
-    protected BaseDAO(final EntityManager entityManager, final Class<E> entityClass) {
+    protected DAO(final EntityManager entityManager, final Class<E> entityClass) {
         this.entityClass = entityClass;
         this.entityManager = entityManager;
     }
@@ -88,7 +88,7 @@ public class BaseDAO<K extends Number, E> implements Serializable {
 //    /**
 //     * Erzeuge einen eigenen EntityManagerFactory - persistenceUnit
 //     */
-//    public BaseDAO() {
+//    public DAO() {
 //        super();
 //    }
 

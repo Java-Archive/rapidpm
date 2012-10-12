@@ -7,11 +7,11 @@ package org.rapidpm.persistence.prj.stammdaten.person; /**
  */
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 
-public class PersonenNameDAO extends BaseDAO<Long, PersonenName> {
+public class PersonenNameDAO extends DAO<Long, PersonenName> {
     private static final Logger logger = Logger.getLogger(PersonenNameDAO.class);
 
 
