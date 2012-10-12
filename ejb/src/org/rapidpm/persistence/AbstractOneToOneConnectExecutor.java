@@ -17,13 +17,13 @@ public abstract class AbstractOneToOneConnectExecutor<D extends DaoFactory, CE, 
 //    }
 
     //    abstract class AbstractOneToOneConnectExecutor<CE, E, RT extends BaseOrmResult<? extends BaseFlatEntity>> {
-    private final BaseDAO<Long, CE> connectEntityDAO;
-    private final BaseDAO<Long, E> entityDAO;
+    private final DAO<Long, CE> connectEntityDAO;
+    private final DAO<Long, E> entityDAO;
     private final D daoFactoryBean;
 
     public AbstractOneToOneConnectExecutor(final D daoFactory,
-                                           final BaseDAO<Long, CE> connectEntityDAO,
-                                           final BaseDAO<Long, E> entityDAO) {
+                                           final DAO<Long, CE> connectEntityDAO,
+                                           final DAO<Long, E> entityDAO) {
         this.connectEntityDAO = connectEntityDAO;
         this.entityDAO = entityDAO;
         this.daoFactoryBean = daoFactory;

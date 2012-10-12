@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.system.security.berechtigungen;
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -18,7 +18,7 @@ import javax.persistence.TypedQuery;
  *        Time: 18:01:24
  */
 
-public class BerechtigungDAO extends BaseDAO<Long, Berechtigung> {
+public class BerechtigungDAO extends DAO<Long, Berechtigung> {
     private static final Logger logger = Logger.getLogger(BerechtigungDAO.class);
 
     public BerechtigungDAO(final EntityManager entityManager) {

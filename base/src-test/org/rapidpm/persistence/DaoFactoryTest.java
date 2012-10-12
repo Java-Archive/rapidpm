@@ -28,7 +28,7 @@ public class DaoFactoryTest {
     public void testGetOIDFromEntity() throws Exception {
         final Person entity = new Person();
         entity.setId(23L);
-        final BaseDAO.EntityUtils entityUtils = new BaseDAO.EntityUtils();
+        final DAO.EntityUtils entityUtils = new DAO.EntityUtils();
         final Long oid = entityUtils.getOIDFromEntity(entity);
         assertEquals(new Long(23L), oid);
         assertEquals(new Long(-1L), entityUtils.getOIDFromEntity("keine Entity"));
@@ -43,7 +43,7 @@ public class DaoFactoryTest {
             entity.setId(id);
             entityList.add(entity);
         }
-        final BaseDAO.EntityUtils entityUtils = new BaseDAO.EntityUtils();
+        final DAO.EntityUtils entityUtils = new DAO.EntityUtils();
         assertTrue(entityUtils.containsOID(entityList, 7L));
         assertFalse(entityUtils.containsOID(entityList, 15L));
     }
@@ -65,7 +65,7 @@ public class DaoFactoryTest {
         benutzerDAO.connectEntity(b3, person.getBenutzer());
     }
 
-    @Test(expected = BaseDAO.AlreadyConnectedException.class)
+    @Test(expected = DAO.AlreadyConnectedException.class)
     public void testConnectEntityFail() throws Exception {
         final Person person = new Person();
         final ArrayList<Benutzer> benutzerList = new ArrayList<>();

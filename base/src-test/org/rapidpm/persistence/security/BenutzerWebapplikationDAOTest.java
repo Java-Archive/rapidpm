@@ -7,7 +7,7 @@ package org.rapidpm.persistence.security;
  * To change this template use File | Settings | File Templates.
  */
 
-import org.rapidpm.persistence.BaseDAOTest;
+import org.rapidpm.persistence.DAOTest;
 import org.rapidpm.persistence.system.security.BenutzerWebapplikation;
 import org.rapidpm.persistence.system.security.BenutzerWebapplikationDAO;
 import org.junit.Test;
@@ -15,7 +15,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class BenutzerWebapplikationDAOTest extends BaseDAOTest {
+public class BenutzerWebapplikationDAOTest extends DAOTest {
 
     @Test
     public void testLoadBenutzerWebapplikation() throws Exception {

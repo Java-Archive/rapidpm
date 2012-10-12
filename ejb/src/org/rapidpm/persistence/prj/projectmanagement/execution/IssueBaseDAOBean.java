@@ -20,7 +20,7 @@ import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnit;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueDAO;
 import org.rapidpm.persistence.system.security.Benutzer;
 
 import javax.ejb.EJB;
@@ -113,7 +113,7 @@ public class IssueBaseDAOBean {
 
     }
 
-    private IssueBaseDAO getEntityDAO() {
+    private IssueDAO getEntityDAO() {
         return daoFactoryBean.getIssueBaseDAO();
     }
 

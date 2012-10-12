@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.msg;
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.system.security.Benutzer;
 
 import javax.persistence.EntityManager;
@@ -19,7 +19,7 @@ import java.util.List;
  *        Time: 16:34:25
  */
 
-public class PersonalMessageDAO extends BaseDAO<Long, PersonalMessage> {
+public class PersonalMessageDAO extends DAO<Long, PersonalMessage> {
     private static final Logger logger = Logger.getLogger(PersonalMessageDAO.class);
 
     public PersonalMessageDAO(final EntityManager entityManager) {
