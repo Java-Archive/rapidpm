@@ -18,11 +18,15 @@ public class IssueTypeDAO extends BaseDAO<Long, IssueType> {
         super(entityManager, IssueType.class);
     }
 
-    public IssueType loadStatus(final String type) {
+    public IssueType loadType(final String type) {
         final TypedQuery<IssueType> typedQuery = entityManager.createQuery("from IssueType t where t.name=:type", IssueType.class).setParameter("type",
                 type);
         return getSingleResultOrNull(typedQuery);
         //        return createWhereClause().eq("name", status).findUnique();
     }
 
+    public IssueType loadTypeBug() {
+        return loadType("bug");
+        //        return createWhereClause().eq("name", "dringend und wichtig").findUnique();
+    }
 }

@@ -10,6 +10,9 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
 import org.junit.Test;
 import org.rapidpm.persistence.prj.BaseDAOTest;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueType;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
