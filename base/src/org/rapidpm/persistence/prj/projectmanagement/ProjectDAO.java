@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.prj.projectmanagement;
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
 import javax.persistence.EntityManager;
@@ -19,7 +19,7 @@ import java.util.List;
  *        Time: 21:18:43
  */
 
-public class ProjectDAO extends BaseDAO<Long, PlannedProject> {
+public class ProjectDAO extends DAO<Long, PlannedProject> {
 
     private static final Logger logger = Logger.getLogger(ProjectDAO.class);
 

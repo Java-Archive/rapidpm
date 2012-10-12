@@ -9,11 +9,11 @@ package org.rapidpm.persistence.prj.book;
  */
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 
-public class BuchDAO extends BaseDAO<Long, Buch> {
+public class BuchDAO extends DAO<Long, Buch> {
     private static final Logger logger = Logger.getLogger(BuchDAO.class);
 
 

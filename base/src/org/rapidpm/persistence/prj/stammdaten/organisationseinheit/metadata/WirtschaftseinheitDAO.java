@@ -7,11 +7,11 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit.metadata; /*
  */
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 
-public class WirtschaftseinheitDAO extends BaseDAO<Long, Wirtschaftseinheit> {
+public class WirtschaftseinheitDAO extends DAO<Long, Wirtschaftseinheit> {
     private static final Logger logger = Logger.getLogger(WirtschaftseinheitDAO.class);
 
 

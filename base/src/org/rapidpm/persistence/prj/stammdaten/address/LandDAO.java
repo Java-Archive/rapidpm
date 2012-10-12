@@ -10,12 +10,12 @@ package org.rapidpm.persistence.prj.stammdaten.address;
  */
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-public class LandDAO extends BaseDAO<Long, Land> {
+public class LandDAO extends DAO<Long, Land> {
     private static final Logger logger = Logger.getLogger(LandDAO.class);
 
     public LandDAO(final EntityManager entityManager) {

@@ -7,13 +7,13 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit; /**
  */
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
-public class PositionDAO extends BaseDAO<Long, Position> {
+public class PositionDAO extends DAO<Long, Position> {
     private static final Logger logger = Logger.getLogger(PositionDAO.class);
 
 

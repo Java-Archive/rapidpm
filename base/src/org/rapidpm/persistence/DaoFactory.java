@@ -28,7 +28,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.Iss
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriorityDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatusDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnitDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElementDAO;
@@ -58,7 +58,7 @@ import javax.persistence.Persistence;
 
 public class DaoFactory {
     private static final Logger logger = Logger.getLogger(DaoFactory.class);
-    private BaseDAO.EntityUtils entityUtils;
+    private DAO.EntityUtils entityUtils;
 
     public DaoFactory(final String persistenceUnitName) {
         final EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
@@ -129,6 +129,7 @@ public class DaoFactory {
     }
 
     //pkg webapp
+    //
 
 
     public OntologieDAO getOntologieDAO() {
@@ -211,8 +212,8 @@ public class DaoFactory {
 
     //IssueTracking
 
-    public IssueBaseDAO getIssueBaseDAO() {
-        return new IssueBaseDAO(getEntityManager());
+    public IssueDAO getIssueBaseDAO() {
+        return new IssueDAO(getEntityManager());
     }
 
     public IssueCommentDAO getIssueCommentDAO() {
@@ -409,7 +410,7 @@ public class DaoFactory {
         }
     }
 
-    public BaseDAO.EntityUtils getEntityUtils() {
+    public DAO.EntityUtils getEntityUtils() {
         return entityUtils;
     }
 }

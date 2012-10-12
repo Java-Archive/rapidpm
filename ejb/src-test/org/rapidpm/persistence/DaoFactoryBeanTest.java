@@ -18,7 +18,7 @@ import java.lang.reflect.Field;
  * Date: 08.12.11
  * Time: 17:00
  */
-public class DaoFactoryBeanTest<T> extends BaseDAOTest {
+public class DaoFactoryBeanTest<T> extends DAOTest {
     private static final Logger logger = Logger.getLogger(DaoFactoryBeanTest.class);
 
     private final Class<T> daoBeanClass;
@@ -41,7 +41,7 @@ public class DaoFactoryBeanTest<T> extends BaseDAOTest {
         try {
             final DFB factoryBean = daoFactoryBeanClass.newInstance();
             setField(daoFactoryBeanClass, "entityManager", factoryBean, daoFactory.getEntityManager());
-            setField(daoFactoryBeanClass, "daoFactory", factoryBean, daoFactory); // BUG falsche BaseDAO
+            setField(daoFactoryBeanClass, "daoFactory", factoryBean, daoFactory); // BUG falsche DAO
 
             final LogEventEntryWriterBean logWriter = new LogEventEntryWriterBean();
             setField(LogEventEntryWriterBean.class, "daoFactory", logWriter, factoryBean);
