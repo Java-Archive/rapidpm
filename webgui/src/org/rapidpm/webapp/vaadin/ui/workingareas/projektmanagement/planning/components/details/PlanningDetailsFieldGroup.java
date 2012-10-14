@@ -4,15 +4,11 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.ui.AbstractField;
-import com.vaadin.ui.AbstractSelect;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.DateField;
+import com.vaadin.ui.*;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
@@ -38,20 +34,17 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
 
     private List<AbstractField> fieldList = new ArrayList<>();
 
-    private AbstractSelect statusBox;
-    private AbstractSelect priorityBox;
-    private AbstractSelect reporterBox;
-    private AbstractSelect assigneeBox;
-    private DateField plannedField;
-    private DateField resolvedField;
-    private DateField closedField;
+    private AbstractSelect responsiblePersonBox;
+    private TextField orderNumberField;
+    private TextField complexityField;
+    private TextField storyPointsField;
 
     private ResourceBundle messages;
     private PlanningDetailsFieldGroupBean bean;
     private DaoFactoryBean baseDaoFactoryBean;
 
-    public PlanningDetailsFieldGroup(final ResourceBundle messages, final IssueBase issueBase) {
-        setItemDataSource(new BeanItem<>(issueBase));
+    public PlanningDetailsFieldGroup(final ResourceBundle messages, final PlanningUnit planningUnit) {
+        setItemDataSource(new BeanItem<>(planningUnit));
         this.messages = messages;
         bean = EJBFactory.getEjbInstance(PlanningDetailsFieldGroupBean.class);
         baseDaoFactoryBean = bean.getDaoFactoryBean();
@@ -60,7 +53,6 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
 
     private void buildForm() {
         refreshEntities(baseDaoFactoryBean);
-        final List<IssuePriority> priorities = baseDaoFactoryBean.getIssuePriorityDAO().loadAllEntities();
         final List<IssueStatus> statusList = baseDaoFactoryBean.getIssueStatusDAO().loadAllEntities();
         final List<Benutzer> users = baseDaoFactoryBean.getBenutzerDAO().loadAllEntities();
         AbstractSelect box;
@@ -68,62 +60,28 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
         for (final Object propertyId : getUnboundPropertyIds()) {
             final String spaltenName = propertyId.toString();
             switch(spaltenName){
-                case(PRIORITY):
-                    box = generateBox(messages.getString("planning_priority"),
-                        new BeanItemContainer<>(IssuePriority.class, priorities),IssuePriority.NAME);
-                    bind(box, propertyId);
-                    for(final Object itemId : box.getItemIds()){
-                        final IssuePriority priority = (IssuePriority) itemId;
-                        final String resourcePfad = (IMAGES_DIRECTORY + priority.getPriorityFileName());
-                        box.setItemIcon(itemId, new ThemeResource(resourcePfad));
-                    }
-                    priorityBox = box;
-                    fieldList.add(box);
-                    break;
-                case(STATUS):
-                    box = generateBox(messages.getString("planning_state"),
-                            new BeanItemContainer<>(IssueStatus.class, statusList), IssueStatus.NAME);
-                    bind(box, propertyId);
-                    for(final Object itemId : box.getItemIds()){
-                        final IssueStatus status = (IssueStatus) itemId;
-                        final String resourcePfad = (IMAGES_DIRECTORY + status.getStatusFileName());
-                        box.setItemIcon(itemId, new ThemeResource(resourcePfad));
-                    }
-                    statusBox = box;
-                    fieldList.add(box);
-                    break;
-                case(REPORTER):
-                    box = generateBox(messages.getString("planning_reporter"),
-                            new BeanItemContainer<>(Benutzer.class, users), Benutzer.LOGIN);
-                    bind(box, propertyId);
-                    reporterBox = box;
-                    fieldList.add(box);
-                    break;
-                case(ASSIGNEE):
-                    box = generateBox(messages.getString("planning_assignee"),
-                            new BeanItemContainer<>(Benutzer.class, users), Benutzer.LOGIN);
-                    bind(box, propertyId);
-                    assigneeBox = box;
-                    fieldList.add(box);
-                    break;
-                case (DATE_PLANNED):
-                    dateField = generateDateField(messages.getString("planning_planned"));
-                    bind(dateField, propertyId);
-                    plannedField = dateField;
-                    fieldList.add(dateField);
-                    break;
-                case (DATE_RESOLVED):
-                    dateField = generateDateField(messages.getString("planning_resolved"));
-                    bind(dateField, propertyId);
-                    resolvedField = dateField;
-                    fieldList.add(dateField);
-                    break;
-                case (DATE_CLOSED):
-                    dateField = generateDateField(messages.getString("planning_closed"));
-                    bind(dateField, propertyId);
-                    closedField = dateField;
-                    fieldList.add(dateField);
-                    break;
+//                case(PlanningUnit.RESPONSIBLE):
+//                    box = generateBox(messages.getString("planning_responsible"),
+//                        new BeanItemContainer<>(Benutzer.class, users),Benutzer.LOGIN);
+//                    bind(box, propertyId);
+//                    responsiblePersonBox = box;
+//                    fieldList.add(box);
+//                    break;
+//                case(PlanningUnit.ORDERNUMBER):
+//                    orderNumberField = new TextField(messages.getString("planning_ordernumber"));
+//                    bind(orderNumberField, propertyId);
+//                    fieldList.add(orderNumberField);
+//                    break;
+//                case(PlanningUnit.COMPLEXITY):
+//                    complexityField = new TextField(messages.getString("planning_complexity"));
+//                    bind(complexityField, propertyId);
+//                    fieldList.add(complexityField);
+//                    break;
+//                case(PlanningUnit.STORYPTS):
+//                    storyPointsField = new TextField(messages.getString("planning_storypoints"));
+//                    bind(storyPointsField, propertyId);
+//                    fieldList.add(storyPointsField);
+//                    break;
                 default:
                     break;
             }
@@ -135,11 +93,6 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
         box.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
         box.setItemCaptionPropertyId(itemCaptionPropertyId);
         return box;
-    }
-
-    public DateField generateDateField(final String caption){
-        final DateField dateField = new DateField(caption);
-        return dateField;
     }
 
     private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
@@ -165,31 +118,19 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
         return fieldList;
     }
 
-    public AbstractSelect getStatusBox() {
-        return statusBox;
+    public AbstractSelect getResponsiblePersonBox() {
+        return responsiblePersonBox;
     }
 
-    public AbstractSelect getPriorityBox() {
-        return priorityBox;
+    public TextField getComplexityField() {
+        return complexityField;
     }
 
-    public AbstractSelect getReporterBox() {
-        return reporterBox;
+    public TextField getOrderNumberField() {
+        return orderNumberField;
     }
 
-    public AbstractSelect getAssigneeBox() {
-        return assigneeBox;
-    }
-
-    public DateField getPlannedField() {
-        return plannedField;
-    }
-
-    public DateField getResolvedField() {
-        return resolvedField;
-    }
-
-    public DateField getClosedField() {
-        return closedField;
+    public TextField getStoryPointsField() {
+        return storyPointsField;
     }
 }

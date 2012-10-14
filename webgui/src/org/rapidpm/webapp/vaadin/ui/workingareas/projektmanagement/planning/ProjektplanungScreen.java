@@ -140,13 +140,6 @@ public class ProjektplanungScreen extends Screen {
             while (iterator.hasNext()){
                 treePanelTree.expandItemsRecursively(iterator.next());
             }
-            for(final Object itemId : treePanelTree.getVisibleItemIds()){
-                final PlanningUnit planningUnit = (PlanningUnit) itemId;
-                final IssueBase planningUnitIssueBase = planningUnit.getIssueBase();
-                final IssueStatus issueStatus = planningUnitIssueBase.getStatus();
-                final String iconPfad = (Constants.IMAGES_DIRECTORY + issueStatus.getStatusFileName());
-                treePanelTree.setItemIcon(itemId, new ThemeResource(iconPfad));
-            }
             treePanel.addComponent(treePanelTree);
         }
     }

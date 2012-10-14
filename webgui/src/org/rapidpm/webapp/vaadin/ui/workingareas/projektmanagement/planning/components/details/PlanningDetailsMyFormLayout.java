@@ -3,6 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.MyFormLayout;
@@ -29,11 +30,12 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
     private PlanningDetailsFieldGroup fieldGroup;
     private ResourceBundle messages;
 
-    public PlanningDetailsMyFormLayout(final IssueBase issueBase, final ProjektplanungScreen screen, final Panel screenPanel) {
+    public PlanningDetailsMyFormLayout(final PlanningUnit planningUnit, final ProjektplanungScreen screen,
+                                       final Panel screenPanel) {
         super(screen, screenPanel);
         messages = screen.getMessagesBundle();
 
-        fieldGroup = new PlanningDetailsFieldGroup(messages, issueBase);
+        fieldGroup = new PlanningDetailsFieldGroup(messages, planningUnit);
         fieldList = fieldGroup.getFieldList();
 
         buildForm();
@@ -78,13 +80,10 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
                 ((ComboBox)field).setTextInputAllowed(false);
             }
         }
-        componentsLayout.addComponent(fieldGroup.getStatusBox());
-        componentsLayout.addComponent(fieldGroup.getPriorityBox());
-        componentsLayout.addComponent(fieldGroup.getReporterBox());
-        componentsLayout.addComponent(fieldGroup.getAssigneeBox());
-        componentsLayout.addComponent(fieldGroup.getPlannedField());
-        componentsLayout.addComponent(fieldGroup.getResolvedField());
-        componentsLayout.addComponent(fieldGroup.getClosedField());
+        componentsLayout.addComponent(fieldGroup.getResponsiblePersonBox());
+        componentsLayout.addComponent(fieldGroup.getComplexityField());
+        componentsLayout.addComponent(fieldGroup.getOrderNumberField());
+        componentsLayout.addComponent(fieldGroup.getStoryPointsField());
     }
 
 

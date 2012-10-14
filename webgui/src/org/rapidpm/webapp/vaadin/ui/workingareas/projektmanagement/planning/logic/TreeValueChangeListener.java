@@ -54,13 +54,13 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                 mainPanel.setCaption(selectedPlanningUnit.getPlanningUnitName());
                 ressourcesPanel.setCaption(RESSOURCE_GROUPS);
                 final VerticalLayout detailsPanelComponentsLayout = new PlanningDetailsMyFormLayout
-                        (selectedPlanningUnit.getIssueBase(), screen, detailPanel);
-                final VerticalLayout mainPanelLayout = new PlanningInformationMyFormLayout(selectedPlanningUnit.getIssueBase(),
-                        screen, mainPanel);
+                        (selectedPlanningUnit, screen, detailPanel);
+//                final VerticalLayout mainPanelLayout = new PlanningInformationMyFormLayout(selectedPlanningUnit,
+//                        screen, mainPanel);
                 final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesMyFormLayout(selectedPlanningUnit,
                         screen, ressourcesPanel, hasChildren);
                 detailPanel.addComponent(detailsPanelComponentsLayout);
-                mainPanel.addComponent(mainPanelLayout);
+                //mainPanel.addComponent(mainPanelLayout);
                 ressourcesPanel.addComponent(ressourcesPanelLayout);
                 
             } else {

@@ -49,7 +49,7 @@ public class IssueAddWindow extends Window {
             PlanningUnit parentPlanningunit = (PlanningUnit)issueTree.getContainerDataSource().getContainerProperty
                     (parentItemId, TreeContainerPlanningUnits.PROPERTY_PLANNINGUNIT).getValue();
             planningUnit.setPlanningUnitName("TEST UNIT WITH ISSUE");
-            planningUnit.setIssueBase(addDetailsLayout.setIssueProperties(true));
+            //planningUnit.setIssueBase(addDetailsLayout.setIssueProperties(true));
             issueTree.getContainerDataSource().getContainerProperty(itemId,
                     TreeContainerPlanningUnits.PROPERTY_CAPTION).setValue(planningUnit.getPlanningUnitName());
             issueTree.getContainerDataSource().getContainerProperty(itemId,
