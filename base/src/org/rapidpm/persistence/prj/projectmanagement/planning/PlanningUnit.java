@@ -62,6 +62,42 @@ public class PlanningUnit {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<PlanningUnitElement> planningUnitElementList;
 
+
+    @Basic
+    private int komplexitaet;
+
+    @Basic
+    private int estimatedStoryPoints;
+
+
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    private PlanningRisk planningRisk;
+
+
+    public PlanningRisk getPlanningRisk() {
+        return planningRisk;
+    }
+
+    public void setPlanningRisk(PlanningRisk planningRisk) {
+        this.planningRisk = planningRisk;
+    }
+
+    public int getEstimatedStoryPoints() {
+        return estimatedStoryPoints;
+    }
+
+    public void setEstimatedStoryPoints(int storypoints) {
+        this.estimatedStoryPoints = storypoints;
+    }
+
+    public int getKomplexitaet() {
+        return komplexitaet;
+    }
+
+    public void setKomplexitaet(int komplexitaet) {
+        this.komplexitaet = komplexitaet;
+    }
+
     public Long getId() {
         return id;
     }
@@ -109,7 +145,7 @@ public class PlanningUnit {
     public void setIssueBase(IssueBase issueBase) {
         this.issueBase = issueBase;
     }
-
+//
     public List<PlannedTravel> getPlannedTravelList() {
         return plannedTravelList;
     }
