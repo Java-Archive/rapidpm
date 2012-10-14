@@ -8,19 +8,19 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit; /**
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.rapidpm.persistence.prj.BaseDAOTest;
+import org.rapidpm.persistence.DAOTest;
 
 import java.util.List;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
-public class PositionDAOTest extends BaseDAOTest {
+public class PositionDAOTest extends DAOTest {
     private static final Logger logger = Logger.getLogger(PositionDAOTest.class);
 
     @Test
     public void testLoadPositionen4OrgEinheit() throws Exception {
-        final List<Position> positionList = daoFactoryFactory.getPositionDAO().loadPositionForOrgeinheit(34L);
+        final List<Position> positionList = daoFactory.getPositionDAO().loadPositionForOrgeinheit(34L);
         assertNotNull(positionList);
         assertFalse(positionList.isEmpty());
         for (final Position position : positionList) {

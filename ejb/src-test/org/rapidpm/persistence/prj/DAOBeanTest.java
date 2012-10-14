@@ -17,14 +17,14 @@ import org.rapidpm.persistence.system.logging.LoggingEventEntry;
 
 import java.lang.reflect.Field;
 
-public class BaseDAOBeanTest<T> extends BaseDAOTest {
+public class DAOBeanTest<T> extends BaseDAOTest {
 
-    private static final Logger logger = Logger.getLogger(BaseDAOBeanTest.class);
+    private static final Logger logger = Logger.getLogger(DAOBeanTest.class);
 
     private final Class<T> daoBeanClass;
     protected T daoBean;
 
-    public BaseDAOBeanTest(final Class<T> daoBeanClass) {
+    public DAOBeanTest(final Class<T> daoBeanClass) {
         this.daoBeanClass = daoBeanClass;
         init();
     }
@@ -38,8 +38,8 @@ public class BaseDAOBeanTest<T> extends BaseDAOTest {
     private void init() {
         try {
             final DaoFactoryBean factoryBean = new DaoFactoryBean();
-            setField(DaoFactoryBean.class, "em", factoryBean, daoFactoryFactory.getEntityManager());
-            setField(DaoFactoryBean.class, "daoFactory", factoryBean, daoFactoryFactory);
+            setField(DaoFactoryBean.class, "em", factoryBean, daoFactory.getEntityManager());
+            setField(DaoFactoryBean.class, "daoFactory", factoryBean, daoFactory);
 
             final LogEventEntryWriterBean logWriter = new LogEventEntryWriterBean();
             setField(LogEventEntryWriterBean.class, "daoFactory", logWriter, factoryBean);
@@ -62,7 +62,7 @@ public class BaseDAOBeanTest<T> extends BaseDAOTest {
 
     @Override
     public String toString() {
-        return "BaseDAOBeanTest{" +
+        return "DAOBeanTest{" +
                 "daoBeanClass=" + daoBeanClass +
                 ", daoBean=" + daoBean +
                 '}';

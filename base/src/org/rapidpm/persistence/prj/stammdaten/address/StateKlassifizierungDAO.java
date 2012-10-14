@@ -7,11 +7,11 @@ package org.rapidpm.persistence.prj.stammdaten.address; /**
  */
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 
-public class StateKlassifizierungDAO extends BaseDAO<Long, StateKlassifizierung> {
+public class StateKlassifizierungDAO extends DAO<Long, StateKlassifizierung> {
     private static final Logger logger = Logger.getLogger(StateKlassifizierungDAO.class);
 
 

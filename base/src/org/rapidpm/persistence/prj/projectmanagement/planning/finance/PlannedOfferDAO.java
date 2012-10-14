@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning.finance;
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 
@@ -12,7 +12,7 @@ import javax.persistence.EntityManager;
  * Time: 10:53
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class PlannedOfferDAO extends BaseDAO<Long, PlannedOffer> {
+public class PlannedOfferDAO extends DAO<Long, PlannedOffer> {
     private static final Logger logger = Logger.getLogger(PlannedOfferDAO.class);
 
     public PlannedOfferDAO(final EntityManager entityManager) {

@@ -12,13 +12,13 @@ import java.util.List;
 public abstract class AbstractOneToManyConnectExecutor<D extends DaoFactory, E, C, RT extends BaseOrmResult<? extends BaseFlatEntity>> {
 
     //    abstract class OneToManyConnectExecutor<E, C, RT extends BaseOrmResult<? extends BaseFlatEntity>> {
-    private final BaseDAO<Long, E> entityDAO;
-    private final BaseDAO<Long, C> entityCollectionDAO;
+    private final DAO<Long, E> entityDAO;
+    private final DAO<Long, C> entityCollectionDAO;
     private final D daoFactory;
 
     public AbstractOneToManyConnectExecutor(final D daoFactory,
-                                            final BaseDAO<Long, E> entityDAO,
-                                            final BaseDAO<Long, C> entityCollectionDAO) {
+                                            final DAO<Long, E> entityDAO,
+                                            final DAO<Long, C> entityCollectionDAO) {
         this.entityDAO = entityDAO;
         this.entityCollectionDAO = entityCollectionDAO;
         this.daoFactory = daoFactory;
@@ -44,7 +44,7 @@ public abstract class AbstractOneToManyConnectExecutor<D extends DaoFactory, E, 
                         methodName, sessionID, entityDAO.entityClass.getSimpleName() + " " + entityOID + " wurde erfolgreich mit " +
                         entityCollectionDAO.entityClass.getSimpleName() + " " + entityCollectionOID + " verknüpft"));
             } catch (Exception e) {
-                valid = e instanceof BaseDAO.AlreadyConnectedException; // QUEST gültig, wenn bereits verknüpft?
+                valid = e instanceof DAO.AlreadyConnectedException; // QUEST gültig, wenn bereits verknüpft?
                 loggingEventEntries.add(logEventEntryWriterBean.createLoggingEventEntry(LogLevelEnum.LOGIKINFO,
                         methodName, sessionID, e.getLocalizedMessage()));
             }

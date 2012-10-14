@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.system.security;
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -18,7 +18,7 @@ import javax.persistence.TypedQuery;
  *        Time: 20:59:59
  */
 
-public class BenutzerWebapplikationDAO extends BaseDAO<Long, BenutzerWebapplikation> {
+public class BenutzerWebapplikationDAO extends DAO<Long, BenutzerWebapplikation> {
     private static final Logger logger = Logger.getLogger(BenutzerWebapplikationDAO.class);
 
     public BenutzerWebapplikationDAO(final EntityManager entityManager) {

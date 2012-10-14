@@ -9,7 +9,7 @@ package org.rapidpm;
  */
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
@@ -30,8 +30,8 @@ public class DBMain {
     public static void main(String[] args) {
         final EntityManagerFactory emf = Persistence.createEntityManagerFactory("baseormJDBC");
         final EntityManager entityManager = emf.createEntityManager();
-        final DaoFactory daoFactoryFactory = new DaoFactory();
-        daoFactoryFactory.setEntityManager(entityManager);
+        final DaoFactory daoFactory = new DaoFactory();
+        daoFactory.setEntityManager(entityManager);
         final EntityTransaction transaction = entityManager.getTransaction();
         try {
             Class.forName("org.postgresql.Driver");
@@ -40,7 +40,7 @@ public class DBMain {
             props.setProperty("user", "ruppert");
             props.setProperty("password", "FE90tz");
             final Connection conn = DriverManager.getConnection(url, props);
-            convertBenutzer(daoFactoryFactory, conn);
+            convertBenutzer(daoFactory, conn);
 //            convertSearchQuery(daoFactory, conn);
 //            convertBranche(daoFactory, conn);
         } catch (SQLException e) {
@@ -54,7 +54,7 @@ public class DBMain {
 
     }
 
-//    private static void convertBranche(final BaseDAO daoFactory, final Connection conn) throws SQLException {
+//    private static void convertBranche(final DAO daoFactory, final Connection conn) throws SQLException {
 //        final Statement statement = conn.createStatement();
 //        final ResultSet resultSet = statement.executeQuery("select * from branche");
 //        while (resultSet.next()) {
@@ -67,7 +67,7 @@ public class DBMain {
 //        }
 //    }
 
-//    private static void convertSearchQuery(final BaseDAO DAO, final Connection conn) throws SQLException {
+//    private static void convertSearchQuery(final DAO DAO, final Connection conn) throws SQLException {
     //        final Statement statement = conn.createStatement();
     //        final SearchQueryDAO searchQueryDAO = DAO.getSearchQueryDAO();
     //        final ResultSet resultSet = statement.executeQuery("select * from search_query");
@@ -93,7 +93,7 @@ public class DBMain {
 //    }
 
     //TODO noch nicht vollständig - Benutzermapping noch falsch bzw mehrdeutig
-    private static void convertSearchQueries(BaseDAO DAO, Connection conn) throws SQLException {
+    private static void convertSearchQueries(DAO DAO, Connection conn) throws SQLException {
         //        final Statement statement = conn.createStatement();
         //        final BenutzerDAO benutzerDAO = DAO.getBenutzerDAO();
         //        final SearchQueryDAO searchQueryDAO = DAO.getSearchQueryDAO();
@@ -119,18 +119,18 @@ public class DBMain {
         //        }
     }
 
-    private static void convertBenutzer(final DaoFactory daoFactoryFactory, final Connection conn) throws SQLException {
+    private static void convertBenutzer(final DaoFactory daoFactory, final Connection conn) throws SQLException {
         final Statement statement = conn.createStatement();
         final
         ResultSet
                 resultSet =
                 statement.executeQuery("select b.login, b.active, b.hidden, b.passwd, b.valid_from, b.valid_until,bw.webapp_name, bg.gruppenname, " + "m.mandantengruppe from benutzer b , mandantengruppe m , benutzer_gruppe bg, " + "benutzer_webapplikation bw  where b.benutzer_gruppe_id = bg.id and  b.benutzer_webapplikation_id = bw.id   and b.mandantengruppe_id = m.id");
 
-        final BenutzerWebapplikationDAO benutzerWebapplikationDAO = daoFactoryFactory.getBenutzerWebapplikationDAO();
-        final BenutzerGruppeDAO benutzerGruppeDAO = daoFactoryFactory.getBenutzerGruppeDAO();
-        final MandantengruppeDAO mandantengruppeDAO = daoFactoryFactory.getMandantengruppeDAO();
-        final BenutzerDAO benutzerDAO = daoFactoryFactory.getBenutzerDAO();
-        final BerechtigungDAO berechtigungDAO = daoFactoryFactory.getBerechtigungDAO();
+        final BenutzerWebapplikationDAO benutzerWebapplikationDAO = daoFactory.getBenutzerWebapplikationDAO();
+        final BenutzerGruppeDAO benutzerGruppeDAO = daoFactory.getBenutzerGruppeDAO();
+        final MandantengruppeDAO mandantengruppeDAO = daoFactory.getMandantengruppeDAO();
+        final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
+        final BerechtigungDAO berechtigungDAO = daoFactory.getBerechtigungDAO();
 
         while (resultSet.next()) {
             final Benutzer benutzer = new Benutzer();
@@ -171,7 +171,7 @@ public class DBMain {
             }
 
 
-            daoFactoryFactory.getBenutzerDAO().saveOrUpdate(benutzer);
+            daoFactory.getBenutzerDAO().saveOrUpdate(benutzer);
         }
     }
 

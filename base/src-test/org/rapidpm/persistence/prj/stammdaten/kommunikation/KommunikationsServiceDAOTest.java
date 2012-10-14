@@ -8,14 +8,14 @@ package org.rapidpm.persistence.prj.stammdaten.kommunikation;
  */
 
 import org.junit.Test;
-import org.rapidpm.persistence.prj.BaseDAOTest;
+import org.rapidpm.persistence.DAOTest;
 
 import java.util.List;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
-public class KommunikationsServiceDAOTest extends BaseDAOTest {
+public class KommunikationsServiceDAOTest extends DAOTest {
     KommunikationsServiceDAO kommunikationsServiceDAO;
 
     @Test
@@ -25,7 +25,7 @@ public class KommunikationsServiceDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadServicesForOrganisationseinheit() throws Exception {
-        final KommunikationsServiceDAO dao = daoFactoryFactory.getKommunikationsServiceDAO();
+        final KommunikationsServiceDAO dao = daoFactory.getKommunikationsServiceDAO();
         final List<KommunikationsService> kommunikationsServices = dao.loadServicesForOrganisationseinheit(1l);
         assertFalse(kommunikationsServices.isEmpty());
     }

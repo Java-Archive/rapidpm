@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.prj.stammdaten.address;
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -18,7 +18,7 @@ import javax.persistence.TypedQuery;
  *        Time: 15:53:13
  */
 
-public class AddressKlassifizierungDAO extends BaseDAO<Long, AdressKlassifizierung> {
+public class AddressKlassifizierungDAO extends DAO<Long, AdressKlassifizierung> {
     private static final Logger logger = Logger.getLogger(AddressKlassifizierungDAO.class);
 
 

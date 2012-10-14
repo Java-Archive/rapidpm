@@ -8,16 +8,16 @@ package org.rapidpm.persistence.prj.stammdaten.address;
  */
 
 import org.junit.Test;
-import org.rapidpm.persistence.prj.BaseDAOTest;
+import org.rapidpm.persistence.DAOTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class AddressKlassifizierungDAOTest extends BaseDAOTest {
+public class AddressKlassifizierungDAOTest extends DAOTest {
 
     @Test
     public void testLoadAddressAdressKlassifizierung() throws Exception {
-        final AddressKlassifizierungDAO dao = daoFactoryFactory.getAddressKlassifizierungDAO();
+        final AddressKlassifizierungDAO dao = daoFactory.getAddressKlassifizierungDAO();
         final AdressKlassifizierung klassifizierung = dao.loadAdressKlassifizierung("privat");
         assertNotNull(klassifizierung);
         assertEquals("privat", klassifizierung.getKlassifizierung());
@@ -25,7 +25,7 @@ public class AddressKlassifizierungDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadKlassifizierungPrivat() throws Exception {
-        final AddressKlassifizierungDAO dao = daoFactoryFactory.getAddressKlassifizierungDAO();
+        final AddressKlassifizierungDAO dao = daoFactory.getAddressKlassifizierungDAO();
         final AdressKlassifizierung klassifizierung = dao.loadKlassifizierungPrivat();
         assertNotNull(klassifizierung);
         assertEquals("privat", klassifizierung.getKlassifizierung());
@@ -33,7 +33,7 @@ public class AddressKlassifizierungDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadKlassifizierungBeruflich() throws Exception {
-        final AddressKlassifizierungDAO dao = daoFactoryFactory.getAddressKlassifizierungDAO();
+        final AddressKlassifizierungDAO dao = daoFactory.getAddressKlassifizierungDAO();
         final AdressKlassifizierung klassifizierung = dao.loadKlassifizierungBeruflich();
         assertNotNull(klassifizierung);
         assertEquals("beruflich", klassifizierung.getKlassifizierung());

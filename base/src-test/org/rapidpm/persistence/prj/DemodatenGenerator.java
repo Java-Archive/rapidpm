@@ -8,6 +8,7 @@ package org.rapidpm.persistence.prj; /**
 
 import org.apache.log4j.Logger;
 import org.rapidpm.Constants;
+import org.rapidpm.persistence.DAOTest;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.system.security.BenutzerGruppe;
 import org.rapidpm.persistence.system.security.BenutzerWebapplikation;
@@ -17,28 +18,28 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class DemodatenGenerator extends BaseDAOTest {
+public class DemodatenGenerator extends DAOTest {
     private static final Logger logger = Logger.getLogger(DemodatenGenerator.class);
 
     private static EntityManagerFactory emf = Persistence.createEntityManagerFactory(Constants.PERSISTENCE_UNIT_NAME_TEST);
     private static EntityManager entityManager = emf.createEntityManager();
-    private static DaoFactory daoFactoryFactory = new DaoFactory();
+    private static DaoFactory daoFactory = new DaoFactory();
 
     public static void main(String[] args) {
-        daoFactoryFactory.setEntityManager(entityManager);
+        daoFactory.setEntityManager(entityManager);
 
         final Mandantengruppe mandantengruppe = new Mandantengruppe();
         mandantengruppe.setMandantengruppe("NeoMeta");
-        daoFactoryFactory.getMandantengruppeDAO().saveOrUpdate(mandantengruppe);
+        daoFactory.getMandantengruppeDAO().saveOrUpdate(mandantengruppe);
 
         final BenutzerWebapplikation benutzerWebapplikation = new BenutzerWebapplikation();
         benutzerWebapplikation.setWebappName("NeoMeta_App");
-        daoFactoryFactory.getBenutzerWebapplikationDAO().saveOrUpdate(benutzerWebapplikation);
+        daoFactory.getBenutzerWebapplikationDAO().saveOrUpdate(benutzerWebapplikation);
 
         final String gruppenname = "admin";
         final BenutzerGruppe benutzerGruppe = new BenutzerGruppe();
         benutzerGruppe.setGruppenname(gruppenname);
-        daoFactoryFactory.getBenutzerGruppeDAO().saveOrUpdate(benutzerGruppe);
+        daoFactory.getBenutzerGruppeDAO().saveOrUpdate(benutzerGruppe);
 
 
     }

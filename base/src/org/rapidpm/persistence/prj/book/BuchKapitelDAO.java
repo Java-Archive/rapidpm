@@ -8,11 +8,11 @@ package org.rapidpm.persistence.prj.book;
  */
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 
-public class BuchKapitelDAO extends BaseDAO<Long, BuchKapitel> {
+public class BuchKapitelDAO extends DAO<Long, BuchKapitel> {
     private static final Logger logger = Logger.getLogger(BuchKapitelDAO.class);
 
 

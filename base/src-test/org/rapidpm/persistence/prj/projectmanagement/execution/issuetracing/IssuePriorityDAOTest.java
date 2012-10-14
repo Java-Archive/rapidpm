@@ -8,16 +8,16 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
  */
 
 import org.junit.Test;
-import org.rapidpm.persistence.prj.BaseDAOTest;
+import org.rapidpm.persistence.DAOTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class IssuePriorityDAOTest extends BaseDAOTest {
+public class IssuePriorityDAOTest extends DAOTest {
 
     @Test
     public void testDringendUWichtig() throws Exception {
-        final org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority issuePriority = daoFactoryFactory.getIssuePriorityDAO().loadPriorityDringend_u_Wichtig();
+        final org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority issuePriority = daoFactory.getIssuePriorityDAO().loadPriorityDringend_u_Wichtig();
         assertNotNull(issuePriority);
         assertEquals("dringend und wichtig", issuePriority.getPriorityName());
 

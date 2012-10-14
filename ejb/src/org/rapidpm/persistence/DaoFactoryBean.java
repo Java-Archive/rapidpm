@@ -42,23 +42,23 @@ public class DaoFactoryBean extends DaoFactory implements Serializable {
     }
 //    private EntityManager em;
 
-//    private BaseDAO daoFactory;
+//    private DAO daoFactory;
 
 //    @Deprecated
-//    public BaseDAO getDaoFactoryFactory() {
+//    public DAO getDaoFactoryFactory() {
 //        return this;
 //    }
 //
 
     @PostConstruct
     void postConstruct() {
-//        daoFactory = new BaseDAO();
+//        daoFactory = new DAO();
 //        setEntityManager(em);
     }
 
     @PostActivate
     private void postActivate() {
-//        daoFactory = new BaseDAO();
+//        daoFactory = new DAO();
 //        setEntityManager(em);
 
     }

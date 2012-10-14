@@ -59,7 +59,7 @@ import javax.persistence.Persistence;
 
 public class DaoFactory {
     private static final Logger logger = Logger.getLogger(DaoFactory.class);
-    private BaseDAO.EntityUtils entityUtils;
+    private DAO.EntityUtils entityUtils;
 
     public DaoFactory(final String persistenceUnitName) {
         final EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
@@ -415,7 +415,7 @@ public class DaoFactory {
         }
     }
 
-    public BaseDAO.EntityUtils getEntityUtils() {
+    public DAO.EntityUtils getEntityUtils() {
         return entityUtils;
     }
 }

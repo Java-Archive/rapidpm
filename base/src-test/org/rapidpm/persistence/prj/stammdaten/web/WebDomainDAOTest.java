@@ -8,7 +8,7 @@ package org.rapidpm.persistence.prj.stammdaten.web; /**
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.rapidpm.persistence.prj.BaseDAOTest;
+import org.rapidpm.persistence.DAOTest;
 import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
 
 import java.util.HashSet;
@@ -18,14 +18,14 @@ import java.util.Set;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
-public class WebDomainDAOTest extends BaseDAOTest {
+public class WebDomainDAOTest extends DAOTest {
     private static final Logger logger = Logger.getLogger(WebDomainDAOTest.class);
 
     @Test
     public void testLoadWebDomainsFor() throws Exception {
-        final WebDomainDAO dao = daoFactoryFactory.getWebDomainDAO();
+        final WebDomainDAO dao = daoFactory.getWebDomainDAO();
 
-        final List<Berechtigung> berechtigungList = daoFactoryFactory.getBerechtigungDAO().loadAllEntities();
+        final List<Berechtigung> berechtigungList = daoFactory.getBerechtigungDAO().loadAllEntities();
         for (final Berechtigung berechtigung : berechtigungList) {
             System.out.println("berechtigung = " + berechtigung);
             final Set<String> webdomainSet = new HashSet<String>();
@@ -57,7 +57,7 @@ public class WebDomainDAOTest extends BaseDAOTest {
 
         for (int i = 0; i < 4; i++) {
             final long start = System.nanoTime();
-            final List<WebDomain> webDomains = daoFactoryFactory.getWebDomainDAO().loadWebDomainsFor("Hochschulsuchmaschine", "Universität");
+            final List<WebDomain> webDomains = daoFactory.getWebDomainDAO().loadWebDomainsFor("Hochschulsuchmaschine", "Universität");
             final long stop = System.nanoTime();
             System.out.println("diff [ms] = " + (stop - start) / 1000 / 1000);
             assertNotNull(webDomains);
@@ -67,7 +67,7 @@ public class WebDomainDAOTest extends BaseDAOTest {
         System.out.println(" = ");
         for (int i = 0; i < 4; i++) {
             final long start = System.nanoTime();
-            final List<WebDomain> webDomains = daoFactoryFactory.getWebDomainDAO().loadWebDomainsForSQL("Hochschulsuchmaschine", "Universität");
+            final List<WebDomain> webDomains = daoFactory.getWebDomainDAO().loadWebDomainsForSQL("Hochschulsuchmaschine", "Universität");
             final long stop = System.nanoTime();
             System.out.println("diff [ms] = " + (stop - start) / 1000 / 1000);
             assertNotNull(webDomains);

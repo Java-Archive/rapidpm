@@ -23,12 +23,12 @@ public class BaseDAOTest {
 
     protected EntityManagerFactory emf = Persistence.createEntityManagerFactory("baseormRapidPMJDBCbeta");
     protected EntityManager entityManager = emf.createEntityManager();
-    protected DaoFactory daoFactoryFactory = new DaoFactory();
+    protected DaoFactory daoFactory = new DaoFactory();
 
 
     @Before
     public void setUp() throws Exception {
-        daoFactoryFactory.setEntityManager(entityManager);
+        daoFactory.setEntityManager(entityManager);
     }
 
     @After

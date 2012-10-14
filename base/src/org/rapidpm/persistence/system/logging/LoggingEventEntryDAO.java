@@ -9,11 +9,11 @@ package org.rapidpm.persistence.system.logging;
  */
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 
-public class LoggingEventEntryDAO extends BaseDAO<Long, LoggingEventEntry> {
+public class LoggingEventEntryDAO extends DAO<Long, LoggingEventEntry> {
     private static final Logger logger = Logger.getLogger(LoggingEventEntryDAO.class);
 
 

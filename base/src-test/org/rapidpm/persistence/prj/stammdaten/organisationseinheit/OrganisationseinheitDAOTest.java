@@ -13,7 +13,7 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
  */
 
 import org.junit.Test;
-import org.rapidpm.persistence.prj.BaseDAOTest;
+import org.rapidpm.persistence.DAOTest;
 import org.rapidpm.persistence.prj.stammdaten.address.Adresse;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomain;
 import org.rapidpm.ormviews.ViewOrgEinheitHptTaetigkeitsfeld;
@@ -26,11 +26,11 @@ import java.util.List;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
-public class OrganisationseinheitDAOTest extends BaseDAOTest {
+public class OrganisationseinheitDAOTest extends DAOTest {
 
     @Test
     public void testLoadViewOrgEinheitWebDomain() throws Exception {
-        final List<ViewOrgEinheitWebDomain> views = daoFactoryFactory.getOrganisationseinheitDAO().loadViewOrgEinheitWebDomain("Hochschulsuchmaschine");
+        final List<ViewOrgEinheitWebDomain> views = daoFactory.getOrganisationseinheitDAO().loadViewOrgEinheitWebDomain("Hochschulsuchmaschine");
         assertNotNull(views);
         assertFalse(views.isEmpty());
         System.out.println("views.size() = " + views.size());
@@ -44,7 +44,7 @@ public class OrganisationseinheitDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadViewOrgEinheitHptTaetigkeitsfeld() throws Exception {
-        final List<ViewOrgEinheitHptTaetigkeitsfeld> views = daoFactoryFactory.getOrganisationseinheitDAO().loadViewOrgEinheitHptTaetigkeitsfeld("Hochschulsuchmaschine");
+        final List<ViewOrgEinheitHptTaetigkeitsfeld> views = daoFactory.getOrganisationseinheitDAO().loadViewOrgEinheitHptTaetigkeitsfeld("Hochschulsuchmaschine");
         assertNotNull(views);
         assertFalse(views.isEmpty());
         System.out.println("views.size() = " + views.size());
@@ -56,7 +56,7 @@ public class OrganisationseinheitDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadOrganisationseinheitenForMandantengruppe() throws Exception {
-        final OrganisationseinheitDAO organisationseinheitDAO = daoFactoryFactory.getOrganisationseinheitDAO();
+        final OrganisationseinheitDAO organisationseinheitDAO = daoFactory.getOrganisationseinheitDAO();
 
         final List<Organisationseinheit> meotec = organisationseinheitDAO.loadOrganisationseinheitenForMandantengruppe("meotec");
 
@@ -81,8 +81,8 @@ public class OrganisationseinheitDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadAllEntitiesFetchAllEager() throws Exception {
-        final List<Organisationseinheit> organisationseinheits = daoFactoryFactory.getOrganisationseinheitDAO().loadAllEntities(true);
-        daoFactoryFactory.getEntityManager().close();
+        final List<Organisationseinheit> organisationseinheits = daoFactory.getOrganisationseinheitDAO().loadAllEntities(true);
+        daoFactory.getEntityManager().close();
         for (final Organisationseinheit organisationseinheit : organisationseinheits) {
             final List<Adresse> adressen = organisationseinheit.getAdressen();
             for (final Adresse adresse : adressen) {
@@ -94,7 +94,7 @@ public class OrganisationseinheitDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadOrganisationseinheitenFor() throws Exception {
-        final OrganisationseinheitDAO organisationseinheitDAO = daoFactoryFactory.getOrganisationseinheitDAO();
+        final OrganisationseinheitDAO organisationseinheitDAO = daoFactory.getOrganisationseinheitDAO();
         final List<Organisationseinheit> organisationseinheitList = organisationseinheitDAO.loadOrganisationseinheitenFor("KIO Oberberg", "Kunststoffverarbeitung");
         assertNotNull(organisationseinheitList);
         assertFalse(organisationseinheitList.isEmpty());
@@ -106,7 +106,7 @@ public class OrganisationseinheitDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadOrganisationseinheitForID() throws Exception {
-        final OrganisationseinheitDAO organisationseinheitDAO = daoFactoryFactory.getOrganisationseinheitDAO();
+        final OrganisationseinheitDAO organisationseinheitDAO = daoFactory.getOrganisationseinheitDAO();
 
         final List<Organisationseinheit> organisationseinheitList = organisationseinheitDAO.loadAllEntities();
         final List<Long> oids = new ArrayList<Long>();

@@ -9,12 +9,12 @@ package org.rapidpm.persistence.prj.stammdaten.kommunikation;
  */
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-public class KommunikationsServiceUIDPartKlassifikationDAO extends BaseDAO<Long, KommunikationsServiceUIDPartKlassifikation> {
+public class KommunikationsServiceUIDPartKlassifikationDAO extends DAO<Long, KommunikationsServiceUIDPartKlassifikation> {
     private static final Logger logger = Logger.getLogger(KommunikationsServiceUIDPartKlassifikationDAO.class);
 
 

@@ -6,7 +6,7 @@
 package org.rapidpm.persistence.prj.stammdaten.address;
 
 import org.junit.Test;
-import org.rapidpm.persistence.prj.BaseDAOBeanTest;
+import org.rapidpm.persistence.prj.DAOBeanTest;
 
 import static org.junit.Assert.assertTrue;
 
@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
  * Date: 15.12.11
  * Time: 13:09
  */
-public class AdresseDAOBeanTest extends BaseDAOBeanTest<AdresseDAOBean> {
+public class AdresseDAOBeanTest extends DAOBeanTest<AdresseDAOBean> {
     public AdresseDAOBeanTest() {
         super(AdresseDAOBean.class);
     }
@@ -28,12 +28,12 @@ public class AdresseDAOBeanTest extends BaseDAOBeanTest<AdresseDAOBean> {
         adresse.setHausnummer("23");
         adresse.setNotiz("Keine Notiz");
         adresse.setOrtsname("Iserlohn");
-        adresse.setAdressKlassifizierungOID(daoFactoryFactory.getAddressKlassifizierungDAO().loadKlassifizierungPrivat().getId());
+        adresse.setAdressKlassifizierungOID(daoFactory.getAddressKlassifizierungDAO().loadKlassifizierungPrivat().getId());
         adresse.setPlz("58097");
         adresse.setGrosskundenplz(false);
-        adresse.setStateOID(daoFactoryFactory.getStateDAO().loadStateForShortname("NRW").getId());
+        adresse.setStateOID(daoFactory.getStateDAO().loadStateForShortname("NRW").getId());
 
-        daoFactoryFactory.getAdresseDAO().new Transaction() {
+        daoFactory.getAdresseDAO().new Transaction() {
             @Override
             public void doTask() {
                 final AdresseDAOBean.AdresseResult result = daoBean.saveOrUpdateTX("sessionID", -1L, adresse);

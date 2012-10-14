@@ -6,7 +6,7 @@
 package org.rapidpm.persistence.prj.security;
 
 import org.junit.Test;
-import org.rapidpm.persistence.prj.BaseDAOBeanTest;
+import org.rapidpm.persistence.prj.DAOBeanTest;
 import org.rapidpm.persistence.security.RegistrationDAOBean;
 
 import static org.junit.Assert.assertTrue;
@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
  * Date: 15.12.11
  * Time: 12:02
  */
-public class RegistrationDAOBeanTest extends BaseDAOBeanTest<RegistrationDAOBean> {
+public class RegistrationDAOBeanTest extends DAOBeanTest<RegistrationDAOBean> {
     public RegistrationDAOBeanTest() {
         super(RegistrationDAOBean.class);
     }
@@ -40,13 +40,13 @@ public class RegistrationDAOBeanTest extends BaseDAOBeanTest<RegistrationDAOBean
         registration.setTitel("");
         registration.setStrasse("Galmeistraße");
         registration.setHausnr("23");
-        registration.setRegistrationStatusOID(daoFactoryFactory.getRegistrationStatusDAO().loadRegistrationStatus_Zur_Pruefung().getId());
-        registration.setTaetigkeitsfeldOID(daoFactoryFactory.getTaetigkeitsfeldDAO().loadTaetigkeitsfeldNichtEingeordnet().getId());
-        registration.setAnredeOID(daoFactoryFactory.getAnredeDAO().loadAnredeHerr().getId());
-        registration.setMandantengruppeOID(daoFactoryFactory.getMandantengruppeDAO().loadMandantengruppe("NeoScioPortal").getId());
-        registration.setBenutzerWebapplikationOID(daoFactoryFactory.getBenutzerWebapplikationDAO().loadBenutzerWebapplikation("NeoScioPortal_App").getId());
+        registration.setRegistrationStatusOID(daoFactory.getRegistrationStatusDAO().loadRegistrationStatus_Zur_Pruefung().getId());
+        registration.setTaetigkeitsfeldOID(daoFactory.getTaetigkeitsfeldDAO().loadTaetigkeitsfeldNichtEingeordnet().getId());
+        registration.setAnredeOID(daoFactory.getAnredeDAO().loadAnredeHerr().getId());
+        registration.setMandantengruppeOID(daoFactory.getMandantengruppeDAO().loadMandantengruppe("NeoScioPortal").getId());
+        registration.setBenutzerWebapplikationOID(daoFactory.getBenutzerWebapplikationDAO().loadBenutzerWebapplikation("NeoScioPortal_App").getId());
 
-        daoFactoryFactory.getRegistrationDAO().new Transaction() {
+        daoFactory.getRegistrationDAO().new Transaction() {
             @Override
             public void doTask() {
                 final RegistrationDAOBean.RegistrationResult result = daoBean.saveOrUpdateTX("sessionID", -1L, registration);

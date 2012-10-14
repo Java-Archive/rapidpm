@@ -1,6 +1,6 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -14,7 +14,7 @@ import java.util.List;
  * Time: 11:59 AM
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
-public class IssueStatusDAO extends BaseDAO<Long, IssueStatus> {
+public class IssueStatusDAO extends DAO<Long, IssueStatus> {
 
     public IssueStatusDAO(final EntityManager entityManager) {
         super(entityManager, IssueStatus.class);

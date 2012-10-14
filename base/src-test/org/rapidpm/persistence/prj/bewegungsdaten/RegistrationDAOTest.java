@@ -8,24 +8,24 @@ package org.rapidpm.persistence.prj.bewegungsdaten;
  */
 
 import org.junit.Test;
-import org.rapidpm.persistence.prj.BaseDAOTest;
+import org.rapidpm.persistence.DAOTest;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class RegistrationDAOTest extends BaseDAOTest {
+public class RegistrationDAOTest extends DAOTest {
 
     @Test
     public void testCheckIfLoginIsAvailable() throws Exception {
-        final RegistrationDAO registrationDAO = daoFactoryFactory.getRegistrationDAO();
+        final RegistrationDAO registrationDAO = daoFactory.getRegistrationDAO();
         final boolean b = registrationDAO.checkIfLoginIsAvailable("sven.ruppert", "NeoScioPortal");
         assertFalse(b);
     }
 
     @Test
     public void testLoadAllForWebappAndAproval() throws Exception {
-        final RegistrationDAO registrationDAO = daoFactoryFactory.getRegistrationDAO();
+        final RegistrationDAO registrationDAO = daoFactory.getRegistrationDAO();
         final List<Registration> registrations = registrationDAO.loadAllRegistrationForWebAppAndAproval("KIO Oberberg_APP");
         assertNotNull(registrations);
         assertFalse(registrations.isEmpty());
@@ -40,7 +40,7 @@ public class RegistrationDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadAllNewRegistration() throws Exception {
-        final RegistrationDAO registrationDAO = daoFactoryFactory.getRegistrationDAO();
+        final RegistrationDAO registrationDAO = daoFactory.getRegistrationDAO();
         final List<Registration> registrations = registrationDAO.loadAllRegistrationForAproval();
         assertNotNull(registrations);
         assertFalse(registrations.isEmpty());

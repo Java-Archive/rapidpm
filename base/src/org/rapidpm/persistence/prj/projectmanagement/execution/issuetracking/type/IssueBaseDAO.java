@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type;
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.BaseDAO;
+import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
 
@@ -22,7 +22,7 @@ import java.util.List;
  *        Time: 13:00:32
  */
 
-public class IssueBaseDAO extends BaseDAO<Long, IssueBase> {
+public class IssueBaseDAO extends DAO<Long, IssueBase> {
     private static final Logger logger = Logger.getLogger(IssueBaseDAO.class);
 
     //    private SimpleDateFormat format = new SimpleDateFormat(Constants.YYYY_MM_DD, Locale.GERMAN);

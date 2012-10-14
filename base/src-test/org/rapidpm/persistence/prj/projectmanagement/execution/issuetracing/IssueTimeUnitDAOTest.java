@@ -8,7 +8,8 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
  */
 
 import org.junit.Test;
-import org.rapidpm.persistence.prj.BaseDAOTest;
+import org.rapidpm.persistence.DAOTest;
+import org.rapidpm.persistence.DAOTest;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnit;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnitDAO;
 
@@ -17,11 +18,11 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class IssueTimeUnitDAOTest extends BaseDAOTest {
+public class IssueTimeUnitDAOTest extends DAOTest {
 
     @Test
     public void testLoadTimeUnitsFor() throws Exception {
-        final IssueTimeUnitDAO issueTimeUnitDAO = daoFactoryFactory.getTimeUnitDAO();
+        final IssueTimeUnitDAO issueTimeUnitDAO = daoFactory.getTimeUnitDAO();
         List<IssueTimeUnit> issueTimeUnits = issueTimeUnitDAO.loadTimeUnitsFor("NeoScioPortal", "sven.ruppert", null, null, null, null);
         assertNotNull(issueTimeUnits);
         assertEquals(2, issueTimeUnits.size());

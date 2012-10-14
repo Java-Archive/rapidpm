@@ -9,7 +9,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing.typ
 
 import org.joda.time.DateTime;
 import org.junit.Test;
-import org.rapidpm.persistence.prj.BaseDAOTest;
+import org.rapidpm.persistence.DAOTest;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 
@@ -18,45 +18,45 @@ import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 
-public class IssueBaseDAOTest extends BaseDAOTest {
+public class IssueBaseDAOTest extends DAOTest {
 
 //    @Test
 //    public void testLoadAllIssuesFor001() throws Exception {
-//        final IssueBaseDAO issueBaseDAO = daoFactoryFactory.getIssueBaseDAO();
+//        final IssueBaseDAO issueDAO = daoFactory.getIssueBaseDAO();
 //        final Date version = Date.valueOf("2010-11-26");
-//        final List<IssueBase> issueBases = issueBaseDAO.loadAllIssuesFromVersionToVersion("NeoScioPortal", "NeoScio - intern - allgemeines", "sven.ruppert", "open", version, null, null);
+//        final List<IssueBase> issueBases = issueDAO.loadAllIssuesFromVersionToVersion("NeoScioPortal", "NeoScio - intern - allgemeines", "sven.ruppert", "open", version, null, null);
 //        assertNotNull(issueBases);
 //    }
 //
 //    @Test
 //    public void testLoadAllIssuesFor002() throws Exception {
-//        final IssueBaseDAO issueBaseDAO = daoFactoryFactory.getIssueBaseDAO();
+//        final IssueBaseDAO issueDAO = daoFactory.getIssueBaseDAO();
 //        final Date version = Date.valueOf("2010-11-26");
-//        final List<IssueBase> issueBases = issueBaseDAO.loadAllIssuesFromVersionToVersion("NeoScioPortal", "NeoScio - intern - allgemeines", "sven.ruppert", "open", null, null, null);
+//        final List<IssueBase> issueBases = issueDAO.loadAllIssuesFromVersionToVersion("NeoScioPortal", "NeoScio - intern - allgemeines", "sven.ruppert", "open", null, null, null);
 //        assertNotNull(issueBases);
 //    }
 //
 //    @Test
 //    public void testLoadAllIssuesFor003() throws Exception {
-//        final IssueBaseDAO issueBaseDAO = daoFactoryFactory.getIssueBaseDAO();
+//        final IssueBaseDAO issueDAO = daoFactory.getIssueBaseDAO();
 //        final DateTime dateTime = new DateTime("2010-11-26");
-//        final List<IssueBase> issueBases = issueBaseDAO.loadAllIssuesFromVersionToVersion("NeoScioPortal", "NeoScio - intern - allgemeines", "sven.ruppert", "open", dateTime.toDate(), null, null);
+//        final List<IssueBase> issueBases = issueDAO.loadAllIssuesFromVersionToVersion("NeoScioPortal", "NeoScio - intern - allgemeines", "sven.ruppert", "open", dateTime.toDate(), null, null);
 //        assertNotNull(issueBases);
 //    }
 //
 //    @Test
 //    public void testLoadAllIssuesFor004() throws Exception {
-//        final IssueBaseDAO issueBaseDAO = daoFactoryFactory.getIssueBaseDAO();
-//        final List<IssueBase> issueBases = issueBaseDAO.loadAllIssuesFromVersionToVersion(null, null, null, null, null, null, null);
+//        final IssueBaseDAO issueDAO = daoFactory.getIssueBaseDAO();
+//        final List<IssueBase> issueBases = issueDAO.loadAllIssuesFromVersionToVersion(null, null, null, null, null, null, null);
 //        assertNotNull(issueBases);
 //    }
 //
 //    @Test
 //    public void testLoadAllIssuesFromVersionToVersion() throws Exception {
-//        final IssueBaseDAO issueBaseDAO = daoFactoryFactory.getIssueBaseDAO();
-//        List<IssueBase> issueBases = issueBaseDAO.loadAllIssuesFromVersionToVersion("NeoScioPortal", "NeoScio - intern - allgemeines", "sven.ruppert", "open", null, null, null);
+//        final IssueBaseDAO issueDAO = daoFactory.getIssueBaseDAO();
+//        List<IssueBase> issueBases = issueDAO.loadAllIssuesFromVersionToVersion("NeoScioPortal", "NeoScio - intern - allgemeines", "sven.ruppert", "open", null, null, null);
 //        assertNotNull(issueBases);
-//        issueBases = issueBaseDAO.loadAllIssuesFromVersionToVersion("NeoScioPortal", "NeoScio - intern - allgemeines", "sven.ruppert", "open", new DateTime("2010-11-23").toDate(), new DateTime("2010-12-03").toDate(), null);
+//        issueBases = issueDAO.loadAllIssuesFromVersionToVersion("NeoScioPortal", "NeoScio - intern - allgemeines", "sven.ruppert", "open", new DateTime("2010-11-23").toDate(), new DateTime("2010-12-03").toDate(), null);
 //        assertNotNull(issueBases);
 //    }
 //
@@ -67,8 +67,8 @@ public class IssueBaseDAOTest extends BaseDAOTest {
 //
 //    @Test
 //    public void testLoadAllIssuesForBenutzer() throws Exception {
-//        final IssueBaseDAO issueBaseDAO = daoFactoryFactory.getIssueBaseDAO();
-//        assertNotNull(issueBaseDAO.loadAllIssuesForBenutzer("sven.ruppert"));
-//        assertNotNull(issueBaseDAO.loadAllIssuesForBenutzer(6L));
+//        final IssueBaseDAO issueDAO = daoFactory.getIssueBaseDAO();
+//        assertNotNull(issueDAO.loadAllIssuesForBenutzer("sven.ruppert"));
+//        assertNotNull(issueDAO.loadAllIssuesForBenutzer(6L));
 //    }
 }

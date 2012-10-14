@@ -13,13 +13,13 @@ import javax.persistence.Persistence;
 import static org.junit.Assert.assertEquals;
 
 /**
- * BaseDAO Tester.
+ * DAO Tester.
  *
  * @author <Authors name>
  * @version 1.0
  * @since <pre>11/16/2010</pre>
  */
-public class BaseDAOTest extends BaseTest {
+public class DAOTest extends BaseTest {
 
     protected EntityManagerFactory emf = Persistence.createEntityManagerFactory(Constants.PERSISTENCE_UNIT_NAME_TEST);
     protected EntityManager entityManager = emf.createEntityManager();

@@ -10,7 +10,7 @@ package org.rapidpm.persistence.prj.book;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.rapidpm.persistence.prj.BaseDAOTest;
+import org.rapidpm.persistence.DAOTest;
 import org.rapidpm.persistence.prj.book.kommentar.BuchAbsatzKommentar;
 import org.rapidpm.persistence.prj.book.kommentar.BuchKapitelKommentar;
 import org.rapidpm.persistence.prj.book.kommentar.BuchKommentar;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class BuchDAOTest extends BaseDAOTest {
+public class BuchDAOTest extends DAOTest {
     private static final Logger logger = Logger.getLogger(BuchDAOTest.class);
 
     @Test
@@ -30,11 +30,11 @@ public class BuchDAOTest extends BaseDAOTest {
         try {
             final EntityTransaction transaction = entityManager.getTransaction();
             transaction.begin();
-            final BuchDAO buchDAO = daoFactoryFactory.getBuchDAO();
+            final BuchDAO buchDAO = daoFactory.getBuchDAO();
 
             final Buch buch = new Buch();
 
-            final Benutzer benutzer = daoFactoryFactory.getBenutzerDAO().loadBenutzer("sven.ruppert", "Netzwerk Draht");
+            final Benutzer benutzer = daoFactory.getBenutzerDAO().loadBenutzer("sven.ruppert", "Netzwerk Draht");
 //            buch.setAutorenliste(new ArrayList<Benutzer>(Arrays.asList(benutzer)));
 //            buch.setLeserliste(new ArrayList<Benutzer>(Arrays.asList(benutzer)));
 

@@ -6,7 +6,7 @@
 package org.rapidpm.persistence.prj.stammdaten.address;
 
 import org.junit.Test;
-import org.rapidpm.persistence.prj.BaseDAOTest;
+import org.rapidpm.persistence.DAOTest;
 
 import java.util.List;
 
@@ -19,10 +19,10 @@ import static org.junit.Assert.assertNotNull;
  * Date: 10.11.11
  * Time: 14:39
  */
-public class AdresseDAOTest extends BaseDAOTest {
+public class AdresseDAOTest extends DAOTest {
     @Test
     public void testGetAdressenByPerson() throws Exception {
-        final AdresseDAO dao = daoFactoryFactory.getAdresseDAO();
+        final AdresseDAO dao = daoFactory.getAdresseDAO();
         final List<Adresse> adressen = dao.getAdressenForPerson(1L);
         assertNotNull(adressen);
         assertFalse(adressen.isEmpty());

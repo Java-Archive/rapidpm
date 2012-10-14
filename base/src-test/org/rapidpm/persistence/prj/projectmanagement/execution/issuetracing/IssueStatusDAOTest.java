@@ -8,17 +8,17 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
  */
 
 import org.junit.Test;
-import org.rapidpm.persistence.prj.BaseDAOTest;
+import org.rapidpm.persistence.DAOTest;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class IssueStatusDAOTest extends BaseDAOTest {
+public class IssueStatusDAOTest extends DAOTest {
 
     @Test
     public void testStatusOpen() throws Exception {
-        final IssueStatus issueStatus = daoFactoryFactory.getIssueStatusDAO().loadStatusOpen();
+        final IssueStatus issueStatus = daoFactory.getIssueStatusDAO().loadStatusOpen();
         assertNotNull(issueStatus);
         assertEquals(issueStatus.getStatusName(), "open");
     }
