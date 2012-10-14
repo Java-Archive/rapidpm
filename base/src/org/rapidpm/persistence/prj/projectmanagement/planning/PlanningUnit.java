@@ -14,7 +14,7 @@ import java.util.List;
  * Date: 30.07.12
  * Time: 06:50
  *
- * Verbindung der PlanungsEinheit mit den Aufwänden der PlanungsRessourcen.
+ * Verbindung der PlanungsEinheit mit den AufwÃ¤nden der PlanungsRessourcen.
  *
  */
 
@@ -22,6 +22,13 @@ import java.util.List;
 public class PlanningUnit {
 
     public static final String NAME = "planningUnitName";
+    public static final String STORYPTS = "estimatedStoryPoints";
+    public static final String COMPLEXITY = "komplexitaet";
+    public static final String RESPONSIBLE = "responsiblePerson";
+    public static final String TESTCASES = "testCases";
+    public static final String ORDERNUMBER = "orderNumber";
+
+
 
     @Id
     @TableGenerator(name = "PKGenPlanningUnit", table = "pk_gen", pkColumnName = "gen_key",
@@ -43,12 +50,8 @@ public class PlanningUnit {
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private List<PlannedMeeting> plannedMeetingList;
 
-
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private List<PlanningUnit> kindPlanningUnits;
-
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    private IssueBase issueBase;
 
     @Basic
     private int orderNumber;
@@ -69,18 +72,21 @@ public class PlanningUnit {
     @Basic
     private int estimatedStoryPoints;
 
+    @ElementCollection
+    private List<String> testcases;
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    private PlanningRisk planningRisk;
+
+    //@OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    //private PlanningRisk planningRisk;
 
 
-    public PlanningRisk getPlanningRisk() {
-        return planningRisk;
-    }
-
-    public void setPlanningRisk(PlanningRisk planningRisk) {
-        this.planningRisk = planningRisk;
-    }
+//    public PlanningRisk getPlanningRisk() {
+//        return planningRisk;
+//    }
+//
+//    public void setPlanningRisk(PlanningRisk planningRisk) {
+//        this.planningRisk = planningRisk;
+//    }
 
     public int getEstimatedStoryPoints() {
         return estimatedStoryPoints;
@@ -138,14 +144,6 @@ public class PlanningUnit {
         this.kindPlanningUnits = kindPlanningUnits;
     }
 
-    public IssueBase getIssueBase() {
-        return issueBase;
-    }
-
-    public void setIssueBase(IssueBase issueBase) {
-        this.issueBase = issueBase;
-    }
-//
     public List<PlannedTravel> getPlannedTravelList() {
         return plannedTravelList;
     }
@@ -184,6 +182,14 @@ public class PlanningUnit {
 
     public void setParent(PlanningUnit parent) {
         this.parent = parent;
+    }
+
+    public List<String> getTestcases() {
+        return testcases;
+    }
+
+    public void setTestcases(List<String> testcases) {
+        this.testcases = testcases;
     }
 
     @Override

@@ -186,14 +186,6 @@ public class IssueBase {
         this.dueDate_resolved = dueDate_resolved;
     }
 
-//    public float getEuro() {
-//        return euro;
-//    }
-//
-//    public void setEuro(final float euro) {
-//        this.euro = euro;
-//    }
-
     public Long getId() {
         return id;
     }
