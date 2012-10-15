@@ -2,6 +2,9 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 
+import static org.rapidpm.Constants.HOURS_DAY;
+import static org.rapidpm.Constants.MINS_HOUR;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Marco
@@ -24,6 +27,19 @@ public class DaysHoursMinutesItem {
         days = planningUnitElement.getPlannedDays();
         hours = planningUnitElement.getPlannedHours();
         minutes = planningUnitElement.getPlannedMinutes();
+    }
+
+    public static void correctDaysHoursMinutesItem(final DaysHoursMinutesItem item) {
+        final int hours = item.getMinutes() / MINS_HOUR;
+        if (hours > 0) {
+            item.setHours(item.getHours() + hours);
+            item.setMinutes(item.getMinutes() - (hours * MINS_HOUR));
+        }
+        final int days = item.getHours() / HOURS_DAY;
+        if (days > 0) {
+            item.setDays(item.getDays() + days);
+            item.setHours(item.getHours() - (days * HOURS_DAY));
+        }
     }
 
     public Integer getDays() {
