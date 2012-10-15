@@ -3,6 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.MyFormLayout;
@@ -27,11 +28,12 @@ public class PlanningInformationMyFormLayout extends MyFormLayout {
     private List<AbstractField> fieldList;
     private PlanningInformationFieldGroup fieldGroup;
 
-    public PlanningInformationMyFormLayout(final IssueBase issueBase, final ProjektplanungScreen screen, final Panel screenPanel) {
+    public PlanningInformationMyFormLayout(final PlanningUnit planningUnit, final ProjektplanungScreen screen,
+                                           final Panel screenPanel) {
         super(screen, screenPanel);
         this.messages = screen.getMessagesBundle();
 
-        fieldGroup = new PlanningInformationFieldGroup(messages, issueBase);
+        fieldGroup = new PlanningInformationFieldGroup(messages, planningUnit);
         fieldList = fieldGroup.getFieldList();
 
         buildForm();
@@ -77,6 +79,5 @@ public class PlanningInformationMyFormLayout extends MyFormLayout {
             }
         }
         componentsLayout.addComponent(fieldGroup.getDescriptionArea());
-        componentsLayout.addComponent(fieldGroup.getStorypointsField());
     }
 }
