@@ -1,14 +1,13 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning;
 
+import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.book.Buch;
 import org.rapidpm.persistence.prj.projectmanagement.planning.finance.PlannedOffer;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedTravel;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -62,6 +61,8 @@ public class PlannedProject {
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private Buch specification;
 
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    private Buch testCases;
 
 
 
@@ -129,6 +130,15 @@ public class PlannedProject {
         result = 31 * result + (plannedOfferList != null ? plannedOfferList.hashCode() : 0);
         result = 31 * result + (specification != null ? specification.hashCode() : 0);
         return result;
+    }
+
+
+    public Buch getTestCases() {
+        return testCases;
+    }
+
+    public void setTestCases(Buch testCases) {
+        this.testCases = testCases;
     }
 
     public List<PlannedTravel> getPlannedTravelList() {
