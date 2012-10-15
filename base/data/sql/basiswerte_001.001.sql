@@ -1025,5 +1025,54 @@ VALUES (14, 112);
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_PlanningUnitElement_id', 113);
 
+INSERT INTO plannedoffer (id, deleteable, eurosperhour,name,percent,responsibleperson_id)
+ VALUES (1,false,0,'Basispreis',0,1);
+
+INSERT INTO plannedoffer (id, deleteable, eurosperhour,name,percent,responsibleperson_id)
+ VALUES (2,false,0,'AufwÃ¤nde',0,1);
+
+INSERT INTO plannedoffer (id, deleteable, eurosperhour,name,percent,responsibleperson_id)
+ VALUES (3,true,125.0,'GewÃ¤hrleistung',0.2,1);
+
+INSERT INTO plannedoffer (id, deleteable, eurosperhour,name,percent,responsibleperson_id)
+ VALUES (4,true,65.0,'Festpreisaufschlag',0.15,1);
+
+INSERT INTO plannedoffer (id, deleteable, eurosperhour,name,percent,responsibleperson_id)
+ VALUES (5,true,125.0,'Risiko',0.2,1);
+
+INSERT INTO plannedoffer (id, deleteable, eurosperhour,name,percent,responsibleperson_id)
+ VALUES (6,false,0,'operatives Ergebnis',0.15,1);
+
+INSERT INTO plannedoffer (id, deleteable, eurosperhour,name,percent,responsibleperson_id)
+ VALUES (7,false,0,'Verhandlungsaufschlag',0.16,1);
+
+INSERT INTO plannedoffer (id, deleteable, eurosperhour,name,percent,responsibleperson_id)
+ VALUES (8,true,65.0,'Handlungsgeld',0.02,1);
+
+INSERT INTO plannedoffer (id, deleteable, eurosperhour,name,percent,responsibleperson_id)
+ VALUES (9,true,65.0,'Overhead / Backoffice',0.05,1);
+
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlannedOffer_id', 10);
+
+INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id) VALUES (1,1);
+
+INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id) VALUES (1,2);
+
+INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id) VALUES (1,3);
+
+INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id) VALUES (1,4);
+
+INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id) VALUES (1,5);
+
+INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id) VALUES (1,6);
+
+INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id) VALUES (1,7);
+
+INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id) VALUES (1,8);
+
+INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id) VALUES (1,9);
+
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlannedProject_PlannedOffer_id', 10);
+
 
 
