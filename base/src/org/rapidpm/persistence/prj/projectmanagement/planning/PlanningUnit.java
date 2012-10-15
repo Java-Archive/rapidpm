@@ -4,6 +4,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.PlannedMeeting;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedTravel;
 import org.rapidpm.persistence.prj.stammdaten.person.Person;
+import org.rapidpm.persistence.system.security.Benutzer;
 
 import javax.persistence.*;
 import java.util.List;
@@ -27,6 +28,7 @@ public class PlanningUnit {
     public static final String RESPONSIBLE = "responsiblePerson";
     public static final String TESTCASES = "testCases";
     public static final String ORDERNUMBER = "orderNumber";
+    public static final String DESCPRIPTION = "description";
 
 
 
@@ -45,7 +47,7 @@ public class PlanningUnit {
     private PlanningStatus planningStatus;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    private Person responsiblePerson;
+    private Benutzer responsiblePerson;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private List<PlannedMeeting> plannedMeetingList;
@@ -71,6 +73,9 @@ public class PlanningUnit {
 
     @Basic
     private int estimatedStoryPoints;
+
+    @Basic
+    private String description;
 
     @ElementCollection
     private List<String> testcases;
@@ -160,11 +165,11 @@ public class PlanningUnit {
         this.planningStatus = planningStatus;
     }
 
-    public Person getResponsiblePerson() {
+    public Benutzer getResponsiblePerson() {
         return responsiblePerson;
     }
 
-    public void setResponsiblePerson(Person responsiblePerson) {
+    public void setResponsiblePerson(Benutzer responsiblePerson) {
         this.responsiblePerson = responsiblePerson;
     }
 
@@ -190,6 +195,14 @@ public class PlanningUnit {
 
     public void setTestcases(List<String> testcases) {
         this.testcases = testcases;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

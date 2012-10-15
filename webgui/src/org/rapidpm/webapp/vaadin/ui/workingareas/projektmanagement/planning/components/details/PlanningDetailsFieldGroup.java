@@ -7,8 +7,6 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
@@ -19,9 +17,6 @@ import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import static org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase.*;
-import static org.rapidpm.Constants.*;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -34,7 +29,7 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
 
     private List<AbstractField> fieldList = new ArrayList<>();
 
-    private AbstractSelect responsiblePersonBox;
+    private ComboBox responsiblePersonBox;
     private TextField orderNumberField;
     private TextField complexityField;
     private TextField storyPointsField;
@@ -43,53 +38,53 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
     private PlanningDetailsFieldGroupBean bean;
     private DaoFactoryBean baseDaoFactoryBean;
 
-    public PlanningDetailsFieldGroup(final ResourceBundle messages, final PlanningUnit planningUnit) {
-        setItemDataSource(new BeanItem<>(planningUnit));
+    public PlanningDetailsFieldGroup(final ResourceBundle messages, final PlanningUnit thePlanningUnit) {
         this.messages = messages;
         bean = EJBFactory.getEjbInstance(PlanningDetailsFieldGroupBean.class);
         baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final PlanningUnit planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().loadPlanningUnitByName
+                (thePlanningUnit.getPlanningUnitName());
+        setItemDataSource(new BeanItem<>(planningUnit));
         buildForm();
     }
 
     private void buildForm() {
         refreshEntities(baseDaoFactoryBean);
-        final List<IssueStatus> statusList = baseDaoFactoryBean.getIssueStatusDAO().loadAllEntities();
         final List<Benutzer> users = baseDaoFactoryBean.getBenutzerDAO().loadAllEntities();
-        AbstractSelect box;
-        DateField dateField;
         for (final Object propertyId : getUnboundPropertyIds()) {
             final String spaltenName = propertyId.toString();
             switch(spaltenName){
-//                case(PlanningUnit.RESPONSIBLE):
-//                    box = generateBox(messages.getString("planning_responsible"),
-//                        new BeanItemContainer<>(Benutzer.class, users),Benutzer.LOGIN);
-//                    bind(box, propertyId);
-//                    responsiblePersonBox = box;
-//                    fieldList.add(box);
-//                    break;
-//                case(PlanningUnit.ORDERNUMBER):
-//                    orderNumberField = new TextField(messages.getString("planning_ordernumber"));
-//                    bind(orderNumberField, propertyId);
-//                    fieldList.add(orderNumberField);
-//                    break;
-//                case(PlanningUnit.COMPLEXITY):
-//                    complexityField = new TextField(messages.getString("planning_complexity"));
-//                    bind(complexityField, propertyId);
-//                    fieldList.add(complexityField);
-//                    break;
-//                case(PlanningUnit.STORYPTS):
-//                    storyPointsField = new TextField(messages.getString("planning_storypoints"));
-//                    bind(storyPointsField, propertyId);
-//                    fieldList.add(storyPointsField);
-//                    break;
+                case(PlanningUnit.RESPONSIBLE):
+                    responsiblePersonBox = generateBox(messages.getString("planning_responsible"),
+                        new BeanItemContainer<>(Benutzer.class, users),Benutzer.LOGIN);
+                    bind(responsiblePersonBox, propertyId);
+
+                    fieldList.add(responsiblePersonBox);
+                    break;
+                case(PlanningUnit.ORDERNUMBER):
+                    orderNumberField = new TextField(messages.getString("planning_ordernumber"));
+                    bind(orderNumberField, propertyId);
+                    fieldList.add(orderNumberField);
+                    break;
+                case(PlanningUnit.COMPLEXITY):
+                    complexityField = new TextField(messages.getString("planning_complexity"));
+                    bind(complexityField, propertyId);
+                    fieldList.add(complexityField);
+                    break;
+                case(PlanningUnit.STORYPTS):
+                    storyPointsField = new TextField(messages.getString("planning_storypoints"));
+                    bind(storyPointsField, propertyId);
+                    fieldList.add(storyPointsField);
+                    break;
                 default:
                     break;
             }
         }
     }
 
-    public AbstractSelect generateBox(final String caption, final BeanItemContainer container, final String itemCaptionPropertyId){
-        final AbstractSelect box = new ComboBox(caption,container);
+    public ComboBox generateBox(final String caption, final BeanItemContainer container,
+                           final String itemCaptionPropertyId){
+        final ComboBox box = new ComboBox(caption,container);
         box.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
         box.setItemCaptionPropertyId(itemCaptionPropertyId);
         return box;

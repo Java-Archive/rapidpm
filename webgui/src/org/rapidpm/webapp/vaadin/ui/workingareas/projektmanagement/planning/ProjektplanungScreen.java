@@ -162,9 +162,9 @@ public class ProjektplanungScreen extends Screen {
 
     private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
+//        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+//            entityManager.refresh(plannedProject);
+//        }
         for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
             entityManager.refresh(planningUnitElement);
         }

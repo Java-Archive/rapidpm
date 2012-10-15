@@ -2,6 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
@@ -79,6 +80,9 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
                 ((ComboBox)field).setNullSelectionAllowed(false);
                 ((ComboBox)field).setTextInputAllowed(false);
             }
+        }
+        for(Field<?> field : fieldGroup.getFields()){
+            componentsLayout.addComponent(field);
         }
         componentsLayout.addComponent(fieldGroup.getResponsiblePersonBox());
         componentsLayout.addComponent(fieldGroup.getComplexityField());
