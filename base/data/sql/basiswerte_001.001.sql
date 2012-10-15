@@ -1073,6 +1073,3 @@ INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id)
 INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id) VALUES (1,9);
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlannedProject_PlannedOffer_id', 10);
-
-
-
