@@ -2,9 +2,9 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,34 +24,25 @@ public class PlanningInformationFieldGroup extends FieldGroup {
 
     private List<AbstractField> fieldList = new ArrayList<>();
     private TextArea descriptionArea;
-    private AbstractTextField storypointsField;
 
     private ResourceBundle messages;
 
-    public PlanningInformationFieldGroup(ResourceBundle messages, IssueBase issueBase) {
-        setItemDataSource(new BeanItem<>(issueBase));
+    public PlanningInformationFieldGroup(final ResourceBundle messages, final PlanningUnit planningUnit) {
+        setItemDataSource(new BeanItem<>(planningUnit));
         this.messages = messages;
-
         buildForm();
     }
 
     private void buildForm() {
-        AbstractTextField field;
         TextArea area;
         for (final Object propertyId : getUnboundPropertyIds()) {
             final String spaltenName = propertyId.toString();
             switch(spaltenName){
-                case(TEXT):
+                case(PlanningUnit.DESCPRIPTION):
                     area = generateTextArea(messages.getString("planning_description"));
                     bind(area, propertyId);
                     descriptionArea = area;
                     fieldList.add(area);
-                    break;
-                case(STORYPOINTS):
-                    field = generateField(messages.getString("planning_storypoints"));
-                    bind(field, propertyId);
-                    storypointsField = field;
-                    fieldList.add(field);
                     break;
                 default:
                     break;
@@ -59,22 +50,9 @@ public class PlanningInformationFieldGroup extends FieldGroup {
         }
     }
 
-    public AbstractSelect generateBox(String caption, BeanItemContainer container, String itemCaptionPropertyId){
-        final AbstractSelect box = new ComboBox(caption,container);
-        //((ComboBox)box).setItemIconPropertyId(ICON);
-        box.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
-        box.setItemCaptionPropertyId(itemCaptionPropertyId);
-        return box;
-    }
-
     public AbstractTextField generateField(String caption){
         final AbstractTextField textField = new TextField(caption);
         return textField;
-    }
-
-    public DateField generateDateField(String caption){
-        final DateField dateField = new DateField(caption);
-        return dateField;
     }
 
     public TextArea generateTextArea(String caption){
@@ -93,13 +71,5 @@ public class PlanningInformationFieldGroup extends FieldGroup {
 
     public void setDescriptionArea(TextArea descriptionArea) {
         this.descriptionArea = descriptionArea;
-    }
-
-    public AbstractTextField getStorypointsField() {
-        return storypointsField;
-    }
-
-    public void setStorypointsField(AbstractTextField storypointsField) {
-        this.storypointsField = storypointsField;
     }
 }

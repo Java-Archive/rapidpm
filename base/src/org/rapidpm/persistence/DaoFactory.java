@@ -32,7 +32,6 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElementDAO;
-import org.rapidpm.persistence.prj.projectmanagement.planning.finance.PlannedOfferDAO;
 import org.rapidpm.persistence.prj.stammdaten.address.*;
 import org.rapidpm.persistence.prj.stammdaten.kommunikation.*;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.*;
@@ -130,6 +129,7 @@ public class DaoFactory {
     }
 
     //pkg webapp
+    //
 
 
     public OntologieDAO getOntologieDAO() {
@@ -391,11 +391,6 @@ public class DaoFactory {
 
     public ProjektanfrageDAO getProjektanfrageDAO() {
         return new ProjektanfrageDAO(getEntityManager());
-    }
-
-    //pkg finance
-    public PlannedOfferDAO getPlannedOfferDAO() {
-        return new PlannedOfferDAO(getEntityManager());
     }
 
     public <T> void remove(T entity) {

@@ -251,47 +251,47 @@ VALUES (2,1,1);
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('Person_id', 2);
 
-INSERT INTO planningunit(id,ordernumber,planningunitname,issuebase_id,parent_id,planningstatus_id,responsibleperson_id)
-VALUES (1,1,'Vorbereitungen',1,null,1,1);
+INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+VALUES (1,1,'Vorbereitungen',1,1,null,1,1);
 
-INSERT INTO planningunit(id,ordernumber,planningunitname,issuebase_id,parent_id,planningstatus_id,responsibleperson_id)
-VALUES (2,2,'Erstkontakt vor Ort',2,1,1,1);
+INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+VALUES (2,2,'Erstkontakt vor Ort',2,1,1,1,3);
 
-INSERT INTO planningunit(id,ordernumber,planningunitname,issuebase_id,parent_id,planningstatus_id,responsibleperson_id)
-VALUES (3,3,'Person A kontaktieren',3,2,1,1);
+INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+VALUES (3,3,'Person A kontaktieren',3,1,2,1,4);
 
-INSERT INTO planningunit(id,ordernumber,planningunitname,issuebase_id,parent_id,planningstatus_id,responsibleperson_id)
-VALUES (4,4,'Person B kontaktieren',4,2,1,2);
+INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+VALUES (4,4,'Person B kontaktieren',4,1,2,1,2);
 
-INSERT INTO planningunit(id,ordernumber,planningunitname,issuebase_id,parent_id,planningstatus_id,responsibleperson_id)
-VALUES (5,5,'Gesprächsvorbereitung',5,1,1,2);
+INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+VALUES (5,5,'Gesprächsvorbereitung',5,1,1,1,2);
 
-INSERT INTO planningunit(id,ordernumber,planningunitname,issuebase_id,parent_id,planningstatus_id,responsibleperson_id)
-VALUES (6,6,'Präsentation',6,1,1,2);
+INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+VALUES (6,6,'Präsentation',6,1,1,1,2);
 
-INSERT INTO planningunit(id,ordernumber,planningunitname,issuebase_id,parent_id,planningstatus_id,responsibleperson_id)
-VALUES (7,7,'Gesprächsbestätigung',7,1,1,2);
+INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+VALUES (7,7,'Gesprächsbestätigung',7,1,1,1,2);
 
-INSERT INTO planningunit(id,ordernumber,planningunitname,issuebase_id,parent_id,planningstatus_id,responsibleperson_id)
-VALUES (8,8,'Vorbereitungsarbeiten',8,null,1,1);
+INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+VALUES (8,8,'Vorbereitungsarbeiten',8,1,null,1,1);
 
-INSERT INTO planningunit(id,ordernumber,planningunitname,issuebase_id,parent_id,planningstatus_id,responsibleperson_id)
-VALUES (9,9,'Vorbereitung der Maschinen',9,8,1,1);
+INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+VALUES (9,9,'Vorbereitung der Maschinen',9,1,8,1,2);
 
-INSERT INTO planningunit(id,ordernumber,planningunitname,issuebase_id,parent_id,planningstatus_id,responsibleperson_id)
-VALUES (10,10,'Vorbereitung von Maschine 1',10,9,1,1);
+INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+VALUES (10,10,'Vorbereitung von Maschine 1',10,1,9,1,1);
 
-INSERT INTO planningunit(id,ordernumber,planningunitname,issuebase_id,parent_id,planningstatus_id,responsibleperson_id)
-VALUES (11,11,'Vorbereitung von Maschine 2',11,9,1,1);
+INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+VALUES (11,11,'Vorbereitung von Maschine 2',11,1,9,1,3);
 
-INSERT INTO planningunit(id,ordernumber,planningunitname,issuebase_id,parent_id,planningstatus_id,responsibleperson_id)
-VALUES (12,12,'Vorbereitung der Werkzeuge',12,8,1,1);
+INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+VALUES (12,12,'Vorbereitung der Werkzeuge',12,1,8,1,1);
 
-INSERT INTO planningunit(id,ordernumber,planningunitname,issuebase_id,parent_id,planningstatus_id,responsibleperson_id)
-VALUES (13,13,'Durchführung',13,null,1,1);
+INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+VALUES (13,13,'Durchführung',13,1,null,1,1);
 
-INSERT INTO planningunit(id,ordernumber,planningunitname,issuebase_id,parent_id,planningstatus_id,responsibleperson_id)
-VALUES (14,14,'Beendigung',14,null,1,1);
+INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+VALUES (14,14,'Beendigung',14,1,null,1,1);
 
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_id', 15);
@@ -1025,52 +1025,5 @@ VALUES (14, 112);
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_PlanningUnitElement_id', 113);
 
-INSERT INTO plannedoffer (id, deleteable, eurosperhour,name,percent,responsibleperson_id)
- VALUES (1,false,0,'Basispreis',0,1);
 
-INSERT INTO plannedoffer (id, deleteable, eurosperhour,name,percent,responsibleperson_id)
- VALUES (2,false,0,'Aufwände',0,1);
-
-INSERT INTO plannedoffer (id, deleteable, eurosperhour,name,percent,responsibleperson_id)
- VALUES (3,true,125.0,'Gewährleistung',0.2,1);
-
-INSERT INTO plannedoffer (id, deleteable, eurosperhour,name,percent,responsibleperson_id)
- VALUES (4,true,65.0,'Festpreisaufschlag',0.15,1);
-
-INSERT INTO plannedoffer (id, deleteable, eurosperhour,name,percent,responsibleperson_id)
- VALUES (5,true,125.0,'Risiko',0.2,1);
-
-INSERT INTO plannedoffer (id, deleteable, eurosperhour,name,percent,responsibleperson_id)
- VALUES (6,false,0,'operatives Ergebnis',0.15,1);
-
-INSERT INTO plannedoffer (id, deleteable, eurosperhour,name,percent,responsibleperson_id)
- VALUES (7,false,0,'Verhandlungsaufschlag',0.16,1);
-
-INSERT INTO plannedoffer (id, deleteable, eurosperhour,name,percent,responsibleperson_id)
- VALUES (8,true,65.0,'Handlungsgeld',0.02,1);
-
-INSERT INTO plannedoffer (id, deleteable, eurosperhour,name,percent,responsibleperson_id)
- VALUES (9,true,65.0,'Overhead / Backoffice',0.05,1);
-
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlannedOffer_id', 10);
-
-INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id) VALUES (1,1);
-
-INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id) VALUES (1,2);
-
-INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id) VALUES (1,3);
-
-INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id) VALUES (1,4);
-
-INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id) VALUES (1,5);
-
-INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id) VALUES (1,6);
-
-INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id) VALUES (1,7);
-
-INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id) VALUES (1,8);
-
-INSERT INTO plannedproject_plannedoffer (plannedproject_id, plannedofferlist_id) VALUES (1,9);
-
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlannedProject_PlannedOffer_id', 10);
 

@@ -53,7 +53,9 @@ public class ProjektplanungScreen extends Screen {
         projektplanungScreenBean = EJBFactory.getEjbInstance(ProjektPlanungScreenBean.class);
         baseDaoFactoryBean = projektplanungScreenBean.getDaoFactoryBean();
         refreshEntities(baseDaoFactoryBean);
-        final PlannedProject plannedProject = ui.getCurrentProject();
+        final PlannedProject projectFromSession = ui.getCurrentProject();
+        final PlannedProject projectFromDB = baseDaoFactoryBean.getPlannedProjectDAO().findByID
+                (projectFromSession.getId());
 
         final PlanningCalculator calculator = new PlanningCalculator(messagesBundle);
         calculator.calculate();
@@ -84,9 +86,9 @@ public class ProjektplanungScreen extends Screen {
         splitPanel.addComponent(mainLayout);
 
 
-        final List<PlanningUnit> planningUnitList = plannedProject.getPlanningUnits();
+        final List<PlanningUnit> planningUnitList = projectFromDB.getPlanningUnits();
 
-        planningUnitPanel.setCaption(plannedProject.getProjektName());
+        planningUnitPanel.setCaption(projectFromDB.getProjektName());
         projektSelect = new ListSelect(null, new BeanItemContainer<>(PlanningUnit.class,planningUnitList));
 
         projektSelect.setNullSelectionAllowed(false);
@@ -101,7 +103,7 @@ public class ProjektplanungScreen extends Screen {
                 treePanel.getContent().removeAllComponents();
                 detailPanel.getContent().removeAllComponents();
                 treePanel.setCaption(value.getPlanningUnitName());
-                fillTreePanel(value, plannedProject);
+                fillTreePanel(value, projectFromDB);
                 treePanelTree.select(value);
             }
 
@@ -119,7 +121,7 @@ public class ProjektplanungScreen extends Screen {
         detailPanel.setCaption(messagesBundle.getString("details"));
     }
 
-    public void fillTreePanel(PlanningUnit selectedPlanningUnit, PlannedProject projekt) {
+    public void fillTreePanel(final PlanningUnit selectedPlanningUnit, final PlannedProject projekt) {
 
         treePanel.removeAllComponents();
         treePanelTree = new Tree();
@@ -138,18 +140,11 @@ public class ProjektplanungScreen extends Screen {
             while (iterator.hasNext()){
                 treePanelTree.expandItemsRecursively(iterator.next());
             }
-            for(final Object itemId : treePanelTree.getVisibleItemIds()){
-                final PlanningUnit planningUnit = (PlanningUnit) itemId;
-                final IssueBase planningUnitIssueBase = planningUnit.getIssueBase();
-                final IssueStatus issueStatus = planningUnitIssueBase.getStatus();
-                final String iconPfad = (Constants.IMAGES_DIRECTION + issueStatus.getStatusFileName());
-                treePanelTree.setItemIcon(itemId, new ThemeResource(iconPfad));
-            }
             treePanel.addComponent(treePanelTree);
         }
     }
 
-    private void buildTree(List<PlanningUnit> planningUnits, PlanningUnit parentUnit) {
+    private void buildTree(final List<PlanningUnit> planningUnits, final PlanningUnit parentUnit) {
         for (final PlanningUnit planningUnit : planningUnits) {
             container.addBean(planningUnit);
             container.setParent(planningUnit, parentUnit);
@@ -165,11 +160,11 @@ public class ProjektplanungScreen extends Screen {
         addComponent(splitPanel);
     }
 
-    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
+//        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+//            entityManager.refresh(plannedProject);
+//        }
         for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
             entityManager.refresh(planningUnitElement);
         }

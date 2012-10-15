@@ -94,7 +94,7 @@ public class TimesCalculator {
                     daysHoursMinutesItem.setHours(hours);
                     daysHoursMinutesItem.setMinutes(minutes);
                 }
-                DaysHoursMinutesItem.correctDaysHoursMinutesItem(daysHoursMinutesItem);
+                correctDaysHoursMinutesItem(daysHoursMinutesItem);
                 ressourceGroupDaysHoursMinutesItemMap.put(oldRessourceGroup, daysHoursMinutesItem);
             }
         }
@@ -119,18 +119,18 @@ public class TimesCalculator {
         }
     }
 
-//    private void correctDaysHoursMinutesItem(final DaysHoursMinutesItem item) {
-//        final int hours = item.getMinutes() / MINS_HOUR;
-//        if (hours > 0) {
-//            item.setHours(item.getHours() + hours);
-//            item.setMinutes(item.getMinutes() - (hours * MINS_HOUR));
-//        }
-//        final int days = item.getHours() / HOURS_DAY;
-//        if (days > 0) {
-//            item.setDays(item.getDays() + days);
-//            item.setHours(item.getHours() - (days * HOURS_DAY));
-//        }
-//    }
+    private void correctDaysHoursMinutesItem(final DaysHoursMinutesItem item) {
+        final int hours = item.getMinutes() / MINS_HOUR;
+        if (hours > 0) {
+            item.setHours(item.getHours() + hours);
+            item.setMinutes(item.getMinutes() - (hours * MINS_HOUR));
+        }
+        final int days = item.getHours() / HOURS_DAY;
+        if (days > 0) {
+            item.setDays(item.getDays() + days);
+            item.setHours(item.getHours() - (days * HOURS_DAY));
+        }
+    }
 
     public Map<RessourceGroup, Double> getRelativeWerte() {
         return relativeWerte;
@@ -147,7 +147,7 @@ public class TimesCalculator {
     public DaysHoursMinutesItem getGesamtSummeItem() {
         final DaysHoursMinutesItem item = new DaysHoursMinutesItem();
         item.setMinutes(gesamtSummeInMin);
-        DaysHoursMinutesItem.correctDaysHoursMinutesItem(item);
+        correctDaysHoursMinutesItem(item);
         return item;
     }
 
@@ -160,7 +160,7 @@ public class TimesCalculator {
         return format.format(mannTageExakt);
     }
 
-    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);

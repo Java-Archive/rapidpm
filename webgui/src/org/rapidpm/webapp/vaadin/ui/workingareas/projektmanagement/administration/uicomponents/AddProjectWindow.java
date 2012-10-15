@@ -43,7 +43,7 @@ public class AddProjectWindow extends Window{
     private ResourceBundle messages;
     private AddProjectWindowBean bean;
 
-    public AddProjectWindow(final MainUI ui, ResourceBundle messages) {
+    public AddProjectWindow(final MainUI ui, final ResourceBundle messages) {
         this.ui = ui;
         this.messages = messages;
         setHeight(HEIGHT);
@@ -66,7 +66,7 @@ public class AddProjectWindow extends Window{
 
         addComponent(horizontalButtonLayout);
 
-        addListeners(baseDaoFactoryBean, projekt, ui);
+        addListeners(baseDaoFactoryBean, ui);
         doInternationalization();
 
     }
@@ -90,8 +90,7 @@ public class AddProjectWindow extends Window{
         cancelButton.setCaption(messages.getString("cancel"));
     }
 
-    private void addListeners(final DaoFactoryBean baseDaoFactoryBean, PlannedProject proj, final MainUI ui) {
-        final PlannedProject projekt = proj;
+    private void addListeners(final DaoFactoryBean baseDaoFactoryBean,final MainUI ui) {
         saveButton.addClickListener(new Button.ClickListener() {
 
             @Override
@@ -143,7 +142,7 @@ public class AddProjectWindow extends Window{
         ui.addWindow(this);
     }
 
-    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);

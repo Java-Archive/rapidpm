@@ -22,7 +22,7 @@ public class ProjectAdministrationScreen extends Screen {
     private ProjectsPanel projectsPanel;
     private CurrentProjectPanel currentProjectPanel;
 
-    public ProjectAdministrationScreen(MainUI ui){
+    public ProjectAdministrationScreen(final MainUI ui){
         super(ui);
 
         chosenProjectPanel = new ChosenProjectPanel(ui, messagesBundle);

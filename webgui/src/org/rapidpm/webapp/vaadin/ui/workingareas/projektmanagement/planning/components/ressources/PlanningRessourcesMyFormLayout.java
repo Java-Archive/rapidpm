@@ -152,7 +152,7 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
         componentsLayout.addComponent(tabelle);
     }
 
-    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);

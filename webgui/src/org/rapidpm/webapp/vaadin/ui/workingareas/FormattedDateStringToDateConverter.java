@@ -22,7 +22,7 @@ public final class FormattedDateStringToDateConverter implements Converter<Strin
     }
 
     @Override
-    public Date convertToModel(String value, Locale locale) throws ConversionException {
+    public Date convertToModel(final String value, final Locale locale) throws ConversionException {
         Date parsedDate = new Date();
 
         try {
@@ -34,7 +34,7 @@ public final class FormattedDateStringToDateConverter implements Converter<Strin
     }
 
     @Override
-    public String convertToPresentation(Date value, Locale locale) throws ConversionException {
+    public String convertToPresentation(final Date value, final Locale locale) throws ConversionException {
         String formattedDate = dateFormat.toPattern();
         if(value != null)
             formattedDate = dateFormat.format(value);

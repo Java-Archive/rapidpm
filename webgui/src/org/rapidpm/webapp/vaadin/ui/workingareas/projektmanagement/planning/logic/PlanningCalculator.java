@@ -92,8 +92,6 @@ public class PlanningCalculator {
             }
         }
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
-            //final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
-            //final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
             Integer daysFromMap;
             Integer hoursFromMap;
             Integer minutesFromMap;
@@ -120,7 +118,6 @@ public class PlanningCalculator {
             planningUnitElement.setPlannedMinutes(minutesFromMap);
             planningCalculatorBean.getDaoFactoryBean().saveOrUpdate(planningUnitElement);
         }
-        System.out.println(ressourceGroupDaysHoursMinutesItemMap.toString());
     }
 
     private void addiereZeileZurRessourceMap(final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap,

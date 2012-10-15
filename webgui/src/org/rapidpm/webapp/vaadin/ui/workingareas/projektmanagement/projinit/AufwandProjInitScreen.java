@@ -55,7 +55,7 @@ public class AufwandProjInitScreen extends Screen {
     private GridLayout upperFormLayout = new GridLayout(2, 10);
     private VerticalLayout lowerFormLayout = new VerticalLayout();
 
-    public AufwandProjInitScreen(MainUI ui) {
+    public AufwandProjInitScreen(final MainUI ui) {
         super(ui);
 
         bean = EJBFactory.getEjbInstance(AufwandProjInitScreenBean.class);
@@ -128,9 +128,9 @@ public class AufwandProjInitScreen extends Screen {
         summeField.setValue(timesCalculator.getGesamtSummeItem().toString());
         manntageField.setReadOnly(true);
         summeField.setReadOnly(true);
-        //final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
-        //final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
-        final PlannedProject projekt = getUi().getCurrentProject();
+        final PlannedProject projectFromSession = ui.getCurrentProject();
+        final PlannedProject projekt = baseDaoFactoryBean.getPlannedProjectDAO().findByID
+                (projectFromSession.getId());
         projektField.setValue(projekt.getProjektName());
     }
 
@@ -144,8 +144,6 @@ public class AufwandProjInitScreen extends Screen {
         datumField.setDateFormat(DATE_FORMAT.toPattern());
         manntageField = new TextField();
         summeField = new TextField();
-        // Horizontallayout (700px) beinhaltet 2 VerticalLayouts(jew. 350px)
-        // beinhalten jeweils x horizontallayouts (sizefull)
         felderLayout.setWidth(ABSOLUTE_WIDTH);
 
         layoutLinks.addComponent(kundeField);
@@ -178,7 +176,7 @@ public class AufwandProjInitScreen extends Screen {
         addComponent(formLayout);
     }
 
-    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);

@@ -69,7 +69,7 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
     private BenutzerScreen screen;
     private ResourceBundle messages;
 
-    public BenutzerEditor(BenutzerScreen theScreen) {
+    public BenutzerEditor(final BenutzerScreen theScreen) {
         this.screen = theScreen;
         this.messages = screen.getMessagesBundle();
         setVisible(false);

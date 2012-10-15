@@ -60,10 +60,10 @@ public class TreeTableDataSourceFiller {
     }
 
     private void computePlanningUnitsAndTotalsAbsolut() {
-        //final Integer currentProjectIndex = projektBean.getCurrentProjectIndex();
-        //final Projekt projekt = projektBean.getProjekte().get(currentProjectIndex);
-        final PlannedProject projekt = screen.getUi().getCurrentProject();
-        final List<PlanningUnit> planningUnits = projekt.getPlanningUnits();
+        final PlannedProject projectFromSession = screen.getUi().getCurrentProject();
+        final PlannedProject projectFromDB = bean.getDaoFactoryBean().getPlannedProjectDAO().findByID
+                (projectFromSession.getId());
+        final List<PlanningUnit> planningUnits = projectFromDB.getPlanningUnits();
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
@@ -86,7 +86,7 @@ public class TreeTableDataSourceFiller {
     }
 
 
-    private void computePlanningUnits(List<PlanningUnit> planningUnits, String parent) {
+    private void computePlanningUnits(final List<PlanningUnit> planningUnits, final String parent) {
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
@@ -138,7 +138,7 @@ public class TreeTableDataSourceFiller {
         return totalHours * externalEurosPerHour;
     }
 
-    private void refreshEntities(DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);

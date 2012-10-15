@@ -87,15 +87,15 @@ public abstract class CRUDExecuter<FT extends BaseFlatEntity, T, RT extends Base
             lastOID = -1L;
         } else {
 
-            final DaoFactory daoFactoryBean = getDaoFactoryBean();
-            daoFactoryBean.saveOrUpdate(entity);
+            final DaoFactory daoFactoryFactoryBean = getDaoFactoryBean();
+            daoFactoryFactoryBean.saveOrUpdate(entity);
             final LoggingEventEntry eventEntry = getLogger().createLoggingEventEntry(LogLevelEnum.LOGIKINFO, "saveOrUpdateTX", sessionid, "saveOrUpdate OK");
             result.getLoggingEventEntries().add(eventEntry);
             result.setValid(true);
 
-            lastOID = daoFactoryBean.<T>getEntityUtils().getOIDFromEntity(entity);
+            lastOID = daoFactoryFactoryBean.<T>getEntityUtils().getOIDFromEntity(entity);
 
-            saveLogginEventEntry(uid, flatEntity, entity, daoFactoryBean);
+            saveLogginEventEntry(uid, flatEntity, entity, daoFactoryFactoryBean);
 
             flatEntity.setId(lastOID);//falls OID durch persist gesetzt wurde..
             result.getGenericObjList().add(flatEntity); //alles per FlatEntity
@@ -110,9 +110,9 @@ public abstract class CRUDExecuter<FT extends BaseFlatEntity, T, RT extends Base
         return result;
     }
 
-    private void saveLogginEventEntry(final Long uid, final FT flatEntity, final T entity, final DaoFactory daoFactoryBean) {
+    private void saveLogginEventEntry(final Long uid, final FT flatEntity, final T entity, final DaoFactory daoFactoryFactoryBean) {
         final LoggingEntityEntry entry = new LoggingEntityEntry();
-        final Benutzer byID = daoFactoryBean.getBenutzerDAO().findByID(uid);
+        final Benutzer byID = daoFactoryFactoryBean.getBenutzerDAO().findByID(uid);
         entry.setActor(byID);
         entry.setClassname(entity.getClass().getName());
         entry.setDate(new Date());
@@ -120,12 +120,12 @@ public abstract class CRUDExecuter<FT extends BaseFlatEntity, T, RT extends Base
         final Long flatEntityId = flatEntity.getId();
         entry.setOid(flatEntityId);
         if (flatEntityId == null || flatEntityId == -1L) {
-            entry.setAction(daoFactoryBean.getLogginEntityActionDAO().loadCreated());
+            entry.setAction(daoFactoryFactoryBean.getLogginEntityActionDAO().loadCreated());
         } else {
-            entry.setAction(daoFactoryBean.getLogginEntityActionDAO().loadModified());
+            entry.setAction(daoFactoryFactoryBean.getLogginEntityActionDAO().loadModified());
 
         }
-        daoFactoryBean.saveOrUpdate(entry);
+        daoFactoryFactoryBean.saveOrUpdate(entry);
         entry.setOid(entry.getOid());
     }
 
