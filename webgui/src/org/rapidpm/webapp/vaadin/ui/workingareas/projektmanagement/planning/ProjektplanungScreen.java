@@ -1,14 +1,9 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning;
 
 import com.vaadin.data.Property;
-import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
-import org.rapidpm.Constants;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
@@ -16,6 +11,9 @@ import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.person
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.PlanningUnitEditableLayout;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.PlanningUnitSelect;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.PlanningUnitsPanelLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.PlanningUnitBeanItemContainer;
@@ -39,23 +37,22 @@ public class ProjektplanungScreen extends Screen {
     private final Panel planningUnitPanel;
     private final Panel treePanel;
     private final Panel detailPanel;
-    private final ListSelect projektSelect;
+    private PlanningUnitSelect planningUnitSelect;
     private final VerticalLayout mainLayout;
     private Tree treePanelTree;
     private ProjektPlanungScreenBean projektplanungScreenBean;
     private DaoFactoryBean baseDaoFactoryBean;
     private PlanningUnitBeanItemContainer container;
+    private PlanningUnitsPanelLayout planningUnitsPanelLayout;
 
 
-    public ProjektplanungScreen(MainUI ui) {
+    public ProjektplanungScreen(final MainUI ui) {
         super(ui);
 
         projektplanungScreenBean = EJBFactory.getEjbInstance(ProjektPlanungScreenBean.class);
         baseDaoFactoryBean = projektplanungScreenBean.getDaoFactoryBean();
         refreshEntities(baseDaoFactoryBean);
-        final PlannedProject projectFromSession = ui.getCurrentProject();
-        final PlannedProject projectFromDB = baseDaoFactoryBean.getPlannedProjectDAO().findByID
-                (projectFromSession.getId());
+
 
         final PlanningCalculator calculator = new PlanningCalculator(messagesBundle);
         calculator.calculate();
@@ -85,35 +82,36 @@ public class ProjektplanungScreen extends Screen {
         splitPanel.addComponent(menuLayout);
         splitPanel.addComponent(mainLayout);
 
+        buildPlanningUnitPanel();
 
-        final List<PlanningUnit> planningUnitList = projectFromDB.getPlanningUnits();
+        doInternationalization();
+        setComponents();
+    }
 
-        planningUnitPanel.setCaption(projectFromDB.getProjektName());
-        projektSelect = new ListSelect(null, new BeanItemContainer<>(PlanningUnit.class,planningUnitList));
+    private void buildPlanningUnitPanel() {
+        planningUnitSelect = new PlanningUnitSelect(ui);
+        final PlannedProject projectFromDB = planningUnitSelect.getProjectFromDB();
 
-        projektSelect.setNullSelectionAllowed(false);
-        projektSelect.setImmediate(true);
-        projektSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
-        projektSelect.setItemCaptionPropertyId(PlanningUnit.NAME);
-        planningUnitPanel.getContent().addComponent(projektSelect);
-        projektSelect.addValueChangeListener(new Property.ValueChangeListener() {
+        planningUnitSelect.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(final Property.ValueChangeEvent valueChangeEvent) {
                 final PlanningUnit value = (PlanningUnit) valueChangeEvent.getProperty().getValue();
+                planningUnitsPanelLayout = new PlanningUnitsPanelLayout(ProjektplanungScreen.this);
+                planningUnitPanel.removeAllComponents();
+                planningUnitPanel.addComponent(planningUnitsPanelLayout);
                 treePanel.getContent().removeAllComponents();
                 detailPanel.getContent().removeAllComponents();
                 treePanel.setCaption(value.getPlanningUnitName());
                 fillTreePanel(value, projectFromDB);
                 treePanelTree.select(value);
             }
-
         });
-        final List<?> ids = (List<?>) projektSelect.getItemIds();
+        final List<?> ids = (List<?>) planningUnitSelect.getItemIds();
         if (ids != null && !ids.isEmpty()){
-            projektSelect.setValue(ids.get(0));
+            planningUnitSelect.setValue(ids.get(0));
         }
-        doInternationalization();
-        setComponents();
+        planningUnitPanel.setCaption(projectFromDB.getProjektName());
+
     }
 
     @Override
@@ -157,6 +155,7 @@ public class ProjektplanungScreen extends Screen {
 
     @Override
     public void setComponents() {
+        splitPanel.markAsDirtyRecursive();
         addComponent(splitPanel);
     }
 
@@ -179,8 +178,8 @@ public class ProjektplanungScreen extends Screen {
         }
     }
 
-    public ListSelect getProjektSelect() {
-        return projektSelect;
+    public PlanningUnitSelect getPlanningUnitSelect() {
+        return planningUnitSelect;
     }
 
     public Tree getTreePanelTree() {

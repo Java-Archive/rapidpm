@@ -10,9 +10,9 @@ import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsMyFormLayout;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.information.PlanningInformationMyFormLayout;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.ressources.PlanningRessourcesMyFormLayout;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsEditableLayout;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.information.PlanningInformationEditableLayout;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.ressources.PlanningRessourcesEditableLayout;
 
 /**
  * Created with IntelliJ IDEA.
@@ -53,11 +53,11 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                 detailPanel.addComponent(new Label(selectedPlanningUnit.getPlanningUnitName()));
                 mainPanel.setCaption(selectedPlanningUnit.getPlanningUnitName());
                 ressourcesPanel.setCaption(RESSOURCE_GROUPS);
-                final VerticalLayout detailsPanelComponentsLayout = new PlanningDetailsMyFormLayout
+                final VerticalLayout detailsPanelComponentsLayout = new PlanningDetailsEditableLayout
                         (selectedPlanningUnit, screen, detailPanel);
-                final VerticalLayout mainPanelLayout = new PlanningInformationMyFormLayout(selectedPlanningUnit,
+                final VerticalLayout mainPanelLayout = new PlanningInformationEditableLayout(selectedPlanningUnit,
                         screen, mainPanel);
-                final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesMyFormLayout(selectedPlanningUnit,
+                final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesEditableLayout(selectedPlanningUnit,
                         screen, ressourcesPanel, hasChildren);
                 detailPanel.addComponent(detailsPanelComponentsLayout);
                 mainPanel.addComponent(mainPanelLayout);
