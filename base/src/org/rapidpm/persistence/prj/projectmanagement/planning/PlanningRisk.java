@@ -13,7 +13,7 @@ import java.util.List;
  * Version:
  */
 @Entity
-public class PlanningRisk {
+public class PlanningRisk  {
 
     @Id
     @TableGenerator(name = "PKGenPlanningRisk", table = "pk_gen", pkColumnName = "gen_key",
@@ -51,6 +51,7 @@ public class PlanningRisk {
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (planningUnitElementList != null ? !planningUnitElementList.equals(that.planningUnitElementList) : that.planningUnitElementList != null)
             return false;
+        System.out.println("hallo");
 
         return true;
     }

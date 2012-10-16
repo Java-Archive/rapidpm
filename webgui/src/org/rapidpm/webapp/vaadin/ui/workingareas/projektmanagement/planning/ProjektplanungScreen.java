@@ -49,7 +49,6 @@ public class ProjektplanungScreen extends Screen {
 
     public ProjektplanungScreen(MainUI ui) {
         super(ui);
-
         projektplanungScreenBean = EJBFactory.getEjbInstance(ProjektPlanungScreenBean.class);
         baseDaoFactoryBean = projektplanungScreenBean.getDaoFactoryBean();
         refreshEntities(baseDaoFactoryBean);
