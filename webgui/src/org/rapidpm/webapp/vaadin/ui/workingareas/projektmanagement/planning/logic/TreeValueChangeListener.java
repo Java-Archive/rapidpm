@@ -12,6 +12,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsEditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.information.PlanningInformationEditableLayout;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitsTree;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.ressources.PlanningRessourcesEditableLayout;
 
 /**
@@ -38,8 +39,8 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
             final Object selectedId = valueClickEvent.getProperty().getValue();
             final boolean hasChildren = ((Tree) valueClickEvent.getProperty()).hasChildren(selectedId);
             if (selectedId != null) {
-                final Tree treePanelTree = screen.getTreePanelTree();
-                final BeanItem<PlanningUnit> selectedPlanningUnitBeanItem = (BeanItem) treePanelTree.getItem
+                final PlanningUnitsTree tree = screen.getPlanningUnitsTree();
+                final BeanItem<PlanningUnit> selectedPlanningUnitBeanItem = (BeanItem) tree.getItem
                         (selectedId);
                 final PlanningUnit selectedPlanningUnit = selectedPlanningUnitBeanItem.getBean();
                 final Panel detailPanel = screen.getDetailPanel();

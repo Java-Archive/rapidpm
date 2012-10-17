@@ -208,22 +208,17 @@ public class PlanningUnit {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof PlanningUnit)) return false;
 
         PlanningUnit that = (PlanningUnit) o;
 
-        if (!id.equals(that.id)) return false;
-        if (!planningUnitName.equals(that.planningUnitName)) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + planningUnitName.hashCode();
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
-
-
 }

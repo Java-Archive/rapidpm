@@ -49,8 +49,7 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
         baseDaoFactoryBean = bean.getDaoFactoryBean();
         refreshEntities(baseDaoFactoryBean);
 
-        final PlanningUnit planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().loadPlanningUnitByName
-                (thePlanningUnit.getPlanningUnitName());
+        final PlanningUnit planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().findByID(thePlanningUnit.getId());
         planningUnitElements = planningUnit.getPlanningUnitElementList();
         buildTable();
         buildForm();

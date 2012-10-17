@@ -1,17 +1,15 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits;
+package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all;
 
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsFieldGroup;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -21,9 +19,9 @@ import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 
-public class PlanningUnitsPanelLayout extends HorizontalLayout {
+public class PlanningUnitsTreePanelLayout extends HorizontalLayout {
 
-    private static final Logger logger = Logger.getLogger(PlanningUnitsPanelLayout.class);
+    private static final Logger logger = Logger.getLogger(PlanningUnitsTreePanelLayout.class);
 
     private VerticalLayout leftLayout = new VerticalLayout();
     private VerticalLayout rightLayout = new VerticalLayout();
@@ -36,20 +34,23 @@ public class PlanningUnitsPanelLayout extends HorizontalLayout {
     private List<AbstractField> fieldList;
     private PlanningDetailsFieldGroup fieldGroup;
     private ResourceBundle messages;
-
+    private PlanningUnitsTreePanelLayoutBean bean;
+    private DaoFactoryBean baseDaoFactoryBean;
 
     private ProjektplanungScreen screen;
 
-    public PlanningUnitsPanelLayout(final ProjektplanungScreen screen) {
-        super(screen);
+    public PlanningUnitsTreePanelLayout(final ProjektplanungScreen screen) {
+        //super(screen);
         this.screen = screen;
-        messages = screen.getMessagesBundle();
-        buildForm();
-    }
+        bean = EJBFactory.getEjbInstance(PlanningUnitsTreePanelLayoutBean.class);
+        baseDaoFactoryBean = bean.getDaoFactoryBean();
 
-    public void buildEditableLayout(){
-        planningUnitEditableLayout = new PlanningUnitEditableLayout((PlanningUnit) screen.getPlanningUnitSelect()
-                .getValue(), screen, screen.getPlanningUnitPanel());
+        messages = screen.getMessagesBundle();
+        final PlanningUnit planningUnitFromTree = (PlanningUnit) screen.getPlanningUnitsTree().getValue();
+        final PlanningUnit planningUnitFromDB = baseDaoFactoryBean.getPlanningUnitDAO().findByID
+                (planningUnitFromTree.getId());
+        planningUnitEditableLayout =  new PlanningUnitEditableLayout(planningUnitFromDB, screen, screen.getPlanningUnitPanel());
+        buildForm();
     }
 
     protected void buildForm() {
@@ -58,10 +59,9 @@ public class PlanningUnitsPanelLayout extends HorizontalLayout {
         buttonLayout.addComponent(deleteButton);
 
         leftLayout.addComponent(buttonLayout);
-        leftLayout.addComponent(screen.getPlanningUnitSelect());
+        leftLayout.addComponent(screen.getPlanningUnitsTree());
 
         rightLayout.addComponent(planningUnitEditableLayout);
-
 
         addComponent(leftLayout);
         addComponent(rightLayout);

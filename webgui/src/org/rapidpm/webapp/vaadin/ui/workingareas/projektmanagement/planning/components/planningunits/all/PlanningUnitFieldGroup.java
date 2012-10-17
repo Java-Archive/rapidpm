@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits;
+package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all;
 
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
@@ -41,14 +41,13 @@ public class PlanningUnitFieldGroup extends FieldGroup {
         this.messages = messages;
         bean = EJBFactory.getEjbInstance(PlanningDetailsFieldGroupBean.class);
         baseDaoFactoryBean = bean.getDaoFactoryBean();
-        final PlanningUnit planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().loadPlanningUnitByName
-                (thePlanningUnit.getPlanningUnitName());
+        refreshEntities(baseDaoFactoryBean);
+        final PlanningUnit planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().findByID(thePlanningUnit.getId());
         setItemDataSource(new BeanItem<>(planningUnit));
         buildForm();
     }
 
     private void buildForm() {
-        refreshEntities(baseDaoFactoryBean);
         for (final Object propertyId : getUnboundPropertyIds()) {
             final String spaltenName = propertyId.toString();
             switch(spaltenName){

@@ -42,8 +42,7 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
         this.messages = messages;
         bean = EJBFactory.getEjbInstance(PlanningDetailsFieldGroupBean.class);
         baseDaoFactoryBean = bean.getDaoFactoryBean();
-        final PlanningUnit planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().loadPlanningUnitByName
-                (thePlanningUnit.getPlanningUnitName());
+        final PlanningUnit planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().findByID(thePlanningUnit.getId());
         setItemDataSource(new BeanItem<>(planningUnit));
         buildForm();
     }

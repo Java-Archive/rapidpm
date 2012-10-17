@@ -1,6 +1,5 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits;
+package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.parents;
 
-import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.ListSelect;

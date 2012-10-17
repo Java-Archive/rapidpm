@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits;
+package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all;
 
 import org.rapidpm.persistence.DaoFactoryBean;
 
@@ -6,9 +6,9 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 
-@Stateless(name = "PlanningUnitSelectEJB")
+@Stateless(name = "PlanningUnitEditableLayoutEJB")
 @TransactionManagement
-public class PlanningUnitSelectBean {
+public class PlanningUnitEditableLayoutBean {
 
     @EJB(beanName = "DaoFactoryEJB")
     private DaoFactoryBean baseDaoFactoryBean;
