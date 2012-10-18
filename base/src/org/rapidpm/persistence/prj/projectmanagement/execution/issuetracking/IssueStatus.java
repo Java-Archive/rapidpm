@@ -1,6 +1,11 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -16,29 +21,30 @@ import javax.persistence.*;
 
 
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
-@Entity
+//@Entity
 public class IssueStatus {
 
     public static final String NAME = "statusName";
-    public static final String ID = "id";
 
-    @Id
-    @TableGenerator(name = "PKGenIssueStatus", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "IssueStatus_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenIssueStatus")
+    @Identifier
     private Long id;
 
-    @Basic
+    @Simple
     private String statusName;
 
-    @Basic
+    @Simple
     private String statusFileName;
 
     public IssueStatus() {
+        //empty on purpose
     }
 
-    public IssueStatus(long id, String statusName) {
-        this.id = id;
+    public IssueStatus(final String statusName) {
         this.statusName = statusName;
+    }
+
+    public List<IssueBase> getConnectedIssues() {
+        return null;
     }
 
     public Long getId() {
@@ -49,15 +55,11 @@ public class IssueStatus {
         this.id = id;
     }
 
-    public IssueStatus(final String statusName) {
-        this.statusName = statusName;
-    }
-
     public String getStatusName() {
         return statusName;
     }
 
-    public void setStatusName(String name) {
+    public void setStatusName(final String name) {
         this.statusName = name;
     }
 
@@ -65,14 +67,15 @@ public class IssueStatus {
         return statusFileName;
     }
 
-    public void setStatusFileName(String statusFileName) {
+    public void setStatusFileName(final String statusFileName) {
         this.statusFileName = statusFileName;
     }
 
     @Override
     public String toString() {
         return "IssueStatus{" +
-                "statusName='" + statusName + '\'' +
+                "id=" + id +
+                ", statusName='" + statusName + '\'' +
                 ", statusFileName='" + statusFileName + '\'' +
                 '}';
     }

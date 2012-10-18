@@ -1,20 +1,18 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
-
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.rapidpm.persistence.GraphBaseDAO;
 
-import javax.persistence.EntityManager;
 /**
  * Created with IntelliJ IDEA.
  * User: Alvin
  * Date: 18.10.12
- * Time: 09:54
+ * Time: 12:53
  * To change this template use File | Settings | File Templates.
  */
-public class IssueCommentDAO extends GraphBaseDAO<IssueComment> {
+public class IssueRelationDAO extends GraphBaseDAO<IssueRelation> {
 
-    public IssueCommentDAO(GraphDatabaseService graphDb) {
-        super(graphDb, IssueComment.class);
+    public IssueRelationDAO(GraphDatabaseService graphDb) {
+        super(graphDb, IssueRelation.class);
     }
 }

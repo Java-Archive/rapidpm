@@ -1,5 +1,8 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Relational;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
 import org.rapidpm.persistence.system.security.Benutzer;
 
 import javax.persistence.*;
@@ -12,67 +15,33 @@ import java.util.Date;
  * Time: 22:10
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
-@Entity
+//@Entity
 public class IssueComment {
 
+    public static final String NAME = "text";
 
-    @TableGenerator(name = "PKGenIssueComment", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "IssueComment_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE,
-            generator = "PKGenIssueComment")
-    @Id
+    @Identifier
     private Long id;
 
-    @Basic
-    @Column(columnDefinition = "TEXT")
-    private String txt;
-    @OneToOne
+    @Simple
+    private String text;
+
+    @Relational
     private Benutzer creator;
-    @Basic
+
+    @Simple
     private Date created;
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof IssueComment)) {
-            return false;
-        }
-
-        final IssueComment that = (IssueComment) o;
-
-        if (created != null ? !created.equals(that.created) : that.created != null) {
-            return false;
-        }
-        if (creator != null ? !creator.equals(that.creator) : that.creator != null) {
-            return false;
-        }
-        if (id != null ? !id.equals(that.id) : that.id != null) {
-            return false;
-        }
-        if (txt != null ? !txt.equals(that.txt) : that.txt != null) {
-            return false;
-        }
-
-        return true;
+    public IssueComment() {
+        //empty on purpose
     }
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (txt != null ? txt.hashCode() : 0);
-        result = 31 * result + (creator != null ? creator.hashCode() : 0);
-        result = 31 * result + (created != null ? created.hashCode() : 0);
-        return result;
+    public Benutzer getCreator() {
+        return creator;
     }
 
-    @Override
-    public String toString() {
-        return "IssueComment{" +
-                "txt='" + txt + '\'' +
-                ", creator=" + creator +
-                ", created=" + created +
-                '}';
+    public void setCreator(final Benutzer creator) {
+        this.creator = creator;
     }
 
     public Date getCreated() {
@@ -87,24 +56,47 @@ public class IssueComment {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
-    public String getTxt() {
-        return txt;
+    public String getText() {
+        return text;
     }
 
-    public void setTxt(String txt) {
-        this.txt = txt;
+    public void setText(final String text) {
+        this.text = text;
     }
 
-
-    public Benutzer getCreator() {
-        return creator;
+    @Override
+    public String toString() {
+        return "IssueComment{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", creator=" + creator +
+                ", created=" + created +
+                '}';
     }
 
-    public void setCreator(Benutzer creator) {
-        this.creator = creator;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IssueComment that = (IssueComment) o;
+
+        if (created != null ? !created.equals(that.created) : that.created != null) return false;
+        if (creator != null ? !creator.equals(that.creator) : that.creator != null) return false;
+        if (text != null ? !text.equals(that.text) : that.text != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = text != null ? text.hashCode() : 0;
+        result = 31 * result + (creator != null ? creator.hashCode() : 0);
+        result = 31 * result + (created != null ? created.hashCode() : 0);
+        return result;
     }
 }

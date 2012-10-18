@@ -4,36 +4,31 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ann
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
-import javax.persistence.*;
 import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
  * User: Alvin
- * Date: 12.10.12
- * Time: 08:22
+ * Date: 18.10.12
+ * Time: 09:54
  * To change this template use File | Settings | File Templates.
  */
+public class IssueComponent {
 
-public class IssueType {
-
-    public static final String NAME = "typeName";
+    public static final String NAME = "componentName";
 
     @Identifier
     private Long id;
 
     @Simple
-    private String typeName;
+    private String componentName;
 
-    @Simple
-    private String typeFileName;
-
-    public IssueType() {
+    public IssueComponent() {
         //empty on purpose
     }
 
-    public IssueType(final String typeName) {
-        this.typeName = typeName;
+    public IssueComponent(final String componentName) {
+        this.componentName = componentName;
     }
 
     public List<IssueBase> getConnectedIssues() {
@@ -48,27 +43,19 @@ public class IssueType {
         this.id = id;
     }
 
-    public String getTypeName() {
-        return typeName;
+    public String getComponentName() {
+        return componentName;
     }
 
-    public void setTypeName(final String typeName) {
-        this.typeName = typeName;
-    }
-
-    public String getTypeFileName() {
-        return typeFileName;
-    }
-
-    public void setTypeFileName(final String typeFileName) {
-        this.typeFileName = typeFileName;
+    public void setComponentName(final String componentName) {
+        this.componentName = componentName;
     }
 
     @Override
     public String toString() {
-        return "IssueType{" +
+        return "IssueComponent{" +
                 "id=" + id +
-                ", typeName='" + typeName + '\'' +
+                ", componentName='" + componentName + '\'' +
                 '}';
     }
 
@@ -77,15 +64,16 @@ public class IssueType {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        IssueType issueType = (IssueType) o;
+        IssueComponent that = (IssueComponent) o;
 
-        if (typeName != null ? !typeName.equals(issueType.typeName) : issueType.typeName != null) return false;
+        if (componentName != null ? !componentName.equals(that.componentName) : that.componentName != null)
+            return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return typeName != null ? typeName.hashCode() : 0;
+        return componentName != null ? componentName.hashCode() : 0;
     }
 }

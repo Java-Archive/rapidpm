@@ -1,6 +1,11 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -16,24 +21,36 @@ import javax.persistence.*;
  */
 
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
-@Entity
+//@Entity
 public class IssuePriority {
     //    private String name;
 
     public static final String NAME = "priorityName";
 
+    @Identifier
+    private Long id;
+
+    @Simple
+    private Integer prio;
+
+    @Simple
+    private String priorityName;
+
+    @Simple
+    private String priorityFileName;
+
     public IssuePriority() {
+        //empty on purpose
     }
+
     public IssuePriority(final int prio, final String priorityName) {
         this.prio = prio;
         this.priorityName = priorityName;
     }
 
-
-    @Id
-    @TableGenerator(name = "PKGenIssuePriority", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "IssuePriority_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenIssuePriority")
-    private Long id;
+    public List<IssueBase> getConnectedIssues() {
+        return null;
+    }
 
     public Long getId() {
         return id;
@@ -42,15 +59,6 @@ public class IssuePriority {
     public void setId(final Long id) {
         this.id = id;
     }
-
-    @Basic
-    private int prio;
-
-    @Basic
-    private String priorityName;
-
-    @Basic
-    private String priorityFileName;
 
     public int getPrio() {
         return prio;
@@ -64,7 +72,7 @@ public class IssuePriority {
         return priorityName;
     }
 
-    public void setPriorityName(String name) {
+    public void setPriorityName(final String name) {
         this.priorityName = name;
     }
 
@@ -72,14 +80,15 @@ public class IssuePriority {
         return priorityFileName;
     }
 
-    public void setPriorityFileName(String priorityFileName) {
+    public void setPriorityFileName(final String priorityFileName) {
         this.priorityFileName = priorityFileName;
     }
 
     @Override
     public String toString() {
         return "IssuePriority{" +
-                "prio=" + prio +
+                "id=" + id +
+                ", prio=" + prio +
                 ", priorityName='" + priorityName + '\'' +
                 ", priorityFileName='" + priorityFileName + '\'' +
                 '}';
@@ -92,6 +101,7 @@ public class IssuePriority {
 
         IssuePriority that = (IssuePriority) o;
 
+        if (prio != that.prio) return false;
         if (priorityName != null ? !priorityName.equals(that.priorityName) : that.priorityName != null) return false;
 
         return true;
@@ -99,6 +109,8 @@ public class IssuePriority {
 
     @Override
     public int hashCode() {
-        return priorityName != null ? priorityName.hashCode() : 0;
+        int result = prio;
+        result = 31 * result + (priorityName != null ? priorityName.hashCode() : 0);
+        return result;
     }
 }

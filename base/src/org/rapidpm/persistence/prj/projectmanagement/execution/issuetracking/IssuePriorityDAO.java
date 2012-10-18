@@ -1,34 +1,18 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
-import org.rapidpm.persistence.DAO;
-
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.rapidpm.persistence.GraphBaseDAO;
 
 /**
- * RapidPM - www.rapidpm.org
- * User: svenruppert
- * Date: 11/23/10
- * Time: 11:31 AM
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * Created with IntelliJ IDEA.
+ * User: Alvin
+ * Date: 17.10.12
+ * Time: 12:04
+ * To change this template use File | Settings | File Templates.
  */
-public class IssuePriorityDAO extends DAO<Long, IssuePriority> {
-    public IssuePriorityDAO(final EntityManager entityManager) {
-        super(entityManager, IssuePriority.class);
+public class IssuePriorityDAO extends GraphBaseDAO<IssuePriority> {
+
+    public IssuePriorityDAO(GraphDatabaseService graphDb) {
+        super(graphDb, IssuePriority.class);
     }
-
-    public IssuePriority loadPriority(final String priority) {
-        final TypedQuery<IssuePriority> typedQuery = entityManager.createQuery("from IssuePriority  p where p.name=:priority", IssuePriority.class).setParameter(
-                "priority",
-                priority);
-        return getSingleResultOrNull(typedQuery);
-        //        return createWhereClause().eq("name", priority).findUnique();
-    }
-
-    public IssuePriority loadPriorityDringend_u_Wichtig() {
-        return loadPriority("dringend und wichtig");
-        //        return createWhereClause().eq("name", "dringend und wichtig").findUnique();
-    }
-
-
 }

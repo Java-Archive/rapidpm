@@ -1,13 +1,15 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type;
 
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueType;
+import org.neo4j.graphdb.Direction;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Graph;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Relational;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.apache.log4j.Logger;
 
-import javax.persistence.*;
+import javax.management.relation.Relation;
 import java.util.Date;
 import java.util.List;
 
@@ -23,10 +25,12 @@ import java.util.List;
  *        Time: 12:24:01
  */
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
-@Entity
+
 public class IssueBase {
 
-    public static final String SUMMARY ="summary";
+    public static final String NAME ="summary";
+
+
     public static final String TEXT = "text";
     public static final String STORYPOINTS = "storyPoints";
     public static final String DATE_PLANNED = "dueDate_planned";
@@ -43,113 +47,79 @@ public class IssueBase {
 
     private static final Logger logger = Logger.getLogger(IssueBase.class);
 
-    //TODO TestCases definieren - Klasse erzeugen
-    @ElementCollection
-    private List<String> testcases;
-    public List<String> getTestcases() {
-        return testcases;
-    }
-    public void setTestcases(List<String> testcases) {
-        this.testcases = testcases;
-    }
-
-
-
-
-
-    @Id
-    @TableGenerator(name = "PKGenIssueBase", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "IssueBase_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE,
-            generator = "PKGenIssueBase")
+    @Identifier
     private Long id;
 
-    @Basic
+    @Simple
     private String summary;
 
-    @Basic
-    @Column(columnDefinition = "TEXT")
+    @Simple
     private String text;
 
-    @Basic
-    private Integer storyPoints;
-
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @Graph
     private IssuePriority priority;
 
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @Graph
     private IssueStatus status;
 
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @Graph
     private IssueType type;
 
-    //@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.EAGER)
-    //private IssueTimeUnit issueTimeUnitEstimated;
-
-    //@OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY)
-    //private List<IssueTimeUnit> issueTimeUnitsUsed;
-
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @Relational
     private Benutzer reporter;
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @Relational
     private Benutzer assignee;
 
-//    @Basic
-//    private float euro; //Stundensaetze und Co koennen hinterlegt werden.. Reporting
-
-    @Basic
+    @Simple
     private String version;
-    @Basic
+
+    @Simple
+    private Integer storyPoints;
+
+    @Simple
     private Date dueDate_planned;
-    @Basic
+
+    @Simple
     private Date dueDate_resolved;
 
-    @Basic
+    @Simple
     private Date dueDate_closed;
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @Relational
+    private IssueTimeUnit timeUnitEstimated;
+
+    @Relational
+    private List<IssueTimeUnit> timeUnitsUsed;
+
+    @Graph
+    private List<IssueBase> subIssues;
+
+    @Graph
     private List<IssueComment> comments;
 
+    @Relational
+    private List<TestCase> testcases;
 
-    public Benutzer getAssignee() {
-        return assignee;
+    @Graph
+    private List<IssueComponent> components;
+
+    //private Risk risk;
+    @Simple
+    private String risk;
+
+    public IssueBase() {
+        //empty on Purpose
     }
 
-    public void setAssignee(final Benutzer assignee) {
-        this.assignee = assignee;
+    public List<IssueBase> getConnectedIssues(Relation relation) {
+       return null;
     }
 
-    public List<IssueComment> getComments() {
-        return comments;
+    public List<IssueBase> getConnectedIssues(Relation relation, Direction direction) {
+        return null;
     }
 
-    public void setComments(final List<IssueComment> comments) {
-        this.comments = comments;
-    }
-
-    public Date getDueDate_closed() {
-        return dueDate_closed;
-    }
-
-    public void setDueDate_closed(final Date dueDate_closed) {
-        this.dueDate_closed = dueDate_closed;
-    }
-
-    public Date getDueDate_planned() {
-        return dueDate_planned;
-    }
-
-    public void setDueDate_planned(final Date dueDate_planned) {
-        this.dueDate_planned = dueDate_planned;
-    }
-
-    public Date getDueDate_resolved() {
-        return dueDate_resolved;
-    }
-
-    public void setDueDate_resolved(final Date dueDate_resolved) {
-        this.dueDate_resolved = dueDate_resolved;
-    }
 
     public Long getId() {
         return id;
@@ -157,55 +127,6 @@ public class IssueBase {
 
     public void setId(final Long id) {
         this.id = id;
-    }
-
-    public IssuePriority getPriority() {
-        return priority;
-    }
-
-    public void setPriority(final IssuePriority issuePriority) {
-        this.priority = issuePriority;
-    }
-
-    public IssueStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(final IssueStatus issueStatus) {
-        this.status = issueStatus;
-    }
-
-    public IssueType getType() {
-        return type;
-    }
-
-    public void setType(final IssueType type) {
-        this.type = type;
-    }
-
-    //    public IssueTimeUnit getIssueTimeUnitEstimated() {
-//        return issueTimeUnitEstimated;
-//    }
-//
-//    public void setIssueTimeUnitEstimated(final IssueTimeUnit issueTimeUnitEstimated) {
-//        this.issueTimeUnitEstimated = issueTimeUnitEstimated;
-//    }
-//
-//    public List<IssueTimeUnit> getIssueTimeUnitsUsed() {
-//        return issueTimeUnitsUsed;
-//    }
-//
-//    public void setIssueTimeUnitsUsed(final List<IssueTimeUnit> issueTimeUnitsUsed) {
-//        this.issueTimeUnitsUsed = issueTimeUnitsUsed;
-//    }
-
-
-    public Benutzer getReporter() {
-        return reporter;
-    }
-
-    public void setReporter(final Benutzer reporter) {
-        this.reporter = reporter;
     }
 
     public String getSummary() {
@@ -224,6 +145,46 @@ public class IssueBase {
         this.text = text;
     }
 
+    public IssuePriority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(final IssuePriority priority) {
+        this.priority = priority;
+    }
+
+    public IssueStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(final IssueStatus status) {
+        this.status = status;
+    }
+
+    public IssueType getType() {
+        return type;
+    }
+
+    public void setType(final IssueType type) {
+        this.type = type;
+    }
+
+    public Benutzer getReporter() {
+        return reporter;
+    }
+
+    public void setReporter(final Benutzer reporter) {
+        this.reporter = reporter;
+    }
+
+    public Benutzer getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(final Benutzer assignee) {
+        this.assignee = assignee;
+    }
+
     public String getVersion() {
         return version;
     }
@@ -231,32 +192,93 @@ public class IssueBase {
     public void setVersion(final String version) {
         this.version = version;
     }
+
     public Integer getStoryPoints() {
         return storyPoints;
     }
 
-    public void setStoryPoints(Integer storyPoints) {
+    public void setStoryPoints(final Integer storyPoints) {
         this.storyPoints = storyPoints;
     }
 
-    @Override
-    public String toString() {
-        return "IssueBase{" +
-                "testcases=" + testcases +
-                ", summary='" + summary + '\'' +
-                ", text='" + text + '\'' +
-                ", storyPoints=" + storyPoints +
-                ", priority=" + priority +
-                ", status=" + status +
-                ", type=" + type +
-                ", reporter=" + reporter +
-                ", assignee=" + assignee +
-                ", version='" + version + '\'' +
-                ", dueDate_planned=" + dueDate_planned +
-                ", dueDate_resolved=" + dueDate_resolved +
-                ", dueDate_closed=" + dueDate_closed +
-                ", comments=" + comments +
-                '}';
+    public Date getDueDate_planned() {
+        return dueDate_planned;
+    }
+
+    public void setDueDate_planned(final Date dueDate_planned) {
+        this.dueDate_planned = dueDate_planned;
+    }
+
+    public Date getDueDate_resolved() {
+        return dueDate_resolved;
+    }
+
+    public void setDueDate_resolved(final Date dueDate_resolved) {
+        this.dueDate_resolved = dueDate_resolved;
+    }
+
+    public Date getDueDate_closed() {
+        return dueDate_closed;
+    }
+
+    public void setDueDate_closed(final Date dueDate_closed) {
+        this.dueDate_closed = dueDate_closed;
+    }
+
+    public IssueTimeUnit getTimeUnitEstimated() {
+        return timeUnitEstimated;
+    }
+
+    public void setTimeUnitEstimated(final IssueTimeUnit timeUnitEstimated) {
+        this.timeUnitEstimated = timeUnitEstimated;
+    }
+
+    public List<IssueTimeUnit> getTimeUnitsUsed() {
+        return timeUnitsUsed;
+    }
+
+    public void setTimeUnitsUsed(final List<IssueTimeUnit> timeUnitsUsed) {
+        this.timeUnitsUsed = timeUnitsUsed;
+    }
+
+    public List<IssueBase> getSubIssues() {
+        return subIssues;
+    }
+
+    public void setSubIssues(final List<IssueBase> subIssues) {
+        this.subIssues = subIssues;
+    }
+
+    public List<IssueComment> getComments() {
+        return comments;
+    }
+
+    public void setComments(final List<IssueComment> comments) {
+        this.comments = comments;
+    }
+
+    public List<TestCase> getTestcases() {
+        return testcases;
+    }
+
+    public void setTestcases(final List<TestCase> testcases) {
+        this.testcases = testcases;
+    }
+
+    public List<IssueComponent> getComponents() {
+        return components;
+    }
+
+    public void setComponents(List<IssueComponent> components) {
+        this.components = components;
+    }
+
+    public String getRisk() {
+        return risk;
+    }
+
+    public void setRisk(String risk) {
+        this.risk = risk;
     }
 
     @Override
@@ -266,13 +288,83 @@ public class IssueBase {
 
         IssueBase issueBase = (IssueBase) o;
 
-        if (id != null ? !id.equals(issueBase.id) : issueBase.id != null) return false;
+        if (assignee != null ? !assignee.equals(issueBase.assignee) : issueBase.assignee != null) return false;
+        if (comments != null ? !comments.equals(issueBase.comments) : issueBase.comments != null) return false;
+        if (components != null ? !components.equals(issueBase.components) : issueBase.components != null) return false;
+        if (dueDate_closed != null ? !dueDate_closed.equals(issueBase.dueDate_closed) : issueBase.dueDate_closed != null)
+            return false;
+        if (dueDate_planned != null ? !dueDate_planned.equals(issueBase.dueDate_planned) : issueBase.dueDate_planned != null)
+            return false;
+        if (dueDate_resolved != null ? !dueDate_resolved.equals(issueBase.dueDate_resolved) : issueBase.dueDate_resolved != null)
+            return false;
+        if (priority != null ? !priority.equals(issueBase.priority) : issueBase.priority != null) return false;
+        if (reporter != null ? !reporter.equals(issueBase.reporter) : issueBase.reporter != null) return false;
+        if (risk != null ? !risk.equals(issueBase.risk) : issueBase.risk != null) return false;
+        if (status != null ? !status.equals(issueBase.status) : issueBase.status != null) return false;
+        if (storyPoints != null ? !storyPoints.equals(issueBase.storyPoints) : issueBase.storyPoints != null)
+            return false;
+        if (subIssues != null ? !subIssues.equals(issueBase.subIssues) : issueBase.subIssues != null) return false;
+        if (summary != null ? !summary.equals(issueBase.summary) : issueBase.summary != null) return false;
+        if (testcases != null ? !testcases.equals(issueBase.testcases) : issueBase.testcases != null) return false;
+        if (text != null ? !text.equals(issueBase.text) : issueBase.text != null) return false;
+        if (timeUnitEstimated != null ? !timeUnitEstimated.equals(issueBase.timeUnitEstimated) : issueBase.timeUnitEstimated != null)
+            return false;
+        if (timeUnitsUsed != null ? !timeUnitsUsed.equals(issueBase.timeUnitsUsed) : issueBase.timeUnitsUsed != null)
+            return false;
+        if (type != null ? !type.equals(issueBase.type) : issueBase.type != null) return false;
+        if (version != null ? !version.equals(issueBase.version) : issueBase.version != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        int result = summary != null ? summary.hashCode() : 0;
+        result = 31 * result + (text != null ? text.hashCode() : 0);
+        result = 31 * result + (priority != null ? priority.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (reporter != null ? reporter.hashCode() : 0);
+        result = 31 * result + (assignee != null ? assignee.hashCode() : 0);
+        result = 31 * result + (version != null ? version.hashCode() : 0);
+        result = 31 * result + (storyPoints != null ? storyPoints.hashCode() : 0);
+        result = 31 * result + (dueDate_planned != null ? dueDate_planned.hashCode() : 0);
+        result = 31 * result + (dueDate_resolved != null ? dueDate_resolved.hashCode() : 0);
+        result = 31 * result + (dueDate_closed != null ? dueDate_closed.hashCode() : 0);
+        result = 31 * result + (timeUnitEstimated != null ? timeUnitEstimated.hashCode() : 0);
+        result = 31 * result + (timeUnitsUsed != null ? timeUnitsUsed.hashCode() : 0);
+        result = 31 * result + (subIssues != null ? subIssues.hashCode() : 0);
+        result = 31 * result + (comments != null ? comments.hashCode() : 0);
+        result = 31 * result + (testcases != null ? testcases.hashCode() : 0);
+        result = 31 * result + (components != null ? components.hashCode() : 0);
+        result = 31 * result + (risk != null ? risk.hashCode() : 0);
+        return result;
     }
+
+    @Override
+    public String toString() {
+        return "IssueBase{" +
+                "id=" + id +
+                ", summary='" + summary + '\'' +
+                ", text='" + text + '\'' +
+                ", priority=" + priority +
+                ", status=" + status +
+                ", type=" + type +
+                ", reporter=" + reporter +
+                ", assignee=" + assignee +
+                ", version='" + version + '\'' +
+                ", storyPoints=" + storyPoints +
+                ", dueDate_planned=" + dueDate_planned +
+                ", dueDate_resolved=" + dueDate_resolved +
+                ", dueDate_closed=" + dueDate_closed +
+                ", timeUnitEstimated=" + timeUnitEstimated +
+                ", timeUnitsUsed=" + timeUnitsUsed +
+                ", subIssues=" + subIssues +
+                ", comments=" + comments +
+                ", testcases=" + testcases +
+                ", components=" + components +
+                ", risk='" + risk + '\'' +
+                '}';
+    }
+
 }
