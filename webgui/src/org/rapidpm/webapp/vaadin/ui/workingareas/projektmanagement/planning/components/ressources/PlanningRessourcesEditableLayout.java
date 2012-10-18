@@ -47,7 +47,7 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
         super(screen, screenPanel);
         bean = EJBFactory.getEjbInstance(PlanningRessourcesMyFormLayoutBean.class);
         baseDaoFactoryBean = bean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
+        //refreshEntities(baseDaoFactoryBean);
 
         final PlanningUnit planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().findByID(thePlanningUnit.getId());
         planningUnitElements = planningUnit.getPlanningUnitElementList();
@@ -110,7 +110,7 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
     }
 
     private void buildTable() {
-        refreshEntities(baseDaoFactoryBean);
+        //refreshEntities(baseDaoFactoryBean);
 
         final List<RessourceGroup> ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
         final String[] spaltenNamen = new String[ressourceGroups.size()];
@@ -151,20 +151,20 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
         componentsLayout.addComponent(tabelle);
     }
 
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
-            entityManager.refresh(planningUnit);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
-    }
+//    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
+//        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
+//        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+//            entityManager.refresh(plannedProject);
+//        }
+//        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+//            entityManager.refresh(planningUnitElement);
+//        }
+//        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
+//            entityManager.refresh(planningUnit);
+//        }
+//        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
+//            entityManager.refresh(ressourceGroup);
+//        }
+//    }
 
 }

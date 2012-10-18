@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsFieldGroup;
 
@@ -46,11 +47,43 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout {
         baseDaoFactoryBean = bean.getDaoFactoryBean();
 
         messages = screen.getMessagesBundle();
+        createEditableLayout(screen);
+        createDeleteButton();
+        createAddButton();
+        buildForm();
+    }
+
+    private void createAddButton() {
+        //To change body of created methods use File | Settings | File Templates.
+    }
+
+    private void createDeleteButton() {
+        deleteButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                try {
+                    final PlanningUnit planningUnit = (PlanningUnit) screen.getPlanningUnitsTree().getValue();
+                    final PlanningUnit managedPlanningUnit = baseDaoFactoryBean.getPlanningUnitDAO().findByID
+                            (planningUnit.getId());
+                    if(managedPlanningUnit.getKindPlanningUnits() != null && !managedPlanningUnit.getKindPlanningUnits
+                            ().isEmpty())
+                        throw new Exception();
+                    baseDaoFactoryBean.getPlanningUnitDAO().remove(managedPlanningUnit);
+                    final MainUI ui = screen.getUi();
+                    ui.setWorkingArea(new ProjektplanungScreen(ui));
+                } catch (final Exception e) {
+                    Notification.show(messages.getString("planning_nodelete"));
+                }
+
+            }
+        });
+    }
+
+    public void createEditableLayout(ProjektplanungScreen screen) {
         final PlanningUnit planningUnitFromTree = (PlanningUnit) screen.getPlanningUnitsTree().getValue();
         final PlanningUnit planningUnitFromDB = baseDaoFactoryBean.getPlanningUnitDAO().findByID
                 (planningUnitFromTree.getId());
-        planningUnitEditableLayout =  new PlanningUnitEditableLayout(planningUnitFromDB, screen, screen.getPlanningUnitPanel());
-        buildForm();
+        planningUnitEditableLayout =  new PlanningUnitEditableLayout(planningUnitFromDB, screen, screen.getTreePanel());
     }
 
     protected void buildForm() {

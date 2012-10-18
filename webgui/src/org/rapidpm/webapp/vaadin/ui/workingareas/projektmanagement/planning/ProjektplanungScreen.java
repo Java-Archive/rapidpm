@@ -47,7 +47,7 @@ public class ProjektplanungScreen extends Screen {
 
         projektplanungScreenBean = EJBFactory.getEjbInstance(ProjektPlanungScreenBean.class);
         baseDaoFactoryBean = projektplanungScreenBean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
+        //refreshEntities(baseDaoFactoryBean);
 
 
         final PlanningCalculator calculator = new PlanningCalculator(messagesBundle);
@@ -110,9 +110,14 @@ public class ProjektplanungScreen extends Screen {
         planningUnitsTree = new PlanningUnitsTree(this, selectedPlanningUnit, projekt);
         planningUnitsTree.select(selectedPlanningUnit);
         planningUnitsTreePanelLayout = new PlanningUnitsTreePanelLayout(ProjektplanungScreen.this);
+        planningUnitsTree.addValueChangeListener(new Property.ValueChangeListener() {
+            @Override
+            public void valueChange(Property.ValueChangeEvent event) {
+                planningUnitsTreePanelLayout.createEditableLayout(ProjektplanungScreen.this);
+            }
+        });
         treePanel.removeAllComponents();
         treePanel.addComponent(planningUnitsTreePanelLayout);
-        treePanel.addComponent(planningUnitsTree);
     }
 
     @Override
@@ -125,24 +130,24 @@ public class ProjektplanungScreen extends Screen {
         addComponent(splitPanel);
     }
 
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for (final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()) {
-            entityManager.refresh(plannedProject);
-        }
-        for (final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()) {
-            entityManager.refresh(planningUnitElement);
-        }
-        for (final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()) {
-            entityManager.refresh(planningUnit);
-        }
-        for (final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()) {
-            entityManager.refresh(ressourceGroup);
-        }
-        for (final Benutzer benutzer : baseDaoFactoryBean.getBenutzerDAO().loadAllEntities()) {
-            entityManager.refresh(benutzer);
-        }
-    }
+//    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
+//        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
+//        for (final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()) {
+//            entityManager.refresh(plannedProject);
+//        }
+//        for (final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()) {
+//            entityManager.refresh(planningUnitElement);
+//        }
+//        for (final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()) {
+//            entityManager.refresh(planningUnit);
+//        }
+//        for (final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()) {
+//            entityManager.refresh(ressourceGroup);
+//        }
+//        for (final Benutzer benutzer : baseDaoFactoryBean.getBenutzerDAO().loadAllEntities()) {
+//            entityManager.refresh(benutzer);
+//        }
+//    }
 
     public PlanningUnitSelect getPlanningUnitSelect() {
         return planningUnitSelect;

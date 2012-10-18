@@ -63,6 +63,8 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                 detailPanel.addComponent(detailsPanelComponentsLayout);
                 mainPanel.addComponent(mainPanelLayout);
                 ressourcesPanel.addComponent(ressourcesPanelLayout);
+
+
                 
             } else {
                 logger.warn("nullselection");

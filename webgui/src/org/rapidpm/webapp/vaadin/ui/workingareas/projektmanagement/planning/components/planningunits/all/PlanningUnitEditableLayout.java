@@ -44,7 +44,7 @@ public class PlanningUnitEditableLayout extends EditableLayout {
         messages = screen.getMessagesBundle();
         bean = EJBFactory.getEjbInstance(PlanningUnitEditableLayoutBean.class);
         baseDaoFactoryBean = bean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
+        //refreshEntities(baseDaoFactoryBean);
 
 
         fieldGroup = new PlanningUnitFieldGroup(messages, planningUnit);
@@ -105,22 +105,22 @@ public class PlanningUnitEditableLayout extends EditableLayout {
         componentsLayout.addComponent(fieldGroup.getNameField());
     }
 
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-//        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-//            entityManager.refresh(plannedProject);
+//    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
+//        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
+////        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+////            entityManager.refresh(plannedProject);
+////        }
+//        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+//            entityManager.refresh(planningUnitElement);
 //        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
-            entityManager.refresh(planningUnit);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
-        for(final Benutzer benutzer : baseDaoFactoryBean.getBenutzerDAO().loadAllEntities()){
-            entityManager.refresh(benutzer);
-        }
-    }
+//        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
+//            entityManager.refresh(planningUnit);
+//        }
+//        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
+//            entityManager.refresh(ressourceGroup);
+//        }
+//        for(final Benutzer benutzer : baseDaoFactoryBean.getBenutzerDAO().loadAllEntities()){
+//            entityManager.refresh(benutzer);
+//        }
+//    }
 }

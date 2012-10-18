@@ -58,11 +58,12 @@ public class PlanningDetailsEditableLayout extends EditableLayout {
             public void buttonClick(Button.ClickEvent event) {
                 try{
                     fieldGroup.commit();
+
                     final MainUI ui = screen.getUi();
                     ui.setWorkingArea(new ProjektplanungScreen(ui));
-                }catch (NullPointerException e){
+                }catch (final NullPointerException e){
                     logger.info(COMMIT_EXCEPTION_MESSAGE);
-                }catch(Exception e){
+                }catch(final Exception e){
                     logger.warn("Exception", e);
                 }
             }

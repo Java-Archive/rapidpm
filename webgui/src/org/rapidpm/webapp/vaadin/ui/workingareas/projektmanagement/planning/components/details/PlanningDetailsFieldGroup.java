@@ -48,7 +48,7 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
     }
 
     private void buildForm() {
-        refreshEntities(baseDaoFactoryBean);
+        //refreshEntities(baseDaoFactoryBean);
         final List<Benutzer> users = baseDaoFactoryBean.getBenutzerDAO().loadAllEntities();
         for (final Object propertyId : getUnboundPropertyIds()) {
             final String spaltenName = propertyId.toString();
@@ -89,24 +89,24 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
         return box;
     }
 
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
-            entityManager.refresh(planningUnit);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
-        for(final Benutzer benutzer : baseDaoFactoryBean.getBenutzerDAO().loadAllEntities()){
-            entityManager.refresh(benutzer);
-        }
-    }
+//    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
+//        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
+//        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
+//            entityManager.refresh(plannedProject);
+//        }
+//        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
+//            entityManager.refresh(planningUnitElement);
+//        }
+//        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
+//            entityManager.refresh(planningUnit);
+//        }
+//        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
+//            entityManager.refresh(ressourceGroup);
+//        }
+//        for(final Benutzer benutzer : baseDaoFactoryBean.getBenutzerDAO().loadAllEntities()){
+//            entityManager.refresh(benutzer);
+//        }
+//    }
 
     public List<AbstractField> getFieldList() {
         return fieldList;
