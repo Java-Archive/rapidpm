@@ -40,6 +40,7 @@
     <orderEntry type="library" exported="" name="module-neoscio" level="project" />
     <orderEntry type="library" exported="" name="module-poi" level="project" />
     <orderEntry type="library" exported="" name="module-xmlrpc" level="project" />
+    <orderEntry type="library" name="lib-neo4j" level="project" />
   </component>
 </module>
 
