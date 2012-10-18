@@ -19,10 +19,10 @@ import static org.junit.Assert.assertNotNull;
 
 public class IssueStatusDAOTest extends BaseDAOTest {
 
-    @Test
-    public void testStatusOpen() throws Exception {
-        final IssueStatus issueStatus = daoFactoryFactory.getIssueStatusDAO().loadStatusOpen();
-        assertNotNull(issueStatus);
-        assertEquals(issueStatus.getStatusName(), "open");
-    }
+//    @Test
+//    public void testStatusOpen() throws Exception {
+//        final IssueStatus issueStatus = daoFactoryFactory.getIssueStatusDAO().loadStatusOpen();
+//        assertNotNull(issueStatus);
+//        assertEquals(issueStatus.getStatusName(), "open");
+//    }
 }

@@ -211,29 +211,12 @@ public class DaoFactory {
 
 
     //IssueTracking
-
-    public IssueBaseDAO getIssueBaseDAO() {
-        return new IssueBaseDAO(getEntityManager());
-    }
-
-    public IssueCommentDAO getIssueCommentDAO() {
-        return new IssueCommentDAO(getEntityManager());
-    }
-
     public ProjectDAO getProjectDAO() {
         return new ProjectDAO(getEntityManager());
     }
 
     public IssueTimeUnitDAO getTimeUnitDAO() {
         return new IssueTimeUnitDAO(getEntityManager());
-    }
-
-    public IssuePriorityDAO getIssuePriorityDAO() {
-        return new IssuePriorityDAO(getEntityManager());
-    }
-
-    public IssueStatusDAO getIssueStatusDAO() {
-        return new IssueStatusDAO(getEntityManager());
     }
 
     public ProjectNameDAO getProjectNameDAO() {

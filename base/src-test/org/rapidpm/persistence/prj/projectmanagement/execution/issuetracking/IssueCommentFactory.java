@@ -19,7 +19,7 @@ public class IssueCommentFactory extends EntityFactory<IssueComment> {
         final IssueComment issueComment = new IssueComment();
         issueComment.setCreated(RND.nextDate());
 //        issueComment.setCreator(); // TODO Benutzer
-        issueComment.setTxt(RND.nextSentence(5, 20, 5, 12));
+        issueComment.setText(RND.nextSentence(5, 20, 5, 12));
         return issueComment;
     }
 

@@ -16,7 +16,7 @@ public class IssueStatusFactory extends EntityFactory<IssueStatus> {
 
     @Override
     public IssueStatus createRandomEntity() {
-        return new IssueStatus(RND.nextInt(1, 10), RND.nextWord(5, 12));
+        return new IssueStatus(RND.nextWord(5, 12));
     }
 
     @Test
