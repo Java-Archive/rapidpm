@@ -38,6 +38,7 @@ public class LoginWindow extends Window {
                     close();
                 } catch (Exception e) {
                     Notification.show("Login failed...");
+                    e.printStackTrace();
                 }
             }
         });

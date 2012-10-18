@@ -365,6 +365,14 @@
     <entry_points version="2.0" />
   </component>
   <component name="IdProvider" IDEtalkID="A4B98868E75CCAA99A2FB05F4ED8B8C5" />
+  <component name="IvyIDEA.ProjectSettings">
+    <option name="artifactTypeSettings">
+      <ArtifactTypeSettings />
+    </option>
+    <option name="propertiesSettings">
+      <PropertiesSettings />
+    </option>
+  </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />
     <option name="OPTION_SCOPE" value="protected" />

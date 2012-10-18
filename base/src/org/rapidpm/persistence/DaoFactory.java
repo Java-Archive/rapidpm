@@ -24,9 +24,11 @@ import org.rapidpm.persistence.prj.book.kommentar.BuchKommentarDAO;
 import org.rapidpm.persistence.prj.book.kommentar.BuchSeitenKommentarDAO;
 import org.rapidpm.persistence.prj.projectmanagement.ProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.ProjectNameDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueCommentDAO;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriorityDAO;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatusDAO;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnitDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElementDAO;
@@ -56,7 +58,7 @@ import javax.persistence.Persistence;
 
 public class DaoFactory {
     private static final Logger logger = Logger.getLogger(DaoFactory.class);
-    private BaseDAO.EntityUtils entityUtils;
+    private DAO.EntityUtils entityUtils;
 
     public DaoFactory(final String persistenceUnitName) {
         final EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
@@ -127,6 +129,7 @@ public class DaoFactory {
     }
 
     //pkg webapp
+    //
 
 
     public OntologieDAO getOntologieDAO() {
@@ -209,8 +212,8 @@ public class DaoFactory {
 
     //IssueTracking
 
-    public IssueDAO getIssueBaseDAO() {
-        return new IssueDAO(getEntityManager());
+    public IssueBaseDAO getIssueBaseDAO() {
+        return new IssueBaseDAO(getEntityManager());
     }
 
     public IssueCommentDAO getIssueCommentDAO() {
@@ -231,10 +234,6 @@ public class DaoFactory {
 
     public IssueStatusDAO getIssueStatusDAO() {
         return new IssueStatusDAO(getEntityManager());
-    }
-
-    public IssueTypeDAO getIssueTypeDAO() {
-        return new IssueTypeDAO(getEntityManager());
     }
 
     public ProjectNameDAO getProjectNameDAO() {

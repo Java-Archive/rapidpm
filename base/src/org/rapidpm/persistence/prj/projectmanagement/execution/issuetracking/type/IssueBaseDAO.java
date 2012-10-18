@@ -18,12 +18,12 @@ import javax.persistence.TypedQuery;
  *        Time: 13:00:32
  */
 
-public class IssueDAO extends DAO<Long, IssueBase> {
-    private static final Logger logger = Logger.getLogger(IssueDAO.class);
+public class IssueBaseDAO extends DAO<Long, IssueBase> {
+    private static final Logger logger = Logger.getLogger(IssueBaseDAO.class);
 
     //    private SimpleDateFormat format = new SimpleDateFormat(Constants.YYYY_MM_DD, Locale.GERMAN);
 
-    public IssueDAO(final EntityManager entityManager) {
+    public IssueBaseDAO(final EntityManager entityManager) {
         super(entityManager, IssueBase.class);
     }
 

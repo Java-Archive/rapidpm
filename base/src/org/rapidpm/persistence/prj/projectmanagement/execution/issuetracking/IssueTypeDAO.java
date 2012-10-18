@@ -1,6 +1,7 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
-import org.rapidpm.persistence.BaseDAO;
+
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -12,7 +13,7 @@ import javax.persistence.TypedQuery;
  * Time: 08:27
  * To change this template use File | Settings | File Templates.
  */
-public class IssueTypeDAO extends BaseDAO<Long, IssueType> {
+public class IssueTypeDAO extends DAO<Long, IssueType> {
 
     public IssueTypeDAO(final EntityManager entityManager) {
         super(entityManager, IssueType.class);
