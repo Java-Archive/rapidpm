@@ -11,7 +11,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ann
  * Time: 10:04
  * To change this template use File | Settings | File Templates.
  */
-public class IssueRelation implements RelationshipType {
+public class IssueRelation{
 
 
     public static final String NAME = "relationName";
@@ -34,11 +34,6 @@ public class IssueRelation implements RelationshipType {
 
     public IssueRelation(final String relationName) {
         this.relationName = relationName;
-    }
-
-    @Override
-    public String name() {
-        return relationName;
     }
 
     public Long getId() {
