@@ -14,44 +14,37 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
  */
 public class GraphDaoFactory {
 
-    private final GraphDatabaseService graphDb;
-    private static GraphDaoFactory instance;
+    private static final GraphDatabaseService graphDb = GraphDBFactory.getGraphDBService();
 
-    public static GraphDaoFactory getInstance() {
-        if (instance == null)
-            instance = new GraphDaoFactory();
-        return instance;
+    private GraphDaoFactory() {
+        //e,pty on purpose
     }
 
-    public GraphDaoFactory() {
-        graphDb = GraphDBFactory.getInstance().getGraphDBService();
-    }
-
-    public IssueBaseDAO getIssueBaseDAO() {
+    public static IssueBaseDAO getIssueBaseDAO() {
         return new IssueBaseDAO(graphDb);
     }
 
-    public IssueStatusDAO getIssueStatusDAO() {
+    public static IssueStatusDAO getIssueStatusDAO() {
         return new IssueStatusDAO(graphDb);
     }
 
-    public IssuePriorityDAO getIssuePriorityDAO() {
+    public static IssuePriorityDAO getIssuePriorityDAO() {
         return new IssuePriorityDAO(graphDb);
     }
 
-    public IssueTypeDAO getIssueTypeDAO() {
+    public static IssueTypeDAO getIssueTypeDAO() {
         return new IssueTypeDAO(graphDb);
     }
 
-    public IssueComponentDAO getIssueComponentDAO() {
+    public static IssueComponentDAO getIssueComponentDAO() {
         return new IssueComponentDAO(graphDb);
     }
 
-    public IssueCommentDAO getIssueCommentDAO() {
+    public static IssueCommentDAO getIssueCommentDAO() {
         return new IssueCommentDAO(graphDb);
     }
 
-    public IssueRelationDAO getIssueRelationDAO() {
+    public static IssueRelationDAO getIssueRelationDAO() {
         return new IssueRelationDAO(graphDb);
     }
 }

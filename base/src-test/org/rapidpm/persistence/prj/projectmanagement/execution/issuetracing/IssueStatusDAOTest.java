@@ -19,10 +19,10 @@ import static org.junit.Assert.assertNotNull;
 
 public class IssueStatusDAOTest {
 
-    private final IssueStatusDAO dao = GraphDaoFactory.getInstance().getIssueStatusDAO();
+    private final IssueStatusDAO dao = GraphDaoFactory.getIssueStatusDAO();
 
     @Test
-    public void addStatus() throws Exception {
+    public void addStatus() {
 
         IssueStatus status = new IssueStatus();
         status.setStatusName("first");
@@ -34,14 +34,14 @@ public class IssueStatusDAOTest {
     }
 
     @Test
-    public void changeComponent() {
+    public void changeStatus() {
         IssueStatus status = new IssueStatus();
-        status.setStatusName("first");
+        status.setStatusName("1st");
         status = dao.persist(status);
         System.out.println(status.toString());
         assertEquals(status, dao.getById(status.getId()));
 
-        status.setStatusName("second");
+        status.setStatusName("2nd");
         status = dao.persist(status);
         assertEquals(status, dao.getById(status.getId()));
         dao.delete(status);

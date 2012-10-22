@@ -25,14 +25,14 @@ import static org.junit.Assert.assertNotNull;
 
 public class IssueBaseDAOTest {
 
-    private final IssueBaseDAO dao = GraphDaoFactory.getInstance().getIssueBaseDAO();
+    private final IssueBaseDAO dao = GraphDaoFactory.getIssueBaseDAO();
 
     @Test
-    public void addIssue() throws Exception {
+    public void addIssue() {
         IssueBase issueBase = new IssueBase();
         issueBase.setVersion("1.0");
         issueBase.setStoryPoints(5);
-        issueBase.setSummary("Issue 2");
+        issueBase.setSummary("Issue 1");
         issueBase.setText("Text 2");
         issueBase.setDueDate_closed(new Date());
         issueBase.setDueDate_planned(new Date());
@@ -58,31 +58,31 @@ public class IssueBaseDAOTest {
 
     @Test
     public void setRelation() {
-        IssueBaseDAO issueBaseDAO = GraphDaoFactory.getInstance().getIssueBaseDAO();
+        IssueBaseDAO issueBaseDAO = GraphDaoFactory.getIssueBaseDAO();
         IssueBase issue = issueBaseDAO.loadAllEntities().get(0);
         System.out.println(issue.toString());
-        issue.setStatus(GraphDaoFactory.getInstance().getIssueStatusDAO().loadAllEntities().get(1));
-        issue.setType(GraphDaoFactory.getInstance().getIssueTypeDAO().loadAllEntities().get(1));
-        issue.setPriority(GraphDaoFactory.getInstance().getIssuePriorityDAO().loadAllEntities().get(1));
+        issue.setStatus(GraphDaoFactory.getIssueStatusDAO().loadAllEntities().get(1));
+        issue.setType(GraphDaoFactory.getIssueTypeDAO().loadAllEntities().get(1));
+        issue.setPriority(GraphDaoFactory.getIssuePriorityDAO().loadAllEntities().get(1));
 
         issueBaseDAO.persist(issue);
     }
 
     @Test
     public void setListRelations() {
-        IssueBaseDAO issueBaseDAO = GraphDaoFactory.getInstance().getIssueBaseDAO();
+        IssueBaseDAO issueBaseDAO = GraphDaoFactory.getIssueBaseDAO();
         IssueBase issue = issueBaseDAO.loadAllEntities().get(0);
 
         List<IssueBase> list = new ArrayList<>();
         list.add(issueBaseDAO.loadAllEntities().get(1));
         issue.setSubIssues(list);
-        issue.setComponents(GraphDaoFactory.getInstance().getIssueComponentDAO().loadAllEntities());
+        issue.setComponents(GraphDaoFactory.getIssueComponentDAO().loadAllEntities());
         issueBaseDAO.persist(issue);
     }
 
     @Test
     public void loadAll() {
-        IssueBaseDAO issueBaseDAO = GraphDaoFactory.getInstance().getIssueBaseDAO();
+        IssueBaseDAO issueBaseDAO = GraphDaoFactory.getIssueBaseDAO();
         for (IssueBase issue : issueBaseDAO.loadAllEntities())
             System.out.println(issue.toString());
     }

@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
  */
 public class IssueComponentDAOTest {
 
-    private final IssueComponentDAO dao = GraphDaoFactory.getInstance().getIssueComponentDAO();
+    private final IssueComponentDAO dao = GraphDaoFactory.getIssueComponentDAO();
 
     @Test
     public void addComponent() {
@@ -33,12 +33,12 @@ public class IssueComponentDAOTest {
     @Test
     public void changeComponent() {
         IssueComponent component = new IssueComponent();
-        component.setComponentName("first");
+        component.setComponentName("1st");
         component = dao.persist(component);
         System.out.println(component.toString());
         assertEquals(component, dao.getById(component.getId()));
 
-        component.setComponentName("second");
+        component.setComponentName("2nd");
         component = dao.persist(component);
         assertEquals(component, dao.getById(component.getId()));
         dao.delete(component);

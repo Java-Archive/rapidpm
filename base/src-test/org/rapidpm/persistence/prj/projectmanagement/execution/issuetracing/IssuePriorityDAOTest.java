@@ -19,10 +19,10 @@ import static org.junit.Assert.assertNotNull;
 
 public class IssuePriorityDAOTest {
 
-    private final IssuePriorityDAO dao = GraphDaoFactory.getInstance().getIssuePriorityDAO();
+    private final IssuePriorityDAO dao = GraphDaoFactory.getIssuePriorityDAO();
 
     @Test
-    public void addPriority() throws Exception {
+    public void addPriority() {
         IssuePriority priority = new IssuePriority();
         priority.setPrio(1);
         priority.setPriorityName("first");
@@ -34,14 +34,16 @@ public class IssuePriorityDAOTest {
     }
 
     @Test
-    public void changeComponent() {
+    public void changePriority() {
         IssuePriority priority = new IssuePriority();
-        priority.setPriorityName("first");
+        priority.setPrio(1);
+        priority.setPriorityName("1st");
         priority = dao.persist(priority);
         System.out.println(priority.toString());
         assertEquals(priority, dao.getById(priority.getId()));
 
-        priority.setPriorityName("second");
+        priority.setPrio(2);
+        priority.setPriorityName("2nd");
         priority = dao.persist(priority);
         assertEquals(priority, dao.getById(priority.getId()));
         dao.delete(priority);

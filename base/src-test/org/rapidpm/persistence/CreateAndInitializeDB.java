@@ -32,7 +32,7 @@ public class CreateAndInitializeDB {
 
     public void createDB() {
 
-        graphDb = GraphDBFactory.getInstance().getGraphDBService();
+        graphDb = GraphDBFactory.getGraphDBService();
         root = graphDb.getNodeById(0);
 
         Transaction tx = graphDb.beginTx();
@@ -91,66 +91,66 @@ public class CreateAndInitializeDB {
     public void initializeDB(){
         IssueStatus status = new IssueStatus();
         status.setStatusName("open");
-        GraphDaoFactory.getInstance().getIssueStatusDAO().persist(status);
+        GraphDaoFactory.getIssueStatusDAO().persist(status);
 
         status = new IssueStatus();
         status.setStatusName("closed");
-        GraphDaoFactory.getInstance().getIssueStatusDAO().persist(status);
+        GraphDaoFactory.getIssueStatusDAO().persist(status);
 
         status = new IssueStatus();
         status.setStatusName("resolved");
-        GraphDaoFactory.getInstance().getIssueStatusDAO().persist(status);
+        GraphDaoFactory.getIssueStatusDAO().persist(status);
 
         status = new IssueStatus();
         status.setStatusName("onhold");
-        GraphDaoFactory.getInstance().getIssueStatusDAO().persist(status);
+        GraphDaoFactory.getIssueStatusDAO().persist(status);
 
         status = new IssueStatus();
         status.setStatusName("inprogress");
-        GraphDaoFactory.getInstance().getIssueStatusDAO().persist(status);
+        GraphDaoFactory.getIssueStatusDAO().persist(status);
 
 
         IssuePriority priority = new IssuePriority();
         priority.setPriorityName("trivial");
         priority.setPrio(0);
-        GraphDaoFactory.getInstance().getIssuePriorityDAO().persist(priority);
+        GraphDaoFactory.getIssuePriorityDAO().persist(priority);
 
         priority = new IssuePriority();
         priority.setPriorityName("minor");
         priority.setPrio(1);
-        GraphDaoFactory.getInstance().getIssuePriorityDAO().persist(priority);
+        GraphDaoFactory.getIssuePriorityDAO().persist(priority);
 
         priority = new IssuePriority();
         priority.setPriorityName("major");
         priority.setPrio(2);
-        GraphDaoFactory.getInstance().getIssuePriorityDAO().persist(priority);
+        GraphDaoFactory.getIssuePriorityDAO().persist(priority);
 
         priority = new IssuePriority();
         priority.setPriorityName("critical");
         priority.setPrio(3);
-        GraphDaoFactory.getInstance().getIssuePriorityDAO().persist(priority);
+        GraphDaoFactory.getIssuePriorityDAO().persist(priority);
 
         priority = new IssuePriority();
         priority.setPriorityName("blocker");
         priority.setPrio(4);
-        GraphDaoFactory.getInstance().getIssuePriorityDAO().persist(priority);
+        GraphDaoFactory.getIssuePriorityDAO().persist(priority);
 
 
         IssueType type = new IssueType();
         type.setTypeName("bug");
-        GraphDaoFactory.getInstance().getIssueTypeDAO().persist(type);
+        GraphDaoFactory.getIssueTypeDAO().persist(type);
 
         type = new IssueType();
         type.setTypeName("task");
-        GraphDaoFactory.getInstance().getIssueTypeDAO().persist(type);
+        GraphDaoFactory.getIssueTypeDAO().persist(type);
 
         type = new IssueType();
         type.setTypeName("improvement");
-        GraphDaoFactory.getInstance().getIssueTypeDAO().persist(type);
+        GraphDaoFactory.getIssueTypeDAO().persist(type);
 
         type = new IssueType();
         type.setTypeName("newfunction");
-        GraphDaoFactory.getInstance().getIssueTypeDAO().persist(type);
+        GraphDaoFactory.getIssueTypeDAO().persist(type);
 
 
 
@@ -158,23 +158,23 @@ public class CreateAndInitializeDB {
         relation.setRelationName("Duplicate");
         relation.setOutgoingName("duplicates");
         relation.setIncomingName("is duplicated by");
-        GraphDaoFactory.getInstance().getIssueRelationDAO().persist(relation);
+        GraphDaoFactory.getIssueRelationDAO().persist(relation);
 
         relation = new IssueRelation();
         relation.setRelationName("Block");
         relation.setOutgoingName("blocks");
         relation.setIncomingName("is blocked by");
-        GraphDaoFactory.getInstance().getIssueRelationDAO().persist(relation);
+        GraphDaoFactory.getIssueRelationDAO().persist(relation);
 
 
         IssueComponent component = new IssueComponent("Oberfläche");
-        GraphDaoFactory.getInstance().getIssueComponentDAO().persist(component);
+        GraphDaoFactory.getIssueComponentDAO().persist(component);
 
         component = new IssueComponent("IssueTracking");
-        GraphDaoFactory.getInstance().getIssueComponentDAO().persist(component);
+        GraphDaoFactory.getIssueComponentDAO().persist(component);
 
         component = new IssueComponent("Dokumentation");
-        GraphDaoFactory.getInstance().getIssueComponentDAO().persist(component);
+        GraphDaoFactory.getIssueComponentDAO().persist(component);
     }
 
 }
