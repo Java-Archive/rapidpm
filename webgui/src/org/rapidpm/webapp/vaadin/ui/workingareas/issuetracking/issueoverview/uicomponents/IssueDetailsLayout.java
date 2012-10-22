@@ -7,6 +7,8 @@ import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.*;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.GraphDBFactory;
+import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
@@ -61,8 +63,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
     @Override
     protected AbstractOrderedLayout buildForm() {
-        final List<IssueStatus> statusList = screen.getBaseDaoFactoryBean().getIssueStatusDAO().loadAllEntities();
-        final List<IssuePriority> priorityList =  screen.getBaseDaoFactoryBean().getIssuePriorityDAO().loadAllEntities();
+        final List<IssueStatus> statusList = GraphDaoFactory.getInstance().getIssueStatusDAO().loadAllEntities();
+        final List<IssuePriority> priorityList =  GraphDaoFactory.getInstance().getIssuePriorityDAO().loadAllEntities();
         final List<Benutzer> userList =  screen.getBaseDaoFactoryBean().getBenutzerDAO().loadAllEntities();
         componentsLayout = new VerticalLayout();
 

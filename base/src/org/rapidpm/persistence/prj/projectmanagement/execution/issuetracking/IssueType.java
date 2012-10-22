@@ -65,20 +65,14 @@ public class IssueType {
     }
 
     @Override
-    public String toString() {
-        return "IssueType{" +
-                "id=" + id +
-                ", typeName='" + typeName + '\'' +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         IssueType issueType = (IssueType) o;
 
+        if (typeFileName != null ? !typeFileName.equals(issueType.typeFileName) : issueType.typeFileName != null)
+            return false;
         if (typeName != null ? !typeName.equals(issueType.typeName) : issueType.typeName != null) return false;
 
         return true;
@@ -86,6 +80,18 @@ public class IssueType {
 
     @Override
     public int hashCode() {
-        return typeName != null ? typeName.hashCode() : 0;
+        int result = typeName != null ? typeName.hashCode() : 0;
+        result = 31 * result + (typeFileName != null ? typeFileName.hashCode() : 0);
+        return result;
     }
+
+    @Override
+    public String toString() {
+        return "IssueType{" +
+                "id=" + id +
+                ", typeName='" + typeName + '\'' +
+                ", typeFileName='" + typeFileName + '\'' +
+                '}';
+    }
+
 }

@@ -6,13 +6,15 @@ import org.neo4j.graphdb.traversal.Evaluators;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.graphdb.traversal.Traverser;
 import org.neo4j.kernel.Traversal;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -71,7 +73,7 @@ public class GraphBaseDAO<T> {
                 class_root_node.createRelationshipTo(node, GraphRelationRegistry.getAttributeChildRelationshipType());
                 clazz.getDeclaredMethod("setId", Long.class).invoke(entity, node.getId());
             } else {
-                node = graphDb.getNodeById(getIdFromEntity(entity));
+                node = graphDb.getNodeById(id);
             }
             setBasicProperties(node, entity, nameVal);
             tx.success();
@@ -89,7 +91,7 @@ public class GraphBaseDAO<T> {
         return entity;
     }
 
-    protected void setBasicProperties(Node node, Object entity, String nameAttribute){
+    private void setBasicProperties(Node node, T entity, String nameAttribute) {
         Field[] fieldNames = entity.getClass().getDeclaredFields();
 
         for (Field field : fieldNames) {
@@ -97,18 +99,64 @@ public class GraphBaseDAO<T> {
             field.setAccessible(true);
             if (field.isAnnotationPresent(Simple.class)) {
                 try {
-                    node.setProperty(field.getName(), field.get(entity) == null ? "null" : field.get(entity));
-                } catch (IllegalAccessException e) { e.printStackTrace(); }
+                    if (field.getAnnotation(Simple.class).clazz().equals("Date")) {
+                    //if (field.getType() == java.util.Date.class) {
+                        node.setProperty(field.getName(), field.get(entity) == null ? "0" : ((Date)field.get(entity)).getTime());
+                    } else
+                        node.setProperty(field.getName(), field.get(entity) == null ? "null" : field.get(entity));
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
             }
+            else if (field.isAnnotationPresent(Relational.class)) {
+
+                    node.setProperty(field.getName(), getIdFromEntity(entity));
+
+                //TODO Verfügbar machen wenn DAO aus Relationaler angeschlossen
+//                try {
+//                    Method method = field.getType().getDeclaredMethod("getId");
+//                    node.setProperty(field.getName(), method.invoke(field.get(entity)));
+//                } catch (NoSuchMethodException e) {
+//                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//                } catch (InvocationTargetException e) {
+//                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//                } catch (IllegalAccessException e) {
+//                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//                }
+            }
+            else if (field.isAnnotationPresent(Graph.class)) {
+                try {
+                    final Class aClass = field.getAnnotation(Graph.class).clazz();
+
+                    if (field.get(entity) != null) {
+                        if (field.getType().isInterface()) {
+                           List list = (List) field.get(entity);
+                            Iterator it = list.iterator();
+                            while (it.hasNext()) {
+                                Long id = getIdFromEntity(aClass.cast(it.next()), aClass);
+                                if (id != null && id != 0) {
+                                    node.createRelationshipTo(graphDb.getNodeById(id), GraphRelationRegistry.getRelationshipTypeToClass(aClass));
+                                }
+                            }
+                        } else {
+                            Long id = getIdFromEntity(field.get(entity), aClass);
+                            if (id != null && id != 0) {
+                                node.createRelationshipTo(graphDb.getNodeById(id), GraphRelationRegistry.getRelationshipTypeToClass(aClass));
+                            }
+                        }
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+
             field.setAccessible(isAccessible);
         }
         index_name.remove(node, nameAttribute);
         index_name.add(node, nameAttribute, node.getProperty(nameAttribute));
     }
 
-    public T getById(Long id) {
-        return getObjectFromNode(graphDb.getNodeById(id));
-    }
+
 
     public List<T> loadAllEntities() {
         TraversalDescription td = Traversal.description()
@@ -118,48 +166,128 @@ public class GraphBaseDAO<T> {
         Traverser trav = td.traverse(class_root_node);
         List<T> entityList = new ArrayList<T>();
         for (Path path : trav) {
-            entityList.add(getObjectFromNode(path.endNode()));
+            entityList.add(getObjectFromNode(path.endNode(), clazz));
         }
 
         return entityList;
     }
 
-    private T getObjectFromNode(Node node) {
-        T entity = null;
-        try {
-            entity = (T) clazz.newInstance();
-
-            Field[] fieldNames = entity.getClass().getDeclaredFields();
-            Method method;
-            for (Field field : fieldNames) {
-                boolean isAccessible = field.isAccessible();
-                field.setAccessible(true);
-                if (field.isAnnotationPresent(Identifier.class)) {
-                    field.set(entity, field.getType().cast(node.getId()));
-                }
-
-                if (field.isAnnotationPresent(Simple.class)) {
-                    try {
-                        field.set(entity, field.getType().cast(node.getProperty(field.getName())));
-                    } catch (IllegalAccessException e) { e.printStackTrace(); }
-                }
-
-                field.setAccessible(isAccessible);
+    public boolean delete(T entity) {
+        Long id = getIdFromEntity(entity);
+        Transaction tx = graphDb.beginTx();
+        try{
+            Node node;
+            if (id == null || id == 0)
+                return true;
+            else {
+                node = graphDb.getNodeById(id);
+                for (Relationship rel : node.getRelationships())
+                    rel.delete();
+                node.delete();
             }
+            tx.success();
+        } finally {
+            tx.finish();
+            return true;
+        }
 
-        } catch (InstantiationException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+    }
+
+    public T getById(Long id) {
+        return getObjectFromNode(graphDb.getNodeById(id), clazz);
+    }
+
+    public T getByEntity(T entity) {
+        return getById(getIdFromEntity(entity));
+    }
+
+    protected T getObjectFromNode(Node node, Class clazz) {
+        T entity = null;
+
+        if (node != null) {
+            try {
+                entity = (T) clazz.newInstance();
+
+                Field[] fieldNames = entity.getClass().getDeclaredFields();
+                Method method;
+                for (Field field : fieldNames) {
+                    boolean isAccessible = field.isAccessible();
+                    field.setAccessible(true);
+                    if (field.isAnnotationPresent(Identifier.class)) {
+                        field.set(entity, field.getType().cast(node.getId()));
+                    }
+
+                    if (field.isAnnotationPresent(Simple.class)) {
+                        try {
+                            if (field.getAnnotation(Simple.class).clazz().equals("Date")) {
+                                field.set(entity, new Date(Long.class.cast(node.getProperty(field.getName()))));
+
+                            } else
+                                field.set(entity, field.getType().cast(node.getProperty(field.getName())));
+                        } catch (IllegalAccessException e) { e.printStackTrace(); }
+                    }
+
+                    else if (field.isAnnotationPresent(Relational.class)) {
+                        //Load via relational DAO's
+                    }
+                    else if (field.isAnnotationPresent(Graph.class)) {
+                        try {
+                            final Class aClass = field.getAnnotation(Graph.class).clazz();
+                            TraversalDescription td = Traversal.description()
+                                    .breadthFirst()
+                                    .relationships(GraphRelationRegistry.getRelationshipTypeToClass(aClass),
+                                            Direction.OUTGOING )
+                                    .evaluator(Evaluators.atDepth(1));
+                            Traverser trav = td.traverse(node);
+
+                                if (field.getType().isInterface()) {
+                                    //TODO subIssues wird LazyLoad implementiert
+                                    if (!field.isAnnotationPresent(Lazy.class)) {
+                                        List list = new ArrayList();
+                                        for (Path path : trav) {
+                                            list.add(getObjectFromNode(path.endNode(), aClass));
+                                        }
+                                        field.set(entity, list);
+                                    }
+                                } else {
+                                    Node travNode = null;
+                                    if (trav.nodes().iterator().hasNext()) {
+                                        travNode = trav.nodes().iterator().next();
+                                    }
+
+                                    field.set(entity, getObjectFromNode(travNode, aClass));
+                                }
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    field.setAccessible(isAccessible);
+                }
+
+            } catch (InstantiationException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
         return entity;
     }
 
+    protected Long getIdFromEntity(Object entity) {
+        return getIdFromEntity(entity, clazz);
+    }
 
-    private Long getIdFromEntity(T entity) {
+
+    protected Long getIdFromEntity(Object entity, Class aClass) {
+        if (entity == null)
+            throw new NullPointerException("Can't get Id from null.");
+        if (aClass == null)
+            throw new NullPointerException("Class to get Id from can't be null.");
+
         Long id = null;
         try {
-            final Method method = clazz.getDeclaredMethod("getId");
+            final Method method = aClass.getDeclaredMethod("getId");
             id = (Long) method.invoke(entity);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.

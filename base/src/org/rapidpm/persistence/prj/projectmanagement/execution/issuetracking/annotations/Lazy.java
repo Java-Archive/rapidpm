@@ -8,12 +8,11 @@ import java.lang.annotation.Target;
 /**
  * Created with IntelliJ IDEA.
  * User: Alvin
- * Date: 17.10.12
- * Time: 13:28
+ * Date: 22.10.12
+ * Time: 18:17
  * To change this template use File | Settings | File Templates.
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Graph {
-    Class clazz();
+public @interface Lazy {
 }

@@ -2,10 +2,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ty
 
 import org.neo4j.graphdb.Direction;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Graph;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Relational;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.apache.log4j.Logger;
 
@@ -56,13 +53,13 @@ public class IssueBase {
     @Simple
     private String text;
 
-    @Graph
+    @Graph(clazz = IssuePriority.class)
     private IssuePriority priority;
 
-    @Graph
+    @Graph(clazz = IssueStatus.class)
     private IssueStatus status;
 
-    @Graph
+    @Graph(clazz = IssueType.class)
     private IssueType type;
 
     @Relational
@@ -77,31 +74,32 @@ public class IssueBase {
     @Simple
     private Integer storyPoints;
 
-    @Simple
+    @Simple(clazz = "Date")
     private Date dueDate_planned;
 
-    @Simple
+    @Simple(clazz = "Date")
     private Date dueDate_resolved;
 
-    @Simple
+    @Simple(clazz = "Date")
     private Date dueDate_closed;
 
-    @Relational
+    //@Relational
     private IssueTimeUnit timeUnitEstimated;
 
-    @Relational
+    //@Relational
     private List<IssueTimeUnit> timeUnitsUsed;
 
-    @Graph
+    @Graph(clazz = IssueBase.class)
+    @Lazy
     private List<IssueBase> subIssues;
 
-    @Graph
+    @Graph(clazz = IssueComment.class)
     private List<IssueComment> comments;
 
-    @Relational
+    //@Relational
     private List<TestCase> testcases;
 
-    @Graph
+    @Graph(clazz = IssueComponent.class)
     private List<IssueComponent> components;
 
     //private Risk risk;

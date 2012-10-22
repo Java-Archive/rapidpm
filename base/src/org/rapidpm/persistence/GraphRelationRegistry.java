@@ -24,4 +24,8 @@ public class GraphRelationRegistry {
     public static RelationshipType getRootRelationshipTypeToClass(Class clazz) {
         return DynamicRelationshipType.withName("root_" + clazz.getSimpleName());
     }
+
+    public static RelationshipType getRelationshipTypeToClass(Class clazz) {
+        return DynamicRelationshipType.withName(clazz.getSimpleName());
+    }
 }

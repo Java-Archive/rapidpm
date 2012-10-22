@@ -8,21 +8,42 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
  */
 
 import org.junit.Test;
+import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.BaseDAOTest;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueType;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-public class IssueStatusDAOTest extends BaseDAOTest {
+public class IssueStatusDAOTest {
 
-//    @Test
-//    public void testStatusOpen() throws Exception {
-//        final IssueStatus issueStatus = daoFactoryFactory.getIssueStatusDAO().loadStatusOpen();
-//        assertNotNull(issueStatus);
-//        assertEquals(issueStatus.getStatusName(), "open");
-//    }
+    private final IssueStatusDAO dao = GraphDaoFactory.getInstance().getIssueStatusDAO();
+
+    @Test
+    public void addStatus() throws Exception {
+
+        IssueStatus status = new IssueStatus();
+        status.setStatusName("first");
+        status.setStatusFileName("filename");
+        status = dao.persist(status);
+        System.out.println(status.toString());
+        assertEquals(status, dao.getById(status.getId()));
+        dao.delete(status);
+    }
+
+    @Test
+    public void changeComponent() {
+        IssueStatus status = new IssueStatus();
+        status.setStatusName("first");
+        status = dao.persist(status);
+        System.out.println(status.toString());
+        assertEquals(status, dao.getById(status.getId()));
+
+        status.setStatusName("second");
+        status = dao.persist(status);
+        assertEquals(status, dao.getById(status.getId()));
+        dao.delete(status);
+    }
 }

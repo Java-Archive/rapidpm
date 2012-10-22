@@ -1,8 +1,9 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
 
 import org.junit.Test;
+import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.BaseDAOTest;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueType;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 
 import java.util.List;
 
@@ -16,20 +17,32 @@ import static org.junit.Assert.assertNotNull;
  * Time: 09:05
  * To change this template use File | Settings | File Templates.
  */
-public class IssueTypeDAOTest extends BaseDAOTest {
+public class IssueTypeDAOTest {
 
-//    @Test
-//    public void testStatusOpen() throws Exception {
-//        final IssueType issueType = daoFactoryFactory.getIssueTypeDAO().loadTypeBug();
-//        assertNotNull(issueType);
-//        assertEquals(issueType.getTypeName(), "bug");
-//    }
-//
-//
-//    @Test
-//    public void loadAllEntities(){
-//        final List<IssueType> typeList = daoFactoryFactory.getIssueTypeDAO().loadAllEntities();
-//        for (IssueType type : typeList)
-//            System.out.println(type);
-//    }
+    private final IssueTypeDAO dao = GraphDaoFactory.getInstance().getIssueTypeDAO();
+
+    @Test
+    public void addType() throws Exception {
+        IssueType type = new IssueType();
+        type.setTypeName("first");
+        type.setTypeFileName("filename");
+        type = dao.persist(type);
+        System.out.println(type.toString());
+        assertEquals(type, dao.getById(type.getId()));
+        dao.delete(type);
+    }
+
+    @Test
+    public void changeComponent() {
+        IssueType type = new IssueType();
+        type.setTypeName("first");
+        type = dao.persist(type);
+        System.out.println(type.toString());
+        assertEquals(type, dao.getById(type.getId()));
+
+        type.setTypeName("second");
+        type = dao.persist(type);
+        assertEquals(type, dao.getById(type.getId()));
+        dao.delete(type);
+    }
 }

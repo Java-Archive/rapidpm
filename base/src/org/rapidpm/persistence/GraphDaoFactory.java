@@ -2,9 +2,7 @@ package org.rapidpm.persistence;
 
 
 import org.neo4j.graphdb.GraphDatabaseService;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriorityDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatusDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTypeDAO;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 
 /**
@@ -43,5 +41,17 @@ public class GraphDaoFactory {
 
     public IssueTypeDAO getIssueTypeDAO() {
         return new IssueTypeDAO(graphDb);
+    }
+
+    public IssueComponentDAO getIssueComponentDAO() {
+        return new IssueComponentDAO(graphDb);
+    }
+
+    public IssueCommentDAO getIssueCommentDAO() {
+        return new IssueCommentDAO(graphDb);
+    }
+
+    public IssueRelationDAO getIssueRelationDAO() {
+        return new IssueRelationDAO(graphDb);
     }
 }
