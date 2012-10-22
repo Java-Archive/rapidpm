@@ -13,7 +13,7 @@ import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * User: marco
+ * User: Marco Ebbinghaus
  * Date: 17.10.12
  * Time: 12:50
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de

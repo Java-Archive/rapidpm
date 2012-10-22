@@ -27,7 +27,7 @@ import static org.rapidpm.Constants.DAYSHOURSMINUTES_REGEX;
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 30.08.12
  * Time: 11:24
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
@@ -43,13 +43,14 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
     private DaoFactoryBean baseDaoFactoryBean;
 
     public PlanningRessourcesEditableLayout(final PlanningUnit thePlanningUnit, final ProjektplanungScreen screen,
-                                            final Panel screenPanel, boolean hasChildren) {
+                                            final Panel screenPanel, boolean hasChildren,
+                                            final PlannedProject projekt) {
         super(screen, screenPanel);
         bean = EJBFactory.getEjbInstance(PlanningRessourcesMyFormLayoutBean.class);
         baseDaoFactoryBean = bean.getDaoFactoryBean();
-        //refreshEntities(baseDaoFactoryBean);
 
         final PlanningUnit planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().findByID(thePlanningUnit.getId());
+        baseDaoFactoryBean.getEntityManager().refresh(planningUnit);
         planningUnitElements = planningUnit.getPlanningUnitElementList();
         buildTable();
         buildForm();
@@ -95,8 +96,12 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
                                         baseDaoFactoryBean.saveOrUpdate(planningUnitElement);
                                     }
                                 }
+                                baseDaoFactoryBean.saveOrUpdate(planningUnit);
                             }
                         }
+                        final PlannedProject projectFromDB = baseDaoFactoryBean.getPlannedProjectDAO().findByID(projekt
+                                .getId());
+                        baseDaoFactoryBean.saveOrUpdate(projectFromDB);
                         screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
                     } catch (CommitException e) {
                         logger.info(COMMIT_EXCEPTION_MESSAGE);
@@ -110,7 +115,6 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
     }
 
     private void buildTable() {
-        //refreshEntities(baseDaoFactoryBean);
 
         final List<RessourceGroup> ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
         final String[] spaltenNamen = new String[ressourceGroups.size()];
@@ -150,21 +154,5 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
     protected void buildForm() {
         componentsLayout.addComponent(tabelle);
     }
-
-//    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-//        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-//        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-//            entityManager.refresh(plannedProject);
-//        }
-//        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-//            entityManager.refresh(planningUnitElement);
-//        }
-//        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
-//            entityManager.refresh(planningUnit);
-//        }
-//        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-//            entityManager.refresh(ressourceGroup);
-//        }
-//    }
 
 }

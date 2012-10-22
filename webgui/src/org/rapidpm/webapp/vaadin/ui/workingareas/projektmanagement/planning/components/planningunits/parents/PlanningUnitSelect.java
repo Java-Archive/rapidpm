@@ -14,11 +14,13 @@ import org.rapidpm.webapp.vaadin.MainUI;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
- * User: marco
+ * User: Marco Ebbinghaus
  * Date: 16.10.12
  * Time: 08:37
  * To change this template use File | Settings | File Templates.
@@ -32,13 +34,14 @@ public class PlanningUnitSelect extends ListSelect {
     public PlanningUnitSelect(final MainUI ui){
         bean = EJBFactory.getEjbInstance(PlanningUnitSelectBean.class);
         baseDaoFactoryBean = bean.getDaoFactoryBean();
-        //refreshEntities(baseDaoFactoryBean);
         final PlannedProject projectFromSession = ui.getCurrentProject();
         projectFromDB = baseDaoFactoryBean.getPlannedProjectDAO().findByID
                 (projectFromSession.getId());
-        final List<PlanningUnit> allPlanningUnitsOfProject = projectFromDB.getPlanningUnits();
-        final List<PlanningUnit> planningUnitsWithoutParent = new ArrayList<>();
+        baseDaoFactoryBean.getEntityManager().refresh(projectFromDB);
+        final Set<PlanningUnit> allPlanningUnitsOfProject = projectFromDB.getPlanningUnits();
+        final Set<PlanningUnit> planningUnitsWithoutParent = new HashSet<>();
         for (final PlanningUnit planningUnit : allPlanningUnitsOfProject) {
+            baseDaoFactoryBean.getEntityManager().refresh(planningUnit);
             if(planningUnit.getParent() == null){
                 planningUnitsWithoutParent.add(planningUnit);
             }
@@ -49,25 +52,6 @@ public class PlanningUnitSelect extends ListSelect {
         setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
         setItemCaptionPropertyId(PlanningUnit.NAME);
     }
-
-//    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-//        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-////        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-////            entityManager.refresh(plannedProject);
-////        }
-//        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-//            entityManager.refresh(planningUnitElement);
-//        }
-//        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
-//            entityManager.refresh(planningUnit);
-//        }
-//        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-//            entityManager.refresh(ressourceGroup);
-//        }
-//        for(final Benutzer benutzer : baseDaoFactoryBean.getBenutzerDAO().loadAllEntities()){
-//            entityManager.refresh(benutzer);
-//        }
-//    }
 
     public PlannedProject getProjectFromDB() {
         return projectFromDB;

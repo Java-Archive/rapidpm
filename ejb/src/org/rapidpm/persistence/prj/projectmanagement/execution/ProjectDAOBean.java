@@ -70,7 +70,7 @@ public class ProjectDAOBean {
             typeObj.setId(flatTypeEntity.getId());
             typeObj.setInfo(flatTypeEntity.getInfo());
             typeObj.setMandantengruppe(daoFactoryBean.getMandantengruppeDAO().findByID(flatTypeEntity.getMandantengruppeIOD()));
-            typeObj.setPlannedProjectName(flatTypeEntity.getProjectName());
+            //typeObj.setPlannedProjectName(flatTypeEntity.getProjectName());
 
             return typeObj;
         }

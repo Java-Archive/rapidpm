@@ -14,17 +14,14 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinu
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 
 import javax.persistence.EntityManager;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static org.rapidpm.Constants.HOURS_DAY;
 import static org.rapidpm.Constants.MINS_HOUR;
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 31.08.12
  * Time: 16:29
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
@@ -68,7 +65,7 @@ public class TreeTableDataSourceFiller {
         final PlannedProject projectFromSession = screen.getUi().getCurrentProject();
         final PlannedProject projectFromDB = bean.getDaoFactoryBean().getPlannedProjectDAO().findByID
                 (projectFromSession.getId());
-        final List<PlanningUnit> planningUnits = projectFromDB.getPlanningUnits();
+        final Set<PlanningUnit> planningUnits = projectFromDB.getPlanningUnits();
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);

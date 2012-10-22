@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 18.09.12
  * Time: 14:45
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de

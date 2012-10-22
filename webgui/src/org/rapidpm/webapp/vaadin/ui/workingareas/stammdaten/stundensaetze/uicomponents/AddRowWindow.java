@@ -129,6 +129,7 @@ public class AddRowWindow extends Window {
                             planningUnitElement.setPlannedHours(0);
                             planningUnitElement.setPlannedMinutes(0);
                             planningUnitElement.setRessourceGroup(group);
+                            baseDaoFactoryBean.getEntityManager().persist(planningUnitElement);
                             planningUnit.getPlanningUnitElementList().add(planningUnitElement);
                             baseDaoFactoryBean.saveOrUpdate(planningUnit);
                         }

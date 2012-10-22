@@ -9,7 +9,7 @@ import java.util.ResourceBundle;
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 30.08.12
  * Time: 09:16
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
@@ -24,6 +24,7 @@ public abstract class EditableLayout extends VerticalLayout {
     protected HorizontalLayout buttonLayout = new HorizontalLayout();
 
     public EditableLayout(final ProjektplanungScreen screen, final Panel screenPanel){
+        this.setStyleName("abc");
         this.setMargin(false);
         messages = screen.getMessagesBundle();
         saveButton.setCaption(messages.getString("save"));
@@ -42,7 +43,6 @@ public abstract class EditableLayout extends VerticalLayout {
                     } else if( component instanceof Field){
                         component.setReadOnly(false);
                     }
-
                 }
                 buttonLayout.setVisible(true);
             }

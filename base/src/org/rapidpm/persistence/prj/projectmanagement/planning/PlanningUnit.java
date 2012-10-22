@@ -1,5 +1,7 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.PlannedMeeting;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedTravel;
@@ -29,6 +31,7 @@ public class PlanningUnit {
     public static final String TESTCASES = "testCases";
     public static final String ORDERNUMBER = "orderNumber";
     public static final String DESCPRIPTION = "description";
+    public static final String PARENT = "parent";
 
 
 
@@ -37,8 +40,6 @@ public class PlanningUnit {
             pkColumnValue = "PlanningUnit_id", valueColumnName = "gen_value", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenPlanningUnit")
     private Long id;
-
-
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private List<PlannedTravel> plannedTravelList;
@@ -61,10 +62,10 @@ public class PlanningUnit {
     @Basic
     private String planningUnitName;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private PlanningUnit parent;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private List<PlanningUnitElement> planningUnitElementList;
 
 
@@ -181,14 +182,6 @@ public class PlanningUnit {
         this.plannedMeetingList = plannedMeetingList;
     }
 
-    public PlanningUnit getParent() {
-        return parent;
-    }
-
-    public void setParent(PlanningUnit parent) {
-        this.parent = parent;
-    }
-
     public List<String> getTestcases() {
         return testcases;
     }
@@ -203,6 +196,14 @@ public class PlanningUnit {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public PlanningUnit getParent() {
+        return parent;
+    }
+
+    public void setParent(PlanningUnit parent) {
+        this.parent = parent;
     }
 
     @Override
@@ -220,5 +221,13 @@ public class PlanningUnit {
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "PlanningUnit{" +
+                "id=" + id +
+                ", planningUnitName='" + planningUnitName + '\'' +
+                '}';
     }
 }

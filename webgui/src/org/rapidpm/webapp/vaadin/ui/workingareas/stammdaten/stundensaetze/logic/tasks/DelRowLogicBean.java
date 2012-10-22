@@ -8,7 +8,7 @@ import javax.ejb.TransactionManagement;
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 23.09.12
  * Time: 13:22
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de

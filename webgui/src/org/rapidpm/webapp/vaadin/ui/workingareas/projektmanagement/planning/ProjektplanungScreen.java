@@ -47,7 +47,6 @@ public class ProjektplanungScreen extends Screen {
 
         projektplanungScreenBean = EJBFactory.getEjbInstance(ProjektPlanungScreenBean.class);
         baseDaoFactoryBean = projektplanungScreenBean.getDaoFactoryBean();
-        //refreshEntities(baseDaoFactoryBean);
 
 
         final PlanningCalculator calculator = new PlanningCalculator(messagesBundle);
@@ -79,7 +78,6 @@ public class ProjektplanungScreen extends Screen {
         splitPanel.addComponent(mainLayout);
 
         buildPlanningUnitPanel();
-
         doInternationalization();
         setComponents();
     }
@@ -91,11 +89,14 @@ public class ProjektplanungScreen extends Screen {
         planningUnitSelect.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(final Property.ValueChangeEvent valueChangeEvent) {
-                final PlanningUnit value = (PlanningUnit) valueChangeEvent.getProperty().getValue();
+                final PlanningUnit planningUnitFromSelect = (PlanningUnit) valueChangeEvent.getProperty().getValue();
+                final PlanningUnit planningUnitFromDB = baseDaoFactoryBean.getPlanningUnitDAO().findByID
+                        (planningUnitFromSelect.getId());
+                baseDaoFactoryBean.getEntityManager().refresh(planningUnitFromDB);
                 treePanel.getContent().removeAllComponents();
                 detailPanel.getContent().removeAllComponents();
-                treePanel.setCaption(value.getPlanningUnitName());
-                fillTreePanel(value, projectFromDB);
+                treePanel.setCaption(planningUnitFromSelect.getPlanningUnitName());
+                fillTreePanel(planningUnitFromDB, projectFromDB);
             }
         });
         if (ids != null && !ids.isEmpty()) {
@@ -109,11 +110,13 @@ public class ProjektplanungScreen extends Screen {
                               final PlannedProject projekt) {
         planningUnitsTree = new PlanningUnitsTree(this, selectedPlanningUnit, projekt);
         planningUnitsTree.select(selectedPlanningUnit);
-        planningUnitsTreePanelLayout = new PlanningUnitsTreePanelLayout(ProjektplanungScreen.this);
+        planningUnitsTreePanelLayout = new PlanningUnitsTreePanelLayout(projekt, ProjektplanungScreen.this);
         planningUnitsTree.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
                 planningUnitsTreePanelLayout.createEditableLayout(ProjektplanungScreen.this);
+                planningUnitsTreePanelLayout.getRightLayout().removeAllComponents();
+                planningUnitsTreePanelLayout.getRightLayout().addComponent(planningUnitsTreePanelLayout.getPlanningUnitEditableLayout());
             }
         });
         treePanel.removeAllComponents();
@@ -129,25 +132,6 @@ public class ProjektplanungScreen extends Screen {
     public void setComponents() {
         addComponent(splitPanel);
     }
-
-//    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-//        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-//        for (final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()) {
-//            entityManager.refresh(plannedProject);
-//        }
-//        for (final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()) {
-//            entityManager.refresh(planningUnitElement);
-//        }
-//        for (final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()) {
-//            entityManager.refresh(planningUnit);
-//        }
-//        for (final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()) {
-//            entityManager.refresh(ressourceGroup);
-//        }
-//        for (final Benutzer benutzer : baseDaoFactoryBean.getBenutzerDAO().loadAllEntities()) {
-//            entityManager.refresh(benutzer);
-//        }
-//    }
 
     public PlanningUnitSelect getPlanningUnitSelect() {
         return planningUnitSelect;
@@ -181,5 +165,7 @@ public class ProjektplanungScreen extends Screen {
         return ressourcesPanel;
     }
 
-
+    public PlanningUnitsTreePanelLayout getPlanningUnitsTreePanelLayout() {
+        return planningUnitsTreePanelLayout;
+    }
 }

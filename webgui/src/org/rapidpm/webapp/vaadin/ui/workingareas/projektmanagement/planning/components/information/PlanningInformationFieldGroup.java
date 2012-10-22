@@ -15,7 +15,7 @@ import static org.rapidpm.persistence.prj.projectmanagement.execution.issuetrack
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 26.09.12
  * Time: 12:51
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de

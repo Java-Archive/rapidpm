@@ -18,7 +18,7 @@ import static org.rapidpm.Constants.*;
 
 /**
 * RapidPM - www.rapidpm.org
-* User: Marco
+* User: Marco Ebbinghaus
 * Date: 31.08.12
 * Time: 14:34
 * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de

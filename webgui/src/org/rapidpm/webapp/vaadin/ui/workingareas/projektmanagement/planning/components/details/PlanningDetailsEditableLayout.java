@@ -15,7 +15,7 @@ import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 25.08.12
  * Time: 18:50
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
@@ -58,7 +58,6 @@ public class PlanningDetailsEditableLayout extends EditableLayout {
             public void buttonClick(Button.ClickEvent event) {
                 try{
                     fieldGroup.commit();
-
                     final MainUI ui = screen.getUi();
                     ui.setWorkingArea(new ProjektplanungScreen(ui));
                 }catch (final NullPointerException e){

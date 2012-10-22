@@ -9,16 +9,13 @@ import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.person
 
 import javax.persistence.EntityManager;
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static org.rapidpm.Constants.*;
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 02.09.12
  * Time: 23:37
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
@@ -55,7 +52,7 @@ public class CostsCalculator {
 
     private void calculatePlanningUnitsAndTotalsAbsolut() {
         //final Integer currentProjectIndex = bean.getCurrentProjectIndex();
-        final List<PlanningUnit> planningUnits = projekt.getPlanningUnits();
+        final Set<PlanningUnit> planningUnits = projekt.getPlanningUnits();
         for (final PlanningUnit planningUnit : planningUnits) {
             calculatePlanningUnits(planningUnit.getKindPlanningUnits());
         }

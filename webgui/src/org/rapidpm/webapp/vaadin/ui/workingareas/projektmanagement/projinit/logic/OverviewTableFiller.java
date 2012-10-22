@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 import static org.rapidpm.Constants.DECIMAL_FORMAT;
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 02.09.12
  * Time: 21:05
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de

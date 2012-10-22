@@ -14,6 +14,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.Proj
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.EditableLayout;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -22,7 +23,7 @@ import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
 
 /**
  * Created with IntelliJ IDEA.
- * User: marco
+ * User: Marco Ebbinghaus
  * Date: 16.10.12
  * Time: 13:11
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
@@ -44,14 +45,26 @@ public class PlanningUnitEditableLayout extends EditableLayout {
         messages = screen.getMessagesBundle();
         bean = EJBFactory.getEjbInstance(PlanningUnitEditableLayoutBean.class);
         baseDaoFactoryBean = bean.getDaoFactoryBean();
-        //refreshEntities(baseDaoFactoryBean);
+
+        PlanningUnit planningUnitFromDB = null;
+        try{
+            planningUnitFromDB = baseDaoFactoryBean.getPlanningUnitDAO().findByID(planningUnit.getId());
+        } catch(EntityNotFoundException e){
+            final List<PlanningUnit> planningUnitList = baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities();
+            if(planningUnitList != null && !planningUnitList.isEmpty()) {
+                planningUnitFromDB = planningUnitList.get(0);
+            } else {
+                //TODO was wenn keine Planningunits mehr vorhanden sind?
+            }
+        }
+        printchildren(planningUnitFromDB);
+        //baseDaoFactoryBean.getEntityManager().refresh(planningUnitFromDB);
 
 
-        fieldGroup = new PlanningUnitFieldGroup(messages, planningUnit);
+        fieldGroup = new PlanningUnitFieldGroup(messages, planningUnitFromDB);
         fieldList = fieldGroup.getFieldList();
 
         buildForm();
-
         cancelButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -75,10 +88,9 @@ public class PlanningUnitEditableLayout extends EditableLayout {
                     final BeanItem<PlanningUnit> planningUnitBeanItem = (BeanItem<PlanningUnit>)fieldGroup
                             .getItemDataSource();
                     final PlanningUnit changedPlanningUnit = planningUnitBeanItem.getBean();
-                    PlanningUnit pu = baseDaoFactoryBean.getPlanningUnitDAO().findByID(planningUnit.getId());
-                    pu.setPlanningUnitName(changedPlanningUnit.getPlanningUnitName());
-                    baseDaoFactoryBean.getEntityManager().refresh(pu);
-
+//                    PlanningUnit pu = baseDaoFactoryBean.getPlanningUnitDAO().findByID(planningUnit.getId());
+//                    pu.setPlanningUnitName(changedPlanningUnit.getPlanningUnitName());
+                    baseDaoFactoryBean.saveOrUpdate(changedPlanningUnit);
                     final MainUI ui = screen.getUi();
                     ui.setWorkingArea(new ProjektplanungScreen(ui));
                 }catch (NullPointerException e){
@@ -88,6 +100,13 @@ public class PlanningUnitEditableLayout extends EditableLayout {
                 }
             }
         });
+    }
+
+    private void printchildren(PlanningUnit planningUnitFromDB) {
+        for(PlanningUnit pu : planningUnitFromDB.getKindPlanningUnits()){
+            System.out.println("children of "+pu+": "+pu.getKindPlanningUnits());
+            printchildren(pu);
+        }
     }
 
     @Override
@@ -100,27 +119,14 @@ public class PlanningUnitEditableLayout extends EditableLayout {
             }
         }
         for(final Field<?> field : fieldGroup.getFields()){
-            componentsLayout.addComponent(field);
+            componentsLayout.addComponent(fieldGroup.getNameField());
+            componentsLayout.addComponent(fieldGroup.getDescriptionArea());
+            componentsLayout.addComponent(fieldGroup.getParentBox());
+            componentsLayout.addComponent(fieldGroup.getResponsibleBox());
+            componentsLayout.addComponent(fieldGroup.getStoryPointsField());
+            componentsLayout.addComponent(fieldGroup.getComplexityField());
+            componentsLayout.addComponent(fieldGroup.getOrderNumberField());
         }
         componentsLayout.addComponent(fieldGroup.getNameField());
     }
-
-//    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-//        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-////        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-////            entityManager.refresh(plannedProject);
-////        }
-//        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-//            entityManager.refresh(planningUnitElement);
-//        }
-//        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
-//            entityManager.refresh(planningUnit);
-//        }
-//        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-//            entityManager.refresh(ressourceGroup);
-//        }
-//        for(final Benutzer benutzer : baseDaoFactoryBean.getBenutzerDAO().loadAllEntities()){
-//            entityManager.refresh(benutzer);
-//        }
-//    }
 }

@@ -12,12 +12,13 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsEditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.information.PlanningInformationEditableLayout;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitEditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitsTree;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.ressources.PlanningRessourcesEditableLayout;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 24.08.12
  * Time: 13:35
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
@@ -28,9 +29,11 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
     private static final Logger logger = Logger.getLogger(TreeValueChangeListener.class);
 
     private ProjektplanungScreen screen;
+    private PlannedProject projekt;
 
     public TreeValueChangeListener(final ProjektplanungScreen screen, final PlannedProject projekt) {
         this.screen = screen;
+        this.projekt = projekt;
     }
 
     @Override
@@ -46,6 +49,7 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                 final Panel detailPanel = screen.getDetailPanel();
                 final Panel mainPanel = screen.getMainPanel();
                 final Panel ressourcesPanel = screen.getRessourcesPanel();
+                final Panel treePanel = screen.getTreePanel();
 
                 detailPanel.removeAllComponents();
                 mainPanel.removeAllComponents();
@@ -59,13 +63,10 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                 final VerticalLayout mainPanelLayout = new PlanningInformationEditableLayout(selectedPlanningUnit,
                         screen, mainPanel);
                 final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesEditableLayout(selectedPlanningUnit,
-                        screen, ressourcesPanel, hasChildren);
+                        screen, ressourcesPanel, hasChildren, projekt);
                 detailPanel.addComponent(detailsPanelComponentsLayout);
                 mainPanel.addComponent(mainPanelLayout);
                 ressourcesPanel.addComponent(ressourcesPanelLayout);
-
-
-                
             } else {
                 logger.warn("nullselection");
             }
