@@ -14,7 +14,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
  */
 public class GraphDaoFactory {
 
-    private static final GraphDatabaseService graphDb = GraphDBFactory.getGraphDBService();
+    private static final GraphDatabaseService graphDb = GraphDBFactory.getInstance().getGraphDBService();
 
     private GraphDaoFactory() {
         //e,pty on purpose

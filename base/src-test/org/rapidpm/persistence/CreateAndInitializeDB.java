@@ -32,12 +32,12 @@ public class CreateAndInitializeDB {
 
     public void createDB() {
 
-        graphDb = GraphDBFactory.getGraphDBService();
+        graphDb = GraphDBFactory.getInstance().getGraphDBService();
         root = graphDb.getNodeById(0);
 
         Transaction tx = graphDb.beginTx();
         try{
-            RelationshipType rel = GraphRelationRegistry.getRootRelationshipTypeToClass(PlannedProject.class);
+            RelationshipType rel = GraphRelationRegistry.getRootToClassRootRelType(PlannedProject.class);
             Node project_root = graphDb.createNode();
             project_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), rel.name());
             root.createRelationshipTo(project_root, rel);
@@ -50,32 +50,32 @@ public class CreateAndInitializeDB {
             project2.setProperty(rel.name(), "Project 2");
             project_root.createRelationshipTo(project2, rel);
 
-            rel = GraphRelationRegistry.getRootRelationshipTypeToClass(IssueStatus.class);
+            rel = GraphRelationRegistry.getRootToClassRootRelType(IssueStatus.class);
             Node status_root = graphDb.createNode();
             status_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), rel.name());
             root.createRelationshipTo(status_root, rel);
 
-            rel = GraphRelationRegistry.getRootRelationshipTypeToClass(IssuePriority.class);
+            rel = GraphRelationRegistry.getRootToClassRootRelType(IssuePriority.class);
             Node priority_root = graphDb.createNode();
             priority_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), rel.name());
             root.createRelationshipTo(priority_root, rel);
 
-            rel = GraphRelationRegistry.getRootRelationshipTypeToClass(IssueType.class);
+            rel = GraphRelationRegistry.getRootToClassRootRelType(IssueType.class);
             Node type_root = graphDb.createNode();
             type_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), rel.name());
             root.createRelationshipTo(type_root, rel);
 
-            rel = GraphRelationRegistry.getRootRelationshipTypeToClass(IssueComponent.class);
+            rel = GraphRelationRegistry.getRootToClassRootRelType(IssueComponent.class);
             Node component_root = graphDb.createNode();
             component_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), rel.name());
             root.createRelationshipTo(component_root, rel);
 
-            rel = GraphRelationRegistry.getRootRelationshipTypeToClass(IssueBase.class);
+            rel = GraphRelationRegistry.getRootToClassRootRelType(IssueBase.class);
             Node issueBase_root = graphDb.createNode();
             issueBase_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), rel.name());
             root.createRelationshipTo(issueBase_root, rel);
 
-            rel = GraphRelationRegistry.getRootRelationshipTypeToClass(IssueRelation.class);
+            rel = GraphRelationRegistry.getRootToClassRootRelType(IssueRelation.class);
             Node issueRelation_root = graphDb.createNode();
             issueRelation_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), rel.name());
             root.createRelationshipTo(issueRelation_root, rel);
@@ -91,47 +91,57 @@ public class CreateAndInitializeDB {
     public void initializeDB(){
         IssueStatus status = new IssueStatus();
         status.setStatusName("open");
+        status.setStatusFileName("status_open.gif");
         GraphDaoFactory.getIssueStatusDAO().persist(status);
 
         status = new IssueStatus();
         status.setStatusName("closed");
+        status.setStatusFileName("status_closed.gif");
         GraphDaoFactory.getIssueStatusDAO().persist(status);
 
         status = new IssueStatus();
         status.setStatusName("resolved");
+        status.setStatusFileName("status_resolved.gif");
         GraphDaoFactory.getIssueStatusDAO().persist(status);
 
         status = new IssueStatus();
         status.setStatusName("onhold");
+        status.setStatusFileName("status_onhold.gif");
         GraphDaoFactory.getIssueStatusDAO().persist(status);
 
         status = new IssueStatus();
         status.setStatusName("inprogress");
+        status.setStatusFileName("status_inprogress.gif");
         GraphDaoFactory.getIssueStatusDAO().persist(status);
 
 
         IssuePriority priority = new IssuePriority();
         priority.setPriorityName("trivial");
+        priority.setPriorityFileName("priority_trivial.gif");
         priority.setPrio(0);
         GraphDaoFactory.getIssuePriorityDAO().persist(priority);
 
         priority = new IssuePriority();
         priority.setPriorityName("minor");
+        priority.setPriorityFileName("priority_minor.gif");
         priority.setPrio(1);
         GraphDaoFactory.getIssuePriorityDAO().persist(priority);
 
         priority = new IssuePriority();
         priority.setPriorityName("major");
+        priority.setPriorityFileName("priority_major.gif");
         priority.setPrio(2);
         GraphDaoFactory.getIssuePriorityDAO().persist(priority);
 
         priority = new IssuePriority();
         priority.setPriorityName("critical");
+        priority.setPriorityFileName("priority_critical.gif");
         priority.setPrio(3);
         GraphDaoFactory.getIssuePriorityDAO().persist(priority);
 
         priority = new IssuePriority();
         priority.setPriorityName("blocker");
+        priority.setPriorityFileName("priority_blocker.gif");
         priority.setPrio(4);
         GraphDaoFactory.getIssuePriorityDAO().persist(priority);
 

@@ -12,13 +12,21 @@ import org.neo4j.kernel.EmbeddedGraphDatabase;
  */
 public class GraphDBFactory {
 
-    private static final GraphDatabaseService graphDb = new EmbeddedGraphDatabase("C:/out/graphDB");
+    private final GraphDatabaseService graphDb;
+    private static GraphDBFactory instance;
 
-    private GraphDBFactory() {
-        //empty on purpose
+    public static GraphDBFactory getInstance() {
+        if (instance == null)
+            instance = new GraphDBFactory();
+        return instance;
     }
 
-    public static GraphDatabaseService getGraphDBService() {
+    private GraphDBFactory() {
+        graphDb = new EmbeddedGraphDatabase("C:/out/graphDB");
+        registerShutdownHook(graphDb);
+    }
+
+    public GraphDatabaseService getGraphDBService() {
         return graphDb;
     }
 

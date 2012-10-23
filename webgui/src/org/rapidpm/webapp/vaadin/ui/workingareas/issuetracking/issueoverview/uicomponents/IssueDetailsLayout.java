@@ -85,9 +85,10 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         typeSelect.addContainerProperty(DummyProjectData.PROPERTY_CAPTION, String.class, null);
         typeSelect.setItemCaptionPropertyId(DummyProjectData.PROPERTY_CAPTION);
         Item item;
-        for (String type : DummyProjectData.getTypeList()) {
+        for (IssueType type : typeList) {
             item = typeSelect.addItem(type);
-            item.getItemProperty(DummyProjectData.PROPERTY_CAPTION).setValue(type);
+            item.getItemProperty(DummyProjectData.PROPERTY_CAPTION).setValue(type.getTypeName());
+            typeSelect.setItemIcon(type, new ThemeResource("images/" + type.getTypeFileName()));
         }
         typeSelect.setTextInputAllowed(false);
         typeSelect.setNullSelectionAllowed(false);

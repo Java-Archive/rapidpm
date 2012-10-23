@@ -110,6 +110,7 @@ public class IssueBase {
         //empty on Purpose
     }
 
+
     public List<IssueBase> getConnectedIssues(Relation relation) {
        return null;
     }

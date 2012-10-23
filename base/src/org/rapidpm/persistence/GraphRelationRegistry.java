@@ -3,6 +3,7 @@ package org.rapidpm.persistence;
 
 import org.neo4j.graphdb.DynamicRelationshipType;
 import org.neo4j.graphdb.RelationshipType;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,15 +18,19 @@ public class GraphRelationRegistry {
         return "name";
     }
 
-    public static RelationshipType getAttributeChildRelationshipType() {
+    public static RelationshipType getClassRootToChildRelType() {
         return DynamicRelationshipType.withName("value");
     }
 
-    public static RelationshipType getRootRelationshipTypeToClass(Class clazz) {
+    public static RelationshipType getRootToClassRootRelType(Class clazz) {
         return DynamicRelationshipType.withName("root_" + clazz.getSimpleName());
     }
 
-    public static RelationshipType getRelationshipTypeToClass(Class clazz) {
+    public static RelationshipType getRelationshipTypeForClass(Class clazz) {
         return DynamicRelationshipType.withName(clazz.getSimpleName());
+    }
+
+    public static RelationshipType getSubIssueRelationshipType() {
+        return DynamicRelationshipType.withName(IssueBase.class.getSimpleName());
     }
 }

@@ -7,7 +7,6 @@ import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.graphdb.traversal.Traverser;
 import org.neo4j.kernel.Traversal;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -43,7 +42,7 @@ public class GraphBaseDAO<T> {
     private Node getClassRootNode() {
         TraversalDescription td = Traversal.description()
                 .breadthFirst()
-                .relationships(GraphRelationRegistry.getRootRelationshipTypeToClass(clazz), Direction.OUTGOING )
+                .relationships(GraphRelationRegistry.getRootToClassRootRelType(clazz), Direction.OUTGOING )
                 .evaluator(Evaluators.atDepth(1));
         Traverser trav = td.traverse( root_node );
         Node node = null;
@@ -70,12 +69,12 @@ public class GraphBaseDAO<T> {
                 if (index_name.get(nameVal, method.invoke(entity)).getSingle() != null)
                     throw new IllegalArgumentException(clazz.getSimpleName() + ": Name already in use");
                 node = graphDb.createNode();
-                class_root_node.createRelationshipTo(node, GraphRelationRegistry.getAttributeChildRelationshipType());
+                class_root_node.createRelationshipTo(node, GraphRelationRegistry.getClassRootToChildRelType());
                 clazz.getDeclaredMethod("setId", Long.class).invoke(entity, node.getId());
             } else {
                 node = graphDb.getNodeById(id);
             }
-            setBasicProperties(node, entity, nameVal);
+            setProperties(node, entity, nameVal);
             tx.success();
         } catch (NoSuchFieldException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -91,7 +90,7 @@ public class GraphBaseDAO<T> {
         return entity;
     }
 
-    private void setBasicProperties(Node node, T entity, String nameAttribute) {
+    private void setProperties(Node node, T entity, String nameAttribute) {
         Field[] fieldNames = entity.getClass().getDeclaredFields();
 
         for (Field field : fieldNames) {
@@ -112,7 +111,7 @@ public class GraphBaseDAO<T> {
 
                     node.setProperty(field.getName(), getIdFromEntity(entity));
 
-                //TODO Verfügbar machen wenn DAO aus Relationaler angeschlossen
+                //TODO Verfügbar machen wenn DAO aus Relationaler angeschlossen ist
 //                try {
 //                    Method method = field.getType().getDeclaredMethod("getId");
 //                    node.setProperty(field.getName(), method.invoke(field.get(entity)));
@@ -135,13 +134,13 @@ public class GraphBaseDAO<T> {
                             while (it.hasNext()) {
                                 Long id = getIdFromEntity(aClass.cast(it.next()), aClass);
                                 if (id != null && id != 0) {
-                                    node.createRelationshipTo(graphDb.getNodeById(id), GraphRelationRegistry.getRelationshipTypeToClass(aClass));
+                                    connectAttribute(node, graphDb.getNodeById(id), aClass);
                                 }
                             }
                         } else {
                             Long id = getIdFromEntity(field.get(entity), aClass);
                             if (id != null && id != 0) {
-                                node.createRelationshipTo(graphDb.getNodeById(id), GraphRelationRegistry.getRelationshipTypeToClass(aClass));
+                                connectSingleAttribute(node, graphDb.getNodeById(id), aClass);
                             }
                         }
                     }
@@ -156,17 +155,32 @@ public class GraphBaseDAO<T> {
         index_name.add(node, nameAttribute, node.getProperty(nameAttribute));
     }
 
+    private void connectSingleAttribute(Node startNode, Node endNode, Class aClass) {
+        if (startNode.hasRelationship(GraphRelationRegistry.getRelationshipTypeForClass
+                (aClass), Direction.OUTGOING)) {
+            for (Relationship rel : startNode.getRelationships(GraphRelationRegistry.getRelationshipTypeForClass
+                    (aClass), Direction.OUTGOING))
+                rel.delete();
+        }
+        connectAttribute(startNode, endNode, aClass);
+    }
+
+    private void connectAttribute(Node startNode, Node endNode, Class aClass) {
+        startNode.createRelationshipTo(endNode, GraphRelationRegistry.getRelationshipTypeForClass
+                (aClass));
+    }
 
 
     public List<T> loadAllEntities() {
         TraversalDescription td = Traversal.description()
                 .breadthFirst()
-                .relationships(GraphRelationRegistry.getAttributeChildRelationshipType(), Direction.OUTGOING )
-                .evaluator(Evaluators.atDepth(1));
+                .relationships(GraphRelationRegistry.getClassRootToChildRelType(), Direction.OUTGOING )
+                .relationships(GraphRelationRegistry.getRelationshipTypeForClass(clazz), Direction.OUTGOING )
+                .evaluator(Evaluators.excludeStartPosition());
         Traverser trav = td.traverse(class_root_node);
         List<T> entityList = new ArrayList<T>();
-        for (Path path : trav) {
-            entityList.add(getObjectFromNode(path.endNode(), clazz));
+        for (Node travNode : trav.nodes()) {
+            entityList.add(getObjectFromNode(travNode, clazz));
         }
 
         return entityList;
@@ -235,28 +249,29 @@ public class GraphBaseDAO<T> {
                             final Class aClass = field.getAnnotation(Graph.class).clazz();
                             TraversalDescription td = Traversal.description()
                                     .breadthFirst()
-                                    .relationships(GraphRelationRegistry.getRelationshipTypeToClass(aClass),
+                                    .relationships(GraphRelationRegistry.getRelationshipTypeForClass(aClass),
                                             Direction.OUTGOING )
                                     .evaluator(Evaluators.atDepth(1));
                             Traverser trav = td.traverse(node);
 
-                                if (field.getType().isInterface()) {
-                                    //TODO subIssues wird LazyLoad implementiert
-                                    if (!field.isAnnotationPresent(Lazy.class)) {
-                                        List list = new ArrayList();
-                                        for (Path path : trav) {
-                                            list.add(getObjectFromNode(path.endNode(), aClass));
-                                        }
-                                        field.set(entity, list);
-                                    }
-                                } else {
-                                    Node travNode = null;
-                                    if (trav.nodes().iterator().hasNext()) {
-                                        travNode = trav.nodes().iterator().next();
-                                    }
+                            if (field.getType().isInterface()) {
 
-                                    field.set(entity, getObjectFromNode(travNode, aClass));
+                                //TODO subIssues wird LazyLoad implementiert
+                                if (!field.isAnnotationPresent(Lazy.class)) {
+                                    List list = new ArrayList();
+                                    for (Path path : trav) {
+                                        list.add(getObjectFromNode(path.endNode(), aClass));
+                                    }
+                                    field.set(entity, list);
                                 }
+                            } else {
+                                Node travNode = null;
+                                if (trav.nodes().iterator().hasNext()) {
+                                    travNode = trav.nodes().iterator().next();
+                                }
+
+                                field.set(entity, getObjectFromNode(travNode, aClass));
+                            }
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         }
