@@ -4,6 +4,7 @@ import org.neo4j.graphdb.Direction;
 import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.apache.log4j.Logger;
 
@@ -47,6 +48,9 @@ public class IssueBase {
     @Identifier
     private Long id;
 
+    //@Simple
+    private PlanningUnit planningUnit;
+
     @Simple
     private String summary;
 
@@ -62,10 +66,10 @@ public class IssueBase {
     @Graph(clazz = IssueType.class)
     private IssueType type;
 
-    @Relational
+    @Relational(clazz = Benutzer.class)
     private Benutzer reporter;
 
-    @Relational
+    @Relational(clazz = Benutzer.class)
     private Benutzer assignee;
 
     @Simple

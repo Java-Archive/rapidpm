@@ -215,16 +215,10 @@ public class CreateAndInitializeDB {
             issueBase.setDueDate_resolved(new Date());
 
             Benutzer benutzer = new Benutzer();
-            benutzer.setId(new Long(i));
-            benutzer.setLogin("testuser " + i);
-
+            benutzer.setId(new Long(4));
             issueBase.setAssignee(benutzer);
+            issueBase.setReporter(benutzer);
 
-            Benutzer benutzer2 = new Benutzer();
-            benutzer2.setId(new Long(i + 100));
-            benutzer2.setLogin("testuser " + (i+100));
-
-            issueBase.setReporter(benutzer2);
             issueBase.setStatus(status);
             issueBase.setType(type);
             issueBase.setPriority(priority);

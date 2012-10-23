@@ -1,20 +1,23 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
+/**
+ * RapidPM - www.rapidpm.org
+ * User: svenruppert
+ * Date: 06.07.11
+ * Time: 12:06
+ * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ */
 
-
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.rapidpm.persistence.GraphBaseDAO;
+import org.apache.log4j.Logger;
+import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
-/**
- * Created with IntelliJ IDEA.
- * User: Alvin
- * Date: 18.10.12
- * Time: 09:54
- * To change this template use File | Settings | File Templates.
- */
-public class IssueCommentDAO extends GraphBaseDAO<IssueComment> {
 
-    public IssueCommentDAO(GraphDatabaseService graphDb) {
-        super(graphDb, IssueComment.class);
+public class IssueCommentDAO extends DAO<Long, IssueComment> {
+    private static final Logger logger = Logger.getLogger(IssueCommentDAO.class);
+
+
+    public IssueCommentDAO(final EntityManager entityManager) {
+        super(entityManager, IssueComment.class);
     }
+
 }

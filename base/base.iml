@@ -42,6 +42,9 @@
     <orderEntry type="library" exported="" name="module-xmlrpc" level="project" />
     <orderEntry type="library" exported="" name="lib-neo4j" level="project" />
     <orderEntry type="library" exported="" name="lib-lucene" level="project" />
+    <orderEntry type="module" module-name="ejb" />
+    <orderEntry type="module" module-name="webgui" />
+    <orderEntry type="library" name="lib-dom4j" level="project" />
   </component>
 </module>
 

@@ -214,7 +214,19 @@ public class Benutzer {
     public String toString() {
         return "Benutzer{" +
                 "id=" + id +
+                ", hidden=" + hidden +
                 ", login='" + login + '\'' +
+                ", email='" + email + '\'' +
+                ", passwd='" + passwd + '\'' +
+                ", lastLogin=" + lastLogin +
+                ", failedLogins=" + failedLogins +
+                ", active=" + active +
+                ", validFrom=" + validFrom +
+                ", validUntil=" + validUntil +
+                ", mandantengruppe=" + mandantengruppe +
+                ", benutzerGruppe=" + benutzerGruppe +
+                ", benutzerWebapplikation=" + benutzerWebapplikation +
+                ", berechtigungen=" + berechtigungen +
                 '}';
     }
 

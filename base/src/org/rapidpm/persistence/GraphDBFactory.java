@@ -2,6 +2,7 @@ package org.rapidpm.persistence;
 
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
+import org.rapidpm.ejb3.EJBFactory;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,6 +15,7 @@ public class GraphDBFactory {
 
     public static final String DB_PATH = "C:/out/graphDB";
     private final GraphDatabaseService graphDb;
+    private DaoFactory relDaoFactory;
     private static GraphDBFactory instance;
 
     public static GraphDBFactory getInstance() {
@@ -23,12 +25,19 @@ public class GraphDBFactory {
     }
 
     private GraphDBFactory() {
+        GraphDBFactoryBean bean = EJBFactory.getEjbInstance(GraphDBFactoryBean.class);
+        if (bean != null)
+            relDaoFactory = bean.getDaoFactoryBean();
         graphDb = new EmbeddedGraphDatabase(DB_PATH);
         registerShutdownHook(graphDb);
     }
 
     public GraphDatabaseService getGraphDBService() {
         return graphDb;
+    }
+
+    public DaoFactory getRelDaoFactory() {
+        return relDaoFactory;
     }
 
     private static void registerShutdownHook( final GraphDatabaseService graphDb )

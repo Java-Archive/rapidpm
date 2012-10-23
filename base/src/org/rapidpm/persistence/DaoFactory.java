@@ -215,6 +215,10 @@ public class DaoFactory {
         return new ProjectDAO(getEntityManager());
     }
 
+    public IssueCommentDAO getIssueCommentDAO() {
+        return new IssueCommentDAO(getEntityManager());
+    }
+
     public IssueTimeUnitDAO getTimeUnitDAO() {
         return new IssueTimeUnitDAO(getEntityManager());
     }

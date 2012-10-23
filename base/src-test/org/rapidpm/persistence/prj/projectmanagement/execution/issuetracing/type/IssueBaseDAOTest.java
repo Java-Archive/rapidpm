@@ -37,10 +37,10 @@ public class IssueBaseDAOTest {
         issueBase.setDueDate_planned(new Date());
         issueBase.setDueDate_resolved(new Date());
 
-//            Benutzer benutzer = new Benutzer();
-//            benutzer.setId(new Long(1000));
-//            benutzer.setLogin("testuser x");
-//            issueBase.setAssignee(benutzer);
+            Benutzer benutzer = new Benutzer();
+            benutzer.setId(new Long(1000));
+            benutzer.setLogin("testuser x");
+            issueBase.setAssignee(benutzer);
 //
 //            Benutzer benutzer2 = new Benutzer();
 //            benutzer2.setId(new Long(1001));
@@ -52,7 +52,7 @@ public class IssueBaseDAOTest {
         issueBase.setPriority(GraphDaoFactory.getIssuePriorityDAO().loadAllEntities().get(0));
 
         issueBase = dao.persist(issueBase);
-        //System.out.println(issueBase.toString());
+        System.out.println(issueBase.toString());
         //assertTrue(issueBase.equals(dao.getById(issueBase.getId()).hashCode()));
 
         dao.delete(issueBase);

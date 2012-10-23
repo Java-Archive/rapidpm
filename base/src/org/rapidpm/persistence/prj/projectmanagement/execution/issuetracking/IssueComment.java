@@ -1,8 +1,5 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Relational;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
 import org.rapidpm.persistence.system.security.Benutzer;
 
 import javax.persistence.*;
@@ -15,34 +12,25 @@ import java.util.Date;
  * Time: 22:10
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
-//@Entity
+@Entity
 public class IssueComment {
 
-    public static final String NAME = "text";
 
-    @Identifier
+    @TableGenerator(name = "PKGenIssueComment", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "IssueComment_id", valueColumnName = "gen_value", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.TABLE,
+            generator = "PKGenIssueComment")
+    @Id
     private Long id;
 
-    @Simple
+    @Basic
+    @Column(columnDefinition = "TEXT")
     private String text;
 
-    @Relational
+    @OneToOne
     private Benutzer creator;
 
-    @Simple
+    @Basic
     private Date created;
-
-    public IssueComment() {
-        //empty on purpose
-    }
-
-    public Benutzer getCreator() {
-        return creator;
-    }
-
-    public void setCreator(final Benutzer creator) {
-        this.creator = creator;
-    }
 
     public Date getCreated() {
         return created;
@@ -56,7 +44,7 @@ public class IssueComment {
         return id;
     }
 
-    public void setId(final Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -64,18 +52,17 @@ public class IssueComment {
         return text;
     }
 
-    public void setText(final String text) {
-        this.text = text;
+    public void setText(String txt) {
+        this.text = txt;
     }
 
-    @Override
-    public String toString() {
-        return "IssueComment{" +
-                "id=" + id +
-                ", text='" + text + '\'' +
-                ", creator=" + creator +
-                ", created=" + created +
-                '}';
+
+    public Benutzer getCreator() {
+        return creator;
+    }
+
+    public void setCreator(Benutzer creator) {
+        this.creator = creator;
     }
 
     @Override
@@ -98,5 +85,15 @@ public class IssueComment {
         result = 31 * result + (creator != null ? creator.hashCode() : 0);
         result = 31 * result + (created != null ? created.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IssueComment{" +
+                "id=" + id +
+                ", txt='" + text + '\'' +
+                ", creator=" + creator +
+                ", created=" + created +
+                '}';
     }
 }
