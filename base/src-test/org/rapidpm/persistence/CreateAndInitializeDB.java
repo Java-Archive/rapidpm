@@ -7,6 +7,10 @@ import org.neo4j.graphdb.Transaction;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.system.security.Benutzer;
+
+import java.io.File;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,12 +25,26 @@ public class CreateAndInitializeDB {
 
     public static void main(final String[] args) {
         CreateAndInitializeDB setUp = new CreateAndInitializeDB();
+        System.out.println("Removing old db");
+        setUp.deleteFileOrDirectory(new File(GraphDBFactory.DB_PATH));
+        System.out.println("Finished removing");
         System.out.println("Start creating");
         setUp.createDB();
         System.out.println("Finished creating");
         System.out.println("Start initializing");
         setUp.initializeDB();
         System.out.println("Finished initializing");
+    }
+
+    public static void deleteFileOrDirectory( final File file ) {
+        if ( file.exists() ) {
+            if ( file.isDirectory() ) {
+                for ( File child : file.listFiles() ) {
+                    deleteFileOrDirectory( child );
+                }
+            }
+            file.delete();
+        }
     }
 
 
@@ -112,7 +130,7 @@ public class CreateAndInitializeDB {
         status = new IssueStatus();
         status.setStatusName("inprogress");
         status.setStatusFileName("status_inprogress.gif");
-        GraphDaoFactory.getIssueStatusDAO().persist(status);
+        status = GraphDaoFactory.getIssueStatusDAO().persist(status);
 
 
         IssuePriority priority = new IssuePriority();
@@ -143,7 +161,7 @@ public class CreateAndInitializeDB {
         priority.setPriorityName("blocker");
         priority.setPriorityFileName("priority_blocker.gif");
         priority.setPrio(4);
-        GraphDaoFactory.getIssuePriorityDAO().persist(priority);
+        priority = GraphDaoFactory.getIssuePriorityDAO().persist(priority);
 
 
         IssueType type = new IssueType();
@@ -160,7 +178,7 @@ public class CreateAndInitializeDB {
 
         type = new IssueType();
         type.setTypeName("newfunction");
-        GraphDaoFactory.getIssueTypeDAO().persist(type);
+        type = GraphDaoFactory.getIssueTypeDAO().persist(type);
 
 
 
@@ -185,6 +203,35 @@ public class CreateAndInitializeDB {
 
         component = new IssueComponent("Dokumentation");
         GraphDaoFactory.getIssueComponentDAO().persist(component);
+
+        for (int i = 1; i<4 ;i++) {
+            IssueBase issueBase = new IssueBase();
+            issueBase.setVersion("1.0");
+            issueBase.setStoryPoints(i);
+            issueBase.setSummary("Issue " + i);
+            issueBase.setText("Text " + i);
+            issueBase.setDueDate_closed(new Date());
+            issueBase.setDueDate_planned(new Date());
+            issueBase.setDueDate_resolved(new Date());
+
+            Benutzer benutzer = new Benutzer();
+            benutzer.setId(new Long(i));
+            benutzer.setLogin("testuser " + i);
+
+            issueBase.setAssignee(benutzer);
+
+            Benutzer benutzer2 = new Benutzer();
+            benutzer2.setId(new Long(i + 100));
+            benutzer2.setLogin("testuser " + (i+100));
+
+            issueBase.setReporter(benutzer2);
+            issueBase.setStatus(status);
+            issueBase.setType(type);
+            issueBase.setPriority(priority);
+
+            issueBase = GraphDaoFactory.getIssueBaseDAO().persist(issueBase);
+            System.out.println(issueBase.toString());
+        }
     }
 
 }

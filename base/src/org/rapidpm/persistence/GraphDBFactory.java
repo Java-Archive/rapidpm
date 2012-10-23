@@ -12,6 +12,7 @@ import org.neo4j.kernel.EmbeddedGraphDatabase;
  */
 public class GraphDBFactory {
 
+    public static final String DB_PATH = "C:/out/graphDB";
     private final GraphDatabaseService graphDb;
     private static GraphDBFactory instance;
 
@@ -22,7 +23,7 @@ public class GraphDBFactory {
     }
 
     private GraphDBFactory() {
-        graphDb = new EmbeddedGraphDatabase("C:/out/graphDB");
+        graphDb = new EmbeddedGraphDatabase(DB_PATH);
         registerShutdownHook(graphDb);
     }
 

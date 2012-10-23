@@ -370,10 +370,8 @@ public class IssueBase {
                 ", dueDate_closed=" + dueDate_closed +
                 ", timeUnitEstimated=" + timeUnitEstimated +
                 ", timeUnitsUsed=" + timeUnitsUsed +
-                ", subIssues=" + this.getSubIssues() +
                 ", comments=" + comments +
                 ", testcases=" + testcases +
-                ", components=" + this.getComponents() +
                 ", risk='" + risk + '\'' +
                 '}';
     }

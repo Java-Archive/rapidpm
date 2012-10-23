@@ -8,7 +8,9 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing.typ
  */
 
 import org.junit.Test;
+import org.neo4j.graphdb.Direction;
 import org.rapidpm.persistence.GraphDaoFactory;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.persistence.system.security.Benutzer;
@@ -17,8 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class IssueBaseDAOTest {
 
@@ -26,81 +27,88 @@ public class IssueBaseDAOTest {
 
     @Test
     public void addIssue() {
-        for (int i = 1; i<4 ;i++) {
-            IssueBase issueBase = new IssueBase();
-            issueBase.setVersion("1.0");
-            issueBase.setStoryPoints(5);
-            issueBase.setSummary("Issue " + i);
-            issueBase.setText("Text " + i);
-            issueBase.setDueDate_closed(new Date());
-            issueBase.setDueDate_planned(new Date());
-            issueBase.setDueDate_resolved(new Date());
+        IssueBase issueBase = new IssueBase();
+        issueBase.setVersion("1.0");
+        issueBase.setStoryPoints(10);
+        issueBase.setSummary("Issue x");
+        issueBase.setText("Text x");
+        issueBase.setDueDate_closed(new Date());
+        issueBase.setDueDate_planned(new Date());
+        issueBase.setDueDate_resolved(new Date());
 
-            Benutzer benutzer = new Benutzer();
-            benutzer.setId(new Long(i));
-            benutzer.setLogin("testuser " + i);
+//            Benutzer benutzer = new Benutzer();
+//            benutzer.setId(new Long(1000));
+//            benutzer.setLogin("testuser x");
+//            issueBase.setAssignee(benutzer);
+//
+//            Benutzer benutzer2 = new Benutzer();
+//            benutzer2.setId(new Long(1001));
+//            benutzer2.setLogin("testuser x");
+//            issueBase.setReporter(benutzer2);
 
-            issueBase.setAssignee(benutzer);
+        issueBase.setStatus(GraphDaoFactory.getIssueStatusDAO().loadAllEntities().get(0));
+        issueBase.setType(GraphDaoFactory.getIssueTypeDAO().loadAllEntities().get(0));
+        issueBase.setPriority(GraphDaoFactory.getIssuePriorityDAO().loadAllEntities().get(0));
 
-            Benutzer benutzer2 = new Benutzer();
-            benutzer2.setId(new Long(i + 100));
-            benutzer2.setLogin("testuser " + (i+100));
+        issueBase = dao.persist(issueBase);
+        //System.out.println(issueBase.toString());
+        //assertTrue(issueBase.equals(dao.getById(issueBase.getId()).hashCode()));
 
-            issueBase.setReporter(benutzer2);
-            issueBase.setStatus(GraphDaoFactory.getIssueStatusDAO().loadAllEntities().get(0));
-            issueBase.setType(GraphDaoFactory.getIssueTypeDAO().loadAllEntities().get(0));
-            issueBase.setPriority(GraphDaoFactory.getIssuePriorityDAO().loadAllEntities().get(0));
-
-            issueBase = dao.persist(issueBase);
-            System.out.println(issueBase.toString());
-            //assertEquals(issueBase, dao.getById(issueBase.getId()));
-        }
-
+        dao.delete(issueBase);
     }
 
     @Test
-    public void ChangeAttributeRelation() {
+    public void ChangeGraphAttributes() {
         IssueBase issue = dao.loadAllEntities().get(1);
-        System.out.println(issue.toString());
         issue.setStatus(GraphDaoFactory.getIssueStatusDAO().loadAllEntities().get(1));
         issue.setType(GraphDaoFactory.getIssueTypeDAO().loadAllEntities().get(1));
         issue.setPriority(GraphDaoFactory.getIssuePriorityDAO().loadAllEntities().get(1));
 
-        dao.persist(issue);
+        issue = dao.persist(issue);
+        IssueBase proof = dao.getById(issue.getId());
+        assertEquals(issue.getStatus(), proof.getStatus());
+        assertEquals(issue.getType(), proof.getType());
+        assertEquals(issue.getPriority(), proof.getPriority());
     }
 
     @Test
-    public void setListRelations() {
+    public void addSubIssue() {
         IssueBase issue = dao.loadAllEntities().get(0);
+        IssueBase sub = dao.loadAllEntities().get(1);
 
-        issue.addSubIssue(dao.loadAllEntities().get(1));
-        //issue.setComponents(GraphDaoFactory.getIssueComponentDAO().loadAllEntities());
-        //dao.persist(issue);
-    }
+        issue.addSubIssue(sub);
+        assertEquals(issue.getSubIssues().get(0).getId(), sub.getId());
 
-    @Test
-    public void loadAll() {
-        for (IssueBase issue : dao.loadAllEntities())
-            System.out.println(issue.toString());
+        issue.removeSubIssue(sub);
+        assertEquals(issue.getSubIssues().size(), 0);
+
+        assertTrue(dao.loadAllEntities().contains(sub));
     }
 
     @Test
     public void connectWithRelation() {
         List<IssueBase> list = dao.loadAllEntities();
-        dao.connectEntitiesWithRelationTx(list.get(1), list.get(2),GraphDaoFactory.getIssueRelationDAO()
-                .loadAllEntities().get(1));
+        IssueBase issue1 = list.get(1);
+        IssueBase issue2 = list.get(2);
+        IssueRelation rel = GraphDaoFactory.getIssueRelationDAO().loadAllEntities().get(1);
+
+        boolean success = issue1.connectToIssueAs(issue2, rel);
+        assertTrue(success);
+        List<IssueBase> connected= issue1.getConnectedIssues(rel, Direction.OUTGOING);
+        assertTrue(connected.contains(issue2));
+
+        success = issue1.removeConnectionToIssue(issue2, rel);
+        assertTrue(success);
+        connected= issue1.getConnectedIssues(rel);
+        assertFalse(connected.contains(issue2));
+
     }
 
     @Test
-    public void deleteRelationOfEntities()  {
+    public void loadAll() {
         List<IssueBase> list = dao.loadAllEntities();
-        dao.deleteRelationOfEntitiesTx(list.get(1), list.get(2), GraphDaoFactory.getIssueRelationDAO()
-                .loadAllEntities().get(1));
-    }
-
-    @Test
-    public void setAsChild() {
-        List<IssueBase> list = dao.loadAllEntities();
-        dao.addSubIssueTx(list.get(1), list.get(0));
+        for (IssueBase issue : list)
+            System.out.println(issue.toString());
+        assertEquals(list.size(), 3);
     }
 }
