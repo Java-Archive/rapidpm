@@ -28,7 +28,6 @@ public class IssuePriorityDAOTest {
         priority.setPriorityName("first");
         priority.setPriorityFileName("filename");
         priority = dao.persist(priority);
-        System.out.println(priority.toString());
         assertEquals(priority, dao.getById(priority.getId()));
         dao.delete(priority);
     }
@@ -36,14 +35,9 @@ public class IssuePriorityDAOTest {
     @Test
     public void changePriority() {
         IssuePriority priority = new IssuePriority();
-        priority.setPrio(1);
-        priority.setPriorityName("1st");
-        priority = dao.persist(priority);
-        System.out.println(priority.toString());
-        assertEquals(priority, dao.getById(priority.getId()));
-
         priority.setPrio(2);
-        priority.setPriorityName("2nd");
+        priority.setPriorityName("1st");
+        priority.setPriorityFileName("second filename");
         priority = dao.persist(priority);
         assertEquals(priority, dao.getById(priority.getId()));
         dao.delete(priority);

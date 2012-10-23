@@ -27,7 +27,6 @@ public class IssueTypeDAOTest {
         type.setTypeName("first");
         type.setTypeFileName("filename");
         type = dao.persist(type);
-        System.out.println(type.toString());
         assertEquals(type, dao.getById(type.getId()));
         dao.delete(type);
     }
@@ -36,13 +35,7 @@ public class IssueTypeDAOTest {
     public void changeType() {
         IssueType type = new IssueType();
         type.setTypeName("1st");
-        type.setTypeFileName("1st fileName");
-        type = dao.persist(type);
-        System.out.println(type.toString());
-        assertEquals(type, dao.getById(type.getId()));
-
-        type.setTypeName("2nd");
-        type.setTypeFileName("2st fileName");
+        type.setTypeFileName("second fileName");
         type = dao.persist(type);
         assertEquals(type, dao.getById(type.getId()));
         dao.delete(type);

@@ -129,21 +129,21 @@ public class GraphBaseDAO<T> {
                     final Class aClass = field.getAnnotation(Graph.class).clazz();
 
                     if (field.get(entity) != null) {
-                        if (field.getType().isInterface()) {
-                           List list = (List) field.get(entity);
-                            Iterator it = list.iterator();
-                            while (it.hasNext()) {
-                                Long id = getIdFromEntity(aClass.cast(it.next()), aClass);
-                                if (id != null && id != 0) {
-                                    connectAttribute(node, graphDb.getNodeById(id), aClass);
-                                }
-                            }
-                        } else {
-                            Long id = getIdFromEntity(field.get(entity), aClass);
-                            if (id != null && id != 0) {
-                                connectSingleAttribute(node, graphDb.getNodeById(id), aClass);
-                            }
+//                        if (field.getType().isInterface()) {
+//                           List list = (List) field.get(entity);
+//                            Iterator it = list.iterator();
+//                            while (it.hasNext()) {
+//                                Long id = getIdFromEntity(aClass.cast(it.next()), aClass);
+//                                if (id != null && id != 0) {
+//                                    connectAttribute(node, graphDb.getNodeById(id), aClass);
+//                                }
+//                            }
+//                        } else {
+                        Long id = getIdFromEntity(field.get(entity), aClass);
+                        if (id != null && id != 0) {
+                            connectSingleAttribute(node, graphDb.getNodeById(id), aClass);
                         }
+//                        }
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
@@ -248,31 +248,24 @@ public class GraphBaseDAO<T> {
                     else if (field.isAnnotationPresent(Graph.class)) {
                         try {
                             final Class aClass = field.getAnnotation(Graph.class).clazz();
-                            TraversalDescription td = Traversal.description()
-                                    .breadthFirst()
-                                    .relationships(GraphRelationRegistry.getRelationshipTypeForClass(aClass),
-                                            Direction.OUTGOING )
-                                    .evaluator(Evaluators.atDepth(1));
-                            Traverser trav = td.traverse(node);
+//                            if (field.getType().isInterface()) {
+//
+//                                //TODO subIssues wird LazyLoad implementiert
+//                                if (!field.isAnnotationPresent(Lazy.class)) {
+//                                    List list = new ArrayList();
+//                                    for (Path path : trav) {
+//                                        list.add(getObjectFromNode(path.endNode(), aClass));
+//                                    }
+//                                    field.set(entity, list);
+//                                }
+//                            } else {
+                            Node travNode = null;
+                            for (Relationship rel : node.getRelationships(GraphRelationRegistry.getRelationshipTypeForClass(aClass),
+                                    Direction.OUTGOING))
+                                travNode = rel.getOtherNode(node);
 
-                            if (field.getType().isInterface()) {
-
-                                //TODO subIssues wird LazyLoad implementiert
-                                if (!field.isAnnotationPresent(Lazy.class)) {
-                                    List list = new ArrayList();
-                                    for (Path path : trav) {
-                                        list.add(getObjectFromNode(path.endNode(), aClass));
-                                    }
-                                    field.set(entity, list);
-                                }
-                            } else {
-                                Node travNode = null;
-                                if (trav.nodes().iterator().hasNext()) {
-                                    travNode = trav.nodes().iterator().next();
-                                }
-
-                                field.set(entity, getObjectFromNode(travNode, aClass));
-                            }
+                            field.set(entity, getObjectFromNode(travNode, aClass));
+//                            }
                         } catch (IllegalAccessException e) {
                             e.printStackTrace();
                         }

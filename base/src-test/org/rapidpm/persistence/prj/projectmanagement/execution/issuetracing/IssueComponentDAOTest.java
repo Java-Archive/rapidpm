@@ -25,20 +25,14 @@ public class IssueComponentDAOTest {
         IssueComponent component = new IssueComponent();
         component.setComponentName("first");
         component = dao.persist(component);
-        System.out.println(component.toString());
         assertEquals(component, dao.getById(component.getId()));
         dao.delete(component);
     }
 
     @Test
     public void changeComponent() {
-        IssueComponent component = new IssueComponent();
+        IssueComponent component = dao.loadAllEntities().get(0);
         component.setComponentName("1st");
-        component = dao.persist(component);
-        System.out.println(component.toString());
-        assertEquals(component, dao.getById(component.getId()));
-
-        component.setComponentName("2nd");
         component = dao.persist(component);
         assertEquals(component, dao.getById(component.getId()));
         dao.delete(component);

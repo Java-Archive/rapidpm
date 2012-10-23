@@ -40,10 +40,6 @@ public class GraphDaoFactory {
         return new IssueComponentDAO(graphDb);
     }
 
-    public static IssueCommentDAO getIssueCommentDAO() {
-        return new IssueCommentDAO(graphDb);
-    }
-
     public static IssueRelationDAO getIssueRelationDAO() {
         return new IssueRelationDAO(graphDb);
     }

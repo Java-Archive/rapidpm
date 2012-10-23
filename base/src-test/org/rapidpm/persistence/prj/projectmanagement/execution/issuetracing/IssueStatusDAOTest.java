@@ -28,7 +28,6 @@ public class IssueStatusDAOTest {
         status.setStatusName("first");
         status.setStatusFileName("filename");
         status = dao.persist(status);
-        System.out.println(status.toString());
         assertEquals(status, dao.getById(status.getId()));
         dao.delete(status);
     }
@@ -37,11 +36,7 @@ public class IssueStatusDAOTest {
     public void changeStatus() {
         IssueStatus status = new IssueStatus();
         status.setStatusName("1st");
-        status = dao.persist(status);
-        System.out.println(status.toString());
-        assertEquals(status, dao.getById(status.getId()));
-
-        status.setStatusName("2nd");
+        status.setStatusFileName("second filename");
         status = dao.persist(status);
         assertEquals(status, dao.getById(status.getId()));
         dao.delete(status);
