@@ -174,8 +174,6 @@ public class DAO<K extends Number, E> implements Serializable {
     }
 
     public <T> void saveOrUpdateTX(final T entity) {
-        Integer i = null;
-        i++;
         if (logger.isInfoEnabled()) {
             logger.info("saveOrUpdateTX entity " + entity);
         }

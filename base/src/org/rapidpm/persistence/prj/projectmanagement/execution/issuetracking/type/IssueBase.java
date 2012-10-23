@@ -48,9 +48,6 @@ public class IssueBase {
     @Identifier
     private Long id;
 
-    @Relational(clazz = PlanningUnit.class)
-    private PlanningUnit planningUnit;
-
     @Simple
     private String summary;
 
@@ -94,7 +91,7 @@ public class IssueBase {
     private List<IssueTimeUnit> timeUnitsUsed;
 
     //@Graph(clazz = IssueComment.class)
-    //@Relational
+    @Relational(clazz = IssueComment.class)
     private List<IssueComment> comments;
 
     //@Relational
@@ -103,6 +100,10 @@ public class IssueBase {
     //private Risk risk;
     @Simple
     private String risk;
+
+    @Relational(clazz = PlanningUnit.class)
+    private PlanningUnit planningUnit;
+
 
     public IssueBase() {
         //empty on Purpose
@@ -159,6 +160,31 @@ public class IssueBase {
     }
 
 
+    public boolean addComment(IssueComment comment) {
+        return comments.add(comment);
+    }
+
+    public boolean removeComment(IssueComment comment) {
+        return comments.remove(comment);
+    }
+
+
+    public boolean addTestCase(TestCase testcase) {
+        return testcases.add(testcase);
+    }
+
+    public boolean removeTestCase(TestCase testcase) {
+        return testcases.remove(testcase);
+    }
+
+
+    public boolean addTimeUnitUsed(IssueTimeUnit timeUnit) {
+        return timeUnitsUsed.add(timeUnit);
+    }
+
+    public boolean removeTimeUnitUsed(IssueTimeUnit timeUnit) {
+        return timeUnitsUsed.remove(timeUnit);
+    }
 
 
     public Long getId() {
@@ -373,6 +399,7 @@ public class IssueBase {
     public String toString() {
         return "IssueBase{" +
                 "id=" + id +
+                ", planningUnit=" + planningUnit +
                 ", summary='" + summary + '\'' +
                 ", text='" + text + '\'' +
                 ", priority=" + priority +

@@ -16,9 +16,7 @@ import org.rapidpm.persistence.system.security.Benutzer;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -42,8 +40,8 @@ public class GraphBaseDAO<T> {
             throw new NullPointerException("GraphDb is null.");
         if (clazz == null)
             throw new NullPointerException("Class is null.");
-        if (relDaoFactory == null)
-            throw new NullPointerException("Rel. DaoFactory is null.");
+//        if (relDaoFactory == null)
+//            throw new NullPointerException("Rel. DaoFactory is null.");
 
         this.clazz = clazz;
         this.graphDb = graphDb;
@@ -121,7 +119,6 @@ public class GraphBaseDAO<T> {
             if (field.isAnnotationPresent(Simple.class)) {
                 try {
                     if (field.getAnnotation(Simple.class).clazz().equals("Date")) {
-                    //if (field.getType() == java.util.Date.class) {
                         node.setProperty(field.getName(), field.get(entity) == null ? "0" : ((Date)field.get(entity)).getTime());
                     } else
                         node.setProperty(field.getName(), field.get(entity) == null ? "null" : field.get(entity));
@@ -130,11 +127,33 @@ public class GraphBaseDAO<T> {
                 }
             }
             else if (field.isAnnotationPresent(Relational.class)) {
+                Class aClass = field.getAnnotation(Relational.class).clazz();
 
                 try {
-                    Method method = field.getType().getDeclaredMethod("getId");
-                    if (method != null && field.get(entity) != null)
-                        node.setProperty(field.getName(), method.invoke(field.get(entity)));
+                    if (field.getType().equals(List.class)) {
+                        if (relDaoFactory != null) {
+                            Method method = relDaoFactory.getClass().getDeclaredMethod("get" + aClass.getSimpleName() + "DAO");
+                            final DAO relDao = (DAO)method.invoke(relDaoFactory);
+                            if (relDao != null) {
+                                List entityList = (List)field.get(entity);
+                                Iterator it = entityList.iterator();
+                                Long[] ids = new Long[entityList.size()];
+                                int i = 0;
+                                while (it.hasNext()) {
+                                    Object single = it.next();
+                                    relDao.saveOrUpdate(single);
+                                    ids[i++] = getIdFromEntity(relDao.getEntityManager().find(aClass, single),
+                                        aClass);
+                                }
+                                node.setProperty(field.getName(), ids);
+                            }
+                        }
+                    } else {
+                        Method method = field.getType().getDeclaredMethod("getId");
+                        if (method != null && field.get(entity) != null) {
+                                node.setProperty(field.getName(), method.invoke(field.get(entity)));
+                        }
+                    }
                 } catch (NoSuchMethodException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 } catch (InvocationTargetException e) {
@@ -262,9 +281,9 @@ public class GraphBaseDAO<T> {
     }
 
     protected T getObjectFromNode(Node node, Class clazz) {
-        if (node != null)
+        if (node == null)
             throw new NullPointerException("Node is null.");
-        if (clazz != null)
+        if (clazz == null)
             throw new NullPointerException("Class is null.");
 
         T entity = null;
@@ -291,12 +310,23 @@ public class GraphBaseDAO<T> {
 
                 else if (field.isAnnotationPresent(Relational.class)) {
                     //Load via relational DAO's
-
                     final Class aClass = field.getAnnotation(Relational.class).clazz();
                     Method method = relDaoFactory.getClass().getDeclaredMethod("get" + aClass.getSimpleName() + "DAO");
                     final DAO relDao = (DAO)method.invoke(relDaoFactory);
                     if (relDao != null) {
-                        field.set(entity, relDao.findByID(Long.class.cast(node.getProperty(field.getName()))));
+                        if (field.getType().equals(List.class)) {
+                            long[] entityList = (long[])node.getProperty(field.getName(), new long[]{});
+                            List<Object> ids = new ArrayList<>();
+                            for (Object single : entityList) {
+
+                                Long id = (Long)single;
+                                ids.add(relDao.findByID(id));
+                            }
+                            field.set(entity, ids);
+                        } else {
+                            if (node.getProperty(field.getName(), null) != null)
+                                field.set(entity, relDao.findByID(Long.class.cast(node.getProperty(field.getName()))));
+                        }
                     }
                 }
                 else if (field.isAnnotationPresent(Graph.class)) {
