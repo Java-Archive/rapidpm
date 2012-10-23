@@ -106,50 +106,55 @@ public class IssueBase {
 
 
 
-    //TODO do test
     public boolean connectToIssueAs(IssueBase issue, IssueRelation relation) {
         return GraphDaoFactory.getIssueBaseDAO().connectEntitiesWithRelationTx(this, issue, relation);
     }
-    //TODO do test
+
     public List<IssueBase> getConnectedIssues(IssueRelation relation) {
         return getConnectedIssues(relation, Direction.BOTH);
     }
-    //TODO do test
+
     public List<IssueBase> getConnectedIssues(IssueRelation relation, Direction direction) {
         return GraphDaoFactory.getIssueBaseDAO().getConnectedIssuesWithRelation(this, relation, direction);
     }
-    //TODO do test
+
     public boolean removeConnectionToIssue(IssueBase issue, IssueRelation relation) {
         return GraphDaoFactory.getIssueBaseDAO().deleteRelationOfEntitiesTx(this, issue, relation);
     }
 
 
-    //TODO do test
+
     public boolean addSubIssue(IssueBase subIssue) {
         return GraphDaoFactory.getIssueBaseDAO().addSubIssueTx(this, subIssue);
     }
-    //TODO do test
+
     public List<IssueBase> getSubIssues() {
         return GraphDaoFactory.getIssueBaseDAO().getSubIssuesOf(this);
     }
-    //TODO do test
+
     public boolean removeSubIssue(IssueBase subIssue) {
         return GraphDaoFactory.getIssueBaseDAO().deleteSubIssueRelationTx(this, subIssue);
     }
 
 
-    //TODO do test
+
     public boolean addComponent(IssueComponent component) {
         return GraphDaoFactory.getIssueBaseDAO().addComponentToTx(this, component);
     }
-    //TODO do test
+
     public List<IssueComponent> getComponents() {
         return GraphDaoFactory.getIssueBaseDAO().getComponentsOf(this);
     }
-    //TODO do test
+
     public boolean removeComponent(IssueComponent component) {
         return GraphDaoFactory.getIssueBaseDAO().deleteComponentRelationTx(this, component);
     }
+
+    public boolean removeAllComponents(List<IssueComponent> componentList) {
+        return GraphDaoFactory.getIssueBaseDAO().deleteAllComponentRelationsTx(this, componentList);
+    }
+
+
 
 
     public Long getId() {

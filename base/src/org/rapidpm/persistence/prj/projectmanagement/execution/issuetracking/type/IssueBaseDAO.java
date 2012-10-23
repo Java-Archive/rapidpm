@@ -163,8 +163,14 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     }
 
     public void addComponentTo(IssueBase issue, IssueComponent component) {
-        graphDb.getNodeById(issue.getId()).createRelationshipTo(graphDb.getNodeById(component.getId()),
-                GraphRelationRegistry.getRelationshipTypeForClass(IssueComponent.class));
+        Node issueNode = graphDb.getNodeById(issue.getId());
+        Node componentNode = graphDb.getNodeById(component.getId());
+        RelationshipType relShipType = GraphRelationRegistry.getRelationshipTypeForClass(IssueComponent.class);
+
+        for (Relationship rel : issueNode.getRelationships())
+            if (rel.getOtherNode(issueNode).equals(componentNode))
+                throw new IllegalStateException("Relation to component aleady exists");
+        issueNode.createRelationshipTo(componentNode, relShipType);
     }
 
 
@@ -173,7 +179,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         List<IssueComponent> issueList = new ArrayList<>();
 
         for (Relationship rel : startNode.getRelationships(GraphRelationRegistry.getRelationshipTypeForClass
-                (IssueComment.class),
+                (IssueComponent.class),
                 Direction.OUTGOING)) {
             issueList.add(GraphDaoFactory.getIssueComponentDAO().getById(rel.getOtherNode(startNode).getId()));
         }

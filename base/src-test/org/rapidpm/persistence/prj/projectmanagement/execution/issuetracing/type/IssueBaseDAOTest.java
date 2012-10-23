@@ -10,6 +10,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing.typ
 import org.junit.Test;
 import org.neo4j.graphdb.Direction;
 import org.rapidpm.persistence.GraphDaoFactory;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponent;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
@@ -101,6 +102,34 @@ public class IssueBaseDAOTest {
         assertTrue(success);
         connected= issue1.getConnectedIssues(rel);
         assertFalse(connected.contains(issue2));
+
+    }
+
+    @Test
+    public void addComponent() {
+        IssueBase issue = dao.loadAllEntities().get(0);
+        List<IssueComponent> componentList = GraphDaoFactory.getIssueComponentDAO().loadAllEntities();
+
+        boolean success = issue.addComponent(componentList.get(0));
+        assertTrue(success);
+        List<IssueComponent> connected= issue.getComponents();
+        assertTrue(connected.contains(componentList.get(0)));
+
+        success = issue.addComponent(componentList.get(1));
+        assertTrue(success);
+        connected= issue.getComponents();
+        assertTrue(connected.contains(componentList.get(0)) && connected.contains(componentList.get(1)));
+
+
+        success = issue.removeComponent(componentList.get(0));
+        assertTrue(success);
+        connected= issue.getComponents();
+        assertFalse(connected.contains(componentList.get(0)));
+
+        success = issue.removeComponent(componentList.get(1));
+        assertTrue(success);
+        connected= issue.getComponents();
+        assertFalse(connected.contains(componentList.get(1)));
 
     }
 
