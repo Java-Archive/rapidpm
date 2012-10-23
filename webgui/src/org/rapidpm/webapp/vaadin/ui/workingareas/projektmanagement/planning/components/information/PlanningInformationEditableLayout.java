@@ -1,42 +1,65 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.information;
 
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.EditableLayout;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsEditableLayoutBean;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitFieldGroup;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ResourceBundle;
 
 import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
 
 /**
- * RapidPM - www.rapidpm.org
+ * Created with IntelliJ IDEA.
  * User: Marco Ebbinghaus
- * Date: 30.08.12
- * Time: 09:15
+ * Date: 16.10.12
+ * Time: 13:11
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 public class PlanningInformationEditableLayout extends EditableLayout {
 
-    //TODO Testcases managen
     private static final Logger logger = Logger.getLogger(PlanningInformationEditableLayout.class);
 
-    private ResourceBundle messages;
     private List<AbstractField> fieldList;
-    private PlanningInformationFieldGroup fieldGroup;
+    private PlanningUnitFieldGroup fieldGroup;
+    private ResourceBundle messages;
+
+    private PlanningInformationEditableLayoutBean bean;
+    private DaoFactoryBean baseDaoFactoryBean;
 
     public PlanningInformationEditableLayout(final PlanningUnit planningUnit, final ProjektplanungScreen screen,
                                              final Panel screenPanel) {
         super(screen, screenPanel);
-        this.messages = screen.getMessagesBundle();
+        messages = screen.getMessagesBundle();
+        bean = EJBFactory.getEjbInstance(PlanningInformationEditableLayoutBean.class);
+        baseDaoFactoryBean = bean.getDaoFactoryBean();
 
-        fieldGroup = new PlanningInformationFieldGroup(messages, planningUnit);
+        PlanningUnit planningUnitFromDB = baseDaoFactoryBean.getPlanningUnitDAO().findByID(planningUnit.getId());
+        //final List<PlanningUnit> planningUnitList = baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities();
+        if(planningUnitFromDB == null){
+            //if(planningUnitList != null && !planningUnitList.isEmpty()) {
+            //    planningUnitFromDB = planningUnitList.get(0);
+            //} else {
+                planningUnitFromDB = screen.getTempPlanningUnit();
+            //}
+        }
+        printchildren(planningUnitFromDB);
+        //baseDaoFactoryBean.getEntityManager().refresh(planningUnitFromDB);
+
+
+        fieldGroup = new PlanningUnitFieldGroup(screen, planningUnitFromDB);
         fieldList = fieldGroup.getFieldList();
 
         buildForm();
-
         cancelButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -51,12 +74,18 @@ public class PlanningInformationEditableLayout extends EditableLayout {
                 buttonLayout.setVisible(false);
             }
         });
-
         saveButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 try{
                     fieldGroup.commit();
+
+                    final BeanItem<PlanningUnit> planningUnitBeanItem = (BeanItem<PlanningUnit>)fieldGroup
+                            .getItemDataSource();
+                    final PlanningUnit changedPlanningUnit = planningUnitBeanItem.getBean();
+//                    PlanningUnit pu = baseDaoFactoryBean.getPlanningUnitDAO().findByID(planningUnit.getId());
+//                    pu.setPlanningUnitName(changedPlanningUnit.getPlanningUnitName());
+                    baseDaoFactoryBean.saveOrUpdate(changedPlanningUnit);
                     final MainUI ui = screen.getUi();
                     ui.setWorkingArea(new ProjektplanungScreen(ui));
                 }catch (NullPointerException e){
@@ -66,6 +95,13 @@ public class PlanningInformationEditableLayout extends EditableLayout {
                 }
             }
         });
+    }
+
+    private void printchildren(PlanningUnit planningUnitFromDB) {
+        for(PlanningUnit pu : planningUnitFromDB.getKindPlanningUnits()){
+            System.out.println("children of "+pu+": "+pu.getKindPlanningUnits());
+            printchildren(pu);
+        }
     }
 
     @Override
@@ -78,5 +114,9 @@ public class PlanningInformationEditableLayout extends EditableLayout {
             }
         }
         componentsLayout.addComponent(fieldGroup.getDescriptionArea());
+        componentsLayout.addComponent(fieldGroup.getStoryPointsField());
+        componentsLayout.addComponent(fieldGroup.getComplexityField());
+        componentsLayout.addComponent(fieldGroup.getOrderNumberField());
+        componentsLayout.addComponent(new Label("//TODO Testcases"));
     }
 }

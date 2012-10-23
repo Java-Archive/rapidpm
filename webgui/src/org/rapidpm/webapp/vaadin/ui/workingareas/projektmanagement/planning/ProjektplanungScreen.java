@@ -6,17 +6,15 @@ import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsEditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitsTree;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitsTreePanelLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.parents.PlanningUnitSelect;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
 
-import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,7 +37,9 @@ public class ProjektplanungScreen extends Screen {
     private ProjektPlanungScreenBean projektplanungScreenBean;
     private DaoFactoryBean baseDaoFactoryBean;
     private PlanningUnitsTreePanelLayout planningUnitsTreePanelLayout;
+    private PlanningDetailsEditableLayout planningDetailsEditableLayout;
     private PlanningUnitsTree planningUnitsTree;
+    private PlanningUnit tempPlanningUnit = new PlanningUnit();
 
 
     public ProjektplanungScreen(final MainUI ui) {
@@ -90,9 +90,13 @@ public class ProjektplanungScreen extends Screen {
             @Override
             public void valueChange(final Property.ValueChangeEvent valueChangeEvent) {
                 final PlanningUnit planningUnitFromSelect = (PlanningUnit) valueChangeEvent.getProperty().getValue();
-                final PlanningUnit planningUnitFromDB = baseDaoFactoryBean.getPlanningUnitDAO().findByID
+                PlanningUnit planningUnitFromDB = baseDaoFactoryBean.getPlanningUnitDAO().findByID
                         (planningUnitFromSelect.getId());
-                baseDaoFactoryBean.getEntityManager().refresh(planningUnitFromDB);
+                if(planningUnitFromDB != null){
+                    baseDaoFactoryBean.getEntityManager().refresh(planningUnitFromDB);
+                }else{
+                    planningUnitFromDB = planningUnitFromSelect;
+                }
                 treePanel.getContent().removeAllComponents();
                 detailPanel.getContent().removeAllComponents();
                 treePanel.setCaption(planningUnitFromSelect.getPlanningUnitName());
@@ -101,22 +105,29 @@ public class ProjektplanungScreen extends Screen {
         });
         if (ids != null && !ids.isEmpty()) {
             planningUnitSelect.setValue(ids.get(0));
+        } else {
+            tempPlanningUnit.setId(666l);
+            tempPlanningUnit.setPlanningUnitName("Platzhalter");
+            tempPlanningUnit.setDescription("Bitte dem Projekt über den \"+\"-Button neue Planungseinheiten " +
+                    "hinzufügen.");
+            tempPlanningUnit.setKindPlanningUnits(new ArrayList<PlanningUnit>());
+            planningUnitSelect.addItem(tempPlanningUnit);
+            planningUnitSelect.setValue(tempPlanningUnit);
         }
         planningUnitPanel.setCaption(projectFromDB.getProjektName());
         planningUnitPanel.addComponent(planningUnitSelect);
     }
 
-    public void fillTreePanel(final PlanningUnit selectedPlanningUnit,
-                              final PlannedProject projekt) {
+    public void fillTreePanel(final PlanningUnit selectedPlanningUnit, final PlannedProject projekt) {
         planningUnitsTree = new PlanningUnitsTree(this, selectedPlanningUnit, projekt);
         planningUnitsTree.select(selectedPlanningUnit);
         planningUnitsTreePanelLayout = new PlanningUnitsTreePanelLayout(projekt, ProjektplanungScreen.this);
         planningUnitsTree.addValueChangeListener(new Property.ValueChangeListener() {
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
-                planningUnitsTreePanelLayout.createEditableLayout(ProjektplanungScreen.this);
-                planningUnitsTreePanelLayout.getRightLayout().removeAllComponents();
-                planningUnitsTreePanelLayout.getRightLayout().addComponent(planningUnitsTreePanelLayout.getPlanningUnitEditableLayout());
+                planningDetailsEditableLayout = new PlanningDetailsEditableLayout((PlanningUnit)planningUnitsTree.getValue
+                        (),ProjektplanungScreen.this,detailPanel);
+                detailPanel.addComponent(planningDetailsEditableLayout);
             }
         });
         treePanel.removeAllComponents();
@@ -133,10 +144,6 @@ public class ProjektplanungScreen extends Screen {
         addComponent(splitPanel);
     }
 
-    public PlanningUnitSelect getPlanningUnitSelect() {
-        return planningUnitSelect;
-    }
-
     public PlanningUnitsTree getPlanningUnitsTree() {
         return planningUnitsTree;
     }
@@ -145,24 +152,16 @@ public class ProjektplanungScreen extends Screen {
         return detailPanel;
     }
 
-    public Panel getPlanningUnitPanel() {
-        return planningUnitPanel;
-    }
-
-    public Panel getTreePanel() {
-        return treePanel;
-    }
-
-    public VerticalLayout getMainLayout() {
-        return mainLayout;
-    }
-
     public Panel getMainPanel() {
         return mainPanel;
     }
 
     public Panel getRessourcesPanel() {
         return ressourcesPanel;
+    }
+
+    public PlanningUnit getTempPlanningUnit() {
+        return tempPlanningUnit;
     }
 
     public PlanningUnitsTreePanelLayout getPlanningUnitsTreePanelLayout() {

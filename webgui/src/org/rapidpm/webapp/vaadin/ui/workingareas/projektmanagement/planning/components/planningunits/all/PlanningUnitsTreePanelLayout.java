@@ -26,10 +26,8 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout {
     private static final Logger logger = Logger.getLogger(PlanningUnitsTreePanelLayout.class);
 
     private VerticalLayout leftLayout = new VerticalLayout();
-    private VerticalLayout rightLayout = new VerticalLayout();
 
     private HorizontalLayout buttonLayout = new HorizontalLayout();
-    private PlanningUnitEditableLayout planningUnitEditableLayout;
     private PlannedProject projekt;
 
     private Button addButton = new Button("+");
@@ -43,14 +41,12 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout {
     private ProjektplanungScreen screen;
 
     public PlanningUnitsTreePanelLayout(final PlannedProject projekt, final ProjektplanungScreen screen) {
-        //super(screen);
         this.screen = screen;
         this.projekt = projekt;
         bean = EJBFactory.getEjbInstance(PlanningUnitsTreePanelLayoutBean.class);
         baseDaoFactoryBean = bean.getDaoFactoryBean();
 
         messages = screen.getMessagesBundle();
-        createEditableLayout(screen);
         createDeleteButton();
         createAddButton();
         buildForm();
@@ -74,39 +70,39 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout {
                     final PlanningUnit planningUnit = (PlanningUnit) screen.getPlanningUnitsTree().getValue();
                     final PlanningUnit managedPlanningUnit = baseDaoFactoryBean.getPlanningUnitDAO().findByID
                             (planningUnit.getId());
+                    if(managedPlanningUnit == null){
+                        throw new PlatzhalterException();
+                    }
                     if(managedPlanningUnit.getKindPlanningUnits() != null && !managedPlanningUnit.getKindPlanningUnits
                             ().isEmpty())
                         throw new Exception();
                     final PlanningUnit parentPlanningUnit = managedPlanningUnit.getParent();
-                    parentPlanningUnit.getKindPlanningUnits().remove(managedPlanningUnit);
-                    baseDaoFactoryBean.saveOrUpdate(parentPlanningUnit);
-                    baseDaoFactoryBean.getPlanningUnitDAO().remove(managedPlanningUnit);
-                    baseDaoFactoryBean.getEntityManager().refresh(parentPlanningUnit);
                     projekt = baseDaoFactoryBean.getPlannedProjectDAO().findByID(projekt.getId());
-                    baseDaoFactoryBean.saveOrUpdate(projekt);
-                    //baseDaoFactoryBean.getEntityManager().refresh(projekt);
+
+                    if(parentPlanningUnit == null){
+                        projekt.getPlanningUnits().remove(managedPlanningUnit);
+                    }
+                    else{
+                        parentPlanningUnit.getKindPlanningUnits().remove(managedPlanningUnit);
+                    }
+                    baseDaoFactoryBean.getPlanningUnitDAO().remove(managedPlanningUnit);
                     for(PlanningUnit pu : projekt.getPlanningUnits()){
                         System.out.println(pu.getPlanningUnitName()+": "+pu.getKindPlanningUnits());
                         for(PlanningUnit pu1 : pu.getKindPlanningUnits()){
                             System.out.println("\t"+pu1.getPlanningUnitName()+": "+pu1.getKindPlanningUnits());
                         }
                     }
+
                     final MainUI ui = screen.getUi();
                     ui.setWorkingArea(new ProjektplanungScreen(ui));
+                }catch (final PlatzhalterException e){
+                    Notification.show(messages.getString("planning_placeholder"));
                 } catch (final Exception e) {
                     e.printStackTrace();
                     Notification.show(messages.getString("planning_nodelete"));
                 }
-
             }
         });
-    }
-
-    public void createEditableLayout(ProjektplanungScreen screen) {
-        final PlanningUnit planningUnitFromTree = (PlanningUnit) screen.getPlanningUnitsTree().getValue();
-        final PlanningUnit planningUnitFromDB = baseDaoFactoryBean.getPlanningUnitDAO().findByID
-                (planningUnitFromTree.getId());
-        planningUnitEditableLayout =  new PlanningUnitEditableLayout(planningUnitFromDB, screen, screen.getTreePanel());
     }
 
     protected void buildForm() {
@@ -116,33 +112,7 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout {
 
         leftLayout.addComponent(buttonLayout);
         leftLayout.addComponent(screen.getPlanningUnitsTree());
-
-        rightLayout.addComponent(planningUnitEditableLayout);
-
         addComponent(leftLayout);
-        addComponent(rightLayout);
-
-//        for(final AbstractField field : fieldList){
-//            field.setReadOnly(true);
-//            if(field instanceof AbstractSelect){
-//                ((ComboBox)field).setNullSelectionAllowed(false);
-//                ((ComboBox)field).setTextInputAllowed(false);
-//            }
-//        }
-//        for(final Field<?> field : fieldGroup.getFields()){
-//            componentsLayout.addComponent(field);
-//        }
     }
 
-    public PlanningUnitEditableLayout getPlanningUnitEditableLayout() {
-        return planningUnitEditableLayout;
-    }
-
-    public void setPlanningUnitEditableLayout(PlanningUnitEditableLayout planningUnitEditableLayout) {
-        this.planningUnitEditableLayout = planningUnitEditableLayout;
-    }
-
-    public VerticalLayout getRightLayout() {
-        return rightLayout;
-    }
 }

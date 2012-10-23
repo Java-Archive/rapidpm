@@ -7,12 +7,13 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
 import org.apache.log4j.Logger;
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsEditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.information.PlanningInformationEditableLayout;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitEditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitsTree;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.ressources.PlanningRessourcesEditableLayout;
 
@@ -30,10 +31,14 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
 
     private ProjektplanungScreen screen;
     private PlannedProject projekt;
+    private TreeValueChangeListenerBean bean;
+    private DaoFactoryBean baseDaoFactoryBean;
 
     public TreeValueChangeListener(final ProjektplanungScreen screen, final PlannedProject projekt) {
         this.screen = screen;
         this.projekt = projekt;
+        bean = EJBFactory.getEjbInstance(TreeValueChangeListenerBean.class);
+        baseDaoFactoryBean = bean.getDaoFactoryBean();
     }
 
     @Override
@@ -49,7 +54,6 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                 final Panel detailPanel = screen.getDetailPanel();
                 final Panel mainPanel = screen.getMainPanel();
                 final Panel ressourcesPanel = screen.getRessourcesPanel();
-                final Panel treePanel = screen.getTreePanel();
 
                 detailPanel.removeAllComponents();
                 mainPanel.removeAllComponents();
@@ -62,11 +66,14 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                         (selectedPlanningUnit, screen, detailPanel);
                 final VerticalLayout mainPanelLayout = new PlanningInformationEditableLayout(selectedPlanningUnit,
                         screen, mainPanel);
-                final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesEditableLayout(selectedPlanningUnit,
-                        screen, ressourcesPanel, hasChildren, projekt);
+                if(baseDaoFactoryBean.getPlanningUnitDAO().findByID(selectedPlanningUnit.getId()) != null){
+                    final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesEditableLayout(selectedPlanningUnit,
+                            screen, ressourcesPanel, hasChildren, projekt);
+                    ressourcesPanel.addComponent(ressourcesPanelLayout);
+                }
                 detailPanel.addComponent(detailsPanelComponentsLayout);
                 mainPanel.addComponent(mainPanelLayout);
-                ressourcesPanel.addComponent(ressourcesPanelLayout);
+
             } else {
                 logger.warn("nullselection");
             }

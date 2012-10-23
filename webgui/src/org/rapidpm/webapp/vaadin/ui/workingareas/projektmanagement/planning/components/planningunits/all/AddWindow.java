@@ -55,7 +55,7 @@ public class AddWindow extends Window {
         addRowWindowBean = EJBFactory.getEjbInstance(AddWindowBean.class);
         final DaoFactoryBean baseDaoFactoryBean = addRowWindowBean.getDaoFactoryBean();
 
-        fieldGroup = new PlanningUnitFieldGroup(screen.getMessagesBundle());
+        fieldGroup = new PlanningUnitFieldGroup(screen);
 
         fillFormLayout();
         addComponent(formLayout);
@@ -106,13 +106,18 @@ public class AddWindow extends Window {
                         //Bean aus dem BeanItem
                         final PlanningUnit planningUnit = beanItem.getBean();
                         baseDaoFactoryBean.getEntityManager().persist(planningUnit);
+                        final PlanningUnit managedPlanningUnit = baseDaoFactoryBean.getPlanningUnitDAO().findByID
+                                (planningUnit.getId());
+                        System.out.println(managedPlanningUnit);
                         if(planningUnit.getParent() == null ){
                             final PlannedProject projekt = baseDaoFactoryBean.getPlannedProjectDAO().findByID(ui
                                     .getCurrentProject().getId());
                            projekt.getPlanningUnits().add(planningUnit);
                         } else {
-                            final PlanningUnit parentPlanningUnit = planningUnit.getParent();
-                            parentPlanningUnit.getKindPlanningUnits().add(planningUnit);
+                            final PlanningUnit transientParentPlanningUnit = planningUnit.getParent();
+                            final PlanningUnit managedParentPlanningUnit = baseDaoFactoryBean.getPlanningUnitDAO()
+                                    .findByID(transientParentPlanningUnit.getId());
+                            managedParentPlanningUnit.getKindPlanningUnits().add(planningUnit);
                         }
                         final List<RessourceGroup> ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO()
                                 .loadAllEntities();
@@ -125,6 +130,7 @@ public class AddWindow extends Window {
                             planningUnitElement.setRessourceGroup(ressourceGroup);
                             planningUnit.getPlanningUnitElementList().add(planningUnitElement);
                         }
+                        baseDaoFactoryBean.getEntityManager().merge(planningUnit);
                         AddWindow.this.close();
                         final MainUI ui = screen.getUi();
                         ui.setWorkingArea(new ProjektplanungScreen(ui));

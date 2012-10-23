@@ -1,11 +1,15 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details;
 
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.EditableLayout;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitFieldGroup;
 
 import java.util.Iterator;
 import java.util.List;
@@ -14,31 +18,39 @@ import java.util.ResourceBundle;
 import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
 
 /**
- * RapidPM - www.rapidpm.org
+ * Created with IntelliJ IDEA.
  * User: Marco Ebbinghaus
- * Date: 25.08.12
- * Time: 18:50
+ * Date: 16.10.12
+ * Time: 13:11
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-
 public class PlanningDetailsEditableLayout extends EditableLayout {
 
     private static final Logger logger = Logger.getLogger(PlanningDetailsEditableLayout.class);
 
     private List<AbstractField> fieldList;
-    private PlanningDetailsFieldGroup fieldGroup;
+    private PlanningUnitFieldGroup fieldGroup;
     private ResourceBundle messages;
+
+    private PlanningDetailsEditableLayoutBean bean;
+    private DaoFactoryBean baseDaoFactoryBean;
 
     public PlanningDetailsEditableLayout(final PlanningUnit planningUnit, final ProjektplanungScreen screen,
                                          final Panel screenPanel) {
         super(screen, screenPanel);
         messages = screen.getMessagesBundle();
+        bean = EJBFactory.getEjbInstance(PlanningDetailsEditableLayoutBean.class);
+        baseDaoFactoryBean = bean.getDaoFactoryBean();
 
-        fieldGroup = new PlanningDetailsFieldGroup(messages, planningUnit);
+        PlanningUnit planningUnitFromDB = baseDaoFactoryBean.getPlanningUnitDAO().findByID(planningUnit.getId());
+        if(planningUnitFromDB == null){
+                planningUnitFromDB = screen.getTempPlanningUnit();
+        }
+        printchildren(planningUnitFromDB);
+        fieldGroup = new PlanningUnitFieldGroup(screen, planningUnitFromDB);
         fieldList = fieldGroup.getFieldList();
 
         buildForm();
-
         cancelButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -58,17 +70,28 @@ public class PlanningDetailsEditableLayout extends EditableLayout {
             public void buttonClick(Button.ClickEvent event) {
                 try{
                     fieldGroup.commit();
+
+                    final BeanItem<PlanningUnit> planningUnitBeanItem = (BeanItem<PlanningUnit>)fieldGroup
+                            .getItemDataSource();
+                    final PlanningUnit changedPlanningUnit = planningUnitBeanItem.getBean();
+                    baseDaoFactoryBean.saveOrUpdate(changedPlanningUnit);
                     final MainUI ui = screen.getUi();
                     ui.setWorkingArea(new ProjektplanungScreen(ui));
                 }catch (final NullPointerException e){
                     logger.info(COMMIT_EXCEPTION_MESSAGE);
-                }catch(final Exception e){
+                }catch(Exception e){
                     logger.warn("Exception", e);
                 }
             }
         });
     }
 
+    private void printchildren(PlanningUnit planningUnitFromDB) {
+        for(PlanningUnit pu : planningUnitFromDB.getKindPlanningUnits()){
+            System.out.println("children of "+pu+": "+pu.getKindPlanningUnits());
+            printchildren(pu);
+        }
+    }
 
     @Override
     protected void buildForm() {
@@ -79,14 +102,8 @@ public class PlanningDetailsEditableLayout extends EditableLayout {
                 ((ComboBox)field).setTextInputAllowed(false);
             }
         }
-        for(Field<?> field : fieldGroup.getFields()){
-            componentsLayout.addComponent(field);
-        }
-        componentsLayout.addComponent(fieldGroup.getResponsiblePersonBox());
-        componentsLayout.addComponent(fieldGroup.getComplexityField());
-        componentsLayout.addComponent(fieldGroup.getOrderNumberField());
-        componentsLayout.addComponent(fieldGroup.getStoryPointsField());
+        componentsLayout.addComponent(fieldGroup.getNameField());
+        componentsLayout.addComponent(fieldGroup.getParentBox());
+        componentsLayout.addComponent(fieldGroup.getResponsibleBox());
     }
-
-
 }

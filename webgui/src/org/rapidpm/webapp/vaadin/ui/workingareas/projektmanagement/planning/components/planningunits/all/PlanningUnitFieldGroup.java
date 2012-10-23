@@ -11,12 +11,11 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.system.security.Benutzer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsFieldGroupBean;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -38,13 +37,15 @@ public class PlanningUnitFieldGroup extends FieldGroup {
     private ComboBox parentBox;
     private ComboBox responsibleBox;
 
+    private ProjektplanungScreen screen;
     private ResourceBundle messages;
     private PlanningDetailsFieldGroupBean bean;
     private DaoFactoryBean baseDaoFactoryBean;
     private boolean isNew;
 
-    public PlanningUnitFieldGroup(final ResourceBundle messages){
-        this.messages = messages;
+    public PlanningUnitFieldGroup(final ProjektplanungScreen screen){
+        this.screen = screen;
+        this.messages = screen.getMessagesBundle();
         bean = EJBFactory.getEjbInstance(PlanningDetailsFieldGroupBean.class);
         baseDaoFactoryBean = bean.getDaoFactoryBean();
         final PlanningUnit planningUnit = new PlanningUnit();
@@ -54,11 +55,15 @@ public class PlanningUnitFieldGroup extends FieldGroup {
         buildForm();
     }
 
-    public PlanningUnitFieldGroup(final ResourceBundle messages, final PlanningUnit thePlanningUnit) {
-        this.messages = messages;
+    public PlanningUnitFieldGroup(final ProjektplanungScreen screen, final PlanningUnit thePlanningUnit) {
+        this.screen = screen;
+        this.messages = screen.getMessagesBundle();
         bean = EJBFactory.getEjbInstance(PlanningDetailsFieldGroupBean.class);
         baseDaoFactoryBean = bean.getDaoFactoryBean();
-        final PlanningUnit planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().findByID(thePlanningUnit.getId());
+        PlanningUnit planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().findByID(thePlanningUnit.getId());
+        if(planningUnit == null){
+            planningUnit = thePlanningUnit;
+        }
         isNew = false;
         setItemDataSource(new BeanItem<>(planningUnit));
         buildForm();
@@ -66,7 +71,12 @@ public class PlanningUnitFieldGroup extends FieldGroup {
 
     private void buildForm() {
         final List<Benutzer> users = baseDaoFactoryBean.getBenutzerDAO().loadAllEntities();
-        final List<PlanningUnit> planningUnits = baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities();
+        final Set<PlanningUnit> planningUnits = screen.getUi().getCurrentProject().getPlanningUnits();
+        final Set<PlanningUnit> managedPlanningUnits = new HashSet<>();
+        for(final PlanningUnit planningUnit : planningUnits){
+           managedPlanningUnits.add(baseDaoFactoryBean.getPlanningUnitDAO().findByID(planningUnit.getId()));
+        }
+
         fieldList = new ArrayList<>();
         for (final Object propertyId : getUnboundPropertyIds()) {
             final String spaltenName = propertyId.toString();
@@ -80,6 +90,7 @@ public class PlanningUnitFieldGroup extends FieldGroup {
                 case (PlanningUnit.DESCPRIPTION):
                     descriptionArea = new TextArea(messages.getString("planning_description"));
                     descriptionArea.setNullRepresentation(messages.getString("planning_nodescription"));
+                    descriptionArea.setSizeFull();
                     bind(descriptionArea, propertyId);
                     fieldList.add(descriptionArea);
                     break;
@@ -104,7 +115,7 @@ public class PlanningUnitFieldGroup extends FieldGroup {
                     final PlanningUnit nullPlanningUnit = new PlanningUnit();
                     nullPlanningUnit.setPlanningUnitName(messages.getString("planning_noparent"));
                     parentBox = new ComboBox(messages.getString("planning_parent"),
-                            new BeanItemContainer<>(PlanningUnit.class, planningUnits));
+                            new BeanItemContainer<>(PlanningUnit.class, managedPlanningUnits));
                     parentBox.setNullSelectionAllowed(true);
                     parentBox.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
                     parentBox.setItemCaptionPropertyId(PlanningUnit.NAME);
