@@ -27,7 +27,13 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     public void connectEntitiesWithRelationTx(Long startId, Long endId, IssueRelation relation) {
         Transaction tx = graphDb.beginTx();
         try {
-            graphDb.getNodeById(startId).createRelationshipTo(graphDb.getNodeById(endId), relation);
+            boolean alreadyExist = false;
+            Node startNode = graphDb.getNodeById(startId);
+            for (Relationship rel : startNode.getRelationships(relation, Direction.BOTH)) {
+                if (rel.getOtherNode(startNode).equals(graphDb.getNodeById(endId)))
+                    alreadyExist = true;
+            }
+            if (!alreadyExist) startNode.createRelationshipTo(graphDb.getNodeById(endId), relation);
             tx.success();
         } finally {
             tx.finish();

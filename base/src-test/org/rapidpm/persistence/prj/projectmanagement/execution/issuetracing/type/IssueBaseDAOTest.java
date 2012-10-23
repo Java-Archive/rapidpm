@@ -90,8 +90,7 @@ public class IssueBaseDAOTest {
     @Test
     public void connectWithRelation() {
         List<IssueBase> list = dao.loadAllEntities();
-        dao.connectEntitiesWithRelationTx(list.get(1), list.get(2),
-                GraphDaoFactory.getIssueRelationDAO()
+        dao.connectEntitiesWithRelationTx(list.get(1), list.get(2),GraphDaoFactory.getIssueRelationDAO()
                 .loadAllEntities().get(1));
     }
 
