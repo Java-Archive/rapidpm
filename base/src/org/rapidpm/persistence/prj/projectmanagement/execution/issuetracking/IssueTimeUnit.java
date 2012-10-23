@@ -33,6 +33,7 @@ public class IssueTimeUnit {
 
     @Basic
     private Date datum;
+
     @Basic
     private int minutes;
 

@@ -8,7 +8,6 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing.typ
  */
 
 import org.junit.Test;
-import org.neo4j.graphdb.Relationship;
 import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
@@ -74,11 +73,9 @@ public class IssueBaseDAOTest {
     public void setListRelations() {
         IssueBase issue = dao.loadAllEntities().get(0);
 
-        List<IssueBase> list = new ArrayList<>();
-        list.add(dao.loadAllEntities().get(1));
-        issue.setSubIssues(list);
-        issue.setComponents(GraphDaoFactory.getIssueComponentDAO().loadAllEntities());
-        dao.persist(issue);
+        issue.addSubIssue(dao.loadAllEntities().get(1));
+        //issue.setComponents(GraphDaoFactory.getIssueComponentDAO().loadAllEntities());
+        //dao.persist(issue);
     }
 
     @Test
@@ -104,6 +101,6 @@ public class IssueBaseDAOTest {
     @Test
     public void setAsChild() {
         List<IssueBase> list = dao.loadAllEntities();
-        dao.setAsChildTx(list.get(1), list.get(0));
+        dao.addSubIssueTx(list.get(1), list.get(0));
     }
 }

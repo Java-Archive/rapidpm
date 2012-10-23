@@ -7,6 +7,7 @@ import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.graphdb.traversal.Traverser;
 import org.neo4j.kernel.Traversal;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

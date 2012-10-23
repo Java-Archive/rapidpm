@@ -3,8 +3,14 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ty
 
 import org.neo4j.graphdb.*;
 import org.rapidpm.persistence.GraphBaseDAO;
+import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.GraphRelationRegistry;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponent;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,59 +26,196 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         super(graphDb, IssueBase.class);
     }
 
-    public void connectEntitiesWithRelationTx(IssueBase start, IssueBase end, IssueRelation relation) {
-        connectEntitiesWithRelationTx(start.getId(), end.getId(), relation);
-    }
 
-    public void connectEntitiesWithRelationTx(Long startId, Long endId, IssueRelation relation) {
+    public boolean connectEntitiesWithRelationTx(IssueBase start, IssueBase end, IssueRelation relation) {
+        boolean success = false;
         Transaction tx = graphDb.beginTx();
         try {
-            boolean alreadyExist = false;
-            Node startNode = graphDb.getNodeById(startId);
-            for (Relationship rel : startNode.getRelationships(relation, Direction.BOTH)) {
-                if (rel.getOtherNode(startNode).equals(graphDb.getNodeById(endId)))
-                    alreadyExist = true;
+            connectEntitiesWithRelation(start, end, relation);
+            tx.success();
+            success = true;
+        } finally {
+            tx.finish();
+            return success;
+        }
+    }
+
+    public void connectEntitiesWithRelation(IssueBase start, IssueBase end, IssueRelation relation) {
+
+        boolean alreadyExist = false;
+        Node startNode = graphDb.getNodeById(start.getId());
+        Node endNode = graphDb.getNodeById(end.getId());
+        for (Relationship rel : startNode.getRelationships(relation, Direction.BOTH)) {
+            if (rel.getOtherNode(startNode).equals(endNode))
+                alreadyExist = true;
+        }
+        if (!alreadyExist) startNode.createRelationshipTo(endNode, relation);
+    }
+
+
+    public List<IssueBase> getConnectedIssuesWithRelation(IssueBase issue, IssueRelation relation,  Direction direction) {
+        Node startNode = graphDb.getNodeById(issue.getId());
+        List<IssueBase> issueList = new ArrayList<>();
+
+        for (Relationship rel : startNode.getRelationships(relation, direction)) {
+            issueList.add(getObjectFromNode(rel.getOtherNode(startNode), IssueBase.class));
+        }
+        return issueList;
+    }
+
+
+    public boolean deleteRelationOfEntitiesTx(IssueBase start, IssueBase end, IssueRelation relation) {
+        boolean success = false;
+        Transaction tx = graphDb.beginTx();
+        try {
+            deleteRelationOfEntities(start, end, relation);
+            tx.success();
+            success = true;
+        } finally {
+            tx.finish();
+            return success;
+        }
+    }
+
+    public void deleteRelationOfEntities(IssueBase start, IssueBase end, IssueRelation relation) {
+        Node startNode = graphDb.getNodeById(start.getId());
+        for (Relationship rel : startNode.getRelationships(relation, Direction.BOTH)) {
+            if (rel.getOtherNode(startNode).equals(graphDb.getNodeById(end.getId())))
+                rel.delete();
+        }
+    }
+
+
+    public boolean addSubIssueTx(IssueBase parent, IssueBase child) {
+        boolean success = false;
+        Transaction tx = graphDb.beginTx();
+        try {
+            addSubIssue(parent, child);
+            tx.success();
+            success = true;
+        } finally {
+            tx.finish();
+            return success;
+        }
+    }
+
+    public void addSubIssue(IssueBase parent, IssueBase child) {
+        Node childNode = graphDb.getNodeById(child.getId());
+        if (childNode.hasRelationship(GraphRelationRegistry.getSubIssueRelationshipType(), Direction.INCOMING)) {
+            throw new IllegalStateException("ChildIssue already is a SubIssue.");
+        }
+
+        graphDb.getNodeById(parent.getId()).createRelationshipTo(childNode,
+                GraphRelationRegistry.getSubIssueRelationshipType());
+        childNode.getSingleRelationship(GraphRelationRegistry.getClassRootToChildRelType(),
+            Direction.INCOMING).delete();
+    }
+
+    public List<IssueBase> getSubIssuesOf(IssueBase issue) {
+        Node startNode = graphDb.getNodeById(issue.getId());
+        List<IssueBase> issueList = new ArrayList<>();
+
+        for (Relationship rel : startNode.getRelationships(GraphRelationRegistry.getSubIssueRelationshipType(),
+                Direction.OUTGOING)) {
+            issueList.add(getObjectFromNode(rel.getOtherNode(startNode), IssueBase.class));
+        }
+        return issueList;
+    }
+
+
+    public boolean deleteSubIssueRelationTx(IssueBase parent, IssueBase child) {
+        boolean success = false;
+        Transaction tx = graphDb.beginTx();
+        try {
+            deleteSubIssueRelation(parent, child);
+            tx.success();
+            success = true;
+        } finally {
+            tx.finish();
+            return success;
+        }
+    }
+
+    public void deleteSubIssueRelation(IssueBase parent, IssueBase child) {
+        Node parentNode = graphDb.getNodeById(parent.getId());
+        Node childNode = graphDb.getNodeById(child.getId());
+        for (Relationship rel : parentNode.getRelationships(GraphRelationRegistry.getSubIssueRelationshipType(),
+                Direction.OUTGOING))
+            if (rel.getOtherNode(parentNode).equals(childNode))
+                rel.delete();
+
+        class_root_node.createRelationshipTo(childNode, GraphRelationRegistry.getClassRootToChildRelType());
+    }
+
+
+
+    public boolean addComponentToTx(IssueBase issue, IssueComponent component) {
+        boolean success = false;
+        Transaction tx = graphDb.beginTx();
+        try {
+            addComponentTo(issue, component);
+            tx.success();
+            success = true;
+        } finally {
+            tx.finish();
+            return success;
+        }
+    }
+
+    public void addComponentTo(IssueBase issue, IssueComponent component) {
+        graphDb.getNodeById(issue.getId()).createRelationshipTo(graphDb.getNodeById(component.getId()),
+                GraphRelationRegistry.getRelationshipTypeForClass(IssueComponent.class));
+    }
+
+
+    public List<IssueComponent> getComponentsOf(IssueBase issue) {
+        Node startNode = graphDb.getNodeById(issue.getId());
+        List<IssueComponent> issueList = new ArrayList<>();
+
+        for (Relationship rel : startNode.getRelationships(GraphRelationRegistry.getRelationshipTypeForClass
+                (IssueComment.class),
+                Direction.OUTGOING)) {
+            issueList.add(GraphDaoFactory.getIssueComponentDAO().getById(rel.getOtherNode(startNode).getId()));
+        }
+        return issueList;
+    }
+
+
+    public boolean deleteComponentRelationTx(IssueBase issue, IssueComponent component) {
+        boolean success = false;
+        Transaction tx = graphDb.beginTx();
+        try {
+            deleteComponentRelation(issue, component);
+            tx.success();
+            success = true;
+        } finally {
+            tx.finish();
+            return success;
+        }
+    }
+
+    public void deleteComponentRelation(IssueBase issue, IssueComponent component) {
+        Node issueNode = graphDb.getNodeById(issue.getId());
+        for (Relationship rel : issueNode.getRelationships(GraphRelationRegistry.getRelationshipTypeForClass
+                (IssueComponent.class), Direction.OUTGOING))
+            if (rel.getOtherNode(issueNode).equals(graphDb.getNodeById(component.getId())))
+                rel.delete();
+    }
+
+
+    public boolean deleteAllComponentRelationsTx(IssueBase issue, List<IssueComponent> componentList) {
+        boolean success = false;
+        Transaction tx = graphDb.beginTx();
+        try {
+            for (IssueComponent component : componentList) {
+                deleteComponentRelation(issue, component);
             }
-            if (!alreadyExist) startNode.createRelationshipTo(graphDb.getNodeById(endId), relation);
             tx.success();
+            success = true;
         } finally {
             tx.finish();
+            return success;
         }
     }
 
-
-    public void deleteRelationOfEntitiesTx(IssueBase start, IssueBase end, IssueRelation relation) {
-        deleteRelationOfEntitiesTx(start.getId(), end.getId(), relation);
-    }
-
-    public void deleteRelationOfEntitiesTx(Long startId, Long endId, IssueRelation relation) {
-        Transaction tx = graphDb.beginTx();
-        try {
-            Node startNode = graphDb.getNodeById(startId);
-            for (Relationship rel : startNode.getRelationships(relation, Direction.BOTH)) {
-                if (rel.getOtherNode(startNode).equals(graphDb.getNodeById(endId)))
-                    rel.delete();
-            }
-            tx.success();
-        } finally {
-            tx.finish();
-        }
-    }
-
-    public void setAsChildTx(IssueBase parent, IssueBase child) {
-        setAsChildTx(parent.getId(), child.getId());
-    }
-
-    public void setAsChildTx(Long parentId, Long childId) {
-        Transaction tx = graphDb.beginTx();
-        try {
-            graphDb.getNodeById(parentId).createRelationshipTo(graphDb.getNodeById(childId),
-                    GraphRelationRegistry.getSubIssueRelationshipType());
-            graphDb.getNodeById(childId).getSingleRelationship(GraphRelationRegistry.getClassRootToChildRelType(),
-                    Direction.INCOMING).delete();
-            tx.success();
-        } finally {
-            tx.finish();
-        }
-    }
 }

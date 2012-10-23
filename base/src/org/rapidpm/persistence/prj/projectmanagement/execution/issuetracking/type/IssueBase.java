@@ -1,12 +1,12 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type;
 
 import org.neo4j.graphdb.Direction;
+import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.apache.log4j.Logger;
 
-import javax.management.relation.Relation;
 import java.util.Date;
 import java.util.List;
 
@@ -89,18 +89,12 @@ public class IssueBase {
     //@Relational
     private List<IssueTimeUnit> timeUnitsUsed;
 
-    @Graph(clazz = IssueBase.class)
-    @Lazy
-    private List<IssueBase> subIssues;
-
-    @Graph(clazz = IssueComment.class)
+    //@Graph(clazz = IssueComment.class)
+    //@Relational
     private List<IssueComment> comments;
 
     //@Relational
     private List<TestCase> testcases;
-
-    @Graph(clazz = IssueComponent.class)
-    private List<IssueComponent> components;
 
     //private Risk risk;
     @Simple
@@ -111,12 +105,50 @@ public class IssueBase {
     }
 
 
-    public List<IssueBase> getConnectedIssues(Relation relation) {
-       return null;
+
+    //TODO do test
+    public boolean connectToIssueAs(IssueBase issue, IssueRelation relation) {
+        return GraphDaoFactory.getIssueBaseDAO().connectEntitiesWithRelationTx(this, issue, relation);
+    }
+    //TODO do test
+    public List<IssueBase> getConnectedIssues(IssueRelation relation) {
+        return getConnectedIssues(relation, Direction.BOTH);
+    }
+    //TODO do test
+    public List<IssueBase> getConnectedIssues(IssueRelation relation, Direction direction) {
+        return GraphDaoFactory.getIssueBaseDAO().getConnectedIssuesWithRelation(this, relation, direction);
+    }
+    //TODO do test
+    public boolean removeConnectionToIssue(IssueBase issue, IssueRelation relation) {
+        return GraphDaoFactory.getIssueBaseDAO().deleteRelationOfEntitiesTx(this, issue, relation);
     }
 
-    public List<IssueBase> getConnectedIssues(Relation relation, Direction direction) {
-        return null;
+
+    //TODO do test
+    public boolean addSubIssue(IssueBase subIssue) {
+        return GraphDaoFactory.getIssueBaseDAO().addSubIssueTx(this, subIssue);
+    }
+    //TODO do test
+    public List<IssueBase> getSubIssues() {
+        return GraphDaoFactory.getIssueBaseDAO().getSubIssuesOf(this);
+    }
+    //TODO do test
+    public boolean removeSubIssue(IssueBase subIssue) {
+        return GraphDaoFactory.getIssueBaseDAO().deleteSubIssueRelationTx(this, subIssue);
+    }
+
+
+    //TODO do test
+    public boolean addComponent(IssueComponent component) {
+        return GraphDaoFactory.getIssueBaseDAO().addComponentToTx(this, component);
+    }
+    //TODO do test
+    public List<IssueComponent> getComponents() {
+        return GraphDaoFactory.getIssueBaseDAO().getComponentsOf(this);
+    }
+    //TODO do test
+    public boolean removeComponent(IssueComponent component) {
+        return GraphDaoFactory.getIssueBaseDAO().deleteComponentRelationTx(this, component);
     }
 
 
@@ -240,14 +272,6 @@ public class IssueBase {
         this.timeUnitsUsed = timeUnitsUsed;
     }
 
-    public List<IssueBase> getSubIssues() {
-        return subIssues;
-    }
-
-    public void setSubIssues(final List<IssueBase> subIssues) {
-        this.subIssues = subIssues;
-    }
-
     public List<IssueComment> getComments() {
         return comments;
     }
@@ -262,14 +286,6 @@ public class IssueBase {
 
     public void setTestcases(final List<TestCase> testcases) {
         this.testcases = testcases;
-    }
-
-    public List<IssueComponent> getComponents() {
-        return components;
-    }
-
-    public void setComponents(List<IssueComponent> components) {
-        this.components = components;
     }
 
     public String getRisk() {
@@ -289,7 +305,6 @@ public class IssueBase {
 
         if (assignee != null ? !assignee.equals(issueBase.assignee) : issueBase.assignee != null) return false;
         if (comments != null ? !comments.equals(issueBase.comments) : issueBase.comments != null) return false;
-        if (components != null ? !components.equals(issueBase.components) : issueBase.components != null) return false;
         if (dueDate_closed != null ? !dueDate_closed.equals(issueBase.dueDate_closed) : issueBase.dueDate_closed != null)
             return false;
         if (dueDate_planned != null ? !dueDate_planned.equals(issueBase.dueDate_planned) : issueBase.dueDate_planned != null)
@@ -302,7 +317,6 @@ public class IssueBase {
         if (status != null ? !status.equals(issueBase.status) : issueBase.status != null) return false;
         if (storyPoints != null ? !storyPoints.equals(issueBase.storyPoints) : issueBase.storyPoints != null)
             return false;
-        if (subIssues != null ? !subIssues.equals(issueBase.subIssues) : issueBase.subIssues != null) return false;
         if (summary != null ? !summary.equals(issueBase.summary) : issueBase.summary != null) return false;
         if (testcases != null ? !testcases.equals(issueBase.testcases) : issueBase.testcases != null) return false;
         if (text != null ? !text.equals(issueBase.text) : issueBase.text != null) return false;
@@ -332,10 +346,8 @@ public class IssueBase {
         result = 31 * result + (dueDate_closed != null ? dueDate_closed.hashCode() : 0);
         result = 31 * result + (timeUnitEstimated != null ? timeUnitEstimated.hashCode() : 0);
         result = 31 * result + (timeUnitsUsed != null ? timeUnitsUsed.hashCode() : 0);
-        result = 31 * result + (subIssues != null ? subIssues.hashCode() : 0);
         result = 31 * result + (comments != null ? comments.hashCode() : 0);
         result = 31 * result + (testcases != null ? testcases.hashCode() : 0);
-        result = 31 * result + (components != null ? components.hashCode() : 0);
         result = 31 * result + (risk != null ? risk.hashCode() : 0);
         return result;
     }
@@ -358,10 +370,10 @@ public class IssueBase {
                 ", dueDate_closed=" + dueDate_closed +
                 ", timeUnitEstimated=" + timeUnitEstimated +
                 ", timeUnitsUsed=" + timeUnitsUsed +
-                ", subIssues=" + subIssues +
+                ", subIssues=" + this.getSubIssues() +
                 ", comments=" + comments +
                 ", testcases=" + testcases +
-                ", components=" + components +
+                ", components=" + this.getComponents() +
                 ", risk='" + risk + '\'' +
                 '}';
     }
