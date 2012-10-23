@@ -18,7 +18,7 @@ public class GraphDaoFactory {
     private static final DaoFactory daoFactory = GraphDBFactory.getInstance().getRelDaoFactory();
 
     private GraphDaoFactory() {
-        //e,pty on purpose
+        //empty on purpose
     }
 
     public static IssueBaseDAO getIssueBaseDAO() {

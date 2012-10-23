@@ -38,6 +38,13 @@ public class GraphBaseDAO<T> {
     private final Class clazz;
 
     public GraphBaseDAO(final GraphDatabaseService graphDb, final Class clazz, final DaoFactory relDaoFactory) {
+        if (graphDb == null)
+            throw new NullPointerException("GraphDb is null.");
+        if (clazz == null)
+            throw new NullPointerException("Class is null.");
+        if (relDaoFactory == null)
+            throw new NullPointerException("Rel. DaoFactory is null.");
+
         this.clazz = clazz;
         this.graphDb = graphDb;
         this.relDaoFactory = relDaoFactory;
@@ -98,6 +105,14 @@ public class GraphBaseDAO<T> {
     }
 
     private void setProperties(Node node, T entity, String nameAttribute) {
+        if (node == null)
+            throw new NullPointerException(clazz.getSimpleName() + ": Node to persist to can't be null");
+        if (entity == null)
+            throw new NullPointerException(clazz.getSimpleName() + ": Object to persist can't be null");
+        if (nameAttribute == null)
+            throw new NullPointerException(clazz.getSimpleName() + ": Name object can't be null");
+
+
         Field[] fieldNames = entity.getClass().getDeclaredFields();
 
         for (Field field : fieldNames) {
@@ -118,7 +133,7 @@ public class GraphBaseDAO<T> {
 
                 try {
                     Method method = field.getType().getDeclaredMethod("getId");
-                    if (method != null)
+                    if (method != null && field.get(entity) != null)
                         node.setProperty(field.getName(), method.invoke(field.get(entity)));
                 } catch (NoSuchMethodException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -150,6 +165,13 @@ public class GraphBaseDAO<T> {
     }
 
     private void connectSingleAttribute(Node startNode, Node endNode, Class aClass) {
+        if (startNode == null)
+            throw new NullPointerException("Startnode is null.");
+        if (endNode == null)
+            throw new NullPointerException("Endnode is null.");
+        if (aClass == null)
+            throw new NullPointerException("Class is null.");
+
         if (startNode.hasRelationship(GraphRelationRegistry.getRelationshipTypeForClass
                 (aClass), Direction.OUTGOING)) {
             for (Relationship rel : startNode.getRelationships(GraphRelationRegistry.getRelationshipTypeForClass
@@ -160,6 +182,13 @@ public class GraphBaseDAO<T> {
     }
 
     private void connectAttribute(Node startNode, Node endNode, Class aClass) {
+        if (startNode == null)
+            throw new NullPointerException("Startnode is null.");
+        if (endNode == null)
+            throw new NullPointerException("Endnode is null.");
+        if (aClass == null)
+            throw new NullPointerException("Class is null.");
+
         startNode.createRelationshipTo(endNode, GraphRelationRegistry.getRelationshipTypeForClass
                 (aClass));
     }
@@ -195,6 +224,9 @@ public class GraphBaseDAO<T> {
     }
 
     public boolean delete(T entity) {
+        if (entity == null)
+            throw new NullPointerException("Object to delete can't be null.");
+
         Long id = getIdFromEntity(entity);
         Transaction tx = graphDb.beginTx();
         try{
@@ -216,74 +248,82 @@ public class GraphBaseDAO<T> {
     }
 
     public T getById(Long id) {
+        if (id == null)
+            throw new NullPointerException("Id object is null.");
+
         return getObjectFromNode(graphDb.getNodeById(id), clazz);
     }
 
     public T getByEntity(T entity) {
+        if (entity == null)
+            throw new NullPointerException("Entity object is null.");
+
         return getById(getIdFromEntity(entity));
     }
 
     protected T getObjectFromNode(Node node, Class clazz) {
+        if (node != null)
+            throw new NullPointerException("Node is null.");
+        if (clazz != null)
+            throw new NullPointerException("Class is null.");
+
         T entity = null;
+        try {
+            entity = (T) clazz.newInstance();
 
-        if (node != null) {
-            try {
-                entity = (T) clazz.newInstance();
-
-                Field[] fieldNames = entity.getClass().getDeclaredFields();
-                for (Field field : fieldNames) {
-                    boolean isAccessible = field.isAccessible();
-                    field.setAccessible(true);
-                    if (field.isAnnotationPresent(Identifier.class)) {
-                        field.set(entity, field.getType().cast(node.getId()));
-                    }
-
-                    if (field.isAnnotationPresent(Simple.class)) {
-                        try {
-                            if (field.getAnnotation(Simple.class).clazz().equals("Date")) {
-                                field.set(entity, new Date(Long.class.cast(node.getProperty(field.getName()))));
-
-                            } else
-                                field.set(entity, field.getType().cast(node.getProperty(field.getName())));
-                        } catch (IllegalAccessException e) { e.printStackTrace(); }
-                    }
-
-                    else if (field.isAnnotationPresent(Relational.class)) {
-                        //Load via relational DAO's
-
-                        final Class aClass = field.getAnnotation(Relational.class).clazz();
-                        Method method = relDaoFactory.getClass().getDeclaredMethod("get" + aClass.getSimpleName() + "DAO");
-                        final DAO relDao = (DAO)method.invoke(relDaoFactory);
-                        if (relDao != null) {
-                            field.set(entity, relDao.findByID(Long.class.cast(node.getProperty(field.getName()))));
-                        }
-                    }
-                    else if (field.isAnnotationPresent(Graph.class)) {
-                        try {
-                            final Class aClass = field.getAnnotation(Graph.class).clazz();
-                            Node travNode = null;
-                            for (Relationship rel : node.getRelationships(GraphRelationRegistry.getRelationshipTypeForClass(aClass),
-                                    Direction.OUTGOING))
-                                travNode = rel.getOtherNode(node);
-
-                            field.set(entity, getObjectFromNode(travNode, aClass));
-//                            }
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    field.setAccessible(isAccessible);
+            Field[] fieldNames = entity.getClass().getDeclaredFields();
+            for (Field field : fieldNames) {
+                boolean isAccessible = field.isAccessible();
+                field.setAccessible(true);
+                if (field.isAnnotationPresent(Identifier.class)) {
+                    field.set(entity, field.getType().cast(node.getId()));
                 }
-            } catch (InstantiationException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
+                if (field.isAnnotationPresent(Simple.class)) {
+                    try {
+                        if (field.getAnnotation(Simple.class).clazz().equals("Date")) {
+                            field.set(entity, new Date(Long.class.cast(node.getProperty(field.getName()))));
+
+                        } else
+                            field.set(entity, field.getType().cast(node.getProperty(field.getName())));
+                    } catch (IllegalAccessException e) { e.printStackTrace(); }
+                }
+
+                else if (field.isAnnotationPresent(Relational.class)) {
+                    //Load via relational DAO's
+
+                    final Class aClass = field.getAnnotation(Relational.class).clazz();
+                    Method method = relDaoFactory.getClass().getDeclaredMethod("get" + aClass.getSimpleName() + "DAO");
+                    final DAO relDao = (DAO)method.invoke(relDaoFactory);
+                    if (relDao != null) {
+                        field.set(entity, relDao.findByID(Long.class.cast(node.getProperty(field.getName()))));
+                    }
+                }
+                else if (field.isAnnotationPresent(Graph.class)) {
+                    try {
+                        final Class aClass = field.getAnnotation(Graph.class).clazz();
+                        Node travNode = null;
+                        for (Relationship rel : node.getRelationships(GraphRelationRegistry.getRelationshipTypeForClass(aClass),
+                                Direction.OUTGOING))
+                            travNode = rel.getOtherNode(node);
+
+                        field.set(entity, getObjectFromNode(travNode, aClass));
+//                            }
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                field.setAccessible(isAccessible);
             }
+        } catch (InstantiationException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         return entity;
     }

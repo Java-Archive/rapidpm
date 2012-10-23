@@ -48,7 +48,7 @@ public class IssueBase {
     @Identifier
     private Long id;
 
-    //@Simple
+    @Relational(clazz = PlanningUnit.class)
     private PlanningUnit planningUnit;
 
     @Simple
@@ -167,6 +167,14 @@ public class IssueBase {
 
     public void setId(final Long id) {
         this.id = id;
+    }
+
+    public PlanningUnit getPlanningUnit() {
+        return planningUnit;
+    }
+
+    public void setPlanningUnit(PlanningUnit planningUnit) {
+        this.planningUnit = planningUnit;
     }
 
     public String getSummary() {

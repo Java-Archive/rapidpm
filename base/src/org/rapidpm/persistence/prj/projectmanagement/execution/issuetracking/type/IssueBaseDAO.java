@@ -42,6 +42,12 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     }
 
     public void connectEntitiesWithRelation(IssueBase start, IssueBase end, IssueRelation relation) {
+        if (start == null)
+            throw new NullPointerException("First issue is null.");
+        if (end == null)
+            throw new NullPointerException("Second issue is null.");
+        if (relation == null)
+            throw new NullPointerException("Relation is null.");
 
         boolean alreadyExist = false;
         Node startNode = graphDb.getNodeById(start.getId());
@@ -55,6 +61,13 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
 
 
     public List<IssueBase> getConnectedIssuesWithRelation(IssueBase issue, IssueRelation relation,  Direction direction) {
+        if (issue == null)
+            throw new NullPointerException("Issue is null.");
+        if (relation == null)
+            throw new NullPointerException("Relation issue is null.");
+        if (direction == null)
+            throw new NullPointerException("Direction is null.");
+
         Node startNode = graphDb.getNodeById(issue.getId());
         List<IssueBase> issueList = new ArrayList<>();
 
@@ -79,6 +92,13 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     }
 
     public void deleteRelationOfEntities(IssueBase start, IssueBase end, IssueRelation relation) {
+        if (start == null)
+            throw new NullPointerException("First issue is null.");
+        if (end == null)
+            throw new NullPointerException("Second issue is null.");
+        if (relation == null)
+            throw new NullPointerException("Relation is null.");
+
         Node startNode = graphDb.getNodeById(start.getId());
         for (Relationship rel : startNode.getRelationships(relation, Direction.BOTH)) {
             if (rel.getOtherNode(startNode).equals(graphDb.getNodeById(end.getId())))
@@ -101,6 +121,12 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     }
 
     public void addSubIssue(IssueBase parent, IssueBase child) {
+        if (parent == null)
+            throw new NullPointerException("Parentissue is null.");
+        if (child == null)
+            throw new NullPointerException("Childissue is null.");
+
+
         Node childNode = graphDb.getNodeById(child.getId());
         if (childNode.hasRelationship(GraphRelationRegistry.getSubIssueRelationshipType(), Direction.INCOMING)) {
             throw new IllegalStateException("ChildIssue already is a SubIssue.");
@@ -113,6 +139,10 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     }
 
     public List<IssueBase> getSubIssuesOf(IssueBase issue) {
+        if (issue == null)
+            throw new NullPointerException("Issue is null.");
+
+
         Node startNode = graphDb.getNodeById(issue.getId());
         List<IssueBase> issueList = new ArrayList<>();
 
@@ -138,6 +168,11 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     }
 
     public void deleteSubIssueRelation(IssueBase parent, IssueBase child) {
+        if (parent == null)
+            throw new NullPointerException("Parentissue is null.");
+        if (child == null)
+            throw new NullPointerException("Childissue is null.");
+
         Node parentNode = graphDb.getNodeById(parent.getId());
         Node childNode = graphDb.getNodeById(child.getId());
         for (Relationship rel : parentNode.getRelationships(GraphRelationRegistry.getSubIssueRelationshipType(),
@@ -164,6 +199,11 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     }
 
     public void addComponentTo(IssueBase issue, IssueComponent component) {
+        if (issue == null)
+            throw new NullPointerException("Issue is null.");
+        if (component == null)
+            throw new NullPointerException("Component is null.");
+
         Node issueNode = graphDb.getNodeById(issue.getId());
         Node componentNode = graphDb.getNodeById(component.getId());
         RelationshipType relShipType = GraphRelationRegistry.getRelationshipTypeForClass(IssueComponent.class);
@@ -176,6 +216,9 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
 
 
     public List<IssueComponent> getComponentsOf(IssueBase issue) {
+        if (issue == null)
+            throw new NullPointerException("Issue is null.");
+
         Node startNode = graphDb.getNodeById(issue.getId());
         List<IssueComponent> issueList = new ArrayList<>();
 
@@ -202,6 +245,11 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     }
 
     public void deleteComponentRelation(IssueBase issue, IssueComponent component) {
+        if (issue == null)
+            throw new NullPointerException("Issue is null.");
+        if (component == null)
+            throw new NullPointerException("Component is null.");
+
         Node issueNode = graphDb.getNodeById(issue.getId());
         for (Relationship rel : issueNode.getRelationships(GraphRelationRegistry.getRelationshipTypeForClass
                 (IssueComponent.class), Direction.OUTGOING))
