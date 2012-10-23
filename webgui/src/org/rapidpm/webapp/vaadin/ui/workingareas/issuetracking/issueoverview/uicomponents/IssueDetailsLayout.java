@@ -231,11 +231,12 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         this.issue = issue;
         setLayoutReadOnly(false);
 
-        headerTextField.setValue(issue.getSummary() + "Hier steht der Name");
+        headerTextField.setValue(issue.getSummary());
+        typeSelect.select(issue.getType());
         statusSelect.select(issue.getStatus());
         prioritySelect.select(issue.getPriority());
         assigneeSelect.setValue(issue.getAssignee());
-        //reporterLabel.setValue(issue.getReporter().getLogin());
+        reporterLabel.setValue(issue.getReporter().getLogin());
         plannedDateField.setValue(issue.getDueDate_planned());
         resolvedDateField.setValue(issue.getDueDate_resolved());
         closedDateField.setValue(issue.getDueDate_closed());

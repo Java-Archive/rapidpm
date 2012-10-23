@@ -1,14 +1,10 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic;
 
-import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.event.ItemClickEvent;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.Tree;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeContainerPlanningUnits;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeContainerIssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTabSheet;
 
 import java.util.ArrayList;
@@ -43,9 +39,9 @@ public class TreeItemClickValueChangeListener implements ItemClickEvent.ItemClic
     }
 
     private void changeDetails(Object itemId) {
-        PlanningUnit punit = (PlanningUnit)issueTree.getContainerProperty(itemId,
-                TreeContainerPlanningUnits.PROPERTY_PLANNINGUNIT).getValue();
-        //issueTabSheet.getDetailsLayout().setPropertiesFromIssue(punit.getIssueBase());
+        IssueBase issueBase = (IssueBase)issueTree.getContainerProperty(itemId,
+                TreeContainerIssueBase.PROPERTY_ISSUEBASE).getValue();
+        issueTabSheet.getDetailsLayout().setPropertiesFromIssue(issueBase);
 
         if (!issueTree.hasChildren(itemId)) {
             issueTabSheet.disableTableTab(true);

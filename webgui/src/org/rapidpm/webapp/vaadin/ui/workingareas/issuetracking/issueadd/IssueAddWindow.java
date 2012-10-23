@@ -6,7 +6,7 @@ import com.vaadin.ui.Window;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeContainerPlanningUnits;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeContainerIssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsLayout;
 
 import java.util.ArrayList;
@@ -45,19 +45,15 @@ public class IssueAddWindow extends Window {
         public void buttonClick(Button.ClickEvent event) {
             Object itemId = issueTree.addItem();
             Object parentItemId = issueTree.getValue();
-            PlanningUnit planningUnit = new PlanningUnit();
-            PlanningUnit parentPlanningunit = (PlanningUnit)issueTree.getContainerDataSource().getContainerProperty
-                    (parentItemId, TreeContainerPlanningUnits.PROPERTY_PLANNINGUNIT).getValue();
-            planningUnit.setPlanningUnitName("TEST UNIT WITH ISSUE");
-            //planningUnit.setIssueBase(addDetailsLayout.setIssueProperties(true));
+            IssueBase issueBase = new IssueBase();
+            IssueBase parentIssue = (IssueBase)issueTree.getContainerDataSource().getContainerProperty
+                    (parentItemId, TreeContainerIssueBase.PROPERTY_ISSUEBASE).getValue();
+            issueBase.setSummary("TEST ISSUE");
             issueTree.getContainerDataSource().getContainerProperty(itemId,
-                    TreeContainerPlanningUnits.PROPERTY_CAPTION).setValue(planningUnit.getPlanningUnitName());
+                    TreeContainerIssueBase.PROPERTY_CAPTION).setValue(issueBase.getSummary());
             issueTree.getContainerDataSource().getContainerProperty(itemId,
-                    TreeContainerPlanningUnits.PROPERTY_PLANNINGUNIT).setValue(planningUnit);
-            List<PlanningUnit> childList = parentPlanningunit.getKindPlanningUnits();
-            if (childList == null) childList = new ArrayList<PlanningUnit>();
-            childList.add(planningUnit);
-            parentPlanningunit.setKindPlanningUnits(childList);
+                    TreeContainerIssueBase.PROPERTY_ISSUEBASE).setValue(issueBase);
+            parentIssue.addSubIssue(issueBase);
             issueTree.setChildrenAllowed(parentItemId, true);
             issueTree.setParent(itemId, parentItemId);
             issueTree.setChildrenAllowed(itemId, false);

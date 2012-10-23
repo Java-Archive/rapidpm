@@ -1,20 +1,23 @@
 package org.rapidpm.persistence;
 
+import org.apache.log4j.Logger;
 import org.neo4j.graphdb.*;
 import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.traversal.Evaluators;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.graphdb.traversal.Traverser;
 import org.neo4j.kernel.Traversal;
+import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnit;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.system.security.Benutzer;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -25,16 +28,19 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class GraphBaseDAO<T> {
+
     protected final GraphDatabaseService graphDb;
+    protected final DaoFactory relDaoFactory;
     protected final Index<Node> index_name;
     protected final Node root_node;
     protected final Node class_root_node;
 
     private final Class clazz;
 
-    public GraphBaseDAO(final GraphDatabaseService graphDb, final Class clazz) {
+    public GraphBaseDAO(final GraphDatabaseService graphDb, final Class clazz, final DaoFactory relDaoFactory) {
         this.clazz = clazz;
         this.graphDb = graphDb;
+        this.relDaoFactory = relDaoFactory;
         index_name = graphDb.index().forNodes(clazz.getSimpleName());
         this.root_node = graphDb.getNodeById(0);
         this.class_root_node = getClassRootNode();
@@ -110,40 +116,27 @@ public class GraphBaseDAO<T> {
             }
             else if (field.isAnnotationPresent(Relational.class)) {
 
-                    node.setProperty(field.getName(), getIdFromEntity(entity));
-
-                //TODO Verfügbar machen wenn DAO aus Relationaler angeschlossen ist
-//                try {
-//                    Method method = field.getType().getDeclaredMethod("getId");
-//                    node.setProperty(field.getName(), method.invoke(field.get(entity)));
-//                } catch (NoSuchMethodException e) {
-//                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-//                } catch (InvocationTargetException e) {
-//                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-//                } catch (IllegalAccessException e) {
-//                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-//                }
+                try {
+                    Method method = field.getType().getDeclaredMethod("getId");
+                    if (method != null)
+                        node.setProperty(field.getName(), method.invoke(field.get(entity)));
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
             }
             else if (field.isAnnotationPresent(Graph.class)) {
                 try {
                     final Class aClass = field.getAnnotation(Graph.class).clazz();
 
                     if (field.get(entity) != null) {
-//                        if (field.getType().isInterface()) {
-//                           List list = (List) field.get(entity);
-//                            Iterator it = list.iterator();
-//                            while (it.hasNext()) {
-//                                Long id = getIdFromEntity(aClass.cast(it.next()), aClass);
-//                                if (id != null && id != 0) {
-//                                    connectAttribute(node, graphDb.getNodeById(id), aClass);
-//                                }
-//                            }
-//                        } else {
                         Long id = getIdFromEntity(field.get(entity), aClass);
                         if (id != null && id != 0) {
                             connectSingleAttribute(node, graphDb.getNodeById(id), aClass);
                         }
-//                        }
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
@@ -177,6 +170,20 @@ public class GraphBaseDAO<T> {
                 .breadthFirst()
                 .relationships(GraphRelationRegistry.getClassRootToChildRelType(), Direction.OUTGOING )
                 .relationships(GraphRelationRegistry.getRelationshipTypeForClass(clazz), Direction.OUTGOING )
+                .evaluator(Evaluators.excludeStartPosition());
+        Traverser trav = td.traverse(class_root_node);
+        List<T> entityList = new ArrayList<T>();
+        for (Node travNode : trav.nodes()) {
+            entityList.add(getObjectFromNode(travNode, clazz));
+        }
+
+        return entityList;
+    }
+
+    public List<T> loadTopLevelEntities() {
+        TraversalDescription td = Traversal.description()
+                .breadthFirst()
+                .relationships(GraphRelationRegistry.getClassRootToChildRelType(), Direction.OUTGOING )
                 .evaluator(Evaluators.excludeStartPosition());
         Traverser trav = td.traverse(class_root_node);
         List<T> entityList = new ArrayList<T>();
@@ -224,7 +231,6 @@ public class GraphBaseDAO<T> {
                 entity = (T) clazz.newInstance();
 
                 Field[] fieldNames = entity.getClass().getDeclaredFields();
-                Method method;
                 for (Field field : fieldNames) {
                     boolean isAccessible = field.isAccessible();
                     field.setAccessible(true);
@@ -244,21 +250,17 @@ public class GraphBaseDAO<T> {
 
                     else if (field.isAnnotationPresent(Relational.class)) {
                         //Load via relational DAO's
+
+                        final Class aClass = field.getAnnotation(Relational.class).clazz();
+                        Method method = relDaoFactory.getClass().getDeclaredMethod("get" + aClass.getSimpleName() + "DAO");
+                        final DAO relDao = (DAO)method.invoke(relDaoFactory);
+                        if (relDao != null) {
+                            field.set(entity, relDao.findByID(Long.class.cast(node.getProperty(field.getName()))));
+                        }
                     }
                     else if (field.isAnnotationPresent(Graph.class)) {
                         try {
                             final Class aClass = field.getAnnotation(Graph.class).clazz();
-//                            if (field.getType().isInterface()) {
-//
-//                                //TODO subIssues wird LazyLoad implementiert
-//                                if (!field.isAnnotationPresent(Lazy.class)) {
-//                                    List list = new ArrayList();
-//                                    for (Path path : trav) {
-//                                        list.add(getObjectFromNode(path.endNode(), aClass));
-//                                    }
-//                                    field.set(entity, list);
-//                                }
-//                            } else {
                             Node travNode = null;
                             for (Relationship rel : node.getRelationships(GraphRelationRegistry.getRelationshipTypeForClass(aClass),
                                     Direction.OUTGOING))
@@ -273,10 +275,13 @@ public class GraphBaseDAO<T> {
 
                     field.setAccessible(isAccessible);
                 }
-
             } catch (InstantiationException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             } catch (IllegalAccessException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (InvocationTargetException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }

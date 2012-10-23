@@ -7,7 +7,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.log
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DeleteButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeActivateOnValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeItemClickValueChangeListener;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeContainerPlanningUnits;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeContainerIssueBase;
 
 
 /**
@@ -53,7 +53,7 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 
         addComponent(buttonLayout);
 
-        issueTree = new Tree("IssueTree", new TreeContainerPlanningUnits(screen.getCurrentProject()));
+        issueTree = new Tree("IssueTree", new TreeContainerIssueBase(screen.getCurrentProject()));
         issueTree.setImmediate(true);
         if (issueTabSheet != null) {
             TreeItemClickValueChangeListener listener = new TreeItemClickValueChangeListener(issueTabSheet, issueTree);
@@ -62,7 +62,7 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
             issueTree.addValueChangeListener(new TreeActivateOnValueChangeListener(new Button[]{deleteButton,
                     addButton}));
         }
-        issueTree.setItemCaptionPropertyId(TreeContainerPlanningUnits.PROPERTY_CAPTION);
+        issueTree.setItemCaptionPropertyId(TreeContainerIssueBase.PROPERTY_CAPTION);
         for (Object id : issueTree.rootItemIds())
             issueTree.expandItemsRecursively(id);
         addComponent(issueTree);

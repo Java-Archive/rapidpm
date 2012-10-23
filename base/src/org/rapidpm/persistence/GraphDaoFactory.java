@@ -15,32 +15,33 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 public class GraphDaoFactory {
 
     private static final GraphDatabaseService graphDb = GraphDBFactory.getInstance().getGraphDBService();
+    private static final DaoFactory daoFactory = GraphDBFactory.getInstance().getRelDaoFactory();
 
     private GraphDaoFactory() {
         //e,pty on purpose
     }
 
     public static IssueBaseDAO getIssueBaseDAO() {
-        return new IssueBaseDAO(graphDb);
+        return new IssueBaseDAO(graphDb, daoFactory);
     }
 
     public static IssueStatusDAO getIssueStatusDAO() {
-        return new IssueStatusDAO(graphDb);
+        return new IssueStatusDAO(graphDb, daoFactory);
     }
 
     public static IssuePriorityDAO getIssuePriorityDAO() {
-        return new IssuePriorityDAO(graphDb);
+        return new IssuePriorityDAO(graphDb, daoFactory);
     }
 
     public static IssueTypeDAO getIssueTypeDAO() {
-        return new IssueTypeDAO(graphDb);
+        return new IssueTypeDAO(graphDb, daoFactory);
     }
 
     public static IssueComponentDAO getIssueComponentDAO() {
-        return new IssueComponentDAO(graphDb);
+        return new IssueComponentDAO(graphDb, daoFactory);
     }
 
     public static IssueRelationDAO getIssueRelationDAO() {
-        return new IssueRelationDAO(graphDb);
+        return new IssueRelationDAO(graphDb, daoFactory);
     }
 }

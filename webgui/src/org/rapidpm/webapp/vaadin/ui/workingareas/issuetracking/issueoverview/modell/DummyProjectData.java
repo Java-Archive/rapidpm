@@ -1,10 +1,5 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell;
 
-import com.vaadin.data.util.BeanItemContainer;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-
 import java.util.ArrayList;
 import java.util.List;
 

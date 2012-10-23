@@ -1,6 +1,7 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.GraphBaseDAO;
 
 /**
@@ -12,7 +13,7 @@ import org.rapidpm.persistence.GraphBaseDAO;
  */
 public class IssueRelationDAO extends GraphBaseDAO<IssueRelation> {
 
-    public IssueRelationDAO(GraphDatabaseService graphDb) {
-        super(graphDb, IssueRelation.class);
+    public IssueRelationDAO(GraphDatabaseService graphDb, DaoFactory relDaoFactory) {
+        super(graphDb, IssueRelation.class, relDaoFactory);
     }
 }
