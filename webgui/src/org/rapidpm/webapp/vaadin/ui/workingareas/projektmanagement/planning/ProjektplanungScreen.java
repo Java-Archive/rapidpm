@@ -167,4 +167,8 @@ public class ProjektplanungScreen extends Screen {
     public PlanningUnitsTreePanelLayout getPlanningUnitsTreePanelLayout() {
         return planningUnitsTreePanelLayout;
     }
+
+    public PlanningUnitSelect getPlanningUnitSelect() {
+        return planningUnitSelect;
+    }
 }

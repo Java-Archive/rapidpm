@@ -91,6 +91,7 @@ public class PlanningInformationEditableLayout extends EditableLayout {
                 }catch (NullPointerException e){
                     logger.info(COMMIT_EXCEPTION_MESSAGE);
                 }catch(Exception e){
+                    e.printStackTrace();
                     logger.warn("Exception", e);
                 }
             }
@@ -114,9 +115,6 @@ public class PlanningInformationEditableLayout extends EditableLayout {
             }
         }
         componentsLayout.addComponent(fieldGroup.getDescriptionArea());
-        componentsLayout.addComponent(fieldGroup.getStoryPointsField());
-        componentsLayout.addComponent(fieldGroup.getComplexityField());
-        componentsLayout.addComponent(fieldGroup.getOrderNumberField());
         componentsLayout.addComponent(new Label("//TODO Testcases"));
     }
 }

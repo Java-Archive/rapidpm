@@ -10,10 +10,7 @@ import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.person
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 
 import javax.persistence.EntityManager;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static org.rapidpm.Constants.HOURS_DAY;
 import static org.rapidpm.Constants.MINS_HOUR;
@@ -61,14 +58,14 @@ public class PlanningCalculator {
             final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
             final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
             if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
-                for (final RessourceGroup spalte : ressourceGroups) {
-                    final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
-                    planningUnitElement.setPlannedDays(0);
-                    planningUnitElement.setPlannedHours(0);
-                    planningUnitElement.setPlannedMinutes(0);
-                    planningUnitElement.setRessourceGroup(spalte);
-                    planningUnit.getPlanningUnitElementList().add(planningUnitElement);
-                }
+//                for (final RessourceGroup spalte : ressourceGroups) {
+//                    final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
+//                    planningUnitElement.setPlannedDays(0);
+//                    planningUnitElement.setPlannedHours(0);
+//                    planningUnitElement.setPlannedMinutes(0);
+//                    planningUnitElement.setRessourceGroup(spalte);
+//                    planningUnit.getPlanningUnitElementList().add(planningUnitElement);
+//                }
             } else {
                 this.calculatePlanningUnits(kindPlanningUnits, planningUnit,
                         ressourceGroupDaysHoursMinutesItemMap);
@@ -79,8 +76,8 @@ public class PlanningCalculator {
 
     private void calculatePlanningUnits(final List<PlanningUnit> planningUnits, final PlanningUnit parent,
                                       final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap) {
-        for (final PlanningUnit planningUnit : planningUnits) {
-            planningCalculatorBean.getDaoFactoryBean().getEntityManager().refresh(planningUnit);
+        for (final PlanningUnit planningUnit : planningUnits){
+//            planningCalculatorBean.getDaoFactoryBean().getEntityManager().merge(planningUnit);
             final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
             if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
                 this.addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, planningUnit);
@@ -103,18 +100,18 @@ public class PlanningCalculator {
                 minutesFromMap = 0;
             }
 
-            PlanningUnitElement element = new PlanningUnitElement();
-            for (final PlanningUnitElement planningUnitElement : parent.getPlanningUnitElementList()) {
-                if (planningUnitElement.getRessourceGroup().equals(ressourceGroup)) {
-                    element = planningUnitElement;
-                }
-            }
-            final int index = parent.getPlanningUnitElementList().indexOf(element);
-            final PlanningUnitElement planningUnitElement = parent.getPlanningUnitElementList().get(index);
-            planningUnitElement.setPlannedDays(daysFromMap);
-            planningUnitElement.setPlannedHours(hoursFromMap);
-            planningUnitElement.setPlannedMinutes(minutesFromMap);
-            planningCalculatorBean.getDaoFactoryBean().saveOrUpdate(planningUnitElement);
+//            PlanningUnitElement element = new PlanningUnitElement();
+//            for (final PlanningUnitElement planningUnitElement : parent.getPlanningUnitElementList()) {
+//                if (planningUnitElement.getRessourceGroup().equals(ressourceGroup)) {
+//                    element = planningUnitElement;
+//                }
+//            }
+//            final int index = parent.getPlanningUnitElementList().indexOf(element);
+//            final PlanningUnitElement planningUnitElement = parent.getPlanningUnitElementList().get(index);
+//            planningUnitElement.setPlannedDays(daysFromMap);
+//            planningUnitElement.setPlannedHours(hoursFromMap);
+//            planningUnitElement.setPlannedMinutes(minutesFromMap);
+//            planningCalculatorBean.getDaoFactoryBean().saveOrUpdate(planningUnitElement);
         }
     }
 

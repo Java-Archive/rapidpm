@@ -27,10 +27,10 @@ import java.util.ResourceBundle;
  */
 public class AddWindow extends Window {
 
-    public static final String HEIGHT = "400px";
-    public static final String WIDTH = "400px";
-    public static final int POSITION_X = 50;
-    public static final int POSITION_Y = 100;
+    public static final String HEIGHT = "600px";
+    public static final String WIDTH = "750px";
+    public static final int POSITION_X = 80;
+    public static final int POSITION_Y = 20;
 
     private static final Logger logger = Logger.getLogger(AddWindow.class);
 

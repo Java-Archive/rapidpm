@@ -105,5 +105,8 @@ public class PlanningDetailsEditableLayout extends EditableLayout {
         componentsLayout.addComponent(fieldGroup.getNameField());
         componentsLayout.addComponent(fieldGroup.getParentBox());
         componentsLayout.addComponent(fieldGroup.getResponsibleBox());
+        componentsLayout.addComponent(fieldGroup.getStoryPointsField());
+        componentsLayout.addComponent(fieldGroup.getComplexityField());
+        componentsLayout.addComponent(fieldGroup.getOrderNumberField());
     }
 }

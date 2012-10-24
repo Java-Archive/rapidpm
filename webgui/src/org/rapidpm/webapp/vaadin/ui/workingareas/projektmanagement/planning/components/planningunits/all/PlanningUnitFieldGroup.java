@@ -4,17 +4,14 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
+import org.rapidpm.Constants;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsFieldGroupBean;
 
-import javax.persistence.EntityManager;
 import java.util.*;
 
 /**
@@ -26,52 +23,50 @@ import java.util.*;
  */
 public class PlanningUnitFieldGroup extends FieldGroup {
 
-    public static final Integer STANDARDVALUE = 1;
-
     private List<AbstractField> fieldList = new ArrayList<>();
     private TextField nameField;
-    private TextArea descriptionArea;
+    private RichTextArea descriptionArea;
     private TextField storyPointsField;
     private TextField complexityField;
     private TextField orderNumberField;
     private ComboBox parentBox;
     private ComboBox responsibleBox;
 
+    private PlanningUnit selectedPlanningUnit;
+
     private ProjektplanungScreen screen;
     private ResourceBundle messages;
-    private PlanningDetailsFieldGroupBean bean;
+    private PlanningUnitFieldGroupBean bean;
     private DaoFactoryBean baseDaoFactoryBean;
-    private boolean isNew;
 
     public PlanningUnitFieldGroup(final ProjektplanungScreen screen){
         this.screen = screen;
         this.messages = screen.getMessagesBundle();
-        bean = EJBFactory.getEjbInstance(PlanningDetailsFieldGroupBean.class);
+        bean = EJBFactory.getEjbInstance(PlanningUnitFieldGroupBean.class);
         baseDaoFactoryBean = bean.getDaoFactoryBean();
         final PlanningUnit planningUnit = new PlanningUnit();
         planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
         setItemDataSource(new BeanItem<>(planningUnit));
-        isNew = true;
+        selectedPlanningUnit = (PlanningUnit) screen.getPlanningUnitSelect().getValue();
         buildForm();
     }
 
     public PlanningUnitFieldGroup(final ProjektplanungScreen screen, final PlanningUnit thePlanningUnit) {
         this.screen = screen;
         this.messages = screen.getMessagesBundle();
-        bean = EJBFactory.getEjbInstance(PlanningDetailsFieldGroupBean.class);
+        bean = EJBFactory.getEjbInstance(PlanningUnitFieldGroupBean.class);
         baseDaoFactoryBean = bean.getDaoFactoryBean();
-        PlanningUnit planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().findByID(thePlanningUnit.getId());
-        if(planningUnit == null){
-            planningUnit = thePlanningUnit;
+        selectedPlanningUnit = baseDaoFactoryBean.getPlanningUnitDAO().findByID(thePlanningUnit.getId());
+        if(selectedPlanningUnit == null){
+            selectedPlanningUnit = thePlanningUnit;
         }
-        isNew = false;
-        setItemDataSource(new BeanItem<>(planningUnit));
+        setItemDataSource(new BeanItem<>(selectedPlanningUnit));
         buildForm();
     }
 
     private void buildForm() {
         final List<Benutzer> users = baseDaoFactoryBean.getBenutzerDAO().loadAllEntities();
-        final Set<PlanningUnit> planningUnits = screen.getUi().getCurrentProject().getPlanningUnits();
+        final List<PlanningUnit> planningUnits = selectedPlanningUnit.getKindPlanningUnits();
         final Set<PlanningUnit> managedPlanningUnits = new HashSet<>();
         for(final PlanningUnit planningUnit : planningUnits){
            managedPlanningUnits.add(baseDaoFactoryBean.getPlanningUnitDAO().findByID(planningUnit.getId()));
@@ -84,19 +79,20 @@ public class PlanningUnitFieldGroup extends FieldGroup {
                 case (PlanningUnit.NAME):
                     nameField = new TextField(messages.getString("planning_name"));
                     nameField.setRequired(true);
+                    nameField.setMaxLength(Constants.FIELDLENGTH_LONG_NAME);
                     bind(nameField, propertyId);
                     fieldList.add(nameField);
                     break;
                 case (PlanningUnit.DESCPRIPTION):
-                    descriptionArea = new TextArea(messages.getString("planning_description"));
+                    descriptionArea = new RichTextArea(messages.getString("planning_description"));
                     descriptionArea.setNullRepresentation(messages.getString("planning_nodescription"));
-                    descriptionArea.setSizeFull();
                     bind(descriptionArea, propertyId);
                     fieldList.add(descriptionArea);
                     break;
                 case (PlanningUnit.STORYPTS):
                     storyPointsField = new TextField(messages.getString("planning_storypoints"));
                     storyPointsField.setRequired(true);
+                    storyPointsField.setMaxLength(Constants.FIELDLENGTH_SMALL_NUMBER);
                     bind(storyPointsField, propertyId);
                     fieldList.add(storyPointsField);
                     break;
@@ -108,6 +104,7 @@ public class PlanningUnitFieldGroup extends FieldGroup {
                     break;
                 case (PlanningUnit.ORDERNUMBER):
                     orderNumberField = new TextField(messages.getString("planning_ordernumber"));
+                    orderNumberField.setRequired(true);
                     bind(orderNumberField, propertyId);
                     fieldList.add(orderNumberField);
                     break;
@@ -122,6 +119,7 @@ public class PlanningUnitFieldGroup extends FieldGroup {
                     parentBox.setTextInputAllowed(false);
                     bind(parentBox, propertyId);
                     parentBox.addItem(nullPlanningUnit);
+                    parentBox.addItem(selectedPlanningUnit);
                     parentBox.setNullSelectionItemId(nullPlanningUnit);
                     fieldList.add(parentBox);
                     break;
@@ -132,6 +130,7 @@ public class PlanningUnitFieldGroup extends FieldGroup {
                     responsibleBox.setTextInputAllowed(false);
                     responsibleBox.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
                     responsibleBox.setItemCaptionPropertyId(Benutzer.LOGIN);
+                    responsibleBox.setRequired(true);
                     bind(responsibleBox, propertyId);
                     fieldList.add(responsibleBox);
                     break;
@@ -149,7 +148,7 @@ public class PlanningUnitFieldGroup extends FieldGroup {
         return nameField;
     }
 
-    public TextArea getDescriptionArea() {
+    public RichTextArea getDescriptionArea() {
         return descriptionArea;
     }
 
@@ -172,4 +171,6 @@ public class PlanningUnitFieldGroup extends FieldGroup {
     public ComboBox getResponsibleBox() {
         return responsibleBox;
     }
+
+
 }
