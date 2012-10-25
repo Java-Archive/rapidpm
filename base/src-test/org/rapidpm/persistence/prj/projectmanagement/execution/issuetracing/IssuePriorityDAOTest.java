@@ -9,10 +9,8 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
 
 import org.junit.Test;
 import org.rapidpm.persistence.GraphDaoFactory;
-import org.rapidpm.persistence.prj.BaseDAOTest;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriorityDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -28,7 +26,7 @@ public class IssuePriorityDAOTest {
         priority.setPriorityName("first");
         priority.setPriorityFileName("filename");
         priority = dao.persist(priority);
-        assertEquals(priority, dao.getById(priority.getId()));
+        assertEquals(priority, dao.findById(priority.getId()));
         dao.delete(priority);
     }
 
@@ -39,7 +37,7 @@ public class IssuePriorityDAOTest {
         priority.setPriorityName("1st");
         priority.setPriorityFileName("second filename");
         priority = dao.persist(priority);
-        assertEquals(priority, dao.getById(priority.getId()));
+        assertEquals(priority, dao.findById(priority.getId()));
         dao.delete(priority);
     }
 }

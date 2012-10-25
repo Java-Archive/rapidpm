@@ -20,8 +20,6 @@ import java.util.List;
  *        Time: 12:19:00
  */
 
-//@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
-//@Entity
 public class IssuePriority {
     //    private String name;
 

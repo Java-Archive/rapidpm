@@ -2,10 +2,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
 
 import org.junit.Test;
 import org.rapidpm.persistence.GraphDaoFactory;
-import org.rapidpm.persistence.prj.BaseDAOTest;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
-
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -27,7 +24,7 @@ public class IssueTypeDAOTest {
         type.setTypeName("first");
         type.setTypeFileName("filename");
         type = dao.persist(type);
-        assertEquals(type, dao.getById(type.getId()));
+        assertEquals(type, dao.findById(type.getId()));
         dao.delete(type);
     }
 
@@ -37,7 +34,7 @@ public class IssueTypeDAOTest {
         type.setTypeName("1st");
         type.setTypeFileName("second fileName");
         type = dao.persist(type);
-        assertEquals(type, dao.getById(type.getId()));
+        assertEquals(type, dao.findById(type.getId()));
         dao.delete(type);
     }
 }

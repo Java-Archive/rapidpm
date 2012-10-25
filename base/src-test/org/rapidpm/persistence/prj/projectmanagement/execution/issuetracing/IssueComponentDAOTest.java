@@ -4,8 +4,6 @@ import org.junit.Test;
 import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponent;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponentDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueType;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTypeDAO;
 
 import static org.junit.Assert.assertEquals;
 
@@ -25,7 +23,7 @@ public class IssueComponentDAOTest {
         IssueComponent component = new IssueComponent();
         component.setComponentName("first");
         component = dao.persist(component);
-        assertEquals(component, dao.getById(component.getId()));
+        assertEquals(component, dao.findById(component.getId()));
         dao.delete(component);
     }
 
@@ -34,7 +32,7 @@ public class IssueComponentDAOTest {
         IssueComponent component = dao.loadAllEntities().get(0);
         component.setComponentName("1st");
         component = dao.persist(component);
-        assertEquals(component, dao.getById(component.getId()));
+        assertEquals(component, dao.findById(component.getId()));
         dao.delete(component);
     }
 }

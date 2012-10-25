@@ -161,6 +161,9 @@ public class IssueBase {
 
 
     public boolean addComment(IssueComment comment) {
+        for (IssueComment com : comments)
+            if (com.getId().equals(comment.getId()))
+                return true;
         return comments.add(comment);
     }
 

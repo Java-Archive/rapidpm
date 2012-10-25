@@ -16,7 +16,6 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.persistence.system.security.Benutzer;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class IssueBaseDAOTest {
 
         issueBase = dao.persist(issueBase);
         System.out.println(issueBase.toString());
-        //assertTrue(issueBase.equals(dao.getById(issueBase.getId()).hashCode()));
+        //assertTrue(issueBase.equals(dao.findById(issueBase.getId()).hashCode()));
 
         dao.delete(issueBase);
     }
@@ -66,7 +65,7 @@ public class IssueBaseDAOTest {
         issue.setPriority(GraphDaoFactory.getIssuePriorityDAO().loadAllEntities().get(1));
 
         issue = dao.persist(issue);
-        IssueBase proof = dao.getById(issue.getId());
+        IssueBase proof = dao.findById(issue.getId());
         assertEquals(issue.getStatus(), proof.getStatus());
         assertEquals(issue.getType(), proof.getType());
         assertEquals(issue.getPriority(), proof.getPriority());

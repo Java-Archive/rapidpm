@@ -10,7 +10,9 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.system.security.Benutzer;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -204,6 +206,7 @@ public class CreateAndInitializeDB {
         component = new IssueComponent("Dokumentation");
         GraphDaoFactory.getIssueComponentDAO().persist(component);
 
+        List<IssueBase> list = new ArrayList<>();
         for (int i = 1; i<4 ;i++) {
             IssueBase issueBase = new IssueBase();
             issueBase.setVersion("1.0");
@@ -224,6 +227,7 @@ public class CreateAndInitializeDB {
             issueBase.setPriority(priority);
 
             issueBase = GraphDaoFactory.getIssueBaseDAO().persist(issueBase);
+            list.add(issueBase);
             System.out.println(issueBase.toString());
         }
     }

@@ -19,9 +19,6 @@ import java.util.List;
  *        Time: 12:21:28
  */
 
-
-//@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
-//@Entity
 public class IssueStatus {
 
     public static final String NAME = "statusName";
