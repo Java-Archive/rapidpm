@@ -109,14 +109,14 @@ public class GraphBaseDAO<T> {
         if (entity == null)
             throw new NullPointerException(clazz.getSimpleName() + ": Object to persist can't be null");
 
-        final Long id = getIdFromEntity(entity);
         final Transaction tx = graphDb.beginTx();
         try{
             final Node node;
-            final String nameAtt = (String) clazz.getDeclaredField("NAME").get(entity);
+            final Method method = clazz.getDeclaredMethod("name");
+            final String nameAtt = (String) method.invoke(entity);
+            final Long id = getIdFromEntity(entity);
             if (id == null || id == 0) {
-                final Method method = clazz.getDeclaredMethod("get" + nameAtt.substring(0, 1).toUpperCase() + nameAtt.substring(1));
-                if (index_name.get(nameAtt, method.invoke(entity)).getSingle() != null)
+                if (index_name.get(method.getName(), nameAtt).getSingle() != null)
                     throw new IllegalArgumentException(clazz.getSimpleName() + ": Name already in use");
                 node = graphDb.createNode();
                 class_root_node.createRelationshipTo(node, GraphRelationRegistry.getClassRootToChildRelType());
@@ -125,12 +125,10 @@ public class GraphBaseDAO<T> {
                 node = graphDb.getNodeById(id);
             }
             setProperties(node, entity);
-            index_name.remove(node, nameAtt);
-            index_name.add(node, nameAtt, node.getProperty(nameAtt));
+            index_name.remove(node, method.getName());
+            index_name.add(node, method.getName(), nameAtt);
 
             tx.success();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (NoSuchMethodException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (IllegalAccessException e) {

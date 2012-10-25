@@ -16,8 +16,6 @@ import java.util.List;
  */
 public class IssueComponent implements PersistInGraph {
 
-    public static final String NAME = "componentName";
-
     @Identifier
     private Long id;
 

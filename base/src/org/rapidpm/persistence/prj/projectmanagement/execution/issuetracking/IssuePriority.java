@@ -22,9 +22,6 @@ import java.util.List;
  */
 
 public class IssuePriority  implements PersistInGraph {
-    //    private String name;
-
-    public static final String NAME = "priorityName";
 
     @Identifier
     private Long id;

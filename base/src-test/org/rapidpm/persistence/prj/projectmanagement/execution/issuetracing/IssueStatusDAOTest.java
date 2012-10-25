@@ -43,6 +43,14 @@ public class IssueStatusDAOTest {
         dao.delete(status);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void persistExistingName() {
+        IssueStatus priority = dao.loadAllEntities().get(0);
+        IssueStatus prioTest = new IssueStatus();
+        prioTest.setStatusName(priority.getStatusName());
+        dao.persist(prioTest);
+    }
+
     @Test
     public void getConnectedIssus() {
         for (IssueStatus status : dao.loadAllEntities()) {

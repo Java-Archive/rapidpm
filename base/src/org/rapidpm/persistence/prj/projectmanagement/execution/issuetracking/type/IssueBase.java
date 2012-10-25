@@ -26,8 +26,6 @@ import java.util.List;
 
 public class IssueBase implements PersistInGraph {
 
-    public static final String NAME ="summary";
-
     //private static final Logger logger = Logger.getLogger(IssueBase.class);
 
     @Identifier

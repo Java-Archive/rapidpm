@@ -42,6 +42,13 @@ public class IssueTypeDAOTest {
         dao.delete(type);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void persistExistingName() {
+        IssueType priority = dao.loadAllEntities().get(0);
+        IssueType prioTest = new IssueType();
+        prioTest.setTypeName(priority.getTypeName());
+        dao.persist(prioTest);
+    }
 
     @Test
     public void getConnectedIssus() {

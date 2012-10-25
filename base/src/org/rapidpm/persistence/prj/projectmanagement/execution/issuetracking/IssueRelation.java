@@ -14,9 +14,6 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
  */
 public class IssueRelation implements RelationshipType, PersistInGraph {
 
-
-    public static final String NAME = "relationName";
-
     @Identifier
     private Long id;
 

@@ -22,8 +22,6 @@ import java.util.List;
 
 public class IssueStatus  implements PersistInGraph {
 
-    public static final String NAME = "statusName";
-
     @Identifier
     private Long id;
 

@@ -18,8 +18,6 @@ import java.util.List;
 
 public class IssueType  implements PersistInGraph {
 
-    public static final String NAME = "typeName";
-
     @Identifier
     private Long id;
 

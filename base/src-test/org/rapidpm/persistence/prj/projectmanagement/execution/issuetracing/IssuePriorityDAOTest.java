@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.neo4j.graphdb.Node;
 import org.rapidpm.persistence.GraphDBFactory;
 import org.rapidpm.persistence.GraphDaoFactory;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponent;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriorityDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
@@ -45,6 +46,14 @@ public class IssuePriorityDAOTest {
         priority = dao.persist(priority);
         assertEquals(priority, dao.findById(priority.getId()));
         dao.delete(priority);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void persistExistingName() {
+        IssuePriority priority = dao.loadAllEntities().get(0);
+        IssuePriority prioTest = new IssuePriority();
+        prioTest.setPriorityName(priority.getPriorityName());
+        dao.persist(prioTest);
     }
 
     @Test

@@ -41,6 +41,14 @@ public class IssueComponentDAOTest {
         dao.delete(component);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void persistExistingName() {
+        IssueComponent component = dao.loadAllEntities().get(0);
+        IssueComponent compTest = new IssueComponent();
+        compTest.setComponentName(component.getComponentName());
+        dao.persist(compTest);
+    }
+
     @Test
     public void getConnectedIssus() {
         for (IssueComponent component : dao.loadAllEntities()) {
