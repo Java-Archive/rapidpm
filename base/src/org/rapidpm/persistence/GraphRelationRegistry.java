@@ -18,15 +18,19 @@ public class GraphRelationRegistry {
         return "name";
     }
 
+    public static String getRelationAttributeProjectId() {
+        return "projectid";
+    }
+
     public static RelationshipType getClassRootToChildRelType() {
         return DynamicRelationshipType.withName("value");
     }
 
-    public static RelationshipType getRootToClassRootRelType(Class clazz) {
+    public static RelationshipType getRootToClassRootRelType(final Class clazz) {
         return DynamicRelationshipType.withName("root_" + clazz.getSimpleName());
     }
 
-    public static RelationshipType getRelationshipTypeForClass(Class clazz) {
+    public static RelationshipType getRelationshipTypeForClass(final Class clazz) {
         return DynamicRelationshipType.withName(clazz.getSimpleName());
     }
 

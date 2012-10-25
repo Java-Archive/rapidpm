@@ -45,7 +45,7 @@ public class IssueAddWindow extends Window {
         public void buttonClick(Button.ClickEvent event) {
             Object itemId = issueTree.addItem();
             Object parentItemId = issueTree.getValue();
-            IssueBase issueBase = new IssueBase();
+            IssueBase issueBase = new IssueBase(screen.getCurrentProject().getId());
             IssueBase parentIssue = (IssueBase)issueTree.getContainerDataSource().getContainerProperty
                     (parentItemId, TreeContainerIssueBase.PROPERTY_ISSUEBASE).getValue();
             issueBase.setSummary("TEST ISSUE");

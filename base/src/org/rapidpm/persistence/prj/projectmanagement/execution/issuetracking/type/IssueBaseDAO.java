@@ -8,6 +8,7 @@ import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.GraphRelationRegistry;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponent;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +23,9 @@ import java.util.List;
 
 public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
 
-    public IssueBaseDAO(final GraphDatabaseService graphDb, final DaoFactory relDaoFactory) {
-        super(graphDb, IssueBase.class, relDaoFactory);
+    public IssueBaseDAO(final GraphDatabaseService graphDb, final DaoFactory relDaoFactory,
+                        final Long projectId) {
+        super(graphDb, IssueBase.class, relDaoFactory, projectId);
     }
 
 

@@ -28,7 +28,7 @@ public class TreeContainerIssueBase extends HierarchicalContainer {
 
     private void filltree() {
         Object itemId;
-        for (IssueBase issuebase : GraphDaoFactory.getIssueBaseDAO().loadTopLevelEntities()) {
+        for (IssueBase issuebase : GraphDaoFactory.getIssueBaseDAO(currentProject.getId()).loadTopLevelEntities()) {
             itemId = addItem();
             this.getContainerProperty(itemId, PROPERTY_CAPTION).setValue(issuebase.getSummary());
             this.getContainerProperty(itemId, PROPERTY_ISSUEBASE).setValue(issuebase);

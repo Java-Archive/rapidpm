@@ -49,6 +49,9 @@ public class IssueBase {
     private Long id;
 
     @Simple
+    private Long projectId;
+
+    @Simple
     private String summary;
 
     @Simple
@@ -104,15 +107,18 @@ public class IssueBase {
     @Relational(clazz = PlanningUnit.class)
     private PlanningUnit planningUnit;
 
-
     public IssueBase() {
-        //empty on Purpose
+        //empty on purpose
+    }
+
+    public IssueBase(final Long projectId) {
+        this.projectId = projectId;
     }
 
 
 
     public boolean connectToIssueAs(IssueBase issue, IssueRelation relation) {
-        return GraphDaoFactory.getIssueBaseDAO().connectEntitiesWithRelationTx(this, issue, relation);
+        return GraphDaoFactory.getIssueBaseDAO(projectId).connectEntitiesWithRelationTx(this, issue, relation);
     }
 
     public List<IssueBase> getConnectedIssues(IssueRelation relation) {
@@ -120,50 +126,52 @@ public class IssueBase {
     }
 
     public List<IssueBase> getConnectedIssues(IssueRelation relation, Direction direction) {
-        return GraphDaoFactory.getIssueBaseDAO().getConnectedIssuesWithRelation(this, relation, direction);
+        return GraphDaoFactory.getIssueBaseDAO(projectId).getConnectedIssuesWithRelation(this, relation, direction);
     }
 
     public boolean removeConnectionToIssue(IssueBase issue, IssueRelation relation) {
-        return GraphDaoFactory.getIssueBaseDAO().deleteRelationOfEntitiesTx(this, issue, relation);
+        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteRelationOfEntitiesTx(this, issue, relation);
     }
 
 
 
     public boolean addSubIssue(IssueBase subIssue) {
-        return GraphDaoFactory.getIssueBaseDAO().addSubIssueTx(this, subIssue);
+        return GraphDaoFactory.getIssueBaseDAO(projectId).addSubIssueTx(this, subIssue);
     }
 
     public List<IssueBase> getSubIssues() {
-        return GraphDaoFactory.getIssueBaseDAO().getSubIssuesOf(this);
+        return GraphDaoFactory.getIssueBaseDAO(projectId).getSubIssuesOf(this);
     }
 
     public boolean removeSubIssue(IssueBase subIssue) {
-        return GraphDaoFactory.getIssueBaseDAO().deleteSubIssueRelationTx(this, subIssue);
+        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteSubIssueRelationTx(this, subIssue);
     }
 
 
 
     public boolean addComponent(IssueComponent component) {
-        return GraphDaoFactory.getIssueBaseDAO().addComponentToTx(this, component);
+        return GraphDaoFactory.getIssueBaseDAO(projectId).addComponentToTx(this, component);
     }
 
     public List<IssueComponent> getComponents() {
-        return GraphDaoFactory.getIssueBaseDAO().getComponentsOf(this);
+        return GraphDaoFactory.getIssueBaseDAO(projectId).getComponentsOf(this);
     }
 
     public boolean removeComponent(IssueComponent component) {
-        return GraphDaoFactory.getIssueBaseDAO().deleteComponentRelationTx(this, component);
+        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteComponentRelationTx(this, component);
     }
 
     public boolean removeAllComponents(List<IssueComponent> componentList) {
-        return GraphDaoFactory.getIssueBaseDAO().deleteAllComponentRelationsTx(this, componentList);
+        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteAllComponentRelationsTx(this, componentList);
     }
 
 
-    public boolean addComment(IssueComment comment) {
+    public boolean addOrChangeComment(IssueComment comment) {
         for (IssueComment com : comments)
-            if (com.getId().equals(comment.getId()))
+            if (comment.getId() != null && com.getId().equals(comment.getId())) {
+                comments.set(comments.indexOf(com), comment);
                 return true;
+            }
         return comments.add(comment);
     }
 
@@ -190,12 +198,21 @@ public class IssueBase {
     }
 
 
+
     public Long getId() {
         return id;
     }
 
     public void setId(final Long id) {
         this.id = id;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(final Long projectId) {
+        this.projectId = projectId;
     }
 
     public PlanningUnit getPlanningUnit() {
@@ -402,7 +419,7 @@ public class IssueBase {
     public String toString() {
         return "IssueBase{" +
                 "id=" + id +
-                ", planningUnit=" + planningUnit +
+                ", projectId=" + projectId +
                 ", summary='" + summary + '\'' +
                 ", text='" + text + '\'' +
                 ", priority=" + priority +
@@ -420,6 +437,7 @@ public class IssueBase {
                 ", comments=" + comments +
                 ", testcases=" + testcases +
                 ", risk='" + risk + '\'' +
+                ", planningUnit=" + planningUnit +
                 '}';
     }
 

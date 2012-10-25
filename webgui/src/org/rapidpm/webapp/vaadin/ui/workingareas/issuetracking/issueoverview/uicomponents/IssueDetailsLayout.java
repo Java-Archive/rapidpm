@@ -248,7 +248,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
     public IssueBase setIssueProperties(boolean newIssue) {
         if (newIssue)
-            this.issue = new IssueBase();
+            this.issue = new IssueBase(screen.getCurrentProject().getId());
 
         issue.setSummary(headerTextField.getValue());
         issue.setStatus((IssueStatus) statusSelect.getValue());

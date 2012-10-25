@@ -10,6 +10,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing.typ
 import org.junit.Test;
 import org.neo4j.graphdb.Direction;
 import org.rapidpm.persistence.GraphDaoFactory;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponent;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
@@ -23,11 +24,12 @@ import static org.junit.Assert.*;
 
 public class IssueBaseDAOTest {
 
-    private final IssueBaseDAO dao = GraphDaoFactory.getIssueBaseDAO();
+    private final Long projectId = new Long(1);
+    private final IssueBaseDAO dao = GraphDaoFactory.getIssueBaseDAO(projectId);
 
     @Test
     public void addIssue() {
-        IssueBase issueBase = new IssueBase();
+        IssueBase issueBase = new IssueBase(projectId);
         issueBase.setVersion("1.0");
         issueBase.setStoryPoints(10);
         issueBase.setSummary("Issue x");
@@ -55,6 +57,15 @@ public class IssueBaseDAOTest {
         //assertTrue(issueBase.equals(dao.findById(issueBase.getId()).hashCode()));
 
         dao.delete(issueBase);
+    }
+
+
+    @Test
+    public void loadAll() {
+        List<IssueBase> list = dao.loadAllEntities();
+        for (IssueBase issue : list)
+            System.out.println(issue.toString());
+        assertEquals(list.size(), 3);
     }
 
     @Test
@@ -132,11 +143,40 @@ public class IssueBaseDAOTest {
 
     }
 
-    @Test
-    public void loadAll() {
-        List<IssueBase> list = dao.loadAllEntities();
-        for (IssueBase issue : list)
-            System.out.println(issue.toString());
-        assertEquals(list.size(), 3);
+    public void addComments() {
+        IssueBase issue = dao.loadAllEntities().get(0);
+        IssueComment comment1 = new IssueComment();
+        comment1.setText("comment1");
+        comment1.setCreated(new Date());
+        comment1.setCreator(issue.getAssignee());
+
+        IssueComment comment2 = new IssueComment();
+        comment2.setText("comment2");
+        comment2.setCreated(new Date());
+        comment2.setCreator(issue.getAssignee());
+
+        issue.addOrChangeComment(comment1);
+        issue.addOrChangeComment(comment2);
+
+        System.out.println(issue.toString());
+        issue = dao.persist(issue);
+
+        assertTrue(issue.getComments().contains(comment1));
+        assertTrue(issue.getComments().contains(comment2));
+
+        comment2.setText("CommentB");
+        issue.addOrChangeComment(comment2);
+
+        issue = GraphDaoFactory.getIssueBaseDAO(projectId).persist(issue);
+
+        assertTrue(issue.getComments().contains(comment2));
+
+        issue.removeComment(comment1);
+        issue.removeComment(comment2);
+
+        assertFalse(issue.getComments().contains(comment1));
+        assertFalse(issue.getComments().contains(comment2));
+
     }
+
 }

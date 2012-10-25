@@ -4,6 +4,7 @@ package org.rapidpm.persistence;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,8 +22,8 @@ public class GraphDaoFactory {
         //empty on purpose
     }
 
-    public static IssueBaseDAO getIssueBaseDAO() {
-        return new IssueBaseDAO(graphDb, daoFactory);
+    public static IssueBaseDAO getIssueBaseDAO(final Long projectId) {
+        return new IssueBaseDAO(graphDb, daoFactory, projectId);
     }
 
     public static IssueStatusDAO getIssueStatusDAO() {

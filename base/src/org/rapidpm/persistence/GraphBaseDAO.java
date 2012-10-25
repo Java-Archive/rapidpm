@@ -6,8 +6,9 @@ import org.neo4j.graphdb.traversal.Evaluators;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.graphdb.traversal.Traverser;
 import org.neo4j.kernel.Traversal;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -31,36 +32,78 @@ public class GraphBaseDAO<T> {
 
     private final Class clazz;
 
-    public GraphBaseDAO(final GraphDatabaseService graphDb, final Class clazz, final DaoFactory relDaoFactory) {
+    public GraphBaseDAO(final GraphDatabaseService graphDb, final Class clazz, final DaoFactory relDaoFactory,
+                        final Long projectId) {
         if (graphDb == null)
             throw new NullPointerException("GraphDb is null.");
         if (clazz == null)
             throw new NullPointerException("Class is null.");
+        if (projectId == null)
+            throw new NullPointerException("ProjectId is null.");
+        if (projectId < 0)
+            throw new NullPointerException("ProjectId must be positiv.");
+
 //        if (relDaoFactory == null)
 //            throw new NullPointerException("Rel. DaoFactory is null.");
-
-        this.clazz = clazz;
         this.graphDb = graphDb;
         this.relDaoFactory = relDaoFactory;
+        this.clazz = clazz;
         index_name = graphDb.index().forNodes(clazz.getSimpleName());
         this.root_node = graphDb.getNodeById(0);
-        this.class_root_node = getClassRootNode();
+        this.class_root_node = getClassRootNode(projectId);
     }
 
-    private Node getClassRootNode() {
+    public GraphBaseDAO(final GraphDatabaseService graphDb, final Class clazz, final DaoFactory relDaoFactory) {
+        this(graphDb, clazz, relDaoFactory, new Long(0));
+    }
+
+    private Node getClassRootNode(final Long projectId) {
+        boolean isProject = (projectId != 0) ;
         final TraversalDescription td = Traversal.description()
                 .breadthFirst()
-                .relationships(GraphRelationRegistry.getRootToClassRootRelType(clazz), Direction.OUTGOING )
-                .evaluator(Evaluators.atDepth(1));
+                .relationships(GraphRelationRegistry.getRootToClassRootRelType(clazz), Direction.OUTGOING)
+                .evaluator(Evaluators.excludeStartPosition());
+
+        if (isProject)  {
+            td.evaluator(Evaluators.atDepth(2));
+        } else {
+            td.evaluator(Evaluators.atDepth(1));
+        }
         final Traverser trav = td.traverse( root_node );
-        Node node = null;
+        Node node = null, project_root = null;
         for (final Path path : trav) {
-            node = path.endNode();
+            if (isProject) {
+                if (project_root == null) project_root = path.endNode();
+                if (projectId.equals(path.endNode().getProperty(GraphRelationRegistry.getRelationAttributeProjectId(), null)))
+                    node = path.endNode();
+            }
+            else
+                node = path.endNode();
         }
         if (node == null)
-            throw new NullPointerException("No class_root_node found. Please initialize graph database");
+            if (isProject && project_root != null) {
+                node = createNewProjectRootNode(project_root, projectId);
+            } else
+                throw new NullPointerException("No class_root_node found. Please initialize graph database");
 
         return node;
+    }
+
+    private Node createNewProjectRootNode(final Node project_root, final Long projectId) {
+        final Transaction tx = graphDb.beginTx();
+        Node project1 = null;
+        try {
+            project1 = graphDb.createNode();
+            project1.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), projectId);
+            project_root.createRelationshipTo(project1, GraphRelationRegistry.getRootToClassRootRelType(IssueBase.class));
+            tx.success();
+        } finally {
+            tx.finish();
+            if (project1 == null)
+                throw new NullPointerException("Couldn't create new project root node");
+            return project1;
+        }
+
     }
 
     public T persist(final T entity) {
@@ -117,8 +160,10 @@ public class GraphBaseDAO<T> {
                 try {
                     if (field.getAnnotation(Simple.class).clazz().equals("Date")) {
                         node.setProperty(field.getName(), field.get(entity) == null ? "0" : ((Date)field.get(entity)).getTime());
-                    } else
-                        node.setProperty(field.getName(), field.get(entity) == null ? "null" : field.get(entity));
+                    } else {
+                        if (field.get(entity) != null)
+                            node.setProperty(field.getName(), field.get(entity));
+                    }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }
@@ -289,7 +334,7 @@ public class GraphBaseDAO<T> {
                             field.set(entity, new Date(Long.class.cast(node.getProperty(field.getName()))));
 
                         } else
-                            field.set(entity, field.getType().cast(node.getProperty(field.getName())));
+                            field.set(entity, field.getType().cast(node.getProperty(field.getName(), null)));
                     } catch (IllegalAccessException e) { e.printStackTrace(); }
                 }
 
@@ -300,10 +345,13 @@ public class GraphBaseDAO<T> {
                         if (field.getType().equals(List.class)) {
                             final long[] entityList = (long[])node.getProperty(field.getName(), new long[]{});
                             final List<Object> ids = new ArrayList<>();
-                            Long id;
+                            Object obj = null;
                             for (Object single : entityList) {
-                                id = (Long)single;
-                                ids.add(relDao.findByID(id));
+                                obj = relDao.findByID((Long)single);
+                                if (obj != null)
+                                    ids.add(obj);
+                                else System.out.println("Requested object not in rel databse: " + field.getAnnotation
+                                        (Relational.class).clazz().getSimpleName() + " " + (Long)single);
                             }
                             field.set(entity, ids);
                         } else {

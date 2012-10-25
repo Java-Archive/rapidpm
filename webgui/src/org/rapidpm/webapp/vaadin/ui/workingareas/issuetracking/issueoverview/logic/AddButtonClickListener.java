@@ -6,12 +6,12 @@ import com.vaadin.ui.UI;
 import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-import org.rapidpm.webapp.vaadin.ui.windows.KontaktWindow;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueadd.IssueAddWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,27 +32,6 @@ public class AddButtonClickListener implements Button.ClickListener {
 
     @Override
     public void buttonClick(Button.ClickEvent event) {
-        //UI.getCurrent().addWindow(new IssueAddWindow(screen, issueTree));
-        test();
-    }
-
-    public void test() {
-        IssueBase issue = GraphDaoFactory.getIssueBaseDAO().loadAllEntities().get(0);
-        IssueComment comment1 = new IssueComment();
-        comment1.setText("comment1");
-        comment1.setCreated(new Date());
-        comment1.setCreator(issue.getAssignee());
-
-        IssueComment comment2 = new IssueComment();
-        comment2.setText("comment2");
-        comment2.setCreated(new Date());
-        comment2.setCreator(issue.getAssignee());
-
-        issue.addComment(comment1);
-        issue.addComment(comment2);
-
-        System.out.println(issue.toString());
-        issue = GraphDaoFactory.getIssueBaseDAO().persist(issue);
-
+        UI.getCurrent().addWindow(new IssueAddWindow(screen, issueTree));
     }
 }

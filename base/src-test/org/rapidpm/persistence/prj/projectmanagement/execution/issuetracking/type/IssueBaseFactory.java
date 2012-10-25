@@ -19,7 +19,7 @@ public class IssueBaseFactory extends EntityFactory<IssueBase> {
 
     @Override
     public IssueBase createRandomEntity() {
-        final IssueBase issueBase = new IssueBase();
+        final IssueBase issueBase = new IssueBase(new Long(1));
 //        issueBase.setAssignee(); // TODO Benutzer
         issueBase.setComments(new ArrayList<IssueComment>() {{
             final IssueCommentFactory factory = new IssueCommentFactory();
