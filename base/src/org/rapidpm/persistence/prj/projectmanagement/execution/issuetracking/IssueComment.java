@@ -32,6 +32,10 @@ public class IssueComment {
     @Basic
     private Date created;
 
+    public IssueComment() {
+        //empty on purpose
+    }
+
     public Date getCreated() {
         return created;
     }

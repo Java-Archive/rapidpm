@@ -4,6 +4,11 @@ import org.junit.Test;
 import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponent;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponentDAO;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -34,5 +39,22 @@ public class IssueComponentDAOTest {
         component = dao.persist(component);
         assertEquals(component, dao.findById(component.getId()));
         dao.delete(component);
+    }
+
+    @Test
+    public void getConnectedIssus() {
+        for (IssueComponent component : dao.loadAllEntities()) {
+            List<IssueBase> issueList = dao.getConnectedIssuesFromProject(component, 1L);
+            List<IssueBase> testList = new ArrayList<>();
+
+            for (IssueBase issue : GraphDaoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+                for (IssueComponent comp : issue.getComponents())
+                    if (comp.equals(component))
+                        testList.add(issue);
+            }
+
+            assertEquals(issueList, testList);
+            System.out.println("listsize: " + issueList.size());
+        }
     }
 }

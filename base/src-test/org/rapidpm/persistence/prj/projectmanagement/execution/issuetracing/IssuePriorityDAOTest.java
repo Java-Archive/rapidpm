@@ -8,9 +8,15 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
  */
 
 import org.junit.Test;
+import org.neo4j.graphdb.Node;
+import org.rapidpm.persistence.GraphDBFactory;
 import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriorityDAO;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -39,5 +45,21 @@ public class IssuePriorityDAOTest {
         priority = dao.persist(priority);
         assertEquals(priority, dao.findById(priority.getId()));
         dao.delete(priority);
+    }
+
+    @Test
+    public void getConnectedIssus() {
+        for (IssuePriority priority : dao.loadAllEntities()) {
+            List<IssueBase> issueList = dao.getConnectedIssuesFromProject(priority, 1L);
+            List<IssueBase> testList = new ArrayList<>();
+
+            for (IssueBase issue : GraphDaoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+                if (issue.getPriority().equals(priority))
+                    testList.add(issue);
+            }
+
+            assertEquals(issueList, testList);
+            System.out.println("listsize: " + issueList.size());
+        }
     }
 }

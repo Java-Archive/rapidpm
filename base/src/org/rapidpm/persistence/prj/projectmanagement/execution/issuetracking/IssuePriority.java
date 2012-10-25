@@ -3,6 +3,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.PersistInGraph;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
  *        Time: 12:19:00
  */
 
-public class IssuePriority {
+public class IssuePriority  implements PersistInGraph {
     //    private String name;
 
     public static final String NAME = "priorityName";
@@ -110,5 +111,10 @@ public class IssuePriority {
         int result = prio;
         result = 31 * result + (priorityName != null ? priorityName.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String name() {
+        return getPriorityName();
     }
 }

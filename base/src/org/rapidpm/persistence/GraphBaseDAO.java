@@ -8,7 +8,6 @@ import org.neo4j.graphdb.traversal.Traverser;
 import org.neo4j.kernel.Traversal;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -252,7 +251,7 @@ public class GraphBaseDAO<T> {
         final Traverser trav = td.traverse(class_root_node);
         final List<T> entityList = new ArrayList<T>();
         for (final Node travNode : trav.nodes()) {
-            entityList.add(getObjectFromNode(travNode, clazz));
+            entityList.add(getObjectFromNode(travNode));
         }
 
         return entityList;
@@ -266,7 +265,7 @@ public class GraphBaseDAO<T> {
         final Traverser trav = td.traverse(class_root_node);
         final List<T> entityList = new ArrayList<T>();
         for (final Node travNode : trav.nodes()) {
-            entityList.add(getObjectFromNode(travNode, clazz));
+            entityList.add(getObjectFromNode(travNode));
         }
 
         return entityList;
@@ -300,7 +299,7 @@ public class GraphBaseDAO<T> {
         if (id == null)
             throw new NullPointerException("Id object is null.");
 
-        return getObjectFromNode(graphDb.getNodeById(id), clazz);
+        return getObjectFromNode(graphDb.getNodeById(id));
     }
 
     public T findByEntity(final T entity) {
@@ -310,15 +309,19 @@ public class GraphBaseDAO<T> {
         return findById(getIdFromEntity(entity));
     }
 
-    protected T getObjectFromNode(final Node node, final Class clazz) {
+    protected T getObjectFromNode(final Node node) {
+        return this.<T>getObjectFromNode(node , clazz);
+    }
+
+    protected <E> E getObjectFromNode(final Node node, final Class clazz) {
         if (node == null)
             throw new NullPointerException("Node is null.");
         if (clazz == null)
             throw new NullPointerException("Class is null.");
 
-        T entity = null;
+        E entity = null;
         try {
-            entity = (T) clazz.newInstance();
+            entity = (E) clazz.newInstance();
 
             final Field[] fieldNames = entity.getClass().getDeclaredFields();
             for (final Field field : fieldNames) {

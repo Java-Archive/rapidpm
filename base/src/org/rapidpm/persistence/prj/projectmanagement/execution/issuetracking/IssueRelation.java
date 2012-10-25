@@ -3,6 +3,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 import org.neo4j.graphdb.RelationshipType;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.PersistInGraph;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,7 +12,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ann
  * Time: 10:04
  * To change this template use File | Settings | File Templates.
  */
-public class IssueRelation implements RelationshipType {
+public class IssueRelation implements RelationshipType, PersistInGraph {
 
 
     public static final String NAME = "relationName";
@@ -102,6 +103,6 @@ public class IssueRelation implements RelationshipType {
 
     @Override
     public String name() {
-        return relationName;
+        return getRelationName();
     }
 }

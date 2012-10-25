@@ -3,6 +3,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.PersistInGraph;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * Time: 09:54
  * To change this template use File | Settings | File Templates.
  */
-public class IssueComponent {
+public class IssueComponent implements PersistInGraph {
 
     public static final String NAME = "componentName";
 
@@ -29,10 +30,6 @@ public class IssueComponent {
 
     public IssueComponent(final String componentName) {
         this.componentName = componentName;
-    }
-
-    public List<IssueBase> getConnectedIssues() {
-        return null;
     }
 
     public Long getId() {
@@ -75,5 +72,10 @@ public class IssueComponent {
     @Override
     public int hashCode() {
         return componentName != null ? componentName.hashCode() : 0;
+    }
+
+    @Override
+    public String name() {
+        return getComponentName();
     }
 }

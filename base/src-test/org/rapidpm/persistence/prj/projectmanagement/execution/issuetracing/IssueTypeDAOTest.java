@@ -3,6 +3,10 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
 import org.junit.Test;
 import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -36,5 +40,22 @@ public class IssueTypeDAOTest {
         type = dao.persist(type);
         assertEquals(type, dao.findById(type.getId()));
         dao.delete(type);
+    }
+
+
+    @Test
+    public void getConnectedIssus() {
+        for (IssueType type : dao.loadAllEntities()) {
+            List<IssueBase> issueList = dao.getConnectedIssuesFromProject(type, 1L);
+            List<IssueBase> testList = new ArrayList<>();
+
+            for (IssueBase issue : GraphDaoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+                if (issue.getType().equals(type))
+                    testList.add(issue);
+            }
+
+            assertEquals(issueList, testList);
+            System.out.println("listsize: " + issueList.size());
+        }
     }
 }

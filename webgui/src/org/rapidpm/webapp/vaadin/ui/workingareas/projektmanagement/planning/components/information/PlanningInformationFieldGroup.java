@@ -3,15 +3,12 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase.STORYPOINTS;
-import static org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase.TEXT;
 
 /**
  * RapidPM - www.rapidpm.org

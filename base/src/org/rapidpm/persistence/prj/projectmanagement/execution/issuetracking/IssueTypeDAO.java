@@ -1,8 +1,16 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
+import org.neo4j.graphdb.Direction;
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.GraphBaseDAO;
+import org.rapidpm.persistence.GraphRelationRegistry;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,5 +23,27 @@ public class IssueTypeDAO extends GraphBaseDAO<IssueType> {
 
     public IssueTypeDAO(final GraphDatabaseService graphDb, DaoFactory relDaoFactory) {
         super(graphDb, IssueType.class, relDaoFactory);
+    }
+
+    public List<IssueBase> getConnectedIssues(final IssueType type) {
+        return getConnectedIssuesFromProject(type, new Long(0));
+    }
+
+    public List<IssueBase> getConnectedIssuesFromProject(final IssueType type, final Long projectId) {
+        if (type == null)
+            throw new NullPointerException("Type is null");
+        if (projectId < 0)
+            throw new IllegalArgumentException("ProjectId must be positiv");
+
+        final List<IssueBase> issueList = new ArrayList<>();
+        final Node typeNode = graphDb.getNodeById(type.getId());
+        IssueBase issue = null;
+        for (Relationship rel : typeNode.getRelationships(GraphRelationRegistry
+                .getRelationshipTypeForClass(IssueType.class), Direction.INCOMING)) {
+            issue = getObjectFromNode(rel.getOtherNode(typeNode), IssueBase.class);
+            if (issue != null && (projectId == 0 || issue.getProjectId().equals(projectId)))
+                issueList.add(issue);
+        }
+        return issueList;
     }
 }

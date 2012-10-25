@@ -73,7 +73,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         final List<IssueBase> issueList = new ArrayList<>();
 
         for (final Relationship rel : startNode.getRelationships(relation, direction)) {
-            issueList.add(getObjectFromNode(rel.getOtherNode(startNode), IssueBase.class));
+            issueList.add(getObjectFromNode(rel.getOtherNode(startNode)));
         }
         return issueList;
     }
@@ -149,7 +149,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
 
         for (Relationship rel : startNode.getRelationships(GraphRelationRegistry.getSubIssueRelationshipType(),
                 Direction.OUTGOING)) {
-            issueList.add(getObjectFromNode(rel.getOtherNode(startNode), IssueBase.class));
+            issueList.add(getObjectFromNode(rel.getOtherNode(startNode)));
         }
         return issueList;
     }

@@ -3,6 +3,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.PersistInGraph;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 
-public class IssueType {
+public class IssueType  implements PersistInGraph {
 
     public static final String NAME = "typeName";
 
@@ -94,4 +95,8 @@ public class IssueType {
                 '}';
     }
 
+    @Override
+    public String name() {
+        return getTypeName();
+    }
 }

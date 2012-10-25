@@ -25,8 +25,6 @@ public class TestCase {
     @Basic
     private String text;
 
-//    @ManyToOne
-//    private IssueBase issue;
 
     public TestCase() {
         //empty on purpose
@@ -52,13 +50,6 @@ public class TestCase {
         this.text = text;
     }
 
-//    public IssueBase getIssue() {
-//        return issue;
-//    }
-//
-//    public void setIssue(IssueBase issue) {
-//        this.issue = issue;
-//    }
 
     @Override
     public String toString() {

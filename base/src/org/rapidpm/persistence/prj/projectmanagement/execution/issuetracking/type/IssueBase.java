@@ -24,26 +24,11 @@ import java.util.List;
  */
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 
-public class IssueBase {
+public class IssueBase implements PersistInGraph {
 
     public static final String NAME ="summary";
 
-
-    public static final String TEXT = "text";
-    public static final String STORYPOINTS = "storyPoints";
-    public static final String DATE_PLANNED = "dueDate_planned";
-    public static final String DATE_RESOLVED = "dueDate_resolved";
-    public static final String DATE_CLOSED = "dueDate_closed";
-    public static final String PRIORITY = "priority";
-    public static final String STATUS = "status";
-    public static final String REPORTER ="reporter";
-    public static final String ASSIGNEE = "assignee";
-    public static final String VERSION = "version";
-    public static final String COMMENTS = "comments";
-    public static final String TESTCASES ="testcases";
-    public static final String TYPE ="type";
-
-    private static final Logger logger = Logger.getLogger(IssueBase.class);
+    //private static final Logger logger = Logger.getLogger(IssueBase.class);
 
     @Identifier
     private Long id;
@@ -441,4 +426,8 @@ public class IssueBase {
                 '}';
     }
 
+    @Override
+    public String name() {
+        return getSummary();
+    }
 }
