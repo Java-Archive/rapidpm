@@ -31,6 +31,7 @@ public class PlanningUnitFieldGroup extends FieldGroup {
     private TextField orderNumberField;
     private ComboBox parentBox;
     private ComboBox responsibleBox;
+    private List<RichTextArea> testcaseAreas;
 
     private PlanningUnit selectedPlanningUnit;
 
@@ -38,6 +39,7 @@ public class PlanningUnitFieldGroup extends FieldGroup {
     private ResourceBundle messages;
     private PlanningUnitFieldGroupBean bean;
     private DaoFactoryBean baseDaoFactoryBean;
+    private boolean isnew = true;
 
     public PlanningUnitFieldGroup(final ProjektplanungScreen screen){
         this.screen = screen;
@@ -45,8 +47,10 @@ public class PlanningUnitFieldGroup extends FieldGroup {
         bean = EJBFactory.getEjbInstance(PlanningUnitFieldGroupBean.class);
         baseDaoFactoryBean = bean.getDaoFactoryBean();
         final PlanningUnit planningUnit = new PlanningUnit();
+        planningUnit.setTestcases(new ArrayList<String>());
         planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
         setItemDataSource(new BeanItem<>(planningUnit));
+        isnew = true;
         selectedPlanningUnit = (PlanningUnit) screen.getPlanningUnitSelect().getValue();
         buildForm();
     }
@@ -134,6 +138,20 @@ public class PlanningUnitFieldGroup extends FieldGroup {
                     bind(responsibleBox, propertyId);
                     fieldList.add(responsibleBox);
                     break;
+                case (PlanningUnit.TESTCASES):
+                    testcaseAreas = new ArrayList<>();
+                    Integer i = 1;
+                    for(final String testcase : selectedPlanningUnit.getTestcases()){
+                        final RichTextArea testcaseArea = new RichTextArea(messages.getString("planning_testcase")+
+                                i++);
+                        testcaseArea.setValue(testcase);
+                        testcaseAreas.add(testcaseArea);
+
+                    }
+                    for(RichTextArea textArea : testcaseAreas){
+                        fieldList.add(textArea);
+                    }
+                    break;
                 default:
                     break;
             }
@@ -172,5 +190,7 @@ public class PlanningUnitFieldGroup extends FieldGroup {
         return responsibleBox;
     }
 
-
+    public List<RichTextArea> getTestcaseAreas() {
+        return testcaseAreas;
+    }
 }

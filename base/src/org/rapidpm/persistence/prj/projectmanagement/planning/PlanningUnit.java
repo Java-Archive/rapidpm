@@ -28,7 +28,7 @@ public class PlanningUnit {
     public static final String STORYPTS = "estimatedStoryPoints";
     public static final String COMPLEXITY = "komplexitaet";
     public static final String RESPONSIBLE = "responsiblePerson";
-    public static final String TESTCASES = "testCases";
+    public static final String TESTCASES = "testcases";
     public static final String ORDERNUMBER = "orderNumber";
     public static final String DESCPRIPTION = "description";
     public static final String PARENT = "parent";

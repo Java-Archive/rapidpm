@@ -71,6 +71,7 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                             screen, ressourcesPanel, hasChildren, projekt);
                     ressourcesPanel.addComponent(ressourcesPanelLayout);
                 }
+                detailPanel.removeAllComponents();
                 detailPanel.addComponent(detailsPanelComponentsLayout);
                 mainPanel.addComponent(mainPanelLayout);
 

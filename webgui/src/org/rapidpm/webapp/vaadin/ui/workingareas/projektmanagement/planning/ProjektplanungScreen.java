@@ -106,8 +106,9 @@ public class ProjektplanungScreen extends Screen {
         if (ids != null && !ids.isEmpty()) {
             planningUnitSelect.setValue(ids.get(0));
         } else {
-            tempPlanningUnit.setId(666l);
+            //tempPlanningUnit.setId(666l);
             tempPlanningUnit.setPlanningUnitName("Platzhalter");
+            tempPlanningUnit.setTestcases(new ArrayList<String>());
             tempPlanningUnit.setDescription("Bitte dem Projekt über den \"+\"-Button neue Planungseinheiten " +
                     "hinzufügen.");
             tempPlanningUnit.setKindPlanningUnits(new ArrayList<PlanningUnit>());
@@ -122,14 +123,14 @@ public class ProjektplanungScreen extends Screen {
         planningUnitsTree = new PlanningUnitsTree(this, selectedPlanningUnit, projekt);
         planningUnitsTree.select(selectedPlanningUnit);
         planningUnitsTreePanelLayout = new PlanningUnitsTreePanelLayout(projekt, ProjektplanungScreen.this);
-        planningUnitsTree.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent event) {
-                planningDetailsEditableLayout = new PlanningDetailsEditableLayout((PlanningUnit)planningUnitsTree.getValue
-                        (),ProjektplanungScreen.this,detailPanel);
-                detailPanel.addComponent(planningDetailsEditableLayout);
-            }
-        });
+//        planningUnitsTree.addValueChangeListener(new Property.ValueChangeListener() {
+//            @Override
+//            public void valueChange(Property.ValueChangeEvent event) {
+//                planningDetailsEditableLayout = new PlanningDetailsEditableLayout((PlanningUnit)planningUnitsTree.getValue
+//                        (),ProjektplanungScreen.this,detailPanel);
+//                detailPanel.addComponent(planningDetailsEditableLayout);
+//            }
+//        });
         treePanel.removeAllComponents();
         treePanel.addComponent(planningUnitsTreePanelLayout);
     }

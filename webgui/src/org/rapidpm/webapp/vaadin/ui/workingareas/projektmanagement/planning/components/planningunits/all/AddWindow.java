@@ -14,6 +14,7 @@ import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.DefaultValues;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -112,6 +113,7 @@ public class AddWindow extends Window {
                         if(planningUnit.getParent() == null ){
                             final PlannedProject projekt = baseDaoFactoryBean.getPlannedProjectDAO().findByID(ui
                                     .getCurrentProject().getId());
+                            managedPlanningUnit.setKindPlanningUnits(new ArrayList<PlanningUnit>());
                            projekt.getPlanningUnits().add(planningUnit);
                         } else {
                             final PlanningUnit transientParentPlanningUnit = planningUnit.getParent();

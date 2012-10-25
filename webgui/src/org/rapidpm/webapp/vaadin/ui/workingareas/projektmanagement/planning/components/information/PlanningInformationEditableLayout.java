@@ -115,6 +115,11 @@ public class PlanningInformationEditableLayout extends EditableLayout {
             }
         }
         componentsLayout.addComponent(fieldGroup.getDescriptionArea());
-        componentsLayout.addComponent(new Label("//TODO Testcases"));
+        componentsLayout.addComponent(new Label
+                (" - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - " +
+                        "- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -"));
+        for(final RichTextArea textArea : fieldGroup.getTestcaseAreas()){
+            componentsLayout.addComponent(textArea);
+        }
     }
 }
