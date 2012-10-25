@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="lib-ebean">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/lib-ebean/ebean-2.7.7-agent.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/lib-ebean/ebean-2.7.7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/lib-ebean/javax.persistence.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/lib-ebean/jta.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/lib-ebean/postgresql-9.1-901.jdbc4.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/lib-ebean/ebean-2.7.7-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/lib-ebean/ebean-2.7.7-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

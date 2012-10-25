@@ -39,6 +39,7 @@
     <orderEntry type="library" name="lib-vaadin" level="project" />
     <orderEntry type="library" name="lib-jason" level="project" />
     <orderEntry type="module" module-name="base" />
+    <orderEntry type="library" name="lib-ebean" level="project" />
   </component>
 </module>
 

@@ -7,6 +7,8 @@ package org.rapidpm.webapp.vaadin.ui.windows;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.SqlRow;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.BaseUI;
@@ -31,6 +33,11 @@ public class LoginWindow extends Window {
             public void onLogin(final LoginForm.LoginEvent loginEvent) {
                 //final BaseUI app = (BaseUI) getRoot();
                 try {
+                    String sql = "select count(*) as count from planningunit";
+                    SqlRow row = Ebean.createSqlQuery(sql).findUnique();
+
+                    Integer i = row.getInteger("count");
+                    System.out.println("Got "+i+" - DataSource good!!!");
                     final String username = loginEvent.getLoginParameter("username");
                     final String password = loginEvent.getLoginParameter("password");
                     ui.localization(languageBox.getValue());

@@ -14,6 +14,8 @@
           <element id="library" level="project" name="lib-vaadin" />
           <element id="library" level="project" name="lib-jason" />
           <element id="library" level="project" name="module-vaadin" />
+          <element id="library" level="project" name="lib-ebean" />
+          <element id="file-copy" path="$PROJECT_DIR$/base/src/ebean.properties" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="ejb/ejb/EJB" />
@@ -23,6 +25,7 @@
       </element>
       <element id="dir-copy" path="$PROJECT_DIR$/webgui/web/VAADIN" />
       <element id="vaadin.resources" include-widgetset-compilation="true" vaadin-facet-name="Vaadin Application (on Web)" web-root-dir="$PROJECT_DIR$/webgui/web" />
+      <element id="library" level="project" name="lib-ebean" />
     </root>
   </artifact>
 </component>
