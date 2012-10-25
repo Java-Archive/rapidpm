@@ -52,6 +52,7 @@ public class PlanningInformationEditableLayout extends EditableLayout {
                 planningUnitFromDB = screen.getTempPlanningUnit();
             //}
         }
+        logger.info(planningUnitFromDB);
         printchildren(planningUnitFromDB);
         //baseDaoFactoryBean.getEntityManager().refresh(planningUnitFromDB);
 
@@ -100,7 +101,7 @@ public class PlanningInformationEditableLayout extends EditableLayout {
 
     private void printchildren(PlanningUnit planningUnitFromDB) {
         for(PlanningUnit pu : planningUnitFromDB.getKindPlanningUnits()){
-            System.out.println("children of "+pu+": "+pu.getKindPlanningUnits());
+            logger.info("children of "+pu+": "+pu.getKindPlanningUnits());
             printchildren(pu);
         }
     }

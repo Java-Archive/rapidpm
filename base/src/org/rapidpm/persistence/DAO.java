@@ -148,8 +148,8 @@ public class DAO<K extends Number, E> implements Serializable {
                     logger.info("Obj ist keine Entity..");
                 }
             } else {
-                final T theentity = this.entityManager.merge(entity);
-                this.entityManager.remove(theentity);
+                //final T theentity = this.entityManager.merge(entity);
+                this.entityManager.remove(entity);
             }
         }
     }

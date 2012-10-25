@@ -17,7 +17,7 @@
             <!--<property name="javax.persistence.validation.mode" value="none"/>-->
             <property name="hibernate.transaction.manager_lookup_class"
             value="org.hibernate.transaction.JBossTransactionManagerLookup"/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <!--<property name="hibernate.hbm2ddl.auto" value="update"/> -->
             <property name="hibernate.cache.use_second_level_cache" value="true"/>
             <property name="hibernate.id.new_generator_mappings" value="false"/>
             <property name="hibernate.connection.release_mode" value="on_close"/>

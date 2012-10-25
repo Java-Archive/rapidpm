@@ -46,6 +46,7 @@ public class PlanningDetailsEditableLayout extends EditableLayout {
         if(planningUnitFromDB == null){
                 planningUnitFromDB = screen.getTempPlanningUnit();
         }
+        logger.info(planningUnitFromDB);
         printchildren(planningUnitFromDB);
         fieldGroup = new PlanningUnitFieldGroup(screen, planningUnitFromDB);
         fieldList = fieldGroup.getFieldList();
@@ -88,7 +89,7 @@ public class PlanningDetailsEditableLayout extends EditableLayout {
 
     private void printchildren(PlanningUnit planningUnitFromDB) {
         for(PlanningUnit pu : planningUnitFromDB.getKindPlanningUnits()){
-            System.out.println("children of "+pu+": "+pu.getKindPlanningUnits());
+            logger.info("children of "+pu+": "+pu.getKindPlanningUnits());
             printchildren(pu);
         }
     }

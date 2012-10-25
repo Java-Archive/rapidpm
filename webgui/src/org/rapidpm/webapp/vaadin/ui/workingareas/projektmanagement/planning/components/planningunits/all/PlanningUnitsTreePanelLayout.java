@@ -83,9 +83,9 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout {
                     }
                     baseDaoFactoryBean.getPlanningUnitDAO().remove(managedPlanningUnit);
                     for(PlanningUnit pu : projekt.getPlanningUnits()){
-                        System.out.println(pu.getPlanningUnitName()+": "+pu.getKindPlanningUnits());
+                        logger.info(pu.getPlanningUnitName()+": "+pu.getKindPlanningUnits());
                         for(PlanningUnit pu1 : pu.getKindPlanningUnits()){
-                            System.out.println("\t"+pu1.getPlanningUnitName()+": "+pu1.getKindPlanningUnits());
+                            logger.info("\t"+pu1.getPlanningUnitName()+": "+pu1.getKindPlanningUnits());
                         }
                     }
 
@@ -109,6 +109,13 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout {
         leftLayout.addComponent(buttonLayout);
         leftLayout.addComponent(screen.getPlanningUnitsTree());
         addComponent(leftLayout);
+    }
+
+    private void printchildren(PlanningUnit planningUnitFromDB) {
+        for(PlanningUnit pu : planningUnitFromDB.getKindPlanningUnits()){
+            logger.info("children of "+pu+": "+pu.getKindPlanningUnits());
+            printchildren(pu);
+        }
     }
 
 }
