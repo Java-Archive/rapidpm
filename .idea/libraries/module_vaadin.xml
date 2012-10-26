@@ -1,23 +1,23 @@
 <component name="libraryTable">
   <library name="module-vaadin">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main/vaadin-server-7.0.0.beta1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main/vaadin-shared-7.0.0.beta1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main/vaadin-theme-compiler-7.0.0.beta1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main/vaadin-client-compiled-7.0.0.beta1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main/vaadin-themes-7.0.0.beta1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main/vaadin-server-7.0.0.beta6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main/vaadin-shared-7.0.0.beta6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main/vaadin-theme-compiler-7.0.0.beta6.jar!/" />
+      <root url="file://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main/vaadin-server-7.0.0.beta1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main/vaadin-shared-7.0.0.beta1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main/vaadin-theme-compiler-7.0.0.beta1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main/vaadin-themes-7.0.0.beta1.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main/vaadin-client-compiled-7.0.0.beta1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main/vaadin-server-7.0.0.beta6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main/vaadin-shared-7.0.0.beta6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main/vaadin-theme-compiler-7.0.0.beta6.jar!/" />
+      <root url="file://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main" />
     </SOURCES>
     <jarDirectory url="file://$PROJECT_DIR$/lib/lib-vaadin/7.0.0.a3" recursive="false" />
     <jarDirectory url="file://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/7.0.0.a3/main" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main" recursive="false" />
     <jarDirectory url="file://$PROJECT_DIR$/lib/lib-vaadin/7.0.0.a3" recursive="false" type="SOURCES" />
     <jarDirectory url="file://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/7.0.0.a3/main" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://$PROJECT_DIR$/lib/module/org/rapidpm/vaadin/main" recursive="false" type="SOURCES" />
   </library>
 </component>

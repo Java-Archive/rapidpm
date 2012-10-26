@@ -106,8 +106,8 @@ public class TreeTableDataSourceFiller {
         for (final RessourceGroup spalte : ressourceGroups) {
             final Item dataSourceItem = dataSource.getItem(parent);
             final Double newValue = ressourceGroupsCostsMap.get(spalte);
-            final Property<?> itemProperty = dataSourceItem.getItemProperty(spalte.getName());
-            itemProperty.setValue(newValue);
+            final Property<String> itemProperty = dataSourceItem.getItemProperty(spalte.getName());
+            itemProperty.setValue(newValue.toString());
         }
     }
 

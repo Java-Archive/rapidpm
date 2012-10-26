@@ -10,6 +10,7 @@ import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
@@ -54,8 +55,8 @@ public class ProjektplanungScreen extends Screen {
         baseDaoFactoryBean = projektplanungScreenBean.getDaoFactoryBean();
         refreshEntities(baseDaoFactoryBean);
         final PlannedProject projectFromSession = ui.getCurrentProject();
-        final PlannedProject projectFromDB = baseDaoFactoryBean.getPlannedProjectDAO().findByID
-                (projectFromSession.getId());
+        final PlannedProjectDAO plannedProjectDAO = baseDaoFactoryBean.getPlannedProjectDAO();
+        final PlannedProject projectFromDB = plannedProjectDAO.findByID(projectFromSession.getId());
 
         final PlanningCalculator calculator = new PlanningCalculator(messagesBundle);
         calculator.calculate();
