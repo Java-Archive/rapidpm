@@ -32,7 +32,7 @@ public class IssueTimeUnit {
     private Long id;
 
     @Basic
-    private Date datum;
+    private Date date;
 
     @Basic
     private int minutes;
@@ -55,12 +55,12 @@ public class IssueTimeUnit {
         this.id = id;
     }
 
-    public Date getDatum() {
-        return datum;
+    public Date getDate() {
+        return date;
     }
 
-    public void setDatum(final Date datum) {
-        this.datum = datum;
+    public void setDate(final Date date) {
+        this.date = date;
     }
 
     public Benutzer getWorker() {
@@ -91,7 +91,7 @@ public class IssueTimeUnit {
     public String toString() {
         return "IssueTimeUnit{" +
                 "id=" + id +
-                ", datum=" + datum +
+                ", date=" + date +
                 ", minutes=" + minutes +
                 ", comment='" + comment + '\'' +
                 ", worker=" + worker +
@@ -107,7 +107,7 @@ public class IssueTimeUnit {
 
         if (minutes != that.minutes) return false;
         if (comment != null ? !comment.equals(that.comment) : that.comment != null) return false;
-        if (datum != null ? !datum.equals(that.datum) : that.datum != null) return false;
+        if (date != null ? !date.equals(that.date) : that.date != null) return false;
         if (worker != null ? !worker.equals(that.worker) : that.worker != null) return false;
 
         return true;
@@ -115,7 +115,7 @@ public class IssueTimeUnit {
 
     @Override
     public int hashCode() {
-        int result = datum != null ? datum.hashCode() : 0;
+        int result = date != null ? date.hashCode() : 0;
         result = 31 * result + minutes;
         result = 31 * result + (comment != null ? comment.hashCode() : 0);
         result = 31 * result + (worker != null ? worker.hashCode() : 0);

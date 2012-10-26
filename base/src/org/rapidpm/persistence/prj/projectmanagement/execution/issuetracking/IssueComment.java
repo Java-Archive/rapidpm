@@ -48,7 +48,7 @@ public class IssueComment {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -56,7 +56,7 @@ public class IssueComment {
         return text;
     }
 
-    public void setText(String txt) {
+    public void setText(final String txt) {
         this.text = txt;
     }
 
@@ -65,7 +65,7 @@ public class IssueComment {
         return creator;
     }
 
-    public void setCreator(Benutzer creator) {
+    public void setCreator(final Benutzer creator) {
         this.creator = creator;
     }
 
@@ -95,7 +95,7 @@ public class IssueComment {
     public String toString() {
         return "IssueComment{" +
                 "id=" + id +
-                ", txt='" + text + '\'' +
+                ", text='" + text + '\'' +
                 ", creator=" + creator +
                 ", created=" + created +
                 '}';

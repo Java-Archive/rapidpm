@@ -90,35 +90,32 @@ public class IssueBase implements PersistInGraph {
     @Relational(clazz = PlanningUnit.class)
     private PlanningUnit planningUnit;
 
-    public IssueBase() {
-        //empty on purpose
-    }
 
     public IssueBase(final Long projectId) {
-        this.projectId = projectId;
+        setProjectId(projectId);
     }
 
 
 
-    public boolean connectToIssueAs(IssueBase issue, IssueRelation relation) {
+    public boolean connectToIssueAs(final IssueBase issue, final IssueRelation relation) {
         return GraphDaoFactory.getIssueBaseDAO(projectId).connectEntitiesWithRelationTx(this, issue, relation);
     }
 
-    public List<IssueBase> getConnectedIssues(IssueRelation relation) {
+    public List<IssueBase> getConnectedIssues(final IssueRelation relation) {
         return getConnectedIssues(relation, Direction.BOTH);
     }
 
-    public List<IssueBase> getConnectedIssues(IssueRelation relation, Direction direction) {
+    public List<IssueBase> getConnectedIssues(final IssueRelation relation, final Direction direction) {
         return GraphDaoFactory.getIssueBaseDAO(projectId).getConnectedIssuesWithRelation(this, relation, direction);
     }
 
-    public boolean removeConnectionToIssue(IssueBase issue, IssueRelation relation) {
+    public boolean removeConnectionToIssue(final IssueBase issue, final IssueRelation relation) {
         return GraphDaoFactory.getIssueBaseDAO(projectId).deleteRelationOfEntitiesTx(this, issue, relation);
     }
 
 
 
-    public boolean addSubIssue(IssueBase subIssue) {
+    public boolean addSubIssue(final IssueBase subIssue) {
         return GraphDaoFactory.getIssueBaseDAO(projectId).addSubIssueTx(this, subIssue);
     }
 
@@ -126,13 +123,13 @@ public class IssueBase implements PersistInGraph {
         return GraphDaoFactory.getIssueBaseDAO(projectId).getSubIssuesOf(this);
     }
 
-    public boolean removeSubIssue(IssueBase subIssue) {
+    public boolean removeSubIssue(final IssueBase subIssue) {
         return GraphDaoFactory.getIssueBaseDAO(projectId).deleteSubIssueRelationTx(this, subIssue);
     }
 
 
 
-    public boolean addComponent(IssueComponent component) {
+    public boolean addComponent(final IssueComponent component) {
         return GraphDaoFactory.getIssueBaseDAO(projectId).addComponentToTx(this, component);
     }
 
@@ -140,16 +137,16 @@ public class IssueBase implements PersistInGraph {
         return GraphDaoFactory.getIssueBaseDAO(projectId).getComponentsOf(this);
     }
 
-    public boolean removeComponent(IssueComponent component) {
+    public boolean removeComponent(final IssueComponent component) {
         return GraphDaoFactory.getIssueBaseDAO(projectId).deleteComponentRelationTx(this, component);
     }
 
-    public boolean removeAllComponents(List<IssueComponent> componentList) {
+    public boolean removeAllComponents(final List<IssueComponent> componentList) {
         return GraphDaoFactory.getIssueBaseDAO(projectId).deleteAllComponentRelationsTx(this, componentList);
     }
 
 
-    public boolean addOrChangeComment(IssueComment comment) {
+    public boolean addOrChangeComment(final IssueComment comment) {
         for (IssueComment com : comments)
             if (comment.getId() != null && com.getId().equals(comment.getId())) {
                 comments.set(comments.indexOf(com), comment);
@@ -158,25 +155,25 @@ public class IssueBase implements PersistInGraph {
         return comments.add(comment);
     }
 
-    public boolean removeComment(IssueComment comment) {
+    public boolean removeComment(final IssueComment comment) {
         return comments.remove(comment);
     }
 
 
-    public boolean addTestCase(TestCase testcase) {
+    public boolean addTestCase(final TestCase testcase) {
         return testcases.add(testcase);
     }
 
-    public boolean removeTestCase(TestCase testcase) {
+    public boolean removeTestCase(final TestCase testcase) {
         return testcases.remove(testcase);
     }
 
 
-    public boolean addTimeUnitUsed(IssueTimeUnit timeUnit) {
+    public boolean addTimeUnitUsed(final IssueTimeUnit timeUnit) {
         return timeUnitsUsed.add(timeUnit);
     }
 
-    public boolean removeTimeUnitUsed(IssueTimeUnit timeUnit) {
+    public boolean removeTimeUnitUsed(final IssueTimeUnit timeUnit) {
         return timeUnitsUsed.remove(timeUnit);
     }
 
@@ -202,7 +199,7 @@ public class IssueBase implements PersistInGraph {
         return planningUnit;
     }
 
-    public void setPlanningUnit(PlanningUnit planningUnit) {
+    public void setPlanningUnit(final PlanningUnit planningUnit) {
         this.planningUnit = planningUnit;
     }
 
@@ -338,7 +335,7 @@ public class IssueBase implements PersistInGraph {
         return risk;
     }
 
-    public void setRisk(String risk) {
+    public void setRisk(final String risk) {
         this.risk = risk;
     }
 
@@ -426,6 +423,6 @@ public class IssueBase implements PersistInGraph {
 
     @Override
     public String name() {
-        return getSummary();
+        return getText();
     }
 }

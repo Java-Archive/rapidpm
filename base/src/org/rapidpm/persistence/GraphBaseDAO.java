@@ -319,7 +319,19 @@ public class GraphBaseDAO<T> {
 
         E entity = null;
         try {
-            entity = (E) clazz.newInstance();
+            try {
+                entity = (E) clazz.getConstructor().newInstance();
+            } catch (NoSuchMethodException e) {
+                try {
+                    entity = (E) clazz.getConstructor(Long.class).newInstance(new Long(-1));
+                } catch (NoSuchMethodException e1) {
+                    e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (InvocationTargetException e1) {
+                    e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
 
             final Field[] fieldNames = entity.getClass().getDeclaredFields();
             for (final Field field : fieldNames) {
@@ -330,13 +342,11 @@ public class GraphBaseDAO<T> {
                 }
 
                 if (field.isAnnotationPresent(Simple.class)) {
-                    try {
-                        if (field.getAnnotation(Simple.class).clazz().equals("Date")) {
-                            field.set(entity, new Date(Long.class.cast(node.getProperty(field.getName()))));
+                    if (field.getAnnotation(Simple.class).clazz().equals("Date")) {
+                        field.set(entity, new Date(Long.class.cast(node.getProperty(field.getName()))));
 
-                        } else
-                            field.set(entity, field.getType().cast(node.getProperty(field.getName(), null)));
-                    } catch (IllegalAccessException e) { e.printStackTrace(); }
+                    } else
+                        field.set(entity, field.getType().cast(node.getProperty(field.getName(), null)));
                 }
 
                 else if (field.isAnnotationPresent(Relational.class)) {
@@ -362,18 +372,13 @@ public class GraphBaseDAO<T> {
                     }
                 }
                 else if (field.isAnnotationPresent(Graph.class)) {
-                    try {
-                        final Class aClass = field.getAnnotation(Graph.class).clazz();
-                        Node travNode = null;
-                        for (Relationship rel : node.getRelationships(GraphRelationRegistry.getRelationshipTypeForClass(aClass),
-                                Direction.OUTGOING))
-                            travNode = rel.getOtherNode(node);
+                    final Class aClass = field.getAnnotation(Graph.class).clazz();
+                    Node travNode = null;
+                    for (Relationship rel : node.getRelationships(GraphRelationRegistry.getRelationshipTypeForClass(aClass),
+                            Direction.OUTGOING))
+                        travNode = rel.getOtherNode(node);
 
-                        field.set(entity, getObjectFromNode(travNode, aClass));
-//                            }
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
+                    field.set(entity, getObjectFromNode(travNode, aClass));
                 }
 
                 field.setAccessible(isAccessible);

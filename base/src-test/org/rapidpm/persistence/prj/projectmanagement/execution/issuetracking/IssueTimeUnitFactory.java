@@ -18,7 +18,7 @@ public class IssueTimeUnitFactory extends EntityFactory<IssueTimeUnit> {
     public IssueTimeUnit createRandomEntity() {
         final IssueTimeUnit issueTimeUnit = new IssueTimeUnit();
         issueTimeUnit.setComment(RND.nextSentence(6, 20, 5, 12));
-        issueTimeUnit.setDatum(RND.nextDate());
+        issueTimeUnit.setDate(RND.nextDate());
         issueTimeUnit.setMinutes(RND.nextInt(5, 320));
 //        issueTimeUnit.setWorker(); //TODO Benutzer
         return issueTimeUnit;

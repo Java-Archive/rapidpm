@@ -30,7 +30,7 @@ public class TestCase {
         //empty on purpose
     }
 
-    public TestCase(String text) {
+    public TestCase(final String text) {
         this.text = text;
     }
 
@@ -38,7 +38,7 @@ public class TestCase {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -46,7 +46,7 @@ public class TestCase {
         return text;
     }
 
-    public void setText(String text) {
+    public void setText(final String text) {
         this.text = text;
     }
 
@@ -56,7 +56,6 @@ public class TestCase {
         return "TestCase{" +
                 "id=" + id +
                 ", text='" + text + '\'' +
-//                ", issue=" + issue +
                 '}';
     }
 
@@ -67,7 +66,6 @@ public class TestCase {
 
         TestCase testCase = (TestCase) o;
 
-//        if (issue != null ? !issue.equals(testCase.issue) : testCase.issue != null) return false;
         if (text != null ? !text.equals(testCase.text) : testCase.text != null) return false;
 
         return true;
@@ -75,8 +73,6 @@ public class TestCase {
 
     @Override
     public int hashCode() {
-        int result = text != null ? text.hashCode() : 0;
-//        result = 31 * result + (issue != null ? issue.hashCode() : 0);
-        return result;
+        return text != null ? text.hashCode() : 0;
     }
 }
