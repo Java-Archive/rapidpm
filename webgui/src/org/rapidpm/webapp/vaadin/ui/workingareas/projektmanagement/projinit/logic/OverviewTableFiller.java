@@ -65,8 +65,9 @@ public class OverviewTableFiller {
         table.addItem(ABSOLUT);
         table.addItem(RELATIV);
 
-        final Property<?> absolutItemAngabeProperty = table.getItem(ABSOLUT).getItemProperty(angabe);
-        absolutItemAngabeProperty.setValue(messages.getString("costsinit_sumInDDHHMM"));
+        final Property<String> absolutItemAngabeProperty = table.getItem(ABSOLUT).getItemProperty(angabe);
+        final String costsinit_sumInDDHHMM = messages.getString("costsinit_sumInDDHHMM");
+        absolutItemAngabeProperty.setValue(costsinit_sumInDDHHMM);
         for (final Object spalte : table.getItem(ABSOLUT).getItemPropertyIds()) {
             if (!spalte.equals(angabe)) {
                 final Map<RessourceGroup, DaysHoursMinutesItem> absoluteWerte = calculator.getAbsoluteWerte();
@@ -84,8 +85,9 @@ public class OverviewTableFiller {
 
         final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
         final Item relativZeile = table.getItem(RELATIV);
-        final Property<?> relativItemAngabeProperty = relativZeile.getItemProperty(angabe);
-        relativItemAngabeProperty.setValue(messages.getString("costsinit_sumInPercent"));
+        final Property<String> relativItemAngabeProperty = relativZeile.getItemProperty(angabe);
+        final String costsinit_sumInPercent = messages.getString("costsinit_sumInPercent");
+        relativItemAngabeProperty.setValue(costsinit_sumInPercent);
         for (final Object spalte : relativZeile.getItemPropertyIds()) {
             if (!spalte.equals(angabe)) {
                 final Map<RessourceGroup, Double> relativeWerte = calculator.getRelativeWerte();

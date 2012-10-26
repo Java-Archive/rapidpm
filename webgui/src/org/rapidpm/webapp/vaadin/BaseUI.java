@@ -9,8 +9,8 @@ package org.rapidpm.webapp.vaadin;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.server.VaadinSession;
-import com.vaadin.server.WrappedRequest;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinServiceSession;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.BaseTheme;
 import org.apache.log4j.Logger;
@@ -54,10 +54,10 @@ public abstract class BaseUI extends UI {
 
 
     @Override
-    public void init(final WrappedRequest request) {
+    public void init(final VaadinRequest request) {
         loadFirstProject();
         this.setSizeFull();
-        final VaadinSession session = getSession();
+        final VaadinServiceSession session = getSession();
         if (session.getAttribute(Benutzer.class) == null) {
             if (DEBUG_MODE) {
                 buildMainLayout();
@@ -79,7 +79,7 @@ public abstract class BaseUI extends UI {
 
     private void loadFirstProject() {
         final LoginBean bean = EJBFactory.getEjbInstance(LoginBean.class);
-        final VaadinSession session = this.getSession();
+        final VaadinServiceSession session = this.getSession();
         final List<PlannedProject> projects = bean.getDaoFactoryBean().getPlannedProjectDAO().loadAllEntities();
         if(projects == null || projects.isEmpty()){
             session.setAttribute(PlannedProject.class, null);

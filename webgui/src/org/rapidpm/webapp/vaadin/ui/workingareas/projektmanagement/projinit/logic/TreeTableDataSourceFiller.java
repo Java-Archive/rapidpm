@@ -83,7 +83,7 @@ public class TreeTableDataSourceFiller {
                             planningUnitElement.setPlannedHours(0);
                             planningUnitElement.setPlannedMinutes(0);
                             final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem(planningUnitElement);
-                            final Property<?> itemProperty = planningUnitItem.getItemProperty(spalte.getName());
+                            final Property<String> itemProperty = planningUnitItem.getItemProperty(spalte.getName());
                             itemProperty.setValue(daysHoursMinutesItem.toString());
                         }
                     }
