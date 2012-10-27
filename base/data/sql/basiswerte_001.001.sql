@@ -1,4 +1,4 @@
-INSERT INTO
+﻿INSERT INTO
         mandantengruppe(id, mandantengruppe) VALUES (1, 'RapidPM');
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('Mandantengruppe_id', 1);
@@ -191,8 +191,17 @@ VALUES (13,13,'Durchführung',13,1,null,1,1);
 INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
 VALUES (14,14,'Beendigung',14,1,null,1,1);
 
+INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+VALUES (15,15,'Angebotserstellung',8,1,null,1,2);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_id', 15);
+INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+VALUES (16,16,'Oberflächen',10,1,null,1,2);
+
+INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+VALUES (17,17,'Abschlussarbeiten',5,1,null,1,3);
+
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_id', 18);
+
 
 INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
 VALUES (1, 1);
@@ -206,9 +215,17 @@ VALUES (2, 13);
 INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
 VALUES (2, 14);
 
+INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
+VALUES (1, 15);
 
+INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
+VALUES (1, 16);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlannedProject_PlanningUnit_id', 5);
+INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
+VALUES (1, 17);
+
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlannedProject_PlanningUnit_id', 8);
+
 
 INSERT INTO planningunit_planningunit(planningunit_id,kindplanningunits_id)
 VALUES (1, 2);
@@ -239,11 +256,6 @@ VALUES (9, 10);
 
 INSERT INTO planningunit_planningunit(planningunit_id,kindplanningunits_id)
 VALUES (9, 11);
-
-
-
-
-
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_PlanningUnit_id', 11);
 
@@ -583,7 +595,79 @@ VALUES (111, 4, 5, 20, 7);
 INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
 VALUES (112, 5, 10, 30, 8);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnitElement_id', 113);
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (113, 3, 1, 10, 1);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (114, 2, 2, 30, 2);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (115, 5, 5, 25, 3);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (116, 4, 3, 40, 4);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (117, 6, 2, 25, 5);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (118, 5, 4, 50, 6);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (119, 4, 5, 30, 7);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (120, 7, 3, 60, 8);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (121, 3, 1, 10, 1);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (122, 2, 2, 30, 2);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (123, 5, 5, 25, 3);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (124, 4, 3, 40, 4);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (125, 6, 2, 25, 5);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (126, 5, 4, 50, 6);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (127, 4, 5, 30, 7);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (128, 7, 3, 60, 8);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (129, 3, 1, 10, 1);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (130, 2, 2, 30, 2);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (131, 5, 5, 25, 3);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (132, 4, 3, 40, 4);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (133, 6, 2, 25, 5);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (134, 5, 4, 50, 6);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (135, 4, 5, 30, 7);
+
+INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
+VALUES (136, 7, 3, 60, 8);
+
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnitElement_id', 137);
 
 INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
 VALUES (1, 1);
@@ -921,7 +1005,216 @@ VALUES (14, 111);
 INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
 VALUES (14, 112);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_PlanningUnitElement_id', 113);
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (15, 113);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (15, 114);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (15, 115);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (15, 116);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (15, 117);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (15, 118);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (15, 119);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (15, 120);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (16, 121);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (16, 122);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (16, 123);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (16, 124);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (16, 125);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (16, 126);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (16, 127);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (16, 128);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (17, 129);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (17, 130);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (17, 131);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (17, 132);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (17, 133);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (17, 134);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (17, 135);
+
+INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
+VALUES (17, 136);
+
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_PlanningUnitElement_id', 137);
 
 
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (1, '2012-08-08', 'Comment 1', 4);
 
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (2, '2012-08-14', 'Comment 2', 3);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (3, '2012-08-28', 'Comment 3', 2);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (4, '2012-09-02', 'Comment 4', 5);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (5, '2012-09-13', 'Comment 5', 5);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (6, '2012-09-20', 'Comment 6', 4);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (7, '2012-09-29', 'Comment 7', 4);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (8, '2012-10-19', 'Comment 8', 3);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (9, '2012-10-20', 'Comment 9', 3);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (10, '2012-11-11', 'Comment 10', 2);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (11, '2012-11-12', 'Comment 11', 2);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (12, '2012-11-13', 'Comment 12', 3);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (13, '2012-11-14', 'Comment 13', 2);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (14, '2012-11-15', 'Comment 14', 5);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (15, '2012-11-16', 'Comment 15', 4);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (16, '2012-09-29', 'Comment 16', 4);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (17, '2012-10-19', 'Comment 17', 5);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (18, '2012-10-20', 'Comment 18', 3);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (19, '2012-11-11', 'Comment 19', 2);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (20, '2012-11-12', 'Comment 20', 2);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (21, '2012-11-13', 'Comment 21', 3);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (22, '2012-11-14', 'Comment 22', 2);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (23, '2012-11-15', 'Comment 23', 5);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (24, '2012-11-16', 'Comment 24', 4);
+
+INSERT INTO issuecomment (id, created, text, creator_id)
+VALUES (25, '2012-09-29', 'Comment 25', 4);
+
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('issuecomment_id', 26);
+
+INSERT INTO testcase (id, text)
+VALUES (1, 'Testcase 1');
+
+INSERT INTO testcase (id, text)
+VALUES (2, 'Testcase 2');
+
+INSERT INTO testcase (id, text)
+VALUES (3, 'Testcase 3');
+
+INSERT INTO testcase (id, text)
+VALUES (4, 'Testcase 4');
+
+INSERT INTO testcase (id, text)
+VALUES (5, 'Testcase 5');
+
+INSERT INTO testcase (id, text)
+VALUES (6, 'Testcase 6');
+
+INSERT INTO testcase (id, text)
+VALUES (7, 'Testcase 7');
+
+INSERT INTO testcase (id, text)
+VALUES (8, 'Testcase 8');
+
+INSERT INTO testcase (id, text)
+VALUES (9, 'Testcase 9');
+
+INSERT INTO testcase (id, text)
+VALUES (10, 'Testcase 10');
+
+INSERT INTO testcase (id, text)
+VALUES (11, 'Testcase 11');
+
+INSERT INTO testcase (id, text)
+VALUES (12, 'Testcase 12');
+
+INSERT INTO testcase (id, text)
+VALUES (13, 'Testcase 13');
+
+INSERT INTO testcase (id, text)
+VALUES (14, 'Testcase 14');
+
+INSERT INTO testcase (id, text)
+VALUES (15, 'Testcase 15');
+
+INSERT INTO testcase (id, text)
+VALUES (16, 'Testcase 16');
+
+INSERT INTO testcase (id, text)
+VALUES (17, 'Testcase 17');
+
+INSERT INTO testcase (id, text)
+VALUES (18, 'Testcase 18');
+
+INSERT INTO testcase (id, text)
+VALUES (19, 'Testcase 19');
+
+INSERT INTO testcase (id, text)
+VALUES (20, 'Testcase 20');
+
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('testcase_id', 21);
