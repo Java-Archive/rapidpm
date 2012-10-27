@@ -4,6 +4,7 @@ import com.vaadin.event.MouseEvents;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.VerticalLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Componentssetable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 
@@ -18,12 +19,15 @@ import java.util.ResourceBundle;
  */
 public abstract class EditablePanel extends Panel implements Internationalizationable, Componentssetable {
 
+    protected VerticalLayout panelLayout;
     protected Button saveButton = new Button();
     protected Button cancelButton = new Button();
     protected HorizontalLayout buttonsLayout = new HorizontalLayout();
     protected ResourceBundle messagesBundle;
 
     public EditablePanel(final ResourceBundle messagesBundle){
+        panelLayout = new VerticalLayout();
+        panelLayout.setStyleName("abc");
         this.messagesBundle = messagesBundle;
 
         addClickListener(new MouseEvents.ClickListener() {

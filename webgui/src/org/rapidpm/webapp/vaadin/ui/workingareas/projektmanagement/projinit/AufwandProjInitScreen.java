@@ -60,7 +60,7 @@ public class AufwandProjInitScreen extends Screen {
 
         bean = EJBFactory.getEjbInstance(AufwandProjInitScreenBean.class);
         baseDaoFactoryBean = bean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
+        //refreshEntities(baseDaoFactoryBean);
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
 
@@ -131,6 +131,7 @@ public class AufwandProjInitScreen extends Screen {
         final PlannedProject projectFromSession = ui.getCurrentProject();
         final PlannedProject projekt = baseDaoFactoryBean.getPlannedProjectDAO().findByID
                 (projectFromSession.getId());
+        baseDaoFactoryBean.getEntityManager().refresh(projekt);
         projektField.setValue(projekt.getProjektName());
     }
 
@@ -174,22 +175,6 @@ public class AufwandProjInitScreen extends Screen {
         addComponent(table1layout);
         addComponent(table2layout);
         addComponent(formLayout);
-    }
-
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
-            entityManager.refresh(planningUnit);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
     }
 
     public TextField getKundeField() {

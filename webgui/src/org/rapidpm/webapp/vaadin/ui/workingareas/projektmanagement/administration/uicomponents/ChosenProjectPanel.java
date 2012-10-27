@@ -62,9 +62,10 @@ public class ChosenProjectPanel extends EditablePanel {
 
     @Override
     public void setComponents() {
-        addComponent(noSelectionLabel);
-        addComponent(formLayout);
-        addComponent(buttonsLayout);
+        panelLayout.addComponent(noSelectionLabel);
+        panelLayout.addComponent(formLayout);
+        panelLayout.addComponent(buttonsLayout);
+        addComponent(panelLayout);
     }
 
     @Override
@@ -94,12 +95,14 @@ public class ChosenProjectPanel extends EditablePanel {
 
     @Override
     public void activate(boolean b){
-        for(Object propertyId : fieldGroup.getBoundPropertyIds()){
-            if(!propertyId.equals(PlannedProject.ID)){
-                final Field field = fieldGroup.getField(propertyId);
-                field.setReadOnly(!b);
+        if(fieldGroup != null){
+            for(Object propertyId : fieldGroup.getBoundPropertyIds()){
+                if(!propertyId.equals(PlannedProject.ID)){
+                    final Field field = fieldGroup.getField(propertyId);
+                    field.setReadOnly(!b);
+                }
             }
+            buttonsLayout.setVisible(b);
         }
-        buttonsLayout.setVisible(b);
     }
 }

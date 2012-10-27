@@ -38,11 +38,12 @@ public class CurrentProjectPanel extends EditablePanel {
         this.screen = theScreen;
         bean = EJBFactory.getEjbInstance(CurrentProjectPanelBean.class);
         final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
-
         setCaption(messagesBundle.getString("pm_currentproject"));
         removeAllComponents();
         final List<PlannedProject> projects = baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities();
+        for(PlannedProject plannedProject : projects){
+            baseDaoFactoryBean.getEntityManager().refresh(plannedProject);
+        }
         if(projects.isEmpty()){
             addComponent(new Label(messagesBundle.getString("pm_noprojects")));
         } else {
@@ -92,23 +93,8 @@ public class CurrentProjectPanel extends EditablePanel {
 
     @Override
     public void setComponents() {
-        addComponent(currentProjectBox);
-        addComponent(buttonsLayout);
-    }
-
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
-            entityManager.refresh(planningUnit);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
+        panelLayout.addComponent(currentProjectBox);
+        panelLayout.addComponent(buttonsLayout);
+        addComponent(panelLayout);
     }
 }

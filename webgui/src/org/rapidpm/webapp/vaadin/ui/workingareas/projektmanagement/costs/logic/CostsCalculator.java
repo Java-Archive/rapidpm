@@ -33,8 +33,8 @@ public class CostsCalculator {
     public CostsCalculator(final ResourceBundle bundle) {
         bean = EJBFactory.getEjbInstance(CostsCalcutorBean.class);
         final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
         projekt = baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities().get(0);
+        baseDaoFactoryBean.getEntityManager().refresh(projekt);
         messages = bundle;
     }
 
@@ -105,16 +105,4 @@ public class CostsCalculator {
         return format.format(totalCostsExakt);
     }
 
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
-    }
 }

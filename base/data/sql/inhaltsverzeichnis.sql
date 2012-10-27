@@ -269,20 +269,20 @@ VALUES (24,24,'Konsolidierung bestehender Archive',14,5,20,1,1);
 INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
 VALUES (25,25,'Darstellung IST-Situation',14,5,24,1,1);
 
-INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
-VALUES (26,26,'Dokumentation, Schulung und Testphase',14,5,null,1,1);
+-- INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+-- VALUES (26,26,'Dokumentation, Schulung und Testphase',14,5,null,1,1);
+--
+-- INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+-- VALUES (27,27,'Server',14,5,null,1,1);
+--
+-- INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+-- VALUES (28,28,'Rechtlicher Hinweis',14,5,null,1,1);
+--
+-- INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
+-- VALUES (29,29,'Projektfreigabe',14,5,null,1,1);
 
-INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
-VALUES (27,27,'Server',14,5,null,1,1);
 
-INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
-VALUES (28,28,'Rechtlicher Hinweis',14,5,null,1,1);
-
-INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
-VALUES (29,29,'Projektfreigabe',14,5,null,1,1);
-
-
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_id', 30);
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_id', 26);
 
 INSERT INTO planningunit_testcases(planningunit_id,testcases)
 VALUES (21, 'Testcase 1');
@@ -313,19 +313,19 @@ VALUES (1, 17);
 INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
 VALUES (1, 20);
 
-INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
-VALUES (1, 26);
+-- INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
+-- VALUES (1, 26);
+--
+-- INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
+-- VALUES (1, 27);
+--
+-- INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
+-- VALUES (1, 28);
+--
+-- INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
+-- VALUES (1, 29);
 
-INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
-VALUES (1, 27);
-
-INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
-VALUES (1, 28);
-
-INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
-VALUES (1, 29);
-
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlannedProject_PlanningUnit_id', 10);
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlannedProject_PlanningUnit_id', 6);
 
 INSERT INTO planningunit_planningunit(planningunit_id,kindplanningunits_id)
 VALUES (2, 3);

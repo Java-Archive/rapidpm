@@ -38,8 +38,10 @@ public class TimesCalculator {
         this.messages = bundle;
         bean = EJBFactory.getEjbInstance(TimesCalculatorBean.class);
         final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
         ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
+        for(RessourceGroup ressourceGroup : ressourceGroups){
+            baseDaoFactoryBean.getEntityManager().refresh(ressourceGroup);
+        }
     }
 
     public void calculate() {
@@ -160,16 +162,4 @@ public class TimesCalculator {
         return format.format(mannTageExakt);
     }
 
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
-    }
 }

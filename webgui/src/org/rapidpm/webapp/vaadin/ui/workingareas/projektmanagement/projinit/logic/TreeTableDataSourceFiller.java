@@ -45,9 +45,11 @@ public class TreeTableDataSourceFiller {
 
         bean = EJBFactory.getEjbInstance(TreeTableDataSourceFillerBean.class);
         final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
 
         ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
+        for(RessourceGroup ressourceGroup : ressourceGroups){
+            baseDaoFactoryBean.getEntityManager().refresh(ressourceGroup);
+        }
 
         dataSource.removeAllItems();
         final String aufgabe = messages.getString("aufgabe");
@@ -154,19 +156,6 @@ public class TreeTableDataSourceFiller {
         if (days > 0) {
             item.setDays(item.getDays() + days);
             item.setHours(item.getHours() - (days * HOURS_DAY));
-        }
-    }
-
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
         }
     }
 }

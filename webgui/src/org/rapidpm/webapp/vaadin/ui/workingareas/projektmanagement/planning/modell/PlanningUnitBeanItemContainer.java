@@ -38,6 +38,7 @@ public class PlanningUnitBeanItemContainer extends BeanItemContainer<PlanningUni
     public boolean hasChildren(final Object planningUnit) {
         if (areChildrenAllowed(planningUnit)) {
             return !((PlanningUnit) planningUnit).getKindPlanningUnits().isEmpty();
+
         }
         return false;
     }

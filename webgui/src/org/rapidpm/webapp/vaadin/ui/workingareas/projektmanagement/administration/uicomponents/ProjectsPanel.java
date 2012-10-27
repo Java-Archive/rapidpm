@@ -47,9 +47,11 @@ public class ProjectsPanel extends Panel implements Internationalizationable, Co
 
         bean = EJBFactory.getEjbInstance(ProjectsPanelBean.class);
         final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
 
         final List<PlannedProject> projects = baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities();
+        for(PlannedProject plannedProject : projects){
+            baseDaoFactoryBean.getEntityManager().refresh(plannedProject);
+        }
 
         deleteProjectButton.setVisible(false);
         setSizeFull();
@@ -106,21 +108,5 @@ public class ProjectsPanel extends Panel implements Internationalizationable, Co
 
     public Button getDeleteProjectButton() {
         return deleteProjectButton;
-    }
-
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
-            entityManager.refresh(planningUnit);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
     }
 }

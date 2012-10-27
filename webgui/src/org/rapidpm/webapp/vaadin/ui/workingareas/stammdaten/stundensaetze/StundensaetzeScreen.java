@@ -48,8 +48,7 @@ public class StundensaetzeScreen extends Screen {
         super(ui);
         betriebsstdField = new TextField();
         betriebsWertField = new TextField();
-        betriebsWertField.setEnabled(false);
-        betriebsstdField.setEnabled(false);
+
 
         betriebsFieldsLayout.addComponent(betriebsstdField);
         betriebsFieldsLayout.addComponent(betriebsWertField);
@@ -117,6 +116,9 @@ public class StundensaetzeScreen extends Screen {
 
         betriebsstdField.setValue(format.format(calculator.getBetriebsStunde()) + EUR);
         betriebsWertField.setValue(format.format(calculator.getBetriebsWert()) + EUR);
+
+        betriebsWertField.setReadOnly(true);
+        betriebsstdField.setReadOnly(true);
 
         tabelle.setEditable(false);
         tabelle.setSelectable(true);
