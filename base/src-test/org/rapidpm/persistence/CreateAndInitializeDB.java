@@ -10,10 +10,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.system.security.Benutzer;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -232,37 +229,40 @@ public class CreateAndInitializeDB {
         List<IssueBase> issues = new ArrayList<>();
         List<List<Integer>> issueAttr = new ArrayList<>();
         Long projectId = new Long(1);
-        Benutzer user = new Benutzer();
+        Calendar calendar = Calendar.getInstance();
+        Benutzer user;
 
-        //status,priority,type,  reporter,assignee,  dueDate_planned,_resolved,_closed,  storypoints,  components(2),
+        //status,priority,type,  reporter,assignee,  dueDate_planned(3),_resolved(3),_closed(3),   storypoints,  components(2),
         //-timeunit_estimated-,  -timeunit_used(3)-,  -testcases(3)-,  comments(1),  risk,  planningunit
-        issueAttr.add(new ArrayList<>(Arrays.asList(0,2,4,  2,2,  0,0,0,  2,  2,-1,         14,  -1,  -1)));
-        issueAttr.add(new ArrayList<>(Arrays.asList(3,3,1,  3,2,  0,0,0,  1,  2,-1,         -1,  -1,  -1)));
-        issueAttr.add(new ArrayList<>(Arrays.asList(2,3,1,  3,3,  0,0,0,  6,  2,-1,          3,  -1,  -1)));
-        issueAttr.add(new ArrayList<>(Arrays.asList(1,0,1,  2,5,  0,0,0,  1,  2,-1,         13,  -1,  -1)));
-        issueAttr.add(new ArrayList<>(Arrays.asList(4,1,3,  4,2,  0,0,0,  6,  2,-1,         -1,  -1,  -1)));
-        issueAttr.add(new ArrayList<>(Arrays.asList(0,2,3,  2,4,  0,0,0,  3,  2,-1,          4,  -1,  -1)));
-        issueAttr.add(new ArrayList<>(Arrays.asList(0,3,1,  3,2,  0,0,0,  4,  2,-1,         -1,  -1,  -1)));
 
-        issueAttr.add(new ArrayList<>(Arrays.asList(0,0,4,  2,2,  0,0,0,  8,  3,-1,         -1,  -1,  -1)));
-        issueAttr.add(new ArrayList<>(Arrays.asList(3,1,1,  5,4,  0,0,0,  3,  3,-1,          5,  -1,  -1)));
-        issueAttr.add(new ArrayList<>(Arrays.asList(0,2,0,  4,5,  0,0,0,  7,  3,-1,         -1,  -1,  -1)));
-        issueAttr.add(new ArrayList<>(Arrays.asList(0,3,2,  2,3,  0,0,0,  4,  3,-1,         12,  -1,  -1)));
+        //Month - 1;  January = 0 ; December = 11;
+        issueAttr.add(Arrays.asList(0,2,4,  2,2,  2012, 7,12, 2012, 8,13, 2012, 8,21,  2,  2,-1,       14,  -1,  -1));
+        issueAttr.add(Arrays.asList(3,3,1,  3,2,  2012, 7,12, 2012, 7,14, 2012, 7,15,  1,  2,-1,       -1,  -1,  -1));
+        issueAttr.add(Arrays.asList(2,3,1,  3,3,  2012, 7,12, 2012, 7,18, 2012, 7,19,  6,  2,-1,        3,  -1,  -1));
+        issueAttr.add(Arrays.asList(1,0,1,  2,5,  2012, 7,12, 2012, 8, 5, 2012, 8, 6,  1,  2,-1,       13,  -1,  -1));
+        issueAttr.add(Arrays.asList(4,1,3,  4,2,  2012, 7,12, 2012, 8, 8, 2012, 8, 9,  6,  2,-1,       -1,  -1,  -1));
+        issueAttr.add(Arrays.asList(0,2,3,  2,4,  2012, 7,12, 2012, 8,13, 2012, 8,13,  3,  2,-1,        4,  -1,  -1));
+        issueAttr.add(Arrays.asList(0,3,1,  3,2,  2012, 7,12, 2012, 8,13, 2012, 8,13,  4,  2,-1,       -1,  -1,  -1));
 
-        issueAttr.add(new ArrayList<>(Arrays.asList(0,4,4,  2,2,  0,0,0, 10,  1, 2,         -1,  -1,  -1)));
-        issueAttr.add(new ArrayList<>(Arrays.asList(3,2,2,  4,5,  0,0,0,  3,  1,-1,          6,  -1,  -1)));
-        issueAttr.add(new ArrayList<>(Arrays.asList(2,3,3,  2,4,  0,0,0,  6,  1,-1,         -1,  -1,  -1)));
-        issueAttr.add(new ArrayList<>(Arrays.asList(0,4,2,  3,2,  0,0,0, 10,  1,-1,         15,  -1,  -1)));
+        issueAttr.add(Arrays.asList(0,0,4,  2,2,  2012, 7,12, 2012, 8,30, 2012, 8,30,  8,  3,-1,       -1,  -1,  -1));
+        issueAttr.add(Arrays.asList(3,1,1,  5,4,  2012, 7,12, 2012, 8,18, 2012, 8,19,  3,  3,-1,        5,  -1,  -1));
+        issueAttr.add(Arrays.asList(0,2,0,  4,5,  2012, 7,12, 2012, 8,22, 2012, 8,23,  7,  3,-1,       -1,  -1,  -1));
+        issueAttr.add(Arrays.asList(0,3,2,  2,3,  2012, 7,12, 2012, 8,28, 2012, 8,28,  4,  3,-1,       12,  -1,  -1));
 
-        issueAttr.add(new ArrayList<>(Arrays.asList(1,0,4,  3,1,  0,0,0,  5,  4, 2,         -1,  -1,  -1)));
-        issueAttr.add(new ArrayList<>(Arrays.asList(2,1,1,  5,2,  0,0,0,  2,  4,-1,          9,  -1,  -1)));
-        issueAttr.add(new ArrayList<>(Arrays.asList(3,2,0,  4,4,  0,0,0,  7,  4,-1,         -1,  -1,  -1)));
-        issueAttr.add(new ArrayList<>(Arrays.asList(0,3,2,  2,5,  0,0,0,  6,  4,-1,         -1,  -1,  -1)));
-        issueAttr.add(new ArrayList<>(Arrays.asList(1,4,1,  4,3,  0,0,0,  1,  4,-1,         10,  -1,  -1)));
-        issueAttr.add(new ArrayList<>(Arrays.asList(2,1,2,  2,2,  0,0,0,  9,  4, 1,         11,  -1,  -1)));
-        issueAttr.add(new ArrayList<>(Arrays.asList(3,2,4,  5,4,  0,0,0,  6,  4,-1,         -1,  -1,  -1)));
-        issueAttr.add(new ArrayList<>(Arrays.asList(0,3,3,  3,2,  0,0,0,  3,  4,-1,         -1,  -1,  -1)));
+        issueAttr.add(Arrays.asList(0,4,4,  2,2,  2012, 7,12, 2013, 0,14, 2012, 0,17, 10,  1, 2,       -1,  -1,  -1));
+        issueAttr.add(Arrays.asList(3,2,2,  4,5,  2012, 7,12, 2012, 9,04, 2012, 9, 5,  3,  1,-1,        6,  -1,  -1));
+        issueAttr.add(Arrays.asList(2,3,3,  2,4,  2012, 7,12, 2012,11, 1, 2012,11, 2,  6,  1,-1,       -1,  -1,  -1));
+        issueAttr.add(Arrays.asList(0,4,2,  3,2,  2012, 7,12, 2013, 0,13, 2012, 0,14, 10,  1,-1,       15,  -1,  -1));
 
+        issueAttr.add(Arrays.asList(1,0,4,  3,1,  2012, 7,12, 2012, 2,31, 2012, 3, 9,  5,  4, 2,       -1,  -1,  -1));
+        issueAttr.add(Arrays.asList(2,1,1,  5,2,  2012, 7,12, 2012, 0,31, 2012, 1,14,  2,  4,-1,        9,  -1,  -1));
+        issueAttr.add(Arrays.asList(3,2,0,  4,4,  2012, 7,12, 2012, 1,12, 2012, 1,14,  7,  4,-1,       -1,  -1,  -1));
+        issueAttr.add(Arrays.asList(0,3,2,  2,5,  2012, 7,12, 2012, 1,14, 2012, 1,14,  6,  4,-1,       -1,  -1,  -1));
+        issueAttr.add(Arrays.asList(1,4,1,  4,3,  2012, 7,12, 2012, 1,14, 2012, 1,14,  1,  4,-1,       10,  -1,  -1));
+        issueAttr.add(Arrays.asList(2,1,2,  2,2,  2012, 7,12, 2012, 2,12, 2012, 2,19,  9,  4, 1,       11,  -1,  -1));
+        issueAttr.add(Arrays.asList(3,2,4,  5,4,  2012, 7,12, 2012, 2,19, 2012, 2,19,  6,  4,-1,       -1,  -1,  -1));
+        issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  3,  4,-1,       -1,  -1,  -1));
+        
         //fill Issues with Attributes
         int i, x = 0;
         for (List<Integer> attributes : issueAttr) {
@@ -279,9 +279,14 @@ public class CreateAndInitializeDB {
             user = new Benutzer();
             user.setId(new Long(attributes.get(i++)));
             issue.setAssignee(user);
-            issue.setDueDate_planned(new Date(attributes.get(i++)));
-            issue.setDueDate_resolved(new Date(attributes.get(i++)));
-            issue.setDueDate_closed(new Date(attributes.get(i++)));
+
+            calendar.set(attributes.get(i++), attributes.get(i++), attributes.get(i++));
+            issue.setDueDate_planned(calendar.getTime());
+            calendar.set(attributes.get(i++), attributes.get(i++), attributes.get(i++));
+            issue.setDueDate_resolved(calendar.getTime());
+            calendar.set(attributes.get(i++), attributes.get(i++), attributes.get(i++));
+            issue.setDueDate_closed(calendar.getTime());
+
             issue.setVersion("1.0");
             issue.setStoryPoints(attributes.get(i++));
             for (int j = 0; j < 2; j++) {
