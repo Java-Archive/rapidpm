@@ -7,6 +7,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing.typ
  * To change this template use File | Settings | File Templates.
  */
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.neo4j.graphdb.Direction;
 import org.rapidpm.persistence.GraphDaoFactory;
@@ -143,6 +144,8 @@ public class IssueBaseDAOTest {
 
     }
 
+    @Ignore
+    @Test
     public void addComments() {
         IssueBase issue = dao.loadAllEntities().get(0);
         IssueComment comment1 = new IssueComment();

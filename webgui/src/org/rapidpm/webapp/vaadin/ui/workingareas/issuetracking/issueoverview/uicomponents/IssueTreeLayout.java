@@ -23,6 +23,7 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 
     private Button addButton;
     private Button deleteButton;
+    private Button expandButton;
 
     private Tree issueTree;
 
@@ -41,17 +42,21 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         buttonLayout.setSpacing(true);
 
         addButton = new Button();
-        addButton.setEnabled(false);
+        addButton.setEnabled(true);
         buttonLayout.addComponent(addButton);
 
         deleteButton = new Button();
         deleteButton.setEnabled(false);
         buttonLayout.addComponent(deleteButton);
 
-        if (addButton.getWidth() > deleteButton.getWidth()) deleteButton.setWidth(addButton.getWidth(), Unit.PIXELS);
-        else addButton.setWidth(deleteButton.getWidth(), Unit.PIXELS);
+        expandButton = new Button();
+        expandButton.setEnabled(true);
+
+//        if (addButton.getWidth() > deleteButton.getWidth()) deleteButton.setWidth(addButton.getWidth(), Unit.PIXELS);
+//        else addButton.setWidth(deleteButton.getWidth(), Unit.PIXELS);
 
         addComponent(buttonLayout);
+        addComponent(expandButton);
 
         issueTree = new Tree("IssueTree", new TreeContainerIssueBase(screen.getCurrentProject()));
         issueTree.setImmediate(true);
@@ -69,11 +74,30 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 
         addButton.addClickListener(new AddButtonClickListener(screen, issueTree));
         deleteButton.addClickListener(new DeleteButtonClickListener(screen, issueTree));
+        expandButton.addClickListener(new Button.ClickListener() {
+            private boolean expanded = true;
+
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                if (expanded) {
+                    for (Object id : issueTree.rootItemIds())
+                        issueTree.collapseItemsRecursively(id);
+                    expandButton.setCaption("Alle Tickets ausklappen");
+                }
+                else {
+                    for (Object id : issueTree.rootItemIds())
+                        issueTree.expandItemsRecursively(id);
+                    expandButton.setCaption("Alle Tickets einklappen");
+                }
+                expanded = !expanded;
+            }
+        });
     }
 
     @Override
     public void doInternationalization() {
         addButton.setCaption(screen.getMessagesBundle().getString("add"));
         deleteButton.setCaption(screen.getMessagesBundle().getString("delete"));
+        expandButton.setCaption("Issues einklappen");
     }
 }

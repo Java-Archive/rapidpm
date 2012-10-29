@@ -41,7 +41,7 @@ public class TreeItemClickValueChangeListener implements ItemClickEvent.ItemClic
     private void changeDetails(Object itemId) {
         IssueBase issueBase = (IssueBase)issueTree.getContainerProperty(itemId,
                 TreeContainerIssueBase.PROPERTY_ISSUEBASE).getValue();
-        issueTabSheet.getDetailsLayout().setPropertiesFromIssue(issueBase);
+        issueTabSheet.getDetailsLayout().setDetailsFromIssue(issueBase);
 
         if (!issueTree.hasChildren(itemId)) {
             issueTabSheet.disableTableTab(true);
@@ -49,9 +49,9 @@ public class TreeItemClickValueChangeListener implements ItemClickEvent.ItemClic
         else {
             List<IssueBase> issues = new ArrayList<>();
             issueTabSheet.disableTableTab(false);
-//            for (PlanningUnit childUnit : punit.getKindPlanningUnits()) {
-//                issues.add(childUnit.getIssueBase());
-//            }
+            for (IssueBase childissue : issueBase.getSubIssues()) {
+                issues.add(childissue);
+            }
             issueTabSheet.getTableLayout().setPropertiesFromIssueList(issues);
         }
     }

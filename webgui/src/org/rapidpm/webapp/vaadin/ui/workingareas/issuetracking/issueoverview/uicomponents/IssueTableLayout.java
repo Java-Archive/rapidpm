@@ -21,6 +21,7 @@ public class IssueTableLayout extends ComponentEditableVLayout {
     private final static String CAPTION = "caption";
     private final static String STATUS = "status";
     private final static String PRIORITY = "priority";
+    private final static String TYPE = "type";
 
     private Table issueTable;
 
@@ -41,16 +42,11 @@ public class IssueTableLayout extends ComponentEditableVLayout {
         issueTable.setSelectable(true);
 
 
-        String[] headerNames = new String[] {CAPTION, STATUS, PRIORITY};
+        String[] headerNames = new String[] {CAPTION, STATUS, PRIORITY, TYPE};
         for (String name : headerNames) {
             issueTable.addContainerProperty(name, String.class, "");
         }
         issueTable.setItemCaptionPropertyId(CAPTION);
-
-        for (int i=0; i<5;i++) {
-            issueTable.addItem(new Object[] {"RPM-" + 1 + i, "St", "Prio"}, i);
-        }
-
         componentsLayout.addComponent(issueTable);
 
         return componentsLayout;
@@ -60,8 +56,8 @@ public class IssueTableLayout extends ComponentEditableVLayout {
         issueTable.removeAllItems();
         int i = 0;
         for (IssueBase issue : issues) {
-            issueTable.addItem(new Object[] {"RPM-" + i, issue.getStatus().getStatusName(),
-                    issue.getPriority().getPriorityName()}, i);
+            issueTable.addItem(new Object[] {issue.getText(), issue.getStatus().getStatusName(),
+                    issue.getPriority().getPriorityName(), issue.getType().getTypeName()}, i);
             i++;
         }
     }

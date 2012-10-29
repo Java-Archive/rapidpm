@@ -21,5 +21,6 @@ public class DetailsCancelButtonClickListener implements Button.ClickListener {
     @Override
     public void buttonClick(Button.ClickEvent event) {
         detailsLayout.setLayoutReadOnly(true);
+        detailsLayout.setDetailsFromIssue(detailsLayout.getCurrentIssue());
     }
 }

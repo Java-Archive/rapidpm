@@ -8,6 +8,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.apache.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -74,18 +75,18 @@ public class IssueBase implements PersistInGraph {
     private IssueTimeUnit timeUnitEstimated;
 
     //@Relational
-    private List<IssueTimeUnit> timeUnitsUsed;
+    private List<IssueTimeUnit> timeUnitsUsed = new ArrayList<>();
 
     //@Graph(clazz = IssueComment.class)
     @Relational(clazz = IssueComment.class)
-    private List<IssueComment> comments;
+    private List<IssueComment> comments = new ArrayList<>();
 
-    //@Relational
-    private List<TestCase> testcases;
+    @Relational(clazz = TestCase.class)
+    private List<TestCase> testcases = new ArrayList<>();
 
     //private Risk risk;
     @Simple
-    private String risk;
+    private Integer risk;
 
     @Relational(clazz = PlanningUnit.class)
     private PlanningUnit planningUnit;
@@ -160,7 +161,12 @@ public class IssueBase implements PersistInGraph {
     }
 
 
-    public boolean addTestCase(final TestCase testcase) {
+    public boolean addOrChangeTestCase(final TestCase testcase) {
+        for (TestCase tCase : testcases)
+            if (testcase.getId() != null && tCase.getId().equals(testcase.getId())) {
+                testcases.set(testcases.indexOf(tCase), testcase);
+                return true;
+            }
         return testcases.add(testcase);
     }
 
@@ -331,11 +337,11 @@ public class IssueBase implements PersistInGraph {
         this.testcases = testcases;
     }
 
-    public String getRisk() {
+    public Integer getRisk() {
         return risk;
     }
 
-    public void setRisk(final String risk) {
+    public void setRisk(final Integer risk) {
         this.risk = risk;
     }
 
@@ -354,7 +360,10 @@ public class IssueBase implements PersistInGraph {
             return false;
         if (dueDate_resolved != null ? !dueDate_resolved.equals(issueBase.dueDate_resolved) : issueBase.dueDate_resolved != null)
             return false;
+        if (planningUnit != null ? !planningUnit.equals(issueBase.planningUnit) : issueBase.planningUnit != null)
+            return false;
         if (priority != null ? !priority.equals(issueBase.priority) : issueBase.priority != null) return false;
+        if (projectId != null ? !projectId.equals(issueBase.projectId) : issueBase.projectId != null) return false;
         if (reporter != null ? !reporter.equals(issueBase.reporter) : issueBase.reporter != null) return false;
         if (risk != null ? !risk.equals(issueBase.risk) : issueBase.risk != null) return false;
         if (status != null ? !status.equals(issueBase.status) : issueBase.status != null) return false;
@@ -375,7 +384,8 @@ public class IssueBase implements PersistInGraph {
 
     @Override
     public int hashCode() {
-        int result = summary != null ? summary.hashCode() : 0;
+        int result = projectId != null ? projectId.hashCode() : 0;
+        result = 31 * result + (summary != null ? summary.hashCode() : 0);
         result = 31 * result + (text != null ? text.hashCode() : 0);
         result = 31 * result + (priority != null ? priority.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
@@ -392,6 +402,7 @@ public class IssueBase implements PersistInGraph {
         result = 31 * result + (comments != null ? comments.hashCode() : 0);
         result = 31 * result + (testcases != null ? testcases.hashCode() : 0);
         result = 31 * result + (risk != null ? risk.hashCode() : 0);
+        result = 31 * result + (planningUnit != null ? planningUnit.hashCode() : 0);
         return result;
     }
 
@@ -416,7 +427,7 @@ public class IssueBase implements PersistInGraph {
                 ", timeUnitsUsed=" + timeUnitsUsed +
                 ", comments=" + comments +
                 ", testcases=" + testcases +
-                ", risk='" + risk + '\'' +
+                ", risk=" + risk +
                 ", planningUnit=" + planningUnit +
                 '}';
     }

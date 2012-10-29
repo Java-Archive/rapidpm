@@ -1,16 +1,12 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueadd;
+package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.issueadd;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.Window;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeContainerIssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsLayout;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,15 +41,14 @@ public class IssueAddWindow extends Window {
         public void buttonClick(Button.ClickEvent event) {
             Object itemId = issueTree.addItem();
             Object parentItemId = issueTree.getValue();
-            IssueBase issueBase = new IssueBase(screen.getCurrentProject().getId());
+            IssueBase childIssue = addDetailsLayout.setIssueProperties(true);
             IssueBase parentIssue = (IssueBase)issueTree.getContainerDataSource().getContainerProperty
                     (parentItemId, TreeContainerIssueBase.PROPERTY_ISSUEBASE).getValue();
-            issueBase.setSummary("TEST ISSUE");
             issueTree.getContainerDataSource().getContainerProperty(itemId,
-                    TreeContainerIssueBase.PROPERTY_CAPTION).setValue(issueBase.getSummary());
+                    TreeContainerIssueBase.PROPERTY_CAPTION).setValue(childIssue.name());
             issueTree.getContainerDataSource().getContainerProperty(itemId,
-                    TreeContainerIssueBase.PROPERTY_ISSUEBASE).setValue(issueBase);
-            parentIssue.addSubIssue(issueBase);
+                    TreeContainerIssueBase.PROPERTY_ISSUEBASE).setValue(childIssue);
+            parentIssue.addSubIssue(childIssue);
             issueTree.setChildrenAllowed(parentItemId, true);
             issueTree.setParent(itemId, parentItemId);
             issueTree.setChildrenAllowed(itemId, false);

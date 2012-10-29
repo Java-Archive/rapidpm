@@ -3,15 +3,8 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.lo
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.UI;
-import org.rapidpm.persistence.GraphDaoFactory;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.persistence.system.security.Benutzer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueadd.IssueAddWindow;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.issueadd.IssueAddWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
-
-import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.

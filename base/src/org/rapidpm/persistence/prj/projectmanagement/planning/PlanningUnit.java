@@ -212,18 +212,37 @@ public class PlanningUnit {
 
         PlanningUnit that = (PlanningUnit) o;
 
-        if (!id.equals(that.id)) return false;
-        if (!planningUnitName.equals(that.planningUnitName)) return false;
+        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (planningUnitName != null ? !planningUnitName.equals(that.planningUnitName) : that.planningUnitName != null)
+            return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + planningUnitName.hashCode();
+        int result = planningUnitName != null ? planningUnitName.hashCode() : 0;
+        result = 31 * result + (description != null ? description.hashCode() : 0);
         return result;
     }
 
-
+    @Override
+    public String toString() {
+        return "PlanningUnit{" +
+                "id='" + id + '\'' +
+                ", description='" + description + '\'' +
+                ", estimatedStoryPoints=" + estimatedStoryPoints +
+                ", komplexitaet=" + komplexitaet +
+                ", planningUnitElementList=" + planningUnitElementList +
+                ", parent=" + parent +
+                ", planningUnitName='" + planningUnitName + '\'' +
+                ", orderNumber=" + orderNumber +
+                ", kindPlanningUnits=" + kindPlanningUnits +
+                ", plannedMeetingList=" + plannedMeetingList +
+                ", responsiblePerson=" + responsiblePerson +
+                ", planningStatus=" + planningStatus +
+                ", plannedTravelList=" + plannedTravelList +
+                ", testcases=" + testcases +
+                '}';
+    }
 }

@@ -3,6 +3,8 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.ui
 import com.vaadin.ui.TabSheet;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DetailsCancelButtonClickListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DetailsSaveButtonClickListener;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,6 +31,8 @@ public class IssueTabSheet extends TabSheet implements Internationalizationable{
     private void setComponents() {
         tableLayout = new IssueTableLayout(screen);
         detailsLayout = new IssueDetailsLayout(screen);
+        detailsLayout.addSaveButtonClickListener(new DetailsSaveButtonClickListener(detailsLayout));
+        detailsLayout.addCancelButtonClickListener(new DetailsCancelButtonClickListener(detailsLayout));
         tableTab = this.addTab(tableLayout);
         detailsTab = this.addTab(detailsLayout);
     }

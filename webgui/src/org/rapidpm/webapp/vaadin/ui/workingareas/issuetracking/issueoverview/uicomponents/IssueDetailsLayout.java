@@ -1,28 +1,21 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents;
 
 import com.vaadin.data.Item;
-import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.*;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
-import org.rapidpm.persistence.GraphDBFactory;
 import org.rapidpm.persistence.GraphDaoFactory;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueType;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditableVLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.DummyProjectData;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsFieldGroupBean;
 
-import javax.swing.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,14 +37,16 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     private DateField closedDateField;
     private ComboBox storyPointSelect;
     private ComboBox versionSelect;
+    private ComboBox riskSelect;
+    private ListSelect componentListSelect;
 
     private TextArea descriptionTextArea;
     private TabSheet tabSheet;
-    private TabSheet.Tab tabComments;
-    private TabSheet.Tab tabTestcases;
-    private TabSheet.Tab tabStory;
+    private VerticalLayout tabComments;
+    private VerticalLayout tabTestcases;
+    private VerticalLayout tabStory;
 
-    private VerticalLayout componentsLayout;
+    private VerticalLayout formLayout;
 
     private IssueBase issue;
 
@@ -67,8 +62,9 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         final List<IssueType> typeList = GraphDaoFactory.getIssueTypeDAO().loadAllEntities();
         final List<IssueStatus> statusList = GraphDaoFactory.getIssueStatusDAO().loadAllEntities();
         final List<IssuePriority> priorityList =  GraphDaoFactory.getIssuePriorityDAO().loadAllEntities();
+        final List<IssueComponent> componentsList = GraphDaoFactory.getIssueComponentDAO().loadAllEntities();
         final List<Benutzer> userList =  screen.getBaseDaoFactoryBean().getBenutzerDAO().loadAllEntities();
-        componentsLayout = new VerticalLayout();
+        formLayout = new VerticalLayout();
 
         FormLayout dateLayout = new FormLayout();
         FormLayout detailLayout = new FormLayout();
@@ -76,10 +72,10 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
 
 
-        headerTextField = new TextField();
+        headerTextField = new TextField("Enter Name");
         headerTextField.setWidth("100%");
         headerTextField.setReadOnly(true);
-        componentsLayout.addComponent(headerTextField);
+        formLayout.addComponent(headerTextField);
 
         typeSelect = new ComboBox();
         typeSelect.addContainerProperty(DummyProjectData.PROPERTY_CAPTION, String.class, null);
@@ -90,6 +86,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             item.getItemProperty(DummyProjectData.PROPERTY_CAPTION).setValue(type.getTypeName());
             typeSelect.setItemIcon(type, new ThemeResource("images/" + type.getTypeFileName()));
         }
+        typeSelect.select(typeList.get(0));
         typeSelect.setTextInputAllowed(false);
         typeSelect.setNullSelectionAllowed(false);
         typeSelect.setReadOnly(true);
@@ -103,6 +100,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             item.getItemProperty(DummyProjectData.PROPERTY_CAPTION).setValue(status.getStatusName());
             statusSelect.setItemIcon(status, new ThemeResource("images/" + status.getStatusFileName()));
         }
+        statusSelect.select(statusList.get(0));
         statusSelect.setTextInputAllowed(false);
         statusSelect.setNullSelectionAllowed(false);
         statusSelect.setReadOnly(true);
@@ -116,13 +114,14 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             item.getItemProperty(DummyProjectData.PROPERTY_CAPTION).setValue(priority.getPriorityName());
             prioritySelect.setItemIcon(priority, new ThemeResource("images/" + priority.getPriorityFileName()));
         }
+        prioritySelect.select(priorityList.get(0));
         prioritySelect.setTextInputAllowed(false);
         prioritySelect.setNullSelectionAllowed(false);
         prioritySelect.setReadOnly(true);
         detailLayout.addComponent(prioritySelect);
 
-        reporterLabel = new Label("sven.ruppert");
-        reporterLabel.setValue("sven.ruppert");
+        reporterLabel = new Label();
+        reporterLabel.setValue(screen.getUi().getCurrentUser().getLogin());
         detailLayout.addComponent(reporterLabel);
 
         assigneeSelect = new ComboBox();
@@ -137,6 +136,20 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         assigneeSelect.setNullSelectionAllowed(false);
         assigneeSelect.setReadOnly(true);
         detailLayout.addComponent(assigneeSelect);
+
+        componentListSelect = new ListSelect();
+        componentListSelect.addContainerProperty(DummyProjectData.PROPERTY_CAPTION, String.class, null);
+        componentListSelect.setItemCaptionPropertyId(DummyProjectData.PROPERTY_CAPTION);
+        for (IssueComponent component : componentsList) {
+            item = componentListSelect.addItem(component);
+            item.getItemProperty(DummyProjectData.PROPERTY_CAPTION).setValue(component.getComponentName());
+        }
+        componentListSelect.setNullSelectionAllowed(true);
+        componentListSelect.setMultiSelect(true);
+        componentListSelect.setRows(5);
+        componentListSelect.setReadOnly(true);
+        detailLayout.addComponent(componentListSelect);
+
 
         plannedDateField = new DateField();
         plannedDateField.setResolution(Resolution.DAY);
@@ -160,6 +173,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         for (Integer storyPoint : DummyProjectData.getStoryPointArray()) {
             storyPointSelect.addItem(storyPoint);
         }
+        storyPointSelect.select(DummyProjectData.getStoryPointArray().get(0));
         storyPointSelect.setTextInputAllowed(false);
         storyPointSelect.setNullSelectionAllowed(false);
         storyPointSelect.setReadOnly(true);
@@ -174,39 +188,43 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         versionSelect.setReadOnly(true);
         dateLayout.addComponent(versionSelect);
 
+        riskSelect = new ComboBox();
+        for (Integer version : DummyProjectData.getRiskArray()) {
+            riskSelect.addItem(version);
+        }
+        riskSelect.select(DummyProjectData.getRiskArray().get(0));
+        riskSelect.setTextInputAllowed(false);
+        riskSelect.setNullSelectionAllowed(true);
+        riskSelect.setReadOnly(true);
+        dateLayout.addComponent(riskSelect);
+
         horLayout.addComponent(detailLayout);
         horLayout.addComponent(dateLayout);
-        componentsLayout.addComponent(horLayout);
+        formLayout.addComponent(horLayout);
 
         descriptionTextArea = new TextArea();
         descriptionTextArea.setWidth("100%");
         descriptionTextArea.setReadOnly(true);
-        componentsLayout.addComponent(descriptionTextArea);
+        formLayout.addComponent(descriptionTextArea);
 
         tabSheet = new TabSheet();
         tabSheet.setSizeFull();
 
-        VerticalLayout commentsLayout = new VerticalLayout();
-        commentsLayout.setMargin(true);
-        commentsLayout.addComponent(new Label("Fill with Comments"));
-        commentsLayout.addComponent(new Label("Fill with Comments"));
-        commentsLayout.addComponent(new Label("Fill with Comments"));
-        commentsLayout.addComponent(new Label("Fill with Comments"));
-        tabComments = tabSheet.addTab(commentsLayout);
+        tabComments = new VerticalLayout();
+        tabComments.setMargin(true);
+        tabSheet.addTab(tabComments);
 
-        VerticalLayout testcaseLayout = new VerticalLayout();
-        testcaseLayout.setMargin(true);
-        testcaseLayout.addComponent(new Label("Fill with TestCases"));
-        tabTestcases = tabSheet.addTab(testcaseLayout);
+        tabTestcases = new VerticalLayout();
+        tabTestcases.setMargin(true);
+        tabSheet.addTab(tabTestcases);
 
-        VerticalLayout storyLayout = new VerticalLayout();
-        storyLayout.setMargin(true);
-        storyLayout.addComponent(new Label("Fill with Story"));
-        tabStory = tabSheet.addTab(storyLayout);
+        tabStory = new VerticalLayout();
+        tabStory.setMargin(true);
+        tabSheet.addTab(tabStory);
 
-        componentsLayout.addComponent(tabSheet);
+        formLayout.addComponent(tabSheet);
 
-        return componentsLayout;
+        return formLayout;
     }
 
     @Override
@@ -216,22 +234,24 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         prioritySelect.setCaption(screen.getMessagesBundle().getString("issue_priority"));
         assigneeSelect.setCaption(screen.getMessagesBundle().getString("issue_assignee"));
         reporterLabel.setCaption(screen.getMessagesBundle().getString("issue_reporter"));
+        componentListSelect.setCaption(screen.getMessagesBundle().getString("issue_components"));
         plannedDateField.setCaption(screen.getMessagesBundle().getString("issue_planned"));
         resolvedDateField.setCaption(screen.getMessagesBundle().getString("issue_resolved"));
         closedDateField.setCaption(screen.getMessagesBundle().getString("issue_closed"));
         storyPointSelect.setCaption(screen.getMessagesBundle().getString("issue_storypoints"));
         versionSelect.setCaption(screen.getMessagesBundle().getString("issue_version"));
+        riskSelect.setCaption(screen.getMessagesBundle().getString("issue_risk"));
         descriptionTextArea.setCaption(screen.getMessagesBundle().getString("issue_description"));
-        tabComments.setCaption(screen.getMessagesBundle().getString("issue_comments"));
-        tabTestcases.setCaption(screen.getMessagesBundle().getString("issue_testcases"));
-        tabStory.setCaption(screen.getMessagesBundle().getString("issue_story"));
+        tabSheet.getTab(tabComments).setCaption(screen.getMessagesBundle().getString("issue_comments"));
+        tabSheet.getTab(tabTestcases).setCaption(screen.getMessagesBundle().getString("issue_testcases"));
+        tabSheet.getTab(tabStory).setCaption(screen.getMessagesBundle().getString("issue_story"));
     }
 
-    public void setPropertiesFromIssue(IssueBase issue) {
+    public void setDetailsFromIssue(IssueBase issue) {
         this.issue = issue;
         setLayoutReadOnly(false);
 
-        headerTextField.setValue(issue.getSummary());
+        headerTextField.setValue(issue.getText());
         typeSelect.select(issue.getType());
         statusSelect.select(issue.getStatus());
         prioritySelect.select(issue.getPriority());
@@ -241,7 +261,26 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         resolvedDateField.setValue(issue.getDueDate_resolved());
         closedDateField.setValue(issue.getDueDate_closed());
         storyPointSelect.select(issue.getStoryPoints());
-        descriptionTextArea.setValue(issue.getText());
+        versionSelect.select(issue.getVersion());
+        riskSelect.select(issue.getRisk());
+        descriptionTextArea.setValue(issue.getSummary());
+
+        for (Object item : componentListSelect.getItemIds())
+            componentListSelect.unselect(item);
+
+        for (IssueComponent component : issue.getComponents()) {
+            componentListSelect.select(component);
+        }
+
+        tabComments.removeAllComponents();
+        for (IssueComment comment : issue.getComments()) {
+            tabComments.addComponent(new Label(comment.getText()));
+        }
+
+        tabTestcases.removeAllComponents();
+        for (TestCase testcase : issue.getTestcases()) {
+            tabTestcases.addComponent(new Label(testcase.getText()));
+        }
 
         setLayoutReadOnly(true);
     }
@@ -250,18 +289,29 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         if (newIssue)
             this.issue = new IssueBase(screen.getCurrentProject().getId());
 
-        issue.setSummary(headerTextField.getValue());
+        issue.setText(headerTextField.getValue());
         issue.setStatus((IssueStatus) statusSelect.getValue());
         issue.setPriority((IssuePriority) prioritySelect.getValue());
+        issue.setType((IssueType) typeSelect.getValue());
         issue.setAssignee((Benutzer) assigneeSelect.getValue());
-        //reporterLabel.setValue(issue.getReporter().getLogin());
+        issue.setReporter(screen.getUi().getCurrentUser());
         issue.setDueDate_planned(plannedDateField.getValue());
         issue.setDueDate_resolved(resolvedDateField.getValue());
         issue.setDueDate_closed(closedDateField.getValue());
         issue.setStoryPoints((Integer) storyPointSelect.getValue());
-        issue.setText(descriptionTextArea.getValue());
+        issue.setVersion((String) versionSelect.getValue());
+        issue.setRisk((Integer) riskSelect.getValue());
+        issue.setSummary(descriptionTextArea.getValue());
 
+        issue = GraphDaoFactory.getIssueBaseDAO(screen.getCurrentProject().getId()).persist(issue);
+
+        for (IssueComponent component : (Set<IssueComponent>) componentListSelect.getValue())
+            issue.addComponent(component);
         return issue;
     }
 
+
+    public IssueBase getCurrentIssue() {
+        return issue;
+    }
 }

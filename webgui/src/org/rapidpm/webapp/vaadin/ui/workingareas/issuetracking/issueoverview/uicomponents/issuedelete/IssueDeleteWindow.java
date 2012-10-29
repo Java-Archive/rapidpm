@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuedelete;
+package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.issuedelete;
 
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
@@ -70,13 +70,15 @@ public class IssueDeleteWindow extends Window implements Internationalizationabl
         noButton.setCaption(screen.getMessagesBundle().getString("no"));
     }
 
+
+
     private class YesButtonClickListener implements Button.ClickListener {
 
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            Object selectParentItem = issueTree.getParent(issueTree.getValue());
-            issueTree.getContainerDataSource().removeItem(issueTree.getValue());
-            issueTree.removeItem(issueTree.getValue());
+            Object item = issueTree.getValue();
+            Object selectParentItem = issueTree.getParent(item);
+            issueTree.removeItem(item);
             issueTree.setValue(selectParentItem);
             self.close();
         }

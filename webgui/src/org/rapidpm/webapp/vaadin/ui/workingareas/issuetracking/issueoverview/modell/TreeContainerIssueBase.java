@@ -30,7 +30,7 @@ public class TreeContainerIssueBase extends HierarchicalContainer {
         Object itemId;
         for (IssueBase issuebase : GraphDaoFactory.getIssueBaseDAO(currentProject.getId()).loadTopLevelEntities()) {
             itemId = addItem();
-            this.getContainerProperty(itemId, PROPERTY_CAPTION).setValue(issuebase.getSummary());
+            this.getContainerProperty(itemId, PROPERTY_CAPTION).setValue(issuebase.name());
             this.getContainerProperty(itemId, PROPERTY_ISSUEBASE).setValue(issuebase);
             if (issuebase.getSubIssues() == null || issuebase.getSubIssues().isEmpty()) {
                 this.setChildrenAllowed(itemId, false);
@@ -46,7 +46,7 @@ public class TreeContainerIssueBase extends HierarchicalContainer {
         Object itemId;
         for (IssueBase issueBase : parentIssue.getSubIssues()) {
             itemId = addItem();
-            this.getContainerProperty(itemId, PROPERTY_CAPTION).setValue(issueBase.getSummary());
+            this.getContainerProperty(itemId, PROPERTY_CAPTION).setValue(issueBase.name());
             this.getContainerProperty(itemId, PROPERTY_ISSUEBASE).setValue(issueBase);
             this.setParent(itemId, parentItemId);
             if (issueBase.getSubIssues() == null || issueBase.getSubIssues().isEmpty()) {
@@ -56,5 +56,19 @@ public class TreeContainerIssueBase extends HierarchicalContainer {
                 iterateSubIssues(issueBase, itemId);
             }
         }
+    }
+
+    @Override
+    public boolean removeItem(Object itemId) {
+        boolean success = true;
+        IssueBase issue = (IssueBase)this.getContainerProperty(itemId, TreeContainerIssueBase.PROPERTY_ISSUEBASE)
+                .getValue();
+        if (!GraphDaoFactory.getIssueBaseDAO(currentProject.getId()).delete(issue))
+            success = false;
+
+        if (!super.removeItem(itemId))
+            success = false;
+
+        return success;
     }
 }

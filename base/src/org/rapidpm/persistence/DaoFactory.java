@@ -24,10 +24,7 @@ import org.rapidpm.persistence.prj.book.kommentar.BuchKommentarDAO;
 import org.rapidpm.persistence.prj.book.kommentar.BuchSeitenKommentarDAO;
 import org.rapidpm.persistence.prj.projectmanagement.ProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.ProjectNameDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueCommentDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriorityDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatusDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnitDAO;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitDAO;
@@ -217,6 +214,10 @@ public class DaoFactory {
 
     public IssueCommentDAO getIssueCommentDAO() {
         return new IssueCommentDAO(getEntityManager());
+    }
+
+    public TestCaseDAO getTestCaseDAO() {
+        return new TestCaseDAO(getEntityManager());
     }
 
     public IssueTimeUnitDAO getTimeUnitDAO() {

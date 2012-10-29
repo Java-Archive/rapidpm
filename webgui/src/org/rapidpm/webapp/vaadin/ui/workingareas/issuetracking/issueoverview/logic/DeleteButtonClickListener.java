@@ -3,8 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.lo
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.UI;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueadd.IssueAddWindow;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuedelete.IssueDeleteWindow;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.issuedelete.IssueDeleteWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 
 /**

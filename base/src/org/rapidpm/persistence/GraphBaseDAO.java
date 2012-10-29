@@ -170,18 +170,17 @@ public class GraphBaseDAO<T> {
                 try {
                     if (field.getType().equals(List.class)) {
                         final DAO relDao = getRelationalDaoInstance(aClass);
-                        if (relDao != null) {
-                            final List entityList = (List)field.get(entity);
-                            final Iterator it = entityList.iterator();
-                            Long[] ids = new Long[entityList.size()];
-                            int i = 0;
-                            while (it.hasNext()) {
-                                Object single = it.next();
+                        final List entityList = (List)field.get(entity);
+                        final Iterator it = entityList.iterator();
+                        Long[] ids = new Long[entityList.size()];
+                        int i = 0;
+                        while (it.hasNext()) {
+                            Object single = it.next();
+                            if (relDao != null)
                                 relDao.saveOrUpdate(single);
-                                ids[i++] = getIdFromEntity(single, aClass);
-                            }
-                            node.setProperty(field.getName(), ids);
+                            ids[i++] = getIdFromEntity(single, aClass);
                         }
+                        node.setProperty(field.getName(), ids);
                     } else {
                         //method = field.getType().getDeclaredMethod("getId");
                         if (field.get(entity) != null)//(method != null && field.get(entity) != null) {
@@ -267,30 +266,6 @@ public class GraphBaseDAO<T> {
         }
 
         return entityList;
-    }
-
-    public boolean delete(T entity) {
-        if (entity == null)
-            throw new NullPointerException("Object to delete can't be null.");
-
-        final Long id = getIdFromEntity(entity);
-        final Transaction tx = graphDb.beginTx();
-        try{
-            Node node;
-            if (id == null || id == 0)
-                return true;
-            else {
-                node = graphDb.getNodeById(id);
-                for (Relationship rel : node.getRelationships())
-                    rel.delete();
-                node.delete();
-            }
-            tx.success();
-        } finally {
-            tx.finish();
-            return true;
-        }
-
     }
 
     public T findById(final Long id) {
@@ -434,6 +409,41 @@ public class GraphBaseDAO<T> {
             }
         }
         return relDao;
+    }
+
+
+    public boolean delete(T entity) {
+        if (entity == null)
+            throw new NullPointerException("Object to delete can't be null.");
+
+        boolean success = false;
+        final Long id = getIdFromEntity(entity);
+        final Transaction tx = graphDb.beginTx();
+        try{
+            Node node;
+            if (id != null && id != 0) {
+                node = graphDb.getNodeById(id);
+                for (Relationship rel : node.getRelationships()) {
+                    if (rel.isType(GraphRelationRegistry.getSubIssueRelationshipType())
+                        && rel.getStartNode().equals(node)) {
+
+                        for (Relationship parent : node.getRelationships(GraphRelationRegistry
+                                .getSubIssueRelationshipType(), Direction.INCOMING)) {
+
+                            parent.getStartNode().createRelationshipTo(rel.getEndNode(),
+                                    GraphRelationRegistry.getSubIssueRelationshipType());
+                        }
+                    }
+                    rel.delete();
+                }
+                node.delete();
+            }
+            tx.success();
+            success = true;
+        } finally {
+            tx.finish();
+            return success;
+        }
     }
 }
 

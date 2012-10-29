@@ -1,6 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,11 +26,15 @@ public class DummyProjectData {
         return statusList;
     }
 
-    public static Integer[] getStoryPointArray() {
-        return new Integer[] {1,2,3,4,5,6,7,8,9,10};
+    public static List<Integer> getStoryPointArray() {
+        return new ArrayList<>(Arrays.asList(1,2,3,4,5,6,7,8,9,10));
     }
 
-    public static String[] getVersionArray() {
-        return new String[] {"1.0", "2.0"};
+    public static List<String> getVersionArray() {
+        return new ArrayList<>(Arrays.asList("1.0", "2.0"));
+    }
+
+    public static List<Integer> getRiskArray() {
+        return new ArrayList<>(Arrays.asList(0,25,50,75,100));
     }
 }
