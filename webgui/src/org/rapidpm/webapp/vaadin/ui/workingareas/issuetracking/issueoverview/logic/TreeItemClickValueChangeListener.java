@@ -22,6 +22,8 @@ public class TreeItemClickValueChangeListener implements ItemClickEvent.ItemClic
     private final IssueTabSheet issueTabSheet;
     private final Tree issueTree;
 
+    private boolean alreadyClicked = false;
+
     public TreeItemClickValueChangeListener(final IssueTabSheet issueTabSheet, final Tree issueTree) {
         this.issueTabSheet = issueTabSheet;
         this.issueTree = issueTree;
@@ -30,12 +32,14 @@ public class TreeItemClickValueChangeListener implements ItemClickEvent.ItemClic
     @Override
     public void itemClick(ItemClickEvent event) {
         changeDetails(event.getItemId());
+        //alreadyClicked = true;
     }
 
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
-        if (event.getProperty().getValue() != null)
+        if (event.getProperty().getValue() != null) // && !alreadyClicked)
             changeDetails(event.getProperty().getValue());
+       // alreadyClicked = false;
     }
 
     private void changeDetails(Object itemId) {

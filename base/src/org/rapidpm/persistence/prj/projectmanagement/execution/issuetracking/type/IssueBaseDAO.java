@@ -121,6 +121,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         }
     }
 
+
+
     public void addSubIssue(IssueBase parent, IssueBase child) {
         if (parent == null)
             throw new NullPointerException("Parentissue is null.");
@@ -130,7 +132,10 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
 
         Node childNode = graphDb.getNodeById(child.getId());
         if (childNode.hasRelationship(GraphRelationRegistry.getSubIssueRelationshipType(), Direction.INCOMING)) {
-            throw new IllegalStateException("ChildIssue already is a SubIssue.");
+            //throw new IllegalStateException("ChildIssue already is a SubIssue.");
+            Relationship rel = childNode.getSingleRelationship(GraphRelationRegistry.getSubIssueRelationshipType(),
+                    Direction.INCOMING);
+            deleteSubIssueRelation(rel.getStartNode(), childNode);
         }
 
         graphDb.getNodeById(parent.getId()).createRelationshipTo(childNode,
@@ -168,14 +173,18 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         }
     }
 
+
     public void deleteSubIssueRelation(final IssueBase parent, final IssueBase child) {
-        if (parent == null)
+        deleteSubIssueRelation(graphDb.getNodeById(parent.getId()), graphDb.getNodeById(child.getId()));
+    }
+
+
+    private void deleteSubIssueRelation(final Node parentNode, final Node childNode) {
+        if (parentNode == null)
             throw new NullPointerException("Parentissue is null.");
-        if (child == null)
+        if (childNode == null)
             throw new NullPointerException("Childissue is null.");
 
-        final Node parentNode = graphDb.getNodeById(parent.getId());
-        final Node childNode = graphDb.getNodeById(child.getId());
         for (final Relationship rel : parentNode.getRelationships(GraphRelationRegistry.getSubIssueRelationshipType(),
                 Direction.OUTGOING))
             if (rel.getOtherNode(parentNode).equals(childNode))
