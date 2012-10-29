@@ -1,7 +1,10 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic;
 
+import com.vaadin.addon.jpacontainer.JPAContainer;
+import com.vaadin.addon.jpacontainer.JPAContainerFactory;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
+import org.rapidpm.Constants;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -13,9 +16,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.comp
 
 import javax.persistence.EntityManager;
 import java.text.DecimalFormat;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static org.rapidpm.Constants.DECIMAL_FORMAT;
 /**
@@ -31,6 +32,9 @@ public class OverviewTableFiller {
     private static final String ABSOLUT = "absolut";
     public static final int WIDTH = 200;
 
+    private JPAContainer<RessourceGroup> ressourceGroupJPAContainer = JPAContainerFactory.make(RessourceGroup.class,
+            Constants.PERSISTENCE_UNIT);
+
 
     private MyTable table;
     private List<RessourceGroup> ressourceGroups;
@@ -40,9 +44,11 @@ public class OverviewTableFiller {
     public OverviewTableFiller(final ResourceBundle bundle, final MyTable table) {
         messages = bundle;
         this.table = table;
-        bean = EJBFactory.getEjbInstance(OverviewTableFillerBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
+        ressourceGroups = new ArrayList<>();
+        Collection<Object> objectCollection = ressourceGroupJPAContainer.getItemIds();
+        for(Object obj : objectCollection){
+            ressourceGroups.add(ressourceGroupJPAContainer.getItem(obj).getEntity());
+        }
 
 }
 

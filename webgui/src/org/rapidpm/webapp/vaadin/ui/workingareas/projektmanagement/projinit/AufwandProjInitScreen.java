@@ -1,7 +1,10 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit;
 
+import com.vaadin.addon.jpacontainer.JPAContainer;
+import com.vaadin.addon.jpacontainer.JPAContainerFactory;
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
+import org.rapidpm.Constants;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -55,12 +58,14 @@ public class AufwandProjInitScreen extends Screen {
     private GridLayout upperFormLayout = new GridLayout(2, 10);
     private VerticalLayout lowerFormLayout = new VerticalLayout();
 
+    private JPAContainer<PlannedProject> plannedProjectJPAContainer = JPAContainerFactory.make(PlannedProject.class,
+            Constants.PERSISTENCE_UNIT);
+
     public AufwandProjInitScreen(final MainUI ui) {
         super(ui);
 
         bean = EJBFactory.getEjbInstance(AufwandProjInitScreenBean.class);
         baseDaoFactoryBean = bean.getDaoFactoryBean();
-        //refreshEntities(baseDaoFactoryBean);
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
 
@@ -129,9 +134,7 @@ public class AufwandProjInitScreen extends Screen {
         manntageField.setReadOnly(true);
         summeField.setReadOnly(true);
         final PlannedProject projectFromSession = ui.getCurrentProject();
-        final PlannedProject projekt = baseDaoFactoryBean.getPlannedProjectDAO().findByID
-                (projectFromSession.getId());
-        baseDaoFactoryBean.getEntityManager().refresh(projekt);
+        final PlannedProject projekt = plannedProjectJPAContainer.getItem(projectFromSession.getId()).getEntity();
         projektField.setValue(projekt.getProjektName());
     }
 

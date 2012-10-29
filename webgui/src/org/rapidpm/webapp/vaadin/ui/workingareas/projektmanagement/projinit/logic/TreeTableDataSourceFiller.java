@@ -1,9 +1,12 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic;
 
+import com.vaadin.addon.jpacontainer.JPAContainer;
+import com.vaadin.addon.jpacontainer.JPAContainerFactory;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.HierarchicalContainer;
 import org.apache.log4j.Logger;
+import org.rapidpm.Constants;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -37,18 +40,20 @@ public class TreeTableDataSourceFiller {
     private HierarchicalContainer dataSource;
     private AufwandProjInitScreen screen;
 
+    private JPAContainer<RessourceGroup> ressourceGroupJPAContainer = JPAContainerFactory.make(RessourceGroup.class,
+            Constants.PERSISTENCE_UNIT);
+    private JPAContainer<PlannedProject> plannedProjectJPAContainer = JPAContainerFactory.make(PlannedProject.class,
+            Constants.PERSISTENCE_UNIT);
+
     public TreeTableDataSourceFiller(final AufwandProjInitScreen screen, final ResourceBundle bundle,
                                      final HierarchicalContainer dSource) {
         this.screen = screen;
         this.messages = bundle;
         dataSource = dSource;
 
-        bean = EJBFactory.getEjbInstance(TreeTableDataSourceFillerBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-
-        ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
-        for(RessourceGroup ressourceGroup : ressourceGroups){
-            baseDaoFactoryBean.getEntityManager().refresh(ressourceGroup);
+        ressourceGroups = new ArrayList<>();
+        for(Object id : ressourceGroupJPAContainer.getItemIds()){
+            ressourceGroups.add(ressourceGroupJPAContainer.getItem(id).getEntity());
         }
 
         dataSource.removeAllItems();
@@ -65,8 +70,7 @@ public class TreeTableDataSourceFiller {
 
     private void computePlanningUnitsAndTotalsAbsolut() {
         final PlannedProject projectFromSession = screen.getUi().getCurrentProject();
-        final PlannedProject projectFromDB = bean.getDaoFactoryBean().getPlannedProjectDAO().findByID
-                (projectFromSession.getId());
+        final PlannedProject projectFromDB = plannedProjectJPAContainer.getItem(projectFromSession.getId()).getEntity();
         final Set<PlanningUnit> planningUnits = projectFromDB.getPlanningUnits();
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();

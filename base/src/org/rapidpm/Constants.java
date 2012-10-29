@@ -122,4 +122,6 @@ public class Constants {
     public static final String COMMIT_EXCEPTION_MESSAGE = "ungueltiger Wert in min. einem Feld.";
     public static final int FIELDLENGTH_LONG_NAME = 50;
     public static final int FIELDLENGTH_SMALL_NUMBER = 5;
+
+    public static final String PERSISTENCE_UNIT = "baseorm";
 }

@@ -2,9 +2,127 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
 
     <persistence-unit name="baseorm" transaction-type="JTA">
+
         <jta-data-source>java:/jboss/datasources/RapidPMDS2</jta-data-source>
+        <class>org.rapidpm.persistence.prj.bewegungsdaten.anfragen.KontaktAnfrage</class>
+        <class>org.rapidpm.persistence.prj.bewegungsdaten.anfragen.Projektanfrage</class>
+        <class>org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.msg.PersonalMessage</class>
+        <class>org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.Message</class>
+        <class>org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.MessageKlassifizierung</class>
+        <class>org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.MessageStatus</class>
+        <class>org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.MessageTag</class>
+        <class>org.rapidpm.persistence.prj.bewegungsdaten.Registration</class>
+        <class>org.rapidpm.persistence.prj.bewegungsdaten.RegistrationStatus</class>
+        <class>org.rapidpm.persistence.prj.book.kommentar.BuchAbsatzKommentar</class>
+        <class>org.rapidpm.persistence.prj.book.kommentar.BuchKapitelKommentar</class>
+        <class>org.rapidpm.persistence.prj.book.kommentar.BuchKommentar</class>
+        <class>org.rapidpm.persistence.prj.book.kommentar.BuchSeitenKommentar</class>
+        <class>org.rapidpm.persistence.prj.book.Buch</class>
+        <class>org.rapidpm.persistence.prj.book.BuchAbsatz</class>
+        <class>org.rapidpm.persistence.prj.book.BuchKapitel</class>
+        <class>org.rapidpm.persistence.prj.book.BuchSeite</class>
+        <class>org.rapidpm.persistence.prj.book.BuchSeitenFussnote</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueAccomodation</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.workflow.Workflow</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnit</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.execution.management.travel.car.Car</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.execution.management.travel.flight.FlightTicket</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.execution.management.travel.train.TrainTicket</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.execution.management.travel.Travel</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.execution.management.Communication</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.execution.management.Meeting</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedAccomodation</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedTravel</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedTravelUnit</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedVehicleType</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedAccomodation</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.planning.management.PlannedMeeting</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.planning.management.PlannedMeetingRessourceGroupAssoc</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.planning.technical.specialmachines.stammdaten.Maschine</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.planning.technical.specialmachines.units.EinheitArbeit</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.planning.technical.specialmachines.units.EinheitMaterial</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.planning.technical.specialmachines.units.EinheitZukauf</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectName</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.planning.PlanningRisk</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.planning.PlanningStatus</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitZukauf</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.planning.finance.PlannedOffer</class>
+        <class>org.rapidpm.persistence.prj.projectmanagement.realisierung.Workplan</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.address.Adresse</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.address.AdressKlassifizierung</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.address.Land</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.address.Postfach</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.address.State</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.address.StateKlassifizierung</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.kommunikation.KommunikationsService</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.kommunikation.KommunikationsServiceKlassifizierung</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.kommunikation.KommunikationsServiceUID</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.kommunikation.KommunikationsServiceUIDPart</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.kommunikation.KommunikationsServiceUIDPartComparator</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.kommunikation.KommunikationsServiceUIDPartKlassifikation</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.gesellschaftsformen.Aktiengesellschaft</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.gesellschaftsformen.Gesellschaftsform</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.gesellschaftsformen.GmbH</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.gesellschaftsformen.Unternehmergesellschaft</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.gesellschaftsformen.Einzelunternehmung</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.Mitarbeiter</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.MitarbeiterComment</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.MitarbeiterGehalt</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.MitarbeiterRessourceGroupAssoc</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.MitarbeiterUrlaub</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.MaschinenStammdaten</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.metadata.Ausbildungseinheit</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.metadata.Verwaltungseinheit</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.metadata.Wirtschaftseinheit</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.Branche</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.BrancheAssoc</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.BrancheKlassifizierung</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.Organisationseinheit</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.OrganisationseinheitMetaData</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.Position</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.Taetigkeitsfeld</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.TaetigkeitsfeldAssoc</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.organisationseinheit.TaetigkeitsfeldKlassifizierung</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.person.Anrede</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.person.Geschlecht</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.person.NameComparator</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.person.NamensKlassifizierung</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.person.Person</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.person.PersonenName</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.person.Titel</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.person.TitelComparator</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.web.WebDomain</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.web.WebDomainMetaData</class>
+        <class>org.rapidpm.persistence.prj.stammdaten.web.WebDomainKlassifizierung</class>
+        <class>org.rapidpm.persistence.rohdaten.Ontologie</class>
+        <class>org.rapidpm.persistence.rohdaten.OntologieConnection</class>
+        <class>org.rapidpm.persistence.rohdaten.OntologieEntry</class>
+        <class>org.rapidpm.persistence.system.logging.LoggingEntityAction</class>
+        <class>org.rapidpm.persistence.system.logging.LoggingEntityEntry</class>
+        <class>org.rapidpm.persistence.system.logging.LoggingEventEntry</class>
+        <class>org.rapidpm.persistence.system.logging.LoggingEventParam</class>
+        <class>org.rapidpm.persistence.system.security.berechtigungen.Berechtigung</class>
+        <class>org.rapidpm.persistence.system.security.Benutzer</class>
+        <class>org.rapidpm.persistence.system.security.BenutzerGruppe</class>
+        <class>org.rapidpm.persistence.system.security.BenutzerWebapplikation</class>
+        <class>org.rapidpm.persistence.system.security.Mandantengruppe</class>
+        <class>org.rapidpm.persistence.system.security.NewPasswdRequest</class>
+
+
+
+
+
         <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
         <!--<validation-mode>NONE</validation-mode>-->
+
 
         <!--<class>de.neoscio.stammdaten.system.security.Benutzer</class>-->
         <!--<class>de.neoscio.stammdaten.system.security.BenutzerGruppe</class>-->
@@ -22,11 +140,13 @@
             <property name="hibernate.id.new_generator_mappings" value="false"/>
             <!--property name="hibernate.connection.release_mode" value="on_close"/-->
         </properties>
+
     </persistence-unit>
 
     <!-- svenruppert / vrthowei56vseribw5b -->
 
     <!--<persistence-unit name="stammdaten" transaction-type="JTA">-->
+
     <!--<jta-data-source>java:/MyNeoScioProdDS</jta-data-source>-->
     <!--<class>de.neoscio.stammdaten.system.security.Benutzer</class>-->
     <!--<class>de.neoscio.stammdaten.system.security.BenutzerGruppe</class>-->

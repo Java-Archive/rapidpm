@@ -1,5 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic;
 
+import com.vaadin.addon.jpacontainer.JPAContainer;
+import com.vaadin.addon.jpacontainer.JPAContainerFactory;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.FieldGroup;
@@ -7,6 +9,7 @@ import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import org.apache.log4j.Logger;
+import org.rapidpm.Constants;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -32,8 +35,11 @@ public class SaveButtonClickListener implements ClickListener {
     private Object itemId;
     private PlanningUnit foundPlanningUnit = null;
     private ResourceBundle messages;
-    private SaveButtonClickListenerBean bean;
-    private DaoFactoryBean baseDaoFactoryBean;
+
+    private JPAContainer<PlanningUnit> planningUnitJPAContainer = JPAContainerFactory.make(PlanningUnit.class,
+            Constants.PERSISTENCE_UNIT);
+    private JPAContainer<PlanningUnitElement> planningUnitElementJPAContainer = JPAContainerFactory.make
+            (PlanningUnitElement.class, Constants.PERSISTENCE_UNIT);
 
     public SaveButtonClickListener(final ResourceBundle bundle, final FieldGroup fieldGroup,
                                    final AufwandProjInitScreen screen, final KnotenBlattEnum knotenBlattEnum, final Object itemId) {
@@ -43,8 +49,6 @@ public class SaveButtonClickListener implements ClickListener {
         this.knotenBlattEnum = knotenBlattEnum;
         this.itemId = itemId;
 
-        bean = EJBFactory.getEjbInstance(SaveButtonClickListenerBean.class);
-        baseDaoFactoryBean = bean.getDaoFactoryBean();
     }
 
     @Override
@@ -52,9 +56,12 @@ public class SaveButtonClickListener implements ClickListener {
         try {
             final Item item = screen.getDataSource().getItem(itemId);
             final String planningUnitNameBeforeCommit = item.getItemProperty(messages.getString("aufgabe")).getValue().toString();
-            foundPlanningUnit = baseDaoFactoryBean.getPlanningUnitDAO().loadPlanningUnitByName(planningUnitNameBeforeCommit);
-            baseDaoFactoryBean.getEntityManager().refresh(foundPlanningUnit);
-
+            for(Object planningUnit : planningUnitJPAContainer.getItemIds()){
+                PlanningUnit planningUnit1 = (PlanningUnit) planningUnit;
+                if(planningUnitNameBeforeCommit.equals(planningUnit1.getPlanningUnitName())){
+                    foundPlanningUnit = (PlanningUnit) planningUnitJPAContainer.getItem(planningUnit1.getId());
+                }
+            }
             fieldGroup.commit();
             final String planningUnitNameAfterCommit = item.getItemProperty(messages.getString("aufgabe")).getValue().toString();
             if (knotenBlattEnum.equals(KnotenBlattEnum.KNOTEN)) {
@@ -72,10 +79,11 @@ public class SaveButtonClickListener implements ClickListener {
                     planningUnitElement.setPlannedDays(plannedDays);
                     planningUnitElement.setPlannedHours(plannedHours);
                     planningUnitElement.setPlannedMinutes(plannedMinutes);
-                    baseDaoFactoryBean.saveOrUpdate(planningUnitElement);
+                    planningUnitElementJPAContainer.addEntity(planningUnitElement);
                 }
             }
-            baseDaoFactoryBean.saveOrUpdate(foundPlanningUnit);
+            planningUnitElementJPAContainer.commit();
+            planningUnitJPAContainer.commit();
             final MainUI ui = screen.getUi();
             ui.setWorkingArea(new AufwandProjInitScreen(ui));
         }catch (CommitException e){

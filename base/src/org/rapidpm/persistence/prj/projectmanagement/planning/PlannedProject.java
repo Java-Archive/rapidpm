@@ -8,11 +8,12 @@ import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
 @Entity
-public class PlannedProject {
+public class PlannedProject implements Serializable {
     private static final Logger logger = Logger.getLogger(PlannedProject.class);
 
     public static final String ID = "id";
