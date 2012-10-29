@@ -52,9 +52,6 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         expandButton = new Button();
         expandButton.setEnabled(true);
 
-//        if (addButton.getWidth() > deleteButton.getWidth()) deleteButton.setWidth(addButton.getWidth(), Unit.PIXELS);
-//        else addButton.setWidth(deleteButton.getWidth(), Unit.PIXELS);
-
         addComponent(buttonLayout);
         addComponent(expandButton);
 
@@ -82,12 +79,12 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
                 if (expanded) {
                     for (Object id : issueTree.rootItemIds())
                         issueTree.collapseItemsRecursively(id);
-                    expandButton.setCaption("Alle Tickets ausklappen");
+                    expandButton.setCaption(screen.getMessagesBundle().getString("issue_expand"));
                 }
                 else {
                     for (Object id : issueTree.rootItemIds())
                         issueTree.expandItemsRecursively(id);
-                    expandButton.setCaption("Alle Tickets einklappen");
+                    expandButton.setCaption(screen.getMessagesBundle().getString("issue_collapse"));
                 }
                 expanded = !expanded;
             }
@@ -98,6 +95,9 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
     public void doInternationalization() {
         addButton.setCaption(screen.getMessagesBundle().getString("add"));
         deleteButton.setCaption(screen.getMessagesBundle().getString("delete"));
-        expandButton.setCaption("Issues einklappen");
+        expandButton.setCaption(screen.getMessagesBundle().getString("issue_collapse"));
+
+        if (addButton.getWidth() > deleteButton.getWidth()) deleteButton.setWidth(addButton.getWidth(), Unit.PIXELS);
+        else addButton.setWidth(deleteButton.getWidth(), Unit.PIXELS);
     }
 }

@@ -72,7 +72,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
 
 
-        headerTextField = new TextField("Enter Name");
+        headerTextField = new TextField();
+        headerTextField.setValue("Enter name");
         headerTextField.setWidth("100%");
         headerTextField.setReadOnly(true);
         formLayout.addComponent(headerTextField);

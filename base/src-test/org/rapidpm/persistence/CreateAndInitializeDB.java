@@ -314,7 +314,7 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  3
             //}
 
             if (attributes.get(i) != -1)
-                issue.setRisk(String.valueOf(attributes.get(i)));
+                issue.setRisk(attributes.get(i));
             i++;
 
             if (attributes.get(i) != -1) {
