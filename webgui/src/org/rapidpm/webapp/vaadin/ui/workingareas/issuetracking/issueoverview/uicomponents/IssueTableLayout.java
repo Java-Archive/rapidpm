@@ -53,8 +53,8 @@ public class IssueTableLayout extends ComponentEditableVLayout {
         issueTable.setColumnCollapsingAllowed(true);
         issueTable.addItemClickListener(new TableItemClickListener());
 
-        final String[] headerNames = new String[] {CAPTION, STATUS, PRIORITY, TYPE, SUMMARY, REPORTER, ASSIGNEE,
-                DUE_DATE_PLANNED, DUE_DATE_RESOLVED, DUE_DATE_CLOSED, STORYPOINTS};
+        final String[] headerNames = new String[] {CAPTION, STATUS, PRIORITY, TYPE, REPORTER, ASSIGNEE,
+        DUE_DATE_PLANNED, DUE_DATE_RESOLVED, DUE_DATE_CLOSED, STORYPOINTS, SUMMARY};
 
         int i = 0;
         for (String name : headerNames) {
@@ -79,12 +79,13 @@ public class IssueTableLayout extends ComponentEditableVLayout {
                     issue.getStatus().getStatusName(),
                     issue.getPriority().getPriorityName(),
                     issue.getType().getTypeName(),
-                    issue.getSummary(),
                     issue.getReporter().getLogin(),
                     issue.getAssignee().getLogin(),
                     issue.getDueDate_planned().toString(),
                     issue.getDueDate_resolved().toString(),
-                    issue.getDueDate_closed().toString()
+                    issue.getDueDate_closed().toString(),
+                    issue.getStoryPoints().toString(),
+                    issue.getSummary()
             }, i);
             i++;
         }
