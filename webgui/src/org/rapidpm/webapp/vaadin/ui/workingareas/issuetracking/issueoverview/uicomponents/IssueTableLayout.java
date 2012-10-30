@@ -34,7 +34,7 @@ public class IssueTableLayout extends ComponentEditableVLayout {
 
     private Table issueTable;
 
-    public IssueTableLayout(IssueOverviewScreen screen) {
+    public IssueTableLayout(final IssueOverviewScreen screen) {
         super(screen);
         addSaveButtonClickListener(new StandardClickListener());
         addCancelButtonClickListener(new StandardClickListener());
@@ -73,9 +73,8 @@ public class IssueTableLayout extends ComponentEditableVLayout {
 
     public void setPropertiesFromIssueList(List<IssueBase> issues) {
         issueTable.removeAllItems();
-        int i = 0;
         for (IssueBase issue : issues) {
-            issueTable.addItem(new Object[] {issue.getText(),
+            issueTable.addItem(            new Object[] {issue.getText(),
                     issue.getStatus().getStatusName(),
                     issue.getPriority().getPriorityName(),
                     issue.getType().getTypeName(),
@@ -85,9 +84,8 @@ public class IssueTableLayout extends ComponentEditableVLayout {
                     issue.getDueDate_resolved().toString(),
                     issue.getDueDate_closed().toString(),
                     issue.getStoryPoints().toString(),
-                    issue.getSummary()
-            }, i);
-            i++;
+                    issue.getSummary()},
+                    issue);
         }
     }
 
@@ -96,6 +94,9 @@ public class IssueTableLayout extends ComponentEditableVLayout {
         @Override
         public void itemClick(ItemClickEvent event) {
             if (event.isDoubleClick()) {
+//                screen.getIssueTabSheet().setSelectedTab(screen.getIssueTabSheet().getDetailsLayout());
+//                screen.getIssueTreeLayout().setSelectedItem((IssueBase)event.getItemId());
+
                 System.out.println("Open Details of Issue");
             }
         }

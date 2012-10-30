@@ -81,6 +81,8 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         issueTree.setItemCaptionPropertyId(TreeContainerIssueBase.PROPERTY_CAPTION);
         for (Object id : issueTree.rootItemIds())
             issueTree.expandItemsRecursively(id);
+        if (issueTree.getItemIds().toArray().length > 0)
+            issueTree.select(issueTree.getItemIds().toArray()[0]);
         addComponent(issueTree);
 
         addButton.addClickListener(new AddButtonClickListener(screen, issueTree));
@@ -114,6 +116,12 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         if (addButton.getWidth() > deleteButton.getWidth()) deleteButton.setWidth(addButton.getWidth(), Unit.PIXELS);
         else addButton.setWidth(deleteButton.getWidth(), Unit.PIXELS);
     }
+
+//    public void setSelectedItem(IssueBase item) {
+//        System.out.println("Tree selectitem: " + item);
+//        issueTree.select(item);
+//
+//    }
 
 
 //

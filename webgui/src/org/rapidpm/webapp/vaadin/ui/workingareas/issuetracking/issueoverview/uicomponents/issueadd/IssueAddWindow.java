@@ -29,6 +29,7 @@ public class IssueAddWindow extends Window {
         setCaption(screen.getMessagesBundle().getString("issue_addwindow"));
         this.setModal(true);
         addDetailsLayout = new IssueDetailsLayout(screen);
+        addDetailsLayout.setRequiredIndicator(true);
         addDetailsLayout.addSaveButtonClickListener(new AddIssueSaveClickListener());
         addDetailsLayout.addCancelButtonClickListener(new AddIssueCancelClickListener());
         this.addComponent(addDetailsLayout);
@@ -39,21 +40,24 @@ public class IssueAddWindow extends Window {
 
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            Object itemId = issueTree.addItem();
-            Object parentItemId = issueTree.getValue();
             IssueBase childIssue = addDetailsLayout.setIssueProperties(true);
-            IssueBase parentIssue = (IssueBase)issueTree.getContainerDataSource().getContainerProperty
-                    (parentItemId, TreeContainerIssueBase.PROPERTY_ISSUEBASE).getValue();
-            issueTree.getContainerDataSource().getContainerProperty(itemId,
-                    TreeContainerIssueBase.PROPERTY_CAPTION).setValue(childIssue.name());
-            issueTree.getContainerDataSource().getContainerProperty(itemId,
-                    TreeContainerIssueBase.PROPERTY_ISSUEBASE).setValue(childIssue);
-            parentIssue.addSubIssue(childIssue);
-            issueTree.setChildrenAllowed(parentItemId, true);
-            issueTree.setParent(itemId, parentItemId);
-            issueTree.setChildrenAllowed(itemId, false);
-
-            self.close();
+            if (childIssue != null) {
+                Object itemId = issueTree.addItem();
+                Object parentItemId = issueTree.getValue();
+                IssueBase parentIssue = (IssueBase)issueTree.getContainerDataSource().getContainerProperty
+                        (parentItemId, TreeContainerIssueBase.PROPERTY_ISSUEBASE).getValue();
+                issueTree.getContainerDataSource().getContainerProperty(itemId,
+                        TreeContainerIssueBase.PROPERTY_CAPTION).setValue(childIssue.name());
+                issueTree.getContainerDataSource().getContainerProperty(itemId,
+                        TreeContainerIssueBase.PROPERTY_ISSUEBASE).setValue(childIssue);
+                parentIssue.addSubIssue(childIssue);
+                issueTree.setChildrenAllowed(parentItemId, true);
+                issueTree.setParent(itemId, parentItemId);
+                issueTree.setChildrenAllowed(itemId, false);
+                issueTree.expandItem(parentItemId);
+                issueTree.select(itemId);
+                self.close();
+            }
         }
     }
 

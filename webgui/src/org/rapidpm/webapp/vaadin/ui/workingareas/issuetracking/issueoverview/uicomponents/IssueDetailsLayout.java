@@ -70,10 +70,14 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         FormLayout detailLayout = new FormLayout();
         HorizontalLayout horLayout = new HorizontalLayout();
 
+        dateLayout.setWidth("100%");
+        detailLayout.setWidth("100%");
+        horLayout.setWidth("100%");
+
 
 
         headerTextField = new TextField();
-        headerTextField.setValue("Enter name");
+        headerTextField.setInputPrompt("Enter name");
         headerTextField.setWidth("100%");
         headerTextField.setReadOnly(true);
         formLayout.addComponent(headerTextField);
@@ -249,6 +253,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     }
 
     public void setDetailsFromIssue(IssueBase issue) {
+        if (issue == null)
+            throw new NullPointerException("Details can't be set from null.");
         this.issue = issue;
         setLayoutReadOnly(false);
 
@@ -287,15 +293,23 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     }
 
     public IssueBase setIssueProperties(boolean newIssue) {
-        if (newIssue)
+        if (newIssue) {
             this.issue = new IssueBase(screen.getCurrentProject().getId());
+            issue.setReporter(screen.getUi().getCurrentUser());
+        }
+
+        if (issue == null)
+            return null;
+            //throw new NullPointerException("No Issue to save.");
+
+        if (headerTextField.getValue() == "")
+            return null;
 
         issue.setText(headerTextField.getValue());
         issue.setStatus((IssueStatus) statusSelect.getValue());
         issue.setPriority((IssuePriority) prioritySelect.getValue());
         issue.setType((IssueType) typeSelect.getValue());
         issue.setAssignee((Benutzer) assigneeSelect.getValue());
-        issue.setReporter(screen.getUi().getCurrentUser());
         issue.setDueDate_planned(plannedDateField.getValue());
         issue.setDueDate_resolved(resolvedDateField.getValue());
         issue.setDueDate_closed(closedDateField.getValue());
@@ -309,6 +323,10 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         for (IssueComponent component : (Set<IssueComponent>) componentListSelect.getValue())
             issue.addComponent(component);
         return issue;
+    }
+
+    public void setRequiredIndicator(boolean set) {
+        headerTextField.setRequired(set);
     }
 
 

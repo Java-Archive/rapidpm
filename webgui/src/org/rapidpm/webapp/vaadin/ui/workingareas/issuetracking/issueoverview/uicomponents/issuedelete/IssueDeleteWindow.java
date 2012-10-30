@@ -80,6 +80,8 @@ public class IssueDeleteWindow extends Window implements Internationalizationabl
             Object selectParentItem = issueTree.getParent(item);
             issueTree.removeItem(item);
             issueTree.setValue(selectParentItem);
+            if (!issueTree.hasChildren(selectParentItem))
+                issueTree.setChildrenAllowed(selectParentItem, false);
             self.close();
         }
     }

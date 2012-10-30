@@ -53,6 +53,13 @@ public class IssueOverviewScreen extends Screen{
                 (ui.getCurrentProject().getId());
     }
 
+    public IssueTabSheet getIssueTabSheet() {
+        return issueTabSheet;
+    }
+
+    public IssueTreeLayout getIssueTreeLayout() {
+        return treeLayout;
+    }
 
     @Override
     public void setComponents() {
