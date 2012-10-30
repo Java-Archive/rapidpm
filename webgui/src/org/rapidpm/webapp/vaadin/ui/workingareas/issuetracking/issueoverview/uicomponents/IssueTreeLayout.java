@@ -116,10 +116,17 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         if (addButton.getWidth() > deleteButton.getWidth()) deleteButton.setWidth(addButton.getWidth(), Unit.PIXELS);
         else addButton.setWidth(deleteButton.getWidth(), Unit.PIXELS);
     }
-
-//    public void setSelectedItem(IssueBase item) {
-//        System.out.println("Tree selectitem: " + item);
-//        issueTree.select(item);
+//
+//    public void setSelectedItem(Object item) {
+//        for (Object itemId : issueTree.getItemIds()){
+//            System.out.println(issueTree.getItem(itemId));
+//            if (issueTree.getItem(itemId).equals(item)){
+//                issueTree.select(itemId);
+//                System.out.println("EQUALS!");
+//                break;
+//            }
+//
+//        }
 //
 //    }
 

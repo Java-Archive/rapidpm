@@ -131,15 +131,14 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
 
 
         Node childNode = graphDb.getNodeById(child.getId());
-        if (childNode.hasRelationship(GraphRelationRegistry.getSubIssueRelationshipType(), Direction.INCOMING)) {
+        final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
+        if (childNode.hasRelationship(relType, Direction.INCOMING)) {
             //throw new IllegalStateException("ChildIssue already is a SubIssue.");
-            Relationship rel = childNode.getSingleRelationship(GraphRelationRegistry.getSubIssueRelationshipType(),
-                    Direction.INCOMING);
+            Relationship rel = childNode.getSingleRelationship(relType, Direction.INCOMING);
             deleteSubIssueRelation(rel.getStartNode(), childNode);
         }
 
-        graphDb.getNodeById(parent.getId()).createRelationshipTo(childNode,
-                GraphRelationRegistry.getSubIssueRelationshipType());
+        graphDb.getNodeById(parent.getId()).createRelationshipTo(childNode,relType );
         childNode.getSingleRelationship(GraphRelationRegistry.getClassRootToChildRelType(),
             Direction.INCOMING).delete();
     }
@@ -152,7 +151,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         Node startNode = graphDb.getNodeById(issue.getId());
         List<IssueBase> issueList = new ArrayList<>();
 
-        for (Relationship rel : startNode.getRelationships(GraphRelationRegistry.getSubIssueRelationshipType(),
+        final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
+        for (Relationship rel : startNode.getRelationships(relType,
                 Direction.OUTGOING)) {
             issueList.add(getObjectFromNode(rel.getOtherNode(startNode)));
         }
@@ -185,7 +185,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         if (childNode == null)
             throw new NullPointerException("Childissue is null.");
 
-        for (final Relationship rel : parentNode.getRelationships(GraphRelationRegistry.getSubIssueRelationshipType(),
+        final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
+        for (final Relationship rel : parentNode.getRelationships(relType,
                 Direction.OUTGOING))
             if (rel.getOtherNode(parentNode).equals(childNode))
                 rel.delete();
@@ -233,8 +234,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         final Node startNode = graphDb.getNodeById(issue.getId());
         final List<IssueComponent> issueList = new ArrayList<>();
 
-        for (final Relationship rel : startNode.getRelationships(GraphRelationRegistry.getRelationshipTypeForClass
-                (IssueComponent.class), Direction.OUTGOING)) {
+        final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueComponent.class);
+        for (final Relationship rel : startNode.getRelationships(relType, Direction.OUTGOING)) {
             issueList.add(GraphDaoFactory.getIssueComponentDAO().findById(rel.getOtherNode(startNode).getId()));
         }
         return issueList;
@@ -261,8 +262,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             throw new NullPointerException("Component is null.");
 
         final Node issueNode = graphDb.getNodeById(issue.getId());
-        for (final Relationship rel : issueNode.getRelationships(GraphRelationRegistry.getRelationshipTypeForClass
-                (IssueComponent.class), Direction.OUTGOING))
+        RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueComponent.class);
+        for (final Relationship rel : issueNode.getRelationships(relType, Direction.OUTGOING))
             if (rel.getOtherNode(issueNode).equals(graphDb.getNodeById(component.getId())))
                 rel.delete();
     }

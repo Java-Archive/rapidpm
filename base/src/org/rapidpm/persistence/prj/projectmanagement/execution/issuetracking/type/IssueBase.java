@@ -77,7 +77,6 @@ public class IssueBase implements PersistInGraph {
     //@Relational
     private List<IssueTimeUnit> timeUnitsUsed = new ArrayList<>();
 
-    //@Graph(clazz = IssueComment.class)
     @Relational(clazz = IssueComment.class)
     private List<IssueComment> comments = new ArrayList<>();
 

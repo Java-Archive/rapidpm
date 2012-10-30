@@ -1,9 +1,6 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
-import org.neo4j.graphdb.Direction;
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Node;
-import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.*;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.GraphBaseDAO;
 import org.rapidpm.persistence.GraphRelationRegistry;
@@ -38,8 +35,8 @@ public class IssueTypeDAO extends GraphBaseDAO<IssueType> {
         final List<IssueBase> issueList = new ArrayList<>();
         final Node typeNode = graphDb.getNodeById(type.getId());
         IssueBase issue = null;
-        for (Relationship rel : typeNode.getRelationships(GraphRelationRegistry
-                .getRelationshipTypeForClass(IssueType.class), Direction.INCOMING)) {
+        final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueType.class);
+        for (Relationship rel : typeNode.getRelationships(relType, Direction.INCOMING)) {
             issue = getObjectFromNode(rel.getOtherNode(typeNode), IssueBase.class);
             if (issue != null && (projectId == 0 || issue.getProjectId().equals(projectId)))
                 issueList.add(issue);

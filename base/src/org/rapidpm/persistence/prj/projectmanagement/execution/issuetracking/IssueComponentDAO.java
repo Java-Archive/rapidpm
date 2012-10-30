@@ -39,8 +39,8 @@ public class IssueComponentDAO extends GraphBaseDAO<IssueComponent> {
         final List<IssueBase> issueList = new ArrayList<>();
         final Node compNode = graphDb.getNodeById(component.getId());
         IssueBase issue = null;
-        for (Relationship rel : compNode.getRelationships(GraphRelationRegistry
-                .getRelationshipTypeForClass(IssueComponent.class), Direction.INCOMING)) {
+        final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueComponent.class);
+        for (Relationship rel : compNode.getRelationships(relType, Direction.INCOMING)) {
             issue = getObjectFromNode(rel.getOtherNode(compNode), IssueBase.class);
             if (issue != null && (projectId == 0 || issue.getProjectId().equals(projectId)))
                 issueList.add(issue);

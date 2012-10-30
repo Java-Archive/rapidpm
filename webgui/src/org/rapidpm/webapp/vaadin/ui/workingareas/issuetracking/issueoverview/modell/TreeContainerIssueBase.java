@@ -28,15 +28,15 @@ public class TreeContainerIssueBase extends HierarchicalContainer {
 
     private void filltree() {
         Object itemId;
-        for (IssueBase issuebase : GraphDaoFactory.getIssueBaseDAO(currentProject.getId()).loadTopLevelEntities()) {
+        for (IssueBase issue : GraphDaoFactory.getIssueBaseDAO(currentProject.getId()).loadTopLevelEntities()) {
             itemId = addItem();
-            this.getContainerProperty(itemId, PROPERTY_CAPTION).setValue(issuebase.name());
-            this.getContainerProperty(itemId, PROPERTY_ISSUEBASE).setValue(issuebase);
-            if (issuebase.getSubIssues() == null || issuebase.getSubIssues().isEmpty()) {
+            this.getContainerProperty(itemId, PROPERTY_CAPTION).setValue(issue.name());
+            this.getContainerProperty(itemId, PROPERTY_ISSUEBASE).setValue(issue);
+            if (issue.getSubIssues() == null || issue.getSubIssues().isEmpty()) {
                 this.setChildrenAllowed(itemId, false);
             } else {
                 this.setChildrenAllowed(itemId, true);
-                iterateSubIssues(issuebase, itemId);
+                iterateSubIssues(issue, itemId);
             }
         }
     }
@@ -44,16 +44,16 @@ public class TreeContainerIssueBase extends HierarchicalContainer {
     private void iterateSubIssues(IssueBase parentIssue, Object parentItemId) {
 
         Object itemId;
-        for (IssueBase issueBase : parentIssue.getSubIssues()) {
+        for (IssueBase subIssue : parentIssue.getSubIssues()) {
             itemId = addItem();
-            this.getContainerProperty(itemId, PROPERTY_CAPTION).setValue(issueBase.name());
-            this.getContainerProperty(itemId, PROPERTY_ISSUEBASE).setValue(issueBase);
+            this.getContainerProperty(itemId, PROPERTY_CAPTION).setValue(subIssue.name());
+            this.getContainerProperty(itemId, PROPERTY_ISSUEBASE).setValue(subIssue);
             this.setParent(itemId, parentItemId);
-            if (issueBase.getSubIssues() == null || issueBase.getSubIssues().isEmpty()) {
+            if (subIssue.getSubIssues() == null || subIssue.getSubIssues().isEmpty()) {
                 this.setChildrenAllowed(itemId, false);
             } else {
                 this.setChildrenAllowed(itemId, true);
-                iterateSubIssues(issueBase, itemId);
+                iterateSubIssues(subIssue, itemId);
             }
         }
     }

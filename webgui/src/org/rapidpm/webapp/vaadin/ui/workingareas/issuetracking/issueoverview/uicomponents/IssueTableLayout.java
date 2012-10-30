@@ -94,9 +94,7 @@ public class IssueTableLayout extends ComponentEditableVLayout {
         @Override
         public void itemClick(ItemClickEvent event) {
             if (event.isDoubleClick()) {
-//                screen.getIssueTabSheet().setSelectedTab(screen.getIssueTabSheet().getDetailsLayout());
-//                screen.getIssueTreeLayout().setSelectedItem((IssueBase)event.getItemId());
-
+//                screen.getIssueTreeLayout().setSelectedItem(event.getItemId());
                 System.out.println("Open Details of Issue");
             }
         }

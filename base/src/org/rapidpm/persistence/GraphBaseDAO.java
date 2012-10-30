@@ -217,10 +217,9 @@ public class GraphBaseDAO<T> {
         if (aClass == null)
             throw new NullPointerException("Class is null.");
 
-        if (startNode.hasRelationship(GraphRelationRegistry.getRelationshipTypeForClass
-                (aClass), Direction.OUTGOING)) {
-            for (Relationship rel : startNode.getRelationships(GraphRelationRegistry.getRelationshipTypeForClass
-                    (aClass), Direction.OUTGOING))
+        final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(aClass);
+        if (startNode.hasRelationship(relType, Direction.OUTGOING)) {
+            for (Relationship rel : startNode.getRelationships(relType, Direction.OUTGOING))
                 rel.delete();
         }
         connectAttribute(startNode, endNode, aClass);
@@ -234,8 +233,7 @@ public class GraphBaseDAO<T> {
         if (aClass == null)
             throw new NullPointerException("Class is null.");
 
-        startNode.createRelationshipTo(endNode, GraphRelationRegistry.getRelationshipTypeForClass
-                (aClass));
+        startNode.createRelationshipTo(endNode, GraphRelationRegistry.getRelationshipTypeForClass(aClass));
     }
 
 
@@ -423,15 +421,11 @@ public class GraphBaseDAO<T> {
             Node node;
             if (id != null && id != 0) {
                 node = graphDb.getNodeById(id);
+                final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
                 for (Relationship rel : node.getRelationships()) {
-                    if (rel.isType(GraphRelationRegistry.getSubIssueRelationshipType())
-                        && rel.getStartNode().equals(node)) {
-
-                        for (Relationship parent : node.getRelationships(GraphRelationRegistry
-                                .getSubIssueRelationshipType(), Direction.INCOMING)) {
-
-                            parent.getStartNode().createRelationshipTo(rel.getEndNode(),
-                                    GraphRelationRegistry.getSubIssueRelationshipType());
+                    if (rel.isType(relType) && rel.getStartNode().equals(node)) {
+                        for (Relationship parent : node.getRelationships(relType, Direction.INCOMING)) {
+                            parent.getStartNode().createRelationshipTo(rel.getEndNode(),relType);
                         }
                     }
                     rel.delete();

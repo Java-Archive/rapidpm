@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
+import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
@@ -36,7 +37,11 @@ public class IssueType  implements PersistInGraph {
     }
 
     public List<IssueBase> getConnectedIssues() {
-        return null;
+        return GraphDaoFactory.getIssueTypeDAO().getConnectedIssues(this);
+    }
+
+    public List<IssueBase> getConnectedIssuesFromProject(final Long projectId) {
+        return GraphDaoFactory.getIssueTypeDAO().getConnectedIssuesFromProject(this, projectId);
     }
 
     public Long getId() {
