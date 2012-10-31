@@ -236,22 +236,22 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
     @Override
     public void doInternationalization() {
-        typeSelect.setCaption(screen.getMessagesBundle().getString("issue_type"));
-        statusSelect.setCaption(screen.getMessagesBundle().getString("issue_status"));
-        prioritySelect.setCaption(screen.getMessagesBundle().getString("issue_priority"));
-        assigneeSelect.setCaption(screen.getMessagesBundle().getString("issue_assignee"));
-        reporterLabel.setCaption(screen.getMessagesBundle().getString("issue_reporter"));
-        componentListSelect.setCaption(screen.getMessagesBundle().getString("issue_components"));
-        plannedDateField.setCaption(screen.getMessagesBundle().getString("issue_planned"));
-        resolvedDateField.setCaption(screen.getMessagesBundle().getString("issue_resolved"));
-        closedDateField.setCaption(screen.getMessagesBundle().getString("issue_closed"));
-        storyPointSelect.setCaption(screen.getMessagesBundle().getString("issue_storypoints"));
-        versionSelect.setCaption(screen.getMessagesBundle().getString("issue_version"));
-        riskSelect.setCaption(screen.getMessagesBundle().getString("issue_risk"));
-        descriptionTextArea.setCaption(screen.getMessagesBundle().getString("issue_description"));
-        tabSheet.getTab(tabComments).setCaption(screen.getMessagesBundle().getString("issue_comments"));
-        tabSheet.getTab(tabTestcases).setCaption(screen.getMessagesBundle().getString("issue_testcases"));
-        tabSheet.getTab(tabStory).setCaption(screen.getMessagesBundle().getString("issue_story"));
+        typeSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_type"));
+        statusSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_status"));
+        prioritySelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_priority"));
+        assigneeSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_assignee"));
+        reporterLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_reporter"));
+        componentListSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_components"));
+        plannedDateField.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_planned"));
+        resolvedDateField.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_resolved"));
+        closedDateField.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_closed"));
+        storyPointSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_storypoints"));
+        versionSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_version"));
+        riskSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_risk"));
+        descriptionTextArea.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_description"));
+        tabSheet.getTab(tabComments).setCaption(screen.getMessagesBundle().getString("issuetracking_issue_comments"));
+        tabSheet.getTab(tabTestcases).setCaption(screen.getMessagesBundle().getString("issuetracking_issue_testcases"));
+        tabSheet.getTab(tabStory).setCaption(screen.getMessagesBundle().getString("issuetracking_issue_story"));
     }
 
     public void setDetailsFromIssue(IssueBase issue) {

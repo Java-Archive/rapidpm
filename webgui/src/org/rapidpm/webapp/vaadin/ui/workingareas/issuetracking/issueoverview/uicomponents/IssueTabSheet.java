@@ -49,8 +49,8 @@ public class IssueTabSheet extends TabSheet implements Internationalizationable{
 
     @Override
     public void doInternationalization() {
-        tableTab.setCaption(screen.getMessagesBundle().getString("issue_table"));
-        detailsTab.setCaption(screen.getMessagesBundle().getString("issue_detail"));
+        tableTab.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_table"));
+        detailsTab.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_detail"));
     }
 
     public IssueDetailsLayout getDetailsLayout() {

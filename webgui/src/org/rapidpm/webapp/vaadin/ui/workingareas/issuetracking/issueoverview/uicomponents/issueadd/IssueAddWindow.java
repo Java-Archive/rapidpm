@@ -29,7 +29,7 @@ public class IssueAddWindow extends Window {
         self = this;
         this.screen = screen;
         this.issueTree = issueTree;
-        setCaption(screen.getMessagesBundle().getString("issue_addwindow"));
+        setCaption(screen.getMessagesBundle().getString("issuetracking_issue_addwindow"));
         this.setModal(true);
         addDetailsLayout = new IssueDetailsLayout(screen);
         addDetailsLayout.setRequiredIndicator(true);

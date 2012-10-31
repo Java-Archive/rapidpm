@@ -64,9 +64,9 @@ public class IssueDeleteWindow extends Window implements Internationalizationabl
 
     @Override
     public void doInternationalization() {
-        setCaption(screen.getMessagesBundle().getString("issue_deletewindow"));
+        setCaption(screen.getMessagesBundle().getString("issuetracking_issue_deletewindow"));
 
-        deleteLabel.setCaption(screen.getMessagesBundle().getString("issue_delete_question"));
+        deleteLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_delete_question"));
         deleteLabel.setValue(issueTree.getItemCaption(issueTree.getValue()));
 
         yesButton.setCaption(screen.getMessagesBundle().getString("yes"));

@@ -105,7 +105,7 @@ public class MainUI extends BaseUI {
 
         final MenuBar.MenuItem issuetracking = menuBar.addItem(messages.getString("issuetracking"), null,
                 null);
-        issuetracking.addItem(messages.getString("issue_overview"), new MenuBar.Command() {
+        issuetracking.addItem(messages.getString("issuetracking_overview"), new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 setWorkingArea(new IssueOverviewScreen(MainUI.this));
