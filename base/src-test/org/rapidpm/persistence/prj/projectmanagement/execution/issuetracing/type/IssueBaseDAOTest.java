@@ -7,6 +7,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing.typ
  * To change this template use File | Settings | File Templates.
  */
 
+import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.neo4j.graphdb.Direction;
@@ -24,6 +25,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class IssueBaseDAOTest {
+    private static Logger logger = Logger.getLogger(IssueBaseDAOTest.class);
 
     private final Long projectId = 1L;
     private final IssueBaseDAO dao = GraphDaoFactory.getIssueBaseDAO(projectId);
@@ -54,7 +56,8 @@ public class IssueBaseDAOTest {
         issueBase.setPriority(GraphDaoFactory.getIssuePriorityDAO().loadAllEntities().get(0));
 
         issueBase = dao.persist(issueBase);
-        System.out.println(issueBase.toString());
+        if (logger.isDebugEnabled())
+            logger.debug(issueBase.toString());
         //assertTrue(issueBase.equals(dao.findById(issueBase.getId()).hashCode()));
 
         dao.delete(issueBase);
@@ -64,8 +67,9 @@ public class IssueBaseDAOTest {
     @Test
     public void loadAll() {
         List<IssueBase> list = dao.loadAllEntities();
-        for (IssueBase issue : list)
-            System.out.println(issue.toString());
+        if (logger.isDebugEnabled())
+            for (IssueBase issue : list)
+                logger.debug(issue.toString());
         assertEquals(list.size(), 3);
     }
 
@@ -161,7 +165,8 @@ public class IssueBaseDAOTest {
         issue.addOrChangeComment(comment1);
         issue.addOrChangeComment(comment2);
 
-        System.out.println(issue.toString());
+        if (logger.isDebugEnabled())
+            logger.debug(issue.toString());
         issue = dao.persist(issue);
 
         assertTrue(issue.getComments().contains(comment1));

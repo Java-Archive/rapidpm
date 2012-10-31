@@ -38,14 +38,22 @@ public class IssueComponentDAO extends GraphBaseDAO<IssueComponent> {
         if (projectId < 0)
             throw new IllegalArgumentException("ProjectId must be positiv");
 
+        if (logger.isDebugEnabled())
+            logger.debug("getConnectedIssuesFromProject: " + projectId);
+
         final List<IssueBase> issueList = new ArrayList<>();
         final Node compNode = graphDb.getNodeById(component.getId());
         IssueBase issue = null;
         final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueComponent.class);
         for (Relationship rel : compNode.getRelationships(relType, Direction.INCOMING)) {
             issue = getObjectFromNode(rel.getOtherNode(compNode), IssueBase.class);
-            if (issue != null && (projectId == 0 || issue.getProjectId().equals(projectId)))
+            if (issue != null && (projectId == 0 || issue.getProjectId().equals(projectId))) {
                 issueList.add(issue);
+                if (logger.isDebugEnabled())
+                    logger.debug("Is connected Issues: " + issue);
+            } else
+            if (logger.isDebugEnabled())
+                logger.debug("Is not connected: " + issue);
         }
         return issueList;
     }

@@ -7,6 +7,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
  * To change this template use File | Settings | File Templates.
  */
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
@@ -19,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class IssueStatusDAOTest {
+    private static Logger logger = Logger.getLogger(IssueStatusDAOTest.class);
 
     private final IssueStatusDAO dao = GraphDaoFactory.getIssueStatusDAO();
 
@@ -63,7 +65,8 @@ public class IssueStatusDAOTest {
             }
 
             assertEquals(issueList, testList);
-            System.out.println("listsize: " + issueList.size());
+            if (logger.isDebugEnabled())
+                logger.debug("listsize: " + issueList.size());
         }
     }
 }

@@ -34,14 +34,22 @@ public class IssuePriorityDAO extends GraphBaseDAO<IssuePriority> {
         if (projectId < 0)
             throw new IllegalArgumentException("ProjectId must be positiv");
 
+        if (logger.isDebugEnabled())
+            logger.debug("getConnectedIssuesFromProject: " + projectId);
+
         final List<IssueBase> issueList = new ArrayList<>();
         final Node prioNode = graphDb.getNodeById(priority.getId());
         IssueBase issue = null;
         final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssuePriority.class);
         for (Relationship rel : prioNode.getRelationships(relType, Direction.INCOMING)) {
             issue = getObjectFromNode(rel.getOtherNode(prioNode), IssueBase.class);
-            if (issue != null && (projectId == 0 || issue.getProjectId().equals(projectId)))
+            if (issue != null && (projectId == 0 || issue.getProjectId().equals(projectId))) {
                 issueList.add(issue);
+                if (logger.isDebugEnabled())
+                    logger.debug("Is connected Issues: " + issue);
+            } else
+            if (logger.isDebugEnabled())
+                logger.debug("Is not connected: " + issue);
         }
         return issueList;
     }

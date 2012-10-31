@@ -7,6 +7,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
  * To change this template use File | Settings | File Templates.
  */
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.neo4j.graphdb.Node;
 import org.rapidpm.persistence.GraphDBFactory;
@@ -23,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class IssuePriorityDAOTest {
-
+    private static Logger logger = Logger.getLogger(IssuePriorityDAOTest.class);
     private final IssuePriorityDAO dao = GraphDaoFactory.getIssuePriorityDAO();
 
     @Test
@@ -68,7 +69,8 @@ public class IssuePriorityDAOTest {
             }
 
             assertEquals(issueList, testList);
-            System.out.println("listsize: " + issueList.size());
+            if (logger.isDebugEnabled())
+                logger.debug("listsize: " + issueList.size());
         }
     }
 }
