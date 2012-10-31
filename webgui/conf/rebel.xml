@@ -2,19 +2,19 @@
 <application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.zeroturnaround.com" xsi:schemaLocation="http://www.zeroturnaround.com http://www.zeroturnaround.com/alderaan/rebel-2_0.xsd">
 
     <classpath>
-        <dir name="C:/Programmierung/Workspace/IntelliJWorkspace/rapidpm/out/production/webgui">
+        <dir name="C:/Users/marco/smartgit/rapidpm19/out/production/webgui">
         </dir>
-        <dir name="C:/Programmierung/Workspace/IntelliJWorkspace/rapidpm/out/production/ejc">
+        <dir name="C:/Users/marco/smartgit/rapidpm19/out/production/ejc">
         </dir>
-        <dir name="C:/Programmierung/Workspace/IntelliJWorkspace/rapidpm/out/production/base">
+        <dir name="C:/Users/marco/smartgit/rapidpm19/out/production/base">
         </dir>
     </classpath>
 
     <web>
         <link target="/">
-            <dir name="C:/Programmierung/Workspace/IntelliJWorkspace/rapidpm/webgui/web">
+            <dir name="C:/Users/marco/smartgit/rapidpm19/webgui/web">
             </dir>
-            <dir name="C:/Programmierung/Workspace/IntelliJWorkspace/rapidpm/ejb">
+            <dir name="C:/Users/marco/smartgit/rapidpm19/ejb">
             </dir>
         </link>
     </web>
