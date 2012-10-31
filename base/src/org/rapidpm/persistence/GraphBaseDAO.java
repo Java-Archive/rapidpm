@@ -99,8 +99,8 @@ public class GraphBaseDAO<T> {
             System.out.println("Project" + project.toString());
             newProjectNode = graphDb.createNode();
             newProjectNode.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), projectId);
-            newProjectNode.setProperty(GraphRelationRegistry.getRelationAttributeProjectToken(), "PR" + projectId); //project.getToken());
-            newProjectNode.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), 0);
+            newProjectNode.setProperty(GraphRelationRegistry.getRelationAttributeProjectToken(), project.getProjektToken());
+            newProjectNode.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), 1);
             project_root.createRelationshipTo(newProjectNode, GraphRelationRegistry.getRootToClassRootRelType(IssueBase.class));
             tx.success();
         } finally {

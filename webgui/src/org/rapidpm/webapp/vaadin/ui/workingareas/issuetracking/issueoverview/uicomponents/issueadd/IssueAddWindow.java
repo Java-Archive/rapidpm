@@ -42,17 +42,23 @@ public class IssueAddWindow extends Window {
 
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            IssueBase childIssue = addDetailsLayout.setIssueProperties(true);
+            final IssueBase childIssue = addDetailsLayout.setIssueProperties(true);
             if (childIssue != null) {
-                Object itemId = issueTree.addItem();
-                Object parentItemId = issueTree.getValue();
-                IssueBase parentIssue = (IssueBase)issueTree.getContainerDataSource().getContainerProperty
-                        (parentItemId, TreeContainerIssueBase.PROPERTY_ISSUEBASE).getValue();
+                final Object itemId = issueTree.addItem();
+                final Object parentItemId = issueTree.getValue();
+
                 issueTree.getContainerDataSource().getContainerProperty(itemId,
                         TreeContainerIssueBase.PROPERTY_CAPTION).setValue(childIssue.name());
                 issueTree.getContainerDataSource().getContainerProperty(itemId,
                         TreeContainerIssueBase.PROPERTY_ISSUEBASE).setValue(childIssue);
-                parentIssue.addSubIssue(childIssue);
+
+                if (parentItemId != null)  {
+                    final IssueBase parentIssue = (IssueBase)issueTree.getContainerDataSource().getContainerProperty
+                            (parentItemId, TreeContainerIssueBase.PROPERTY_ISSUEBASE).getValue();
+                    parentIssue.addSubIssue(childIssue);
+
+                }
+
                 issueTree.setChildrenAllowed(parentItemId, true);
                 issueTree.setParent(itemId, parentItemId);
                 issueTree.setChildrenAllowed(itemId, false);

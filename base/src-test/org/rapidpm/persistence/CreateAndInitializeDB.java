@@ -80,14 +80,14 @@ public class CreateAndInitializeDB {
 
             Node project1 = graphDb.createNode();
             project1.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), 1L);
-            project1.setProperty(GraphRelationRegistry.getRelationAttributeProjectToken(), "TPR");
-            project1.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), 0);
+            project1.setProperty(GraphRelationRegistry.getRelationAttributeProjectToken(), "PRO1");
+            project1.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), 1);
             project_root.createRelationshipTo(project1, rel);
 
             Node project2 = graphDb.createNode();
             project2.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), 2L);
-            project2.setProperty(GraphRelationRegistry.getRelationAttributeProjectToken(), "PR2");
-            project2.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), 0);
+            project2.setProperty(GraphRelationRegistry.getRelationAttributeProjectToken(), "PRO2");
+            project2.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), 1);
             project_root.createRelationshipTo(project2, rel);
 
             rel = GraphRelationRegistry.getRootToClassRootRelType(IssueStatus.class);
