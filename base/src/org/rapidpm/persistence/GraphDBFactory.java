@@ -22,6 +22,8 @@ public class GraphDBFactory {
 
     public static GraphDBFactory getInstance() {
         if (instance == null)
+            if (logger.isDebugEnabled())
+                logger.debug("Create new GrapgDBFactory instance");
             instance = new GraphDBFactory();
         return instance;
     }
@@ -30,6 +32,8 @@ public class GraphDBFactory {
         GraphDBFactoryBean bean = EJBFactory.getEjbInstance(GraphDBFactoryBean.class);
         if (bean != null)
             relDaoFactory = bean.getDaoFactoryBean();
+        else
+            logger.fatal("Couldn't create DAOFactory for relational DB");
         graphDb = new EmbeddedGraphDatabase(DB_PATH);
         registerShutdownHook(graphDb);
     }

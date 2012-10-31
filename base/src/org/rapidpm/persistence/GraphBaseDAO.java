@@ -42,7 +42,7 @@ public class GraphBaseDAO<T> {
         if (projectId == null)
             throw new NullPointerException("ProjectId is null.");
         if (projectId < 0)
-            throw new NullPointerException("ProjectId must be positiv.");
+            throw new IllegalArgumentException("ProjectId must be positiv.");
 
 //        if (relDaoFactory == null)
 //            throw new NullPointerException("Rel. DaoFactory is null.");
@@ -111,6 +111,9 @@ public class GraphBaseDAO<T> {
         if (entity == null)
             throw new NullPointerException(clazz.getSimpleName() + ": Object to persist can't be null");
 
+        if (logger.isDebugEnabled())
+            logger.debug("persist: " + entity);
+
         final Transaction tx = graphDb.beginTx();
         try{
             final Node node;
@@ -132,10 +135,13 @@ public class GraphBaseDAO<T> {
 
             tx.success();
         } catch (NoSuchMethodException e) {
+            logger.fatal("NoSuchMethodException: " + e.getMessage());
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (IllegalAccessException e) {
+            logger.fatal("IllegalAccessException: " + e.getMessage());
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (InvocationTargetException e) {
+            logger.fatal("InvocationTargetException: " + e.getMessage());
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } finally {
             tx.finish();
@@ -149,28 +155,26 @@ public class GraphBaseDAO<T> {
         if (entity == null)
             throw new NullPointerException(clazz.getSimpleName() + ": Object to persist can't be null");
 
+        if (logger.isDebugEnabled())
+            logger.debug("setProperties: " + entity);
+
         final Field[] fieldNames = entity.getClass().getDeclaredFields();
-
-        for (final Field field : fieldNames) {
-            boolean isAccessible = field.isAccessible();
-            field.setAccessible(true);
-
-            if (field.isAnnotationPresent(Simple.class)) {
-                try {
+        try {
+            for (final Field field : fieldNames) {
+                boolean isAccessible = field.isAccessible();
+                field.setAccessible(true);
+                if (field.isAnnotationPresent(Simple.class)) {
                     if (field.getAnnotation(Simple.class).clazz().equals("Date")) {
                         node.setProperty(field.getName(), field.get(entity) == null ? "0" : ((Date)field.get(entity)).getTime());
                     } else {
                         if (field.get(entity) != null)
                             node.setProperty(field.getName(), field.get(entity));
                     }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
                 }
-            }
-            else if (field.isAnnotationPresent(Relational.class)) {
-                final Class aClass = field.getAnnotation(Relational.class).clazz();
-                try {
-                    if (field.getType().equals(List.class)) {
+                else if (field.isAnnotationPresent(Relational.class)) {
+                    final Class aClass = field.getAnnotation(Relational.class).clazz();
+
+                        if (field.getType().equals(List.class)) {
                         final DAO relDao = getRelationalDaoInstance(aClass);
                         final List entityList = (List)field.get(entity);
                         final Iterator it = entityList.iterator();
@@ -184,17 +188,11 @@ public class GraphBaseDAO<T> {
                         }
                         node.setProperty(field.getName(), ids);
                     } else {
-                        //method = field.getType().getDeclaredMethod("getId");
-                        if (field.get(entity) != null)//(method != null && field.get(entity) != null) {
+                        if (field.get(entity) != null)
                                 node.setProperty(field.getName(), getIdFromEntity(field.get(entity), aClass));
-                        // }
                     }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }
-            }
-            else if (field.isAnnotationPresent(Graph.class)) {
-                try {
+                else if (field.isAnnotationPresent(Graph.class)) {
                     if (field.get(entity) != null) {
                         final Class aClass = field.getAnnotation(Graph.class).clazz();
                         Long id = getIdFromEntity(field.get(entity), aClass);
@@ -202,12 +200,13 @@ public class GraphBaseDAO<T> {
                             connectSingleAttribute(node, graphDb.getNodeById(id), aClass);
                         }
                     }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
                 }
-            }
 
-            field.setAccessible(isAccessible);
+                field.setAccessible(isAccessible);
+            }
+        } catch (IllegalAccessException e) {
+            logger.fatal("IllegalAccessException: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -218,6 +217,9 @@ public class GraphBaseDAO<T> {
             throw new NullPointerException("Endnode is null.");
         if (aClass == null)
             throw new NullPointerException("Class is null.");
+
+        if (logger.isDebugEnabled())
+            logger.debug("connectSingleAttribute");
 
         final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(aClass);
         if (startNode.hasRelationship(relType, Direction.OUTGOING)) {
@@ -235,11 +237,17 @@ public class GraphBaseDAO<T> {
         if (aClass == null)
             throw new NullPointerException("Class is null.");
 
+        if (logger.isDebugEnabled())
+            logger.debug("connectAttribute");
+
         startNode.createRelationshipTo(endNode, GraphRelationRegistry.getRelationshipTypeForClass(aClass));
     }
 
 
     public List<T> loadAllEntities() {
+        if (logger.isDebugEnabled())
+            logger.debug("loadAllEntities");
+
         final TraversalDescription td = Traversal.description()
                 .breadthFirst()
                 .relationships(GraphRelationRegistry.getClassRootToChildRelType(), Direction.OUTGOING )
@@ -255,6 +263,9 @@ public class GraphBaseDAO<T> {
     }
 
     public List<T> loadTopLevelEntities() {
+        if (logger.isDebugEnabled())
+            logger.debug("loadTopLevelEntities");
+
         final TraversalDescription td = Traversal.description()
                 .breadthFirst()
                 .relationships(GraphRelationRegistry.getClassRootToChildRelType(), Direction.OUTGOING )
@@ -269,6 +280,9 @@ public class GraphBaseDAO<T> {
     }
 
     public T findById(final Long id) {
+        if (logger.isDebugEnabled())
+            logger.debug("findById");
+
         if (id == null)
             throw new NullPointerException("Id object is null.");
 
@@ -276,6 +290,9 @@ public class GraphBaseDAO<T> {
     }
 
     public T findByEntity(final T entity) {
+        if (logger.isDebugEnabled())
+            logger.debug("findByEntity");
+
         if (entity == null)
             throw new NullPointerException("Entity object is null.");
 
@@ -283,6 +300,9 @@ public class GraphBaseDAO<T> {
     }
 
     protected T getObjectFromNode(final Node node) {
+        if (logger.isDebugEnabled())
+            logger.debug("getObjectFromNode: " + clazz.getSimpleName());
+
         return this.<T>getObjectFromNode(node , clazz);
     }
 
@@ -292,19 +312,27 @@ public class GraphBaseDAO<T> {
         if (clazz == null)
             throw new NullPointerException("Class is null.");
 
+        if (logger.isDebugEnabled())
+            logger.debug("getObjectFromNode: " + clazz.getSimpleName());
+
         E entity = null;
         try {
             try {
                 entity = (E) clazz.getConstructor().newInstance();
             } catch (NoSuchMethodException e) {
                 try {
+                    if (logger.isDebugEnabled())
+                        logger.debug("Get constructor with parameter: " + clazz.getSimpleName());
                     entity = (E) clazz.getConstructor(Long.class).newInstance(-1L);
                 } catch (NoSuchMethodException e1) {
+                    logger.fatal("NoSuchMethodException" + e.getMessage());
                     e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 } catch (InvocationTargetException e1) {
+                    logger.fatal("InvocationTargetException" + e.getMessage());
                     e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }
             } catch (InvocationTargetException e) {
+                logger.fatal("InvocationTargetException" + e.getMessage());
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
 
@@ -377,6 +405,9 @@ public class GraphBaseDAO<T> {
         if (aClass == null)
             throw new NullPointerException("Class to get Id from can't be null.");
 
+        if (logger.isDebugEnabled())
+            logger.debug("getIdFromEntity");
+
         Long id = null;
         try {
             final Method method = aClass.getDeclaredMethod("getId");
@@ -394,6 +425,9 @@ public class GraphBaseDAO<T> {
     }
 
     private DAO getRelationalDaoInstance(final Class aClass) {
+        if (logger.isDebugEnabled())
+            logger.debug("getRelationalDaoInstance");
+
         DAO relDao = null;
         if (relDaoFactory != null) {
             final Method method;
@@ -415,6 +449,9 @@ public class GraphBaseDAO<T> {
     public boolean delete(T entity) {
         if (entity == null)
             throw new NullPointerException("Object to delete can't be null.");
+
+        if (logger.isDebugEnabled())
+            logger.debug("delete: " + entity);
 
         boolean success = false;
         final Long id = getIdFromEntity(entity);
