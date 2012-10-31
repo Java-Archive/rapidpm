@@ -1,5 +1,6 @@
 package org.rapidpm.persistence;
 
+import org.apache.log4j.Logger;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.RelationshipType;
@@ -20,6 +21,9 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class CreateAndInitializeDB {
+    private static final Logger logger = Logger.getLogger(CreateAndInitializeDB.class);
+
+    private final boolean debug;
     private GraphDatabaseService graphDb;
     private Node root;
 
@@ -30,12 +34,12 @@ public class CreateAndInitializeDB {
     private static final List<IssueRelation> relationList = new ArrayList<>();
 
     public static void main(final String[] args) {
-        CreateAndInitializeDB setUp = new CreateAndInitializeDB();
-        setUp.createDB();
-        setUp.initializeDB();
+        CreateAndInitializeDB setUp = new CreateAndInitializeDB(false);
+        setUp.CreateAndInitialize();
     }
 
-    public CreateAndInitializeDB() {
+    public CreateAndInitializeDB(boolean debug) {
+        this.debug = debug;
         deleteFileOrDirectory(true, new File(GraphDBFactory.DB_PATH));
         graphDb = GraphDBFactory.getInstance().getGraphDBService();
         root = graphDb.getNodeById(0);
@@ -54,9 +58,19 @@ public class CreateAndInitializeDB {
     }
 
 
-    public void createDB() {
+    public void CreateAndInitialize(){
         System.out.println("Start creating");
+        createDB();
+        System.out.println("Finished creating");
+        System.out.println("Start initializing");
+        initializeAttributes();
+        initializeProject1();
+        initializeProject2();
+        System.out.println("Finished initializing");
+        graphDb.shutdown();
+    }
 
+    public void createDB() {
         Transaction tx = graphDb.beginTx();
         try{
             RelationshipType rel = GraphRelationRegistry.getRootToClassRootRelType(IssueBase.class);
@@ -102,17 +116,8 @@ public class CreateAndInitializeDB {
         } finally {
             tx.finish();
         }
-        System.out.println("Finished creating");
     }
 
-
-    public void initializeDB(){
-        System.out.println("Start initializing");
-        initializeAttributes();
-        initializeProject1();
-        initializeProject2();
-        System.out.println("Finished initializing");
-    }
 
     private void initializeAttributes(){
 
@@ -304,14 +309,14 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  3
                 i++;
             }
 
-            //for (int j = 0; j < 1; j++) {
+            for (int j = 0; j < 1; j++) {
                 if (attributes.get(i) != -1) {
                     IssueComment comment = new IssueComment();
                     comment.setId(new Long(attributes.get(i)));
                     issue.addOrChangeComment(comment);
                 }
                 i++;
-            //}
+            }
 
             if (attributes.get(i) != -1)
                 issue.setRisk(attributes.get(i));
@@ -327,8 +332,9 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  3
         }
 
 
-        for (IssueBase singleIssue : issues)
-            System.out.println(singleIssue.toString());
+        if (debug)
+            for (IssueBase singleIssue : issues)
+                System.out.println(singleIssue.toString());
 
 
         //Create Sublists
@@ -387,7 +393,8 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  3
             issueBase.addComponent(componentList.get(i));
 
             issueBase = GraphDaoFactory.getIssueBaseDAO(projectId).persist(issueBase);
-            System.out.println(issueBase.toString());
+            if (debug)
+                System.out.println(issueBase.toString());
         }
     }
 

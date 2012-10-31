@@ -21,10 +21,11 @@ public class GraphDBFactory {
     private static GraphDBFactory instance;
 
     public static GraphDBFactory getInstance() {
-        if (instance == null)
+        if (instance == null) {
             if (logger.isDebugEnabled())
                 logger.debug("Create new GrapgDBFactory instance");
             instance = new GraphDBFactory();
+        }
         return instance;
     }
 
