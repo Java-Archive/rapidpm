@@ -1,7 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents;
 
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.server.VaadinSession;
+import com.vaadin.server.VaadinServiceSession;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -51,7 +51,7 @@ public class CurrentProjectPanel extends EditablePanel {
             currentProjectBox.setTextInputAllowed(false);
             currentProjectBox.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
             currentProjectBox.setItemCaptionPropertyId(PlannedProject.NAME);
-            final VaadinSession session = screen.getUi().getSession();
+            final VaadinServiceSession session = screen.getUi().getSession();
             final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
             if(currentProject != null){
                 currentProjectBox.select(currentProject);
