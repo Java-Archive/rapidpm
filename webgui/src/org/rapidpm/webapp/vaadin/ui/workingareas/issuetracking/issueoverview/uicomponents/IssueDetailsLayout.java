@@ -2,6 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.ui
 
 import com.vaadin.data.Item;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.server.UserError;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
@@ -49,7 +50,6 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     private TabSheet tabSheet;
     private VerticalLayout tabComments;
     private VerticalLayout tabTestcases;
-    private VerticalLayout tabStory;
 
     private VerticalLayout formLayout;
 
@@ -235,10 +235,6 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabTestcases.setMargin(true);
         tabSheet.addTab(tabTestcases);
 
-        tabStory = new VerticalLayout();
-        tabStory.setMargin(true);
-        tabSheet.addTab(tabStory);
-
         formLayout.addComponent(tabSheet);
 
         return formLayout;
@@ -261,7 +257,6 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         descriptionTextArea.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_description"));
         tabSheet.getTab(tabComments).setCaption(screen.getMessagesBundle().getString("issuetracking_issue_comments"));
         tabSheet.getTab(tabTestcases).setCaption(screen.getMessagesBundle().getString("issuetracking_issue_testcases"));
-        tabSheet.getTab(tabStory).setCaption(screen.getMessagesBundle().getString("issuetracking_issue_story"));
     }
 
     public void setDetailsFromIssue(IssueBase issue) {
@@ -323,6 +318,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
 
         if (headerSummaryField.getValue() == "") {
+            headerSummaryField.setComponentError(new UserError("Issue must have a name!"));
             logger.warn("Issue must have a name");
             return null;
         }

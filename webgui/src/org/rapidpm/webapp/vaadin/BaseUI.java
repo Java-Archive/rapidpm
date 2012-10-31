@@ -62,10 +62,7 @@ public abstract class BaseUI extends UI {
             if (DEBUG_MODE) {
                 buildMainLayout();
             } else {
-//            removeAllComponents();
-//                final VerticalLayout layout = new VerticalLayout();
-                final LoginWindow window = new LoginWindow(this);
-                addWindow(window);
+                buildLoginScreen();
             }
         } else {
             currentUser = session.getAttribute(Benutzer.class);
@@ -102,6 +99,7 @@ public abstract class BaseUI extends UI {
             if (userLogin.equals(enteredLogin) && userPasswd.equals(enteredPasswdHashed)) {
                 currentUser = user;
                 getSession().setAttribute(Benutzer.class, currentUser);
+                removeAllComponents();
                 loadProtectedRessources();
                 return;
             }
@@ -117,13 +115,12 @@ public abstract class BaseUI extends UI {
         switch (value.toString()) {
             case "GERMAN":
                 locale = new Locale("de", "DE");
-                messages = ResourceBundle.getBundle(MESSAGESBUNDLE, locale);
                 break;
             case "ENGLISH":
                 locale = new Locale("en", "US");
-                messages = ResourceBundle.getBundle(MESSAGESBUNDLE, locale);
                 break;
         }
+        messages = ResourceBundle.getBundle(MESSAGESBUNDLE, locale);
         //this.getSession().setLocale(messagesBundle);
     }
 
@@ -272,6 +269,7 @@ public abstract class BaseUI extends UI {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 getSession().close();
+                getPage().setLocation("/rapidpm");
             }
         });
         buttonKontakt.setStyleName(BaseTheme.BUTTON_LINK);
@@ -310,6 +308,12 @@ public abstract class BaseUI extends UI {
 //        buttonSitemap.addListener(this);
         hlHeaderLine.setComponentAlignment(buttonSitemap, Alignment.MIDDLE_RIGHT);
         return hlHeaderLine;
+    }
+
+    private void buildLoginScreen() {
+        final LoginMask mask = new LoginMask(this);
+        removeAllComponents();
+        addComponent(mask);
     }
 
 
