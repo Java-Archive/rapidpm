@@ -4,6 +4,7 @@ import com.vaadin.data.Item;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.*;
+import org.apache.log4j.Logger;
 import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
@@ -25,6 +26,7 @@ import java.util.Set;
  * To change this template use File | Settings | File Templates.
  */
 public class IssueDetailsLayout extends ComponentEditableVLayout implements Internationalizationable{
+    private static Logger logger = Logger.getLogger(IssueDetailsLayout.class);
 
     private TextField headerTextField;
     private ComboBox typeSelect;
@@ -296,14 +298,21 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         if (newIssue) {
             this.issue = new IssueBase(screen.getCurrentProject().getId());
             issue.setReporter(screen.getUi().getCurrentUser());
-        }
+            logger.info("Adding new issue");
+        } else
+            logger.info("Updating issue");
 
-        if (issue == null)
+        if (issue == null) {
+            logger.warn("Issue to save was null");
             return null;
             //throw new NullPointerException("No Issue to save.");
+        }
 
-        if (headerTextField.getValue() == "")
+
+        if (headerTextField.getValue() == "") {
+            logger.warn("Issue must have a name");
             return null;
+        }
 
         issue.setText(headerTextField.getValue());
         issue.setStatus((IssueStatus) statusSelect.getValue());

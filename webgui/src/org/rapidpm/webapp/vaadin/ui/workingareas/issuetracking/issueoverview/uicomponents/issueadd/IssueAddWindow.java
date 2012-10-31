@@ -3,6 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.ui
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.Window;
+import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeContainerIssueBase;
@@ -16,6 +17,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uic
  * To change this template use File | Settings | File Templates.
  */
 public class IssueAddWindow extends Window {
+    private static Logger logger = Logger.getLogger(IssueAddWindow.class);
+
     private final IssueOverviewScreen screen;
     private final Tree issueTree;
     private IssueAddWindow self;
@@ -37,7 +40,6 @@ public class IssueAddWindow extends Window {
 
     private class AddIssueSaveClickListener implements Button.ClickListener {
 
-
         @Override
         public void buttonClick(Button.ClickEvent event) {
             IssueBase childIssue = addDetailsLayout.setIssueProperties(true);
@@ -57,7 +59,10 @@ public class IssueAddWindow extends Window {
                 issueTree.expandItem(parentItemId);
                 issueTree.select(itemId);
                 self.close();
-            }
+            } else
+                if (logger.isDebugEnabled())
+                    logger.debug("childIssue is null");
+
         }
     }
 

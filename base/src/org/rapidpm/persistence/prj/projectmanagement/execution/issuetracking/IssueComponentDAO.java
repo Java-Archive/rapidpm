@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
+import org.apache.log4j.Logger;
 import org.neo4j.graphdb.*;
 import org.neo4j.graphdb.traversal.Evaluators;
 import org.neo4j.graphdb.traversal.TraversalDescription;
@@ -21,6 +22,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class IssueComponentDAO extends GraphBaseDAO<IssueComponent> {
+    private static final Logger logger = Logger.getLogger(IssueComponentDAO.class);
 
     public IssueComponentDAO(GraphDatabaseService graphDb, DaoFactory relDaoFactory) {
         super(graphDb, IssueComponent.class, relDaoFactory);

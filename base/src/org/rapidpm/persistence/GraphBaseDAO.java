@@ -1,5 +1,6 @@
 package org.rapidpm.persistence;
 
+import org.apache.log4j.Logger;
 import org.neo4j.graphdb.*;
 import org.neo4j.graphdb.index.Index;
 import org.neo4j.graphdb.traversal.Evaluators;
@@ -22,6 +23,7 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class GraphBaseDAO<T> {
+    private static final Logger logger = Logger.getLogger(GraphBaseDAO.class);
 
     protected final GraphDatabaseService graphDb;
     protected final DaoFactory relDaoFactory;

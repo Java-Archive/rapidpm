@@ -1,6 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.issuedelete;
 
 import com.vaadin.ui.*;
+import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 
@@ -12,6 +13,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.Iss
  * To change this template use File | Settings | File Templates.
  */
 public class IssueDeleteWindow extends Window implements Internationalizationable{
+    private static Logger logger = Logger.getLogger(IssueDeleteWindow.class);
+
     private final IssueOverviewScreen screen;
     private Label deleteLabel;
     private Button yesButton;

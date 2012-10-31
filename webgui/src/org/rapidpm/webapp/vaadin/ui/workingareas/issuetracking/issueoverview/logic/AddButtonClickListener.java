@@ -3,6 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.lo
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.UI;
+import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.issueadd.IssueAddWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 
@@ -14,6 +15,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.Iss
  * To change this template use File | Settings | File Templates.
  */
 public class AddButtonClickListener implements Button.ClickListener {
+    private static Logger logger = Logger.getLogger(AddButtonClickListener.class);
 
     private final Tree issueTree;
     private final IssueOverviewScreen screen;

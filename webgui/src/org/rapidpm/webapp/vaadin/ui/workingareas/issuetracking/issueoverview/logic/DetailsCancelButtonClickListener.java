@@ -1,6 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic;
 
 import com.vaadin.ui.Button;
+import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsLayout;
 
 /**
@@ -11,6 +12,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uic
  * To change this template use File | Settings | File Templates.
  */
 public class DetailsCancelButtonClickListener implements Button.ClickListener {
+    private static Logger logger = Logger.getLogger(DetailsCancelButtonClickListener.class);
 
     private final IssueDetailsLayout detailsLayout;
 
@@ -22,6 +24,9 @@ public class DetailsCancelButtonClickListener implements Button.ClickListener {
     public void buttonClick(Button.ClickEvent event) {
         detailsLayout.setLayoutReadOnly(true);
         if (detailsLayout.getCurrentIssue() != null)
-        detailsLayout.setDetailsFromIssue(detailsLayout.getCurrentIssue());
+            detailsLayout.setDetailsFromIssue(detailsLayout.getCurrentIssue());
+        else
+            if (logger.isDebugEnabled())
+                logger.debug("No issue selected to show");
     }
 }

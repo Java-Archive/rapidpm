@@ -1,5 +1,6 @@
 package org.rapidpm.persistence;
 
+import org.apache.log4j.Logger;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 import org.rapidpm.ejb3.EJBFactory;
@@ -12,6 +13,7 @@ import org.rapidpm.ejb3.EJBFactory;
  * To change this template use File | Settings | File Templates.
  */
 public class GraphDBFactory {
+    private static final Logger logger = Logger.getLogger(GraphDBFactory.class);
 
     public static final String DB_PATH = "C:/out/graphDB";
     private final GraphDatabaseService graphDb;

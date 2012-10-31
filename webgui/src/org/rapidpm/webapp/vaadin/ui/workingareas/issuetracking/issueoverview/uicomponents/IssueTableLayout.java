@@ -3,6 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.ui
 
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.*;
+import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditableVLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;

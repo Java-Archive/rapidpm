@@ -3,6 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.lo
 import com.vaadin.data.Property;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Tree;
+import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeContainerIssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTabSheet;
@@ -18,6 +19,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class TreeItemClickValueChangeListener implements ItemClickEvent.ItemClickListener, Tree.ValueChangeListener {
+    private static Logger logger = Logger.getLogger(TreeItemClickValueChangeListener.class);
 
     private final IssueTabSheet issueTabSheet;
     private final Tree issueTree;
@@ -39,6 +41,9 @@ public class TreeItemClickValueChangeListener implements ItemClickEvent.ItemClic
     public void valueChange(Property.ValueChangeEvent event) {
         if (event.getProperty().getValue() != null) // && !alreadyClicked)
             changeDetails(event.getProperty().getValue());
+        else
+            if (logger.isDebugEnabled())
+                logger.debug("Property of values was null");
        // alreadyClicked = false;
     }
 
@@ -49,8 +54,7 @@ public class TreeItemClickValueChangeListener implements ItemClickEvent.ItemClic
 
         if (!issueTree.hasChildren(itemId)) {
             issueTabSheet.disableTableTab(true);
-        }
-        else {
+        } else {
             List<IssueBase> issues = new ArrayList<>();
             issueTabSheet.disableTableTab(false);
             for (IssueBase childissue : issueBase.getSubIssues()) {

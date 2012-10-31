@@ -4,6 +4,7 @@ import com.vaadin.data.Property;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Tree;
+import org.apache.log4j.Logger;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class TreeActivateOnValueChangeListener implements Tree.ValueChangeListener {
+    private static Logger logger = Logger.getLogger(TreeActivateOnValueChangeListener.class);
 
     private final Button[] buttonList;
 
