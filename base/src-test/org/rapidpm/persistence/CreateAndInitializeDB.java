@@ -34,7 +34,7 @@ public class CreateAndInitializeDB {
     private static final List<IssueRelation> relationList = new ArrayList<>();
 
     public static void main(final String[] args) {
-        CreateAndInitializeDB setUp = new CreateAndInitializeDB(false);
+        CreateAndInitializeDB setUp = new CreateAndInitializeDB(true);
         setUp.CreateAndInitialize();
     }
 
@@ -80,10 +80,14 @@ public class CreateAndInitializeDB {
 
             Node project1 = graphDb.createNode();
             project1.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), 1L);
+            project1.setProperty(GraphRelationRegistry.getRelationAttributeProjectToken(), "TPR");
+            project1.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), 0);
             project_root.createRelationshipTo(project1, rel);
 
             Node project2 = graphDb.createNode();
             project2.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), 2L);
+            project2.setProperty(GraphRelationRegistry.getRelationAttributeProjectToken(), "PR2");
+            project2.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), 0);
             project_root.createRelationshipTo(project2, rel);
 
             rel = GraphRelationRegistry.getRootToClassRootRelType(IssueStatus.class);
@@ -273,8 +277,9 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  3
         for (List<Integer> attributes : issueAttr) {
             i = 0;
             IssueBase issue = new IssueBase(projectId);
-            issue.setSummary("Issue " + x);
-            issue.setText("TPR-" + x);
+            //issue.setText("TPR-" + x);
+            issue.setSummary("Issue Summary " + x);
+            issue.setStory("Issue Story " + x);
             issue.setStatus(statusList.get(attributes.get(i++)));
             issue.setPriority(priorityList.get(attributes.get(i++)));
             issue.setType(typeList.get(attributes.get(i++)));
@@ -371,13 +376,14 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  3
 
         for (int i = 0; i<3 ;i++) {
             IssueBase issueBase = new IssueBase(projectId);
-            issueBase.setVersion("1.0");
-            issueBase.setStoryPoints(i);
-            issueBase.setSummary("Issue " + projectId + " " + i);
-            issueBase.setText("Text " + projectId + " " + i);
+            //issueBase.setText("PR2 " + projectId + " " + i);
+            issueBase.setSummary("Issue Summary" + projectId + " " + i);
+            issueBase.setStory("Issue Story" + projectId + " " + i);
             issueBase.setDueDate_closed(new Date());
             issueBase.setDueDate_planned(new Date());
             issueBase.setDueDate_resolved(new Date());
+            issueBase.setVersion("1.0");
+            issueBase.setStoryPoints(i);
 
             Benutzer benutzer = new Benutzer();
             benutzer.setId(new Long(i+projectId));

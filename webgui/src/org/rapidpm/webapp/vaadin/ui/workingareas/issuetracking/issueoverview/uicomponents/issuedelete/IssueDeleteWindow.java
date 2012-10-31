@@ -80,11 +80,8 @@ public class IssueDeleteWindow extends Window implements Internationalizationabl
         @Override
         public void buttonClick(Button.ClickEvent event) {
             Object item = issueTree.getValue();
-            Object selectParentItem = issueTree.getParent(item);
+            issueTree.setValue(issueTree.getParent(item));
             issueTree.removeItem(item);
-            issueTree.setValue(selectParentItem);
-            if (!issueTree.hasChildren(selectParentItem))
-                issueTree.setChildrenAllowed(selectParentItem, false);
             self.close();
         }
     }

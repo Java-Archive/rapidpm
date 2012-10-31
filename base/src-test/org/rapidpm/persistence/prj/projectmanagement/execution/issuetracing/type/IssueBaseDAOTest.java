@@ -36,13 +36,13 @@ public class IssueBaseDAOTest {
         issueBase.setVersion("1.0");
         issueBase.setStoryPoints(10);
         issueBase.setSummary("Issue x");
-        issueBase.setText("Text x");
+        issueBase.setStory("Story x");
         issueBase.setDueDate_closed(new Date());
         issueBase.setDueDate_planned(new Date());
         issueBase.setDueDate_resolved(new Date());
 
             Benutzer benutzer = new Benutzer();
-            benutzer.setId(new Long(1000));
+            benutzer.setId(1000L);
             benutzer.setLogin("testuser x");
             issueBase.setAssignee(benutzer);
 //

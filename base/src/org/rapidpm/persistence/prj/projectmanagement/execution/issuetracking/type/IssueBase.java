@@ -33,13 +33,16 @@ public class IssueBase implements PersistInGraph {
     private Long id;
 
     @Simple
+    private String text;
+
+    @Simple
     private Long projectId;
 
     @Simple
     private String summary;
 
     @Simple
-    private String text;
+    private String story;
 
     @Graph(clazz = IssuePriority.class)
     private IssuePriority priority;
@@ -200,14 +203,6 @@ public class IssueBase implements PersistInGraph {
         this.projectId = projectId;
     }
 
-    public PlanningUnit getPlanningUnit() {
-        return planningUnit;
-    }
-
-    public void setPlanningUnit(final PlanningUnit planningUnit) {
-        this.planningUnit = planningUnit;
-    }
-
     public String getSummary() {
         return summary;
     }
@@ -222,6 +217,14 @@ public class IssueBase implements PersistInGraph {
 
     public void setText(final String text) {
         this.text = text;
+    }
+
+    public String getStory() {
+        return story;
+    }
+
+    public void setStory(final String story) {
+        this.story = story;
     }
 
     public IssuePriority getPriority() {
@@ -344,6 +347,14 @@ public class IssueBase implements PersistInGraph {
         this.risk = risk;
     }
 
+    public PlanningUnit getPlanningUnit() {
+        return planningUnit;
+    }
+
+    public void setPlanningUnit(final PlanningUnit planningUnit) {
+        this.planningUnit = planningUnit;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -433,6 +444,6 @@ public class IssueBase implements PersistInGraph {
 
     @Override
     public String name() {
-        return getText();
+        return getText() + " - " + getSummary();
     }
 }

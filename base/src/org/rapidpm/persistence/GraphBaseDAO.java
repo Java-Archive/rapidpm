@@ -9,6 +9,7 @@ import org.neo4j.graphdb.traversal.Traverser;
 import org.neo4j.kernel.Traversal;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -42,8 +43,7 @@ public class GraphBaseDAO<T> {
         if (projectId == null)
             throw new NullPointerException("ProjectId is null.");
         if (projectId < 0)
-            throw new IllegalArgumentException("ProjectId must be positiv.");
-
+            throw new IllegalArgumentException("ProjectId must be positiv");
 //        if (relDaoFactory == null)
 //            throw new NullPointerException("Rel. DaoFactory is null.");
         this.graphDb = graphDb;
@@ -92,17 +92,22 @@ public class GraphBaseDAO<T> {
 
     private Node createNewProjectRootNode(final Node project_root, final Long projectId) {
         final Transaction tx = graphDb.beginTx();
-        Node project1 = null;
+        Node newProjectNode = null;
         try {
-            project1 = graphDb.createNode();
-            project1.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), projectId);
-            project_root.createRelationshipTo(project1, GraphRelationRegistry.getRootToClassRootRelType(IssueBase.class));
+            DAO projectDao = getRelationalDaoInstance(PlannedProject.class);
+            PlannedProject project = (PlannedProject) projectDao.findByID(projectId);
+            System.out.println("Project" + project.toString());
+            newProjectNode = graphDb.createNode();
+            newProjectNode.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), projectId);
+            newProjectNode.setProperty(GraphRelationRegistry.getRelationAttributeProjectToken(), "PR" + projectId); //project.getToken());
+            newProjectNode.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), 0);
+            project_root.createRelationshipTo(newProjectNode, GraphRelationRegistry.getRootToClassRootRelType(IssueBase.class));
             tx.success();
         } finally {
             tx.finish();
-            if (project1 == null)
+            if (newProjectNode == null)
                 throw new NullPointerException("Couldn't create new project root node");
-            return project1;
+            return newProjectNode;
         }
 
     }
@@ -121,17 +126,31 @@ public class GraphBaseDAO<T> {
             final String nameAtt = (String) method.invoke(entity);
             final Long id = getIdFromEntity(entity);
             if (id == null || id == 0) {
-                if (index_name.get(method.getName(), nameAtt).getSingle() != null)
-                    throw new IllegalArgumentException(clazz.getSimpleName() + ": Name already in use");
+//                if (index_name.get(method.getName(), nameAtt).getSingle() != null)
+//                    throw new IllegalArgumentException(clazz.getSimpleName() + ": Name already in use");
                 node = graphDb.createNode();
                 class_root_node.createRelationshipTo(node, GraphRelationRegistry.getClassRootToChildRelType());
                 clazz.getDeclaredMethod("setId", Long.class).invoke(entity, node.getId());
+
+                try {
+                    Method singleMethod = clazz.getDeclaredMethod("setText", String.class);
+                    final String text;
+                    text = class_root_node.getProperty(GraphRelationRegistry.getRelationAttributeProjectToken()).toString();
+                    final Integer textId;
+                    textId= (Integer) class_root_node.getProperty(GraphRelationRegistry.getRelationAttributeTokenId());
+                    singleMethod.invoke(entity, text + "-" + textId);
+                    class_root_node.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), (textId + 1));
+                } catch (NoSuchMethodException e) {
+                    if (logger.isDebugEnabled())
+                        logger.debug("no instance of issuebase. Continue");
+                }
+
             } else {
                 node = graphDb.getNodeById(id);
             }
             setProperties(node, entity);
-            index_name.remove(node, method.getName());
-            index_name.add(node, method.getName(), nameAtt);
+//            index_name.remove(node, method.getName());
+//            index_name.add(node, method.getName(), nameAtt);
 
             tx.success();
         } catch (NoSuchMethodException e) {
@@ -364,8 +383,8 @@ public class GraphBaseDAO<T> {
                                 obj = relDao.findByID((Long)single);
                                 if (obj != null)
                                     ids.add(obj);
-                                else System.out.println("Requested object not in rel databse: " + field.getAnnotation
-                                        (Relational.class).clazz().getSimpleName() + " " + (Long)single);
+                                else logger.error("Requested object not in rel databse: " + field.getAnnotation
+                                        (Relational.class).clazz().getSimpleName() + " " + (Long) single);
                             }
                             field.set(entity, ids);
                         } else {

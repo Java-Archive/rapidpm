@@ -24,6 +24,15 @@ public class GraphRelationRegistry {
         return "projectid";
     }
 
+    public static String getRelationAttributeProjectToken() {
+        return "projecttoken";
+    }
+
+    public static String getRelationAttributeTokenId() {
+        return "projecttokenid";
+    }
+
+
     public static RelationshipType getClassRootToChildRelType() {
         return DynamicRelationshipType.withName("value");
     }

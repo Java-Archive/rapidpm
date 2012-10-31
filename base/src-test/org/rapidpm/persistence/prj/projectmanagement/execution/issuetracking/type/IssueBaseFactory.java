@@ -41,7 +41,7 @@ public class IssueBaseFactory extends EntityFactory<IssueBase> {
 //        }});
 //        issueBase.setReporter(); // TODO Benutzer
         issueBase.setSummary(RND.nextSentence(5, 20, 5, 12));
-        issueBase.setText(RND.nextSentence(8, 25, 5, 12));
+        issueBase.setStory(RND.nextSentence(8, 25, 5, 12));
         issueBase.setVersion(String.valueOf(RND.nextDigit()));
 
         return issueBase;

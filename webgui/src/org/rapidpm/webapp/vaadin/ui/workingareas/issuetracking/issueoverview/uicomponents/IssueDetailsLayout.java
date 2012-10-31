@@ -28,7 +28,10 @@ import java.util.Set;
 public class IssueDetailsLayout extends ComponentEditableVLayout implements Internationalizationable{
     private static Logger logger = Logger.getLogger(IssueDetailsLayout.class);
 
-    private TextField headerTextField;
+    private TextField headerSummaryField;
+    private Label headerTextField;
+    private VerticalLayout headerLayout;
+
     private ComboBox typeSelect;
     private ComboBox statusSelect;
     private ComboBox prioritySelect;
@@ -76,13 +79,20 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         detailLayout.setWidth("100%");
         horLayout.setWidth("100%");
 
-
-
-        headerTextField = new TextField();
-        headerTextField.setInputPrompt("Enter name");
+        headerTextField = new Label();
         headerTextField.setWidth("100%");
-        headerTextField.setReadOnly(true);
-        formLayout.addComponent(headerTextField);
+
+        headerSummaryField = new TextField();
+        headerSummaryField.setInputPrompt("Enter name");
+        headerSummaryField.setWidth("100%");
+        headerSummaryField.setReadOnly(true);
+
+        headerLayout = new VerticalLayout();
+        headerLayout.addComponent(headerTextField);
+        headerLayout.addComponent(headerSummaryField);
+        headerLayout.setExpandRatio(headerSummaryField, 1.0F);
+
+        formLayout.addComponent(headerLayout);
 
         typeSelect = new ComboBox();
         typeSelect.addContainerProperty(DummyProjectData.PROPERTY_CAPTION, String.class, null);
@@ -261,6 +271,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         setLayoutReadOnly(false);
 
         headerTextField.setValue(issue.getText());
+        headerSummaryField.setValue(issue.getSummary());
         typeSelect.select(issue.getType());
         statusSelect.select(issue.getStatus());
         prioritySelect.select(issue.getPriority());
@@ -272,7 +283,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         storyPointSelect.select(issue.getStoryPoints());
         versionSelect.select(issue.getVersion());
         riskSelect.select(issue.getRisk());
-        descriptionTextArea.setValue(issue.getSummary());
+        descriptionTextArea.setValue(issue.getStory());
 
         for (Object item : componentListSelect.getItemIds())
             componentListSelect.unselect(item);
@@ -311,12 +322,12 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         }
 
 
-        if (headerTextField.getValue() == "") {
+        if (headerSummaryField.getValue() == "") {
             logger.warn("Issue must have a name");
             return null;
         }
 
-        issue.setText(headerTextField.getValue());
+        issue.setSummary(headerSummaryField.getValue());
         issue.setStatus((IssueStatus) statusSelect.getValue());
         issue.setPriority((IssuePriority) prioritySelect.getValue());
         issue.setType((IssueType) typeSelect.getValue());
@@ -327,7 +338,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         issue.setStoryPoints((Integer) storyPointSelect.getValue());
         issue.setVersion((String) versionSelect.getValue());
         issue.setRisk((Integer) riskSelect.getValue());
-        issue.setSummary(descriptionTextArea.getValue());
+        issue.setStory(descriptionTextArea.getValue());
 
         issue = GraphDaoFactory.getIssueBaseDAO(screen.getCurrentProject().getId()).persist(issue);
 
@@ -337,7 +348,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     }
 
     public void setRequiredIndicator(boolean set) {
-        headerTextField.setRequired(set);
+        headerSummaryField.setRequired(set);
     }
 
 

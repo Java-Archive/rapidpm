@@ -1,9 +1,14 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell;
 
 import com.vaadin.data.util.HierarchicalContainer;
+import org.apache.log4j.Logger;
 import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -14,6 +19,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
  * To change this template use File | Settings | File Templates.
  */
 public class TreeContainerIssueBase extends HierarchicalContainer {
+    private static Logger logger = Logger.getLogger(TreeContainerIssueBase.class);
 
     public final static String PROPERTY_CAPTION = "caption";
     public final static String PROPERTY_ISSUEBASE = "issueBase";
@@ -61,8 +67,20 @@ public class TreeContainerIssueBase extends HierarchicalContainer {
     @Override
     public boolean removeItem(Object itemId) {
         boolean success = true;
+        Object parentItem = this.getParent(itemId);
         IssueBase issue = (IssueBase)this.getContainerProperty(itemId, TreeContainerIssueBase.PROPERTY_ISSUEBASE)
                 .getValue();
+
+        if (this.hasChildren(itemId)) {
+            List<Object> children = new ArrayList<>(this.getChildren(itemId));
+            for (Object childItem : children) {
+                setParent(childItem, parentItem);
+            }
+        }
+
+        if (!this.hasChildren(parentItem))
+            this.setChildrenAllowed(parentItem, false);
+
         if (!GraphDaoFactory.getIssueBaseDAO(currentProject.getId()).delete(issue))
             success = false;
 
