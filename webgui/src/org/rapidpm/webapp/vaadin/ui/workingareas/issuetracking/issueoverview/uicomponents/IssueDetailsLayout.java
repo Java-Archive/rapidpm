@@ -298,12 +298,14 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         if (newIssue) {
             this.issue = new IssueBase(screen.getCurrentProject().getId());
             issue.setReporter(screen.getUi().getCurrentUser());
-            logger.info("Adding new issue");
+            if (logger.isInfoEnabled())
+                    logger.info("Adding new issue");
         } else
-            logger.info("Updating issue");
+            if (logger.isInfoEnabled())
+                logger.info("Updating issue");
 
         if (issue == null) {
-            logger.warn("Issue to save was null");
+            logger.error("Issue to save was null");
             return null;
             //throw new NullPointerException("No Issue to save.");
         }
