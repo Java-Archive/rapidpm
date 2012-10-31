@@ -90,6 +90,7 @@ public class ChosenProjectPanel extends EditablePanel {
         noSelectionLabel.setVisible(false);
         formLayout.removeAllComponents();
         formLayout.addComponent(fieldGroup.getField(PlannedProject.NAME));
+        formLayout.addComponent(fieldGroup.getField(PlannedProject.TOKEN));
     }
 
     @Override
