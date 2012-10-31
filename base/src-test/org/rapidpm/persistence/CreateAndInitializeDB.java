@@ -65,11 +65,11 @@ public class CreateAndInitializeDB {
             root.createRelationshipTo(project_root, rel);
 
             Node project1 = graphDb.createNode();
-            project1.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), new Long(1));
+            project1.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), 1L);
             project_root.createRelationshipTo(project1, rel);
 
             Node project2 = graphDb.createNode();
-            project2.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), new Long(2));
+            project2.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), 2L);
             project_root.createRelationshipTo(project2, rel);
 
             rel = GraphRelationRegistry.getRootToClassRootRelType(IssueStatus.class);
@@ -228,7 +228,7 @@ public class CreateAndInitializeDB {
     private void initializeProject1() {
         List<IssueBase> issues = new ArrayList<>();
         List<List<Integer>> issueAttr = new ArrayList<>();
-        Long projectId = new Long(1);
+        Long projectId = 1L;
         Calendar calendar = Calendar.getInstance();
         Benutzer user;
 
@@ -360,7 +360,7 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  3
 
 
     private void initializeProject2() {
-        Long projectId = new Long(2);
+        Long projectId = 2L;
 
 
         for (int i = 0; i<3 ;i++) {

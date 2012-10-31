@@ -53,7 +53,7 @@ public class GraphBaseDAO<T> {
     }
 
     public GraphBaseDAO(final GraphDatabaseService graphDb, final Class clazz, final DaoFactory relDaoFactory) {
-        this(graphDb, clazz, relDaoFactory, new Long(0));
+        this(graphDb, clazz, relDaoFactory, 0L);
     }
 
     private Node getClassRootNode(final Long projectId) {
@@ -296,7 +296,7 @@ public class GraphBaseDAO<T> {
                 entity = (E) clazz.getConstructor().newInstance();
             } catch (NoSuchMethodException e) {
                 try {
-                    entity = (E) clazz.getConstructor(Long.class).newInstance(new Long(-1));
+                    entity = (E) clazz.getConstructor(Long.class).newInstance(-1L);
                 } catch (NoSuchMethodException e1) {
                     e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 } catch (InvocationTargetException e1) {

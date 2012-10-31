@@ -25,7 +25,7 @@ import static org.junit.Assert.*;
 
 public class IssueBaseDAOTest {
 
-    private final Long projectId = new Long(1);
+    private final Long projectId = 1L;
     private final IssueBaseDAO dao = GraphDaoFactory.getIssueBaseDAO(projectId);
 
     @Test

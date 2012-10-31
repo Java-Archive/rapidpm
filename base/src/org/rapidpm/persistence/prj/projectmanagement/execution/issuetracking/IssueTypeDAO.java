@@ -23,7 +23,7 @@ public class IssueTypeDAO extends GraphBaseDAO<IssueType> {
     }
 
     public List<IssueBase> getConnectedIssues(final IssueType type) {
-        return getConnectedIssuesFromProject(type, new Long(0));
+        return getConnectedIssuesFromProject(type, 0L);
     }
 
     public List<IssueBase> getConnectedIssuesFromProject(final IssueType type, final Long projectId) {

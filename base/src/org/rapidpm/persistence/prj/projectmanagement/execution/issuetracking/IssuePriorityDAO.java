@@ -23,7 +23,7 @@ public class IssuePriorityDAO extends GraphBaseDAO<IssuePriority> {
     }
 
     public List<IssueBase> getConnectedIssues(final IssuePriority priority) {
-        return getConnectedIssuesFromProject(priority, new Long(0));
+        return getConnectedIssuesFromProject(priority, 0L);
     }
 
     public List<IssueBase> getConnectedIssuesFromProject(final IssuePriority priority, final Long projectId) {

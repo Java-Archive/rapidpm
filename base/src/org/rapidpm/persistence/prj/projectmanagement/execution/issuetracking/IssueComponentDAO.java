@@ -27,7 +27,7 @@ public class IssueComponentDAO extends GraphBaseDAO<IssueComponent> {
     }
 
     public List<IssueBase> getConnectedIssues(final IssueComponent component) {
-        return getConnectedIssuesFromProject(component, new Long(0));
+        return getConnectedIssuesFromProject(component, 0L);
     }
 
     public List<IssueBase> getConnectedIssuesFromProject(final IssueComponent component, final Long projectId) {
