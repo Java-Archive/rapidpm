@@ -50,6 +50,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     private TabSheet tabSheet;
     private VerticalLayout tabComments;
     private VerticalLayout tabTestcases;
+    private VerticalLayout tabRelations;
 
     private VerticalLayout formLayout;
 
@@ -235,6 +236,11 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabTestcases.setMargin(true);
         tabSheet.addTab(tabTestcases);
 
+        tabRelations = new VerticalLayout();
+        tabRelations.setMargin(true);
+        tabSheet.addTab(tabRelations);
+
+
         formLayout.addComponent(tabSheet);
 
         return formLayout;
@@ -257,6 +263,9 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         descriptionTextArea.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_description"));
         tabSheet.getTab(tabComments).setCaption(screen.getMessagesBundle().getString("issuetracking_issue_comments"));
         tabSheet.getTab(tabTestcases).setCaption(screen.getMessagesBundle().getString("issuetracking_issue_testcases"));
+        tabSheet.getTab(tabRelations).setCaption(screen.getMessagesBundle().getString
+                ("issuetracking_issue_relations"));
+
     }
 
     public void setDetailsFromIssue(IssueBase issue) {
