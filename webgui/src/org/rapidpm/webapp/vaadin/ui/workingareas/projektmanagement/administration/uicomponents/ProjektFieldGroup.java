@@ -22,16 +22,26 @@ public class ProjektFieldGroup extends FieldGroup {
     private void buildForm() {
         for (final Object propertyId : getUnboundPropertyIds()) {
             final String spaltenName = propertyId.toString();
-            if(spaltenName.equals(PlannedProject.ID) ){
+            switch (spaltenName) {
+                case PlannedProject.ID:
 //                final TextField field = build(PlannedProject.ID, String.class, TextField.class);
 //                field.setNullRepresentation("");
 //                field.setRequired(true);
 //                field.setValue("autom.");
 //                field.setEnabled(false);
-            } else if (spaltenName.equals(PlannedProject.NAME)){
-                final AbstractTextField field = (AbstractTextField) buildAndBind(propertyId);
-                field.setNullRepresentation("");
-                field.setRequired(true);
+                    break;
+                case PlannedProject.NAME:
+                    final AbstractTextField nameField = (AbstractTextField) buildAndBind(propertyId);
+                    nameField.setNullRepresentation("");
+                    nameField.setRequired(true);
+                    break;
+                case PlannedProject.TOKEN:
+                    final AbstractTextField tokenField = (AbstractTextField) buildAndBind(propertyId);
+                    tokenField.setNullRepresentation("");
+                    tokenField.setRequired(true);
+                    break;
+                default:
+                    break;
             }
         }
     }

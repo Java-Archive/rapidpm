@@ -16,6 +16,7 @@ public class PlannedProject {
 
     public static final String ID = "id";
     public static final String NAME = "projektName";
+    public static final String TOKEN = "projektToken";
 
     @Id
     @TableGenerator(name = "PKGenPlannedProject", table = "pk_gen", pkColumnName = "gen_key",
@@ -28,6 +29,9 @@ public class PlannedProject {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<PlannedProjectName> plannedProjectName;
+
+    @Basic
+    private String projektToken;
 
     @Basic
     private String projektName;
@@ -90,48 +94,15 @@ public class PlannedProject {
 
         PlannedProject that = (PlannedProject) o;
 
-        if (active != that.active) return false;
-        if (fakturierbar != that.fakturierbar) return false;
-        if (creator != null ? !creator.equals(that.creator) : that.creator != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (info != null ? !info.equals(that.info) : that.info != null) return false;
-        if (mandantengruppe != null ? !mandantengruppe.equals(that.mandantengruppe) : that.mandantengruppe != null)
-            return false;
-        if (plannedOfferList != null ? !plannedOfferList.equals(that.plannedOfferList) : that.plannedOfferList != null)
-            return false;
-        if (plannedProjectName != null ? !plannedProjectName.equals(that.plannedProjectName) : that.plannedProjectName != null)
-            return false;
-        if (plannedTravelList != null ? !plannedTravelList.equals(that.plannedTravelList) : that.plannedTravelList != null)
-            return false;
-        if (planningUnits != null ? !planningUnits.equals(that.planningUnits) : that.planningUnits != null)
-            return false;
-        if (projektName != null ? !projektName.equals(that.projektName) : that.projektName != null) return false;
-        if (responsiblePerson != null ? !responsiblePerson.equals(that.responsiblePerson) : that.responsiblePerson != null)
-            return false;
-        if (specification != null ? !specification.equals(that.specification) : that.specification != null)
-            return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (mandantengruppe != null ? mandantengruppe.hashCode() : 0);
-        result = 31 * result + (plannedProjectName != null ? plannedProjectName.hashCode() : 0);
-        result = 31 * result + (projektName != null ? projektName.hashCode() : 0);
-        result = 31 * result + (planningUnits != null ? planningUnits.hashCode() : 0);
-        result = 31 * result + (active ? 1 : 0);
-        result = 31 * result + (fakturierbar ? 1 : 0);
-        result = 31 * result + (info != null ? info.hashCode() : 0);
-        result = 31 * result + (creator != null ? creator.hashCode() : 0);
-        result = 31 * result + (responsiblePerson != null ? responsiblePerson.hashCode() : 0);
-        result = 31 * result + (plannedTravelList != null ? plannedTravelList.hashCode() : 0);
-        result = 31 * result + (plannedOfferList != null ? plannedOfferList.hashCode() : 0);
-        result = 31 * result + (specification != null ? specification.hashCode() : 0);
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
-
 
     public Buch getTestCases() {
         return testCases;
@@ -243,5 +214,13 @@ public class PlannedProject {
 
     public void setProjektName(String projektName) {
         this.projektName = projektName;
+    }
+
+    public String getProjektToken() {
+        return projektToken;
+    }
+
+    public void setProjektToken(String projektToken) {
+        this.projektToken = projektToken;
     }
 }
