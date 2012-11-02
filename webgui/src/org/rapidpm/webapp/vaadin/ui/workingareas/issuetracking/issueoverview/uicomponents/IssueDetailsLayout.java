@@ -46,7 +46,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     private ComboBox riskSelect;
     private ListSelect componentListSelect;
 
-    private TextArea descriptionTextArea;
+    private RichTextArea descriptionTextArea;
     private TabSheet tabSheet;
     private VerticalLayout tabComments;
     private VerticalLayout tabTestcases;
@@ -220,7 +220,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         horLayout.addComponent(dateLayout);
         formLayout.addComponent(horLayout);
 
-        descriptionTextArea = new TextArea();
+        descriptionTextArea = new RichTextArea();
+        //descriptionTextArea.set
         descriptionTextArea.setWidth("100%");
         descriptionTextArea.setReadOnly(true);
         formLayout.addComponent(descriptionTextArea);
@@ -327,7 +328,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
 
         if (headerSummaryField.getValue() == "") {
-            headerSummaryField.setComponentError(new UserError("Issue must have a name!"));
+            headerSummaryField.setRequired(true);
+            headerSummaryField.setRequiredError("Issue must have a name!");
             logger.warn("Issue must have a name");
             return null;
         }
@@ -350,10 +352,6 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         for (IssueComponent component : (Set<IssueComponent>) componentListSelect.getValue())
             issue.addComponent(component);
         return issue;
-    }
-
-    public void setRequiredIndicator(boolean set) {
-        headerSummaryField.setRequired(set);
     }
 
 
