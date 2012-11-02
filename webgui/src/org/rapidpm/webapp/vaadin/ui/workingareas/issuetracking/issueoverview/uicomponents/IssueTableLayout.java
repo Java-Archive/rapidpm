@@ -75,7 +75,7 @@ public class IssueTableLayout extends ComponentEditableVLayout {
     public void setPropertiesFromIssueList(List<IssueBase> issues) {
         issueTable.removeAllItems();
         for (IssueBase issue : issues) {
-            issueTable.addItem(            new Object[] {issue.getText(),
+            issueTable.addItem(new Object[] {issue.getText(),
                     issue.getStatus().getStatusName(),
                     issue.getPriority().getPriorityName(),
                     issue.getType().getTypeName(),

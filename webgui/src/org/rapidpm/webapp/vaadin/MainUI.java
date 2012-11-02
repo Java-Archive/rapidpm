@@ -4,6 +4,7 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.ui.MenuBar;
 import org.rapidpm.webapp.vaadin.ui.workingareas.anfragenmanagement.AnfragenmanagementWorkingArea;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.IssueSettingsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.ProjectAdministrationScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.CostsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.distribution.VertriebScreen;
@@ -105,10 +106,18 @@ public class MainUI extends BaseUI {
 
         final MenuBar.MenuItem issuetracking = menuBar.addItem(messages.getString("issuetracking"), null,
                 null);
+
         issuetracking.addItem(messages.getString("issuetracking_overview"), new MenuBar.Command() {
             @Override
             public void menuSelected(MenuBar.MenuItem selectedItem) {
                 setWorkingArea(new IssueOverviewScreen(MainUI.this));
+            }
+        });
+
+        issuetracking.addItem(messages.getString("issuetracking_settings"), new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                setWorkingArea(new IssueSettingsScreen(MainUI.this));
             }
         });
 

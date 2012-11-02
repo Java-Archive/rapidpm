@@ -102,7 +102,9 @@ public class IssuePriority  implements PersistInGraph {
 
         IssuePriority that = (IssuePriority) o;
 
-        if (prio != that.prio) return false;
+        if (prio != null ? !prio.equals(that.prio) : that.prio != null) return false;
+        if (priorityFileName != null ? !priorityFileName.equals(that.priorityFileName) : that.priorityFileName != null)
+            return false;
         if (priorityName != null ? !priorityName.equals(that.priorityName) : that.priorityName != null) return false;
 
         return true;
@@ -110,8 +112,9 @@ public class IssuePriority  implements PersistInGraph {
 
     @Override
     public int hashCode() {
-        int result = prio;
+        int result = prio != null ? prio.hashCode() : 0;
         result = 31 * result + (priorityName != null ? priorityName.hashCode() : 0);
+        result = 31 * result + (priorityFileName != null ? priorityFileName.hashCode() : 0);
         return result;
     }
 

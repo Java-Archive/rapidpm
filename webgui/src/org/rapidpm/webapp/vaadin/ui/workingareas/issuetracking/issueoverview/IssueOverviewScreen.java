@@ -2,6 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview;
 
 
 import com.vaadin.ui.*;
+import org.apache.log4j.Logger;
 import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -19,7 +20,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.comp
  * Time: 15:04
  * To change this template use File | Settings | File Templates.
  */
-public class IssueOverviewScreen extends Screen{
+public class IssueOverviewScreen extends Screen {
+    private static Logger logger = Logger.getLogger(IssueOverviewScreen.class);
 
     private HorizontalSplitPanel hSplitPanel;
     private IssueTreeLayout treeLayout;
