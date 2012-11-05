@@ -25,10 +25,13 @@ public class SingleRowEditTableFieldFactory implements TableFieldFactory {
 
     @Override
     public Field<?> createField(Container container, Object itemId, Object propertyId, Component uiContext) {
-        logger.info("SaveItem: " + this.itemId);
-        logger.info("SaveItem: " + itemId);
+        if (logger.isDebugEnabled()) {
+            logger.debug("CreateField given itemId   : " + this.itemId);
+            logger.debug("CreateField function itemId: " + itemId);
+        }
         if (itemId.equals(this.itemId)) {
-            logger.info("if true");
+            if (logger.isDebugEnabled())
+                logger.debug("Items are equal");
             return DefaultFieldFactory.get().createField(container, itemId, propertyId, uiContext);
         }
         return null;

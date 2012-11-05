@@ -112,9 +112,6 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         addButton.setCaption(screen.getMessagesBundle().getString("add"));
         deleteButton.setCaption(screen.getMessagesBundle().getString("delete"));
         expandButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_collapse"));
-
-        if (addButton.getWidth() > deleteButton.getWidth()) deleteButton.setWidth(addButton.getWidth(), Unit.PIXELS);
-        else addButton.setWidth(deleteButton.getWidth(), Unit.PIXELS);
     }
 //
 //    public void setSelectedItem(Object item) {
