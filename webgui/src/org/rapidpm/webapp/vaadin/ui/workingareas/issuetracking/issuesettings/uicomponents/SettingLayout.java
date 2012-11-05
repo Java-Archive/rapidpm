@@ -5,6 +5,7 @@ import com.vaadin.data.Property;
 import com.vaadin.server.AbstractErrorMessage;
 import com.vaadin.server.ErrorMessage;
 import com.vaadin.server.UserError;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.GraphBaseDAO;
@@ -72,6 +73,7 @@ public class SettingLayout<T> extends VerticalLayout {
 
         errorLabel = new Label();
         errorLabel.setWidth("100%");
+        errorLabel.setContentMode(ContentMode.HTML);
         addComponent(errorLabel);
 
         contentTable = new Table();
@@ -79,6 +81,7 @@ public class SettingLayout<T> extends VerticalLayout {
         contentTable.setImmediate(true);
         contentTable.setEditable(false);
         contentTable.setSelectable(true);
+        contentTable.setPageLength(10);
         contentTable.addValueChangeListener(new ContentTableValueChangeListener());
 
         final Field[] fieldnames = this.aClass.getDeclaredFields();
@@ -166,6 +169,7 @@ public class SettingLayout<T> extends VerticalLayout {
     private Object fillObjectFromItem(Object entity, Item item) {
         final Field[] fieldnames = aClass.getDeclaredFields();
         List<Object> itemProps = new ArrayList<>();
+        Object prop;
         for (Object itemId : item.getItemPropertyIds())
             itemProps.add(item.getItemProperty(itemId).getValue());
 
@@ -179,9 +183,19 @@ public class SettingLayout<T> extends VerticalLayout {
                 field.setAccessible(true);
                 try {
                     if (i < itemProps.size()) {
-                        if (logger.isDebugEnabled())
-                            logger.debug("Property Value: " + itemProps.get(i) + " in " + field.getName());
-                        field.set(entity, field.getType().cast(itemProps.get(i)));
+                        //if (logger.isDebugEnabled())
+                            logger.info("Property Value: " + itemProps.get(i) + " in " + field.getName());
+                        prop = itemProps.get(i);
+
+                        if (!field.getName().contains("FileName"))
+                            if (prop == null || prop.equals("null") || prop.equals("")) {
+                                if (logger.isDebugEnabled())
+                                    logger.debug("null value found: " + field.getName() + " in " + item);
+                                return null;
+                            }
+
+
+                        field.set(entity, field.getType().cast(prop));
                     }
                     i++;
                 } catch (IllegalAccessException e) {
@@ -224,6 +238,8 @@ public class SettingLayout<T> extends VerticalLayout {
         @Override
         public void buttonClick(Button.ClickEvent event) {
             try {
+                errorLabel.setValue("");
+
                 final T entity;
                 if (isAddButton) {
                     entity = (T) aClass.newInstance();
@@ -266,7 +282,6 @@ public class SettingLayout<T> extends VerticalLayout {
 
     private class SaveCancelButtonClickListener implements Button.ClickListener {
         private final boolean isSaveButton;
-        //private boolean success = true;
 
         public SaveCancelButtonClickListener(boolean isSaveButton) {
             this.isSaveButton = isSaveButton;
@@ -283,26 +298,30 @@ public class SettingLayout<T> extends VerticalLayout {
                     logger.debug("selected entity: " + entity);
                 }
                 entity = fillObjectFromItem(entity, item);
-                logger.info("filled entity: " + entity);
-                try {
-                    dao.persist((T)entity);
-                    //success = true;
-
-                } catch (IllegalArgumentException e) {
-                    //success = false;
-                    contentTable.setComponentError(new UserError(e.getMessage(), AbstractErrorMessage.ContentMode.TEXT,
-                            ErrorMessage.ErrorLevel.INFORMATION));
-                    //errorLabel.setValue("Error");
+                if (entity == null) {
+                    if (logger.isInfoEnabled())
+                        logger.info("No null values allowed in Item.");
+                    errorLabel.setValue("<b><font color=\"red\">No null value allowed in item</font></b>");
+                } else {
+                    contentTable.setComponentError(null);
+                    errorLabel.setValue("");
+                    if (logger.isInfoEnabled())
+                        logger.info("filled entity: " + entity);
+                    try {
+                        dao.persist((T)entity);
+                    } catch (IllegalArgumentException e) {
+                        errorLabel.setValue("<b><font color=\"red\">Name already in use</font></b>");
+                    }
                 }
                 fillTableWithDaoEntities();
             } else {
                 Object prop = item.getItemProperty(item.getItemPropertyIds().iterator().next()).getValue();
-                if (logger.isDebugEnabled()) {
-                    logger.debug("CancelEditing");
-                    logger.debug("selected item: " + item);
-                    logger.debug("prop: " + prop);
-                }
-                if (prop == null || prop == "" || prop == "null") {
+                //if (logger.isDebugEnabled()) {
+                    logger.info("CancelEditing");
+                    logger.info("selected item: " + item);
+                    logger.info("prop: " + prop);
+                //}
+                if (prop == null || prop.equals("") || prop.equals("null")) {
                     contentTable.removeItem(entity);
                 }
             }

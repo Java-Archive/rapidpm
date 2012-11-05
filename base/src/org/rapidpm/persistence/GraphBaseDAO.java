@@ -125,9 +125,9 @@ public class GraphBaseDAO<T> {
             final Method method = clazz.getDeclaredMethod("name");
             final String nameAtt = (String) method.invoke(entity);
             final Long id = getIdFromEntity(entity);
+            if (index_name.get(method.getName(), nameAtt).getSingle() != null)
+                throw new IllegalArgumentException(clazz.getSimpleName() + ": Name already in use");
             if (id == null || id == 0) {
-                if (index_name.get(method.getName(), nameAtt).getSingle() != null)
-                    throw new IllegalArgumentException(clazz.getSimpleName() + ": Name already in use");
                 node = graphDb.createNode();
                 class_root_node.createRelationshipTo(node, GraphRelationRegistry.getClassRootToChildRelType());
                 clazz.getDeclaredMethod("setId", Long.class).invoke(entity, node.getId());
