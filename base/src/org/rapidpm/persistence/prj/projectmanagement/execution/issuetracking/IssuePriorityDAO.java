@@ -53,4 +53,8 @@ public class IssuePriorityDAO extends GraphBaseDAO<IssuePriority> {
         }
         return issueList;
     }
+
+    public boolean delete(final IssuePriority entity, final IssuePriority assignTo){
+        return super.deleteAttribute(entity, assignTo);
+    }
 }

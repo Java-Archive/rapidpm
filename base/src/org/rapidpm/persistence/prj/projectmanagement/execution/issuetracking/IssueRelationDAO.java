@@ -18,4 +18,8 @@ public class IssueRelationDAO extends GraphBaseDAO<IssueRelation> {
     public IssueRelationDAO(GraphDatabaseService graphDb, DaoFactory relDaoFactory) {
         super(graphDb, IssueRelation.class, relDaoFactory);
     }
+
+    protected boolean deleteRelations(final IssueRelation entity) {
+        return super.deleteRelations(entity);
+    }
 }

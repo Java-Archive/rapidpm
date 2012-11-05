@@ -53,4 +53,8 @@ public class IssueStatusDAO extends GraphBaseDAO<IssueStatus> {
         }
         return issueList;
     }
+
+    public boolean delete(final IssueStatus entity, final IssueStatus assignTo){
+        return super.deleteAttribute(entity, assignTo);
+    }
 }

@@ -57,4 +57,8 @@ public class IssueComponentDAO extends GraphBaseDAO<IssueComponent> {
         }
         return issueList;
     }
+
+    public boolean delete(final IssueComponent entity, final IssueComponent assignTo){
+        return super.deleteAttribute(entity, assignTo);
+    }
 }

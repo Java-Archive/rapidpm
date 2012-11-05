@@ -183,8 +183,8 @@ public class SettingLayout<T> extends VerticalLayout {
                 field.setAccessible(true);
                 try {
                     if (i < itemProps.size()) {
-                        //if (logger.isDebugEnabled())
-                            logger.info("Property Value: " + itemProps.get(i) + " in " + field.getName());
+                        if (logger.isDebugEnabled())
+                            logger.debug("Property Value: " + itemProps.get(i) + " in " + field.getName());
                         prop = itemProps.get(i);
 
                         if (!field.getName().contains("FileName"))
@@ -316,11 +316,11 @@ public class SettingLayout<T> extends VerticalLayout {
                 fillTableWithDaoEntities();
             } else {
                 Object prop = item.getItemProperty(item.getItemPropertyIds().iterator().next()).getValue();
-                //if (logger.isDebugEnabled()) {
-                    logger.info("CancelEditing");
-                    logger.info("selected item: " + item);
-                    logger.info("prop: " + prop);
-                //}
+                if (logger.isDebugEnabled()) {
+                    logger.debug("CancelEditing");
+                    logger.debug("selected item: " + item);
+                    logger.debug("prop: " + prop);
+                }
                 if (prop == null || prop.equals("") || prop.equals("null")) {
                     contentTable.removeItem(entity);
                 }

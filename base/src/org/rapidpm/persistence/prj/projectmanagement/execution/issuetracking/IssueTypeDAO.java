@@ -53,4 +53,8 @@ public class IssueTypeDAO extends GraphBaseDAO<IssueType> {
         }
         return issueList;
     }
+
+    public boolean delete(final IssueType entity, final IssueType assignTo){
+        return super.deleteAttribute(entity, assignTo);
+    }
 }

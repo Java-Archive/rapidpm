@@ -159,6 +159,7 @@ public class IssueBase implements PersistInGraph {
     }
 
     public boolean removeComment(final IssueComment comment) {
+
         return comments.remove(comment);
     }
 
