@@ -2,13 +2,10 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings;
 
 import com.vaadin.ui.GridLayout;
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponent;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueType;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.uicomponents.AbstractSettingsComponent;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.uicomponents.SettingLayout;
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,11 +34,17 @@ public class IssueSettingsScreen  extends Screen {
         gridLayout.setSpacing(true);
         //gridLayout.setMargin(true);
 
-        gridLayout.addComponent(new AbstractSettingsComponent<IssueStatus>(this, "Status", IssueStatus.class));
-        gridLayout.addComponent(new AbstractSettingsComponent<IssuePriority>(this, "Prioriry", IssuePriority.class));
-        gridLayout.addComponent(new AbstractSettingsComponent<IssueType>(this, "Type", IssueType.class));
-        gridLayout.addComponent(new AbstractSettingsComponent<IssueComponent>(this, "Component",
-                IssueComponent.class));
+        gridLayout.addComponent(new SettingLayout<IssueStatus>(this, getMessagesBundle().getString
+                ("issuetracking_issue_status"), IssueStatus.class));
+        gridLayout.addComponent(new SettingLayout<IssuePriority>(this, getMessagesBundle().getString
+                ("issuetracking_issue_priority"), IssuePriority.class));
+        gridLayout.addComponent(new SettingLayout<IssueType>(this, getMessagesBundle().getString
+                ("issuetracking_issue_type"), IssueType.class));
+        gridLayout.addComponent(new SettingLayout<IssueComponent>(this, getMessagesBundle().getString
+                ("issuetracking_issue_components"), IssueComponent.class));
+        gridLayout.addComponent(new SettingLayout<IssueRelation>(this, getMessagesBundle().getString
+                ("issuetracking_issue_relations"),
+                IssueRelation.class));
         addComponent(gridLayout);
     }
 

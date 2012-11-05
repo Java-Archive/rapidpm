@@ -112,7 +112,7 @@ public class GraphBaseDAO<T> {
 
     }
 
-    public T persist(final T entity) {
+    public T persist(final T entity) throws IllegalArgumentException{
         if (entity == null)
             throw new NullPointerException(clazz.getSimpleName() + ": Object to persist can't be null");
 
@@ -126,8 +126,8 @@ public class GraphBaseDAO<T> {
             final String nameAtt = (String) method.invoke(entity);
             final Long id = getIdFromEntity(entity);
             if (id == null || id == 0) {
-//                if (index_name.get(method.getName(), nameAtt).getSingle() != null)
-//                    throw new IllegalArgumentException(clazz.getSimpleName() + ": Name already in use");
+                if (index_name.get(method.getName(), nameAtt).getSingle() != null)
+                    throw new IllegalArgumentException(clazz.getSimpleName() + ": Name already in use");
                 node = graphDb.createNode();
                 class_root_node.createRelationshipTo(node, GraphRelationRegistry.getClassRootToChildRelType());
                 clazz.getDeclaredMethod("setId", Long.class).invoke(entity, node.getId());
@@ -149,8 +149,8 @@ public class GraphBaseDAO<T> {
                 node = graphDb.getNodeById(id);
             }
             setProperties(node, entity);
-//            index_name.remove(node, method.getName());
-//            index_name.add(node, method.getName(), nameAtt);
+            index_name.remove(node, method.getName());
+            index_name.add(node, method.getName(), nameAtt);
 
             tx.success();
         } catch (NoSuchMethodException e) {

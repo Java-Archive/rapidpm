@@ -2,6 +2,9 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.ui
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
+import com.vaadin.server.AbstractErrorMessage;
+import com.vaadin.server.ErrorMessage;
+import com.vaadin.server.UserError;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.GraphBaseDAO;
@@ -24,11 +27,12 @@ import java.util.List;
  * Time: 10:33
  * To change this template use File | Settings | File Templates.
  */
-public class AbstractSettingsComponent<T> extends VerticalLayout {
-    private static Logger logger = Logger.getLogger(AbstractSettingsComponent.class);
+public class SettingLayout<T> extends VerticalLayout {
+    private static Logger logger = Logger.getLogger(SettingLayout.class);
 
     private final Label headerLabel;
     private final Table contentTable;
+    private final Label errorLabel;
     private final Class aClass;
     private final GraphBaseDAO<T> dao;
 
@@ -43,7 +47,7 @@ public class AbstractSettingsComponent<T> extends VerticalLayout {
     VerticalLayout saveButtonLayout;
 
 
-    public AbstractSettingsComponent(IssueSettingsScreen screen, String headerName, Class aClass) {
+    public SettingLayout(IssueSettingsScreen screen, String headerName, Class aClass) {
         this.aClass = aClass;
 
         dao = getGraphDAOInstance(aClass);
@@ -65,6 +69,10 @@ public class AbstractSettingsComponent<T> extends VerticalLayout {
         headerLabel = new Label(headerName);
         headerLabel.setWidth("100%");
         addComponent(headerLabel);
+
+        errorLabel = new Label();
+        errorLabel.setWidth("100%");
+        addComponent(errorLabel);
 
         contentTable = new Table();
         contentTable.setWidth("100%");
@@ -258,6 +266,7 @@ public class AbstractSettingsComponent<T> extends VerticalLayout {
 
     private class SaveCancelButtonClickListener implements Button.ClickListener {
         private final boolean isSaveButton;
+        //private boolean success = true;
 
         public SaveCancelButtonClickListener(boolean isSaveButton) {
             this.isSaveButton = isSaveButton;
@@ -265,7 +274,6 @@ public class AbstractSettingsComponent<T> extends VerticalLayout {
 
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            contentTable.setEditable(false);
             Object entity = contentTable.getValue();
             final Item item = contentTable.getItem(entity);
             if (isSaveButton) {
@@ -276,7 +284,16 @@ public class AbstractSettingsComponent<T> extends VerticalLayout {
                 }
                 entity = fillObjectFromItem(entity, item);
                 logger.info("filled entity: " + entity);
-                dao.persist((T)entity);
+                try {
+                    dao.persist((T)entity);
+                    //success = true;
+
+                } catch (IllegalArgumentException e) {
+                    //success = false;
+                    contentTable.setComponentError(new UserError(e.getMessage(), AbstractErrorMessage.ContentMode.TEXT,
+                            ErrorMessage.ErrorLevel.INFORMATION));
+                    //errorLabel.setValue("Error");
+                }
                 fillTableWithDaoEntities();
             } else {
                 Object prop = item.getItemProperty(item.getItemPropertyIds().iterator().next()).getValue();
@@ -289,8 +306,10 @@ public class AbstractSettingsComponent<T> extends VerticalLayout {
                     contentTable.removeItem(entity);
                 }
             }
+            contentTable.setEditable(false);
             contentTable.setSelectable(true);
             buttonHorLayout.replaceComponent(saveButtonLayout, addButtonLayout);
+
         }
     }
 
