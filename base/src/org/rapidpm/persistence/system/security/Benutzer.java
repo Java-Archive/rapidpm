@@ -23,6 +23,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 
@@ -88,7 +89,7 @@ public class Benutzer {
     private BenutzerWebapplikation benutzerWebapplikation;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Berechtigung> berechtigungen;
+    private Set<Berechtigung> berechtigungen;
 
 
     public Long getId() {
@@ -184,11 +185,11 @@ public class Benutzer {
         this.benutzerWebapplikation = benutzerWebapplikation;
     }
 
-    public List<Berechtigung> getBerechtigungen() {
+    public Set<Berechtigung> getBerechtigungen() {
         return berechtigungen;
     }
 
-    public void setBerechtigungen(final List<Berechtigung> berechtigungen) {
+    public void setBerechtigungen(final Set<Berechtigung> berechtigungen) {
         this.berechtigungen = berechtigungen;
     }
 

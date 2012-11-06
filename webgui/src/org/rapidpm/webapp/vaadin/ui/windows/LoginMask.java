@@ -7,6 +7,7 @@ package org.rapidpm.webapp.vaadin.ui.windows;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
+import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.BaseUI;
@@ -36,8 +37,10 @@ public class LoginMask extends VerticalLayout {
         frame.setSizeUndefined();
         loginLayout = new FormLayout();
         usernameField = new TextField("username");
+        usernameField.focus();
         passwordField = new PasswordField("password");
         loginButton = new Button("Login");
+        loginButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         languageBox = new ComboBox("Language", Arrays.asList(Languages.values()));
         loginLayout.setCaption("Please enter your username and password");
         loginButton.addClickListener(new Button.ClickListener() {

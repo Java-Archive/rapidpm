@@ -44,7 +44,7 @@ public class BenutzerEntityFactory extends EntityFactory<Benutzer> {
         benutzer.setBenutzerGruppe(new BenutzerGruppeEntityFactory().createRandomEntity());
         benutzer.setBenutzerWebapplikation(new BenutzerWebapplikationEntityFactory().createRandomEntity());
 //        benutzer.setPerson(person);
-        benutzer.setBerechtigungen(new BerechtigungEntityFactory().createRandomEntityList(1));
+//        benutzer.setBerechtigungen(new BerechtigungEntityFactory().createRandomEntityList(1));
         return benutzer;
     }
 

@@ -29,11 +29,6 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
 
     private List<AbstractField> fieldList = new ArrayList<>();
 
-    private ComboBox responsiblePersonBox;
-    private TextField orderNumberField;
-    private TextField complexityField;
-    private TextField storyPointsField;
-
     private ResourceBundle messages;
     private PlanningDetailsFieldGroupBean bean;
     private DaoFactoryBean baseDaoFactoryBean;
@@ -55,24 +50,23 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
             final String spaltenName = propertyId.toString();
             switch(spaltenName){
                 case(PlanningUnit.RESPONSIBLE):
-                    responsiblePersonBox = generateBox(messages.getString("planning_responsible"),
-                        new BeanItemContainer<>(Benutzer.class, users),Benutzer.LOGIN);
+                    final ComboBox responsiblePersonBox = generateBox(messages.getString("planning_responsible"),
+                            new BeanItemContainer<>(Benutzer.class, users),Benutzer.LOGIN);
                     bind(responsiblePersonBox, propertyId);
-
                     fieldList.add(responsiblePersonBox);
                     break;
                 case(PlanningUnit.ORDERNUMBER):
-                    orderNumberField = new TextField(messages.getString("planning_ordernumber"));
+                    final TextField orderNumberField = new TextField(messages.getString("planning_ordernumber"));
                     bind(orderNumberField, propertyId);
                     fieldList.add(orderNumberField);
                     break;
                 case(PlanningUnit.COMPLEXITY):
-                    complexityField = new TextField(messages.getString("planning_complexity"));
+                    final TextField complexityField = new TextField(messages.getString("planning_complexity"));
                     bind(complexityField, propertyId);
                     fieldList.add(complexityField);
                     break;
                 case(PlanningUnit.STORYPTS):
-                    storyPointsField = new TextField(messages.getString("planning_storypoints"));
+                    final TextField storyPointsField = new TextField(messages.getString("planning_storypoints"));
                     bind(storyPointsField, propertyId);
                     fieldList.add(storyPointsField);
                     break;
@@ -83,7 +77,7 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
     }
 
     public ComboBox generateBox(final String caption, final BeanItemContainer container,
-                           final String itemCaptionPropertyId){
+                                final String itemCaptionPropertyId){
         final ComboBox box = new ComboBox(caption,container);
         box.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
         box.setItemCaptionPropertyId(itemCaptionPropertyId);
@@ -111,21 +105,5 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
 
     public List<AbstractField> getFieldList() {
         return fieldList;
-    }
-
-    public AbstractSelect getResponsiblePersonBox() {
-        return responsiblePersonBox;
-    }
-
-    public TextField getComplexityField() {
-        return complexityField;
-    }
-
-    public TextField getOrderNumberField() {
-        return orderNumberField;
-    }
-
-    public TextField getStoryPointsField() {
-        return storyPointsField;
     }
 }

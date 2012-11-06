@@ -46,7 +46,7 @@ public class PlanningUnit {
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private PlanningStatus planningStatus;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private Benutzer responsiblePerson;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)

@@ -162,8 +162,8 @@ public class ProjectDAOBean {
         if (logger.isDebugEnabled()) {
             logger.debug("responsible Person " + responsiblePerson.getLogin());
         }
-        final List<Berechtigung> berechtigungen = responsiblePerson.getBerechtigungen();
-        berechtigungen.size();
+        //final List<Berechtigung> berechtigungen = responsiblePerson.getBerechtigungen();
+       // berechtigungen.size();
         return prj;
     }
 

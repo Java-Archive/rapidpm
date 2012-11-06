@@ -90,7 +90,7 @@ public class BenutzerDAOBean {
             for (final Long berechtigung : berechtigungen) {
                 berechtingunsObjList.add(daoFactoryBean.getBerechtigungDAO().findByID(berechtigung));
             }
-            b.setBerechtigungen(berechtingunsObjList);
+            //b.setBerechtigungen(berechtingunsObjList);
 
 //            b.setPerson(daoFactoryBean.getPersonDAO().findByID(flatTypeEntity.getPersonOID()));
             return b;
@@ -141,12 +141,12 @@ public class BenutzerDAOBean {
         ft.setBenutzerGruppeOID(b.getBenutzerGruppe().getId());
         ft.setBenutzerWebapplikationOID(b.getBenutzerWebapplikation().getId());
 
-        final List<Berechtigung> berechtigungen = b.getBerechtigungen();
-        if (berechtigungen != null) {
-            for (final Berechtigung berechtigung : berechtigungen) {
-                ft.getBerechtigungOIDs().add(berechtigung.getId());
-            }
-        }
+        //final List<Berechtigung> berechtigungen = b.getBerechtigungen();
+//        if (berechtigungen != null) {
+//            for (final Berechtigung berechtigung : berechtigungen) {
+//                ft.getBerechtigungOIDs().add(berechtigung.getId());
+//            }
+//        }
 //        ft.setFailedLogins(b.getFailedLogins());
         ft.setHidden(b.getHidden());
 //        ft.setLastLogin(b.getLastLogin());
