@@ -23,6 +23,7 @@ public class IssueStatusDAOTest {
     private static Logger logger = Logger.getLogger(IssueStatusDAOTest.class);
 
     private final IssueStatusDAO dao = GraphDaoFactory.getIssueStatusDAO();
+    private final IssueStatus assignTo = dao.loadAllEntities().get(0);
 
     @Test
     public void addStatus() {
@@ -32,7 +33,7 @@ public class IssueStatusDAOTest {
         status.setStatusFileName("filename");
         status = dao.persist(status);
         assertEquals(status, dao.findById(status.getId()));
-        dao.delete(status);
+        dao.delete(status, assignTo);
     }
 
     @Test
@@ -42,7 +43,7 @@ public class IssueStatusDAOTest {
         status.setStatusFileName("second filename");
         status = dao.persist(status);
         assertEquals(status, dao.findById(status.getId()));
-        dao.delete(status);
+        dao.delete(status, assignTo);
     }
 
     @Test(expected = IllegalArgumentException.class)

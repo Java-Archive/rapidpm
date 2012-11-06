@@ -125,8 +125,11 @@ public class GraphBaseDAO<T> {
             final Method method = clazz.getDeclaredMethod("name");
             final String nameAtt = (String) method.invoke(entity);
             final Long id = getIdFromEntity(entity);
-            if (index_name.get(method.getName(), nameAtt).getSingle() != null)
-                throw new IllegalArgumentException(clazz.getSimpleName() + ": Name already in use");
+            final Node indexNode = index_name.get(method.getName(), nameAtt).getSingle();
+            if (indexNode != null) {
+                if (id == null || (indexNode.getId() != id))
+                    throw new IllegalArgumentException(clazz.getSimpleName() + ": Name already in use");
+            }
             if (id == null || id == 0) {
                 node = graphDb.createNode();
                 class_root_node.createRelationshipTo(node, GraphRelationRegistry.getClassRootToChildRelType());
@@ -464,7 +467,8 @@ public class GraphBaseDAO<T> {
         return relDao;
     }
 
-    protected boolean deleteIssue(final T entity) {
+
+    public boolean deleteIssue(final T entity) {
         if (entity == null)
             throw new NullPointerException("Object to delete can't be null.");
 
@@ -499,7 +503,7 @@ public class GraphBaseDAO<T> {
     }
 
 
-    protected boolean deleteAttribute(final T entity, final T assignTo) {
+    public boolean deleteAttribute(final T entity, final T assignTo) {
         if (entity == null)
             throw new NullPointerException("Object to delete can't be null.");
         if (assignTo == null)
@@ -535,7 +539,7 @@ public class GraphBaseDAO<T> {
         }
     }
 
-    protected boolean deleteRelations(final T entity) {
+    public boolean deleteRelations(final T entity) {
         if (entity == null)
             throw new NullPointerException("Object to delete can't be null.");
 

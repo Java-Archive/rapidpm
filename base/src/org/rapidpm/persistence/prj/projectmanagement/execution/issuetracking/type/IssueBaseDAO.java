@@ -413,7 +413,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         }
     }
 
-    public boolean deleteIssue(final IssueBase entity) {
+    public boolean delete(final IssueBase entity) {
         return super.deleteIssue(entity);
     }
 }

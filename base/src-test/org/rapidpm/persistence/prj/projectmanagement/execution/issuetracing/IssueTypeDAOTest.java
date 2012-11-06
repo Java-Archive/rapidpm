@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
@@ -19,8 +20,10 @@ import static org.junit.Assert.assertNotNull;
  * To change this template use File | Settings | File Templates.
  */
 public class IssueTypeDAOTest {
+    private static Logger logger = Logger.getLogger(IssueTypeDAOTest.class);
 
     private final IssueTypeDAO dao = GraphDaoFactory.getIssueTypeDAO();
+    private final IssueType assignTo = dao.loadAllEntities().get(0);
 
     @Test
     public void addType() {
@@ -29,7 +32,7 @@ public class IssueTypeDAOTest {
         type.setTypeFileName("filename");
         type = dao.persist(type);
         assertEquals(type, dao.findById(type.getId()));
-        dao.delete(type);
+        dao.delete(type, assignTo);
     }
 
     @Test
@@ -39,7 +42,7 @@ public class IssueTypeDAOTest {
         type.setTypeFileName("second fileName");
         type = dao.persist(type);
         assertEquals(type, dao.findById(type.getId()));
-        dao.delete(type);
+        dao.delete(type, assignTo);
     }
 
     @Test(expected = IllegalArgumentException.class)

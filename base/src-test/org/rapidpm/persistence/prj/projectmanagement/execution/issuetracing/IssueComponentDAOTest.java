@@ -6,6 +6,7 @@ import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponent;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponentDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
 import java.util.ArrayList;
@@ -22,7 +23,9 @@ import static org.junit.Assert.assertEquals;
  */
 public class IssueComponentDAOTest {
     private static Logger logger = Logger.getLogger(IssueComponentDAOTest.class);
+
     private final IssueComponentDAO dao = GraphDaoFactory.getIssueComponentDAO();
+    private final IssueComponent assignTo = dao.loadAllEntities().get(0);
 
     @Test
     public void addComponent() {
@@ -30,7 +33,7 @@ public class IssueComponentDAOTest {
         component.setComponentName("first");
         component = dao.persist(component);
         assertEquals(component, dao.findById(component.getId()));
-        dao.delete(component);
+        dao.delete(component, assignTo);
     }
 
     @Test
@@ -39,7 +42,7 @@ public class IssueComponentDAOTest {
         component.setComponentName("1st");
         component = dao.persist(component);
         assertEquals(component, dao.findById(component.getId()));
-        dao.delete(component);
+        dao.delete(component, assignTo);
     }
 
     @Test(expected = IllegalArgumentException.class)

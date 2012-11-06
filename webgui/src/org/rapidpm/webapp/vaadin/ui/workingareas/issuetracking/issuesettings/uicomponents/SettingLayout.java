@@ -1,24 +1,12 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.uicomponents;
 
-import com.vaadin.data.Item;
 import com.vaadin.data.Property;
-import com.vaadin.server.AbstractErrorMessage;
-import com.vaadin.server.ErrorMessage;
-import com.vaadin.server.UserError;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.GraphBaseDAO;
-import org.rapidpm.persistence.GraphDaoFactory;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.IssueSettingsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.logic.SingleRowEditTableFieldFactory;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.modell.SettingsDataContainer;
 
 
 /**
@@ -35,7 +23,7 @@ public class SettingLayout<T> extends VerticalLayout {
     private final Table contentTable;
     private final Label errorLabel;
     private final Class aClass;
-    private final GraphBaseDAO<T> dao;
+    private final SettingsDataContainer<T> container;
 
     private final Button addButton;
     private final Button editButton;
@@ -50,8 +38,7 @@ public class SettingLayout<T> extends VerticalLayout {
 
     public SettingLayout(IssueSettingsScreen screen, String headerName, Class aClass) {
         this.aClass = aClass;
-
-        dao = getGraphDAOInstance(aClass);
+        container = new SettingsDataContainer<T>(aClass);
 
         buttonHorLayout = new HorizontalLayout();
         buttonHorLayout.setSizeFull();
@@ -67,7 +54,9 @@ public class SettingLayout<T> extends VerticalLayout {
         saveButtonLayout.setMargin(true);
 
 
-        headerLabel = new Label(headerName);
+        headerLabel = new Label();
+        headerLabel.setContentMode(ContentMode.HTML);
+        headerLabel.setValue("<b>" + headerName + "</b>");
         headerLabel.setWidth("100%");
         addComponent(headerLabel);
 
@@ -77,20 +66,14 @@ public class SettingLayout<T> extends VerticalLayout {
         addComponent(errorLabel);
 
         contentTable = new Table();
+        contentTable.setContainerDataSource(container);
+        contentTable.setVisibleColumns(container.getVisibleColumns().toArray());
         contentTable.setWidth("100%");
         contentTable.setImmediate(true);
         contentTable.setEditable(false);
         contentTable.setSelectable(true);
         contentTable.setPageLength(10);
         contentTable.addValueChangeListener(new ContentTableValueChangeListener());
-
-        final Field[] fieldnames = this.aClass.getDeclaredFields();
-        for (Field field : fieldnames) {
-            if (field.isAnnotationPresent(Simple.class))
-                contentTable.addContainerProperty(field.getName(), field.getType(), "");
-        }
-
-        fillTableWithDaoEntities();
 
         addButton = new Button(screen.getMessagesBundle().getString("add"));
         addButton.addClickListener(new AddEditButtonClickListener(true, aClass));
@@ -135,95 +118,6 @@ public class SettingLayout<T> extends VerticalLayout {
         addComponent(buttonHorLayout);
     }
 
-    private void addEntitiesToTable(final T entity) {
-        final Field[] fieldnames = aClass.getDeclaredFields();
-
-            if (logger.isDebugEnabled())
-                logger.debug("entity: " + entity);
-            List<Object> list = new ArrayList<>();
-            for (Field field : fieldnames) {
-                if (field.isAnnotationPresent(Simple.class)){
-                    boolean isAccessible = field.isAccessible();
-                    field.setAccessible(true);
-                    try {
-                        Object val = field.get(entity);
-                        list.add(field.getType().cast(val));
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                    }
-                    field.setAccessible(isAccessible);
-                }
-            }
-            contentTable.addItem(list.toArray(), entity);
-    }
-
-    private void fillTableWithDaoEntities() {
-        if (logger.isDebugEnabled())
-            logger.debug("Fill table with DAO entities");
-        contentTable.removeAllItems();
-        for (T entity : dao.loadAllEntities()) {
-            addEntitiesToTable(entity);
-        }
-    }
-
-    private Object fillObjectFromItem(Object entity, Item item) {
-        final Field[] fieldnames = aClass.getDeclaredFields();
-        List<Object> itemProps = new ArrayList<>();
-        Object prop;
-        for (Object itemId : item.getItemPropertyIds())
-            itemProps.add(item.getItemProperty(itemId).getValue());
-
-        int i= 0;
-        if (logger.isDebugEnabled())
-            logger.debug("fillObjectFromItem: " + entity + ", " + item);
-
-        for (Field field : fieldnames) {
-            if (field.isAnnotationPresent(Simple.class)){
-                boolean isAccessible = field.isAccessible();
-                field.setAccessible(true);
-                try {
-                    if (i < itemProps.size()) {
-                        if (logger.isDebugEnabled())
-                            logger.debug("Property Value: " + itemProps.get(i) + " in " + field.getName());
-                        prop = itemProps.get(i);
-
-                        if (!field.getName().contains("FileName"))
-                            if (prop == null || prop.equals("null") || prop.equals("")) {
-                                if (logger.isDebugEnabled())
-                                    logger.debug("null value found: " + field.getName() + " in " + item);
-                                return null;
-                            }
-
-
-                        field.set(entity, field.getType().cast(prop));
-                    }
-                    i++;
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
-                field.setAccessible(isAccessible);
-            }
-        }
-        return entity;
-    }
-
-
-    private GraphBaseDAO<T> getGraphDAOInstance(final Class aClass) {
-        GraphBaseDAO<T> dao = null;
-        final Method method;
-        try {
-            method = GraphDaoFactory.class.getDeclaredMethod("get" + aClass.getSimpleName() + "DAO");
-            dao = (GraphBaseDAO<T>)method.invoke(GraphDaoFactory.class);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        return dao;
-    }
-
 
     private class AddEditButtonClickListener implements Button.ClickListener {
 
@@ -243,8 +137,8 @@ public class SettingLayout<T> extends VerticalLayout {
                 final T entity;
                 if (isAddButton) {
                     entity = (T) aClass.newInstance();
-                    addEntitiesToTable(entity);
-                    contentTable.select(entity);
+                    container.addEntityToTable(entity);
+                    contentTable.select(container.getItemIdFromEntity(entity));
                     if (logger.isDebugEnabled())
                         logger.debug("Add Entity: " + entity);
                 } else {
@@ -272,10 +166,12 @@ public class SettingLayout<T> extends VerticalLayout {
         }
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            Object itemId = contentTable.getValue();
-            logger.info("delete item: " + itemId);
-            dao.delete((T) itemId);
-            fillTableWithDaoEntities();
+            errorLabel.setValue("");
+            final Object itemId = contentTable.getValue();
+
+            //TODO Let User select Object to assign to!
+            container.removeItem(itemId, itemId);
+            contentTable.select(contentTable.getNullSelectionItemId());
         }
     }
 
@@ -289,44 +185,40 @@ public class SettingLayout<T> extends VerticalLayout {
 
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            Object entity = contentTable.getValue();
-            final Item item = contentTable.getItem(entity);
-            if (isSaveButton) {
-               if (logger.isDebugEnabled()) {
-                    logger.debug("SaveItem");
-                    logger.debug("selected item: " + item);
-                    logger.debug("selected entity: " + entity);
-                }
-                entity = fillObjectFromItem(entity, item);
-                if (entity == null) {
-                    if (logger.isInfoEnabled())
-                        logger.info("No null values allowed in Item.");
-                    errorLabel.setValue("<b><font color=\"red\">No null value allowed in item</font></b>");
-                } else {
-                    contentTable.setComponentError(null);
-                    errorLabel.setValue("");
-                    if (logger.isInfoEnabled())
-                        logger.info("filled entity: " + entity);
-                    try {
-                        dao.persist((T)entity);
-                    } catch (IllegalArgumentException e) {
-                        errorLabel.setValue("<b><font color=\"red\">Name already in use</font></b>");
+            Object itemId = contentTable.getValue();
+            logger.info("selected: " + itemId);
+                if (isSaveButton) {
+                   if (logger.isDebugEnabled()) {
+                        logger.debug("SaveItem");
+                        logger.debug("selected entity: " + itemId);
                     }
+                    itemId = container.fillObjectFromItem(itemId);
+                    if (itemId != null) {
+                        contentTable.setComponentError(null);
+                        errorLabel.setValue("");
+                        if (logger.isInfoEnabled())
+                            logger.info("filled entity: " + itemId);
+                        try {
+                            container.persistItem(itemId);
+                        } catch (IllegalArgumentException e) {
+                            errorLabel.setValue("<b><font color=\"red\">Name already in use</font></b>");
+                        }
+                    } else {
+                        if (logger.isInfoEnabled())
+                            logger.info("No null values allowed in Item.");
+                        errorLabel.setValue("<b><font color=\"red\">No null value allowed in item</font></b>");
+                    }
+                    container.fillTableWithDaoEntities();
+                } else {
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("CancelEditing");
+                    }
+
+                    container.cancelAddingEditing(itemId);
                 }
-                fillTableWithDaoEntities();
-            } else {
-                Object prop = item.getItemProperty(item.getItemPropertyIds().iterator().next()).getValue();
-                if (logger.isDebugEnabled()) {
-                    logger.debug("CancelEditing");
-                    logger.debug("selected item: " + item);
-                    logger.debug("prop: " + prop);
-                }
-                if (prop == null || prop.equals("") || prop.equals("null")) {
-                    contentTable.removeItem(entity);
-                }
-            }
             contentTable.setEditable(false);
             contentTable.setSelectable(true);
+            contentTable.select(contentTable.getNullSelectionItemId());
             buttonHorLayout.replaceComponent(saveButtonLayout, addButtonLayout);
 
         }

@@ -25,7 +25,9 @@ import static org.junit.Assert.assertNotNull;
 
 public class IssuePriorityDAOTest {
     private static Logger logger = Logger.getLogger(IssuePriorityDAOTest.class);
+
     private final IssuePriorityDAO dao = GraphDaoFactory.getIssuePriorityDAO();
+    private final IssuePriority assignTo = dao.loadAllEntities().get(0);
 
     @Test
     public void addPriority() {
@@ -35,7 +37,7 @@ public class IssuePriorityDAOTest {
         priority.setPriorityFileName("filename");
         priority = dao.persist(priority);
         assertEquals(priority, dao.findById(priority.getId()));
-        dao.delete(priority);
+        dao.delete(priority, assignTo);
     }
 
     @Test
@@ -46,7 +48,7 @@ public class IssuePriorityDAOTest {
         priority.setPriorityFileName("second filename");
         priority = dao.persist(priority);
         assertEquals(priority, dao.findById(priority.getId()));
-        dao.delete(priority);
+        dao.delete(priority, assignTo);
     }
 
     @Test(expected = IllegalArgumentException.class)
