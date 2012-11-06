@@ -4,6 +4,7 @@ import com.vaadin.data.Property;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.issuedelete.IssueDeleteWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.IssueSettingsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.logic.SingleRowEditTableFieldFactory;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.modell.SettingsDataContainer;
@@ -18,6 +19,9 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.mod
  */
 public class SettingLayout<T> extends VerticalLayout {
     private static Logger logger = Logger.getLogger(SettingLayout.class);
+
+    private final IssueSettingsScreen screen;
+    private final boolean simpleErasing;
 
     private final Label headerLabel;
     private final Table contentTable;
@@ -36,8 +40,11 @@ public class SettingLayout<T> extends VerticalLayout {
     VerticalLayout saveButtonLayout;
 
 
-    public SettingLayout(IssueSettingsScreen screen, String headerName, Class aClass) {
+    public SettingLayout(final IssueSettingsScreen screen, final String headerName, final Class aClass,
+                         final boolean simpleErasing) {
+        this.screen = screen;
         this.aClass = aClass;
+        this.simpleErasing = simpleErasing;
         container = new SettingsDataContainer<T>(aClass);
 
         buttonHorLayout = new HorizontalLayout();
@@ -167,10 +174,7 @@ public class SettingLayout<T> extends VerticalLayout {
         @Override
         public void buttonClick(Button.ClickEvent event) {
             errorLabel.setValue("");
-            final Object itemId = contentTable.getValue();
-
-            //TODO Let User select Object to assign to!
-            container.removeItem(itemId, itemId);
+            UI.getCurrent().addWindow(new SettingsDeleteWindow<T>(screen, aClass, contentTable, simpleErasing));
             contentTable.select(contentTable.getNullSelectionItemId());
         }
     }
@@ -201,12 +205,18 @@ public class SettingLayout<T> extends VerticalLayout {
                         try {
                             container.persistItem(itemId);
                         } catch (IllegalArgumentException e) {
-                            errorLabel.setValue("<b><font color=\"red\">Name already in use</font></b>");
+                            if (logger.isInfoEnabled())
+                                logger.info("Name is already in use");
+                            errorLabel.setValue("<b><font color=\"red\">" +
+                                    screen.getMessagesBundle().getString("issuetracking_settings_error_name") +
+                                    "</font></b>");
                         }
                     } else {
                         if (logger.isInfoEnabled())
                             logger.info("No null values allowed in Item.");
-                        errorLabel.setValue("<b><font color=\"red\">No null value allowed in item</font></b>");
+                        errorLabel.setValue("<b><font color=\"red\">" +
+                                screen.getMessagesBundle().getString("issuetracking_settings_error_null") +
+                                "</font></b>");
                     }
                     container.fillTableWithDaoEntities();
                 } else {

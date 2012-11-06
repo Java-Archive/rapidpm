@@ -503,25 +503,52 @@ public class GraphBaseDAO<T> {
     }
 
 
-    public boolean deleteAttribute(final T entity, final T assignTo) {
+    public boolean deleteSimpleAttribute(final T entity) {
         if (entity == null)
             throw new NullPointerException("Object to delete can't be null.");
-        if (assignTo == null)
-            throw new NullPointerException("Object to assign issues to can't be null.");
 
         if (logger.isDebugEnabled())
             logger.debug("delete: " + entity);
 
         boolean success = false;
         final Long id = getIdFromEntity(entity);
-        final Long assignToId = getIdFromEntity(assignTo);
+        final Transaction tx = graphDb.beginTx();
+        try{
+            Node node;
+            if (id != null && id != 0) {
+                node = graphDb.getNodeById(id);
+                for (Relationship rel : node.getRelationships()) {
+                    rel.delete();
+                }
+                node.delete();
+            }
+            tx.success();
+            success = true;
+        } finally {
+            tx.finish();
+            return success;
+        }
+    }
+
+    public boolean deleteAttribute(final T entity, final T assignTo) {
+        if (entity == null)
+            throw new NullPointerException("Object to delete can't be null.");
+        if (assignTo == null)
+            throw new NullPointerException("Object deleted objects get assigned to can't be null.");
+
+        if (logger.isDebugEnabled())
+            logger.debug("delete: " + entity);
+
+        boolean success = false;
+        final Long id = getIdFromEntity(entity);
+        Long assignToId = getIdFromEntity(assignTo);
         final Transaction tx = graphDb.beginTx();
         try{
             Node node, assignToNode;
             if (id != null && id != 0 && assignToId != null && assignToId != 0) {
                 node = graphDb.getNodeById(id);
                 assignToNode = graphDb.getNodeById(assignToId);
-                //rearrange Subissues
+                //rearrange Issues
                 final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(clazz);
                 for (Relationship rel : node.getRelationships()) {
                     if (rel.isType(relType) && rel.getEndNode().equals(node)) {

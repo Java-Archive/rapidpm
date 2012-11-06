@@ -131,13 +131,18 @@ public class SettingsDataContainer<T> extends IndexedContainer {
                             logger.debug("Property Value: " + itemProps.get(i) + " in " + field.getName());
                         prop = itemProps.get(i);
 
-                        if (!field.getName().contains("FileName"))
+                        if (!field.getName().contains("FileName")) {
                             if (prop == null || prop.equals("null") || prop.equals("")) {
                                 if (logger.isDebugEnabled())
                                     logger.debug("null value found: " + field.getName());
                                 return null;
                             }
+                        } else
+                            if (prop == "") prop = null;
+
                         field.set(entity, field.getType().cast(prop));
+
+
                     }
                     i++;
                 } catch (IllegalAccessException e) {
@@ -156,16 +161,25 @@ public class SettingsDataContainer<T> extends IndexedContainer {
         return entity;
     }
 
-    public boolean removeItem(Object itemId, Object assignToItemId){
+    public boolean removeConnectedItem(Object itemId, Object assignToItemId){
         boolean success = false;
         final Object entity = this.getContainerProperty(itemId, ENTITY).getValue();
-        //TODO Let User select Object to assign to!
-        Object assignTo = dao.loadAllEntities().get(0);
-        if (entity.equals(assignTo))
-            assignTo = dao.loadAllEntities().get(1);
+        final Object assignTo = this.getContainerProperty(assignToItemId, ENTITY).getValue();
         logger.info("delete item: " + entity + " and assign to" + assignTo);
 
         if (dao.deleteAttribute((T) entity,(T) assignTo))
+            if (this.removeItem(itemId))
+                success = true;
+        fillTableWithDaoEntities();
+        return success;
+    }
+
+    public boolean removeSimpleItem(Object itemId) {
+        boolean success = false;
+        final Object entity = this.getContainerProperty(itemId, ENTITY).getValue();
+        logger.info("delete item: " + entity);
+
+        if (dao.deleteSimpleAttribute((T) entity))
             if (this.removeItem(itemId))
                 success = true;
         fillTableWithDaoEntities();
