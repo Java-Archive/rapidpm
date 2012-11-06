@@ -23,6 +23,7 @@ public class IssueTableLayout extends ComponentEditableVLayout {
     private final static String STATUS = "status";
     private final static String PRIORITY = "priority";
     private final static String TYPE = "type";
+    private final static String VERSION = "version";
     private final static String STORYPOINTS = "storypoints";
     private final static String SUMMARY = "summary";
     private final static String REPORTER = "reporter";
@@ -55,7 +56,7 @@ public class IssueTableLayout extends ComponentEditableVLayout {
         issueTable.addItemClickListener(new TableItemClickListener());
 
         final String[] headerNames = new String[] {CAPTION, STATUS, PRIORITY, TYPE, REPORTER, ASSIGNEE,
-        DUE_DATE_PLANNED, DUE_DATE_RESOLVED, DUE_DATE_CLOSED, STORYPOINTS, SUMMARY};
+        DUE_DATE_PLANNED, DUE_DATE_RESOLVED, DUE_DATE_CLOSED, VERSION,STORYPOINTS, SUMMARY};
 
         int i = 0;
         for (String name : headerNames) {
@@ -84,7 +85,8 @@ public class IssueTableLayout extends ComponentEditableVLayout {
                     issue.getDueDate_planned().toString(),
                     issue.getDueDate_resolved().toString(),
                     issue.getDueDate_closed().toString(),
-                    issue.getStoryPoints().toString(),
+                    issue.getVersion().getVersionName(),
+                    issue.getStoryPoints().getStorypoint().toString(),
                     issue.getSummary()},
                     issue);
         }
@@ -95,8 +97,7 @@ public class IssueTableLayout extends ComponentEditableVLayout {
         @Override
         public void itemClick(ItemClickEvent event) {
             if (event.isDoubleClick()) {
-//                screen.getIssueTreeLayout().setSelectedItem(event.getItemId());
-                System.out.println("Open Details of Issue");
+                screen.getIssueTreeLayout().setSelectedItem(event.getItemId());
             }
         }
     }

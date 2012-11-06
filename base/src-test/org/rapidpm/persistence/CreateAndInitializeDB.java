@@ -215,8 +215,10 @@ public class CreateAndInitializeDB {
         type.setTypeName("Epic");
         typeList.add(GraphDaoFactory.getIssueTypeDAO().persist(type));
 
+        IssueVersion version = new IssueVersion(" - ");
+        versionList.add(GraphDaoFactory.getIssueVersionDAO().persist(version));
 
-        IssueVersion version = new IssueVersion("Alpha");
+        version = new IssueVersion("Alpha");
         versionList.add(GraphDaoFactory.getIssueVersionDAO().persist(version));
 
         version = new IssueVersion("1.0");
@@ -273,32 +275,32 @@ public class CreateAndInitializeDB {
         //-timeunit_estimated-,  -timeunit_used(3)-,  testcases(3),  comments(1),  risk,  planningunit
 
         //Month - 1;  January = 0 ; December = 11;
-issueAttr.add(Arrays.asList(0,2,4,  2,2,  2012, 7,12, 2012, 8,13, 2012, 8,21,  1, 2,  2,-1,  -1,-1,-1,  14,  25,   1));
-issueAttr.add(Arrays.asList(3,3,1,  3,2,  2012, 7,12, 2012, 7,14, 2012, 7,15,  1, 1,  2,-1,  -1,-1,-1,  -1,  -1,  -1));
-issueAttr.add(Arrays.asList(2,3,1,  3,3,  2012, 7,12, 2012, 7,18, 2012, 7,19,  1, 6,  2,-1,  -1,-1,-1,   3,  -1,  -1));
-issueAttr.add(Arrays.asList(1,0,1,  2,5,  2012, 7,12, 2012, 8, 5, 2012, 8, 6,  1, 1,  2,-1,   1,-1,-1,  13,  -1,  -1));
-issueAttr.add(Arrays.asList(4,1,3,  4,2,  2012, 7,12, 2012, 8, 8, 2012, 8, 9,  1, 6,  2,-1,   2,17,-1,  -1,  -1,  -1));
-issueAttr.add(Arrays.asList(0,2,3,  2,4,  2012, 7,12, 2012, 8,13, 2012, 8,13,  1, 3,  2,-1,   5,-1,-1,   4,  -1,  -1));
-issueAttr.add(Arrays.asList(0,3,1,  3,2,  2012, 7,12, 2012, 8,13, 2012, 8,13,  1, 4,  2,-1,   4,16,-1,  -1,  -1,  -1));
+issueAttr.add(Arrays.asList(0,2,4,  2,2,  2012, 7,12, 2012, 8,13, 2012, 8,21,  2, 2,  2,-1,  -1,-1,-1,  14,  25,   1));
+issueAttr.add(Arrays.asList(3,3,1,  3,2,  2012, 7,12, 2012, 7,14, 2012, 7,15,  2, 1,  2,-1,  -1,-1,-1,  -1,  -1,  -1));
+issueAttr.add(Arrays.asList(2,3,1,  3,3,  2012, 7,12, 2012, 7,18, 2012, 7,19,  2, 6,  2,-1,  -1,-1,-1,   3,  -1,  -1));
+issueAttr.add(Arrays.asList(1,0,1,  2,5,  2012, 7,12, 2012, 8, 5, 2012, 8, 6,  2, 1,  2,-1,   1,-1,-1,  13,  -1,  -1));
+issueAttr.add(Arrays.asList(4,1,3,  4,2,  2012, 7,12, 2012, 8, 8, 2012, 8, 9,  2, 6,  2,-1,   2,17,-1,  -1,  -1,  -1));
+issueAttr.add(Arrays.asList(0,2,3,  2,4,  2012, 7,12, 2012, 8,13, 2012, 8,13,  2, 3,  2,-1,   5,-1,-1,   4,  -1,  -1));
+issueAttr.add(Arrays.asList(0,3,1,  3,2,  2012, 7,12, 2012, 8,13, 2012, 8,13,  2, 4,  2,-1,   4,16,-1,  -1,  -1,  -1));
 
-issueAttr.add(Arrays.asList(0,0,4,  2,2,  2012, 7,12, 2012, 8,30, 2012, 8,30,  1, 8,  3,-1,   6,-1,-1,  -1,  50,  15));
-issueAttr.add(Arrays.asList(3,1,1,  5,4,  2012, 7,12, 2012, 8,18, 2012, 8,19,  1, 3,  3,-1,   7,-1,-1,   5,  -1,  -1));
-issueAttr.add(Arrays.asList(0,2,0,  4,5,  2012, 7,12, 2012, 8,22, 2012, 8,23,  1, 7,  3,-1,   8,-1,-1,  -1,  -1,  -1));
-issueAttr.add(Arrays.asList(0,3,2,  2,3,  2012, 7,12, 2012, 8,28, 2012, 8,28,  1, 4,  3,-1,   9,-1,-1,  12,  -1,  -1));
+issueAttr.add(Arrays.asList(0,0,4,  2,2,  2012, 7,12, 2012, 8,30, 2012, 8,30,  2, 8,  3,-1,   6,-1,-1,  -1,  50,  15));
+issueAttr.add(Arrays.asList(3,1,1,  5,4,  2012, 7,12, 2012, 8,18, 2012, 8,19,  2, 3,  3,-1,   7,-1,-1,   5,  -1,  -1));
+issueAttr.add(Arrays.asList(0,2,0,  4,5,  2012, 7,12, 2012, 8,22, 2012, 8,23,  2, 7,  3,-1,   8,-1,-1,  -1,  -1,  -1));
+issueAttr.add(Arrays.asList(0,3,2,  2,3,  2012, 7,12, 2012, 8,28, 2012, 8,28,  2, 4,  3,-1,   9,-1,-1,  12,  -1,  -1));
 
-issueAttr.add(Arrays.asList(0,4,4,  2,2,  2012, 7,12, 2013, 0,14, 2012, 0,17,  1,10,  1, 2,  10,-1,-1,  -1,  75,  16));
-issueAttr.add(Arrays.asList(3,2,2,  4,5,  2012, 7,12, 2012, 9,04, 2012, 9, 5,  1, 3,  1,-1,  11,-1,-1,   6,  -1,  -1));
-issueAttr.add(Arrays.asList(2,3,3,  2,4,  2012, 7,12, 2012,11, 1, 2012,11, 2,  1, 6,  1,-1,   3,-1,-1,  -1,  -1,  -1));
-issueAttr.add(Arrays.asList(0,4,2,  3,2,  2012, 7,12, 2013, 0,13, 2012, 0,14,  1,10,  1,-1,  13,18,-1,  15,  -1,  -1));
+issueAttr.add(Arrays.asList(0,4,4,  2,2,  2012, 7,12, 2013, 0,14, 2012, 0,17,  2,10,  1, 2,  10,-1,-1,  -1,  75,  16));
+issueAttr.add(Arrays.asList(3,2,2,  4,5,  2012, 7,12, 2012, 9,04, 2012, 9, 5,  2, 3,  1,-1,  11,-1,-1,   6,  -1,  -1));
+issueAttr.add(Arrays.asList(2,3,3,  2,4,  2012, 7,12, 2012,11, 1, 2012,11, 2,  2, 6,  1,-1,   3,-1,-1,  -1,  -1,  -1));
+issueAttr.add(Arrays.asList(0,4,2,  3,2,  2012, 7,12, 2013, 0,13, 2012, 0,14,  2,10,  1,-1,  13,18,-1,  15,  -1,  -1));
 
-issueAttr.add(Arrays.asList(1,0,4,  3,1,  2012, 7,12, 2012, 2,31, 2012, 3, 9,  1, 5,  4, 2,  15,-1,-1,  -1, 100,  17));
-issueAttr.add(Arrays.asList(2,1,1,  5,2,  2012, 7,12, 2012, 0,31, 2012, 1,14,  1, 2,  4,-1,  -1,-1,-1,   9,  -1,  -1));
-issueAttr.add(Arrays.asList(3,2,0,  4,4,  2012, 7,12, 2012, 1,12, 2012, 1,14,  1, 7,  4,-1,  14,19,20,  -1,  -1,  -1));
-issueAttr.add(Arrays.asList(0,3,2,  2,5,  2012, 7,12, 2012, 1,14, 2012, 1,14,  1, 6,  4,-1,  -1,-1,-1,  -1,  -1,  -1));
-issueAttr.add(Arrays.asList(1,4,1,  4,3,  2012, 7,12, 2012, 1,14, 2012, 1,14,  1, 1,  4,-1,  -1,-1,-1,  10,  -1,  -1));
-issueAttr.add(Arrays.asList(2,1,2,  2,2,  2012, 7,12, 2012, 2,12, 2012, 2,19,  1, 9,  4, 1,  -1,-1,-1,  11,  -1,  -1));
-issueAttr.add(Arrays.asList(3,2,4,  5,4,  2012, 7,12, 2012, 2,19, 2012, 2,19,  1, 6,  4,-1,  -1,-1,-1,  -1,  -1,  -1));
-issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  1, 3,  4,-1,  -1,-1,-1,  -1,  -1,  -1));
+issueAttr.add(Arrays.asList(1,0,4,  3,1,  2012, 7,12, 2012, 2,31, 2012, 3, 9,  2, 5,  4, 2,  15,-1,-1,  -1, 100,  17));
+issueAttr.add(Arrays.asList(2,1,1,  5,2,  2012, 7,12, 2012, 0,31, 2012, 1,14,  2, 2,  4,-1,  -1,-1,-1,   9,  -1,  -1));
+issueAttr.add(Arrays.asList(3,2,0,  4,4,  2012, 7,12, 2012, 1,12, 2012, 1,14,  2, 7,  4,-1,  14,19,20,  -1,  -1,  -1));
+issueAttr.add(Arrays.asList(0,3,2,  2,5,  2012, 7,12, 2012, 1,14, 2012, 1,14,  2, 6,  4,-1,  -1,-1,-1,  -1,  -1,  -1));
+issueAttr.add(Arrays.asList(1,4,1,  4,3,  2012, 7,12, 2012, 1,14, 2012, 1,14,  2, 1,  4,-1,  -1,-1,-1,  10,  -1,  -1));
+issueAttr.add(Arrays.asList(2,1,2,  2,2,  2012, 7,12, 2012, 2,12, 2012, 2,19,  2, 9,  4, 1,  -1,-1,-1,  11,  -1,  -1));
+issueAttr.add(Arrays.asList(3,2,4,  5,4,  2012, 7,12, 2012, 2,19, 2012, 2,19,  2, 6,  4,-1,  -1,-1,-1,  -1,  -1,  -1));
+issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2, 3,  4,-1,  -1,-1,-1,  -1,  -1,  -1));
         
         //fill Issues with Attributes
         int i, x = 0;

@@ -398,12 +398,16 @@ public class GraphBaseDAO<T> {
                 }
                 else if (field.isAnnotationPresent(Graph.class)) {
                     final Class aClass = field.getAnnotation(Graph.class).clazz();
-                    Node travNode = null;
-                    for (Relationship rel : node.getRelationships(GraphRelationRegistry.getRelationshipTypeForClass(aClass),
-                            Direction.OUTGOING))
-                        travNode = rel.getOtherNode(node);
 
-                    field.set(entity, getObjectFromNode(travNode, aClass));
+                    Relationship rel = node.getSingleRelationship(GraphRelationRegistry.getRelationshipTypeForClass(aClass),
+                            Direction.OUTGOING);
+                    if (rel != null) {
+                        Node otherNode = rel.getOtherNode(node);
+                        if (otherNode != null)
+                            field.set(entity, getObjectFromNode(otherNode, aClass));
+                    }
+
+
                 }
 
                 field.setAccessible(isAccessible);

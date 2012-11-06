@@ -108,6 +108,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         typeSelect.setTextInputAllowed(false);
         typeSelect.setNullSelectionAllowed(false);
         typeSelect.setReadOnly(true);
+        typeSelect.setScrollToSelectedItem(true);
         detailLayout.addComponent(typeSelect);
 
         statusSelect = new ComboBox();
@@ -122,6 +123,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         statusSelect.setTextInputAllowed(false);
         statusSelect.setNullSelectionAllowed(false);
         statusSelect.setReadOnly(true);
+        statusSelect.setScrollToSelectedItem(true);
         detailLayout.addComponent(statusSelect);
 
         prioritySelect = new ComboBox();
@@ -136,6 +138,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         prioritySelect.setTextInputAllowed(false);
         prioritySelect.setNullSelectionAllowed(false);
         prioritySelect.setReadOnly(true);
+        prioritySelect.setScrollToSelectedItem(true);
         detailLayout.addComponent(prioritySelect);
 
         reporterLabel = new Label();
@@ -153,6 +156,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         assigneeSelect.setTextInputAllowed(false);
         assigneeSelect.setNullSelectionAllowed(false);
         assigneeSelect.setReadOnly(true);
+        assigneeSelect.setScrollToSelectedItem(true);
         detailLayout.addComponent(assigneeSelect);
 
         componentListSelect = new ListSelect();
@@ -195,9 +199,11 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             item = storyPointSelect.addItem(storypoint);
             item.getItemProperty(PROPERTY_CAPTION).setValue(storypoint.getStorypoint());
         }
+        storyPointSelect.select(storyPointList.get(0));
         storyPointSelect.setTextInputAllowed(false);
         storyPointSelect.setNullSelectionAllowed(false);
         storyPointSelect.setReadOnly(true);
+        storyPointSelect.setScrollToSelectedItem(true);
         dateLayout.addComponent(storyPointSelect);
 
 
@@ -208,9 +214,11 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             item = versionSelect.addItem(version);
             item.getItemProperty(PROPERTY_CAPTION).setValue(version.getVersionName());
         }
+        versionSelect.select(versionList.get(0));
         versionSelect.setTextInputAllowed(false);
         versionSelect.setNullSelectionAllowed(false);
         versionSelect.setReadOnly(true);
+        versionSelect.setScrollToSelectedItem(true);
         dateLayout.addComponent(versionSelect);
 
 
@@ -226,17 +234,21 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         riskSelect.setTextInputAllowed(false);
         riskSelect.setNullSelectionAllowed(true);
         riskSelect.setReadOnly(true);
+        riskSelect.setScrollToSelectedItem(true);
         dateLayout.addComponent(riskSelect);
 
         horLayout.addComponent(detailLayout);
         horLayout.addComponent(dateLayout);
         formLayout.addComponent(horLayout);
 
+        VerticalLayout bottomLayout = new VerticalLayout();
+        bottomLayout.setSpacing(true);
+
         descriptionTextArea = new RichTextArea();
         //descriptionTextArea.set
         descriptionTextArea.setWidth("100%");
         descriptionTextArea.setReadOnly(true);
-        formLayout.addComponent(descriptionTextArea);
+        bottomLayout.addComponent(descriptionTextArea);
 
         tabSheet = new TabSheet();
         tabSheet.setSizeFull();
@@ -254,8 +266,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabSheet.addTab(tabRelations);
 
 
-        formLayout.addComponent(tabSheet);
-
+        bottomLayout.addComponent(tabSheet);
+        formLayout.addComponent(bottomLayout);
         return formLayout;
     }
 

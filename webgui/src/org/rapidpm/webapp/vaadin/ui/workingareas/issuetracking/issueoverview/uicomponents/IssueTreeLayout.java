@@ -113,19 +113,17 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         deleteButton.setCaption(screen.getMessagesBundle().getString("delete"));
         expandButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_collapse"));
     }
-//
-//    public void setSelectedItem(Object item) {
-//        for (Object itemId : issueTree.getItemIds()){
-//            System.out.println(issueTree.getItem(itemId));
-//            if (issueTree.getItem(itemId).equals(item)){
-//                issueTree.select(itemId);
-//                System.out.println("EQUALS!");
-//                break;
-//            }
-//
-//        }
-//
-//    }
+
+    public void setSelectedItem(Object entity) {
+        for (Object itemId : issueTree.getItemIds()) {
+            Object issue = issueTree.getContainerDataSource().getContainerProperty(itemId,
+                    TreeContainerIssueBase.PROPERTY_ISSUEBASE).getValue();
+            if (issue.equals(entity)){
+                issueTree.select(itemId);
+                break;
+            }
+        }
+    }
 
 
 //
