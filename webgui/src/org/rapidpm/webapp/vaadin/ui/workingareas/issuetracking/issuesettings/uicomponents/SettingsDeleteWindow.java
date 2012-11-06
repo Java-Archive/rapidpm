@@ -104,15 +104,10 @@ public class SettingsDeleteWindow<T> extends Window implements Internationalizat
         final Collection<?> ids = contentTable.getItem(removeItemId).getItemPropertyIds();
         String labelValue = "-      ";
         Object value;
-        int i = 0;
         for (Object propId : ids) {
-            if (i < ids.size() - 1) {
                 value = contentTable.getItem(removeItemId).getItemProperty(propId).getValue();
                 if (value != null)
                     labelValue += value.toString() + "   -   ";
-            } else
-                break;
-            i++;
         }
         deleteLabel.setValue(labelValue);
 

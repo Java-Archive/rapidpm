@@ -145,7 +145,7 @@ public class SettingLayout<T> extends VerticalLayout {
                 if (isAddButton) {
                     entity = (T) aClass.newInstance();
                     container.addEntityToTable(entity);
-                    contentTable.select(container.getItemIdFromEntity(entity));
+                    contentTable.select(entity);
                     if (logger.isDebugEnabled())
                         logger.debug("Add Entity: " + entity);
                 } else {
@@ -189,21 +189,21 @@ public class SettingLayout<T> extends VerticalLayout {
 
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            Object itemId = contentTable.getValue();
-            logger.info("selected: " + itemId);
+            Object entity = contentTable.getValue();
+            logger.info("selected: " + entity);
                 if (isSaveButton) {
                    if (logger.isDebugEnabled()) {
                         logger.debug("SaveItem");
-                        logger.debug("selected entity: " + itemId);
+                        logger.debug("selected entity: " + entity);
                     }
-                    itemId = container.fillObjectFromItem(itemId);
-                    if (itemId != null) {
+                    entity = container.fillObjectFromItem(entity);
+                    if (entity != null) {
                         contentTable.setComponentError(null);
                         errorLabel.setValue("");
                         if (logger.isInfoEnabled())
-                            logger.info("filled entity: " + itemId);
+                            logger.info("filled entity: " + entity);
                         try {
-                            container.persistItem(itemId);
+                            container.persistItem(entity);
                         } catch (IllegalArgumentException e) {
                             if (logger.isInfoEnabled())
                                 logger.info("Name is already in use");
@@ -224,7 +224,7 @@ public class SettingLayout<T> extends VerticalLayout {
                         logger.debug("CancelEditing");
                     }
 
-                    container.cancelAddingEditing(itemId);
+                    container.cancelAddingEditing(entity);
                 }
             contentTable.setEditable(false);
             contentTable.setSelectable(true);

@@ -22,7 +22,6 @@ import java.util.List;
  */
 public class SettingsDataContainer<T> extends IndexedContainer {
     private static Logger logger = Logger.getLogger(SettingsDataContainer.class);
-    private final static String ENTITY = "entitiy";
 
     private final GraphBaseDAO<T> dao;
     private final Class clazz;
@@ -41,22 +40,11 @@ public class SettingsDataContainer<T> extends IndexedContainer {
                 visibleColumns.add(field.getName());
             }
         }
-        this.addContainerProperty(ENTITY, clazz, null);
         fillTableWithDaoEntities();
     }
 
     public List<Object> getVisibleColumns() {
         return visibleColumns;
-    }
-
-    public Object getItemIdFromEntity(Object entity) {
-        Object ent;
-        for (Object itemId : this.getItemIds()) {
-            ent = this.getContainerProperty(itemId, ENTITY).getValue();
-            if (entity.equals(ent))
-                return itemId;
-        }
-        return null;
     }
 
     public void fillTableWithDaoEntities() {
@@ -74,22 +62,20 @@ public class SettingsDataContainer<T> extends IndexedContainer {
         if (logger.isDebugEnabled())
             logger.debug("entity: " + entity);
 
-        Object itemId = this.addItem();
-        //this.get
+        Item itemId = this.addItem(entity);
         for (Field field : fieldnames) {
             if (field.isAnnotationPresent(Simple.class)){
                 boolean isAccessible = field.isAccessible();
                 field.setAccessible(true);
                 try {
                     Object val = field.get(entity);
-                    this.getContainerProperty(itemId, field.getName()).setValue(field.getType().cast(val));
+                    itemId.getItemProperty(field.getName()).setValue(field.getType().cast(val));
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }
                 field.setAccessible(isAccessible);
             }
         }
-        this.getContainerProperty(itemId, ENTITY).setValue(entity);
     }
 
     private GraphBaseDAO<T> getGraphDAOInstance() {
@@ -108,18 +94,17 @@ public class SettingsDataContainer<T> extends IndexedContainer {
         return dao;
     }
 
-    public Object fillObjectFromItem(Object itemId) {
-        final Object entity = this.getContainerProperty(itemId, ENTITY).getValue();
+    public Object fillObjectFromItem(Object entity) {
         final Field[] fieldnames = clazz.getDeclaredFields();
         List<Object> itemProps = new ArrayList<>();
         Object prop;
         logger.info("PropIds: " + this.getContainerPropertyIds());
         for (Object propId : this.getContainerPropertyIds())
-            itemProps.add(this.getContainerProperty(itemId, propId).getValue());
+            itemProps.add(this.getContainerProperty(entity, propId).getValue());
 
         int i= 0;
         if (logger.isDebugEnabled())
-            logger.debug("fillObjectFromItem: " + itemId);
+            logger.debug("fillObjectFromItem: " + entity);
 
         for (Field field : fieldnames) {
             if (field.isAnnotationPresent(Simple.class)){
@@ -151,47 +136,43 @@ public class SettingsDataContainer<T> extends IndexedContainer {
                 field.setAccessible(isAccessible);
             }
         }
-        return itemId;
+        return entity;
     }
 
-    public Object persistItem(Object itemId) {
-        Object entity = this.getContainerProperty(itemId, ENTITY).getValue();
+    public Object persistItem(Object entity) {
         entity = dao.persist((T)entity);
         fillTableWithDaoEntities();
         return entity;
     }
 
-    public boolean removeConnectedItem(Object itemId, Object assignToItemId){
+    public boolean removeConnectedItem(Object entity, Object assignTo){
         boolean success = false;
-        final Object entity = this.getContainerProperty(itemId, ENTITY).getValue();
-        final Object assignTo = this.getContainerProperty(assignToItemId, ENTITY).getValue();
         logger.info("delete item: " + entity + " and assign to" + assignTo);
 
         if (dao.deleteAttribute((T) entity,(T) assignTo))
-            if (this.removeItem(itemId))
+            if (this.removeItem(entity))
                 success = true;
         fillTableWithDaoEntities();
         return success;
     }
 
-    public boolean removeSimpleItem(Object itemId) {
+    public boolean removeSimpleItem(Object entity) {
         boolean success = false;
-        final Object entity = this.getContainerProperty(itemId, ENTITY).getValue();
         logger.info("delete item: " + entity);
 
         if (dao.deleteSimpleAttribute((T) entity))
-            if (this.removeItem(itemId))
+            if (this.removeItem(entity))
                 success = true;
         fillTableWithDaoEntities();
         return success;
     }
 
-    public boolean cancelAddingEditing(Object itemId) {
+    public boolean cancelAddingEditing(Object entity) {
         boolean success = true;
-        logger.info("cancelAddingEditing: entity " + itemId);
-        Object prop = this.getContainerProperty(itemId, this.getContainerPropertyIds().iterator().next()).getValue();
+        logger.info("cancelAddingEditing: entity " + entity);
+        Object prop = this.getContainerProperty(entity, this.getContainerPropertyIds().iterator().next()).getValue();
         if (prop == null || prop.equals("") || prop.equals("null"))
-            success = this.removeItem(itemId);
+            success = this.removeItem(entity);
         return success;
     }
 }

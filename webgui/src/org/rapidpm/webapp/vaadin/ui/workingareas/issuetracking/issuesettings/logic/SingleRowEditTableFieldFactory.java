@@ -30,10 +30,7 @@ public class SingleRowEditTableFieldFactory implements TableFieldFactory {
             logger.debug("CreateField given itemId   : " + this.entity);
             logger.debug("CreateField function itemId: " + itemId);
         }
-        Object entityItemId = null;
-        if (entity != null)
-            entityItemId = ((SettingsDataContainer)container).getItemIdFromEntity(entity);
-        if ((entityItemId != null && itemId.equals(entityItemId)) || itemId.equals(entity)) {
+        if (itemId.equals(entity)) {
             if (logger.isDebugEnabled())
                 logger.debug("Items are equal");
             return DefaultFieldFactory.get().createField(container, itemId, propertyId, uiContext);
