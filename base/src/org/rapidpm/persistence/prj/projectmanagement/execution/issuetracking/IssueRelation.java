@@ -83,6 +83,7 @@ public class IssueRelation implements RelationshipType, PersistInGraph {
 
         IssueRelation that = (IssueRelation) o;
 
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (incomingName != null ? !incomingName.equals(that.incomingName) : that.incomingName != null) return false;
         if (outgoingName != null ? !outgoingName.equals(that.outgoingName) : that.outgoingName != null) return false;
         if (relationName != null ? !relationName.equals(that.relationName) : that.relationName != null) return false;
@@ -92,7 +93,8 @@ public class IssueRelation implements RelationshipType, PersistInGraph {
 
     @Override
     public int hashCode() {
-        int result = relationName != null ? relationName.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (relationName != null ? relationName.hashCode() : 0);
         result = 31 * result + (outgoingName != null ? outgoingName.hashCode() : 0);
         result = 31 * result + (incomingName != null ? incomingName.hashCode() : 0);
         return result;

@@ -131,9 +131,11 @@ public class SettingsDeleteWindow<T> extends Window implements Internationalizat
         public void buttonClick(Button.ClickEvent event) {
             if (!simpleErasing) {
                 final Object assignToItemId = table.getValue();
-                ((SettingsDataContainer)contentTable.getContainerDataSource()).removeConnectedItem(removeItemId, assignToItemId);
+                logger.info("AssignItemId" + assignToItemId);
+                ((SettingsDataContainer<T>)contentTable.getContainerDataSource()).removeConnectedItem(removeItemId,
+                        assignToItemId);
             } else
-                ((SettingsDataContainer)contentTable.getContainerDataSource()).removeSimpleItem(removeItemId);
+                ((SettingsDataContainer<T>)contentTable.getContainerDataSource()).removeSimpleItem(removeItemId);
             self.close();
         }
     }

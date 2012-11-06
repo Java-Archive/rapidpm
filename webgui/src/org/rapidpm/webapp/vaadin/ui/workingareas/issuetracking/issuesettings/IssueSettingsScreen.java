@@ -42,6 +42,10 @@ public class IssueSettingsScreen  extends Screen {
                 ("issuetracking_issue_type"), IssueType.class, false));
         gridLayout.addComponent(new SettingLayout<IssueComponent>(this, getMessagesBundle().getString
                 ("issuetracking_issue_components"), IssueComponent.class, true));
+        gridLayout.addComponent(new SettingLayout<IssueVersion>(this, getMessagesBundle().getString
+                ("issuetracking_issue_version"), IssueVersion.class, false));
+        gridLayout.addComponent(new SettingLayout<IssueStoryPoint>(this, getMessagesBundle().getString
+                ("issuetracking_issue_storypoints"), IssueStoryPoint.class, false));
         gridLayout.addComponent(new SettingLayout<IssueRelation>(this, getMessagesBundle().getString
                 ("issuetracking_issue_relations"), IssueRelation.class, true));
         addComponent(gridLayout);

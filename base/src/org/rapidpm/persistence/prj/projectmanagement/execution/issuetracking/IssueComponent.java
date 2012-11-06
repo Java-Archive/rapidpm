@@ -68,17 +68,20 @@ public class IssueComponent implements PersistInGraph {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        IssueComponent that = (IssueComponent) o;
+        IssueComponent component = (IssueComponent) o;
 
-        if (componentName != null ? !componentName.equals(that.componentName) : that.componentName != null)
+        if (componentName != null ? !componentName.equals(component.componentName) : component.componentName != null)
             return false;
+        if (id != null ? !id.equals(component.id) : component.id != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return componentName != null ? componentName.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (componentName != null ? componentName.hashCode() : 0);
+        return result;
     }
 
     @Override

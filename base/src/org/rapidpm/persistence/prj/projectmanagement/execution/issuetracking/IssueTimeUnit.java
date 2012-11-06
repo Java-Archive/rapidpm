@@ -108,6 +108,7 @@ public class IssueTimeUnit {
         if (minutes != that.minutes) return false;
         if (comment != null ? !comment.equals(that.comment) : that.comment != null) return false;
         if (date != null ? !date.equals(that.date) : that.date != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (worker != null ? !worker.equals(that.worker) : that.worker != null) return false;
 
         return true;
@@ -115,7 +116,8 @@ public class IssueTimeUnit {
 
     @Override
     public int hashCode() {
-        int result = date != null ? date.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + minutes;
         result = 31 * result + (comment != null ? comment.hashCode() : 0);
         result = 31 * result + (worker != null ? worker.hashCode() : 0);

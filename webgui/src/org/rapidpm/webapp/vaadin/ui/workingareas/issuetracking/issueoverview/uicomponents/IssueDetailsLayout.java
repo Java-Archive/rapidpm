@@ -2,7 +2,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.ui
 
 import com.vaadin.data.Item;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.server.UserError;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
@@ -13,11 +12,8 @@ import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditableVLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.DummyProjectData;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,6 +24,8 @@ import java.util.Set;
  */
 public class IssueDetailsLayout extends ComponentEditableVLayout implements Internationalizationable{
     private static Logger logger = Logger.getLogger(IssueDetailsLayout.class);
+
+    public final static String PROPERTY_CAPTION = "caption";
 
     private TextField headerSummaryField;
     private Label headerTextField;
@@ -68,6 +66,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         final List<IssueType> typeList = GraphDaoFactory.getIssueTypeDAO().loadAllEntities();
         final List<IssueStatus> statusList = GraphDaoFactory.getIssueStatusDAO().loadAllEntities();
         final List<IssuePriority> priorityList =  GraphDaoFactory.getIssuePriorityDAO().loadAllEntities();
+        final List<IssueVersion> versionList =  GraphDaoFactory.getIssueVersionDAO().loadAllEntities();
+        final List<IssueStoryPoint> storyPointList =  GraphDaoFactory.getIssueStoryPointDAO().loadAllEntities();
         final List<IssueComponent> componentsList = GraphDaoFactory.getIssueComponentDAO().loadAllEntities();
         final List<Benutzer> userList =  screen.getBaseDaoFactoryBean().getBenutzerDAO().loadAllEntities();
         formLayout = new VerticalLayout();
@@ -96,12 +96,12 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         formLayout.addComponent(headerLayout);
 
         typeSelect = new ComboBox();
-        typeSelect.addContainerProperty(DummyProjectData.PROPERTY_CAPTION, String.class, null);
-        typeSelect.setItemCaptionPropertyId(DummyProjectData.PROPERTY_CAPTION);
+        typeSelect.addContainerProperty(PROPERTY_CAPTION, String.class, null);
+        typeSelect.setItemCaptionPropertyId(PROPERTY_CAPTION);
         Item item;
         for (IssueType type : typeList) {
             item = typeSelect.addItem(type);
-            item.getItemProperty(DummyProjectData.PROPERTY_CAPTION).setValue(type.getTypeName());
+            item.getItemProperty(PROPERTY_CAPTION).setValue(type.getTypeName());
             typeSelect.setItemIcon(type, new ThemeResource("images/" + type.getTypeFileName()));
         }
         typeSelect.select(typeList.get(0));
@@ -111,11 +111,11 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         detailLayout.addComponent(typeSelect);
 
         statusSelect = new ComboBox();
-        statusSelect.addContainerProperty(DummyProjectData.PROPERTY_CAPTION, String.class, null);
-        statusSelect.setItemCaptionPropertyId(DummyProjectData.PROPERTY_CAPTION);
+        statusSelect.addContainerProperty(PROPERTY_CAPTION, String.class, null);
+        statusSelect.setItemCaptionPropertyId(PROPERTY_CAPTION);
         for (IssueStatus status : statusList) {
             item = statusSelect.addItem(status);
-            item.getItemProperty(DummyProjectData.PROPERTY_CAPTION).setValue(status.getStatusName());
+            item.getItemProperty(PROPERTY_CAPTION).setValue(status.getStatusName());
             statusSelect.setItemIcon(status, new ThemeResource("images/" + status.getStatusFileName()));
         }
         statusSelect.select(statusList.get(0));
@@ -125,11 +125,11 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         detailLayout.addComponent(statusSelect);
 
         prioritySelect = new ComboBox();
-        prioritySelect.addContainerProperty(DummyProjectData.PROPERTY_CAPTION, String.class, null);
-        prioritySelect.setItemCaptionPropertyId(DummyProjectData.PROPERTY_CAPTION);
+        prioritySelect.addContainerProperty(PROPERTY_CAPTION, String.class, null);
+        prioritySelect.setItemCaptionPropertyId(PROPERTY_CAPTION);
         for (IssuePriority priority : priorityList) {
             item = prioritySelect.addItem(priority);
-            item.getItemProperty(DummyProjectData.PROPERTY_CAPTION).setValue(priority.getPriorityName());
+            item.getItemProperty(PROPERTY_CAPTION).setValue(priority.getPriorityName());
             prioritySelect.setItemIcon(priority, new ThemeResource("images/" + priority.getPriorityFileName()));
         }
         prioritySelect.select(priorityList.get(0));
@@ -143,11 +143,11 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         detailLayout.addComponent(reporterLabel);
 
         assigneeSelect = new ComboBox();
-        assigneeSelect.addContainerProperty(DummyProjectData.PROPERTY_CAPTION, String.class, null);
-        assigneeSelect.setItemCaptionPropertyId(DummyProjectData.PROPERTY_CAPTION);
+        assigneeSelect.addContainerProperty(PROPERTY_CAPTION, String.class, null);
+        assigneeSelect.setItemCaptionPropertyId(PROPERTY_CAPTION);
         for (Benutzer user : userList) {
             item = assigneeSelect.addItem(user);
-            item.getItemProperty(DummyProjectData.PROPERTY_CAPTION).setValue(user.getLogin());
+            item.getItemProperty(PROPERTY_CAPTION).setValue(user.getLogin());
         }
         assigneeSelect.select(userList.get(0));
         assigneeSelect.setTextInputAllowed(false);
@@ -156,11 +156,11 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         detailLayout.addComponent(assigneeSelect);
 
         componentListSelect = new ListSelect();
-        componentListSelect.addContainerProperty(DummyProjectData.PROPERTY_CAPTION, String.class, null);
-        componentListSelect.setItemCaptionPropertyId(DummyProjectData.PROPERTY_CAPTION);
+        componentListSelect.addContainerProperty(PROPERTY_CAPTION, String.class, null);
+        componentListSelect.setItemCaptionPropertyId(PROPERTY_CAPTION);
         for (IssueComponent component : componentsList) {
             item = componentListSelect.addItem(component);
-            item.getItemProperty(DummyProjectData.PROPERTY_CAPTION).setValue(component.getComponentName());
+            item.getItemProperty(PROPERTY_CAPTION).setValue(component.getComponentName());
         }
         componentListSelect.setNullSelectionAllowed(true);
         componentListSelect.setMultiSelect(true);
@@ -187,30 +187,42 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         closedDateField.setReadOnly(true);
         dateLayout.addComponent(closedDateField);
 
+
         storyPointSelect = new ComboBox();
-        for (Integer storyPoint : DummyProjectData.getStoryPointArray()) {
-            storyPointSelect.addItem(storyPoint);
+        storyPointSelect.addContainerProperty(PROPERTY_CAPTION, Integer.class, null);
+        storyPointSelect.setItemCaptionPropertyId(PROPERTY_CAPTION);
+        for (IssueStoryPoint storypoint : storyPointList) {
+            item = storyPointSelect.addItem(storypoint);
+            item.getItemProperty(PROPERTY_CAPTION).setValue(storypoint.getStorypoint());
         }
-        storyPointSelect.select(DummyProjectData.getStoryPointArray().get(0));
         storyPointSelect.setTextInputAllowed(false);
         storyPointSelect.setNullSelectionAllowed(false);
         storyPointSelect.setReadOnly(true);
         dateLayout.addComponent(storyPointSelect);
 
+
         versionSelect = new ComboBox();
-        for (String version : DummyProjectData.getVersionArray()) {
-            versionSelect.addItem(version);
+        versionSelect.addContainerProperty(PROPERTY_CAPTION, String.class, null);
+        versionSelect.setItemCaptionPropertyId(PROPERTY_CAPTION);
+        for (IssueVersion version : versionList) {
+            item = versionSelect.addItem(version);
+            item.getItemProperty(PROPERTY_CAPTION).setValue(version.getVersionName());
         }
         versionSelect.setTextInputAllowed(false);
-        versionSelect.setNullSelectionAllowed(true);
+        versionSelect.setNullSelectionAllowed(false);
         versionSelect.setReadOnly(true);
         dateLayout.addComponent(versionSelect);
 
+
+
+
         riskSelect = new ComboBox();
-        for (Integer version : DummyProjectData.getRiskArray()) {
+        //TODO Persistente Daten verwenden
+        List<Integer> riskarray = new ArrayList<>(Arrays.asList(0, 25, 50, 75, 100));
+        for (Integer version : riskarray) {
             riskSelect.addItem(version);
         }
-        riskSelect.select(DummyProjectData.getRiskArray().get(0));
+        riskSelect.select(riskarray.get(0));
         riskSelect.setTextInputAllowed(false);
         riskSelect.setNullSelectionAllowed(true);
         riskSelect.setReadOnly(true);
@@ -342,8 +354,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         issue.setDueDate_planned(plannedDateField.getValue());
         issue.setDueDate_resolved(resolvedDateField.getValue());
         issue.setDueDate_closed(closedDateField.getValue());
-        issue.setStoryPoints((Integer) storyPointSelect.getValue());
-        issue.setVersion((String) versionSelect.getValue());
+        issue.setStoryPoints((IssueStoryPoint) storyPointSelect.getValue());
+        issue.setVersion((IssueVersion) versionSelect.getValue());
         issue.setRisk((Integer) riskSelect.getValue());
         issue.setStory(descriptionTextArea.getValue());
 

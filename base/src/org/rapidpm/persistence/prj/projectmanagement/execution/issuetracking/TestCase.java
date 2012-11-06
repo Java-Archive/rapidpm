@@ -66,6 +66,7 @@ public class TestCase {
 
         TestCase testCase = (TestCase) o;
 
+        if (id != null ? !id.equals(testCase.id) : testCase.id != null) return false;
         if (text != null ? !text.equals(testCase.text) : testCase.text != null) return false;
 
         return true;
@@ -73,6 +74,8 @@ public class TestCase {
 
     @Override
     public int hashCode() {
-        return text != null ? text.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (text != null ? text.hashCode() : 0);
+        return result;
     }
 }

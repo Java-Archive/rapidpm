@@ -34,6 +34,7 @@ public class SettingsDataContainer<T> extends IndexedContainer {
         dao = getGraphDAOInstance();
         visibleColumns = new ArrayList<>();
 
+
         for (Field field : clazz.getDeclaredFields()) {
             if (field.isAnnotationPresent(Simple.class)) {
                 this.addContainerProperty(field.getName(), field.getType(), null);
@@ -41,7 +42,6 @@ public class SettingsDataContainer<T> extends IndexedContainer {
             }
         }
         this.addContainerProperty(ENTITY, clazz, null);
-        this.
         fillTableWithDaoEntities();
     }
 

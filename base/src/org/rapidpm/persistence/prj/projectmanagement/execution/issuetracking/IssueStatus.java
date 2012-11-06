@@ -86,16 +86,22 @@ public class IssueStatus  implements PersistInGraph {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        IssueStatus that = (IssueStatus) o;
+        IssueStatus status = (IssueStatus) o;
 
-        if (statusName != null ? !statusName.equals(that.statusName) : that.statusName != null) return false;
+        if (id != null ? !id.equals(status.id) : status.id != null) return false;
+        if (statusFileName != null ? !statusFileName.equals(status.statusFileName) : status.statusFileName != null)
+            return false;
+        if (statusName != null ? !statusName.equals(status.statusName) : status.statusName != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return statusName != null ? statusName.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (statusName != null ? statusName.hashCode() : 0);
+        result = 31 * result + (statusFileName != null ? statusFileName.hashCode() : 0);
+        return result;
     }
 
     @Override

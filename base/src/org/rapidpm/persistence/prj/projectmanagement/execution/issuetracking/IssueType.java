@@ -75,6 +75,7 @@ public class IssueType  implements PersistInGraph {
 
         IssueType issueType = (IssueType) o;
 
+        if (id != null ? !id.equals(issueType.id) : issueType.id != null) return false;
         if (typeFileName != null ? !typeFileName.equals(issueType.typeFileName) : issueType.typeFileName != null)
             return false;
         if (typeName != null ? !typeName.equals(issueType.typeName) : issueType.typeName != null) return false;
@@ -84,7 +85,8 @@ public class IssueType  implements PersistInGraph {
 
     @Override
     public int hashCode() {
-        int result = typeName != null ? typeName.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (typeName != null ? typeName.hashCode() : 0);
         result = 31 * result + (typeFileName != null ? typeFileName.hashCode() : 0);
         return result;
     }

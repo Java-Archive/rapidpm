@@ -33,8 +33,7 @@ public class IssueBaseDAOTest {
     @Test
     public void addIssue() {
         IssueBase issueBase = new IssueBase(projectId);
-        issueBase.setVersion("1.0");
-        issueBase.setStoryPoints(10);
+
         issueBase.setSummary("Issue x");
         issueBase.setStory("Story x");
         issueBase.setDueDate_closed(new Date());
@@ -54,6 +53,8 @@ public class IssueBaseDAOTest {
         issueBase.setStatus(GraphDaoFactory.getIssueStatusDAO().loadAllEntities().get(0));
         issueBase.setType(GraphDaoFactory.getIssueTypeDAO().loadAllEntities().get(0));
         issueBase.setPriority(GraphDaoFactory.getIssuePriorityDAO().loadAllEntities().get(0));
+        issueBase.setVersion(GraphDaoFactory.getIssueVersionDAO().loadAllEntities().get(0));
+        issueBase.setStoryPoints(GraphDaoFactory.getIssueStoryPointDAO().loadAllEntities().get(0));
 
         issueBase = dao.persist(issueBase);
         if (logger.isDebugEnabled())

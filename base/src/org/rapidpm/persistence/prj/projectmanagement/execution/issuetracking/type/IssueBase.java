@@ -59,11 +59,11 @@ public class IssueBase implements PersistInGraph {
     @Relational(clazz = Benutzer.class)
     private Benutzer assignee;
 
-    @Simple
-    private String version;
+    @Graph(clazz = IssueVersion.class)
+    private IssueVersion version;
 
-    @Simple
-    private Integer storyPoints;
+    @Graph(clazz = IssueStoryPoint.class)
+    private IssueStoryPoint storyPoints;
 
     @Simple(clazz = "Date")
     private Date dueDate_planned;
@@ -268,19 +268,19 @@ public class IssueBase implements PersistInGraph {
         this.assignee = assignee;
     }
 
-    public String getVersion() {
+    public IssueVersion getVersion() {
         return version;
     }
 
-    public void setVersion(final String version) {
+    public void setVersion(final IssueVersion version) {
         this.version = version;
     }
 
-    public Integer getStoryPoints() {
+    public IssueStoryPoint getStoryPoints() {
         return storyPoints;
     }
 
-    public void setStoryPoints(final Integer storyPoints) {
+    public void setStoryPoints(final IssueStoryPoint storyPoints) {
         this.storyPoints = storyPoints;
     }
 
@@ -371,6 +371,7 @@ public class IssueBase implements PersistInGraph {
             return false;
         if (dueDate_resolved != null ? !dueDate_resolved.equals(issueBase.dueDate_resolved) : issueBase.dueDate_resolved != null)
             return false;
+        if (id != null ? !id.equals(issueBase.id) : issueBase.id != null) return false;
         if (planningUnit != null ? !planningUnit.equals(issueBase.planningUnit) : issueBase.planningUnit != null)
             return false;
         if (priority != null ? !priority.equals(issueBase.priority) : issueBase.priority != null) return false;
@@ -378,6 +379,7 @@ public class IssueBase implements PersistInGraph {
         if (reporter != null ? !reporter.equals(issueBase.reporter) : issueBase.reporter != null) return false;
         if (risk != null ? !risk.equals(issueBase.risk) : issueBase.risk != null) return false;
         if (status != null ? !status.equals(issueBase.status) : issueBase.status != null) return false;
+        if (story != null ? !story.equals(issueBase.story) : issueBase.story != null) return false;
         if (storyPoints != null ? !storyPoints.equals(issueBase.storyPoints) : issueBase.storyPoints != null)
             return false;
         if (summary != null ? !summary.equals(issueBase.summary) : issueBase.summary != null) return false;
@@ -395,9 +397,11 @@ public class IssueBase implements PersistInGraph {
 
     @Override
     public int hashCode() {
-        int result = projectId != null ? projectId.hashCode() : 0;
-        result = 31 * result + (summary != null ? summary.hashCode() : 0);
+        int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (text != null ? text.hashCode() : 0);
+        result = 31 * result + (projectId != null ? projectId.hashCode() : 0);
+        result = 31 * result + (summary != null ? summary.hashCode() : 0);
+        result = 31 * result + (story != null ? story.hashCode() : 0);
         result = 31 * result + (priority != null ? priority.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (type != null ? type.hashCode() : 0);
@@ -421,15 +425,16 @@ public class IssueBase implements PersistInGraph {
     public String toString() {
         return "IssueBase{" +
                 "id=" + id +
+                ", text='" + text + '\'' +
                 ", projectId=" + projectId +
                 ", summary='" + summary + '\'' +
-                ", text='" + text + '\'' +
+                ", story='" + story + '\'' +
                 ", priority=" + priority +
                 ", status=" + status +
                 ", type=" + type +
                 ", reporter=" + reporter +
                 ", assignee=" + assignee +
-                ", version='" + version + '\'' +
+                ", version=" + version +
                 ", storyPoints=" + storyPoints +
                 ", dueDate_planned=" + dueDate_planned +
                 ", dueDate_resolved=" + dueDate_resolved +

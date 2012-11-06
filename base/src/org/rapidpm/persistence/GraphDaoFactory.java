@@ -47,4 +47,12 @@ public class GraphDaoFactory {
     public static IssueRelationDAO getIssueRelationDAO() {
         return new IssueRelationDAO(graphDb, daoFactory);
     }
+
+    public static IssueVersionDAO getIssueVersionDAO() {
+        return new IssueVersionDAO(graphDb, daoFactory);
+    }
+
+    public static IssueStoryPointDAO getIssueStoryPointDAO() {
+        return new IssueStoryPointDAO(graphDb, daoFactory);
+    }
 }

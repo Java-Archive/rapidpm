@@ -78,6 +78,7 @@ public class IssueComment {
 
         if (created != null ? !created.equals(that.created) : that.created != null) return false;
         if (creator != null ? !creator.equals(that.creator) : that.creator != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (text != null ? !text.equals(that.text) : that.text != null) return false;
 
         return true;
@@ -85,7 +86,8 @@ public class IssueComment {
 
     @Override
     public int hashCode() {
-        int result = text != null ? text.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (text != null ? text.hashCode() : 0);
         result = 31 * result + (creator != null ? creator.hashCode() : 0);
         result = 31 * result + (created != null ? created.hashCode() : 0);
         return result;
