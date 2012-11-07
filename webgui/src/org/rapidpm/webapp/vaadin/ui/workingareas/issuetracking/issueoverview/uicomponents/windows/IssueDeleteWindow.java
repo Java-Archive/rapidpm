@@ -37,9 +37,13 @@ public class IssueDeleteWindow extends Window implements Internationalizationabl
     }
 
     private void setComponentens() {
+        VerticalLayout contentLayout = new VerticalLayout();
+        contentLayout.setSpacing(true);
+        contentLayout.setSizeFull();
+
         deleteLabel = new Label();
         deleteLabel.setWidth("100%");
-        addComponent(deleteLabel);
+        contentLayout.addComponent(deleteLabel);
 
         buttonLayout = new HorizontalLayout();
         buttonLayout.setMargin(true);
@@ -57,8 +61,8 @@ public class IssueDeleteWindow extends Window implements Internationalizationabl
         buttonLayout.addComponent(noButton);
         buttonLayout.setExpandRatio(noButton, 1.0f);
 
-
-        addComponent(buttonLayout);
+        contentLayout.addComponent(buttonLayout);
+        addComponent(contentLayout);
     }
 
 

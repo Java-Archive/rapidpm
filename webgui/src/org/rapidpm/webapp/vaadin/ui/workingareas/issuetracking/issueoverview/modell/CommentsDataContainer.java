@@ -37,8 +37,13 @@ public class CommentsDataContainer extends AbstractIssueDataContainer {
     }
 
     @Override
-    public IssueBase getIssueFromItemId(Object itemId) {
+    public IssueBase getConnIssueFromItemId(Object itemId) {
         return null;
+    }
+
+    @Override
+    public boolean refresh() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
 

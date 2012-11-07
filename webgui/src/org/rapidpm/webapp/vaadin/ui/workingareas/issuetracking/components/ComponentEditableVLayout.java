@@ -2,7 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components;
 
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.ui.*;
-import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
+import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 
 import java.util.Iterator;
@@ -13,14 +13,18 @@ import java.util.ResourceBundle;
  * User: Alvin Schiller
  * Date: 25.09.12
  * Time: 15:13
+ *
  * To change this template use File | Settings | File Templates.
  */
 public abstract class ComponentEditableVLayout extends VerticalLayout{
+    private static Logger logger = Logger.getLogger(ComponentEditableVLayout.class);
+
     protected Button saveButton;
     protected Button cancelButton;
     protected ResourceBundle messages;
 
-    protected AbstractOrderedLayout componentsLayout;
+    protected AbstractOrderedLayout saveableLayout;
+    protected AbstractOrderedLayout unSaveableLayout;
     protected HorizontalLayout buttonLayout;
     protected final IssueOverviewScreen screen;
 
@@ -30,8 +34,12 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
         setSizeFull();
         setMargin(true);
         setSpacing(true);
-        componentsLayout = buildForm();
-        componentsLayout.setSizeFull();
+        saveableLayout = buildSaveableForm();
+        if (saveableLayout != null) {
+            saveableLayout.setSizeFull();
+            addComponent(saveableLayout);
+            saveableLayout.addLayoutClickListener(new LayoutMouseClickListener());
+        }
         buttonLayout = new HorizontalLayout();
         saveButton = new Button();
         saveButton.setCaption(messages.getString("save"));
@@ -39,18 +47,27 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
 
         cancelButton = new Button();
         cancelButton.setCaption(messages.getString("cancel"));
-        this.addLayoutClickListener(new LayoutMouseClickListener());
 
         buttonLayout.addComponent(saveButton);
         buttonLayout.addComponent(cancelButton);
+        buttonLayout.setSpacing(true);
+        //buttonLayout.setMargin(true);
         buttonLayout.setVisible(false);
-        addComponent(componentsLayout);
+
         addComponent(buttonLayout);
         setLayoutReadOnly(readOnlyInit);
+
+        unSaveableLayout = buildUnsaveableForm();
+        if (unSaveableLayout != null) {
+            unSaveableLayout.setSizeFull();
+            unSaveableLayout.setSpacing(true);
+            addComponent(unSaveableLayout);
+        }
     }
 
 
-    protected abstract AbstractOrderedLayout buildForm();
+    protected abstract AbstractOrderedLayout buildSaveableForm();
+    protected abstract AbstractOrderedLayout buildUnsaveableForm();
 
     public void addSaveButtonClickListener(Button.ClickListener listener) {
         saveButton.addClickListener(listener);
@@ -62,7 +79,11 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
 
 
     public void setLayoutReadOnly(boolean readOnly) {
-        iterateLayoutReadOnly(readOnly, componentsLayout);
+        if (saveableLayout != null)
+            iterateLayoutReadOnly(readOnly, saveableLayout);
+        else
+            if (logger.isDebugEnabled())
+                logger.debug("No Components present in UnsabeableLayout");
     }
 
     private void iterateLayoutReadOnly(boolean readOnly, AbstractOrderedLayout layout) {

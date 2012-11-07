@@ -42,7 +42,12 @@ public class IssueTableLayout extends ComponentEditableVLayout {
     }
 
     @Override
-    protected AbstractOrderedLayout buildForm() {
+    protected AbstractOrderedLayout buildSaveableForm() {
+        return null;
+    }
+
+    @Override
+    protected AbstractOrderedLayout buildUnsaveableForm() {
         VerticalLayout componentsLayout = new VerticalLayout();
 
         issueTable = new Table();
@@ -55,7 +60,7 @@ public class IssueTableLayout extends ComponentEditableVLayout {
         issueTable.addItemClickListener(new TableItemClickListener());
 
         final String[] headerNames = new String[] {CAPTION, STATUS, PRIORITY, TYPE, REPORTER, ASSIGNEE,
-        DUE_DATE_PLANNED, DUE_DATE_RESOLVED, DUE_DATE_CLOSED, VERSION,STORYPOINTS, SUMMARY};
+                DUE_DATE_PLANNED, DUE_DATE_RESOLVED, DUE_DATE_CLOSED, VERSION,STORYPOINTS, SUMMARY};
 
         int i = 0;
         for (String name : headerNames) {

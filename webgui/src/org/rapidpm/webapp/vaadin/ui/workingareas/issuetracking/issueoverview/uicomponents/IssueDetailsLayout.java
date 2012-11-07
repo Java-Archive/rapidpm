@@ -2,9 +2,11 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.ui
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
+import com.vaadin.data.Property;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.datefield.Resolution;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.GraphDaoFactory;
@@ -15,6 +17,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditableVLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabAddButtonClickListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabDeleteButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.AbstractIssueDataContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.RelationsDataContainer;
 
@@ -34,7 +37,6 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
     private TextField headerSummaryField;
     private Label headerTextField;
-    private VerticalLayout headerLayout;
 
     private ComboBox typeSelect;
     private ComboBox statusSelect;
@@ -58,8 +60,6 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     private Button tabAddButon;
     private Button tabDeleteButton;
 
-    private VerticalLayout formLayout;
-
     private IssueBase issue;
 
 
@@ -70,7 +70,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
 
     @Override
-    protected AbstractOrderedLayout buildForm() {
+    protected AbstractOrderedLayout buildSaveableForm() {
         final List<IssueType> typeList = GraphDaoFactory.getIssueTypeDAO().loadAllEntities();
         final List<IssueStatus> statusList = GraphDaoFactory.getIssueStatusDAO().loadAllEntities();
         final List<IssuePriority> priorityList =  GraphDaoFactory.getIssuePriorityDAO().loadAllEntities();
@@ -78,7 +78,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         final List<IssueStoryPoint> storyPointList =  GraphDaoFactory.getIssueStoryPointDAO().loadAllEntities();
         final List<IssueComponent> componentsList = GraphDaoFactory.getIssueComponentDAO().loadAllEntities();
         final List<Benutzer> userList =  screen.getBaseDaoFactoryBean().getBenutzerDAO().loadAllEntities();
-        formLayout = new VerticalLayout();
+
+        VerticalLayout formLayout = new VerticalLayout();
 
         FormLayout dateLayout = new FormLayout();
         FormLayout detailLayout = new FormLayout();
@@ -96,7 +97,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         headerSummaryField.setWidth("100%");
         headerSummaryField.setReadOnly(true);
 
-        headerLayout = new VerticalLayout();
+        VerticalLayout headerLayout = new VerticalLayout();
         headerLayout.addComponent(headerTextField);
         headerLayout.addComponent(headerSummaryField);
         headerLayout.setExpandRatio(headerSummaryField, 1.0F);
@@ -230,8 +231,6 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         dateLayout.addComponent(versionSelect);
 
 
-
-
         riskSelect = new ComboBox();
         //TODO Persistente Daten verwenden
         List<Integer> riskarray = new ArrayList<>(Arrays.asList(0, 25, 50, 75, 100));
@@ -245,24 +244,34 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         riskSelect.setScrollToSelectedItem(true);
         dateLayout.addComponent(riskSelect);
 
+
         horLayout.addComponent(detailLayout);
         horLayout.addComponent(dateLayout);
         formLayout.addComponent(horLayout);
 
+        descriptionTextArea = new RichTextArea();
+        descriptionTextArea.setWidth("100%");
+        descriptionTextArea.setReadOnly(true);
+        formLayout.addComponent(descriptionTextArea);
+
+        return formLayout;
+    }
+
+    @Override
+    protected AbstractOrderedLayout buildUnsaveableForm() {
         VerticalLayout bottomLayout = new VerticalLayout();
         bottomLayout.setSpacing(true);
         bottomLayout.setWidth("100%");
 
-        descriptionTextArea = new RichTextArea();
-        descriptionTextArea.setWidth("100%");
-        descriptionTextArea.setReadOnly(true);
-        bottomLayout.addComponent(descriptionTextArea);
-
-
+        Label spaceLabel = new Label();
+        spaceLabel.setContentMode(ContentMode.HTML);
+        spaceLabel.setValue("&nbsp;");
         tabAddButon = new Button();
         tabDeleteButton = new Button();
+        tabDeleteButton.setEnabled(false);
 
         HorizontalLayout tabButtonLayout = new HorizontalLayout();
+        tabButtonLayout.setSpacing(true);
         tabButtonLayout.addComponent(tabAddButon);
         tabButtonLayout.addComponent(tabDeleteButton);
         bottomLayout.addComponent(tabButtonLayout);
@@ -283,16 +292,21 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabRelations.setWidth("100%");
         tabRelations.setContainerDataSource(relContainer);
         tabRelations.setVisibleColumns(relContainer.getVisibleColumns().toArray());
+        tabRelations.setNullSelectionAllowed(false);
         tabRelations.setSelectable(true);
         tabRelations.setEditable(false);
         tabRelations.setPageLength(10);
         tabRelations.addItemClickListener(new TableItemClickListener());
+        tabRelations.addValueChangeListener(new TableValueChangeListener());
         tabSheet.addTab(tabRelations);
 
         tabSheet.addSelectedTabChangeListener(new TabSheet.SelectedTabChangeListener() {
             @Override
             public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
                 Component comp = event.getTabSheet().getSelectedTab();
+                for (Object clickListener : tabAddButon.getListeners(Button.ClickListener.class))
+                    tabAddButon.removeClickListener((Button.ClickListener)clickListener);
+
                 if (comp.equals(tabComments)) {
                     logger.info("CommentsTabSelected");
                 } else if (comp.equals(tabTestcases)) {
@@ -300,14 +314,14 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
                 } else if (comp.equals(tabRelations)) {
                     logger.info("RelationsTabSelected");
                     tabAddButon.addClickListener(new TabAddButtonClickListener(screen, issue));
+                    tabDeleteButton.addClickListener(new TabDeleteButtonClickListener(screen, tabRelations));
                 }
             }
         });
 
 
         bottomLayout.addComponent(tabSheet);
-        formLayout.addComponent(bottomLayout);
-        return formLayout;
+        return bottomLayout;
     }
 
     @Override
@@ -425,6 +439,19 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         return issue;
     }
 
+    private class TableValueChangeListener implements Property.ValueChangeListener{
+
+        @Override
+        public void valueChange(Property.ValueChangeEvent event) {
+            if (event.getProperty().getValue() != null) {
+                tabDeleteButton.setEnabled(true);
+                logger.info("DeleteButton Enabled TRUE");
+            } else {
+                tabDeleteButton.setEnabled(false);
+                logger.info("DeleteButton Enabled FALSE");
+            }
+        }
+    }
 
     private class TableItemClickListener implements ItemClickEvent.ItemClickListener {
 
@@ -433,7 +460,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             Container container = ((Table)event.getComponent()).getContainerDataSource();
             if (container instanceof AbstractIssueDataContainer)
                 if (event.isDoubleClick()) {
-                    IssueBase issue = ((AbstractIssueDataContainer)container).getIssueFromItemId(event.getItemId());
+                    IssueBase issue = ((AbstractIssueDataContainer)container).getConnIssueFromItemId(event.getItemId());
                     screen.getIssueTreeLayout().setSelectedItemByIssue(issue);
                 }
         }

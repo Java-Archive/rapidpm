@@ -1,7 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic;
 
 import com.vaadin.data.Property;
-import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Tree;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
@@ -18,23 +17,17 @@ import java.util.List;
  * Time: 11:37
  * To change this template use File | Settings | File Templates.
  */
-public class TreeItemClickValueChangeListener implements ItemClickEvent.ItemClickListener, Tree.ValueChangeListener {
-    private static Logger logger = Logger.getLogger(TreeItemClickValueChangeListener.class);
+public class TreeValueChangeListener implements Tree.ValueChangeListener {
+    private static Logger logger = Logger.getLogger(TreeValueChangeListener.class);
 
     private final IssueTabSheet issueTabSheet;
     private final Tree issueTree;
 
     private boolean alreadyClicked = false;
 
-    public TreeItemClickValueChangeListener(final IssueTabSheet issueTabSheet, final Tree issueTree) {
+    public TreeValueChangeListener(final IssueTabSheet issueTabSheet, final Tree issueTree) {
         this.issueTabSheet = issueTabSheet;
         this.issueTree = issueTree;
-    }
-
-    @Override
-    public void itemClick(ItemClickEvent event) {
-        changeDetails(event.getItemId());
-        //alreadyClicked = true;
     }
 
     @Override

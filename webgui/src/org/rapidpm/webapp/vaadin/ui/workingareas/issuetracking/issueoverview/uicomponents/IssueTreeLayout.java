@@ -8,7 +8,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.Iss
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.AddButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DeleteButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeActivateOnValueChangeListener;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeItemClickValueChangeListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeIssueBaseContainer;
 
 
@@ -58,12 +58,12 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         addComponent(buttonLayout);
         addComponent(expandButton);
 
-        issueTree = new Tree("IssueTree", new TreeIssueBaseContainer(screen.getCurrentProject()));
+        issueTree = new Tree("IssueTree");
+        issueTree.setNullSelectionAllowed(false);
+        issueTree.setContainerDataSource(new TreeIssueBaseContainer(screen.getCurrentProject()));
         issueTree.setImmediate(true);
         if (issueTabSheet != null) {
-            TreeItemClickValueChangeListener listener = new TreeItemClickValueChangeListener(issueTabSheet, issueTree);
-            issueTree.addItemClickListener(listener);
-            issueTree.addValueChangeListener(listener);
+            issueTree.addValueChangeListener(new TreeValueChangeListener(issueTabSheet, issueTree));
         }
         issueTree.addValueChangeListener(new TreeActivateOnValueChangeListener(new Button[]{deleteButton,
                 addButton}));

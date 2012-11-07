@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.RelationsDataContainer;
 
@@ -19,7 +20,7 @@ import java.util.List;
  * Time: 12:19
  * To change this template use File | Settings | File Templates.
  */
-public class AddRelationWindow extends Window {
+public class AddRelationWindow extends Window implements Internationalizationable {
     private static Logger logger = Logger.getLogger(AddRelationWindow.class);
 
     private final static String PROPERTY_NAME = "name";
@@ -47,6 +48,7 @@ public class AddRelationWindow extends Window {
     private void setComponents() {
         VerticalLayout baseLayout = new VerticalLayout();
         baseLayout.setSizeFull();
+        baseLayout.setSpacing(true);
 
         List<IssueRelation> relationList = GraphDaoFactory.getIssueRelationDAO().loadAllEntities();
         relationsSelect = new ComboBox();
@@ -87,12 +89,13 @@ public class AddRelationWindow extends Window {
         buttonLayout.addComponent(saveButton);
         buttonLayout.addComponent(cancelButton);
 
+        baseLayout.addComponent(buttonLayout);
         addComponent(baseLayout);
-        addComponent(buttonLayout);
     }
 
+    @Override
     public void doInternationalization() {
-        this.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_relationswindow"));
+        this.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_addrelationswindow"));
         relationsSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_relations"));
         issueSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_table"));
         saveButton.setCaption(screen.getMessagesBundle().getString("save"));
@@ -112,11 +115,10 @@ public class AddRelationWindow extends Window {
 
             if (relation != null && relation != "") {
                 if (connIssue != null && connIssue != "")  {
-                    if (issue.connectToIssueAs((IssueBase) connIssue, (IssueRelation)relation))
-                        self.close();
-                    else
+                    if (!issue.connectToIssueAs((IssueBase) connIssue, (IssueRelation)relation))
                         //TODO Show Errormessage to User
-                        logger.info("Connecting issues failed");
+                        logger.error("Connecting issues failed");
+                    self.close();
                 } else {
                     if (logger.isDebugEnabled())
                         logger.debug("Issue to connect to is needed");

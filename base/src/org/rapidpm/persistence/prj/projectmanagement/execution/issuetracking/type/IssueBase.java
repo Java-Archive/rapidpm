@@ -105,7 +105,7 @@ public class IssueBase implements PersistInGraph {
     }
 
     public List<IssueBase> getConnectedIssues(final IssueRelation relation) {
-        return getConnectedIssues(relation, Direction.BOTH);
+        return GraphDaoFactory.getIssueBaseDAO(projectId).getConnectedIssuesWithRelation(this, relation, Direction.BOTH);
     }
 
     public List<IssueBase> getConnectedIssues(final IssueRelation relation, final Direction direction) {
@@ -113,7 +113,11 @@ public class IssueBase implements PersistInGraph {
     }
 
     public boolean removeConnectionToIssue(final IssueBase issue, final IssueRelation relation) {
-        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteRelationOfEntitiesTx(this, issue, relation);
+        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteRelationOfEntitiesTx(this, issue, relation, Direction.BOTH);
+    }
+
+    public boolean removeConnectionToIssue(final IssueBase issue, final IssueRelation relation, final Direction direction) {
+        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteRelationOfEntitiesTx(this, issue, relation, direction);
     }
 
 

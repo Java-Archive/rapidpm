@@ -100,13 +100,14 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     }
 
 
-    public boolean deleteRelationOfEntitiesTx(final IssueBase start, final IssueBase end, final IssueRelation relation) {
+    public boolean deleteRelationOfEntitiesTx(final IssueBase start, final IssueBase end, final IssueRelation relation,
+                                              final Direction direction) {
         boolean success = false;
         final Transaction tx = graphDb.beginTx();
         try {
             if(logger.isDebugEnabled())
                 logger.debug("deleteRelationOfEntitiesTx");
-            deleteRelationOfEntities(start, end, relation);
+            deleteRelationOfEntities(start, end, relation, direction);
             tx.success();
             success = true;
         } catch (NullPointerException e) {
@@ -123,7 +124,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         }
     }
 
-    public void deleteRelationOfEntities(final IssueBase start, final IssueBase end, final IssueRelation relation) {
+    public void deleteRelationOfEntities(final IssueBase start, final IssueBase end, final IssueRelation relation,
+                                         final Direction direction) {
         if (start == null)
             throw new NullPointerException("First issue is null.");
         if (end == null)
@@ -135,7 +137,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             logger.debug("deleteRelationOfEntities");
 
         final Node startNode = graphDb.getNodeById(start.getId());
-        for (final Relationship rel : startNode.getRelationships(relation, Direction.BOTH)) {
+        for (final Relationship rel : startNode.getRelationships(relation, direction)) {
             if (rel.getOtherNode(startNode).equals(graphDb.getNodeById(end.getId()))) {
                 if (logger.isDebugEnabled())
                     logger.debug("delete relation between" + start + ", " + end);

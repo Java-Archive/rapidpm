@@ -33,32 +33,35 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
 
     private void filltree() {
         Object itemId;
+        List<IssueBase> subIssueList;
         for (IssueBase issue : GraphDaoFactory.getIssueBaseDAO(currentProject.getId()).loadTopLevelEntities()) {
             itemId = addItem();
             this.getContainerProperty(itemId, PROPERTY_CAPTION).setValue(issue.name());
             this.getContainerProperty(itemId, PROPERTY_ISSUEBASE).setValue(issue);
-            if (issue.getSubIssues() == null || issue.getSubIssues().isEmpty()) {
+            subIssueList = issue.getSubIssues();
+            if (subIssueList == null || subIssueList.isEmpty()) {
                 this.setChildrenAllowed(itemId, false);
             } else {
                 this.setChildrenAllowed(itemId, true);
-                iterateSubIssues(issue, itemId);
+                iterateSubIssues(subIssueList, itemId);
             }
         }
     }
 
-    private void iterateSubIssues(IssueBase parentIssue, Object parentItemId) {
-
+    private void iterateSubIssues(List<IssueBase> parentSubIssueList, Object parentItemId) {
         Object itemId;
-        for (IssueBase subIssue : parentIssue.getSubIssues()) {
+        List<IssueBase> subIssueList;
+        for (IssueBase subIssue : parentSubIssueList) {
             itemId = addItem();
             this.getContainerProperty(itemId, PROPERTY_CAPTION).setValue(subIssue.name());
             this.getContainerProperty(itemId, PROPERTY_ISSUEBASE).setValue(subIssue);
             this.setParent(itemId, parentItemId);
-            if (subIssue.getSubIssues() == null || subIssue.getSubIssues().isEmpty()) {
+            subIssueList = subIssue.getSubIssues();
+            if (subIssueList == null || subIssueList.isEmpty()) {
                 this.setChildrenAllowed(itemId, false);
             } else {
                 this.setChildrenAllowed(itemId, true);
-                iterateSubIssues(subIssue, itemId);
+                iterateSubIssues(subIssueList, itemId);
             }
         }
     }
