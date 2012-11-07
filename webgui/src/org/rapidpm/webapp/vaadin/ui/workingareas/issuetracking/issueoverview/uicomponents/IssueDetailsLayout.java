@@ -50,6 +50,9 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     private VerticalLayout tabTestcases;
     private VerticalLayout tabRelations;
 
+    private Button tabAddButon;
+    private Button tabDeleteButton;
+
     private VerticalLayout formLayout;
 
     private IssueBase issue;
@@ -245,10 +248,22 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         bottomLayout.setSpacing(true);
 
         descriptionTextArea = new RichTextArea();
-        //descriptionTextArea.set
         descriptionTextArea.setWidth("100%");
         descriptionTextArea.setReadOnly(true);
         bottomLayout.addComponent(descriptionTextArea);
+
+
+        tabAddButon = new Button();
+//        tabAddButon.addClickListener();
+
+
+        tabDeleteButton = new Button();
+//        tabDeleteButton.addClickListener();
+
+        HorizontalLayout tabButtonLayout = new HorizontalLayout();
+        tabButtonLayout.addComponent(tabAddButon);
+        tabButtonLayout.addComponent(tabDeleteButton);
+        bottomLayout.addComponent(tabButtonLayout);
 
         tabSheet = new TabSheet();
         tabSheet.setSizeFull();
@@ -347,7 +362,6 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         if (issue == null) {
             logger.error("Issue to save was null");
             return null;
-            //throw new NullPointerException("No Issue to save.");
         }
 
 
