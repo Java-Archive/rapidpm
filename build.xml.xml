@@ -57,6 +57,7 @@
     <include name="**/?*.tld"/>
     <include name="**/?*.ftl"/>
     <include name="**/*.txt"/>
+    <include name="**/*.js"/>
     <include name="**/trace.info"/>
   </patternset>
   
@@ -654,6 +655,7 @@
       <zipfileset dir="${basedir}/webgui/web/VAADIN"/>
       <zipfileset dir="${basedir}/webgui/web/VAADIN/widgetsets" prefix="VAADIN/widgetsets"/>
       <zipfileset dir="${basedir}/webgui/web/VAADIN/themes" prefix="VAADIN/themes"/>
+      <zipfileset dir="${basedir}/webgui/web/VAADIN/javascript" prefix="VAADIN/javascript"/>
     </zip>
     <copy file="${temp.jar.path.rapidpm.war}" tofile="${artifact.temp.output.rapidpm}/rapidpm.war"/>
   </target>
