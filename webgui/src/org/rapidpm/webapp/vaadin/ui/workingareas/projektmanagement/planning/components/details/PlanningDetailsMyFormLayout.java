@@ -81,13 +81,10 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
                 ((ComboBox)field).setTextInputAllowed(false);
             }
         }
-        for(Field<?> field : fieldGroup.getFields()){
-            componentsLayout.addComponent(field);
-        }
-        componentsLayout.addComponent(fieldGroup.getResponsiblePersonBox());
-        componentsLayout.addComponent(fieldGroup.getComplexityField());
-        componentsLayout.addComponent(fieldGroup.getOrderNumberField());
-        componentsLayout.addComponent(fieldGroup.getStoryPointsField());
+        componentsLayout.addComponent(fieldGroup.getField(PlanningUnit.RESPONSIBLE));
+        componentsLayout.addComponent(fieldGroup.getField(PlanningUnit.COMPLEXITY));
+        componentsLayout.addComponent(fieldGroup.getField(PlanningUnit.ORDERNUMBER));
+        componentsLayout.addComponent(fieldGroup.getField(PlanningUnit.STORYPTS));
     }
 
 
