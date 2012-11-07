@@ -5,7 +5,7 @@ import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Tree;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeContainerIssueBase;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeIssueBaseContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTabSheet;
 
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class TreeItemClickValueChangeListener implements ItemClickEvent.ItemClic
 
     private void changeDetails(Object itemId) {
         IssueBase issueBase = (IssueBase)issueTree.getContainerProperty(itemId,
-                TreeContainerIssueBase.PROPERTY_ISSUEBASE).getValue();
+                TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
         issueTabSheet.getDetailsLayout().setDetailsFromIssue(issueBase);
 
         if (!issueTree.hasChildren(itemId)) {

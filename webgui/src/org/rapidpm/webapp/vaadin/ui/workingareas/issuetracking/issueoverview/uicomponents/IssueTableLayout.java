@@ -3,7 +3,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.ui
 
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.*;
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditableVLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
@@ -97,7 +96,7 @@ public class IssueTableLayout extends ComponentEditableVLayout {
         @Override
         public void itemClick(ItemClickEvent event) {
             if (event.isDoubleClick()) {
-                screen.getIssueTreeLayout().setSelectedItem(event.getItemId());
+                screen.getIssueTreeLayout().setSelectedItemByIssue((IssueBase) event.getItemId());
             }
         }
     }

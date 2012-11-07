@@ -1,15 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents;
 
-import com.vaadin.data.util.HierarchicalContainer;
-import com.vaadin.event.DataBoundTransferable;
-import com.vaadin.event.Transferable;
-import com.vaadin.event.dd.DragAndDropEvent;
-import com.vaadin.event.dd.DropHandler;
-import com.vaadin.event.dd.acceptcriteria.AcceptAll;
-import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
-import com.vaadin.shared.ui.dd.VerticalDropLocation;
 import com.vaadin.ui.*;
-import org.rapidpm.persistence.GraphDaoFactory;
+import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
@@ -17,7 +9,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.log
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DeleteButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeActivateOnValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeItemClickValueChangeListener;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeContainerIssueBase;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeIssueBaseContainer;
 
 
 /**
@@ -28,6 +20,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.mod
  * To change this template use File | Settings | File Templates.
  */
 public class IssueTreeLayout extends VerticalLayout implements Internationalizationable{
+    private static Logger logger = Logger.getLogger(IssueTreeLayout.class);
 
     private final IssueOverviewScreen screen;
 
@@ -65,7 +58,7 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         addComponent(buttonLayout);
         addComponent(expandButton);
 
-        issueTree = new Tree("IssueTree", new TreeContainerIssueBase(screen.getCurrentProject()));
+        issueTree = new Tree("IssueTree", new TreeIssueBaseContainer(screen.getCurrentProject()));
         issueTree.setImmediate(true);
         if (issueTabSheet != null) {
             TreeItemClickValueChangeListener listener = new TreeItemClickValueChangeListener(issueTabSheet, issueTree);
@@ -78,7 +71,7 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 //        issueTree.setDragMode(Tree.TreeDragMode.NODE);
 //        issueTree.setDropHandler(new TreeSortDropHandler(issueTree));
 
-        issueTree.setItemCaptionPropertyId(TreeContainerIssueBase.PROPERTY_CAPTION);
+        issueTree.setItemCaptionPropertyId(TreeIssueBaseContainer.PROPERTY_CAPTION);
         for (Object id : issueTree.rootItemIds())
             issueTree.expandItemsRecursively(id);
         if (issueTree.getItemIds().toArray().length > 0)
@@ -114,11 +107,11 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         expandButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_collapse"));
     }
 
-    public void setSelectedItem(Object entity) {
+    public void setSelectedItemByIssue(IssueBase issue) {
         for (Object itemId : issueTree.getItemIds()) {
-            Object issue = issueTree.getContainerDataSource().getContainerProperty(itemId,
-                    TreeContainerIssueBase.PROPERTY_ISSUEBASE).getValue();
-            if (issue.equals(entity)){
+            IssueBase treeIssue = (IssueBase)issueTree.getContainerDataSource().getContainerProperty(itemId,
+                    TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
+            if (treeIssue.equals(issue)){
                 issueTree.select(itemId);
                 break;
             }
@@ -188,9 +181,9 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 //
 //            Object parentId = container.getParent(targetItemId);
 //            IssueBase issue = (IssueBase)container.getContainerProperty(parentId,
-//                    TreeContainerIssueBase.PROPERTY_ISSUEBASE).getValue();
+//                    TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
 //            issue.addSubIssue((IssueBase)container.getContainerProperty(targetItemId,
-//                    TreeContainerIssueBase.PROPERTY_ISSUEBASE).getValue());
+//                    TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue());
 //        }
 //    }
 
@@ -277,9 +270,9 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 //
 //            Object parentId = container.getParent(targetItemId);
 //            IssueBase issue = (IssueBase)container.getContainerProperty(parentId,
-//                    TreeContainerIssueBase.PROPERTY_ISSUEBASE).getValue();
+//                    TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
 //            issue.addSubIssue((IssueBase)container.getContainerProperty(targetItemId,
-//                    TreeContainerIssueBase.PROPERTY_ISSUEBASE).getValue());
+//                    TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue());
 //
 //        }
     //}

@@ -45,6 +45,7 @@ public class SettingLayout<T> extends VerticalLayout {
         this.screen = screen;
         this.aClass = aClass;
         this.simpleErasing = simpleErasing;
+        this.setSpacing(true);
         container = new SettingsDataContainer<T>(aClass);
 
         buttonHorLayout = new HorizontalLayout();

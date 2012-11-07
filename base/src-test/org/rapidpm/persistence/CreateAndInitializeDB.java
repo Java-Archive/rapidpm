@@ -246,6 +246,12 @@ public class CreateAndInitializeDB {
         relation.setIncomingName("is blocked by");
         relationList.add(GraphDaoFactory.getIssueRelationDAO().persist(relation));
 
+        relation = new IssueRelation();
+        relation.setRelationName("Dependance");
+        relation.setOutgoingName("relates");
+        relation.setIncomingName("depends on");
+        relationList.add(GraphDaoFactory.getIssueRelationDAO().persist(relation));
+
 
         IssueComponent component = new IssueComponent("GUI");
         componentList.add(GraphDaoFactory.getIssueComponentDAO().persist(component));
@@ -395,6 +401,12 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
         issues.get(15).addSubIssue(issues.get(20));
             issues.get(20).addSubIssue(issues.get(21));
             issues.get(15).addSubIssue(issues.get(22));
+
+
+        issues.get(2).connectToIssueAs(issues.get(3), relationList.get(0));
+        issues.get(19).connectToIssueAs(issues.get(21), relationList.get(1));
+        issues.get(2).connectToIssueAs(issues.get(1), relationList.get(1));
+        issues.get(1).connectToIssueAs(issues.get(2), relationList.get(0));
 
     }
 

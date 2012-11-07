@@ -7,7 +7,6 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -18,14 +17,14 @@ import java.util.List;
  * Time: 15:44
  * To change this template use File | Settings | File Templates.
  */
-public class TreeContainerIssueBase extends HierarchicalContainer {
-    private static Logger logger = Logger.getLogger(TreeContainerIssueBase.class);
+public class TreeIssueBaseContainer extends HierarchicalContainer {
+    private static Logger logger = Logger.getLogger(TreeIssueBaseContainer.class);
 
     public final static String PROPERTY_CAPTION = "caption";
     public final static String PROPERTY_ISSUEBASE = "issueBase";
     private final PlannedProject currentProject;
 
-    public TreeContainerIssueBase(final PlannedProject currentProject) {
+    public TreeIssueBaseContainer(final PlannedProject currentProject) {
         this.currentProject = currentProject;
         this.addContainerProperty(PROPERTY_CAPTION, String.class, null);
         this.addContainerProperty(PROPERTY_ISSUEBASE, IssueBase.class, null);
@@ -68,7 +67,7 @@ public class TreeContainerIssueBase extends HierarchicalContainer {
     public boolean removeItem(Object itemId) {
         boolean success = true;
         Object parentItem = this.getParent(itemId);
-        IssueBase issue = (IssueBase)this.getContainerProperty(itemId, TreeContainerIssueBase.PROPERTY_ISSUEBASE)
+        IssueBase issue = (IssueBase)this.getContainerProperty(itemId, TreeIssueBaseContainer.PROPERTY_ISSUEBASE)
                 .getValue();
 
         if (this.hasChildren(itemId)) {

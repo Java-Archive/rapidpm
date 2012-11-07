@@ -6,7 +6,7 @@ import com.vaadin.ui.Window;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeContainerIssueBase;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeIssueBaseContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsLayout;
 
 /**
@@ -47,13 +47,13 @@ public class IssueAddWindow extends Window {
                 final Object parentItemId = issueTree.getValue();
 
                 issueTree.getContainerDataSource().getContainerProperty(itemId,
-                        TreeContainerIssueBase.PROPERTY_CAPTION).setValue(childIssue.name());
+                        TreeIssueBaseContainer.PROPERTY_CAPTION).setValue(childIssue.name());
                 issueTree.getContainerDataSource().getContainerProperty(itemId,
-                        TreeContainerIssueBase.PROPERTY_ISSUEBASE).setValue(childIssue);
+                        TreeIssueBaseContainer.PROPERTY_ISSUEBASE).setValue(childIssue);
 
                 if (parentItemId != null)  {
                     final IssueBase parentIssue = (IssueBase)issueTree.getContainerDataSource().getContainerProperty
-                            (parentItemId, TreeContainerIssueBase.PROPERTY_ISSUEBASE).getValue();
+                            (parentItemId, TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
                     parentIssue.addSubIssue(childIssue);
 
                 }

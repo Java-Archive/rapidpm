@@ -1,6 +1,8 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents;
 
+import com.vaadin.data.Container;
 import com.vaadin.data.Item;
+import com.vaadin.event.ItemClickEvent;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.*;
@@ -12,6 +14,8 @@ import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditableVLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.AbstractIssueDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.RelationsDataContainer;
 
 import java.util.*;
 
@@ -48,7 +52,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     private TabSheet tabSheet;
     private VerticalLayout tabComments;
     private VerticalLayout tabTestcases;
-    private VerticalLayout tabRelations;
+    private Table tabRelations;
 
     private Button tabAddButon;
     private Button tabDeleteButton;
@@ -276,8 +280,15 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabTestcases.setMargin(true);
         tabSheet.addTab(tabTestcases);
 
-        tabRelations = new VerticalLayout();
-        tabRelations.setMargin(true);
+        RelationsDataContainer relContainer = new RelationsDataContainer(screen);
+        tabRelations = new Table();
+        tabRelations.setWidth("100%");
+        tabRelations.setContainerDataSource(relContainer);
+        tabRelations.setVisibleColumns(relContainer.getVisibleColumns().toArray());
+        tabRelations.setSelectable(true);
+        tabRelations.setEditable(false);
+        tabRelations.setPageLength(10);
+        tabRelations.addItemClickListener(new TableItemClickListener());
         tabSheet.addTab(tabRelations);
 
 
@@ -301,6 +312,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         versionSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_version"));
         riskSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_risk"));
         descriptionTextArea.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_description"));
+        tabAddButon.setCaption(screen.getMessagesBundle().getString("add"));
+        tabDeleteButton.setCaption(screen.getMessagesBundle().getString("delete"));
         tabSheet.getTab(tabComments).setCaption(screen.getMessagesBundle().getString("issuetracking_issue_comments"));
         tabSheet.getTab(tabTestcases).setCaption(screen.getMessagesBundle().getString("issuetracking_issue_testcases"));
         tabSheet.getTab(tabRelations).setCaption(screen.getMessagesBundle().getString
@@ -345,6 +358,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         for (TestCase testcase : issue.getTestcases()) {
             tabTestcases.addComponent(new Label(testcase.getText()));
         }
+
+        ((RelationsDataContainer)tabRelations.getContainerDataSource()).fillContainer(issue);
 
         setLayoutReadOnly(true);
     }
@@ -395,5 +410,19 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
     public IssueBase getCurrentIssue() {
         return issue;
+    }
+
+
+    private class TableItemClickListener implements ItemClickEvent.ItemClickListener {
+
+        @Override
+        public void itemClick(ItemClickEvent event) {
+            Container container = ((Table)event.getComponent()).getContainerDataSource();
+            if (container instanceof AbstractIssueDataContainer)
+                if (event.isDoubleClick()) {
+                    IssueBase issue = ((AbstractIssueDataContainer)container).getIssueFromItemId(event.getItemId());
+                    screen.getIssueTreeLayout().setSelectedItemByIssue(issue);
+                }
+        }
     }
 }
