@@ -20,6 +20,7 @@
       <entry name="?*.ftl" />
       <entry name="*.txt" />
       <entry name="trace.info" />
+      <entry name="*.js" />
     </wildcardResourcePatterns>
     <annotationProcessing enabled="false" useClasspath="true" />
   </component>
