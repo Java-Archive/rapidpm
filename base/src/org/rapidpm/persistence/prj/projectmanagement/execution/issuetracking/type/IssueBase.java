@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type;
 
+import org.rapidpm.persistence.prj.projectmanagement.controlling.BaseControllingunit;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
@@ -52,7 +53,12 @@ public class IssueBase {
     }
 
 
-
+    @Transient
+    private BaseControllingunit totalControllingUnit;
+    @Transient
+    private BaseControllingunit totalOwnCotntrollingUnit;
+    @Transient
+    private BaseControllingunit totalSubIssuesBaseControllingUnit;
 
 
     @Id

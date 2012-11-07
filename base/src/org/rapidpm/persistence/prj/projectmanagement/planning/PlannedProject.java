@@ -2,6 +2,7 @@ package org.rapidpm.persistence.prj.projectmanagement.planning;
 
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.book.Buch;
+import org.rapidpm.persistence.prj.projectmanagement.controlling.BaseControllingunit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.finance.PlannedOffer;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedTravel;
 import org.rapidpm.persistence.system.security.Benutzer;
@@ -17,6 +18,9 @@ public class PlannedProject {
     public static final String ID = "id";
     public static final String NAME = "projektName";
     public static final String TOKEN = "projektToken";
+
+    @Transient
+    private BaseControllingunit totalProjectControllingunit;
 
     @Id
     @TableGenerator(name = "PKGenPlannedProject", table = "pk_gen", pkColumnName = "gen_key",
@@ -83,6 +87,7 @@ public class PlannedProject {
         sb.append(", responsiblePerson=").append(responsiblePerson);
         //        sb.append(", created=").append(created);
         sb.append(", info='").append(info).append('\'');
+        sb.append(", totalProjectControllingunit").append(totalProjectControllingunit);
         sb.append('}');
         return sb.toString();
     }
