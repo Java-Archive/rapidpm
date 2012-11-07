@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.issueadd;
+package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Tree;
@@ -31,7 +31,7 @@ public class IssueAddWindow extends Window {
         this.issueTree = issueTree;
         setCaption(screen.getMessagesBundle().getString("issuetracking_issue_addwindow"));
         this.setModal(true);
-        addDetailsLayout = new IssueDetailsLayout(screen);
+        addDetailsLayout = new IssueDetailsLayout(screen, false);
         addDetailsLayout.addSaveButtonClickListener(new AddIssueSaveClickListener());
         addDetailsLayout.addCancelButtonClickListener(new AddIssueCancelClickListener());
         this.addComponent(addDetailsLayout);

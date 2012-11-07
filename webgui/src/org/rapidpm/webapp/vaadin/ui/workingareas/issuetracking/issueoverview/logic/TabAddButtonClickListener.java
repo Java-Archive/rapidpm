@@ -3,7 +3,12 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.lo
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.UI;
+import org.apache.log4j.Logger;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.AddRelationWindow;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.IssueAddWindow;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,16 +18,18 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.Iss
  * To change this template use File | Settings | File Templates.
  */
 public class TabAddButtonClickListener implements Button.ClickListener {
+    private static Logger logger = Logger.getLogger(TabAddButtonClickListener.class);
 
     private final IssueOverviewScreen screen;
-    private final TabSheet tabSheet;
+    private final IssueBase issue;
 
-    public TabAddButtonClickListener(final IssueOverviewScreen screen, final TabSheet tabSheet) {
+    public TabAddButtonClickListener(final IssueOverviewScreen screen, final IssueBase issue) {
         this.screen = screen;
-        this.tabSheet = tabSheet;
+        this.issue = issue;
     }
+
     @Override
     public void buttonClick(Button.ClickEvent event) {
-
+        UI.getCurrent().addWindow(new AddRelationWindow(screen, issue));
     }
 }

@@ -35,8 +35,8 @@ public class IssueTableLayout extends ComponentEditableVLayout {
 
     private Table issueTable;
 
-    public IssueTableLayout(final IssueOverviewScreen screen) {
-        super(screen);
+    public IssueTableLayout(final IssueOverviewScreen screen, final boolean componentsReadOnlyInit) {
+        super(screen, componentsReadOnlyInit);
         addSaveButtonClickListener(new StandardClickListener());
         addCancelButtonClickListener(new StandardClickListener());
     }

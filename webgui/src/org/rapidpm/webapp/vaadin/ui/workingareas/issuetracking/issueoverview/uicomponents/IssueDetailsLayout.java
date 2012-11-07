@@ -14,6 +14,7 @@ import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components.ComponentEditableVLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabAddButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.AbstractIssueDataContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.RelationsDataContainer;
 
@@ -62,8 +63,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     private IssueBase issue;
 
 
-    public IssueDetailsLayout(IssueOverviewScreen screen) {
-        super(screen);
+    public IssueDetailsLayout(final IssueOverviewScreen screen, final boolean componentsReadOnlyInit) {
+        super(screen, componentsReadOnlyInit);
         doInternationalization();
     }
 
@@ -250,6 +251,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
         VerticalLayout bottomLayout = new VerticalLayout();
         bottomLayout.setSpacing(true);
+        bottomLayout.setWidth("100%");
 
         descriptionTextArea = new RichTextArea();
         descriptionTextArea.setWidth("100%");
@@ -258,11 +260,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
 
         tabAddButon = new Button();
-//        tabAddButon.addClickListener();
-
-
         tabDeleteButton = new Button();
-//        tabDeleteButton.addClickListener();
 
         HorizontalLayout tabButtonLayout = new HorizontalLayout();
         tabButtonLayout.addComponent(tabAddButon);
@@ -290,6 +288,21 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabRelations.setPageLength(10);
         tabRelations.addItemClickListener(new TableItemClickListener());
         tabSheet.addTab(tabRelations);
+
+        tabSheet.addSelectedTabChangeListener(new TabSheet.SelectedTabChangeListener() {
+            @Override
+            public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
+                Component comp = event.getTabSheet().getSelectedTab();
+                if (comp.equals(tabComments)) {
+                    logger.info("CommentsTabSelected");
+                } else if (comp.equals(tabTestcases)) {
+                    logger.info("TestcasesTabSelected");
+                } else if (comp.equals(tabRelations)) {
+                    logger.info("RelationsTabSelected");
+                    tabAddButon.addClickListener(new TabAddButtonClickListener(screen, issue));
+                }
+            }
+        });
 
 
         bottomLayout.addComponent(tabSheet);
@@ -425,4 +438,5 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
                 }
         }
     }
+
 }

@@ -29,8 +29,8 @@ public class IssueTabSheet extends TabSheet implements Internationalizationable{
     }
 
     private void setComponents() {
-        tableLayout = new IssueTableLayout(screen);
-        detailsLayout = new IssueDetailsLayout(screen);
+        tableLayout = new IssueTableLayout(screen, true);
+        detailsLayout = new IssueDetailsLayout(screen, true);
         detailsLayout.addSaveButtonClickListener(new DetailsSaveButtonClickListener(detailsLayout));
         detailsLayout.addCancelButtonClickListener(new DetailsCancelButtonClickListener(detailsLayout));
         tableTab = this.addTab(tableLayout);

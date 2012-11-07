@@ -24,7 +24,7 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
     protected HorizontalLayout buttonLayout;
     protected final IssueOverviewScreen screen;
 
-    public ComponentEditableVLayout(final IssueOverviewScreen screen){
+    public ComponentEditableVLayout(final IssueOverviewScreen screen, final boolean readOnlyInit){
         this.screen = screen;
         messages = screen.getMessagesBundle();
         setSizeFull();
@@ -46,6 +46,7 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
         buttonLayout.setVisible(false);
         addComponent(componentsLayout);
         addComponent(buttonLayout);
+        setLayoutReadOnly(readOnlyInit);
     }
 
 
