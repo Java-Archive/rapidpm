@@ -196,12 +196,32 @@ public class GraphBaseDAO<T> {
                 else if (field.isAnnotationPresent(Relational.class)) {
                     final Class aClass = field.getAnnotation(Relational.class).clazz();
 
-                        if (field.getType().equals(List.class)) {
+                    if (field.getType().equals(List.class)) {
+                        //get List from Entity
                         final DAO relDao = getRelationalDaoInstance(aClass);
                         final List entityList = (List)field.get(entity);
                         final Iterator it = entityList.iterator();
                         Long[] ids = new Long[entityList.size()];
                         int i = 0;
+
+                        //remove deleted Objects from relDB
+                        final long[] nodeIds = (long[])node.getProperty(field.getName(), new long[]{});
+                        boolean deleteInRel = false;
+                        for (long singleId : nodeIds) {
+                            for (Object singleEntity : entityList) {
+                                if (getIdFromEntity(singleEntity, aClass).equals(singleId)) {
+                                    deleteInRel = false;
+                                    break;
+                                } else {
+                                    deleteInRel = true;
+                                }
+                            }
+                            if (deleteInRel) {
+                                relDao.remove(relDao.findByID((Long)singleId));
+                            }
+                        }
+
+                        //persist comments
                         while (it.hasNext()) {
                             Object single = it.next();
                             if (relDao != null)
@@ -406,10 +426,7 @@ public class GraphBaseDAO<T> {
                         if (otherNode != null)
                             field.set(entity, getObjectFromNode(otherNode, aClass));
                     }
-
-
                 }
-
                 field.setAccessible(isAccessible);
             }
         } catch (InstantiationException e) {

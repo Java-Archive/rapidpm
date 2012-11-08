@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.components;
+package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents;
 
 import com.vaadin.event.LayoutEvents;
 import com.vaadin.ui.*;

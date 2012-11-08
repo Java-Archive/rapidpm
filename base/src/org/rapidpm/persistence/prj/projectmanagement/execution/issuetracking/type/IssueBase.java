@@ -153,6 +153,7 @@ public class IssueBase implements PersistInGraph {
     }
 
 
+
     public boolean addOrChangeComment(final IssueComment comment) {
         for (IssueComment com : comments)
             if (comment.getId() != null && com.getId().equals(comment.getId())) {
@@ -166,6 +167,7 @@ public class IssueBase implements PersistInGraph {
 
         return comments.remove(comment);
     }
+
 
 
     public boolean addOrChangeTestCase(final TestCase testcase) {
