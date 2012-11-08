@@ -304,16 +304,21 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             @Override
             public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
                 Component comp = event.getTabSheet().getSelectedTab();
-                for (Object clickListener : tabAddButon.getListeners(Button.ClickListener.class))
+                for (Object clickListener : tabAddButon.getListeners(Button.ClickEvent.class))
                     tabAddButon.removeClickListener((Button.ClickListener)clickListener);
+                for (Object clickListener : tabDeleteButton.getListeners(Button.ClickEvent.class))
+                    tabDeleteButton.removeClickListener((Button.ClickListener)clickListener);
 
                 if (comp.equals(tabComments)) {
-                    logger.info("CommentsTabSelected");
+                    if (logger.isDebugEnabled())
+                        logger.debug("CommentsTabSelected");
                 } else if (comp.equals(tabTestcases)) {
-                    logger.info("TestcasesTabSelected");
+                    if (logger.isDebugEnabled())
+                        logger.debug("TestcasesTabSelected");
                 } else if (comp.equals(tabRelations)) {
-                    logger.info("RelationsTabSelected");
-                    tabAddButon.addClickListener(new TabAddButtonClickListener(screen, issue));
+                    if (logger.isDebugEnabled())
+                        logger.debug("RelationsTabSelected");
+                    tabAddButon.addClickListener(new TabAddButtonClickListener(screen, issue, tabRelations));
                     tabDeleteButton.addClickListener(new TabDeleteButtonClickListener(screen, tabRelations));
                 }
             }

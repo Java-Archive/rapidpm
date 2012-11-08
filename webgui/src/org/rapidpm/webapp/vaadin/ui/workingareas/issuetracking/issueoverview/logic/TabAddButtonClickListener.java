@@ -1,9 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic;
 
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.UI;
+import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
@@ -22,14 +19,16 @@ public class TabAddButtonClickListener implements Button.ClickListener {
 
     private final IssueOverviewScreen screen;
     private final IssueBase issue;
+    private final Table table;
 
-    public TabAddButtonClickListener(final IssueOverviewScreen screen, final IssueBase issue) {
+    public TabAddButtonClickListener(final IssueOverviewScreen screen, final IssueBase issue, final Table table) {
         this.screen = screen;
         this.issue = issue;
+        this.table = table;
     }
 
     @Override
     public void buttonClick(Button.ClickEvent event) {
-        UI.getCurrent().addWindow(new AddRelationWindow(screen, issue));
+        UI.getCurrent().addWindow(new AddRelationWindow(screen, issue, table));
     }
 }

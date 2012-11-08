@@ -74,6 +74,7 @@ public class DeleteRelationWindow extends Window implements Internationalization
                     labelValue += value.toString() + "   -   ";
             } else
                 break;
+            i++;
         }
         questionLabel.setValue(labelValue);
 

@@ -45,8 +45,7 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
     }
 
     @Override
-    public void fillContainer(IssueBase issue) {
-        finishedLoading = false;
+    public void fillContainer(final IssueBase issue) {
         currentIssue = issue;
         this.removeAllItems();
         Object itemId;
@@ -69,11 +68,10 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
                 this.getContainerProperty(itemId,RELATION).setValue(relation);
             }
         }
-        finishedLoading = true;
     }
 
     @Override
-    public IssueBase getConnIssueFromItemId(Object itemId) {
+    public IssueBase getConnIssueFromItemId(final Object itemId) {
         return (IssueBase)this.getContainerProperty(itemId, ISSUE).getValue();
     }
 
@@ -90,7 +88,7 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
     }
 
     @Override
-    public boolean removeItem(Object itemId) {
+    public boolean removeItem(final Object itemId) {
         boolean success = false;
         if (currentIssue != null) {
             IssueBase connIssue = getConnIssueFromItemId(itemId);

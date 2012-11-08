@@ -20,12 +20,10 @@ public abstract class AbstractIssueDataContainer extends IndexedContainer {
 
     private final IssueOverviewScreen screen;
     private List<Object> visibleColumns;
-    protected boolean finishedLoading = false;
 
     public AbstractIssueDataContainer(final IssueOverviewScreen screen) {
         this.screen = screen;
         visibleColumns = setVisibleColumns();
-//        this.addItemSetChangeListener(new DataContainerItemSetChangeListener());
     }
 
     protected abstract List<Object> setVisibleColumns();
@@ -36,16 +34,4 @@ public abstract class AbstractIssueDataContainer extends IndexedContainer {
     public List<Object> getVisibleColumns() {
         return visibleColumns;
     }
-
-
-//    protected class DataContainerItemSetChangeListener implements ItemSetChangeListener {
-//
-//        @Override
-//        public void containerItemSetChange(Container.ItemSetChangeEvent event) {
-//            if (finishedLoading) {
-//                refresh();
-//                logger.info("REFRESH!");
-//            }
-//        }
-//    }
 }

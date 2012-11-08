@@ -26,6 +26,7 @@ public class AddRelationWindow extends Window implements Internationalizationabl
     private final static String PROPERTY_NAME = "name";
     private final IssueOverviewScreen screen;
     private final IssueBase issue;
+    private final Table relationTable;
     private final AddRelationWindow self;
 
     private ComboBox relationsSelect;
@@ -36,10 +37,11 @@ public class AddRelationWindow extends Window implements Internationalizationabl
 
 
 
-    public AddRelationWindow(final IssueOverviewScreen screen, final IssueBase issue){
+    public AddRelationWindow(final IssueOverviewScreen screen, final IssueBase issue, final Table relationTable){
         self = this;
         this.screen = screen;
         this.issue = issue;
+        this.relationTable = relationTable;
         this.setModal(true);
         setComponents();
         doInternationalization();
@@ -118,6 +120,8 @@ public class AddRelationWindow extends Window implements Internationalizationabl
                     if (!issue.connectToIssueAs((IssueBase) connIssue, (IssueRelation)relation))
                         //TODO Show Errormessage to User
                         logger.error("Connecting issues failed");
+                    else
+                        ((RelationsDataContainer)relationTable.getContainerDataSource()).refresh();
                     self.close();
                 } else {
                     if (logger.isDebugEnabled())
