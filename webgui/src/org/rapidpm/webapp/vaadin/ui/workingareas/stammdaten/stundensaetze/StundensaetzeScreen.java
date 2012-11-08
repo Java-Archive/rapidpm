@@ -1,8 +1,10 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze;
 
 import com.vaadin.ui.*;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+//import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.DaoFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.MainUI;
@@ -39,7 +41,7 @@ public class StundensaetzeScreen extends Screen {
     private VerticalLayout saveButtonLayout = new VerticalLayout();
     private Button saveButton = new Button();
     private OptionGroup optionGroup;
-    private StundensaetzeScreenBean screenBean;
+//    private StundensaetzeScreenBean screenBean;
 
 
     private List<ItemClickDependentComponent> dependentComponents = new ArrayList<>();
@@ -95,9 +97,11 @@ public class StundensaetzeScreen extends Screen {
     }
 
     public void generateTableAndCalculate() {
-        screenBean = EJBFactory.getEjbInstance(StundensaetzeScreenBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = screenBean.getDaoFactoryBean();
-        final RessourceGroupDAO ressourceGroupDAO = baseDaoFactoryBean.getRessourceGroupDAO();
+//        screenBean = EJBFactory.getEjbInstance(StundensaetzeScreenBean.class);
+//        final DaoFactoryBean baseDaoFactoryBean = screenBean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final RessourceGroupDAO ressourceGroupDAO = daoFactory.getRessourceGroupDAO();
+
         final List<RessourceGroup> ressourceGroups = ressourceGroupDAO.loadAllEntities();
         final List<RessourceGroup> containerBeans = new ArrayList<>();
         for(final RessourceGroup ressourceGroup : ressourceGroups){
@@ -175,7 +179,7 @@ public class StundensaetzeScreen extends Screen {
         this.saveButtonLayout = saveButtonLayout;
     }
 
-    public StundensaetzeScreenBean getScreenBean() {
-        return screenBean;
-    }
+//    public StundensaetzeScreenBean getScreenBean() {
+//        return screenBean;
+//    }
 }

@@ -9,8 +9,8 @@ import com.vaadin.event.ItemClickEvent;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
 import org.rapidpm.persistence.system.security.berechtigungen.BerechtigungDAO;
@@ -50,13 +50,14 @@ public class BenutzerScreen extends Screen {
         contentLayout.setSizeFull();
         contentLayout.setSpacing(true);
 
-        final BenutzerScreenBean bean = EJBFactory.getEjbInstance(BenutzerScreenBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        final MandantengruppeDAO mandantengruppeDAO = baseDaoFactoryBean.getMandantengruppeDAO();
-        final BerechtigungDAO berechtigungDAO = baseDaoFactoryBean.getBerechtigungDAO();
-        final BenutzerGruppeDAO benutzerGruppeDAO = baseDaoFactoryBean.getBenutzerGruppeDAO();
-        final BenutzerWebapplikationDAO benutzerWebapplikationDAO = baseDaoFactoryBean.getBenutzerWebapplikationDAO();
-        final BenutzerDAO benutzerDAO = baseDaoFactoryBean.getBenutzerDAO();
+//        final BenutzerScreenBean bean = EJBFactory.getEjbInstance(BenutzerScreenBean.class);
+//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final MandantengruppeDAO mandantengruppeDAO = daoFactory.getMandantengruppeDAO();
+        final BerechtigungDAO berechtigungDAO = daoFactory.getBerechtigungDAO();
+        final BenutzerGruppeDAO benutzerGruppeDAO = daoFactory.getBenutzerGruppeDAO();
+        final BenutzerWebapplikationDAO benutzerWebapplikationDAO = daoFactory.getBenutzerWebapplikationDAO();
+        final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
         final List<Mandantengruppe> mandantengruppen = mandantengruppeDAO.loadAllEntities();
         final List<BenutzerGruppe> benutzerGruppen = benutzerGruppeDAO.loadAllEntities();
         final List<BenutzerWebapplikation> benutzerWebapplikationen = benutzerWebapplikationDAO.loadAllEntities();
@@ -113,13 +114,14 @@ public class BenutzerScreen extends Screen {
                 final boolean isUserDeletingHimself = currentUser.getLogin().equals(selectedBenutzer.getLogin());
 
                 if(!isUserDeletingHimself){
-                    final BenutzerScreenBean stammdatenScreenBean = EJBFactory.getEjbInstance(BenutzerScreenBean.class);
-                    final DaoFactoryBean daoFactoryBean = stammdatenScreenBean.getDaoFactoryBean();
-                    final List<Benutzer> benutzerFromDB = daoFactoryBean.getBenutzerDAO().loadBenutzerForLogin
+//                    final BenutzerScreenBean stammdatenScreenBean = EJBFactory.getEjbInstance(BenutzerScreenBean.class);
+//                    final DaoFactoryBean daoFactoryBean = stammdatenScreenBean.getDaoFactoryBean();
+                    final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+                    final List<Benutzer> benutzerFromDB = daoFactory.getBenutzerDAO().loadBenutzerForLogin
                             (selectedBenutzer.getLogin());
                     if(benutzerFromDB != null && !benutzerFromDB.isEmpty()){
                         try{
-                            daoFactoryBean.remove(selectedBenutzer);
+                            daoFactory.remove(selectedBenutzer);
                             benutzerTable.removeItem(tableItemId);
                             benutzerEditor.setVisible(false);
                         } catch (Exception e){
@@ -145,9 +147,10 @@ public class BenutzerScreen extends Screen {
                 final BeanItem<Benutzer> beanItem = (BeanItem<Benutzer>) benutzerTable.getItem(tableItemId);
                 beanItem.getItemProperty("failedLogins").setValue(0);
                 final Benutzer selectedBenutzer = beanItem.getBean();
-                final BenutzerScreenBean stammdatenScreenBean = EJBFactory.getEjbInstance(BenutzerScreenBean.class);
-                final DaoFactoryBean daoFactoryBean = stammdatenScreenBean.getDaoFactoryBean();
-                daoFactoryBean.saveOrUpdate(selectedBenutzer);
+//                final BenutzerScreenBean stammdatenScreenBean = EJBFactory.getEjbInstance(BenutzerScreenBean.class);
+//                final DaoFactoryBean daoFactoryBean = stammdatenScreenBean.getDaoFactoryBean();
+                final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+                daoFactory.saveOrUpdate(selectedBenutzer);
             }
         });
         resetButton.setEnabled(false);

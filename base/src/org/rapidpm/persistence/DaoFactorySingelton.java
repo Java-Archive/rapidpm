@@ -10,13 +10,14 @@ package org.rapidpm.persistence;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 public class DaoFactorySingelton {
-    private static DaoFactorySingelton ourInstance = new DaoFactorySingelton();
+//    private static DaoFactorySingelton ourInstance = new DaoFactorySingelton();
 
-    private DaoFactory daoFactoryFactory = null;
+    private static DaoFactory daoFactoryFactory = null;
 
-    public static DaoFactorySingelton getInstance() {
-        System.out.println("ourInstance = " + ourInstance);
-        return ourInstance;
+    public static DaoFactory getInstance() {
+//        System.out.println("ourInstance = " + ourInstance);
+//        return ourInstance;
+        return daoFactoryFactory;
     }
 
     public DaoFactory getDaoFactoryFactory() {
@@ -26,6 +27,7 @@ public class DaoFactorySingelton {
     private DaoFactorySingelton() {
         //        final EbeanServer em = EbeanServerFactory.create(new ConfigDevelop());
         //        daoFactory = new DAO(em);
+        daoFactoryFactory = new DaoFactory("baseormJDBC");
 
     }
 }

@@ -2,11 +2,14 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.log
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
@@ -35,15 +38,17 @@ public class OverviewTableFiller {
     private MyTable table;
     private List<RessourceGroup> ressourceGroups;
     private ResourceBundle messages;
-    private OverviewTableFillerBean bean;
+//    private OverviewTableFillerBean bean;
 
     public OverviewTableFiller(final ResourceBundle bundle, final MyTable table) {
         messages = bundle;
         this.table = table;
-        bean = EJBFactory.getEjbInstance(OverviewTableFillerBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
-        ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
+//        bean = EJBFactory.getEjbInstance(OverviewTableFillerBean.class);
+//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        refreshEntities(daoFactory);
+        final RessourceGroupDAO ressourceGroupDAO = daoFactory.getRessourceGroupDAO();
+        ressourceGroups = ressourceGroupDAO.loadAllEntities();
 
 }
 
@@ -103,7 +108,7 @@ public class OverviewTableFiller {
         }
     }
 
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactory baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);

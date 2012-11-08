@@ -3,9 +3,12 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.HierarchicalContainer;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
@@ -28,7 +31,7 @@ import static org.rapidpm.Constants.STD_ANTEILE;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 public class TreeTableDataSourceFiller {
-    private TreeTableDataSourceFillerBean bean;
+//    private TreeTableDataSourceFillerBean bean;
     private List<RessourceGroup> ressourceGroups;
     private final Map<RessourceGroup, Double> ressourceGroupsCostsMap = new HashMap<>();
     private ResourceBundle messages;
@@ -42,11 +45,12 @@ public class TreeTableDataSourceFiller {
         messages = bundle;
         dataSource = dSource;
 
-        bean = EJBFactory.getEjbInstance(TreeTableDataSourceFillerBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
+//        bean = EJBFactory.getEjbInstance(TreeTableDataSourceFillerBean.class);
+//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        refreshEntities(daoFactory);
 
-        ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
+        ressourceGroups = daoFactory.getRessourceGroupDAO().loadAllEntities();
         dataSource.removeAllItems();
         dataSource.addContainerProperty(messages.getString("aufgabe"), String.class, null);
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
@@ -61,8 +65,9 @@ public class TreeTableDataSourceFiller {
 
     private void computePlanningUnitsAndTotalsAbsolut() {
         final PlannedProject projectFromSession = screen.getUi().getCurrentProject();
-        final PlannedProject projectFromDB = bean.getDaoFactoryBean().getPlannedProjectDAO().findByID
-                (projectFromSession.getId());
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
+        final PlannedProject projectFromDB = plannedProjectDAO.findByID(projectFromSession.getId());
         final List<PlanningUnit> planningUnits = projectFromDB.getPlanningUnits();
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
@@ -138,7 +143,7 @@ public class TreeTableDataSourceFiller {
         return totalHours * externalEurosPerHour;
     }
 
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactory baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);

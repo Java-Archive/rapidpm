@@ -28,7 +28,7 @@ public final class FormattedDateStringToDateConverter implements Converter<Strin
         try {
             parsedDate = dateFormat.parse(value);
         } catch (ParseException e) {
-            e.printStackTrace();
+            e.printStackTrace();  //TODO Logger verwenden
         }
         return parsedDate;
     }

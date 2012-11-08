@@ -3211,10 +3211,18 @@
       <column name="issuereporter_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="issuestatus_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="issuetimeunitestimated_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="assignee_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="priority_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="reporter_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="status_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="issuebase_pkey" columns="id" />
+      <foreign-key name="fk826d2f2a1dce30a5" columns="assignee_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <foreign-key name="fk826d2f2a672b6f4b" columns="isssueassignee_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <foreign-key name="fk826d2f2ab99adda" columns="issuereporter_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk826d2f2aa79b2853" columns="reporter_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk826d2f2a2879c1f9" columns="priority_id" ref-table="issuepriority" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <foreign-key name="fk826d2f2a8c784780" columns="issuepriority_id" ref-table="issuepriority" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk826d2f2a227d1af9" columns="status_id" ref-table="issuestatus" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <foreign-key name="fk826d2f2acd9d5640" columns="issuestatus_id" ref-table="issuestatus" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <foreign-key name="fk826d2f2ad6369b58" columns="issuetimeunitestimated_id" ref-table="issuetimeunit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
@@ -3249,11 +3257,13 @@
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="prio" sqlType="int4" length="10" precision="0" nullable="false" jdbcType="4" />
       <column name="priorityname" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
+      <column name="priorityfilename" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
       <primary-key name="issuepriority_pkey" columns="id" />
     </table>
     <table name="issuestatus" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="statusname" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
+      <column name="statusfilename" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
       <primary-key name="issuestatus_pkey" columns="id" />
     </table>
     <table name="issuetimeunit" schema="public" catalog="" type="TABLE">
@@ -3737,9 +3747,14 @@
       <column name="creator_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="mandantengruppe_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <column name="responsibleperson_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="projektname" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
+      <column name="specification_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="testcases_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
       <primary-key name="plannedproject_pkey" columns="id" />
       <foreign-key name="fk747708d5a3549b29" columns="responsibleperson_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <foreign-key name="fk747708d5830c528" columns="creator_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk747708d582465712" columns="testcases_id" ref-table="buch" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fk747708d5699e96c0" columns="specification_id" ref-table="buch" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <foreign-key name="fk747708d5a3e0a5d" columns="mandantengruppe_id" ref-table="mandantengruppe" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
     <table name="plannedproject_plannedoffer" schema="public" catalog="" type="TABLE">
@@ -3762,6 +3777,13 @@
       <foreign-key name="fk63795bf4d8b8f165" columns="plannedproject_id" ref-table="plannedproject" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <foreign-key name="fk63795bf4d9662328" columns="plannedtravellist_id" ref-table="plannedtravel" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="plannedproject_plannedtravel_plannedtravellist_id_key" unique="true" columns="plannedtravellist_id" />
+    </table>
+    <table name="plannedproject_planningunit" schema="public" catalog="" type="TABLE">
+      <column name="plannedproject_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="planningunits_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <foreign-key name="fkb75135cbd8b8f165" columns="plannedproject_id" ref-table="plannedproject" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <foreign-key name="fkb75135cbec003b74" columns="planningunits_id" ref-table="planningunit" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
+      <index name="plannedproject_planningunit_planningunits_id_key" unique="true" columns="planningunits_id" />
     </table>
     <table name="plannedproject_planningunitgroup" schema="public" catalog="" type="TABLE">
       <column name="plannedproject_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3816,6 +3838,8 @@
       <column name="typename" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
       <primary-key name="plannedvehicletype_pkey" columns="id" />
     </table>
+    <table name="planningrisk" schema="public" catalog="" type="TABLE" />
+    <table name="planningrisk_planningunitelement" schema="public" catalog="" type="TABLE" />
     <table name="planningstatus" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="name" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
@@ -3828,6 +3852,9 @@
       <column name="planningunitelementname" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
       <primary-key name="planningunit_pkey" columns="id" />
     </table>
+    <table name="planningunit_plannedmeeting" schema="public" catalog="" type="TABLE" />
+    <table name="planningunit_plannedtravel" schema="public" catalog="" type="TABLE" />
+    <table name="planningunit_planningunit" schema="public" catalog="" type="TABLE" />
     <table name="planningunit_planningunitelement" schema="public" catalog="" type="TABLE">
       <column name="planningunit_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="planningunitelementlist_id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
@@ -3835,6 +3862,7 @@
       <foreign-key name="fk8d84a27d8b5feab1" columns="planningunitelementlist_id" ref-table="planningunitelement" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
       <index name="planningunit_planningunitelement_planningunitelementlist_id_key" unique="true" columns="planningunitelementlist_id" />
     </table>
+    <table name="planningunit_testcases" schema="public" catalog="" type="TABLE" />
     <table name="planningunitelement" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="planneddays" sqlType="int4" length="10" precision="0" nullable="false" jdbcType="4" />
