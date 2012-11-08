@@ -39,6 +39,7 @@ public class AddRelationWindow extends Window implements Internationalizationabl
 
 
     public AddRelationWindow(final IssueOverviewScreen screen, final AbstractIssueDataContainer relationContainer){
+        super();
         self = this;
         this.screen = screen;
         this.relationContainer = (RelationsDataContainer)relationContainer;

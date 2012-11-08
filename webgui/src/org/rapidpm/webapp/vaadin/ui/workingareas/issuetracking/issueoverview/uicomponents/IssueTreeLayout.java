@@ -33,8 +33,8 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
     private HorizontalLayout buttonLayout;
 
     public IssueTreeLayout(final IssueOverviewScreen screen, final IssueTabSheet issueTabSheet) {
+        super();
         this.screen = screen;
-        this.setSizeFull();
 
         setComponents(issueTabSheet);
         doInternationalization();

@@ -23,8 +23,6 @@ public class TreeValueChangeListener implements Tree.ValueChangeListener {
     private final IssueTabSheet issueTabSheet;
     private final Tree issueTree;
 
-    private boolean alreadyClicked = false;
-
     public TreeValueChangeListener(final IssueTabSheet issueTabSheet, final Tree issueTree) {
         this.issueTabSheet = issueTabSheet;
         this.issueTree = issueTree;
@@ -32,16 +30,15 @@ public class TreeValueChangeListener implements Tree.ValueChangeListener {
 
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
-        if (event.getProperty().getValue() != null) // && !alreadyClicked)
+        if (event.getProperty().getValue() != null)
             changeDetails(event.getProperty().getValue());
         else
             if (logger.isDebugEnabled())
                 logger.debug("Property of values was null");
-       // alreadyClicked = false;
     }
 
     private void changeDetails(Object itemId) {
-        IssueBase issueBase = (IssueBase)issueTree.getContainerProperty(itemId,
+        IssueBase issueBase = (IssueBase)issueTree.getContainerDataSource().getContainerProperty(itemId,
                 TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
         issueTabSheet.getDetailsLayout().setDetailsFromIssue(issueBase);
 

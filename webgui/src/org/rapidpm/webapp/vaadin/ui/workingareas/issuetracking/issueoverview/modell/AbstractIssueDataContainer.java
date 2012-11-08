@@ -23,6 +23,7 @@ public abstract class AbstractIssueDataContainer extends IndexedContainer {
     private IssueBase currentIssue;
 
     public AbstractIssueDataContainer(final IssueOverviewScreen screen) {
+        super();
         this.screen = screen;
         visibleColumns = setVisibleColumns();
     }

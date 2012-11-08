@@ -26,6 +26,7 @@ public class IssueAddWindow extends Window {
     private IssueDetailsLayout addDetailsLayout;
 
     public IssueAddWindow(final IssueOverviewScreen screen, final Tree issueTree) {
+        super();
         self = this;
         this.screen = screen;
         this.issueTree = issueTree;

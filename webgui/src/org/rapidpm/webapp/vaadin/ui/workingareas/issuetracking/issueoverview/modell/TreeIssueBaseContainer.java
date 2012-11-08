@@ -25,6 +25,7 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
     private final PlannedProject currentProject;
 
     public TreeIssueBaseContainer(final PlannedProject currentProject) {
+        super();
         this.currentProject = currentProject;
         this.addContainerProperty(PROPERTY_CAPTION, String.class, null);
         this.addContainerProperty(PROPERTY_ISSUEBASE, IssueBase.class, null);

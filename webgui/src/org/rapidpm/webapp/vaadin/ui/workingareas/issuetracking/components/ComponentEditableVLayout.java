@@ -29,9 +29,9 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
     protected final IssueOverviewScreen screen;
 
     public ComponentEditableVLayout(final IssueOverviewScreen screen, final boolean readOnlyInit){
+        super();
         this.screen = screen;
         messages = screen.getMessagesBundle();
-        setSizeFull();
         setMargin(true);
         setSpacing(true);
         saveableLayout = buildSaveableForm();

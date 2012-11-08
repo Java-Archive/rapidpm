@@ -25,6 +25,7 @@ public class IssueDeleteWindow extends Window implements Internationalizationabl
     private final Tree issueTree;
 
     public IssueDeleteWindow(final IssueOverviewScreen screen, final Tree issueTree) {
+        super();
         if (screen == null)
             throw new NullPointerException("Screen must not be NULL!");
         if (issueTree == null)

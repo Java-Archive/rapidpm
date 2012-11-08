@@ -29,6 +29,7 @@ public class DeleteRelationWindow extends Window implements Internationalization
 
 
     public DeleteRelationWindow(final IssueOverviewScreen screen, final Table relationTable) {
+        super();
         self = this;
         this.screen = screen;
         this.relationTable = relationTable;

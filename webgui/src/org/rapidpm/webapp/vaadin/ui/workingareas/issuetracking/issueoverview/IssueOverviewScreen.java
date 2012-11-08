@@ -39,7 +39,6 @@ public class IssueOverviewScreen extends Screen {
         this.setSizeFull();
         hSplitPanel = new HorizontalSplitPanel();
         hSplitPanel.setSplitPosition(30, Unit.PERCENTAGE);
-        hSplitPanel.setSizeFull();
         issueTabSheet = new IssueTabSheet(this);
         treeLayout = new IssueTreeLayout(this, issueTabSheet);
         doInternationalization();
