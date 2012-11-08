@@ -24,7 +24,7 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
     private final static String ISSUE = "issue";
     private final static String RELATION = "relation";
 
-    private IssueBase currentIssue;
+
 
     public RelationsDataContainer(final IssueOverviewScreen screen) {
         super(screen);
@@ -46,7 +46,7 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
 
     @Override
     public void fillContainer(final IssueBase issue) {
-        currentIssue = issue;
+        setCurrentIssue(issue);
         this.removeAllItems();
         Object itemId;
         for (IssueRelation relation : GraphDaoFactory.getIssueRelationDAO().loadAllEntities()) {
@@ -70,31 +70,35 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
         }
     }
 
+    public boolean addRelation(final IssueBase connIssue, final IssueRelation relation){
+        boolean success = false;
+        if (getCurrentIssue() != null) {
+            if (getCurrentIssue().connectToIssueAs(connIssue, relation)) {
+                Object itemId = this.addItem();
+                this.getContainerProperty(itemId,DIRECTION).setValue(Direction.OUTGOING);
+                this.getContainerProperty(itemId, NAME).setValue(relation.getOutgoingName());
+                this.getContainerProperty(itemId, ISSUEID).setValue(connIssue.getText());
+                this.getContainerProperty(itemId,ISSUE).setValue(connIssue);
+                this.getContainerProperty(itemId,RELATION).setValue(relation);
+                success = true;
+            }
+        }
+        return success;
+    }
+
     @Override
     public IssueBase getConnIssueFromItemId(final Object itemId) {
         return (IssueBase)this.getContainerProperty(itemId, ISSUE).getValue();
     }
 
     @Override
-    public boolean refresh() {
-        boolean success = false;
-        if (currentIssue != null) {
-            fillContainer(currentIssue);
-            success = true;
-        } else
-            logger.error("CurrentIssue is null. Cant delete item.");
-
-        return success;
-    }
-
-    @Override
     public boolean removeItem(final Object itemId) {
         boolean success = false;
-        if (currentIssue != null) {
+        if (getCurrentIssue() != null) {
             IssueBase connIssue = getConnIssueFromItemId(itemId);
             IssueRelation relation = (IssueRelation) this.getContainerProperty(itemId, RELATION).getValue();
             Direction direction = (Direction) this.getContainerProperty(itemId, DIRECTION).getValue();
-            if (currentIssue.removeConnectionToIssue(connIssue, relation, direction))
+            if (getCurrentIssue().removeConnectionToIssue(connIssue, relation, direction))
                 if (super.removeItem(itemId))
                     success = true;
         } else {

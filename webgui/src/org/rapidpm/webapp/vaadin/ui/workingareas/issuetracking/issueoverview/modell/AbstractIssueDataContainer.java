@@ -20,6 +20,7 @@ public abstract class AbstractIssueDataContainer extends IndexedContainer {
 
     private final IssueOverviewScreen screen;
     private List<Object> visibleColumns;
+    private IssueBase currentIssue;
 
     public AbstractIssueDataContainer(final IssueOverviewScreen screen) {
         this.screen = screen;
@@ -29,7 +30,25 @@ public abstract class AbstractIssueDataContainer extends IndexedContainer {
     protected abstract List<Object> setVisibleColumns();
     public abstract void fillContainer(final IssueBase issue);
     public abstract IssueBase getConnIssueFromItemId(Object itemId);
-    public abstract boolean refresh();
+
+    public IssueBase getCurrentIssue() {
+        return currentIssue;
+    }
+
+    protected void setCurrentIssue(IssueBase issue) {
+        currentIssue = issue;
+    }
+
+    public boolean refresh() {
+        boolean success = false;
+        if (currentIssue != null) {
+            fillContainer(currentIssue);
+            success = true;
+        } else
+            logger.error("CurrentIssue is null. Cant refresh.");
+
+        return success;
+    }
 
     public List<Object> getVisibleColumns() {
         return visibleColumns;

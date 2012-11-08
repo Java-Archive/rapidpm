@@ -318,7 +318,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
                 } else if (comp.equals(tabRelations)) {
                     if (logger.isDebugEnabled())
                         logger.debug("RelationsTabSelected");
-                    tabAddButon.addClickListener(new TabAddButtonClickListener(screen, issue, tabRelations));
+                    tabAddButon.addClickListener(new TabAddButtonClickListener(screen, tabRelations));
                     tabDeleteButton.addClickListener(new TabDeleteButtonClickListener(screen, tabRelations));
                 }
             }
@@ -450,10 +450,12 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         public void valueChange(Property.ValueChangeEvent event) {
             if (event.getProperty().getValue() != null) {
                 tabDeleteButton.setEnabled(true);
-                logger.info("DeleteButton Enabled TRUE");
+                if (logger.isDebugEnabled())
+                    logger.debug("DeleteButton Enabled TRUE");
             } else {
                 tabDeleteButton.setEnabled(false);
-                logger.info("DeleteButton Enabled FALSE");
+                if (logger.isDebugEnabled())
+                    logger.debug("DeleteButton Enabled FALSE");
             }
         }
     }

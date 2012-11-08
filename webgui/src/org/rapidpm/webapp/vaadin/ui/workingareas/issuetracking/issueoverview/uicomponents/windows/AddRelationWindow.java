@@ -1,5 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows;
 
+import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
@@ -9,6 +10,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.Iss
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.AbstractIssueDataContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.RelationsDataContainer;
 
 import java.util.List;
@@ -25,8 +27,7 @@ public class AddRelationWindow extends Window implements Internationalizationabl
 
     private final static String PROPERTY_NAME = "name";
     private final IssueOverviewScreen screen;
-    private final IssueBase issue;
-    private final Table relationTable;
+    private final RelationsDataContainer relationContainer;
     private final AddRelationWindow self;
 
     private ComboBox relationsSelect;
@@ -37,11 +38,10 @@ public class AddRelationWindow extends Window implements Internationalizationabl
 
 
 
-    public AddRelationWindow(final IssueOverviewScreen screen, final IssueBase issue, final Table relationTable){
+    public AddRelationWindow(final IssueOverviewScreen screen, final AbstractIssueDataContainer relationContainer){
         self = this;
         this.screen = screen;
-        this.issue = issue;
-        this.relationTable = relationTable;
+        this.relationContainer = (RelationsDataContainer)relationContainer;
         this.setModal(true);
         setComponents();
         doInternationalization();
@@ -66,7 +66,8 @@ public class AddRelationWindow extends Window implements Internationalizationabl
         relationsSelect.setFilteringMode(FilteringMode.STARTSWITH);
         baseLayout.addComponent(relationsSelect);
 
-        List<IssueBase> issueList = GraphDaoFactory.getIssueBaseDAO(issue.getProjectId()).loadAllEntities();
+        List<IssueBase> issueList = GraphDaoFactory.getIssueBaseDAO(relationContainer.getCurrentIssue().getProjectId())
+        .loadAllEntities();
         issueSelect = new ComboBox();
         issueSelect.setWidth("100%");
         issueSelect.addContainerProperty(PROPERTY_NAME, String.class, null);
@@ -117,11 +118,9 @@ public class AddRelationWindow extends Window implements Internationalizationabl
 
             if (relation != null && relation != "") {
                 if (connIssue != null && connIssue != "")  {
-                    if (!issue.connectToIssueAs((IssueBase) connIssue, (IssueRelation)relation))
+                    if (!relationContainer.addRelation((IssueBase) connIssue, (IssueRelation)relation))
                         //TODO Show Errormessage to User
                         logger.error("Connecting issues failed");
-                    else
-                        ((RelationsDataContainer)relationTable.getContainerDataSource()).refresh();
                     self.close();
                 } else {
                     if (logger.isDebugEnabled())

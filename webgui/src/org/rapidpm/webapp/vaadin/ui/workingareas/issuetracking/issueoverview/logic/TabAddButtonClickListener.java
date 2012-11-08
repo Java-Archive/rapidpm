@@ -1,9 +1,11 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic;
 
+import com.vaadin.data.Container;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.AbstractIssueDataContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.AddRelationWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.IssueAddWindow;
 
@@ -18,17 +20,22 @@ public class TabAddButtonClickListener implements Button.ClickListener {
     private static Logger logger = Logger.getLogger(TabAddButtonClickListener.class);
 
     private final IssueOverviewScreen screen;
-    private final IssueBase issue;
-    private final Table table;
+    private final AbstractIssueDataContainer tableContainer;
 
-    public TabAddButtonClickListener(final IssueOverviewScreen screen, final IssueBase issue, final Table table) {
+    public TabAddButtonClickListener(final IssueOverviewScreen screen, final Table table) {
+        if (screen == null)
+            throw new NullPointerException("Screen is null.");
+        if (table == null)
+            throw new NullPointerException("Table is null.");
+        if (!(table.getContainerDataSource() instanceof AbstractIssueDataContainer))
+            throw new IllegalArgumentException("Tabledatacontainer is no instance of AbstractIssueDataContainer");
+
         this.screen = screen;
-        this.issue = issue;
-        this.table = table;
+        this.tableContainer = (AbstractIssueDataContainer)table.getContainerDataSource();
     }
 
     @Override
     public void buttonClick(Button.ClickEvent event) {
-        UI.getCurrent().addWindow(new AddRelationWindow(screen, issue, table));
+        UI.getCurrent().addWindow(new AddRelationWindow(screen, tableContainer));
     }
 }
