@@ -86,7 +86,6 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
         return success;
     }
 
-    @Override
     public IssueBase getConnIssueFromItemId(final Object itemId) {
         return (IssueBase)this.getContainerProperty(itemId, ISSUE).getValue();
     }
@@ -107,6 +106,4 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
 
         return success;
     }
-
-
 }

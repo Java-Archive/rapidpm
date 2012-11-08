@@ -1,10 +1,16 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic;
 
+import com.vaadin.data.Container;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.UI;
 import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.CommentsDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.RelationsDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TestCasesDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.AddRelationWindow;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.DeleteCommentWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.DeleteRelationWindow;
 
 /**
@@ -27,7 +33,17 @@ public class TabDeleteButtonClickListener implements Button.ClickListener {
 
     @Override
     public void buttonClick(Button.ClickEvent event) {
-        UI.getCurrent().addWindow(new DeleteRelationWindow(screen, table));
+        Container container = table.getContainerDataSource();
+        if (container instanceof CommentsDataContainer) {
+            logger.info("Comment");
+            UI.getCurrent().addWindow(new DeleteCommentWindow(screen, table));
+        } else if (container instanceof TestCasesDataContainer) {
+            logger.info("TestCase");
+            //UI.getCurrent().addWindow(new DeleteRelationWindow(screen, table));
+        } else if (container instanceof RelationsDataContainer) {
+            logger.info("Relation");
+            UI.getCurrent().addWindow(new DeleteRelationWindow(screen, table));
+        }
 
     }
 }

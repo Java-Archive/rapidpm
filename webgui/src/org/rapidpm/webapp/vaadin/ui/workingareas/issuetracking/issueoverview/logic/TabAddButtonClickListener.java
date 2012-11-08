@@ -6,6 +6,10 @@ import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.AbstractIssueDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.CommentsDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.RelationsDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TestCasesDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.AddCommentWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.AddRelationWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.IssueAddWindow;
 
@@ -36,6 +40,15 @@ public class TabAddButtonClickListener implements Button.ClickListener {
 
     @Override
     public void buttonClick(Button.ClickEvent event) {
-        UI.getCurrent().addWindow(new AddRelationWindow(screen, tableContainer));
+        if (tableContainer instanceof CommentsDataContainer) {
+            logger.info("Comment");
+            UI.getCurrent().addWindow(new AddCommentWindow(screen, tableContainer));
+        } else if (tableContainer instanceof TestCasesDataContainer) {
+            logger.info("TestCase");
+            UI.getCurrent().addWindow(new AddCommentWindow(screen, tableContainer));
+        } else if (tableContainer instanceof RelationsDataContainer) {
+            logger.info("Relation");
+            UI.getCurrent().addWindow(new AddRelationWindow(screen, tableContainer));
+        }
     }
 }

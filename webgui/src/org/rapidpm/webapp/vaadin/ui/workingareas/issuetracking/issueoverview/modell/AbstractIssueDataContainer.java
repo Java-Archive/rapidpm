@@ -30,7 +30,6 @@ public abstract class AbstractIssueDataContainer extends IndexedContainer {
 
     protected abstract List<Object> setVisibleColumns();
     public abstract void fillContainer(final IssueBase issue);
-    public abstract IssueBase getConnIssueFromItemId(Object itemId);
 
     public IssueBase getCurrentIssue() {
         return currentIssue;

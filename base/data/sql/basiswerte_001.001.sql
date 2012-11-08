@@ -1159,7 +1159,7 @@ VALUES (24, '2012-11-16', 'Comment 24', 4);
 INSERT INTO issuecomment (id, created, text, creator_id)
 VALUES (25, '2012-09-29', 'Comment 25', 4);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('issuecomment_id', 26);
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('IssueComment_id', 26);
 
 INSERT INTO testcase (id, text)
 VALUES (1, 'Testcase 1');
@@ -1221,4 +1221,4 @@ VALUES (19, 'Testcase 19');
 INSERT INTO testcase (id, text)
 VALUES (20, 'Testcase 20');
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('testcase_id', 21);
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('TestCase_id', 21);

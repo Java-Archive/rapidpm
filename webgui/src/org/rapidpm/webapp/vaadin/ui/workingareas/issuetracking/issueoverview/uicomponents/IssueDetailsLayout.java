@@ -18,6 +18,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.Iss
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabAddButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabDeleteButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.AbstractIssueDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.CommentsDataContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.RelationsDataContainer;
 
 import java.util.*;
@@ -52,7 +53,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
     private RichTextArea descriptionTextArea;
     private TabSheet tabSheet;
-    private VerticalLayout tabComments;
+    private Table tabComments;
     private VerticalLayout tabTestcases;
     private Table tabRelations;
 
@@ -278,13 +279,24 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabSheet = new TabSheet();
         tabSheet.setSizeFull();
 
-        tabComments = new VerticalLayout();
-        tabComments.setMargin(true);
+
+        CommentsDataContainer comContainer = new CommentsDataContainer(screen);
+        tabComments = new Table();
+        tabComments.setWidth("100%");
+        tabComments.setContainerDataSource(comContainer);
+        tabComments.setVisibleColumns(comContainer.getVisibleColumns().toArray());
+        tabComments.setNullSelectionAllowed(false);
+        tabComments.setSelectable(true);
+        tabComments.setEditable(false);
+        tabComments.setPageLength(10);
+        tabComments.addValueChangeListener(new TableValueChangeListener());
         tabSheet.addTab(tabComments);
 
-        tabTestcases = new VerticalLayout();
+
+        tabTestcases= new VerticalLayout();
         tabTestcases.setMargin(true);
         tabSheet.addTab(tabTestcases);
+
 
         RelationsDataContainer relContainer = new RelationsDataContainer(screen);
         tabRelations = new Table();
@@ -295,7 +307,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabRelations.setSelectable(true);
         tabRelations.setEditable(false);
         tabRelations.setPageLength(10);
-        tabRelations.addItemClickListener(new TableItemClickListener());
+        tabRelations.addItemClickListener(new RelationTableItemClickListener());
         tabRelations.addValueChangeListener(new TableValueChangeListener());
         tabSheet.addTab(tabRelations);
 
@@ -311,6 +323,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
                 if (comp.equals(tabComments)) {
                     if (logger.isDebugEnabled())
                         logger.debug("CommentsTabSelected");
+                    tabAddButon.addClickListener(new TabAddButtonClickListener(screen, tabComments));
+                    tabDeleteButton.addClickListener(new TabDeleteButtonClickListener(screen, tabComments));
                 } else if (comp.equals(tabTestcases)) {
                     if (logger.isDebugEnabled())
                         logger.debug("TestcasesTabSelected");
@@ -380,10 +394,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             componentListSelect.select(component);
         }
 
-        tabComments.removeAllComponents();
-        for (IssueComment comment : issue.getComments()) {
-            tabComments.addComponent(new Label(comment.getText()));
-        }
+        ((CommentsDataContainer)tabComments.getContainerDataSource()).fillContainer(issue);
 
         tabTestcases.removeAllComponents();
         for (TestCase testcase : issue.getTestcases()) {
@@ -431,11 +442,16 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         issue.setRisk((Integer) riskSelect.getValue());
         issue.setStory(descriptionTextArea.getValue());
 
-        issue = GraphDaoFactory.getIssueBaseDAO(screen.getCurrentProject().getId()).persist(issue);
-
         for (IssueComponent component : (Set<IssueComponent>) componentListSelect.getValue())
             issue.addComponent(component);
-        return issue;
+
+        List<IssueComment> comments = new ArrayList<>((Collection<IssueComment>)tabComments.getItemIds());
+        issue.setComments(comments);
+
+//        List<TestCase> testCases = new ArrayList<>((Collection<TestCase>)tabTestcases.getItemIds());
+//        issue.setTestcases(testCases);
+
+        return GraphDaoFactory.getIssueBaseDAO(screen.getCurrentProject().getId()).persist(issue);
     }
 
 
@@ -459,14 +475,14 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         }
     }
 
-    private class TableItemClickListener implements ItemClickEvent.ItemClickListener {
+    private class RelationTableItemClickListener implements ItemClickEvent.ItemClickListener {
 
         @Override
         public void itemClick(ItemClickEvent event) {
             Container container = ((Table)event.getComponent()).getContainerDataSource();
             if (container instanceof AbstractIssueDataContainer)
                 if (event.isDoubleClick()) {
-                    IssueBase issue = ((AbstractIssueDataContainer)container).getConnIssueFromItemId(event.getItemId());
+                    IssueBase issue = ((RelationsDataContainer)container).getConnIssueFromItemId(event.getItemId());
                     screen.getIssueTreeLayout().setSelectedItemByIssue(issue);
                 }
         }
