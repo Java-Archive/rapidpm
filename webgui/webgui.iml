@@ -22,6 +22,7 @@
     </facet>
     <facet type="JRebel" name="JRebel">
       <configuration>
+        <option name="allPaths" value="false" />
         <option name="generateRebel" value="false" />
       </configuration>
     </facet>
@@ -31,6 +32,7 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/conf" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src-wsdl" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -39,6 +41,7 @@
     <orderEntry type="library" name="lib-vaadin" level="project" />
     <orderEntry type="library" name="lib-jason" level="project" />
     <orderEntry type="module" module-name="base" />
+    <orderEntry type="library" name="lib-tablemodell" level="project" />
   </component>
 </module>
 
