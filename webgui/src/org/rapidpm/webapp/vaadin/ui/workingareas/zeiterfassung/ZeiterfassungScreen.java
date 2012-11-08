@@ -45,12 +45,11 @@ public class ZeiterfassungScreen extends Screen {
         tabelle = new Table();
 
         exportPanel = new ExportPanel(ui, tabelle);
-        filterPanel = new FilterPanel(tabelle);
-        filterPanel.activate(false);
+
         exportPanel.activate(false);
         panelLayout = new HorizontalLayout();
         panelLayout.addComponent(exportPanel);
-        panelLayout.addComponent(filterPanel);
+
 
 
         queryField.setSizeFull();
@@ -70,6 +69,8 @@ public class ZeiterfassungScreen extends Screen {
                 tabelle.setCaption("Abfrageergebnis");
                 //tabelle.setColumnHeaders(HEADERS);
                 tabelle.setPageLength(200);
+                filterPanel = new FilterPanel(tabelle);
+                panelLayout.addComponent(filterPanel);
                 exportPanel.activate(true);
                 filterPanel.activate(true);
             }

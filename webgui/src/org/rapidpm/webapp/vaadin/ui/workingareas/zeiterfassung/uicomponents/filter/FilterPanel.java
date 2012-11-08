@@ -32,8 +32,10 @@ public class FilterPanel extends Panel {
     private Button goButton;
 
     private Container container;
+    private Table tabelle;
 
     public FilterPanel(final Table tabelle) {
+        this.tabelle = tabelle;
         this.setCaption("Filter");
         setSizeUndefined();
         this.setHeight("200px");
@@ -58,9 +60,10 @@ public class FilterPanel extends Panel {
         goButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                final Set<String> chosenColumns = (Set<String>)angezeigteSpalten.getValue();
+                Set<String> chosenColumns = (Set<String>)angezeigteSpalten.getValue();
+                final List<String> chosenColumnsList = new ArrayList<>(chosenColumns);
                 for(final String spalte : ZeiterfassungScreen.VISIBLE_COLUMNS){
-                    if(!chosenColumns.contains(spalte)){
+                    if(!chosenColumnsList.contains(spalte)){
                         container.removeContainerProperty(spalte);
                     }
                 }
@@ -77,6 +80,7 @@ public class FilterPanel extends Panel {
 //                        if (userWorkLog.get)
 //                    }
 //                }
+
             }
         });
         buttonLayout.addComponent(goButton);
@@ -138,4 +142,15 @@ public class FilterPanel extends Panel {
         this.setVisible(b);
     }
 
+    public Table getTabelle() {
+        return tabelle;
+    }
+
+    public void setTabelle(Table tabelle) {
+        this.tabelle = tabelle;
+    }
+
+    public void setContainer(Container container) {
+        this.container = container;
+    }
 }
