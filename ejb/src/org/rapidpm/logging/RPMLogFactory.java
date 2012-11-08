@@ -10,7 +10,7 @@ package org.rapidpm.logging;
 
 import org.apache.log4j.Logger;
 
-import javax.context.RequestScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;

@@ -44,7 +44,11 @@
         <property name="hibernate.connection.password" value="rapidpm"/>
         <!--<property status="hibernate.default_schema" value="public" />-->
         <!--<property name="hibernate.hbm2ddl.auto" value="update"/>-->
-        <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+        <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect"/>
+        <property name="hibernate.hbm2ddl.auto" value="update"/>
+        <property name="hibernate.cache.use_second_level_cache" value="true"/>
+        <property name="hibernate.id.new_generator_mappings" value="false"/>
+        <property name="hibernate.connection.release_mode" value="on_close"/>
     </properties>
 </persistence-unit>
 
