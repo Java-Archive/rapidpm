@@ -12,10 +12,10 @@ import javax.persistence.EntityManager;
  * Time: 12:55
  * To change this template use File | Settings | File Templates.
  */
-public class TestCaseDAO extends DAO<Long, TestCase> {
-    private static final Logger logger = Logger.getLogger(TestCaseDAO.class);
+public class IssueTestCaseDAO extends DAO<Long, IssueTestCase> {
+    private static final Logger logger = Logger.getLogger(IssueTestCaseDAO.class);
 
-    public TestCaseDAO(final EntityManager entityManager) {
-        super(entityManager, TestCase.class);
+    public IssueTestCaseDAO(final EntityManager entityManager) {
+        super(entityManager, IssueTestCase.class);
     }
 }

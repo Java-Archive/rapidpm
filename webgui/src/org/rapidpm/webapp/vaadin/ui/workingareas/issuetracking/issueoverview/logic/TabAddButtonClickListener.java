@@ -47,7 +47,7 @@ public class TabAddButtonClickListener implements Button.ClickListener {
             UI.getCurrent().addWindow(new AddCommentWindow(screen, tableContainer));
         } else if (tableContainer instanceof TestCasesDataContainer) {
             if (logger.isDebugEnabled())
-                logger.debug("AddButton TestCase");
+                logger.debug("AddButton IssueTestCase");
             UI.getCurrent().addWindow(new AddTestcaseWindow(screen, tableContainer));
         } else if (tableContainer instanceof RelationsDataContainer) {
             if (logger.isDebugEnabled())

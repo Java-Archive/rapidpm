@@ -1,7 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell;
 
 import com.vaadin.data.Item;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.TestCase;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 
@@ -36,12 +36,12 @@ public class TestCasesDataContainer extends AbstractIssueDataContainer {
     public void fillContainer(IssueBase issue) {
         setCurrentIssue(issue);
         this.removeAllItems();
-        for (TestCase testCase : issue.getTestcases()) {
+        for (IssueTestCase testCase : issue.getTestcases()) {
             addTestcase(testCase);
         }
     }
 
-    public boolean addTestcase(TestCase testCase) {
+    public boolean addTestcase(IssueTestCase testCase) {
         boolean success = false;
         if (testCase != null) {
             Item itemId = this.addItem(testCase);

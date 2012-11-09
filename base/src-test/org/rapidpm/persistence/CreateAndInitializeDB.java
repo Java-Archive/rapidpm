@@ -343,7 +343,7 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
 
             for (int j = 0; j < 3; j++) {
                 if (attributes.get(i) != -1) {
-                    TestCase testcase = new TestCase();
+                    IssueTestCase testcase = new IssueTestCase();
                     testcase.setId(new Long(attributes.get(i)));
                     issue.addOrChangeTestCase(testcase);
                 }

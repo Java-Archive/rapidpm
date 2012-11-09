@@ -1,7 +1,5 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-
 import javax.persistence.*;
 
 /**
@@ -12,13 +10,13 @@ import javax.persistence.*;
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-public class TestCase {
+public class IssueTestCase {
 
 
-    @TableGenerator(name = "PKGenTestCase", table = "pk_gen", pkColumnName = "gen_key",
-            pkColumnValue = "TestCase_id", valueColumnName = "gen_value", allocationSize = 1)
+    @TableGenerator(name = "PKGenIssueTestCase", table = "pk_gen", pkColumnName = "gen_key",
+            pkColumnValue = "IssueTestCase_id", valueColumnName = "gen_value", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.TABLE,
-            generator = "PKGenTestCase")
+            generator = "PKGenIssueTestCase")
     @Id
     private Long id;
 
@@ -26,11 +24,11 @@ public class TestCase {
     private String text;
 
 
-    public TestCase() {
+    public IssueTestCase() {
         //empty on purpose
     }
 
-    public TestCase(final String text) {
+    public IssueTestCase(final String text) {
         this.text = text;
     }
 
@@ -53,7 +51,7 @@ public class TestCase {
 
     @Override
     public String toString() {
-        return "TestCase{" +
+        return "IssueTestCase{" +
                 "id=" + id +
                 ", text='" + text + '\'' +
                 '}';
@@ -64,7 +62,7 @@ public class TestCase {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        TestCase testCase = (TestCase) o;
+        IssueTestCase testCase = (IssueTestCase) o;
 
         if (id != null ? !id.equals(testCase.id) : testCase.id != null) return false;
         if (text != null ? !text.equals(testCase.text) : testCase.text != null) return false;

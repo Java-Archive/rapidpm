@@ -41,7 +41,7 @@ public class TabDeleteButtonClickListener implements Button.ClickListener {
             UI.getCurrent().addWindow(new DeleteCommentWindow(screen, table));
         } else if (container instanceof TestCasesDataContainer) {
             if (logger.isDebugEnabled())
-                logger.debug("DeleteButton TestCase");
+                logger.debug("DeleteButton IssueTestCase");
             UI.getCurrent().addWindow(new DeleteTestcaseWindow(screen, table));
         } else if (container instanceof RelationsDataContainer) {
             if (logger.isDebugEnabled())

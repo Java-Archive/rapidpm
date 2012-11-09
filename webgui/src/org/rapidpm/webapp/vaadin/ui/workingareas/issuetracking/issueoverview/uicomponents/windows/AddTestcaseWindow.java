@@ -2,7 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.ui
 
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.TestCase;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.AbstractIssueDataContainer;
@@ -81,7 +81,7 @@ public class AddTestcaseWindow extends Window implements Internationalizationabl
             final String testcaseTextValue = testcaseText.getValue();
 
             if (testcaseTextValue != null && testcaseTextValue != "") {
-                final TestCase newTestcase = new TestCase();
+                final IssueTestCase newTestcase = new IssueTestCase();
                 newTestcase.setText(testcaseTextValue);
                 if (!testcaseContainer.addTestcase(newTestcase)) {
                     //TODO Show Errormessage to User

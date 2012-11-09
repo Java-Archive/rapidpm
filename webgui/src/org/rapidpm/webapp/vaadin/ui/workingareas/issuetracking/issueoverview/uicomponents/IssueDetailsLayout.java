@@ -443,7 +443,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         List<IssueComment> comments = new ArrayList<>((Collection<IssueComment>)tabComments.getItemIds());
         issue.setComments(comments);
 
-        List<TestCase> testCases = new ArrayList<>((Collection<TestCase>)tabTestcases.getItemIds());
+        List<IssueTestCase> testCases = new ArrayList<>((Collection<IssueTestCase>)tabTestcases.getItemIds());
         issue.setTestcases(testCases);
 
         issue = GraphDaoFactory.getIssueBaseDAO(screen.getCurrentProject().getId()).persist(issue);

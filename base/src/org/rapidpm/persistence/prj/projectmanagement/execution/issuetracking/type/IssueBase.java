@@ -6,7 +6,6 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.system.security.Benutzer;
-import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -83,8 +82,8 @@ public class IssueBase implements PersistInGraph {
     @Relational(clazz = IssueComment.class)
     private List<IssueComment> comments = new ArrayList<>();
 
-    @Relational(clazz = TestCase.class)
-    private List<TestCase> testcases = new ArrayList<>();
+    @Relational(clazz = IssueTestCase.class)
+    private List<IssueTestCase> testcases = new ArrayList<>();
 
     //private Risk risk;
     @Simple
@@ -170,8 +169,8 @@ public class IssueBase implements PersistInGraph {
 
 
 
-    public boolean addOrChangeTestCase(final TestCase testcase) {
-        for (TestCase tCase : testcases)
+    public boolean addOrChangeTestCase(final IssueTestCase testcase) {
+        for (IssueTestCase tCase : testcases)
             if (testcase.getId() != null && tCase.getId().equals(testcase.getId())) {
                 testcases.set(testcases.indexOf(tCase), testcase);
                 return true;
@@ -179,7 +178,7 @@ public class IssueBase implements PersistInGraph {
         return testcases.add(testcase);
     }
 
-    public boolean removeTestCase(final TestCase testcase) {
+    public boolean removeTestCase(final IssueTestCase testcase) {
         return testcases.remove(testcase);
     }
 
@@ -338,11 +337,11 @@ public class IssueBase implements PersistInGraph {
         this.comments = comments;
     }
 
-    public List<TestCase> getTestcases() {
+    public List<IssueTestCase> getTestcases() {
         return testcases;
     }
 
-    public void setTestcases(final List<TestCase> testcases) {
+    public void setTestcases(final List<IssueTestCase> testcases) {
         this.testcases = testcases;
     }
 
