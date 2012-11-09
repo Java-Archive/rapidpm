@@ -20,6 +20,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.log
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.AbstractIssueDataContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.CommentsDataContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.RelationsDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TestCasesDataContainer;
 
 import java.util.*;
 
@@ -51,13 +52,13 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     private ComboBox riskSelect;
     private ListSelect componentListSelect;
 
-    private RichTextArea descriptionTextArea;
+    private TextArea descriptionTextArea;
     private TabSheet tabSheet;
     private Table tabComments;
-    private VerticalLayout tabTestcases;
+    private Table tabTestcases;
     private Table tabRelations;
 
-    private Button tabAddButon;
+    private Button tabAddButton;
     private Button tabDeleteButton;
 
     private IssueBase issue;
@@ -249,7 +250,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         horLayout.addComponent(dateLayout);
         formLayout.addComponent(horLayout);
 
-        descriptionTextArea = new RichTextArea();
+        descriptionTextArea = new TextArea();
         descriptionTextArea.setWidth("100%");
         descriptionTextArea.setReadOnly(true);
         formLayout.addComponent(descriptionTextArea);
@@ -266,41 +267,57 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         Label spaceLabel = new Label();
         spaceLabel.setContentMode(ContentMode.HTML);
         spaceLabel.setValue("&nbsp;");
-        tabAddButon = new Button();
+        tabAddButton = new Button();
+        tabAddButton.setImmediate(true);
+
         tabDeleteButton = new Button();
+        tabDeleteButton.setImmediate(true);
         tabDeleteButton.setEnabled(false);
 
         HorizontalLayout tabButtonLayout = new HorizontalLayout();
         tabButtonLayout.setSpacing(true);
-        tabButtonLayout.addComponent(tabAddButon);
+        tabButtonLayout.addComponent(tabAddButton);
         tabButtonLayout.addComponent(tabDeleteButton);
         bottomLayout.addComponent(tabButtonLayout);
 
         tabSheet = new TabSheet();
         tabSheet.setSizeFull();
+        tabSheet.setImmediate(true);
 
+        TableValueChangeListener tabValueListener = new TableValueChangeListener();
 
         CommentsDataContainer comContainer = new CommentsDataContainer(screen);
         tabComments = new Table();
         tabComments.setWidth("100%");
+        tabComments.setImmediate(true);
         tabComments.setContainerDataSource(comContainer);
         tabComments.setVisibleColumns(comContainer.getVisibleColumns().toArray());
         tabComments.setNullSelectionAllowed(false);
         tabComments.setSelectable(true);
         tabComments.setEditable(false);
         tabComments.setPageLength(10);
-        tabComments.addValueChangeListener(new TableValueChangeListener());
+        tabComments.addValueChangeListener(tabValueListener);
         tabSheet.addTab(tabComments);
 
 
-        tabTestcases= new VerticalLayout();
-        tabTestcases.setMargin(true);
+        TestCasesDataContainer tesContainer = new TestCasesDataContainer(screen);
+        tabTestcases = new Table();
+        tabTestcases.setWidth("100%");
+        tabTestcases.setImmediate(true);
+        tabTestcases.setContainerDataSource(tesContainer);
+        tabTestcases.setVisibleColumns(tesContainer.getVisibleColumns().toArray());
+        tabTestcases.setNullSelectionAllowed(false);
+        tabTestcases.setSelectable(true);
+        tabTestcases.setEditable(false);
+        tabTestcases.setPageLength(10);
+        tabTestcases.addValueChangeListener(tabValueListener);
         tabSheet.addTab(tabTestcases);
 
 
         RelationsDataContainer relContainer = new RelationsDataContainer(screen);
         tabRelations = new Table();
         tabRelations.setWidth("100%");
+        tabRelations.setImmediate(true);
         tabRelations.setContainerDataSource(relContainer);
         tabRelations.setVisibleColumns(relContainer.getVisibleColumns().toArray());
         tabRelations.setNullSelectionAllowed(false);
@@ -308,35 +325,13 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabRelations.setEditable(false);
         tabRelations.setPageLength(10);
         tabRelations.addItemClickListener(new RelationTableItemClickListener());
-        tabRelations.addValueChangeListener(new TableValueChangeListener());
+        tabRelations.addValueChangeListener(tabValueListener);
         tabSheet.addTab(tabRelations);
 
-        tabSheet.addSelectedTabChangeListener(new TabSheet.SelectedTabChangeListener() {
-            @Override
-            public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
-                Component comp = event.getTabSheet().getSelectedTab();
-                for (Object clickListener : tabAddButon.getListeners(Button.ClickEvent.class))
-                    tabAddButon.removeClickListener((Button.ClickListener)clickListener);
-                for (Object clickListener : tabDeleteButton.getListeners(Button.ClickEvent.class))
-                    tabDeleteButton.removeClickListener((Button.ClickListener)clickListener);
+        tabSheet.addSelectedTabChangeListener(new TabSheetSelectionChangeListener());
 
-                if (comp.equals(tabComments)) {
-                    if (logger.isDebugEnabled())
-                        logger.debug("CommentsTabSelected");
-                    tabAddButon.addClickListener(new TabAddButtonClickListener(screen, tabComments));
-                    tabDeleteButton.addClickListener(new TabDeleteButtonClickListener(screen, tabComments));
-                } else if (comp.equals(tabTestcases)) {
-                    if (logger.isDebugEnabled())
-                        logger.debug("TestcasesTabSelected");
-                } else if (comp.equals(tabRelations)) {
-                    if (logger.isDebugEnabled())
-                        logger.debug("RelationsTabSelected");
-                    tabAddButon.addClickListener(new TabAddButtonClickListener(screen, tabRelations));
-                    tabDeleteButton.addClickListener(new TabDeleteButtonClickListener(screen, tabRelations));
-                }
-            }
-        });
-
+        tabAddButton.addClickListener(new TabAddButtonClickListener(screen, tabComments));
+        tabDeleteButton.addClickListener(new TabDeleteButtonClickListener(screen, tabComments));
 
         bottomLayout.addComponent(tabSheet);
         return bottomLayout;
@@ -357,7 +352,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         versionSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_version"));
         riskSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_risk"));
         descriptionTextArea.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_description"));
-        tabAddButon.setCaption(screen.getMessagesBundle().getString("add"));
+        tabAddButton.setCaption(screen.getMessagesBundle().getString("add"));
         tabDeleteButton.setCaption(screen.getMessagesBundle().getString("delete"));
         tabSheet.getTab(tabComments).setCaption(screen.getMessagesBundle().getString("issuetracking_issue_comments"));
         tabSheet.getTab(tabTestcases).setCaption(screen.getMessagesBundle().getString("issuetracking_issue_testcases"));
@@ -395,13 +390,13 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         }
 
         ((CommentsDataContainer)tabComments.getContainerDataSource()).fillContainer(issue);
+        tabComments.select(tabComments.getNullSelectionItemId());
 
-        tabTestcases.removeAllComponents();
-        for (TestCase testcase : issue.getTestcases()) {
-            tabTestcases.addComponent(new Label(testcase.getText()));
-        }
+        ((TestCasesDataContainer)tabTestcases.getContainerDataSource()).fillContainer(issue);
+        tabTestcases.select(tabComments.getNullSelectionItemId());
 
         ((RelationsDataContainer)tabRelations.getContainerDataSource()).fillContainer(issue);
+        tabRelations.select(tabComments.getNullSelectionItemId());
 
         setLayoutReadOnly(true);
     }
@@ -448,10 +443,11 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         List<IssueComment> comments = new ArrayList<>((Collection<IssueComment>)tabComments.getItemIds());
         issue.setComments(comments);
 
-//        List<TestCase> testCases = new ArrayList<>((Collection<TestCase>)tabTestcases.getItemIds());
-//        issue.setTestcases(testCases);
+        List<TestCase> testCases = new ArrayList<>((Collection<TestCase>)tabTestcases.getItemIds());
+        issue.setTestcases(testCases);
 
-        return GraphDaoFactory.getIssueBaseDAO(screen.getCurrentProject().getId()).persist(issue);
+        issue = GraphDaoFactory.getIssueBaseDAO(screen.getCurrentProject().getId()).persist(issue);
+        return issue;
     }
 
 
@@ -459,7 +455,35 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         return issue;
     }
 
-    private class TableValueChangeListener implements Property.ValueChangeListener{
+
+    private class TabSheetSelectionChangeListener implements TabSheet.SelectedTabChangeListener {
+
+        @Override
+        public void selectedTabChange(TabSheet.SelectedTabChangeEvent event) {
+            final Component comp = event.getTabSheet().getSelectedTab();
+            for (final Object clickListener : tabAddButton.getListeners(Button.ClickEvent.class))
+                tabAddButton.removeClickListener((Button.ClickListener)clickListener);
+            for (final Object clickListener : tabDeleteButton.getListeners(Button.ClickEvent.class))
+                tabDeleteButton.removeClickListener((Button.ClickListener)clickListener);
+
+            if (comp instanceof Table) {
+                final Table table = (Table) comp;
+                if (table.getValue() != null) {
+                    tabDeleteButton.setEnabled(true);
+                    if (logger.isDebugEnabled())
+                        logger.debug("DeleteButton Enabled TRUE");
+                } else {
+                    tabDeleteButton.setEnabled(false);
+                    if (logger.isDebugEnabled())
+                        logger.debug("DeleteButton Enabled FALSE");
+                }
+                tabAddButton.addClickListener(new TabAddButtonClickListener(screen, table));
+                tabDeleteButton.addClickListener(new TabDeleteButtonClickListener(screen, table));
+            }
+        }
+    }
+
+    private class TableValueChangeListener implements Table.ValueChangeListener{
 
         @Override
         public void valueChange(Property.ValueChangeEvent event) {

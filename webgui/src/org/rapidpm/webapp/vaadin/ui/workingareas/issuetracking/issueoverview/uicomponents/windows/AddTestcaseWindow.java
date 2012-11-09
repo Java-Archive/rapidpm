@@ -2,42 +2,38 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.ui
 
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.TestCase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.AbstractIssueDataContainer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.CommentsDataContainer;
-
-import java.util.Date;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TestCasesDataContainer;
 
 /**
  * Created with IntelliJ IDEA.
  * User: Alvin
- * Date: 08.11.12
- * Time: 15:56
+ * Date: 09.11.12
+ * Time: 08:14
  * To change this template use File | Settings | File Templates.
  */
-public class AddCommentWindow extends Window implements Internationalizationable {
-    private static Logger logger = Logger.getLogger(AddRelationWindow.class);
+public class AddTestcaseWindow extends Window implements Internationalizationable {
+    private static Logger logger = Logger.getLogger(AddTestcaseWindow.class);
 
     private final IssueOverviewScreen screen;
-    private final CommentsDataContainer commentContainer;
-    private final AddCommentWindow self;
+    private final TestCasesDataContainer testcaseContainer;
+    private final AddTestcaseWindow self;
 
-    private TextArea commentText;
+    private TextArea testcaseText;
     private Button saveButton;
     private Button cancelButton;
 
 
 
 
-    public AddCommentWindow(final IssueOverviewScreen screen, final AbstractIssueDataContainer commentContainer){
+    public AddTestcaseWindow(final IssueOverviewScreen screen, final AbstractIssueDataContainer testcaseContainer){
         super();
         self = this;
         this.screen = screen;
-        this.commentContainer = (CommentsDataContainer) commentContainer;
+        this.testcaseContainer = (TestCasesDataContainer) testcaseContainer;
         this.setModal(true);
         setComponents();
         doInternationalization();
@@ -48,9 +44,9 @@ public class AddCommentWindow extends Window implements Internationalizationable
         baseLayout.setSizeFull();
         baseLayout.setSpacing(true);
 
-        commentText = new TextArea();
-        commentText.setWidth("100%");
-        baseLayout.addComponent(commentText);
+        testcaseText = new TextArea();
+        testcaseText.setWidth("100%");
+        baseLayout.addComponent(testcaseText);
 
         final HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.setWidth("100%");
@@ -69,8 +65,8 @@ public class AddCommentWindow extends Window implements Internationalizationable
 
     @Override
     public void doInternationalization() {
-        this.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_addcommentwindow"));
-        commentText.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_comments"));
+        this.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_addtestcasewindow"));
+        testcaseText.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_testcases"));
         saveButton.setCaption(screen.getMessagesBundle().getString("save"));
         cancelButton.setCaption(screen.getMessagesBundle().getString("cancel"));
     }
@@ -80,25 +76,23 @@ public class AddCommentWindow extends Window implements Internationalizationable
 
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            commentText.setRequired(false);
+            testcaseText.setRequired(false);
 
-            final String commentTextValue = commentText.getValue();
+            final String testcaseTextValue = testcaseText.getValue();
 
-            if (commentTextValue != null && commentTextValue != "") {
-                final IssueComment newComment = new IssueComment();
-                newComment.setText(commentTextValue);
-                newComment.setCreator(screen.getUi().getCurrentUser());
-                newComment.setCreated(new Date());
-                if (!commentContainer.addComment(newComment)) {
+            if (testcaseTextValue != null && testcaseTextValue != "") {
+                final TestCase newTestcase = new TestCase();
+                newTestcase.setText(testcaseTextValue);
+                if (!testcaseContainer.addTestcase(newTestcase)) {
                     //TODO Show Errormessage to User
-                    logger.error("Adding comment failed");
+                    logger.error("Adding testcase failed");
                 }
                 self.close();
             } else {
                 if (logger.isDebugEnabled())
-                    logger.debug("Text for comment is needed");
-                commentText.setRequired(true);
-                commentText.setRequiredError("Text for comment is needed");
+                    logger.debug("Text for testcase is needed");
+                testcaseText.setRequired(true);
+                testcaseText.setRequiredError("Text for testcase is needed");
             }
         }
     }

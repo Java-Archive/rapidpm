@@ -49,16 +49,16 @@ public class AddRelationWindow extends Window implements Internationalizationabl
     }
 
     private void setComponents() {
-        VerticalLayout baseLayout = new VerticalLayout();
+        final VerticalLayout baseLayout = new VerticalLayout();
         baseLayout.setSizeFull();
         baseLayout.setSpacing(true);
 
-        List<IssueRelation> relationList = GraphDaoFactory.getIssueRelationDAO().loadAllEntities();
+        final List<IssueRelation> relationList = GraphDaoFactory.getIssueRelationDAO().loadAllEntities();
         relationsSelect = new ComboBox();
         relationsSelect.setWidth("100%");
         relationsSelect.addContainerProperty(PROPERTY_NAME, String.class, null);
         relationsSelect.setItemCaptionPropertyId(PROPERTY_NAME);
-        for (IssueRelation relation : relationList) {
+        for (final IssueRelation relation : relationList) {
             Item item = relationsSelect.addItem(relation);
             item.getItemProperty(PROPERTY_NAME).setValue(relation.getRelationName());
         }
@@ -67,13 +67,13 @@ public class AddRelationWindow extends Window implements Internationalizationabl
         relationsSelect.setFilteringMode(FilteringMode.STARTSWITH);
         baseLayout.addComponent(relationsSelect);
 
-        List<IssueBase> issueList = GraphDaoFactory.getIssueBaseDAO(relationContainer.getCurrentIssue().getProjectId())
+        final List<IssueBase> issueList = GraphDaoFactory.getIssueBaseDAO(relationContainer.getCurrentIssue().getProjectId())
         .loadAllEntities();
         issueSelect = new ComboBox();
         issueSelect.setWidth("100%");
         issueSelect.addContainerProperty(PROPERTY_NAME, String.class, null);
         issueSelect.setItemCaptionPropertyId(PROPERTY_NAME);
-        for (IssueBase connIssue : issueList) {
+        for (final IssueBase connIssue : issueList) {
             Item item = issueSelect.addItem(connIssue);
             item.getItemProperty(PROPERTY_NAME).setValue(connIssue.name());
         }
@@ -82,7 +82,7 @@ public class AddRelationWindow extends Window implements Internationalizationabl
         issueSelect.setFilteringMode(FilteringMode.STARTSWITH);
         baseLayout.addComponent(issueSelect);
 
-        HorizontalLayout buttonLayout = new HorizontalLayout();
+        final HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.setWidth("100%");
 
         saveButton = new Button();
@@ -114,8 +114,8 @@ public class AddRelationWindow extends Window implements Internationalizationabl
             relationsSelect.setRequired(false);
             issueSelect.setRequired(false);
 
-            Object relation = relationsSelect.getValue();
-            Object connIssue = issueSelect.getValue();
+            final Object relation = relationsSelect.getValue();
+            final Object connIssue = issueSelect.getValue();
 
             if (relation != null && relation != "") {
                 if (connIssue != null && connIssue != "")  {

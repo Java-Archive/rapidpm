@@ -11,6 +11,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.mod
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TestCasesDataContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.AddCommentWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.AddRelationWindow;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.AddTestcaseWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.IssueAddWindow;
 
 /**
@@ -41,13 +42,16 @@ public class TabAddButtonClickListener implements Button.ClickListener {
     @Override
     public void buttonClick(Button.ClickEvent event) {
         if (tableContainer instanceof CommentsDataContainer) {
-            logger.info("Comment");
+            if (logger.isDebugEnabled())
+                logger.debug("AddButton Comment");
             UI.getCurrent().addWindow(new AddCommentWindow(screen, tableContainer));
         } else if (tableContainer instanceof TestCasesDataContainer) {
-            logger.info("TestCase");
-            UI.getCurrent().addWindow(new AddCommentWindow(screen, tableContainer));
+            if (logger.isDebugEnabled())
+                logger.debug("AddButton TestCase");
+            UI.getCurrent().addWindow(new AddTestcaseWindow(screen, tableContainer));
         } else if (tableContainer instanceof RelationsDataContainer) {
-            logger.info("Relation");
+            if (logger.isDebugEnabled())
+                logger.debug("AddButton Relation");
             UI.getCurrent().addWindow(new AddRelationWindow(screen, tableContainer));
         }
     }

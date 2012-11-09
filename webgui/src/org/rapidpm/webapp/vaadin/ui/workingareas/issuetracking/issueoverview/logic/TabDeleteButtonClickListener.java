@@ -12,6 +12,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.mod
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.AddRelationWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.DeleteCommentWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.DeleteRelationWindow;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.DeleteTestcaseWindow;
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,15 +34,18 @@ public class TabDeleteButtonClickListener implements Button.ClickListener {
 
     @Override
     public void buttonClick(Button.ClickEvent event) {
-        Container container = table.getContainerDataSource();
+        final Container container = table.getContainerDataSource();
         if (container instanceof CommentsDataContainer) {
-            logger.info("Comment");
+            if (logger.isDebugEnabled())
+                logger.debug("DeleteButton Comment");
             UI.getCurrent().addWindow(new DeleteCommentWindow(screen, table));
         } else if (container instanceof TestCasesDataContainer) {
-            logger.info("TestCase");
-            //UI.getCurrent().addWindow(new DeleteRelationWindow(screen, table));
+            if (logger.isDebugEnabled())
+                logger.debug("DeleteButton TestCase");
+            UI.getCurrent().addWindow(new DeleteTestcaseWindow(screen, table));
         } else if (container instanceof RelationsDataContainer) {
-            logger.info("Relation");
+            if (logger.isDebugEnabled())
+                logger.debug("DeleteButton Relation");
             UI.getCurrent().addWindow(new DeleteRelationWindow(screen, table));
         }
 

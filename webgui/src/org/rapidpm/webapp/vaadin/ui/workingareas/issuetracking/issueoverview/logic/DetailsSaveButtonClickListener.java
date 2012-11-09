@@ -23,6 +23,6 @@ public class DetailsSaveButtonClickListener implements Button.ClickListener {
     @Override
     public void buttonClick(Button.ClickEvent event) {
         detailsLayout.setLayoutReadOnly(true);
-        detailsLayout.setIssueProperties(false);
+        detailsLayout.setDetailsFromIssue(detailsLayout.setIssueProperties(false));
     }
 }
