@@ -20,8 +20,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class IssuePriorityDAOTest {
     private static Logger logger = Logger.getLogger(IssuePriorityDAOTest.class);
@@ -30,25 +29,22 @@ public class IssuePriorityDAOTest {
     private final IssuePriority assignTo = dao.loadAllEntities().get(0);
 
     @Test
-    public void addPriority() {
+    public void addChangeDelete() {
         IssuePriority priority = new IssuePriority();
         priority.setPrio(1);
-        priority.setPriorityName("first");
-        priority.setPriorityFileName("filename");
+        priority.setPriorityName("test");
+        priority.setPriorityFileName("test_filename");
         priority = dao.persist(priority);
         assertEquals(priority, dao.findById(priority.getId()));
-        dao.delete(priority, assignTo);
-    }
 
-    @Test
-    public void changePriority() {
-        IssuePriority priority = new IssuePriority();
         priority.setPrio(2);
-        priority.setPriorityName("1st");
-        priority.setPriorityFileName("second filename");
+        priority.setPriorityName("second_test");
+        priority.setPriorityFileName("second_test_filename");
         priority = dao.persist(priority);
         assertEquals(priority, dao.findById(priority.getId()));
+
         dao.delete(priority, assignTo);
+        assertFalse(dao.loadAllEntities().contains(priority));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -63,16 +59,11 @@ public class IssuePriorityDAOTest {
     public void getConnectedIssus() {
         for (IssuePriority priority : dao.loadAllEntities()) {
             List<IssueBase> issueList = dao.getConnectedIssuesFromProject(priority, 1L);
-            List<IssueBase> testList = new ArrayList<>();
 
             for (IssueBase issue : GraphDaoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
                 if (issue.getPriority().equals(priority))
-                    testList.add(issue);
+                    assertTrue(issueList.contains(issue));
             }
-
-            assertEquals(issueList, testList);
-            if (logger.isDebugEnabled())
-                logger.debug("listsize: " + issueList.size());
         }
     }
 }

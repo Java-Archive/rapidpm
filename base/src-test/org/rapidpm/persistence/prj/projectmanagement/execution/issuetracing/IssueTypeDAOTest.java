@@ -9,8 +9,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,24 +25,22 @@ public class IssueTypeDAOTest {
     private final IssueType assignTo = dao.loadAllEntities().get(0);
 
     @Test
-    public void addType() {
+    public void addChangeDelete() {
         IssueType type = new IssueType();
-        type.setTypeName("first");
-        type.setTypeFileName("filename");
+        type.setTypeName("test");
+        type.setTypeFileName("test_filename");
         type = dao.persist(type);
         assertEquals(type, dao.findById(type.getId()));
+
+        type.setTypeName("second_test");
+        type.setTypeFileName("second_test_filename");
+        type = dao.persist(type);
+        assertEquals(type, dao.findById(type.getId()));
+
         dao.delete(type, assignTo);
+        assertFalse(dao.loadAllEntities().contains(type));
     }
 
-    @Test
-    public void changeType() {
-        IssueType type = new IssueType();
-        type.setTypeName("1st");
-        type.setTypeFileName("second fileName");
-        type = dao.persist(type);
-        assertEquals(type, dao.findById(type.getId()));
-        dao.delete(type, assignTo);
-    }
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
@@ -57,15 +54,10 @@ public class IssueTypeDAOTest {
     public void getConnectedIssus() {
         for (IssueType type : dao.loadAllEntities()) {
             List<IssueBase> issueList = dao.getConnectedIssuesFromProject(type, 1L);
-            List<IssueBase> testList = new ArrayList<>();
-
             for (IssueBase issue : GraphDaoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
                 if (issue.getType().equals(type))
-                    testList.add(issue);
+                    assertTrue(issueList.contains(issue));
             }
-
-            assertEquals(issueList, testList);
-            System.out.println("listsize: " + issueList.size());
         }
     }
 }

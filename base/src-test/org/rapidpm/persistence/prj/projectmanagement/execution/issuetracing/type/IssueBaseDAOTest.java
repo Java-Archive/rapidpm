@@ -71,7 +71,7 @@ public class IssueBaseDAOTest {
         if (logger.isDebugEnabled())
             for (IssueBase issue : list)
                 logger.debug(issue.toString());
-        assertEquals(list.size(), 3);
+        assertEquals(list, dao.loadAllEntities());
     }
 
     @Test
@@ -94,10 +94,10 @@ public class IssueBaseDAOTest {
         IssueBase sub = dao.loadAllEntities().get(1);
 
         issue.addSubIssue(sub);
-        assertEquals(issue.getSubIssues().get(0).getId(), sub.getId());
+        assertTrue(issue.getSubIssues().contains(sub));
 
         issue.removeSubIssue(sub);
-        assertEquals(issue.getSubIssues().size(), 0);
+        assertFalse(issue.getSubIssues().contains(sub));
 
         assertTrue(dao.loadAllEntities().contains(sub));
     }
@@ -149,16 +149,17 @@ public class IssueBaseDAOTest {
 
     }
 
-    @Ignore
     @Test
     public void addComments() {
         IssueBase issue = dao.loadAllEntities().get(0);
         IssueComment comment1 = new IssueComment();
+        comment1.setId(1000L);
         comment1.setText("comment1");
         comment1.setCreated(new Date());
         comment1.setCreator(issue.getAssignee());
 
         IssueComment comment2 = new IssueComment();
+        comment2.setId(1001L);
         comment2.setText("comment2");
         comment2.setCreated(new Date());
         comment2.setCreator(issue.getAssignee());
@@ -185,7 +186,6 @@ public class IssueBaseDAOTest {
 
         assertFalse(issue.getComments().contains(comment1));
         assertFalse(issue.getComments().contains(comment2));
-
     }
 
 }

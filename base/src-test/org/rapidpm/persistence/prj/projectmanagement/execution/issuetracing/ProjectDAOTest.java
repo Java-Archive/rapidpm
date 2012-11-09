@@ -7,6 +7,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
  * To change this template use File | Settings | File Templates.
  */
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.prj.BaseDAOTest;
@@ -21,6 +22,7 @@ import java.util.List;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+@Ignore
 public class ProjectDAOTest extends BaseDAOTest {
 
     @Test

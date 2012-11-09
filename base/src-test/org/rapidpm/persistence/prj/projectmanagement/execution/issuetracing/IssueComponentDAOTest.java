@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,25 +26,22 @@ public class IssueComponentDAOTest {
     private static Logger logger = Logger.getLogger(IssueComponentDAOTest.class);
 
     private final IssueComponentDAO dao = GraphDaoFactory.getIssueComponentDAO();
-    private final IssueComponent assignTo = dao.loadAllEntities().get(0);
 
     @Test
-    public void addComponent() {
+    public void addChangeDelete() {
         IssueComponent component = new IssueComponent();
-        component.setComponentName("first");
+        component.setComponentName("test");
         component = dao.persist(component);
         assertEquals(component, dao.findById(component.getId()));
-        dao.delete(component, assignTo);
+
+        component.setComponentName("second_test");
+        component = dao.persist(component);
+        assertEquals(component, dao.findById(component.getId()));
+
+        dao.delete(component);
+        assertFalse(dao.loadAllEntities().contains(component));
     }
 
-    @Test
-    public void changeComponent() {
-        IssueComponent component = dao.loadAllEntities().get(0);
-        component.setComponentName("1st");
-        component = dao.persist(component);
-        assertEquals(component, dao.findById(component.getId()));
-        dao.delete(component, assignTo);
-    }
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
