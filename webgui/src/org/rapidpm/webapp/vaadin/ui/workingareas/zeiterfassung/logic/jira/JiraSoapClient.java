@@ -20,8 +20,8 @@ import java.util.List;
  */
 public class JiraSoapClient {
 
-    public static final String USER = "???";
-    public static final String PASSWD = "xxx";
+    public static final String USER = "marco.ebbinghaus";
+    public static final String PASSWD = "Opafe1Awet15";
 
     private JiraRequestExecutor<List<UserWorkLog>> executor;
     private List<UserWorkLog> userWorkLogs;

@@ -31,7 +31,6 @@ public class JiraSoapClientVaadin {
 
     public JiraSoapClientVaadin(final MainUI ui, final Table vaadinTable, final String fileName,
                                 final ExportTypes exportType){
-        final UserWorkLogContainer container = (UserWorkLogContainer) vaadinTable.getContainerDataSource();
         userWorkLogs = (List<UserWorkLog>) vaadinTable.getItemIds();
         final TimeSheetReport timeSheetReport = new TimeSheetReport();
 

@@ -18,7 +18,7 @@ import java.io.File;
  */
 public class ExportPanel extends Panel {
 
-   private HorizontalLayout exportLayout;
+   private VerticalLayout exportLayout;
    private ExportButton exportButton;
     private ExportOptionGroup exportOptionGroup;
     private TextField filenameField;
@@ -26,9 +26,9 @@ public class ExportPanel extends Panel {
    public ExportPanel(final MainUI ui, final Table tabelle){
        this.setSizeUndefined();
        this.setCaption("Export");
-       this.setHeight("200px");
+       this.setHeight("300px");
        this.setWidth("200px");
-       exportLayout = new HorizontalLayout();
+       exportLayout = new VerticalLayout();
        exportButton = new ExportButton();
        exportButton.addClickListener(new Button.ClickListener() {
            @Override
