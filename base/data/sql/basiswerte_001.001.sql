@@ -1164,61 +1164,61 @@ INSERT INTO pk_gen(gen_key, gen_value) VALUES ('IssueComment_id', 26);
 INSERT INTO issuetestcase (id, text)
 VALUES (1, 'Testcase 1');
 
-INSERT INTO testcase (id, text)
+INSERT INTO issuetestcase (id, text)
 VALUES (2, 'Testcase 2');
 
-INSERT INTO testcase (id, text)
+INSERT INTO issuetestcase (id, text)
 VALUES (3, 'Testcase 3');
 
-INSERT INTO testcase (id, text)
+INSERT INTO issuetestcase (id, text)
 VALUES (4, 'Testcase 4');
 
-INSERT INTO testcase (id, text)
+INSERT INTO issuetestcase (id, text)
 VALUES (5, 'Testcase 5');
 
-INSERT INTO testcase (id, text)
+INSERT INTO issuetestcase (id, text)
 VALUES (6, 'Testcase 6');
 
-INSERT INTO testcase (id, text)
+INSERT INTO issuetestcase (id, text)
 VALUES (7, 'Testcase 7');
 
-INSERT INTO testcase (id, text)
+INSERT INTO issuetestcase (id, text)
 VALUES (8, 'Testcase 8');
 
-INSERT INTO testcase (id, text)
+INSERT INTO issuetestcase (id, text)
 VALUES (9, 'Testcase 9');
 
-INSERT INTO testcase (id, text)
+INSERT INTO issuetestcase (id, text)
 VALUES (10, 'Testcase 10');
 
-INSERT INTO testcase (id, text)
+INSERT INTO issuetestcase (id, text)
 VALUES (11, 'Testcase 11');
 
-INSERT INTO testcase (id, text)
+INSERT INTO issuetestcase (id, text)
 VALUES (12, 'Testcase 12');
 
-INSERT INTO testcase (id, text)
+INSERT INTO issuetestcase (id, text)
 VALUES (13, 'Testcase 13');
 
-INSERT INTO testcase (id, text)
+INSERT INTO issuetestcase (id, text)
 VALUES (14, 'Testcase 14');
 
-INSERT INTO testcase (id, text)
+INSERT INTO issuetestcase (id, text)
 VALUES (15, 'Testcase 15');
 
-INSERT INTO testcase (id, text)
+INSERT INTO issuetestcase (id, text)
 VALUES (16, 'Testcase 16');
 
-INSERT INTO testcase (id, text)
+INSERT INTO issuetestcase (id, text)
 VALUES (17, 'Testcase 17');
 
-INSERT INTO testcase (id, text)
+INSERT INTO issuetestcase (id, text)
 VALUES (18, 'Testcase 18');
 
-INSERT INTO testcase (id, text)
+INSERT INTO issuetestcase (id, text)
 VALUES (19, 'Testcase 19');
 
-INSERT INTO testcase (id, text)
+INSERT INTO issuetestcase (id, text)
 VALUES (20, 'Testcase 20');
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('IssueTestCase_id', 21);

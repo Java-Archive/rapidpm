@@ -215,7 +215,7 @@ public class DaoFactory {
         return new IssueCommentDAO(getEntityManager());
     }
 
-    public IssueTestCaseDAO getTestCaseDAO() {
+    public IssueTestCaseDAO getIssueTestCaseDAO() {
         return new IssueTestCaseDAO(getEntityManager());
     }
 
