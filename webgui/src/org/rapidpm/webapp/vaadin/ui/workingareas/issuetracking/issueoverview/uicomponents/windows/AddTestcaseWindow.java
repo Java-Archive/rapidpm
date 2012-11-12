@@ -67,7 +67,7 @@ public class AddTestcaseWindow extends Window implements Internationalizationabl
     public void doInternationalization() {
         this.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_addtestcasewindow"));
         testcaseText.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_testcases"));
-        saveButton.setCaption(screen.getMessagesBundle().getString("save"));
+        saveButton.setCaption(screen.getMessagesBundle().getString("add"));
         cancelButton.setCaption(screen.getMessagesBundle().getString("cancel"));
     }
 

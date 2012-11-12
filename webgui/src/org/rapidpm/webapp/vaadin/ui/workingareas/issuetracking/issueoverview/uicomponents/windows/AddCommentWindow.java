@@ -71,7 +71,7 @@ public class AddCommentWindow extends Window implements Internationalizationable
     public void doInternationalization() {
         this.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_addcommentwindow"));
         commentText.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_comments"));
-        saveButton.setCaption(screen.getMessagesBundle().getString("save"));
+        saveButton.setCaption(screen.getMessagesBundle().getString("add"));
         cancelButton.setCaption(screen.getMessagesBundle().getString("cancel"));
     }
 

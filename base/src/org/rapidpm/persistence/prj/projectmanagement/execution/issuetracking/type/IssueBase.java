@@ -158,7 +158,6 @@ public class IssueBase implements PersistInGraph {
     }
 
 
-
     public boolean addSubIssue(final IssueBase subIssue) {
         //return GraphDaoFactory.getIssueBaseDAO(projectId).addSubIssueTx(this, subIssue);
         return addToMap("addSubIssueTx", new Object[]{this, subIssue});

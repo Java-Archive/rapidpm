@@ -102,7 +102,7 @@ public class AddRelationWindow extends Window implements Internationalizationabl
         this.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_addrelationswindow"));
         relationsSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_relations"));
         issueSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_table"));
-        saveButton.setCaption(screen.getMessagesBundle().getString("save"));
+        saveButton.setCaption(screen.getMessagesBundle().getString("add"));
         cancelButton.setCaption(screen.getMessagesBundle().getString("cancel"));
     }
 

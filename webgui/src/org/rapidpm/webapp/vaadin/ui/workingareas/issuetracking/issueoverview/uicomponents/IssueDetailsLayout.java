@@ -398,6 +398,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         ((RelationsDataContainer)tabRelations.getContainerDataSource()).fillContainer(issue);
         tabRelations.select(tabComments.getNullSelectionItemId());
 
+        issue.resetTransactions();
+
 
         setLayoutReadOnly(true);
     }
