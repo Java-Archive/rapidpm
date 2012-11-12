@@ -94,9 +94,11 @@ public class IssueBaseDAOTest {
         IssueBase sub = dao.loadAllEntities().get(1);
 
         issue.addSubIssue(sub);
+        issue = dao.persist(issue);
         assertTrue(issue.getSubIssues().contains(sub));
 
         issue.removeSubIssue(sub);
+        issue = dao.persist(issue);
         assertFalse(issue.getSubIssues().contains(sub));
 
         assertTrue(dao.loadAllEntities().contains(sub));
@@ -110,11 +112,13 @@ public class IssueBaseDAOTest {
         IssueRelation rel = GraphDaoFactory.getIssueRelationDAO().loadAllEntities().get(1);
 
         boolean success = issue1.connectToIssueAs(issue2, rel);
+        issue1 = dao.persist(issue1);
         assertTrue(success);
-        List<IssueBase> connected= issue1.getConnectedIssues(rel, Direction.OUTGOING);
+        List<IssueBase> connected = issue1.getConnectedIssues(rel, Direction.OUTGOING);
         assertTrue(connected.contains(issue2));
 
         success = issue1.removeConnectionToIssue(issue2, rel);
+        issue1 = dao.persist(issue1);
         assertTrue(success);
         connected= issue1.getConnectedIssues(rel);
         assertFalse(connected.contains(issue2));
@@ -127,22 +131,26 @@ public class IssueBaseDAOTest {
         List<IssueComponent> componentList = GraphDaoFactory.getIssueComponentDAO().loadAllEntities();
 
         boolean success = issue.addComponent(componentList.get(0));
+        issue = dao.persist(issue);
         assertTrue(success);
         List<IssueComponent> connected= issue.getComponents();
         assertTrue(connected.contains(componentList.get(0)));
 
         success = issue.addComponent(componentList.get(1));
+        issue = dao.persist(issue);
         assertTrue(success);
         connected= issue.getComponents();
         assertTrue(connected.contains(componentList.get(0)) && connected.contains(componentList.get(1)));
 
 
         success = issue.removeComponent(componentList.get(0));
+        issue = dao.persist(issue);
         assertTrue(success);
         connected= issue.getComponents();
         assertFalse(connected.contains(componentList.get(0)));
 
         success = issue.removeComponent(componentList.get(1));
+        issue = dao.persist(issue);
         assertTrue(success);
         connected= issue.getComponents();
         assertFalse(connected.contains(componentList.get(1)));

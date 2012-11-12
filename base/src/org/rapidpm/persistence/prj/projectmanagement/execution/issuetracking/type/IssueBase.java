@@ -7,9 +7,8 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ann
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.system.security.Benutzer;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -92,15 +91,52 @@ public class IssueBase implements PersistInGraph {
     @Relational(clazz = PlanningUnit.class)
     private PlanningUnit planningUnit;
 
+    @LazyGraphPersisting
+    private Map<Method, List<Object[]>> graphMap;
+
 
     public IssueBase(final Long projectId) {
         setProjectId(projectId);
     }
 
 
+    private boolean addToMap(String methodName, Object[] args) {
+        boolean success = false;
+        if (graphMap == null) {
+            graphMap = new HashMap<>();
+        }
+
+        Class[] methodParams = new Class[args.length];
+        int i = 0;
+        for (Object obj : args) {
+            methodParams[i++] = obj.getClass();
+        }
+
+        try {
+            Method method = GraphDaoFactory.getIssueBaseDAO(projectId).getClass().getMethod(methodName, methodParams);
+            if (method != null) {
+                List<Object[]> list = graphMap.get(method);
+                if (list == null) {
+                    list = new ArrayList<>();
+                }
+                list.add(args);
+                graphMap.put(method, list);
+                success = true;
+            }
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return success;
+    }
+
+    public void resetTransactions() {
+        graphMap = null;
+    }
+
 
     public boolean connectToIssueAs(final IssueBase issue, final IssueRelation relation) {
-        return GraphDaoFactory.getIssueBaseDAO(projectId).connectEntitiesWithRelationTx(this, issue, relation);
+        //return GraphDaoFactory.getIssueBaseDAO(projectId).connectEntitiesWithRelationTx(this, issue, relation);
+        return addToMap("connectEntitiesWithRelationTx", new Object[]{this, issue, relation});
     }
 
     public List<IssueBase> getConnectedIssues(final IssueRelation relation) {
@@ -112,17 +148,20 @@ public class IssueBase implements PersistInGraph {
     }
 
     public boolean removeConnectionToIssue(final IssueBase issue, final IssueRelation relation) {
-        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteRelationOfEntitiesTx(this, issue, relation, Direction.BOTH);
+//        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteRelationOfEntitiesTx(this, issue, relation, Direction.BOTH);
+        return addToMap("deleteRelationOfEntitiesTx", new Object[]{this, issue, relation, Direction.BOTH});
     }
 
     public boolean removeConnectionToIssue(final IssueBase issue, final IssueRelation relation, final Direction direction) {
-        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteRelationOfEntitiesTx(this, issue, relation, direction);
+//        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteRelationOfEntitiesTx(this, issue, relation, direction);
+        return addToMap("deleteRelationOfEntitiesTx", new Object[]{this, issue, relation, direction});
     }
 
 
 
     public boolean addSubIssue(final IssueBase subIssue) {
-        return GraphDaoFactory.getIssueBaseDAO(projectId).addSubIssueTx(this, subIssue);
+        //return GraphDaoFactory.getIssueBaseDAO(projectId).addSubIssueTx(this, subIssue);
+        return addToMap("addSubIssueTx", new Object[]{this, subIssue});
     }
 
     public List<IssueBase> getSubIssues() {
@@ -130,13 +169,15 @@ public class IssueBase implements PersistInGraph {
     }
 
     public boolean removeSubIssue(final IssueBase subIssue) {
-        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteSubIssueRelationTx(this, subIssue);
+//        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteSubIssueRelationTx(this, subIssue);
+        return addToMap("deleteSubIssueRelationTx", new Object[]{this, subIssue});
     }
 
 
 
     public boolean addComponent(final IssueComponent component) {
-        return GraphDaoFactory.getIssueBaseDAO(projectId).addComponentToTx(this, component);
+//        return GraphDaoFactory.getIssueBaseDAO(projectId).addComponentToTx(this, component);
+        return addToMap("addComponentToTx", new Object[]{this, component});
     }
 
     public List<IssueComponent> getComponents() {
@@ -144,11 +185,13 @@ public class IssueBase implements PersistInGraph {
     }
 
     public boolean removeComponent(final IssueComponent component) {
-        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteComponentRelationTx(this, component);
+//        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteComponentRelationTx(this, component);
+        return addToMap("deleteComponentRelationTx", new Object[]{this, component});
     }
 
     public boolean removeAllComponents(final List<IssueComponent> componentList) {
-        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteAllComponentRelationsTx(this, componentList);
+//        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteAllComponentRelationsTx(this, componentList);
+        return addToMap("deleteAllComponentRelationsTx", new Object[]{this, componentList});
     }
 
 

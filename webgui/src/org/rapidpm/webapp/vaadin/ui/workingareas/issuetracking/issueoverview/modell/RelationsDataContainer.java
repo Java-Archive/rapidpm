@@ -74,7 +74,7 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
         boolean success = false;
         if (getCurrentIssue() != null) {
             if (getCurrentIssue().connectToIssueAs(connIssue, relation)) {
-                Object itemId = this.addItem();
+                final Object itemId = this.addItem();
                 this.getContainerProperty(itemId,DIRECTION).setValue(Direction.OUTGOING);
                 this.getContainerProperty(itemId, NAME).setValue(relation.getOutgoingName());
                 this.getContainerProperty(itemId, ISSUEID).setValue(connIssue.getText());
@@ -94,9 +94,9 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
     public boolean removeItem(final Object itemId) {
         boolean success = false;
         if (getCurrentIssue() != null) {
-            IssueBase connIssue = getConnIssueFromItemId(itemId);
-            IssueRelation relation = (IssueRelation) this.getContainerProperty(itemId, RELATION).getValue();
-            Direction direction = (Direction) this.getContainerProperty(itemId, DIRECTION).getValue();
+            final IssueBase connIssue = getConnIssueFromItemId(itemId);
+            final IssueRelation relation = (IssueRelation) this.getContainerProperty(itemId, RELATION).getValue();
+            final Direction direction = (Direction) this.getContainerProperty(itemId, DIRECTION).getValue();
             if (getCurrentIssue().removeConnectionToIssue(connIssue, relation, direction))
                 if (super.removeItem(itemId))
                     success = true;

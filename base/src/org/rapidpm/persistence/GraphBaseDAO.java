@@ -243,12 +243,28 @@ public class GraphBaseDAO<T> {
                         }
                     }
                 }
+                else if (field.isAnnotationPresent(LazyGraphPersisting.class)) {
+                    final Object fieldValue = field.get(entity);
+                    if (fieldValue != null) {
+                        final Map valueMap = Map.class.cast(fieldValue);
 
+                        for (Iterator it = valueMap.keySet().iterator(); it.hasNext();) {
+                            final Method method = Method.class.cast(it.next());
+                            final List<Object[]> argsList = List.class.cast(valueMap.get(method));
+                            for (Object[] args : argsList) {
+                                method.invoke(this, args);
+                            }
+                        }
+                    }
+                    field.set(entity, null);
+                }
                 field.setAccessible(isAccessible);
             }
         } catch (IllegalAccessException e) {
             logger.fatal("IllegalAccessException: " + e.getMessage());
             e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
 

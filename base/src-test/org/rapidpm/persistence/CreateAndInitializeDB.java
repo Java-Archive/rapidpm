@@ -372,12 +372,6 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
             x++;
         }
 
-
-        if (debug)
-            for (IssueBase singleIssue : issues)
-                System.out.println(singleIssue.toString());
-
-
         //Create Sublists
         issues.get(0).addSubIssue(issues.get(1));
             issues.get(1).addSubIssue(issues.get(2));
@@ -407,6 +401,14 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
         issues.get(19).connectToIssueAs(issues.get(21), relationList.get(1));
         issues.get(2).connectToIssueAs(issues.get(1), relationList.get(1));
         issues.get(1).connectToIssueAs(issues.get(2), relationList.get(0));
+
+        for (IssueBase issue : issues) {
+            GraphDaoFactory.getIssueBaseDAO(projectId).persist(issue);
+        }
+
+        if (debug)
+            for (IssueBase singleIssue : issues)
+                System.out.println(singleIssue.toString());
 
     }
 
