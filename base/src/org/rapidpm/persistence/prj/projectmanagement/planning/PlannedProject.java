@@ -5,11 +5,13 @@ import org.rapidpm.persistence.prj.book.Buch;
 import org.rapidpm.persistence.prj.projectmanagement.controlling.BaseControllingunit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.finance.PlannedOffer;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedTravel;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 public class PlannedProject {
@@ -21,6 +23,9 @@ public class PlannedProject {
 
     @Transient
     private BaseControllingunit totalProjectControllingunit;
+
+    @Transient
+    Map<RessourceGroup, BaseControllingunit> resourceGroupControllingMap;
 
     @Id
     @TableGenerator(name = "PKGenPlannedProject", table = "pk_gen", pkColumnName = "gen_key",
