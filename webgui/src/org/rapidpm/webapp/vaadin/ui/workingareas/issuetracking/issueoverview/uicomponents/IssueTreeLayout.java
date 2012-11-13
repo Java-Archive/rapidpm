@@ -1,5 +1,13 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents;
 
+import com.vaadin.data.util.HierarchicalContainer;
+import com.vaadin.event.DataBoundTransferable;
+import com.vaadin.event.Transferable;
+import com.vaadin.event.dd.DragAndDropEvent;
+import com.vaadin.event.dd.DropHandler;
+import com.vaadin.event.dd.acceptcriteria.AcceptAll;
+import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
+import com.vaadin.shared.ui.dd.VerticalDropLocation;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
@@ -68,14 +76,16 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         issueTree.addValueChangeListener(new TreeActivateOnValueChangeListener(new Button[]{deleteButton,
                 addButton}));
 
-//        issueTree.setDragMode(Tree.TreeDragMode.NODE);
-//        issueTree.setDropHandler(new TreeSortDropHandler(issueTree));
+
 
         issueTree.setItemCaptionPropertyId(TreeIssueBaseContainer.PROPERTY_CAPTION);
         for (Object id : issueTree.rootItemIds())
             issueTree.expandItemsRecursively(id);
         if (issueTree.getItemIds().toArray().length > 0)
             issueTree.select(issueTree.getItemIds().toArray()[0]);
+
+//        issueTree.setDragMode(Tree.TreeDragMode.NODE);
+//        issueTree.setDropHandler(new TreeSortDropHandler(issueTree));
         addComponent(issueTree);
 
         addButton.addClickListener(new AddButtonClickListener(screen, issueTree));
@@ -119,12 +129,12 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
     }
 
 
-//
+
 //    private static class TreeSortDropHandler implements DropHandler {
 //        private final Tree tree;
 //
 //        /**
-//         * Tree must use {@link HierarchicalContainer}.
+//         * Tree must use {@link com.vaadin.data.util.HierarchicalContainer}.
 //         *
 //         * @param tree
 //         */
@@ -133,61 +143,61 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 //            this.tree = tree;
 //        }
 //
-//        public AcceptCriterion getAcceptCriterion() {
-//            return AcceptAll.get();
-//        }
+////        public AcceptCriterion getAcceptCriterion() {
+////            return AcceptAll.get();
+////        }
+////
+////        public void drop(DragAndDropEvent event) {
+////            // Wrapper for the object that is dragged
+////            Transferable t = event.getTransferable();
+////
+////            // Make sure the drag source is the same tree
+////            if (t.getSourceComponent() != tree)
+////                return;
+////
+////            Tree.TreeTargetDetails target = (Tree.TreeTargetDetails)
+////                    event.getTargetDetails();
+////
+////            // Get ids of the dragged item and the target item
+////            Object sourceItemId = t.getData("itemId");
+////            Object targetItemId = target.getItemIdOver();
+////
+////            // On which side of the target the item was dropped
+////            VerticalDropLocation location = target.getDropLocation();
+////
+////            HierarchicalContainer container = (HierarchicalContainer)
+////                    tree.getContainerDataSource();
+////
+////            // Drop right on an item -> make it a child
+////            if (location == VerticalDropLocation.MIDDLE) {
+////                container.setChildrenAllowed(targetItemId, true);
+////                tree.setParent(sourceItemId, targetItemId);
+////            }
+////
+////                // Drop at the top of a subtree -> make it previous
+////            else if (location == VerticalDropLocation.TOP) {
+////                Object parentId = container.getParent(targetItemId);
+////                container.setParent(sourceItemId, parentId);
+////                container.moveAfterSibling(sourceItemId, targetItemId);
+////                container.moveAfterSibling(targetItemId, sourceItemId);
+////            }
+////
+////            // Drop below another item -> make it next
+////            else if (location == VerticalDropLocation.BOTTOM) {
+////                Object parentId = container.getParent(targetItemId);
+////                container.setParent(sourceItemId, parentId);
+////                container.moveAfterSibling(sourceItemId, targetItemId);
+////            }
+////
+////            Object parentId = container.getParent(targetItemId);
+////            IssueBase issue = (IssueBase)container.getContainerProperty(parentId,
+////                    TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
+////            issue.addSubIssue((IssueBase)container.getContainerProperty(targetItemId,
+////                    TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue());
+////        }
 //
-//        public void drop(DragAndDropEvent event) {
-//            // Wrapper for the object that is dragged
-//            Transferable t = event.getTransferable();
 //
-//            // Make sure the drag source is the same tree
-//            if (t.getSourceComponent() != tree)
-//                return;
 //
-//            Tree.TreeTargetDetails target = (Tree.TreeTargetDetails)
-//                    event.getTargetDetails();
-//
-//            // Get ids of the dragged item and the target item
-//            Object sourceItemId = t.getData("itemId");
-//            Object targetItemId = target.getItemIdOver();
-//
-//            // On which side of the target the item was dropped
-//            VerticalDropLocation location = target.getDropLocation();
-//
-//            HierarchicalContainer container = (HierarchicalContainer)
-//                    tree.getContainerDataSource();
-//
-//            // Drop right on an item -> make it a child
-//            if (location == VerticalDropLocation.MIDDLE) {
-//                container.setChildrenAllowed(targetItemId, true);
-//                tree.setParent(sourceItemId, targetItemId);
-//            }
-//
-//                // Drop at the top of a subtree -> make it previous
-//            else if (location == VerticalDropLocation.TOP) {
-//                Object parentId = container.getParent(targetItemId);
-//                container.setParent(sourceItemId, parentId);
-//                container.moveAfterSibling(sourceItemId, targetItemId);
-//                container.moveAfterSibling(targetItemId, sourceItemId);
-//            }
-//
-//            // Drop below another item -> make it next
-//            else if (location == VerticalDropLocation.BOTTOM) {
-//                Object parentId = container.getParent(targetItemId);
-//                container.setParent(sourceItemId, parentId);
-//                container.moveAfterSibling(sourceItemId, targetItemId);
-//            }
-//
-//            Object parentId = container.getParent(targetItemId);
-//            IssueBase issue = (IssueBase)container.getContainerProperty(parentId,
-//                    TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
-//            issue.addSubIssue((IssueBase)container.getContainerProperty(targetItemId,
-//                    TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue());
-//        }
-//    }
-
-
 //        public AcceptCriterion getAcceptCriterion() {
 //            // Alternatively, could use the following criteria to eliminate some
 //            // checks in drop():
@@ -275,5 +285,5 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 //                    TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue());
 //
 //        }
-    //}
+//    }
 }

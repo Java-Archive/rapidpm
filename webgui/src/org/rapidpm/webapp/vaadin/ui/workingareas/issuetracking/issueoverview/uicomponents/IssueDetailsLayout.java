@@ -264,9 +264,6 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         bottomLayout.setSpacing(true);
         bottomLayout.setWidth("100%");
 
-        Label spaceLabel = new Label();
-        spaceLabel.setContentMode(ContentMode.HTML);
-        spaceLabel.setValue("&nbsp;");
         tabAddButton = new Button();
         tabAddButton.setImmediate(true);
 
