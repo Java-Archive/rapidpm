@@ -4,7 +4,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.UI;
 import org.apache.log4j.Logger;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.IssueAddWindow;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.AddIssueWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 
 /**
@@ -27,6 +27,6 @@ public class AddButtonClickListener implements Button.ClickListener {
 
     @Override
     public void buttonClick(Button.ClickEvent event) {
-        UI.getCurrent().addWindow(new IssueAddWindow(screen, issueTree));
+        UI.getCurrent().addWindow(new AddIssueWindow(screen, issueTree));
     }
 }

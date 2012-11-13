@@ -1,9 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic;
 
-import com.vaadin.data.Container;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.AbstractIssueDataContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.CommentsDataContainer;
@@ -12,7 +10,6 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.mod
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.AddCommentWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.AddRelationWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.AddTestcaseWindow;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.IssueAddWindow;
 
 /**
  * Created with IntelliJ IDEA.

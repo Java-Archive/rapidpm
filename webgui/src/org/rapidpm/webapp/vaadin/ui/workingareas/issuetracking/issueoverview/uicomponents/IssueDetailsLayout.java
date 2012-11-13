@@ -81,13 +81,16 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         final List<Benutzer> userList =  screen.getBaseDaoFactoryBean().getBenutzerDAO().loadAllEntities();
 
         VerticalLayout formLayout = new VerticalLayout();
+        formLayout.setSpacing(true);
 
         FormLayout dateLayout = new FormLayout();
         FormLayout detailLayout = new FormLayout();
+        FormLayout componentLayout = new FormLayout();
         HorizontalLayout horLayout = new HorizontalLayout();
 
         dateLayout.setWidth("100%");
         detailLayout.setWidth("100%");
+        componentLayout.setWidth("100%");
         horLayout.setWidth("100%");
 
         headerTextField = new Label();
@@ -169,19 +172,6 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         assigneeSelect.setScrollToSelectedItem(true);
         detailLayout.addComponent(assigneeSelect);
 
-        componentListSelect = new ListSelect();
-        componentListSelect.addContainerProperty(PROPERTY_CAPTION, String.class, null);
-        componentListSelect.setItemCaptionPropertyId(PROPERTY_CAPTION);
-        for (IssueComponent component : componentsList) {
-            item = componentListSelect.addItem(component);
-            item.getItemProperty(PROPERTY_CAPTION).setValue(component.getComponentName());
-        }
-        componentListSelect.setNullSelectionAllowed(true);
-        componentListSelect.setMultiSelect(true);
-        componentListSelect.setRows(5);
-        componentListSelect.setReadOnly(true);
-        detailLayout.addComponent(componentListSelect);
-
 
         plannedDateField = new DateField();
         plannedDateField.setResolution(Resolution.DAY);
@@ -243,11 +233,26 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         riskSelect.setNullSelectionAllowed(true);
         riskSelect.setReadOnly(true);
         riskSelect.setScrollToSelectedItem(true);
-        dateLayout.addComponent(riskSelect);
+        componentLayout.addComponent(riskSelect);
+
+
+        componentListSelect = new ListSelect();
+        componentListSelect.addContainerProperty(PROPERTY_CAPTION, String.class, null);
+        componentListSelect.setItemCaptionPropertyId(PROPERTY_CAPTION);
+        for (IssueComponent component : componentsList) {
+            item = componentListSelect.addItem(component);
+            item.getItemProperty(PROPERTY_CAPTION).setValue(component.getComponentName());
+        }
+        componentListSelect.setNullSelectionAllowed(true);
+        componentListSelect.setMultiSelect(true);
+        componentListSelect.setRows(5);
+        componentListSelect.setReadOnly(true);
+        componentLayout.addComponent(componentListSelect);
 
 
         horLayout.addComponent(detailLayout);
         horLayout.addComponent(dateLayout);
+        horLayout.addComponent(componentLayout);
         formLayout.addComponent(horLayout);
 
         descriptionTextArea = new TextArea();
@@ -255,11 +260,6 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         descriptionTextArea.setReadOnly(true);
         formLayout.addComponent(descriptionTextArea);
 
-        return formLayout;
-    }
-
-    @Override
-    protected AbstractOrderedLayout buildUnsaveableForm() {
         VerticalLayout bottomLayout = new VerticalLayout();
         bottomLayout.setSpacing(true);
         bottomLayout.setWidth("100%");
@@ -334,8 +334,16 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabDeleteButton.addClickListener(new TabDeleteButtonClickListener(screen, tabComments));
 
         bottomLayout.addComponent(tabSheet);
-        return bottomLayout;
+        formLayout.addComponent(bottomLayout);
+
+        return formLayout;
     }
+
+    @Override
+    protected AbstractOrderedLayout buildUnsaveableForm() {
+        return null;  //No unsavable Components
+    }
+
 
     @Override
     public void doInternationalization() {

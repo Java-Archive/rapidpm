@@ -16,22 +16,23 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uic
  * Time: 11:19
  * To change this template use File | Settings | File Templates.
  */
-public class IssueAddWindow extends Window {
-    private static Logger logger = Logger.getLogger(IssueAddWindow.class);
+public class AddIssueWindow extends Window {
+    private static Logger logger = Logger.getLogger(AddIssueWindow.class);
 
     private final IssueOverviewScreen screen;
     private final Tree issueTree;
-    private IssueAddWindow self;
+    private AddIssueWindow self;
 
     private IssueDetailsLayout addDetailsLayout;
 
-    public IssueAddWindow(final IssueOverviewScreen screen, final Tree issueTree) {
+    public AddIssueWindow(final IssueOverviewScreen screen, final Tree issueTree) {
         super();
         self = this;
         this.screen = screen;
         this.issueTree = issueTree;
         setCaption(screen.getMessagesBundle().getString("issuetracking_issue_addwindow"));
         this.setModal(true);
+        this.setResizable(false);
         addDetailsLayout = new IssueDetailsLayout(screen, false);
         addDetailsLayout.addSaveButtonClickListener(new AddIssueSaveClickListener());
         addDetailsLayout.addCancelButtonClickListener(new AddIssueCancelClickListener());

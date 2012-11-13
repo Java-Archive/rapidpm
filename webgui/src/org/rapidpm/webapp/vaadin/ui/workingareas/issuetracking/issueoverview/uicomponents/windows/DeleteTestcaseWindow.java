@@ -35,6 +35,7 @@ public class DeleteTestcaseWindow extends Window implements Internationalization
         this.testcaseTable = testcaseTable;
         removeItemId = testcaseTable.getValue();
         this.setModal(true);
+        this.setResizable(false);
         setComponents();
         doInternationalization();
     }

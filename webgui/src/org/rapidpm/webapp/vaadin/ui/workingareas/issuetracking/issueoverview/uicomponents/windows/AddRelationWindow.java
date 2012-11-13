@@ -44,6 +44,7 @@ public class AddRelationWindow extends Window implements Internationalizationabl
         this.screen = screen;
         this.relationContainer = (RelationsDataContainer)relationContainer;
         this.setModal(true);
+        this.setResizable(false);
         setComponents();
         doInternationalization();
     }

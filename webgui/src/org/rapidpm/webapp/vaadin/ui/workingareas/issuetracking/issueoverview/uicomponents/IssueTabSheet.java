@@ -23,7 +23,7 @@ public class IssueTabSheet extends TabSheet implements Internationalizationable{
     public IssueTabSheet(final IssueOverviewScreen screen) {
         super();
         this.screen = screen;
-        this.setImmediate(true);
+        this.setHeight("100%");
         setComponents();
         doInternationalization();
     }

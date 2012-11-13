@@ -4,7 +4,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.UI;
 import org.apache.log4j.Logger;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.IssueDeleteWindow;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.DeleteIssueWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 
 /**
@@ -27,6 +27,6 @@ public class DeleteButtonClickListener implements Button.ClickListener {
 
     @Override
     public void buttonClick(Button.ClickEvent event) {
-        UI.getCurrent().addWindow(new IssueDeleteWindow(screen, issueTree));
+        UI.getCurrent().addWindow(new DeleteIssueWindow(screen, issueTree));
     }
 }

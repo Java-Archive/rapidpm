@@ -12,8 +12,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.Iss
  * Time: 08:17
  * To change this template use File | Settings | File Templates.
  */
-public class IssueDeleteWindow extends Window implements Internationalizationable{
-    private static Logger logger = Logger.getLogger(IssueDeleteWindow.class);
+public class DeleteIssueWindow extends Window implements Internationalizationable{
+    private static Logger logger = Logger.getLogger(DeleteIssueWindow.class);
 
     private final IssueOverviewScreen screen;
     private Label deleteLabel;
@@ -21,10 +21,10 @@ public class IssueDeleteWindow extends Window implements Internationalizationabl
     private Button noButton;
     private HorizontalLayout buttonLayout;
 
-    private final IssueDeleteWindow self = this;
+    private final DeleteIssueWindow self = this;
     private final Tree issueTree;
 
-    public IssueDeleteWindow(final IssueOverviewScreen screen, final Tree issueTree) {
+    public DeleteIssueWindow(final IssueOverviewScreen screen, final Tree issueTree) {
         super();
         if (screen == null)
             throw new NullPointerException("Screen must not be NULL!");
@@ -33,6 +33,7 @@ public class IssueDeleteWindow extends Window implements Internationalizationabl
         this.screen = screen;
         this.issueTree = issueTree;
         this.setModal(true);
+        this.setResizable(false);
         setComponentens();
         doInternationalization();
     }

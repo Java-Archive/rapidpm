@@ -35,6 +35,7 @@ public class AddTestcaseWindow extends Window implements Internationalizationabl
         this.screen = screen;
         this.testcaseContainer = (TestCasesDataContainer) testcaseContainer;
         this.setModal(true);
+        this.setResizable(false);
         setComponents();
         doInternationalization();
     }

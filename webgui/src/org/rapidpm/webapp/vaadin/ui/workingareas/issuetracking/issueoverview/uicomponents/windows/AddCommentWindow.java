@@ -39,6 +39,7 @@ public class AddCommentWindow extends Window implements Internationalizationable
         this.screen = screen;
         this.commentContainer = (CommentsDataContainer) commentContainer;
         this.setModal(true);
+        this.setResizable(false);
         setComponents();
         doInternationalization();
     }

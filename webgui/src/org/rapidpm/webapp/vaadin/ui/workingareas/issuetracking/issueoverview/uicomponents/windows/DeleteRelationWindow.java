@@ -35,6 +35,7 @@ public class DeleteRelationWindow extends Window implements Internationalization
         this.relationTable = relationTable;
         removeItemId = relationTable.getValue();
         this.setModal(true);
+        this.setResizable(false);
         setComponents();
         doInternationalization();
     }

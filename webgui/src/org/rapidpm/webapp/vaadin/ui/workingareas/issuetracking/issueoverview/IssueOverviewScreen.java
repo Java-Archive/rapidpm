@@ -27,10 +27,6 @@ public class IssueOverviewScreen extends Screen {
     private IssueTreeLayout treeLayout;
     private IssueTabSheet issueTabSheet;
 
-    private Button saveButton;
-    private Button cancelButton;
-    private HorizontalLayout buttonLayout;
-
     private DaoFactoryBean baseDaoFactoryBean;
 
     public IssueOverviewScreen(MainUI ui) {
@@ -66,7 +62,11 @@ public class IssueOverviewScreen extends Screen {
     public void setComponents() {
         hSplitPanel.setFirstComponent(treeLayout);
         hSplitPanel.setSecondComponent(issueTabSheet);
+        hSplitPanel.setHeight("770px");
         addComponent(hSplitPanel);
+//        Panel testPanel = new Panel("PANEL");
+//        testPanel.setHeight("200px");
+//        addComponent(testPanel);
     }
 
     @Override

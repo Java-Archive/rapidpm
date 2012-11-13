@@ -35,6 +35,7 @@ public class DeleteCommentWindow extends Window implements Internationalizationa
         this.commentTable = commentTable;
         removeItemId = commentTable.getValue();
         this.setModal(true);
+        this.setResizable(false);
         setComponents();
         doInternationalization();
     }
