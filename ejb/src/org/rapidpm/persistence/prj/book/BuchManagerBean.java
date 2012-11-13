@@ -2,7 +2,6 @@ package org.rapidpm.persistence.prj.book;
 
 import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseOrmResult;
-import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
 import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
@@ -14,7 +13,6 @@ import org.rapidpm.persistence.system.security.Benutzer;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -85,7 +83,7 @@ public class BuchManagerBean {
     }
 
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "saveOrUpdateTXBuchSeitenKommentar")
     @WebResult(name = "BuchSeitenKommentarResult")
@@ -95,7 +93,7 @@ public class BuchManagerBean {
         return new BuchSeitenKommentarResult();
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "removeTXBuchSeitenKommentar")
     @WebResult(name = "BuchSeitenKommentarResult")
@@ -115,7 +113,7 @@ public class BuchManagerBean {
         return result;
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "findByIDBuchSeitenKommentar")
     @WebResult(name = "BuchSeitenKommentarResult")
@@ -124,7 +122,7 @@ public class BuchManagerBean {
         return createResult(getBuchSeitenKommentarDAO().findByID(oid));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadWithOIDListBuchSeitenKommentar")
     @WebResult(name = "BuchSeitenKommentarResult")
@@ -133,7 +131,7 @@ public class BuchManagerBean {
         return createResultBSK(getBuchSeitenKommentarDAO().loadWithOIDList(oids));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadAllEntitiesBuchSeitenKommentar")
     @WebResult(name = "BuchSeitenKommentarResult")
@@ -143,7 +141,7 @@ public class BuchManagerBean {
 
     //BuchKapitelKommentarResult
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "saveOrUpdateTXBuchKapitelKommentar")
     @WebResult(name = "BuchKapitelKommentarResult")
@@ -154,7 +152,7 @@ public class BuchManagerBean {
         return new BuchKapitelKommentarResult();
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "removeTXBuchKapitelKommentar")
     @WebResult(name = "BuchKapitelKommentarResult")
@@ -174,7 +172,7 @@ public class BuchManagerBean {
         return result;
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "findByIDBuchKapitelKommentar")
     @WebResult(name = "BuchKapitelKommentarResult")
@@ -183,7 +181,7 @@ public class BuchManagerBean {
         return createResult(getBuchKapitelKommentarDAO().findByID(oid));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadWithOIDListBuchKapitelKommentar")
     @WebResult(name = "BuchKapitelKommentarResult")
@@ -192,7 +190,7 @@ public class BuchManagerBean {
         return createResultBKK(getBuchKapitelKommentarDAO().loadWithOIDList(oids));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadAllEntitiesBuchKapitelKommentar")
     @WebResult(name = "BuchKapitelKommentarResult")
@@ -201,7 +199,7 @@ public class BuchManagerBean {
     }
 
     // BuchKommentarResult
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "saveOrUpdateTXBuchKommentar")
     @WebResult(name = "BuchKommentarResult")
@@ -211,7 +209,7 @@ public class BuchManagerBean {
         return new BuchKommentarResult();
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "removeTXBuchKommentar")
     @WebResult(name = "BuchKommentarResult")
@@ -231,7 +229,7 @@ public class BuchManagerBean {
         return result;
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "findByIDBuchKommentar")
     @WebResult(name = "BuchKommentarResult")
@@ -240,7 +238,7 @@ public class BuchManagerBean {
         return createResult(getBuchKommentarDAO().findByID(oid));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadWithOIDListBuchKommentar")
     @WebResult(name = "BuchKommentarResult")
@@ -249,7 +247,7 @@ public class BuchManagerBean {
         return createResultBK(getBuchKommentarDAO().loadWithOIDList(oids));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadAllEntitiesBuchKommentar")
     @WebResult(name = "BuchKommentarResult")
@@ -259,7 +257,7 @@ public class BuchManagerBean {
 
 
     // BuchSeitenFussnoteResult
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "saveOrUpdateTXBuchSeitenFussnote")
     @WebResult(name = "BuchSeitenFussnoteResult")
@@ -269,7 +267,7 @@ public class BuchManagerBean {
         return new BuchSeitenFussnoteResult();
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "removeTXBuchSeitenFussnote")
     @WebResult(name = "BuchSeitenFussnoteResult")
@@ -289,7 +287,7 @@ public class BuchManagerBean {
         return result;
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "findByIDBuchSeitenFussnote")
     @WebResult(name = "BuchSeitenFussnoteResult")
@@ -298,7 +296,7 @@ public class BuchManagerBean {
         return createResult(getBuchSeitenFussnoteDAO().findByID(oid));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadWithOIDListBuchSeitenFussnote")
     @WebResult(name = "BuchSeitenFussnoteResult")
@@ -307,7 +305,7 @@ public class BuchManagerBean {
         return createResultBSF(getBuchSeitenFussnoteDAO().loadWithOIDList(oids));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadAllEntitiesBuchSeitenFussnote")
     @WebResult(name = "BuchSeitenFussnoteResult")
@@ -316,7 +314,7 @@ public class BuchManagerBean {
     }
 
     // BuchSeiteResult
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "saveOrUpdateTXBuchSeiten")
     @WebResult(name = "BuchSeiteResult")
@@ -326,7 +324,7 @@ public class BuchManagerBean {
         return new BuchSeiteResult();
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "removeTXBuchSeite")
     @WebResult(name = "BuchSeiteResult")
@@ -345,7 +343,7 @@ public class BuchManagerBean {
         return result;
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "findByIDBuchSeiten")
     @WebResult(name = "BuchSeiteResult")
@@ -353,7 +351,7 @@ public class BuchManagerBean {
         return createResult(getBuchSeiteDAO().findByID(oid));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadWithOIDListBuchSeite")
     @WebResult(name = "BuchSeiteResult")
@@ -362,7 +360,7 @@ public class BuchManagerBean {
         return createResultBS(getBuchSeiteDAO().loadWithOIDList(oids));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadAllEntitiesBuchSeite")
     @WebResult(name = "BuchSeiteResult")
@@ -372,7 +370,7 @@ public class BuchManagerBean {
 
 
     // BuchResult
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "saveOrUpdateTXBuch")
     @WebResult(name = "BuchResult")
@@ -382,7 +380,7 @@ public class BuchManagerBean {
         return new BuchResult();
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "removeTXBuch")
     @WebResult(name = "BuchResult")
@@ -401,7 +399,7 @@ public class BuchManagerBean {
         return result;
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "findByIDBuch")
     @WebResult(name = "BuchResult")
@@ -409,7 +407,7 @@ public class BuchManagerBean {
         return createResult(getBuchDAO().findByID(oid));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadWithOIDListBuch")
     @WebResult(name = "BuchResult")
@@ -418,7 +416,7 @@ public class BuchManagerBean {
         return createResultB(getBuchDAO().loadWithOIDList(oids));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadAllEntitiesBuch")
     @WebResult(name = "BuchResult")

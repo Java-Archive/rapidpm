@@ -15,7 +15,6 @@ import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
-import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
 import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.*;
@@ -33,7 +32,6 @@ import org.rapidpm.persistence.system.security.MandantengruppeDAO;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -131,7 +129,7 @@ public class OrganisationseinheitDAOBean {
     }
 
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "saveOrUpdateTX")
     @WebResult(name = "OrganisationseinheitResult")
@@ -141,7 +139,7 @@ public class OrganisationseinheitDAOBean {
         return crudExecuter.saveOrUpdate(sessionid, uid, entity);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "removeTX")
     @WebResult(name = "OrganisationseinheitResult")
@@ -149,7 +147,7 @@ public class OrganisationseinheitDAOBean {
         return crudExecuter.remove(sessionid, uid, oid);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "findByID")
     @WebResult(name = "OrganisationseinheitResult")
@@ -162,7 +160,7 @@ public class OrganisationseinheitDAOBean {
         }
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadWithOIDList")
     @WebResult(name = "OrganisationseinheitResult")
@@ -171,7 +169,7 @@ public class OrganisationseinheitDAOBean {
         return createResult(getEntityDAO().loadWithOIDList(oids, true));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadAllEntities")
     @WebResult(name = "OrganisationseinheitResult")
@@ -179,7 +177,7 @@ public class OrganisationseinheitDAOBean {
         return createResult(getEntityDAO().loadAllEntities(true));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadOrganisationseinheitenForMandantengruppe")
     @WebResult(name = "OrganisationseinheitResult")
@@ -188,7 +186,7 @@ public class OrganisationseinheitDAOBean {
         return createResult(getEntityDAO().loadOrganisationseinheitenForMandantengruppe(oid, true));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "connectAdresse")
     @WebResult(name = "OrganisationseinheitResult")
@@ -211,7 +209,7 @@ public class OrganisationseinheitDAOBean {
         }.execute("connectAdresse", logEventEntryWriterBean, sessionid, adresseOID, organisationseinheitOID);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "connectWebDomain")
     @WebResult(name = "OrganisationseinheitResult")
@@ -233,7 +231,7 @@ public class OrganisationseinheitDAOBean {
         }.execute("connectWebDomain", logEventEntryWriterBean, sessionid, webDomainOID, organisationseinheitOID);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "connectKommunikationsServiceUID")
     @WebResult(name = "OrganisationseinheitResult")
@@ -256,7 +254,7 @@ public class OrganisationseinheitDAOBean {
         }.execute("connectKommunikationsServiceUID", logEventEntryWriterBean, sessionid, kommunikationsServiceUIDOID, organisationseinheitOID);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "connectGesellschaftsform")
     @WebResult(name = "OrganisationseinheitResult")
@@ -279,7 +277,7 @@ public class OrganisationseinheitDAOBean {
         }.execute("connectGesellschaftsform", logEventEntryWriterBean, sessionid, gesellschaftsformOID, organisationseinheitOID);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "connectBrancheAssoc")
     @WebResult(name = "OrganisationseinheitResult")
@@ -302,7 +300,7 @@ public class OrganisationseinheitDAOBean {
         }.execute("connectBrancheAssoc", logEventEntryWriterBean, sessionid, brancheAssocOID, organisationseinheitOID);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "connectAusbildungseinheit")
     @WebResult(name = "OrganisationseinheitResult")
@@ -325,7 +323,7 @@ public class OrganisationseinheitDAOBean {
         }.execute("connectAusbildungseinheit", logEventEntryWriterBean, sessionid, ausbildungseinheitOID, organisationseinheitOID);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "connectTaetigkeitsfeldAssoc")
     @WebResult(name = "OrganisationseinheitResult")
@@ -348,7 +346,7 @@ public class OrganisationseinheitDAOBean {
         }.execute("connectTaetigkeitsfeldAssoc", logEventEntryWriterBean, sessionid, taetigkeitsfeldAssocOID, organisationseinheitOID);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "connectVerwaltungseinheit")
     @WebResult(name = "OrganisationseinheitResult")
@@ -371,7 +369,7 @@ public class OrganisationseinheitDAOBean {
         }.execute("connectVerwaltungseinheit", logEventEntryWriterBean, sessionid, verwaltungseinheitOID, organisationseinheitOID);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "connectPerson")
     @WebResult(name = "OrganisationseinheitResult")
@@ -419,7 +417,7 @@ public class OrganisationseinheitDAOBean {
         }
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "connectWirtschaftseinheit")
     @WebResult(name = "OrganisationseinheitResult")
