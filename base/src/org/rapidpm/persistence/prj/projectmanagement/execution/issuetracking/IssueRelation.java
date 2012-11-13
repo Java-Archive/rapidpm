@@ -30,10 +30,6 @@ public class IssueRelation implements RelationshipType, PersistInGraph {
         //empty on purpose
     }
 
-    public IssueRelation(final String relationName) {
-        this.relationName = relationName;
-    }
-
     public Long getId() {
         return id;
     }

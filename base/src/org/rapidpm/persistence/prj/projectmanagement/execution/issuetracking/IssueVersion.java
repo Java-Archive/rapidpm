@@ -1,8 +1,12 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
+import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.PersistInGraph;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,6 +29,10 @@ public class IssueVersion implements PersistInGraph{
 
     public IssueVersion(final String versionName) {
         setVersionName(versionName);
+    }
+
+    public List<IssueBase> getConnectedIssuesFromProject(final Long projectId) {
+        return GraphDaoFactory.getIssueVersionDAO().getConnectedIssuesFromProject(this, projectId);
     }
 
     public Long getId() {

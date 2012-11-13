@@ -1,4 +1,4 @@
-package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
+package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 /**
  * Created by IntelliJ IDEA.
  * User: svenruppert
@@ -9,15 +9,9 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.neo4j.graphdb.Node;
-import org.rapidpm.persistence.GraphDBFactory;
 import org.rapidpm.persistence.GraphDaoFactory;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponent;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriorityDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -30,9 +24,7 @@ public class IssuePriorityDAOTest {
 
     @Test
     public void addChangeDelete() {
-        IssuePriority priority = new IssuePriority();
-        priority.setPrio(1);
-        priority.setPriorityName("test");
+        IssuePriority priority = new IssuePriority(1, "test");
         priority.setPriorityFileName("test_filename");
         priority = dao.persist(priority);
         assertEquals(priority, dao.findById(priority.getId()));
@@ -58,12 +50,27 @@ public class IssuePriorityDAOTest {
     @Test
     public void getConnectedIssus() {
         for (IssuePriority priority : dao.loadAllEntities()) {
-            List<IssueBase> issueList = dao.getConnectedIssuesFromProject(priority, 1L);
+            List<IssueBase> issueList = priority.getConnectedIssuesFromProject(1L);
 
             for (IssueBase issue : GraphDaoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
                 if (issue.getPriority().equals(priority))
                     assertTrue(issueList.contains(issue));
             }
         }
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void firstParameterException() {
+        dao.getConnectedIssuesFromProject(null, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void secondParameterException() {
+        dao.getConnectedIssuesFromProject(new IssuePriority(), -1L);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void itemWithoutId() {
+        dao.getConnectedIssuesFromProject(new IssuePriority(), 1L);
     }
 }

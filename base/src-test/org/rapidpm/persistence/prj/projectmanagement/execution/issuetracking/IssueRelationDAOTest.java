@@ -1,15 +1,8 @@
-package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
+package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.rapidpm.persistence.GraphDaoFactory;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriorityDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelationDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

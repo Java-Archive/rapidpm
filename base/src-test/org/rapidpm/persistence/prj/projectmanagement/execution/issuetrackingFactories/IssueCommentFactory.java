@@ -1,7 +1,8 @@
-package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
+package org.rapidpm.persistence.prj.projectmanagement.execution.issuetrackingFactories;
 
 import org.rapidpm.persistence.EntityFactory;
 import org.junit.Test;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
 
 /**
  * Created by IntelliJ IDEA.

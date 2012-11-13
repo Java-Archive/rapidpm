@@ -1,8 +1,13 @@
-package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type;
+package org.rapidpm.persistence.prj.projectmanagement.execution.issuetrackingFactories.type;
 
 import org.rapidpm.persistence.EntityFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.junit.Test;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetrackingFactories.IssueCommentFactory;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetrackingFactories.IssuePriorityFactory;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetrackingFactories.IssueStatusFactory;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetrackingFactories.IssueVersionFactory;
 
 import java.util.ArrayList;
 

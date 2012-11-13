@@ -45,9 +45,11 @@ public class IssuePriority  implements PersistInGraph {
         this.priorityName = priorityName;
     }
 
-    public List<IssueBase> getConnectedIssues() {
-        return GraphDaoFactory.getIssuePriorityDAO().getConnectedIssues(this);
-    }
+//    public List<IssueBase> getConnectedIssues() {
+//        return GraphDaoFactory.getIssuePriorityDAO().getConnectedIssues(this);
+//    }    public List<IssueBase> getConnectedIssues() {
+//        return GraphDaoFactory.getIssuePriorityDAO().getConnectedIssues(this);
+//    }
 
     public List<IssueBase> getConnectedIssuesFromProject(final Long projectId) {
         return GraphDaoFactory.getIssuePriorityDAO().getConnectedIssuesFromProject(this, projectId);

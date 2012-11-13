@@ -149,7 +149,7 @@ public class IssueBase implements PersistInGraph {
 
     public boolean removeConnectionToIssue(final IssueBase issue, final IssueRelation relation) {
 //        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteRelationOfEntitiesTx(this, issue, relation, Direction.BOTH);
-        return addToMap("deleteRelationOfEntitiesTx", new Object[]{this, issue, relation, Direction.BOTH});
+        return removeConnectionToIssue(issue, relation, Direction.BOTH);
     }
 
     public boolean removeConnectionToIssue(final IssueBase issue, final IssueRelation relation, final Direction direction) {
@@ -187,12 +187,6 @@ public class IssueBase implements PersistInGraph {
 //        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteComponentRelationTx(this, component);
         return addToMap("deleteComponentRelationTx", new Object[]{this, component});
     }
-
-    public boolean removeAllComponents(final List<IssueComponent> componentList) {
-//        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteAllComponentRelationsTx(this, componentList);
-        return addToMap("deleteAllComponentRelationsTx", new Object[]{this, componentList});
-    }
-
 
 
     public boolean addOrChangeComment(final IssueComment comment) {

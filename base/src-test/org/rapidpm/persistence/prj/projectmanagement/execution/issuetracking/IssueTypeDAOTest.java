@@ -1,12 +1,10 @@
-package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
+package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.rapidpm.persistence.GraphDaoFactory;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -26,8 +24,7 @@ public class IssueTypeDAOTest {
 
     @Test
     public void addChangeDelete() {
-        IssueType type = new IssueType();
-        type.setTypeName("test");
+        IssueType type = new IssueType("test");
         type.setTypeFileName("test_filename");
         type = dao.persist(type);
         assertEquals(type, dao.findById(type.getId()));
@@ -53,7 +50,7 @@ public class IssueTypeDAOTest {
     @Test
     public void getConnectedIssus() {
         for (IssueType type : dao.loadAllEntities()) {
-            List<IssueBase> issueList = dao.getConnectedIssuesFromProject(type, 1L);
+            List<IssueBase> issueList = type.getConnectedIssuesFromProject(1L);
             for (IssueBase issue : GraphDaoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
                 if (issue.getType().equals(type))
                     assertTrue(issueList.contains(issue));

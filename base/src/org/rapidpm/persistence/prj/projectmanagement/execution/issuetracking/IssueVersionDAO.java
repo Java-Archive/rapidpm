@@ -24,34 +24,12 @@ public class IssueVersionDAO extends GraphBaseDAO<IssueVersion> {
         super(graphDb, IssueVersion.class, relDaoFactory);
     }
 
-    public List<IssueBase> getConnectedIssues(final IssueVersion status) {
-        return getConnectedIssuesFromProject(status, 0L);
-    }
+//    public List<IssueBase> getConnectedIssues(final IssueVersion status) {
+//        return getConnectedIssuesFromProject(status, 0L);
+//    }
 
-    public List<IssueBase> getConnectedIssuesFromProject(final IssueVersion status, final Long projectId) {
-        if (status == null)
-            throw new NullPointerException("Status is null");
-        if (projectId < 0)
-            throw new IllegalArgumentException("ProjectId must be positiv");
-
-        if (logger.isDebugEnabled())
-            logger.debug("getConnectedIssuesFromProject: " + projectId);
-
-        final List<IssueBase> issueList = new ArrayList<>();
-        final Node statusNode = graphDb.getNodeById(status.getId());
-        IssueBase issue = null;
-        final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueVersion.class);
-        for (Relationship rel : statusNode.getRelationships(relType, Direction.INCOMING)) {
-            issue = getObjectFromNode(rel.getOtherNode(statusNode), IssueBase.class);
-            if (issue != null && (projectId == 0 || issue.getProjectId().equals(projectId))) {
-                issueList.add(issue);
-                if (logger.isDebugEnabled())
-                    logger.debug("Is connected Issues: " + issue);
-            } else
-            if (logger.isDebugEnabled())
-                logger.debug("Is not connected: " + issue);
-        }
-        return issueList;
+    public List<IssueBase> getConnectedIssuesFromProject(final IssueVersion version, final Long projectId) {
+        return super.getConnectedIssuesFromProject(version, projectId);
     }
 
     public boolean delete(final IssueVersion entity, final IssueVersion assignTo){

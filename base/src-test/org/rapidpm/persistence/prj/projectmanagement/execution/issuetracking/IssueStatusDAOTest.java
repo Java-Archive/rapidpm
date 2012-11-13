@@ -1,4 +1,4 @@
-package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
+package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 /**
  * Created by IntelliJ IDEA.
  * User: svenruppert
@@ -10,10 +10,8 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.rapidpm.persistence.GraphDaoFactory;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -26,8 +24,7 @@ public class IssueStatusDAOTest {
 
     @Test
     public void addChangeDelete() {
-        IssueStatus status = new IssueStatus();
-        status.setStatusName("test");
+        IssueStatus status = new IssueStatus("test");
         status.setStatusFileName("test_filename");
         status = dao.persist(status);
         assertEquals(status, dao.findById(status.getId()));
@@ -53,7 +50,7 @@ public class IssueStatusDAOTest {
     @Test
     public void getConnectedIssus() {
         for (IssueStatus status : dao.loadAllEntities()) {
-            List<IssueBase> issueList = dao.getConnectedIssuesFromProject(status, 1L);
+            List<IssueBase> issueList = status.getConnectedIssuesFromProject(1L);
             for (IssueBase issue : GraphDaoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
                 if (issue.getStatus().equals(status))
                     assertTrue(issueList.contains(issue));

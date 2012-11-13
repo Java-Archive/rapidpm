@@ -24,34 +24,12 @@ public class IssueTypeDAO extends GraphBaseDAO<IssueType> {
         super(graphDb, IssueType.class, relDaoFactory);
     }
 
-    public List<IssueBase> getConnectedIssues(final IssueType type) {
-        return getConnectedIssuesFromProject(type, 0L);
-    }
+//    public List<IssueBase> getConnectedIssues(final IssueType type) {
+//        return getConnectedIssuesFromProject(type, 0L);
+//    }
 
     public List<IssueBase> getConnectedIssuesFromProject(final IssueType type, final Long projectId) {
-        if (type == null)
-            throw new NullPointerException("Type is null");
-        if (projectId < 0)
-            throw new IllegalArgumentException("ProjectId must be positiv");
-
-        if (logger.isDebugEnabled())
-            logger.debug("getConnectedIssuesFromProject: " + projectId);
-
-        final List<IssueBase> issueList = new ArrayList<>();
-        final Node typeNode = graphDb.getNodeById(type.getId());
-        IssueBase issue = null;
-        final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueType.class);
-        for (Relationship rel : typeNode.getRelationships(relType, Direction.INCOMING)) {
-            issue = getObjectFromNode(rel.getOtherNode(typeNode), IssueBase.class);
-            if (issue != null && (projectId == 0 || issue.getProjectId().equals(projectId))) {
-                issueList.add(issue);
-                if (logger.isDebugEnabled())
-                    logger.debug("Is connected Issues: " + issue);
-            } else
-                if (logger.isDebugEnabled())
-                    logger.debug("Is not connected: " + issue);
-        }
-        return issueList;
+        return super.getConnectedIssuesFromProject(type, projectId);
     }
 
     public boolean delete(final IssueType entity, final IssueType assignTo){

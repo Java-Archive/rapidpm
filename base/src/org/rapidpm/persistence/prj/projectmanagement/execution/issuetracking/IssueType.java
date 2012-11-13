@@ -36,9 +36,9 @@ public class IssueType  implements PersistInGraph {
         this.typeName = typeName;
     }
 
-    public List<IssueBase> getConnectedIssues() {
-        return GraphDaoFactory.getIssueTypeDAO().getConnectedIssues(this);
-    }
+//    public List<IssueBase> getConnectedIssues() {
+//        return GraphDaoFactory.getIssueTypeDAO().getConnectedIssues(this);
+//    }
 
     public List<IssueBase> getConnectedIssuesFromProject(final Long projectId) {
         return GraphDaoFactory.getIssueTypeDAO().getConnectedIssuesFromProject(this, projectId);
@@ -76,8 +76,7 @@ public class IssueType  implements PersistInGraph {
         IssueType issueType = (IssueType) o;
 
         if (id != null ? !id.equals(issueType.id) : issueType.id != null) return false;
-        if (typeFileName != null ? !typeFileName.equals(issueType.typeFileName) : issueType.typeFileName != null)
-            return false;
+        if (typeFileName != null ? !typeFileName.equals(issueType.typeFileName) : issueType.typeFileName != null) return false;
         if (typeName != null ? !typeName.equals(issueType.typeName) : issueType.typeName != null) return false;
 
         return true;

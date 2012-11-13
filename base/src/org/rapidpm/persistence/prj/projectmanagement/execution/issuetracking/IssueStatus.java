@@ -40,9 +40,9 @@ public class IssueStatus  implements PersistInGraph {
         this.statusName = statusName;
     }
 
-    public List<IssueBase> getConnectedIssues() {
-        return GraphDaoFactory.getIssueStatusDAO().getConnectedIssues(this);
-    }
+//    public List<IssueBase> getConnectedIssues() {
+//        return GraphDaoFactory.getIssueStatusDAO().getConnectedIssues(this);
+//    }
 
     public List<IssueBase> getConnectedIssuesFromProject(final Long projectId) {
         return GraphDaoFactory.getIssueStatusDAO().getConnectedIssuesFromProject(this, projectId);
@@ -89,8 +89,7 @@ public class IssueStatus  implements PersistInGraph {
         IssueStatus status = (IssueStatus) o;
 
         if (id != null ? !id.equals(status.id) : status.id != null) return false;
-        if (statusFileName != null ? !statusFileName.equals(status.statusFileName) : status.statusFileName != null)
-            return false;
+        if (statusFileName != null ? !statusFileName.equals(status.statusFileName) : status.statusFileName != null) return false;
         if (statusName != null ? !statusName.equals(status.statusName) : status.statusName != null) return false;
 
         return true;

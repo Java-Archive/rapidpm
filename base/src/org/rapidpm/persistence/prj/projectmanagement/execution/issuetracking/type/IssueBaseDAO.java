@@ -40,8 +40,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             connectEntitiesWithRelation(start, end, relation);
             tx.success();
             success = true;
-        } catch (NullPointerException e) {
-            logger.error("NullpointerException: " + e.getMessage());
+        } catch (NullPointerException | IllegalArgumentException e) {
+            logger.error(e.getClass().getSimpleName() + e.getMessage());
         } finally {
             tx.finish();
             if (logger.isDebugEnabled()) {
@@ -57,17 +57,32 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     public void connectEntitiesWithRelation(final IssueBase start, final IssueBase end, final IssueRelation relation) {
         if (start == null)
             throw new NullPointerException("First issue is null.");
+        Long startId = start.getId();
+        if (startId == null)
+            throw new IllegalArgumentException("Id of first issue cant be null. Persist first.");
+
         if (end == null)
             throw new NullPointerException("Second issue is null.");
+        Long endId = end.getId();
+        if (endId == null)
+            throw new IllegalArgumentException("Id of second issue cant be null. Persist first.");
+
+        if (start.equals(end))
+            throw new IllegalArgumentException("Start and end issue are the same. Can't create relation to itself.");
+
         if (relation == null)
             throw new NullPointerException("Relation is null.");
+        Long relationId = relation.getId();
+        if (relationId == null)
+            throw new IllegalArgumentException("Id of relation cant be null. Persist first.");
+
 
         if(logger.isDebugEnabled())
             logger.debug("connectEntitiesWithRelation");
 
         boolean alreadyExist = false;
-        final Node startNode = graphDb.getNodeById(start.getId());
-        final Node endNode = graphDb.getNodeById(end.getId());
+        final Node startNode = graphDb.getNodeById(startId);
+        final Node endNode = graphDb.getNodeById(endId);
         for (final Relationship rel : startNode.getRelationships(relation, Direction.BOTH)) {
             if (rel.getOtherNode(startNode).equals(endNode))
                 alreadyExist = true;
@@ -82,8 +97,16 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     public List<IssueBase> getConnectedIssuesWithRelation(final IssueBase issue, final IssueRelation relation, final Direction direction) {
         if (issue == null)
             throw new NullPointerException("Issue is null.");
+        Long issueId = issue.getId();
+        if (issueId == null)
+            throw new IllegalArgumentException("Id of Issue cant be null. Persist first.");
+
         if (relation == null)
-            throw new NullPointerException("Relation issue is null.");
+            throw new NullPointerException("Relation is null.");
+        Long relationId = relation.getId();
+        if (relationId == null)
+            throw new IllegalArgumentException("Id of relation cant be null. Persist first.");
+
         if (direction == null)
             throw new NullPointerException("Direction is null.");
 
@@ -110,8 +133,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             deleteRelationOfEntities(start, end, relation, direction);
             tx.success();
             success = true;
-        } catch (NullPointerException e) {
-            logger.error("NullpointerException: " + e.getMessage());
+        } catch (NullPointerException | IllegalArgumentException e) {
+            logger.error(e.getClass().getSimpleName() + e.getMessage());
         } finally {
             tx.finish();
             if (logger.isDebugEnabled()) {
@@ -128,10 +151,28 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
                                          final Direction direction) {
         if (start == null)
             throw new NullPointerException("First issue is null.");
+        Long startId = start.getId();
+        if (startId == null)
+            throw new IllegalArgumentException("Id of first issue cant be null. Persist first.");
+
         if (end == null)
             throw new NullPointerException("Second issue is null.");
+        Long endId = end.getId();
+        if (endId == null)
+            throw new IllegalArgumentException("Id of second issue cant be null. Persist first.");
+
+        if (start.equals(end))
+            throw new IllegalArgumentException("Start and end issue are the same. Can't create relation to itself.");
+
         if (relation == null)
             throw new NullPointerException("Relation is null.");
+        Long relationId = relation.getId();
+        if (relationId == null)
+            throw new IllegalArgumentException("Id of relation cant be null. Persist first.");
+
+        if (direction == null)
+            throw new NullPointerException("Direction is null.");
+
 
         if (logger.isDebugEnabled())
             logger.debug("deleteRelationOfEntities");
@@ -145,7 +186,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             }
             else
                 if (logger.isDebugEnabled())
-                    logger.debug("has no relation to: " + start + ", " + end);
+                    logger.debug("Issue " + start + "has no relation to: " + end);
         }
     }
 
@@ -159,8 +200,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             addSubIssue(parent, child);
             tx.success();
             success = true;
-        } catch (NullPointerException e) {
-            logger.error("NullpointerException: " + e.getMessage());
+        } catch (NullPointerException | IllegalArgumentException e) {
+            logger.error(e.getClass().getSimpleName() + e.getMessage());
         } finally {
             tx.finish();
             if (logger.isDebugEnabled()) {
@@ -178,13 +219,25 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     public void addSubIssue(IssueBase parent, IssueBase child) {
         if (parent == null)
             throw new NullPointerException("Parentissue is null.");
+        Long parentId = parent.getId();
+        if (parentId == null)
+            throw new IllegalArgumentException("Id of parent issue cant be null. Persist first.");
+
         if (child == null)
             throw new NullPointerException("Childissue is null.");
+        Long childId = child.getId();
+        if (childId == null)
+            throw new IllegalArgumentException("Id of child issue cant be null. Persist first.");
+
+        if (parent.equals(child))
+            throw new IllegalArgumentException("Parent and Child issue are the same. Can't create relation to itself" +
+                    ".");
+
 
         if (logger.isDebugEnabled())
             logger.debug("addSubIssue");
 
-        Node childNode = graphDb.getNodeById(child.getId());
+        Node childNode = graphDb.getNodeById(childId);
         final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
         if (childNode.hasRelationship(relType, Direction.INCOMING)) {
             if (logger.isDebugEnabled())
@@ -196,7 +249,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
                 logger.debug("Childissue has no Parent: " + child);
 
 
-        graphDb.getNodeById(parent.getId()).createRelationshipTo(childNode,relType );
+        graphDb.getNodeById(parentId).createRelationshipTo(childNode,relType );
         childNode.getSingleRelationship(GraphRelationRegistry.getClassRootToChildRelType(),
             Direction.INCOMING).delete();
     }
@@ -204,11 +257,14 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     public List<IssueBase> getSubIssuesOf(IssueBase issue) {
         if (issue == null)
             throw new NullPointerException("Issue is null.");
+        Long issueId = issue.getId();
+        if (issueId == null)
+            throw new IllegalArgumentException("Id of issue cant be null. Persist first.");
 
         if (logger.isDebugEnabled())
             logger.debug("getSubIssuesOf");
 
-        Node startNode = graphDb.getNodeById(issue.getId());
+        Node startNode = graphDb.getNodeById(issueId);
         List<IssueBase> issueList = new ArrayList<>();
 
         final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
@@ -230,8 +286,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             deleteSubIssueRelation(parent, child);
             tx.success();
             success = true;
-        } catch (NullPointerException e) {
-            logger.error("NullpointerException: " + e.getMessage());
+        } catch (NullPointerException | IllegalArgumentException e) {
+            logger.error(e.getClass().getSimpleName() + e.getMessage());
         } finally {
             tx.finish();
             if (logger.isDebugEnabled()) {
@@ -246,7 +302,23 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
 
 
     public void deleteSubIssueRelation(final IssueBase parent, final IssueBase child) {
-        deleteSubIssueRelation(graphDb.getNodeById(parent.getId()), graphDb.getNodeById(child.getId()));
+        if (parent == null)
+            throw new NullPointerException("Parentissue is null.");
+        Long parentId = parent.getId();
+        if (parentId == null)
+            throw new IllegalArgumentException("Id of parent issue cant be null. Persist first.");
+
+        if (child == null)
+            throw new NullPointerException("Childissue is null.");
+        Long childId = child.getId();
+        if (childId == null)
+            throw new IllegalArgumentException("Id of child issue cant be null. Persist first.");
+
+        if (parent.equals(child))
+            throw new IllegalArgumentException("Parent and Child issue are the same. Can't create relation to itself" +
+                    ".");
+
+        deleteSubIssueRelation(graphDb.getNodeById(parentId), graphDb.getNodeById(childId));
     }
 
 
@@ -284,8 +356,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             addComponentTo(issue, component);
             tx.success();
             success = true;
-        } catch (NullPointerException e) {
-            logger.error("NullpointerException: " + e.getMessage());
+        } catch (NullPointerException | IllegalArgumentException e) {
+            logger.error(e.getClass().getSimpleName() + e.getMessage());
         } finally {
             tx.finish();
             if (logger.isDebugEnabled()) {
@@ -301,15 +373,22 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     public void addComponentTo(final IssueBase issue, final IssueComponent component) {
         if (issue == null)
             throw new NullPointerException("Issue is null.");
+        Long issueId = issue.getId();
+        if (issueId == null)
+            throw new IllegalArgumentException("Id of Issue cant be null. Persist first.");
+
         if (component == null)
             throw new NullPointerException("Component is null.");
+        Long componentId = component.getId();
+        if (componentId == null)
+            throw new IllegalArgumentException("Id of Component cant be null. Persist first.");
 
         if (logger.isDebugEnabled())
             logger.debug("addComponentTo");
 
         boolean exists = false;
-        final Node issueNode = graphDb.getNodeById(issue.getId());
-        final Node componentNode = graphDb.getNodeById(component.getId());
+        final Node issueNode = graphDb.getNodeById(issueId);
+        final Node componentNode = graphDb.getNodeById(componentId);
         final RelationshipType relShipType = GraphRelationRegistry.getRelationshipTypeForClass(IssueComponent.class);
 
         for (final Relationship rel : issueNode.getRelationships())
@@ -353,8 +432,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             deleteComponentRelation(issue, component);
             tx.success();
             success = true;
-        } catch (NullPointerException e) {
-            logger.error("NullpointerException: " + e.getMessage());
+        } catch (NullPointerException | IllegalArgumentException e) {
+            logger.error(e.getClass().getSimpleName() + e.getMessage());
         } finally {
             tx.finish();
             if (logger.isDebugEnabled()) {
@@ -370,16 +449,24 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     public void deleteComponentRelation(final IssueBase issue, final IssueComponent component) {
         if (issue == null)
             throw new NullPointerException("Issue is null.");
+        Long issueId = issue.getId();
+        if (issueId == null)
+            throw new IllegalArgumentException("Id of Issue cant be null. Persist first.");
+
         if (component == null)
             throw new NullPointerException("Component is null.");
+        Long componentId = component.getId();
+        if (componentId == null)
+            throw new IllegalArgumentException("Id of Component cant be null. Persist first.");
+
 
         if (logger.isDebugEnabled())
             logger.debug("deleteComponentRelation");
 
-        final Node issueNode = graphDb.getNodeById(issue.getId());
+        final Node issueNode = graphDb.getNodeById(issueId);
         RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueComponent.class);
         for (final Relationship rel : issueNode.getRelationships(relType, Direction.OUTGOING))
-            if (rel.getOtherNode(issueNode).equals(graphDb.getNodeById(component.getId()))) {
+            if (rel.getOtherNode(issueNode).equals(graphDb.getNodeById(componentId))) {
                 if (logger.isDebugEnabled())
                     logger.debug("Delete Relation to Component: " + issue + ", " + component);
                 rel.delete();
@@ -387,32 +474,6 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
                 if (logger.isDebugEnabled())
                     logger.debug("Has no relation to Component: " + issue + ", " + component);
 
-    }
-
-
-    public boolean deleteAllComponentRelationsTx(final IssueBase issue, final List<IssueComponent> componentList) {
-        boolean success = false;
-        final Transaction tx = graphDb.beginTx();
-        try {
-            if (logger.isDebugEnabled())
-                logger.debug("deleteAllComponentRelationsTx");
-            for (final IssueComponent component : componentList) {
-                deleteComponentRelation(issue, component);
-            }
-            tx.success();
-            success = true;
-        } catch (NullPointerException e) {
-            logger.error("NullpointerException: " + e.getMessage());
-        } finally {
-            tx.finish();
-            if (logger.isDebugEnabled()) {
-                if (success)
-                    logger.debug("Successfull");
-                else
-                    logger.debug("Unsuccessfull");
-            }
-            return success;
-        }
     }
 
     public boolean delete(final IssueBase entity) {

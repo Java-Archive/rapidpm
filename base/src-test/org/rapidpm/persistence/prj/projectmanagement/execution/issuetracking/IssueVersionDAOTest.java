@@ -1,12 +1,15 @@
-package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
+package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.rapidpm.persistence.GraphDaoFactory;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,8 +26,7 @@ public class IssueVersionDAOTest {
 
     @Test
     public void addChangeDelete() {
-        IssueVersion version = new IssueVersion();
-        version.setVersionName("test");
+        IssueVersion version = new IssueVersion("test");
         version = dao.persist(version);
         assertEquals(version, dao.findById(version.getId()));
 
@@ -42,5 +44,17 @@ public class IssueVersionDAOTest {
         IssueVersion verTest = new IssueVersion();
         verTest.setVersionName(version.getVersionName());
         dao.persist(verTest);
+    }
+
+    @Test
+    public void getConnectedIssus() {
+        for (IssueVersion version : dao.loadAllEntities()) {
+            List<IssueBase> issueList = version.getConnectedIssuesFromProject(1L);
+
+            for (IssueBase issue : GraphDaoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+                if (issue.getVersion().equals(version))
+                    assertTrue(issueList.contains(issue));
+            }
+        }
     }
 }

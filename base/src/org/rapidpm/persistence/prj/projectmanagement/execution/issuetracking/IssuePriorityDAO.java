@@ -24,34 +24,12 @@ public class IssuePriorityDAO extends GraphBaseDAO<IssuePriority> {
         super(graphDb, IssuePriority.class, relDaoFactory);
     }
 
-    public List<IssueBase> getConnectedIssues(final IssuePriority priority) {
-        return getConnectedIssuesFromProject(priority, 0L);
-    }
+//    public List<IssueBase> getConnectedIssues(final IssuePriority priority) {
+//        return getConnectedIssuesFromProject(priority, 0L);
+//    }
 
     public List<IssueBase> getConnectedIssuesFromProject(final IssuePriority priority, final Long projectId) {
-        if (priority == null)
-            throw new NullPointerException("Priority is null");
-        if (projectId < 0)
-            throw new IllegalArgumentException("ProjectId must be positiv");
-
-        if (logger.isDebugEnabled())
-            logger.debug("getConnectedIssuesFromProject: " + projectId);
-
-        final List<IssueBase> issueList = new ArrayList<>();
-        final Node prioNode = graphDb.getNodeById(priority.getId());
-        IssueBase issue = null;
-        final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssuePriority.class);
-        for (Relationship rel : prioNode.getRelationships(relType, Direction.INCOMING)) {
-            issue = getObjectFromNode(rel.getOtherNode(prioNode), IssueBase.class);
-            if (issue != null && (projectId == 0 || issue.getProjectId().equals(projectId))) {
-                issueList.add(issue);
-                if (logger.isDebugEnabled())
-                    logger.debug("Is connected Issues: " + issue);
-            } else
-            if (logger.isDebugEnabled())
-                logger.debug("Is not connected: " + issue);
-        }
-        return issueList;
+        return super.getConnectedIssuesFromProject(priority, projectId);
     }
 
     public boolean delete(final IssuePriority entity, final IssuePriority assignTo){

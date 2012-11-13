@@ -7,6 +7,7 @@ import org.neo4j.graphdb.traversal.Evaluators;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.graphdb.traversal.Traverser;
 import org.neo4j.kernel.Traversal;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStoryPoint;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -629,6 +630,38 @@ public class GraphBaseDAO<T> {
             tx.finish();
             return success;
         }
+    }
+
+    protected List<IssueBase> getConnectedIssuesFromProject(final T entity, final Long projectId) {
+        if (entity == null)
+            throw new NullPointerException("StoryPoint is null");
+        if (projectId < 0)
+            throw new IllegalArgumentException("ProjectId must be positiv");
+
+        Long id = getIdFromEntity(entity);
+        if (id == null)
+            throw new IllegalArgumentException("StoryPoint Id cant be null. Persist first.");
+
+        if (logger.isDebugEnabled())
+            logger.debug(this.getClass().getSimpleName() + ".getConnectedIssuesFromProject: " + projectId);
+
+        final List<IssueBase> issueList = new ArrayList<>();
+        final Node statusNode = graphDb.getNodeById(id);
+        if (statusNode == null)
+            throw new NullPointerException("Could not find item in Database.");
+        IssueBase issue = null;
+        final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(clazz);
+        for (Relationship rel : statusNode.getRelationships(relType, Direction.INCOMING)) {
+            issue = getObjectFromNode(rel.getOtherNode(statusNode), IssueBase.class);
+            if (issue != null && (projectId == 0 || issue.getProjectId().equals(projectId))) {
+                issueList.add(issue);
+                if (logger.isDebugEnabled())
+                    logger.debug("Is connected Issues: " + issue);
+            } else
+            if (logger.isDebugEnabled())
+                logger.debug("Is not connected: " + issue);
+        }
+        return issueList;
     }
 }
 

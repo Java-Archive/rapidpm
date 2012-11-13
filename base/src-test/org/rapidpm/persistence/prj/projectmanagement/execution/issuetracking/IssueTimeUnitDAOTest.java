@@ -1,4 +1,4 @@
-package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
+package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 /**
  * Created by IntelliJ IDEA.
  * User: svenruppert
@@ -10,8 +10,6 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracing;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.rapidpm.persistence.prj.BaseDAOTest;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnit;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnitDAO;
 
 import java.util.List;
 
