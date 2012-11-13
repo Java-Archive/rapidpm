@@ -2,23 +2,23 @@
  * RemoteProject.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis #axisVersion# #today# WSDL2Java emitter.
+ * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated;
+package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated;
 
-public class RemoteProject  extends org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.AbstractNamedRemoteEntity  implements java.io.Serializable {
+public class RemoteProject  extends org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.AbstractNamedRemoteEntity  implements java.io.Serializable {
     private java.lang.String description;
 
-    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteScheme issueSecurityScheme;
+    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteScheme issueSecurityScheme;
 
     private java.lang.String key;
 
     private java.lang.String lead;
 
-    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteScheme notificationScheme;
+    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteScheme notificationScheme;
 
-    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemotePermissionScheme permissionScheme;
+    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemotePermissionScheme permissionScheme;
 
     private java.lang.String projectUrl;
 
@@ -31,11 +31,11 @@ public class RemoteProject  extends org.rapidpm.webapp.vaadin.ui.workingareas.ze
            java.lang.String id,
            java.lang.String name,
            java.lang.String description,
-           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteScheme issueSecurityScheme,
+           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteScheme issueSecurityScheme,
            java.lang.String key,
            java.lang.String lead,
-           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteScheme notificationScheme,
-           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemotePermissionScheme permissionScheme,
+           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteScheme notificationScheme,
+           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemotePermissionScheme permissionScheme,
            java.lang.String projectUrl,
            java.lang.String url) {
         super(
@@ -77,7 +77,7 @@ public class RemoteProject  extends org.rapidpm.webapp.vaadin.ui.workingareas.ze
      * 
      * @return issueSecurityScheme
      */
-    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteScheme getIssueSecurityScheme() {
+    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteScheme getIssueSecurityScheme() {
         return issueSecurityScheme;
     }
 
@@ -87,7 +87,7 @@ public class RemoteProject  extends org.rapidpm.webapp.vaadin.ui.workingareas.ze
      * 
      * @param issueSecurityScheme
      */
-    public void setIssueSecurityScheme(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteScheme issueSecurityScheme) {
+    public void setIssueSecurityScheme(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteScheme issueSecurityScheme) {
         this.issueSecurityScheme = issueSecurityScheme;
     }
 
@@ -137,7 +137,7 @@ public class RemoteProject  extends org.rapidpm.webapp.vaadin.ui.workingareas.ze
      * 
      * @return notificationScheme
      */
-    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteScheme getNotificationScheme() {
+    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteScheme getNotificationScheme() {
         return notificationScheme;
     }
 
@@ -147,7 +147,7 @@ public class RemoteProject  extends org.rapidpm.webapp.vaadin.ui.workingareas.ze
      * 
      * @param notificationScheme
      */
-    public void setNotificationScheme(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteScheme notificationScheme) {
+    public void setNotificationScheme(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteScheme notificationScheme) {
         this.notificationScheme = notificationScheme;
     }
 
@@ -157,7 +157,7 @@ public class RemoteProject  extends org.rapidpm.webapp.vaadin.ui.workingareas.ze
      * 
      * @return permissionScheme
      */
-    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemotePermissionScheme getPermissionScheme() {
+    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemotePermissionScheme getPermissionScheme() {
         return permissionScheme;
     }
 
@@ -167,7 +167,7 @@ public class RemoteProject  extends org.rapidpm.webapp.vaadin.ui.workingareas.ze
      * 
      * @param permissionScheme
      */
-    public void setPermissionScheme(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemotePermissionScheme permissionScheme) {
+    public void setPermissionScheme(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemotePermissionScheme permissionScheme) {
         this.permissionScheme = permissionScheme;
     }
 

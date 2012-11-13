@@ -2,23 +2,23 @@
  * RemoteIssue.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis #axisVersion# #today# WSDL2Java emitter.
+ * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated;
+package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated;
 
-public class RemoteIssue  extends org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.AbstractRemoteEntity  implements java.io.Serializable {
-    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteVersion[] affectsVersions;
+public class RemoteIssue  extends org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.AbstractRemoteEntity  implements java.io.Serializable {
+    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteVersion[] affectsVersions;
 
     private java.lang.String assignee;
 
     private java.lang.String[] attachmentNames;
 
-    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteComponent[] components;
+    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteComponent[] components;
 
     private java.util.Calendar created;
 
-    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteCustomFieldValue[] customFieldValues;
+    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteCustomFieldValue[] customFieldValues;
 
     private java.lang.String description;
 
@@ -26,7 +26,7 @@ public class RemoteIssue  extends org.rapidpm.webapp.vaadin.ui.workingareas.zeit
 
     private java.lang.String environment;
 
-    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteVersion[] fixVersions;
+    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteVersion[] fixVersions;
 
     private java.lang.String key;
 
@@ -53,16 +53,16 @@ public class RemoteIssue  extends org.rapidpm.webapp.vaadin.ui.workingareas.zeit
 
     public RemoteIssue(
            java.lang.String id,
-           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteVersion[] affectsVersions,
+           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteVersion[] affectsVersions,
            java.lang.String assignee,
            java.lang.String[] attachmentNames,
-           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteComponent[] components,
+           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteComponent[] components,
            java.util.Calendar created,
-           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteCustomFieldValue[] customFieldValues,
+           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteCustomFieldValue[] customFieldValues,
            java.lang.String description,
            java.util.Calendar duedate,
            java.lang.String environment,
-           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteVersion[] fixVersions,
+           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteVersion[] fixVersions,
            java.lang.String key,
            java.lang.String priority,
            java.lang.String project,
@@ -103,7 +103,7 @@ public class RemoteIssue  extends org.rapidpm.webapp.vaadin.ui.workingareas.zeit
      * 
      * @return affectsVersions
      */
-    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteVersion[] getAffectsVersions() {
+    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteVersion[] getAffectsVersions() {
         return affectsVersions;
     }
 
@@ -113,7 +113,7 @@ public class RemoteIssue  extends org.rapidpm.webapp.vaadin.ui.workingareas.zeit
      * 
      * @param affectsVersions
      */
-    public void setAffectsVersions(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteVersion[] affectsVersions) {
+    public void setAffectsVersions(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteVersion[] affectsVersions) {
         this.affectsVersions = affectsVersions;
     }
 
@@ -163,7 +163,7 @@ public class RemoteIssue  extends org.rapidpm.webapp.vaadin.ui.workingareas.zeit
      * 
      * @return components
      */
-    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteComponent[] getComponents() {
+    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteComponent[] getComponents() {
         return components;
     }
 
@@ -173,7 +173,7 @@ public class RemoteIssue  extends org.rapidpm.webapp.vaadin.ui.workingareas.zeit
      * 
      * @param components
      */
-    public void setComponents(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteComponent[] components) {
+    public void setComponents(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteComponent[] components) {
         this.components = components;
     }
 
@@ -203,7 +203,7 @@ public class RemoteIssue  extends org.rapidpm.webapp.vaadin.ui.workingareas.zeit
      * 
      * @return customFieldValues
      */
-    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteCustomFieldValue[] getCustomFieldValues() {
+    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteCustomFieldValue[] getCustomFieldValues() {
         return customFieldValues;
     }
 
@@ -213,7 +213,7 @@ public class RemoteIssue  extends org.rapidpm.webapp.vaadin.ui.workingareas.zeit
      * 
      * @param customFieldValues
      */
-    public void setCustomFieldValues(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteCustomFieldValue[] customFieldValues) {
+    public void setCustomFieldValues(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteCustomFieldValue[] customFieldValues) {
         this.customFieldValues = customFieldValues;
     }
 
@@ -283,7 +283,7 @@ public class RemoteIssue  extends org.rapidpm.webapp.vaadin.ui.workingareas.zeit
      * 
      * @return fixVersions
      */
-    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteVersion[] getFixVersions() {
+    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteVersion[] getFixVersions() {
         return fixVersions;
     }
 
@@ -293,7 +293,7 @@ public class RemoteIssue  extends org.rapidpm.webapp.vaadin.ui.workingareas.zeit
      * 
      * @param fixVersions
      */
-    public void setFixVersions(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteVersion[] fixVersions) {
+    public void setFixVersions(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteVersion[] fixVersions) {
         this.fixVersions = fixVersions;
     }
 

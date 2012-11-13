@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.uicomponents.export;
+package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.uicomponents.export;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;

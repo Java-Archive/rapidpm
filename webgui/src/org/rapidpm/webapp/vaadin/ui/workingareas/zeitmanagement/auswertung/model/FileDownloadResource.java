@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model;
+package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model;
 
 import com.vaadin.server.DownloadStream;
 import com.vaadin.server.FileResource;

@@ -2,21 +2,21 @@
  * RemoteRoleActor.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis #axisVersion# #today# WSDL2Java emitter.
+ * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated;
+package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated;
 
 public class RemoteRoleActor  implements java.io.Serializable {
     private java.lang.String descriptor;
 
     private java.lang.String parameter;
 
-    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteProjectRole projectRole;
+    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteProjectRole projectRole;
 
     private java.lang.String type;
 
-    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteUser[] users;
+    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteUser[] users;
 
     public RemoteRoleActor() {
     }
@@ -24,9 +24,9 @@ public class RemoteRoleActor  implements java.io.Serializable {
     public RemoteRoleActor(
            java.lang.String descriptor,
            java.lang.String parameter,
-           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteProjectRole projectRole,
+           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteProjectRole projectRole,
            java.lang.String type,
-           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteUser[] users) {
+           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteUser[] users) {
            this.descriptor = descriptor;
            this.parameter = parameter;
            this.projectRole = projectRole;
@@ -80,7 +80,7 @@ public class RemoteRoleActor  implements java.io.Serializable {
      * 
      * @return projectRole
      */
-    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteProjectRole getProjectRole() {
+    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteProjectRole getProjectRole() {
         return projectRole;
     }
 
@@ -90,7 +90,7 @@ public class RemoteRoleActor  implements java.io.Serializable {
      * 
      * @param projectRole
      */
-    public void setProjectRole(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteProjectRole projectRole) {
+    public void setProjectRole(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteProjectRole projectRole) {
         this.projectRole = projectRole;
     }
 
@@ -120,7 +120,7 @@ public class RemoteRoleActor  implements java.io.Serializable {
      * 
      * @return users
      */
-    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteUser[] getUsers() {
+    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteUser[] getUsers() {
         return users;
     }
 
@@ -130,7 +130,7 @@ public class RemoteRoleActor  implements java.io.Serializable {
      * 
      * @param users
      */
-    public void setUsers(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteUser[] users) {
+    public void setUsers(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteUser[] users) {
         this.users = users;
     }
 

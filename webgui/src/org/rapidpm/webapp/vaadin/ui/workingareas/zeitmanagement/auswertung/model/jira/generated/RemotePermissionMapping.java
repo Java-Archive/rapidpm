@@ -2,22 +2,22 @@
  * RemotePermissionMapping.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis #axisVersion# #today# WSDL2Java emitter.
+ * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated;
+package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated;
 
 public class RemotePermissionMapping  implements java.io.Serializable {
-    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemotePermission permission;
+    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemotePermission permission;
 
-    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteEntity[] remoteEntities;
+    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteEntity[] remoteEntities;
 
     public RemotePermissionMapping() {
     }
 
     public RemotePermissionMapping(
-           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemotePermission permission,
-           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteEntity[] remoteEntities) {
+           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemotePermission permission,
+           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteEntity[] remoteEntities) {
            this.permission = permission;
            this.remoteEntities = remoteEntities;
     }
@@ -28,7 +28,7 @@ public class RemotePermissionMapping  implements java.io.Serializable {
      * 
      * @return permission
      */
-    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemotePermission getPermission() {
+    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemotePermission getPermission() {
         return permission;
     }
 
@@ -38,7 +38,7 @@ public class RemotePermissionMapping  implements java.io.Serializable {
      * 
      * @param permission
      */
-    public void setPermission(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemotePermission permission) {
+    public void setPermission(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemotePermission permission) {
         this.permission = permission;
     }
 
@@ -48,7 +48,7 @@ public class RemotePermissionMapping  implements java.io.Serializable {
      * 
      * @return remoteEntities
      */
-    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteEntity[] getRemoteEntities() {
+    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteEntity[] getRemoteEntities() {
         return remoteEntities;
     }
 
@@ -58,7 +58,7 @@ public class RemotePermissionMapping  implements java.io.Serializable {
      * 
      * @param remoteEntities
      */
-    public void setRemoteEntities(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteEntity[] remoteEntities) {
+    public void setRemoteEntities(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteEntity[] remoteEntities) {
         this.remoteEntities = remoteEntities;
     }
 

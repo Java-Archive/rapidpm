@@ -2,12 +2,12 @@
  * JiraSoapServiceServiceLocator.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis #axisVersion# #today# WSDL2Java emitter.
+ * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated;
+package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated;
 
-public class JiraSoapServiceServiceLocator extends org.apache.axis.client.Service implements org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.JiraSoapServiceService {
+public class JiraSoapServiceServiceLocator extends org.apache.axis.client.Service implements org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.JiraSoapServiceService {
 
     public JiraSoapServiceServiceLocator() {
     }
@@ -39,7 +39,7 @@ public class JiraSoapServiceServiceLocator extends org.apache.axis.client.Servic
         JirasoapserviceV2WSDDServiceName = name;
     }
 
-    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.JiraSoapService getJirasoapserviceV2() throws javax.xml.rpc.ServiceException {
+    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.JiraSoapService getJirasoapserviceV2() throws javax.xml.rpc.ServiceException {
        java.net.URL endpoint;
         try {
             endpoint = new java.net.URL(JirasoapserviceV2_address);
@@ -50,9 +50,9 @@ public class JiraSoapServiceServiceLocator extends org.apache.axis.client.Servic
         return getJirasoapserviceV2(endpoint);
     }
 
-    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.JiraSoapService getJirasoapserviceV2(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
+    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.JiraSoapService getJirasoapserviceV2(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
         try {
-            org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.JirasoapserviceV2SoapBindingStub _stub = new org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.JirasoapserviceV2SoapBindingStub(portAddress, this);
+            org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.JirasoapserviceV2SoapBindingStub _stub = new org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.JirasoapserviceV2SoapBindingStub(portAddress, this);
             _stub.setPortName(getJirasoapserviceV2WSDDServiceName());
             return _stub;
         }
@@ -72,8 +72,8 @@ public class JiraSoapServiceServiceLocator extends org.apache.axis.client.Servic
      */
     public java.rmi.Remote getPort(Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
         try {
-            if (org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.JiraSoapService.class.isAssignableFrom(serviceEndpointInterface)) {
-                org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.JirasoapserviceV2SoapBindingStub _stub = new org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.JirasoapserviceV2SoapBindingStub(new java.net.URL(JirasoapserviceV2_address), this);
+            if (org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.JiraSoapService.class.isAssignableFrom(serviceEndpointInterface)) {
+                org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.JirasoapserviceV2SoapBindingStub _stub = new org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.JirasoapserviceV2SoapBindingStub(new java.net.URL(JirasoapserviceV2_address), this);
                 _stub.setPortName(getJirasoapserviceV2WSDDServiceName());
                 return _stub;
             }

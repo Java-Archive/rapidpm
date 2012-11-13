@@ -1,9 +1,12 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.uicomponents.filter;
+package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.uicomponents.filter;
 
 import com.vaadin.data.Property;
 import com.vaadin.ui.*;
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.ZeitauswertungScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.uicomponents.filter.listeners.ListSelectImmediateValueChangeListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.ZeitauswertungScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.ZeitauswertungScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.uicomponents.filter.listeners.ListSelectImmediateValueChangeListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.uicomponents.filter.listeners
+        .ListSelectImmediateValueChangeListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;

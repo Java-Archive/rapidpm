@@ -1,13 +1,13 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement;
+package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung;
 
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.logic.TableFiller;
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.logic.jira.JiraSoapClient;
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.UserWorkLog;
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.uicomponents.export.ExportPanel;
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.uicomponents.filter.FilterPanel;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.UserWorkLog;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.logic.TableFiller;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.logic.jira.JiraSoapClient;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.uicomponents.export.ExportPanel;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.uicomponents.filter.FilterPanel;
 
 
 public class ZeitauswertungScreen extends Screen {

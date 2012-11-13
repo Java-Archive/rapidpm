@@ -1,9 +1,9 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.logic.jira;
+package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.logic.jira;
 
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.UserWorkLog;
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.JirasoapserviceV2SoapBindingStub;
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteIssue;
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteWorklog;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.UserWorkLog;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.JirasoapserviceV2SoapBindingStub;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteIssue;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteWorklog;
 
 import javax.xml.rpc.ServiceException;
 import java.util.ArrayList;
@@ -20,8 +20,8 @@ import java.util.List;
  */
 public class JiraSoapClient {
 
-    public static final String USER = "marco.ebbinghaus";
-    public static final String PASSWD = "Opafe1Awet15";
+    public static final String USER = "xxx";
+    public static final String PASSWD = "???";
 
     private JiraRequestExecutor<List<UserWorkLog>> executor;
     private List<UserWorkLog> userWorkLogs;

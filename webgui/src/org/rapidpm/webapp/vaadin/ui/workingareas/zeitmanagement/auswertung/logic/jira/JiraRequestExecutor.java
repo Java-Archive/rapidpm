@@ -1,7 +1,7 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.logic.jira;
+package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.logic.jira;
 
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.JiraSoapServiceServiceLocator;
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.JirasoapserviceV2SoapBindingStub;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.JiraSoapServiceServiceLocator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.JirasoapserviceV2SoapBindingStub;
 
 
 /**

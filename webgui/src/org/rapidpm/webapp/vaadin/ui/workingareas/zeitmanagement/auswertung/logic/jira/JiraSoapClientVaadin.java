@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.logic.jira;
+package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.logic.jira;
 
 import com.vaadin.ui.Table;
 import org.rapidpm.data.table.BaseTableSimpleCreatorExecutor;
@@ -6,7 +6,7 @@ import org.rapidpm.data.table.TableCreator;
 import org.rapidpm.data.table.export.Table2CSV;
 import org.rapidpm.data.table.export.Table2XLSX;
 import org.rapidpm.webapp.vaadin.MainUI;
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.*;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.*;
 
 import java.io.*;
 import java.util.List;

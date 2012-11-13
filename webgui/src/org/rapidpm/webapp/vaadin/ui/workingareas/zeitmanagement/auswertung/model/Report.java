@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model;
+package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model;
 
 /**
  * Copyright by Sven Ruppert // chef@sven-ruppert.de

@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.uicomponents.filter;
+package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.uicomponents.filter;
 
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.HorizontalLayout;

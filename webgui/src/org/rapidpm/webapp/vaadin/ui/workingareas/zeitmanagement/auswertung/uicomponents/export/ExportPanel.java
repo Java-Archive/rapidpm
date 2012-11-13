@@ -1,9 +1,9 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.uicomponents.export;
+package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.uicomponents.export;
 
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.MainUI;
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.logic.jira.JiraSoapClientVaadin;
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.ExportTypes;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.logic.jira.JiraSoapClientVaadin;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.ExportTypes;
 
 /**
  * Created with IntelliJ IDEA.

@@ -2,13 +2,13 @@
  * RemotePermissionScheme.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis #axisVersion# #today# WSDL2Java emitter.
+ * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated;
+package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated;
 
-public class RemotePermissionScheme  extends org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteScheme  implements java.io.Serializable {
-    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemotePermissionMapping[] permissionMappings;
+public class RemotePermissionScheme  extends org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteScheme  implements java.io.Serializable {
+    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemotePermissionMapping[] permissionMappings;
 
     public RemotePermissionScheme() {
     }
@@ -18,7 +18,7 @@ public class RemotePermissionScheme  extends org.rapidpm.webapp.vaadin.ui.workin
            java.lang.Long id,
            java.lang.String name,
            java.lang.String type,
-           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemotePermissionMapping[] permissionMappings) {
+           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemotePermissionMapping[] permissionMappings) {
         super(
             description,
             id,
@@ -33,7 +33,7 @@ public class RemotePermissionScheme  extends org.rapidpm.webapp.vaadin.ui.workin
      * 
      * @return permissionMappings
      */
-    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemotePermissionMapping[] getPermissionMappings() {
+    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemotePermissionMapping[] getPermissionMappings() {
         return permissionMappings;
     }
 
@@ -43,7 +43,7 @@ public class RemotePermissionScheme  extends org.rapidpm.webapp.vaadin.ui.workin
      * 
      * @param permissionMappings
      */
-    public void setPermissionMappings(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemotePermissionMapping[] permissionMappings) {
+    public void setPermissionMappings(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemotePermissionMapping[] permissionMappings) {
         this.permissionMappings = permissionMappings;
     }
 

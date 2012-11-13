@@ -2,10 +2,10 @@
  * RemoteServerInfo.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis #axisVersion# #today# WSDL2Java emitter.
+ * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated;
+package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated;
 
 public class RemoteServerInfo  implements java.io.Serializable {
     private java.lang.String baseUrl;
@@ -14,7 +14,7 @@ public class RemoteServerInfo  implements java.io.Serializable {
 
     private java.lang.String buildNumber;
 
-    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteTimeInfo serverTime;
+    private org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteTimeInfo serverTime;
 
     private java.lang.String version;
 
@@ -25,7 +25,7 @@ public class RemoteServerInfo  implements java.io.Serializable {
            java.lang.String baseUrl,
            java.util.Calendar buildDate,
            java.lang.String buildNumber,
-           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteTimeInfo serverTime,
+           org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteTimeInfo serverTime,
            java.lang.String version) {
            this.baseUrl = baseUrl;
            this.buildDate = buildDate;
@@ -100,7 +100,7 @@ public class RemoteServerInfo  implements java.io.Serializable {
      * 
      * @return serverTime
      */
-    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteTimeInfo getServerTime() {
+    public org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteTimeInfo getServerTime() {
         return serverTime;
     }
 
@@ -110,7 +110,7 @@ public class RemoteServerInfo  implements java.io.Serializable {
      * 
      * @param serverTime
      */
-    public void setServerTime(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.jira.generated.RemoteTimeInfo serverTime) {
+    public void setServerTime(org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteTimeInfo serverTime) {
         this.serverTime = serverTime;
     }
 

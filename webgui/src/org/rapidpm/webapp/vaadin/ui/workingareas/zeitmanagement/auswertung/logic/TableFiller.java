@@ -1,8 +1,8 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.logic;
+package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.logic;
 
 import com.vaadin.ui.Table;
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.UserWorkLog;
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model.UserWorkLogContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.UserWorkLog;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.UserWorkLogContainer;
 
 import java.util.List;
 

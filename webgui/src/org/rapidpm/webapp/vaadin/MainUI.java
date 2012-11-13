@@ -12,7 +12,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.Proj
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.BenutzerScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.ZeitauswertungScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.ZeitauswertungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.erfassung.ZeiterfassungScreen;
 
 import java.util.Locale;

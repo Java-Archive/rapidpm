@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.model;
+package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model;
 
 import java.util.Date;
 
