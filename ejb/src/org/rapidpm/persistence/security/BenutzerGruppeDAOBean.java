@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
-import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
 import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
@@ -14,7 +13,6 @@ import org.rapidpm.persistence.system.security.BenutzerGruppeDAO;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -89,7 +87,7 @@ public class BenutzerGruppeDAOBean {
     }
 
     @WebResult(name = "BenutzerGruppeResult")
-    @Interceptors(LoggingInterceptor.class)
+
     @WebMethod(operationName = "loadRevisionFor")
     public
     BenutzerGruppeResult loadRevisionFor(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid, @WebParam(name = "oid", mode = WebParam.Mode.IN) final Long oid) {
@@ -99,7 +97,7 @@ public class BenutzerGruppeDAOBean {
 
 
     @WebResult(name = "BenutzerGruppeResult")
-    @Interceptors(LoggingInterceptor.class)
+
     @WebMethod(operationName = "loadBenutzerGruppeByName")
     public
     BenutzerGruppeResult loadBenutzerGruppeByName(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
@@ -111,7 +109,7 @@ public class BenutzerGruppeDAOBean {
 
     @WebResult(name = "BenutzerGruppeResult")
     @WebMethod(operationName = "saveOrUpdateTX")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     BenutzerGruppeResult saveOrUpdateTX(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                         @WebParam(name = "entity", mode = WebParam.Mode.IN) final FlatBenutzerGruppe entity) {
@@ -121,7 +119,7 @@ public class BenutzerGruppeDAOBean {
 
     @WebResult(name = "BenutzerGruppeResult")
     @WebMethod(operationName = "removeTX")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     BenutzerGruppeResult removeTX(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid, @WebParam(name = "oid", mode = WebParam.Mode.IN) final Long oid) {
         return crudExecuter.remove(sessionid, uid, oid);
@@ -130,7 +128,7 @@ public class BenutzerGruppeDAOBean {
 
     @WebResult(name = "BenutzerGruppeResult")
     @WebMethod(operationName = "findByID")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     BenutzerGruppeResult findByID(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid, @WebParam(name = "oid", mode = WebParam.Mode.IN) final Long oid) {
         final BenutzerGruppe byID = getBenutzerGruppeDAO().findByID(oid);
@@ -143,7 +141,7 @@ public class BenutzerGruppeDAOBean {
 
     @WebResult(name = "BenutzerGruppeResult")
     @WebMethod(operationName = "loadWithOIDList")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     BenutzerGruppeResult loadWithOIDList(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                          @WebParam(name = "oidliste", mode = WebParam.Mode.IN) final List<Long> oids) {
@@ -152,7 +150,7 @@ public class BenutzerGruppeDAOBean {
 
     @WebResult(name = "BenutzerGruppeResult")
     @WebMethod(operationName = "loadAllEntities")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     BenutzerGruppeResult loadAllEntities(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid) {
         return createResult(getBenutzerGruppeDAO().loadAllEntities());

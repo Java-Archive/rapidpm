@@ -6,13 +6,11 @@
 package org.rapidpm.services;
 
 import org.apache.log4j.Logger;
-import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.lang.PackageClassLoader;
 import org.rapidpm.logging.LoggerQualifier;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -38,7 +36,7 @@ public class WebServiceInfoBean {
     private transient Logger logger;
 
     @WebResult(name = "servicelist")
-    @Interceptors(LoggingInterceptor.class)
+
     @WebMethod(operationName = "getWebServiceList")
     public
     List<String> getWebServiceList(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid,
@@ -59,7 +57,7 @@ public class WebServiceInfoBean {
 
 
 //    @WebMethod(operationName = "getTailFromLogfile")
-//    @Interceptors(LoggingInterceptor.class)
+//
 //    public
 //    @WebResult(name = "logmessages")
 //    String getTailFromLogfile(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid,

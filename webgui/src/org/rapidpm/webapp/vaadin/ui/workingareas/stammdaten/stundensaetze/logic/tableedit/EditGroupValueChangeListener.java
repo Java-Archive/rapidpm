@@ -6,8 +6,8 @@ import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tablelisteners.StundensaetzeItemClickListener;
@@ -61,10 +61,11 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
     }
 
     private void editMethod(final EditModes mode) {
-        final EditGroupValueChangeListenerBean editGroupValueChangeListenerBean = EJBFactory
-                .getEjbInstance(EditGroupValueChangeListenerBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = editGroupValueChangeListenerBean.getDaoFactoryBean();
+//        final EditGroupValueChangeListenerBean editGroupValueChangeListenerBean = EJBFactory
+//                .getEjbInstance(EditGroupValueChangeListenerBean.class);
+//        final DaoFactoryBean baseDaoFactoryBean = editGroupValueChangeListenerBean.getDaoFactoryBean();
 
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         for (final Object listener : saveButton.getListeners(Component.Event.class)) {
             if (listener instanceof Button.ClickListener) {
                 saveButton.removeClickListener((Button.ClickListener) listener);
@@ -90,7 +91,7 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
                 public void buttonClick(Button.ClickEvent event) {
                     try {
                         for(RessourceGroup ressourceGroup : (Collection<RessourceGroup>) tabelle.getItemIds()){
-                            baseDaoFactoryBean.saveOrUpdate(ressourceGroup);
+                            daoFactory.saveOrUpdate(ressourceGroup);
                         }
                         screen.generateTableAndCalculate();
                         saveButtonLayout.setVisible(false);
@@ -116,7 +117,7 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
                     try {
 
                         //RessourceGroup in DB updaten
-                        baseDaoFactoryBean.saveOrUpdate(tabelle.getValue());
+                        daoFactory.saveOrUpdate(tabelle.getValue());
 
                         screen.generateTableAndCalculate();
 

@@ -2,9 +2,12 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit;
 
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
@@ -42,8 +45,8 @@ public class AufwandProjInitScreen extends Screen {
     private HierarchicalContainer dataSource = new HierarchicalContainer();
     private MyTreeTable treeTable = new MyTreeTable();
     private MyTable uebersichtTable = new MyTable();
-    private AufwandProjInitScreenBean bean;
-    private DaoFactoryBean baseDaoFactoryBean;
+//    private AufwandProjInitScreenBean bean;
+//    private DaoFactoryBean baseDaoFactoryBean;
 
     private static final String ABSOLUTE_WIDTH = "700px";
 
@@ -58,9 +61,10 @@ public class AufwandProjInitScreen extends Screen {
     public AufwandProjInitScreen(final MainUI ui) {
         super(ui);
 
-        bean = EJBFactory.getEjbInstance(AufwandProjInitScreenBean.class);
-        baseDaoFactoryBean = bean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
+//        bean = EJBFactory.getEjbInstance(AufwandProjInitScreenBean.class);
+//        baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        refreshEntities(daoFactory);
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
 
@@ -129,8 +133,9 @@ public class AufwandProjInitScreen extends Screen {
         manntageField.setReadOnly(true);
         summeField.setReadOnly(true);
         final PlannedProject projectFromSession = ui.getCurrentProject();
-        final PlannedProject projekt = baseDaoFactoryBean.getPlannedProjectDAO().findByID
-                (projectFromSession.getId());
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
+        final PlannedProject projekt = plannedProjectDAO.findByID(projectFromSession.getId());
         projektField.setValue(projekt.getProjektName());
     }
 
@@ -176,7 +181,7 @@ public class AufwandProjInitScreen extends Screen {
         addComponent(formLayout);
     }
 
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactory baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);

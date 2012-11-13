@@ -10,7 +10,6 @@ import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.data.LoggingResult;
 import org.rapidpm.ejb3.CRUDExecuter;
-import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
 import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
@@ -27,7 +26,6 @@ import org.rapidpm.persistence.system.security.Mandantengruppe;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -174,7 +172,7 @@ public class RegistrationDAOBean {
     }
 
     @WebMethod(operationName = "loadRevisionFor")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebResult(name = "RegistrationResult")
     RegistrationResult loadRevisionFor(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid, @WebParam(name = "oid", mode = WebParam.Mode.IN) final Long oid) {
@@ -184,7 +182,7 @@ public class RegistrationDAOBean {
 
 
     @WebMethod(operationName = "checkIfLoginIsAvailable")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebResult(name = "CheckIfLoginIsAvailableResult")
     CheckIfLoginIsAvailableResult checkIfLoginIsAvailable(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
@@ -218,7 +216,7 @@ public class RegistrationDAOBean {
 
 
     @WebMethod(operationName = "loadAllRegistrationForMandantengruppe")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebResult(name = "RegistrationResult")
     RegistrationResult loadAllRegistrationForMandantengruppe(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
@@ -229,7 +227,7 @@ public class RegistrationDAOBean {
     }
 
     @WebMethod(operationName = "loadAllRegistrationForWebApp")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebResult(name = "RegistrationResult")
     RegistrationResult loadAllRegistrationForWebApp(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
@@ -239,7 +237,7 @@ public class RegistrationDAOBean {
     }
 
     @WebMethod(operationName = "loadAllRegistrationForWebAppAndStatus")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebResult(name = "RegistrationResult")
     RegistrationResult loadAllRegistrationForWebApp(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
@@ -249,7 +247,7 @@ public class RegistrationDAOBean {
     }
 
     @WebMethod(operationName = "loadAllRegistrationForWebAppAndStatuslist")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebResult(name = "RegistrationResult")
     RegistrationResult loadAllRegistrationForWebApp(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
@@ -259,7 +257,7 @@ public class RegistrationDAOBean {
     }
 
     @WebMethod(operationName = "loadAllRegistrationForWebAppWithoutAccepted")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebResult(name = "RegistrationResult")
     RegistrationResult loadAllRegistrationForWebAppWithoutAccepted(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
@@ -269,7 +267,7 @@ public class RegistrationDAOBean {
     }
 
     @WebMethod(operationName = "loadAllRegistrationForWebAppAndAproval")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebResult(name = "RegistrationResult")
     RegistrationResult loadAllRegistrationForWebAppAndAproval(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
@@ -278,7 +276,7 @@ public class RegistrationDAOBean {
     }
 
     @WebMethod(operationName = "loadAllRegistrationWithoutAccepted")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebResult(name = "RegistrationResult")
     RegistrationResult loadAllRegistrationWithoutAccepted(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid) {
@@ -286,7 +284,7 @@ public class RegistrationDAOBean {
     }
 
     @WebMethod(operationName = "loadAllRegistrationForAproval")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebResult(name = "RegistrationResult")
     RegistrationResult loadAllRegistrationForAproval(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid) {
@@ -294,7 +292,7 @@ public class RegistrationDAOBean {
     }
 
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "saveOrUpdateTX")
     @WebResult(name = "RegistrationResult")
@@ -304,7 +302,7 @@ public class RegistrationDAOBean {
         return crudExecuter.saveOrUpdate(sessionid, uid, entity);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "removeTX")
     @WebResult(name = "RegistrationResult")
@@ -312,7 +310,7 @@ public class RegistrationDAOBean {
         return crudExecuter.remove(sessionid, uid, oid);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "findByID")
     @WebResult(name = "RegistrationResult")
@@ -325,7 +323,7 @@ public class RegistrationDAOBean {
         }
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadWithOIDList")
     @WebResult(name = "RegistrationResult")
@@ -334,7 +332,7 @@ public class RegistrationDAOBean {
         return createResult(getRegistrationDAO().loadWithOIDList(oids));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadAllEntities")
     @WebResult(name = "RegistrationResult")

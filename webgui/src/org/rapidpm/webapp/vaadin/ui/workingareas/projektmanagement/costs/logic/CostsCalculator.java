@@ -1,7 +1,9 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic;
 
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
@@ -28,16 +30,17 @@ public class CostsCalculator {
 
     private final Map<RessourceGroup, Double> ressourceGroupsCostsMap = new HashMap<>();
     private ResourceBundle messages;
-    private CostsCalcutorBean bean;
+//    private CostsCalcutorBean bean;
     private PlannedProject projekt;
 
     private Double totalCostsExakt = 0.0;
 
     public CostsCalculator(final ResourceBundle bundle) {
-        bean = EJBFactory.getEjbInstance(CostsCalcutorBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
-        projekt = baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities().get(0);
+//        bean = EJBFactory.getEjbInstance(CostsCalcutorBean.class);
+//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        refreshEntities(daoFactory);
+        projekt = daoFactory.getPlannedProjectDAO().loadAllEntities().get(0);
         messages = bundle;
     }
 
@@ -108,7 +111,7 @@ public class CostsCalculator {
         return format.format(totalCostsExakt);
     }
 
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactory baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);
