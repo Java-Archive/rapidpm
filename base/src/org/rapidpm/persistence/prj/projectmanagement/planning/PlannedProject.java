@@ -2,13 +2,16 @@ package org.rapidpm.persistence.prj.projectmanagement.planning;
 
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.book.Buch;
+import org.rapidpm.persistence.prj.projectmanagement.controlling.BaseControllingunit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.finance.PlannedOffer;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedTravel;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 public class PlannedProject {
@@ -17,6 +20,12 @@ public class PlannedProject {
     public static final String ID = "id";
     public static final String NAME = "projektName";
     public static final String TOKEN = "projektToken";
+
+    @Transient
+    private BaseControllingunit totalProjectControllingunit;
+
+    @Transient
+    Map<RessourceGroup, BaseControllingunit> resourceGroupControllingMap;
 
     @Id
     @TableGenerator(name = "PKGenPlannedProject", table = "pk_gen", pkColumnName = "gen_key",
@@ -83,6 +92,7 @@ public class PlannedProject {
         sb.append(", responsiblePerson=").append(responsiblePerson);
         //        sb.append(", created=").append(created);
         sb.append(", info='").append(info).append('\'');
+        sb.append(", totalProjectControllingunit").append(totalProjectControllingunit);
         sb.append('}');
         return sb.toString();
     }

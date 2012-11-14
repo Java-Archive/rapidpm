@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
+import org.rapidpm.persistence.prj.projectmanagement.controlling.Risk;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.apache.log4j.Logger;
 
@@ -51,6 +52,9 @@ public class IssueTimeUnit {
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private Benutzer worker;
 
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    private Risk risk;
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -90,6 +94,10 @@ public class IssueTimeUnit {
             return false;
         }
 
+        if(!risk.equals(issueTimeUnit.risk)){
+            return false;
+        }
+
         return true;
     }
 
@@ -100,6 +108,7 @@ public class IssueTimeUnit {
         result = 31 * result + minutes;
         result = 31 * result + comment.hashCode();
         result = 31 * result + worker.hashCode();
+        result = 31 * result + risk.hashCode();
         return result;
     }
 

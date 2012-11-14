@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning;
 
+import org.rapidpm.persistence.prj.projectmanagement.controlling.Risk;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 
 import javax.persistence.*;
@@ -26,6 +27,9 @@ public class PlanningUnitElement {
     @Basic private int plannedDays;
     @Basic private int plannedHours;
     @Basic private int plannedMinutes;
+
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    private Risk risk;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private RessourceGroup ressourceGroup;

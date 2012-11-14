@@ -1,13 +1,14 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning;
 
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.controlling.BaseControllingunit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.PlannedMeeting;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedTravel;
-import org.rapidpm.persistence.prj.stammdaten.person.Person;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.system.security.Benutzer;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -31,6 +32,15 @@ public class PlanningUnit {
     public static final String DESCPRIPTION = "description";
 
 
+    @Transient
+    private BaseControllingunit totalControllingUnit;
+    @Transient
+    private BaseControllingunit totalOwnIssuesCotntrollingUnit;
+    @Transient
+    private BaseControllingunit totalSubPlaningUnitsControllingUnit;
+
+    @Transient
+    Map<RessourceGroup, BaseControllingunit> resourceGroupControllingMap;
 
     @Id
     @TableGenerator(name = "PKGenPlanningUnit", table = "pk_gen", pkColumnName = "gen_key",
