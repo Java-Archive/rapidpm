@@ -91,7 +91,7 @@ public class IssueBase implements PersistInGraph {
     @Relational(clazz = PlanningUnit.class)
     private PlanningUnit planningUnit;
 
-    @LazyGraphPersisting
+    @LazyGraphPersist
     private Map<Method, List<Object[]>> graphMap;
 
 
