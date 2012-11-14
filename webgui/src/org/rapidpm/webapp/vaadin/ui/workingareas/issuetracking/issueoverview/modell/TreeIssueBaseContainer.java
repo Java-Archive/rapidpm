@@ -88,10 +88,6 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
                     this.setChildrenAllowed(parentItem, false);
             }
 
-
-
-
-
         return success;
     }
 }
