@@ -243,7 +243,7 @@ public class GraphBaseDAO<T> {
                         }
                     }
                 }
-                else if (field.isAnnotationPresent(LazyGraphPersisting.class)) {
+                else if (field.isAnnotationPresent(LazyGraphPersist.class)) {
                     final Object fieldValue = field.get(entity);
                     if (fieldValue != null) {
                         final Map valueMap = Map.class.cast(fieldValue);
