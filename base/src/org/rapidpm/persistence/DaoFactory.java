@@ -54,7 +54,7 @@ import javax.persistence.*;
 
 public class DaoFactory {
     private static final Logger logger = Logger.getLogger(DaoFactory.class);
-    private DAO.EntityUtils entityUtils;
+    private DAO.EntityUtils entityUtils = new DAO.EntityUtils();
 
     public DaoFactory(final String persistenceUnitName) {
         final EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);

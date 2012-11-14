@@ -9,6 +9,8 @@ import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
@@ -17,10 +19,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabAddButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabDeleteButtonClickListener;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.AbstractIssueDataContainer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.CommentsDataContainer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.RelationsDataContainer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TestCasesDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.*;
 
 import java.util.*;
 
@@ -72,13 +71,14 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
     @Override
     protected AbstractOrderedLayout buildSaveableForm() {
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final List<IssueType> typeList = GraphDaoFactory.getIssueTypeDAO().loadAllEntities();
         final List<IssueStatus> statusList = GraphDaoFactory.getIssueStatusDAO().loadAllEntities();
         final List<IssuePriority> priorityList =  GraphDaoFactory.getIssuePriorityDAO().loadAllEntities();
         final List<IssueVersion> versionList =  GraphDaoFactory.getIssueVersionDAO().loadAllEntities();
         final List<IssueStoryPoint> storyPointList =  GraphDaoFactory.getIssueStoryPointDAO().loadAllEntities();
         final List<IssueComponent> componentsList = GraphDaoFactory.getIssueComponentDAO().loadAllEntities();
-        final List<Benutzer> userList =  screen.getBaseDaoFactoryBean().getBenutzerDAO().loadAllEntities();
+        final List<Benutzer> userList =  daoFactory.getBenutzerDAO().loadAllEntities();
 
         VerticalLayout formLayout = new VerticalLayout();
         formLayout.setSpacing(true);
@@ -161,7 +161,13 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         assigneeSelect = new ComboBox();
         assigneeSelect.addContainerProperty(PROPERTY_CAPTION, String.class, null);
         assigneeSelect.setItemCaptionPropertyId(PROPERTY_CAPTION);
+        int i= 0;
         for (Benutzer user : userList) {
+            //TODO entfernen sobald bug behoben
+            if (i == 0) {
+                i++;
+                continue;
+            }
             item = assigneeSelect.addItem(user);
             item.getItemProperty(PROPERTY_CAPTION).setValue(user.getLogin());
         }
@@ -411,7 +417,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
     public IssueBase setIssueProperties(boolean newIssue) {
         if (newIssue) {
-            this.issue = new IssueBase(screen.getCurrentProject().getId());
+            issue = new IssueBase(screen.getCurrentProject().getId());
             issue.setReporter(screen.getUi().getCurrentUser());
             if (logger.isInfoEnabled())
                     logger.info("Adding new issue");
@@ -445,14 +451,25 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         issue.setRisk((Integer) riskSelect.getValue());
         issue.setStory(descriptionTextArea.getValue());
 
-        for (IssueComponent component : (Set<IssueComponent>) componentListSelect.getValue())
+        for (final IssueComponent component : (Set<IssueComponent>) componentListSelect.getValue())
             issue.addComponent(component);
 
-        List<IssueComment> comments = new ArrayList<>((Collection<IssueComment>)tabComments.getItemIds());
+        final List<IssueComment> comments = new ArrayList<>((Collection<IssueComment>)tabComments.getItemIds());
         issue.setComments(comments);
 
-        List<IssueTestCase> testCases = new ArrayList<>((Collection<IssueTestCase>)tabTestcases.getItemIds());
+        final List<IssueTestCase> testCases = new ArrayList<>((Collection<IssueTestCase>)tabTestcases.getItemIds());
         issue.setTestcases(testCases);
+
+        final RelationsDataContainer relContainer = (RelationsDataContainer)tabRelations.getContainerDataSource();
+        for (RelationItem delItem : relContainer.getDeleteList()) {
+            issue.removeConnectionToIssue(delItem.getConnIssue(), delItem.getRelation(), delItem.getDirection());
+        }
+
+        for (RelationItem addItem : relContainer.getCreateList()) {
+            issue.connectToIssueAs(addItem.getConnIssue(), addItem.getRelation());
+        }
+
+        relContainer.resetTransactions();
 
         issue = GraphDaoFactory.getIssueBaseDAO(screen.getCurrentProject().getId()).persist(issue);
         return issue;

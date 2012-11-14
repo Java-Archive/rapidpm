@@ -159,8 +159,8 @@ public class IssueBase implements PersistInGraph {
 
 
     public boolean addSubIssue(final IssueBase subIssue) {
-        //return GraphDaoFactory.getIssueBaseDAO(projectId).addSubIssueTx(this, subIssue);
-        return addToMap("addSubIssueTx", new Object[]{this, subIssue});
+        return GraphDaoFactory.getIssueBaseDAO(projectId).addSubIssueTx(this, subIssue);
+//        return addToMap("addSubIssueTx", new Object[]{this, subIssue});
     }
 
     public List<IssueBase> getSubIssues() {
@@ -168,8 +168,8 @@ public class IssueBase implements PersistInGraph {
     }
 
     public boolean removeSubIssue(final IssueBase subIssue) {
-//        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteSubIssueRelationTx(this, subIssue);
-        return addToMap("deleteSubIssueRelationTx", new Object[]{this, subIssue});
+        return GraphDaoFactory.getIssueBaseDAO(projectId).deleteSubIssueRelationTx(this, subIssue);
+//        return addToMap("deleteSubIssueRelationTx", new Object[]{this, subIssue});
     }
 
 

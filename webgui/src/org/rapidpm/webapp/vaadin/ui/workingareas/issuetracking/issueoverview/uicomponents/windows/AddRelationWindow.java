@@ -68,7 +68,7 @@ public class AddRelationWindow extends Window implements Internationalizationabl
         relationsSelect.setFilteringMode(FilteringMode.STARTSWITH);
         baseLayout.addComponent(relationsSelect);
 
-        final List<IssueBase> issueList = GraphDaoFactory.getIssueBaseDAO(relationContainer.getCurrentIssue().getProjectId())
+        final List<IssueBase> issueList = GraphDaoFactory.getIssueBaseDAO(screen.getCurrentProject().getId())
         .loadAllEntities();
         issueSelect = new ComboBox();
         issueSelect.setWidth("100%");

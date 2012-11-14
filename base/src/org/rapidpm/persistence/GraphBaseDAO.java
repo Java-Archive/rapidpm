@@ -11,6 +11,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ann
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -217,7 +218,7 @@ public class GraphBaseDAO<T> {
                                 }
                             }
                             if (deleteInRel) {
-                                relDao.remove(relDao.findByID((Long)singleId));
+                                relDaoFactory.remove(relDao.findByID((Long)singleId));
                             }
                         }
 
@@ -225,7 +226,7 @@ public class GraphBaseDAO<T> {
                         while (it.hasNext()) {
                             Object single = it.next();
                             if (relDao != null)
-                                relDao.saveOrUpdate(single);
+                                relDaoFactory.saveOrUpdate(single);
                             ids[i++] = getIdFromEntity(single, aClass);
                         }
                         node.setProperty(field.getName(), ids);

@@ -69,9 +69,9 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
 
     @Override
     public boolean removeItem(Object itemId) {
-        boolean success = true;
+        boolean success = false;
         Object parentItem = this.getParent(itemId);
-        IssueBase issue = (IssueBase)this.getContainerProperty(itemId, TreeIssueBaseContainer.PROPERTY_ISSUEBASE)
+        IssueBase issue = (IssueBase)this.getContainerProperty(itemId, PROPERTY_ISSUEBASE)
                 .getValue();
 
         if (this.hasChildren(itemId)) {
@@ -81,14 +81,16 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
             }
         }
 
-        if (!this.hasChildren(parentItem))
-            this.setChildrenAllowed(parentItem, false);
+        if (GraphDaoFactory.getIssueBaseDAO(currentProject.getId()).delete(issue))
+            if (super.removeItem(itemId)) {
+                success = true;
+                if (!this.hasChildren(parentItem))
+                    this.setChildrenAllowed(parentItem, false);
+            }
 
-        if (!GraphDaoFactory.getIssueBaseDAO(currentProject.getId()).delete(issue))
-            success = false;
 
-        if (!super.removeItem(itemId))
-            success = false;
+
+
 
         return success;
     }

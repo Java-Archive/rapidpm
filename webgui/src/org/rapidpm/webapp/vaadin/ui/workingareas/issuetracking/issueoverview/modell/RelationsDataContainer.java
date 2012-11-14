@@ -1,5 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell;
 
+import com.vaadin.data.Item;
 import org.neo4j.graphdb.Direction;
 import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
@@ -24,6 +25,8 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
     private final static String ISSUE = "issue";
     private final static String RELATION = "relation";
 
+    private final List<RelationItem> createList = new ArrayList<>();
+    private final List<RelationItem> deleteList = new ArrayList<>();
 
 
     public RelationsDataContainer(final IssueOverviewScreen screen) {
@@ -46,7 +49,7 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
 
     @Override
     public void fillContainer(final IssueBase issue) {
-        setCurrentIssue(issue);
+        resetTransactions();
         this.removeAllItems();
         Object itemId;
         for (IssueRelation relation : GraphDaoFactory.getIssueRelationDAO().loadAllEntities()) {
@@ -72,16 +75,25 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
 
     public boolean addRelation(final IssueBase connIssue, final IssueRelation relation){
         boolean success = false;
-        if (getCurrentIssue() != null) {
-            if (getCurrentIssue().connectToIssueAs(connIssue, relation)) {
-                final Object itemId = this.addItem();
-                this.getContainerProperty(itemId,DIRECTION).setValue(Direction.OUTGOING);
-                this.getContainerProperty(itemId, NAME).setValue(relation.getOutgoingName());
-                this.getContainerProperty(itemId, ISSUEID).setValue(connIssue.getText());
-                this.getContainerProperty(itemId,ISSUE).setValue(connIssue);
-                this.getContainerProperty(itemId,RELATION).setValue(relation);
-                success = true;
-            }
+        if (connIssue != null && relation != null) {
+            // (getCurrentIssue().connectToIssueAs(connIssue, relation)) {
+            final Object itemId = this.addItem();
+            this.getContainerProperty(itemId, DIRECTION).setValue(Direction.OUTGOING);
+            this.getContainerProperty(itemId, NAME).setValue(relation.getOutgoingName());
+            this.getContainerProperty(itemId, ISSUEID).setValue(connIssue.getText());
+            this.getContainerProperty(itemId, ISSUE).setValue(connIssue);
+            this.getContainerProperty(itemId, RELATION).setValue(relation);
+
+            final RelationItem item = new RelationItem();
+            item.setConnIssue(connIssue);
+            item.setRelation(relation);
+            item.setDirection(Direction.OUTGOING);
+            createList.add(item);
+
+            success = true;
+            //}
+        } else {
+            logger.error("Issue to connect to or relation is null");
         }
         return success;
     }
@@ -93,17 +105,33 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
     @Override
     public boolean removeItem(final Object itemId) {
         boolean success = false;
-        if (getCurrentIssue() != null) {
-            final IssueBase connIssue = getConnIssueFromItemId(itemId);
-            final IssueRelation relation = (IssueRelation) this.getContainerProperty(itemId, RELATION).getValue();
-            final Direction direction = (Direction) this.getContainerProperty(itemId, DIRECTION).getValue();
-            if (getCurrentIssue().removeConnectionToIssue(connIssue, relation, direction))
-                if (super.removeItem(itemId))
+        if (itemId != null) {
+            final RelationItem item = new RelationItem();
+            item.setConnIssue(getConnIssueFromItemId(itemId));
+            item.setRelation((IssueRelation) this.getContainerProperty(itemId, RELATION).getValue());
+            item.setDirection((Direction) this.getContainerProperty(itemId, DIRECTION).getValue());
+            //if (getCurrentIssue().removeConnectionToIssue(connIssue, relation, direction))
+                if (super.removeItem(itemId)) {
+                    deleteList.add(item);
                     success = true;
+                }
         } else {
-            logger.error("CurrentIssue is null. Cant delete item.");
+            logger.error("ItemId to remove is null. Cant delete item.");
         }
 
         return success;
+    }
+
+    public List<RelationItem> getDeleteList() {
+        return deleteList;
+    }
+
+    public List<RelationItem> getCreateList() {
+        return createList;
+    }
+
+    public void resetTransactions() {
+        deleteList.clear();
+        createList.clear();
     }
 }
