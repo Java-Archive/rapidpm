@@ -249,9 +249,12 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
                 logger.debug("Childissue has no Parent: " + child);
 
 
-        graphDb.getNodeById(parentId).createRelationshipTo(childNode,relType );
-        childNode.getSingleRelationship(GraphRelationRegistry.getClassRootToChildRelType(),
-            Direction.INCOMING).delete();
+        graphDb.getNodeById(parentId).createRelationshipTo(childNode, relType);
+
+           Relationship relToDel = childNode.getSingleRelationship(GraphRelationRegistry.getClassRootToChildRelType(),
+                   Direction.INCOMING);
+            if (relToDel != null)
+                relToDel.delete();
     }
 
     public List<IssueBase> getSubIssuesOf(IssueBase issue) {
@@ -405,11 +408,14 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     public List<IssueComponent> getComponentsOf(final IssueBase issue) {
         if (issue == null)
             throw new NullPointerException("Issue is null.");
+        Long issueId = issue.getId();
+        if (issueId == null)
+            throw new IllegalArgumentException("Id of Issue cant be null. Persist first.");
 
         if (logger.isDebugEnabled())
             logger.debug("getComponentsOf");
 
-        final Node startNode = graphDb.getNodeById(issue.getId());
+        final Node startNode = graphDb.getNodeById(issueId);
         final List<IssueComponent> componentList = new ArrayList<>();
 
         final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueComponent.class);

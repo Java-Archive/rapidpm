@@ -123,4 +123,15 @@ public class IssueBaseDAOTest_SubIssues {
         dao.deleteSubIssueRelation(dao.loadAllEntities().get(0), dao.loadAllEntities().get(0));
     }
 
+
+
+    @Test(expected = NullPointerException.class)
+    public void getSubIssuesOf_FirstParameterNull() {
+        dao.getSubIssuesOf(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getSubIssuesOf_FirstParameterId() {
+        dao.getSubIssuesOf(new IssueBase(3L));
+    }
 }

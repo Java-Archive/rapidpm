@@ -52,14 +52,16 @@ public class IssueBaseDAOTest_Relations {
         }
         assertTrue(i == 1);
 
-        //delete relation
-        success = issue1.removeConnectionToIssue(issue2, rel);
-        assertTrue(success);
-        issue1 = dao.persist(issue1);
-        connected= issue1.getConnectedIssues(rel);
-        assertFalse(connected.contains(issue2));
 
         //delete non existing relation
+        connected = issue1.getConnectedIssues(rel);
+        success = issue1.removeConnectionToIssue(list.get(list.size() - 1), rel);
+        assertTrue(success);
+        issue1 = dao.persist(issue1);
+        assertEquals(connected.size(), issue1.getConnectedIssues(rel).size());
+
+
+        //delete relation
         success = issue1.removeConnectionToIssue(issue2, rel);
         assertTrue(success);
         issue1 = dao.persist(issue1);
@@ -154,5 +156,32 @@ public class IssueBaseDAOTest_Relations {
     public void deleteRelationOfEntities_FirstEqualsSecond() {
         dao.deleteRelationOfEntities(dao.loadAllEntities().get(0), dao.loadAllEntities().get(0),
                 new IssueRelation(), null);
+    }
+
+
+    @Test(expected = NullPointerException.class)
+    public void getConnectedIssuesWithRelation_FirstParameterNull() {
+        dao.getConnectedIssuesWithRelation(null, null, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getConnectedIssuesWithRelation_FirstParameterId() {
+        dao.getConnectedIssuesWithRelation(new IssueBase(3L), null, null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void getConnectedIssuesWithRelation_SecondParameterNull() {
+        dao.getConnectedIssuesWithRelation(dao.loadAllEntities().get(0), null, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getConnectedIssuesWithRelation_SecondParameterId() {
+        dao.getConnectedIssuesWithRelation(dao.loadAllEntities().get(0), new IssueRelation(), null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void getConnectedIssuesWithRelation_ThirdParameterNull() {
+        dao.getConnectedIssuesWithRelation(dao.loadAllEntities().get(0), GraphDaoFactory.getIssueRelationDAO().loadAllEntities().get
+                (0), null);
     }
 }

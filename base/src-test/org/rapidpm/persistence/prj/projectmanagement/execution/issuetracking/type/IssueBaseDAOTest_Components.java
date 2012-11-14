@@ -141,4 +141,15 @@ public class IssueBaseDAOTest_Components {
     public void deleteComponentRelation_SecondParameterId() {
         dao.deleteComponentRelation(dao.loadAllEntities().get(0), new IssueComponent());
     }
+
+
+    @Test(expected = NullPointerException.class)
+    public void getComponentsOf_FirstParameterNull() {
+        dao.getComponentsOf(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getComponentsOf_FirstParameterId() {
+        dao.getComponentsOf(new IssueBase(3L));
+    }
 }
