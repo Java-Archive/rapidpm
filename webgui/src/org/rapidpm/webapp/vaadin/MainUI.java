@@ -5,7 +5,7 @@ import com.vaadin.ui.MenuBar;
 import org.rapidpm.webapp.vaadin.ui.workingareas.anfragenmanagement.AnfragenmanagementWorkingArea;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.ProjectAdministrationScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.controlling.ControllingScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.ControllingScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.CostsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.distribution.VertriebScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.offer.OfferScreen;
