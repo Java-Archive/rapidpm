@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
-import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
 import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
@@ -14,7 +13,6 @@ import org.rapidpm.persistence.prj.bewegungsdaten.RegistrationStatusDAO;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -74,7 +72,7 @@ public class RegistrationStatusDAOBean {
     };
 
     @WebMethod(operationName = "loadRevisionFor")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebResult(name = "RegistrationStatusResult")
     RegistrationStatusResult loadRevisionFor(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
@@ -84,7 +82,7 @@ public class RegistrationStatusDAOBean {
     }
 
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadRegistrationStatus_Zur_Pruefung")
     @WebResult(name = "RegistrationStatusResult")
@@ -92,7 +90,7 @@ public class RegistrationStatusDAOBean {
         return createResult(getRegistrationStatusDAO().loadRegistrationStatus_Zur_Pruefung());
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "load")
     @WebResult(name = "RegistrationStatusResult")
@@ -100,7 +98,7 @@ public class RegistrationStatusDAOBean {
         return createResult(getRegistrationStatusDAO().load(txt));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadRegistrationStatus_abgelehnt")
     @WebResult(name = "RegistrationStatusResult")
@@ -108,7 +106,7 @@ public class RegistrationStatusDAOBean {
         return createResult(getRegistrationStatusDAO().loadRegistrationStatus_abgelehnt());
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadRegistrationStatus_freigeschaltet")
     @WebResult(name = "RegistrationStatusResult")
@@ -117,7 +115,7 @@ public class RegistrationStatusDAOBean {
     }
 
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "saveOrUpdateTX")
     @WebResult(name = "RegistrationStatusResult")
@@ -131,7 +129,7 @@ public class RegistrationStatusDAOBean {
         return executer.saveOrUpdate(sessionid, uid, entity);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "removeTX")
     @WebResult(name = "RegistrationStatusResult")
@@ -151,7 +149,7 @@ public class RegistrationStatusDAOBean {
         return executer.remove(sessionid, uid, oid);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "findByID")
     @WebResult(name = "RegistrationStatusResult")
@@ -164,7 +162,7 @@ public class RegistrationStatusDAOBean {
         }
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadWithOIDList")
     @WebResult(name = "RegistrationStatusResult")
@@ -173,7 +171,7 @@ public class RegistrationStatusDAOBean {
         return createResult(getRegistrationStatusDAO().loadWithOIDList(oids));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadAllEntities")
     @WebResult(name = "RegistrationStatusResult")

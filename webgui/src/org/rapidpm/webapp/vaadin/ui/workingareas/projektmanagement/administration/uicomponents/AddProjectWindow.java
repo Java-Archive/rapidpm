@@ -4,8 +4,10 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
@@ -41,7 +43,7 @@ public class AddProjectWindow extends Window{
     private Button cancelButton = new Button();
     private ProjektFieldGroup fieldGroup;
     private ResourceBundle messages;
-    private AddProjectWindowBean bean;
+//    private AddProjectWindowBean bean;
 
     public AddProjectWindow(final MainUI ui, final ResourceBundle messages) {
         this.ui = ui;
@@ -51,9 +53,10 @@ public class AddProjectWindow extends Window{
         setPositionX(POSITION_X);
         setPositionY(POSITION_Y);
 
-        bean = EJBFactory.getEjbInstance(AddProjectWindowBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
+//        bean = EJBFactory.getEjbInstance(AddProjectWindowBean.class);
+//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        refreshEntities(daoFactory);
 
         final PlannedProject projekt = new PlannedProject();
         fieldGroup = new ProjektFieldGroup(projekt);
@@ -66,7 +69,7 @@ public class AddProjectWindow extends Window{
 
         addComponent(horizontalButtonLayout);
 
-        addListeners(baseDaoFactoryBean, ui);
+        addListeners(daoFactory, ui);
         doInternationalization();
 
     }
@@ -90,7 +93,7 @@ public class AddProjectWindow extends Window{
         cancelButton.setCaption(messages.getString("cancel"));
     }
 
-    private void addListeners(final DaoFactoryBean baseDaoFactoryBean,final MainUI ui) {
+    private void addListeners(final DaoFactory baseDaoFactoryBean,final MainUI ui) {
         saveButton.addClickListener(new Button.ClickListener() {
 
             @Override
@@ -142,7 +145,7 @@ public class AddProjectWindow extends Window{
         ui.addWindow(this);
     }
 
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactory baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);

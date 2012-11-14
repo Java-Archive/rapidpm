@@ -2,13 +2,15 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.server.ThemeResource;
+//import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
-import org.rapidpm.Constants;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+//import org.rapidpm.Constants;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+//import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
+//import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
@@ -43,19 +45,20 @@ public class ProjektplanungScreen extends Screen {
     private final ListSelect projektSelect;
     private final VerticalLayout mainLayout;
     private Tree treePanelTree;
-    private ProjektPlanungScreenBean projektplanungScreenBean;
-    private DaoFactoryBean baseDaoFactoryBean;
+//    private ProjektPlanungScreenBean projektplanungScreenBean;
+//    private DaoFactoryBean baseDaoFactoryBean;
     private PlanningUnitBeanItemContainer container;
 
 
     public ProjektplanungScreen(MainUI ui) {
         super(ui);
 
-        projektplanungScreenBean = EJBFactory.getEjbInstance(ProjektPlanungScreenBean.class);
-        baseDaoFactoryBean = projektplanungScreenBean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
+//        projektplanungScreenBean = EJBFactory.getEjbInstance(ProjektPlanungScreenBean.class);
+//        baseDaoFactoryBean = projektplanungScreenBean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        refreshEntities(daoFactory);
         final PlannedProject projectFromSession = ui.getCurrentProject();
-        final PlannedProjectDAO plannedProjectDAO = baseDaoFactoryBean.getPlannedProjectDAO();
+        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
         final PlannedProject projectFromDB = plannedProjectDAO.findByID(projectFromSession.getId());
 
         final PlanningCalculator calculator = new PlanningCalculator(messagesBundle);
@@ -161,7 +164,7 @@ public class ProjektplanungScreen extends Screen {
         addComponent(splitPanel);
     }
 
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactory baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
 //        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
 //            entityManager.refresh(plannedProject);

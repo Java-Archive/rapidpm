@@ -6,16 +6,11 @@
         <element id="directory" name="classes">
           <element id="module-output" name="base" />
           <element id="jpa-descriptors" facet="base/jpa/JPA" />
-          <element id="module-output" name="ejb" />
           <element id="module-output" name="webgui" />
           <element id="file-copy" path="$PROJECT_DIR$/webgui/conf/rebel.xml" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="lib-vaadin" />
-          <element id="library" level="project" name="lib-jason" />
-          <element id="library" level="project" name="module-vaadin" />
-          <element id="library" level="project" name="lib-lucene" />
-          <element id="library" level="project" name="lib-neo4j" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="ejb/ejb/EJB" />

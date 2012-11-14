@@ -367,11 +367,17 @@
   <component name="IdProvider" IDEtalkID="A4B98868E75CCAA99A2FB05F4ED8B8C5" />
   <component name="IvyIDEA.ProjectSettings">
     <option name="artifactTypeSettings">
-      <ArtifactTypeSettings />
+      <ArtifactTypeSettings>
+        <option name="classesTypes" value="jar, mar, sar, war, ear, ejb, bundle, test-jar" />
+      </ArtifactTypeSettings>
     </option>
+    <option name="ivyLogLevelThreshold" value="Info" />
+    <option name="ivySettingsFile" value="$PROJECT_DIR$/ivy.xml" />
+    <option name="libraryNameIncludesModule" value="true" />
     <option name="propertiesSettings">
       <PropertiesSettings />
     </option>
+    <option name="validateIvyFiles" value="true" />
   </component>
   <component name="JavadocGenerationManager">
     <option name="OUTPUT_DIRECTORY" />

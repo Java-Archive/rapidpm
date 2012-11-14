@@ -6,8 +6,8 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import org.apache.log4j.Logger;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
@@ -34,7 +34,7 @@ public class AddRowWindow extends Window {
     private Button cancelButton = new Button();
     private RowFieldGroup fieldGroup;
     private ResourceBundle messages;
-    private AddRowWindowBean addRowWindowBean;
+//    private AddRowWindowBean addRowWindowBean;
 
     public AddRowWindow(final MainUI ui, final StundensaetzeScreen screen) {
         this.ui = ui;
@@ -44,8 +44,8 @@ public class AddRowWindow extends Window {
         setPositionX(POSITION_X);
         setPositionY(POSITION_Y);
 
-        addRowWindowBean = EJBFactory.getEjbInstance(AddRowWindowBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = addRowWindowBean.getDaoFactoryBean();
+//        addRowWindowBean = EJBFactory.getEjbInstance(AddRowWindowBean.class);
+//        final DaoFactoryBean baseDaoFactoryBean = addRowWindowBean.getDaoFactoryBean();
 
         fieldGroup = new RowFieldGroup();
 
@@ -57,7 +57,8 @@ public class AddRowWindow extends Window {
 
         addComponent(horizontalButtonLayout);
 
-        addListeners(baseDaoFactoryBean, ui, screen);
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        addListeners(daoFactory, ui, screen);
         doInternationalization();
 
     }
@@ -84,7 +85,7 @@ public class AddRowWindow extends Window {
         cancelButton.setCaption(messages.getString("cancel"));
     }
 
-    private void addListeners(final DaoFactoryBean baseDaoFactoryBean, final MainUI ui,
+    private void addListeners(final DaoFactory baseDaoFactoryBean, final MainUI ui,
                               final StundensaetzeScreen screen) {
         saveButton.addClickListener(new ClickListener() {
 

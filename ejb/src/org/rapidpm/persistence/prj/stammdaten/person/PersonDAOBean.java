@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
-import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
 import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.AbstractOneToManyConnectExecutor;
@@ -24,7 +23,6 @@ import org.rapidpm.persistence.system.security.Benutzer;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -197,7 +195,7 @@ public class PersonDAOBean {
     }
 
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "saveOrUpdateTX")
     @WebResult(name = "PersonResult")
@@ -208,7 +206,7 @@ public class PersonDAOBean {
         return crudExecuter.saveOrUpdate(sessionid, uid, entity);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "removeTX")
     @WebResult(name = "PersonResult")
@@ -216,7 +214,7 @@ public class PersonDAOBean {
         return crudExecuter.remove(sessionid, uid, oid);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "findByID")
     @WebResult(name = "PersonResult")
@@ -229,7 +227,7 @@ public class PersonDAOBean {
         }
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadWithOIDList")
     @WebResult(name = "PersonResult")
@@ -238,7 +236,7 @@ public class PersonDAOBean {
         return createResult(getEntityDAO().loadWithOIDList(oids));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadAllEntities")
     @WebResult(name = "PersonResult")
@@ -247,7 +245,7 @@ public class PersonDAOBean {
     }
 
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadPersonByOrgeinheit")
     @WebResult(name = "PersonResult")
@@ -258,7 +256,7 @@ public class PersonDAOBean {
     }
 
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadPersonByMandantengruppeOID")
     @WebResult(name = "PersonResult")
@@ -268,7 +266,7 @@ public class PersonDAOBean {
         return createResult(persons);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadPersonByMandantengruppe")
     @WebResult(name = "PersonResult")
@@ -279,7 +277,7 @@ public class PersonDAOBean {
     }
 
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadPersonByBenutzer")
     @WebResult(name = "PersonResult")
@@ -291,7 +289,7 @@ public class PersonDAOBean {
     }
 
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "saveStammdaten")
     @WebResult(name = "PersonResult")
@@ -303,7 +301,7 @@ public class PersonDAOBean {
     }
 
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "connectBenutzer")
     @WebResult(name = "PersonResult")
@@ -327,7 +325,7 @@ public class PersonDAOBean {
         }.execute("connectBenutzer", logEventEntryWriterBean, sessionid, benutzerOID, personOID);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "connectAdresse")
     @WebResult(name = "PersonResult")
@@ -350,7 +348,7 @@ public class PersonDAOBean {
         }.execute("connectAdresse", logEventEntryWriterBean, sessionid, adresseOID, personOID);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "connectKommunikationsServiceUID")
     @WebResult(name = "PersonResult")

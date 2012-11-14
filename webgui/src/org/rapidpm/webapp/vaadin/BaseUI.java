@@ -14,8 +14,8 @@ import com.vaadin.server.VaadinServiceSession;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.BaseTheme;
 import org.apache.log4j.Logger;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
@@ -75,9 +75,10 @@ public abstract class BaseUI extends UI {
     }
 
     private void loadFirstProject() {
-        final LoginBean bean = EJBFactory.getEjbInstance(LoginBean.class);
+//        final LoginBean bean = EJBFactory.getEjbInstance(LoginBean.class);
         final VaadinServiceSession session = this.getSession();
-        final List<PlannedProject> projects = bean.getDaoFactoryBean().getPlannedProjectDAO().loadAllEntities();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final List<PlannedProject> projects = daoFactory.getPlannedProjectDAO().loadAllEntities();
         if(projects == null || projects.isEmpty()){
             session.setAttribute(PlannedProject.class, null);
         } else {
@@ -88,9 +89,10 @@ public abstract class BaseUI extends UI {
 
     public void authentication(final String enteredLogin, final String enteredPasswd) throws Exception {
 
-        final LoginBean bean = EJBFactory.getEjbInstance(LoginBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        final BenutzerDAO benutzerDAO = baseDaoFactoryBean.getBenutzerDAO();
+//        final LoginBean bean = EJBFactory.getEjbInstance(LoginBean.class);
+//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
         final List<Benutzer> benutzer = benutzerDAO.loadBenutzerForLogin(enteredLogin);
         final String enteredPasswdHashed = hash(enteredPasswd);
         for (final Benutzer user : benutzer) {

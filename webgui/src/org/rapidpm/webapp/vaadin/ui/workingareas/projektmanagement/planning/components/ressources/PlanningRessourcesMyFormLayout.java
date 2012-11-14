@@ -8,8 +8,10 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import org.apache.log4j.Logger;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
@@ -39,17 +41,18 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
     private Table tabelle = new Table();
 
     private List<PlanningUnitElement> planningUnitElements;
-    private PlanningRessourcesMyFormLayoutBean bean;
-    private DaoFactoryBean baseDaoFactoryBean;
+//    private PlanningRessourcesMyFormLayoutBean bean;
+//    private DaoFactoryBean baseDaoFactoryBean;
 
     public PlanningRessourcesMyFormLayout(final PlanningUnit thePlanningUnit, final ProjektplanungScreen screen,
                                           final Panel screenPanel, boolean hasChildren) {
         super(screen, screenPanel);
-        bean = EJBFactory.getEjbInstance(PlanningRessourcesMyFormLayoutBean.class);
-        baseDaoFactoryBean = bean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
+//        bean = EJBFactory.getEjbInstance(PlanningRessourcesMyFormLayoutBean.class);
+//        baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        refreshEntities(daoFactory);
 
-        final PlanningUnit planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().loadPlanningUnitByName
+        final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().loadPlanningUnitByName
                 (thePlanningUnit.getPlanningUnitName());
         planningUnitElements = planningUnit.getPlanningUnitElementList();
         buildTable();
@@ -93,7 +96,8 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
                                         planningUnitElement.setPlannedDays(Integer.parseInt(daysHoursMinutes[0]));
                                         planningUnitElement.setPlannedHours(Integer.parseInt(daysHoursMinutes[1]));
                                         planningUnitElement.setPlannedMinutes(Integer.parseInt(daysHoursMinutes[2]));
-                                        baseDaoFactoryBean.saveOrUpdate(planningUnitElement);
+                                        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+                                        daoFactory.saveOrUpdate(planningUnitElement);
                                     }
                                 }
                             }
@@ -111,9 +115,10 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
     }
 
     private void buildTable() {
-        refreshEntities(baseDaoFactoryBean);
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        refreshEntities(daoFactory);
 
-        final List<RessourceGroup> ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
+        final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO().loadAllEntities();
         final String[] spaltenNamen = new String[ressourceGroups.size()];
         Integer index = 0;
         for(final RessourceGroup ressourceGroup : ressourceGroups){
@@ -152,7 +157,7 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
         componentsLayout.addComponent(tabelle);
     }
 
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
+    private void refreshEntities(final DaoFactory baseDaoFactoryBean) {
         final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
         for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
             entityManager.refresh(plannedProject);

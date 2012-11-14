@@ -2,15 +2,17 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview;
 
 
 import com.vaadin.ui.*;
-import org.apache.log4j.Logger;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTabSheet;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTreeLayout;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsFieldGroupBean;
+//import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsFieldGroupBean;
 
 
 /**
@@ -20,18 +22,18 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.comp
  * Time: 15:04
  * To change this template use File | Settings | File Templates.
  */
-public class IssueOverviewScreen extends Screen {
-    private static Logger logger = Logger.getLogger(IssueOverviewScreen.class);
+public class IssueOverviewScreen extends Screen{
 
     private HorizontalSplitPanel hSplitPanel;
     private IssueTreeLayout treeLayout;
     private IssueTabSheet issueTabSheet;
 
-    private DaoFactoryBean baseDaoFactoryBean;
+//    private DaoFactoryBean baseDaoFactoryBean;
 
     public IssueOverviewScreen(MainUI ui) {
         super(ui);
-        baseDaoFactoryBean = EJBFactory.getEjbInstance(IssueOverviewScreenBean.class).getDaoFactoryBean();
+//        baseDaoFactoryBean = EJBFactory.getEjbInstance(IssueOverviewScreenBean.class).getDaoFactoryBean();
+//        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         this.setSizeFull();
         hSplitPanel = new HorizontalSplitPanel();
         hSplitPanel.setSplitPosition(30, Unit.PERCENTAGE);
@@ -41,13 +43,14 @@ public class IssueOverviewScreen extends Screen {
         setComponents();
     }
 
-    public DaoFactoryBean getBaseDaoFactoryBean() {
-        return baseDaoFactoryBean;
-    }
+//    public DaoFactoryBean getBaseDaoFactoryBean() {
+//        return baseDaoFactoryBean;
+//    }
 
     public PlannedProject getCurrentProject() {
-        return baseDaoFactoryBean.getPlannedProjectDAO().findByID
-                (ui.getCurrentProject().getId());
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
+        return plannedProjectDAO.findByID(ui.getCurrentProject().getId());
     }
 
     public IssueTabSheet getIssueTabSheet() {
@@ -64,9 +67,6 @@ public class IssueOverviewScreen extends Screen {
         hSplitPanel.setSecondComponent(issueTabSheet);
         hSplitPanel.setHeight("770px");
         addComponent(hSplitPanel);
-//        Panel testPanel = new Panel("PANEL");
-//        testPanel.setHeight("200px");
-//        addComponent(testPanel);
     }
 
     @Override

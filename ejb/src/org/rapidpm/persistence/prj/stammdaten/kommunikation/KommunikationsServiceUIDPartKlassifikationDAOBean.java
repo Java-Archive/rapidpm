@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
-import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
 import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
@@ -12,7 +11,6 @@ import org.rapidpm.persistence.DaoFactoryBean;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -78,7 +76,7 @@ public class KommunikationsServiceUIDPartKlassifikationDAOBean {
         return daoFactoryBean.getKommunikationsServiceUIDPartKlassifikationDAO();
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadComplete")
     @WebResult(name = "KommunikationsServiceUIDPartKlassifikationResult")
@@ -86,7 +84,7 @@ public class KommunikationsServiceUIDPartKlassifikationDAOBean {
         return create(getKommunikationsServiceUIDPartKlassifikationDAO().loadComplete());
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadLandeskennziffer")
     @WebResult(name = "KommunikationsServiceUIDPartKlassifikationResult")
@@ -94,7 +92,7 @@ public class KommunikationsServiceUIDPartKlassifikationDAOBean {
         return create(getKommunikationsServiceUIDPartKlassifikationDAO().loadLandeskennziffer());
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadVorwahl")
     @WebResult(name = "KommunikationsServiceUIDPartKlassifikationResult")
@@ -102,7 +100,7 @@ public class KommunikationsServiceUIDPartKlassifikationDAOBean {
         return create(getKommunikationsServiceUIDPartKlassifikationDAO().loadVorwahl());
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadNummer")
     @WebResult(name = "KommunikationsServiceUIDPartKlassifikationResult")
@@ -110,7 +108,7 @@ public class KommunikationsServiceUIDPartKlassifikationDAOBean {
         return create(getKommunikationsServiceUIDPartKlassifikationDAO().loadNummer());
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadDurchwahl")
     @WebResult(name = "KommunikationsServiceUIDPartKlassifikationResult")
@@ -118,7 +116,7 @@ public class KommunikationsServiceUIDPartKlassifikationDAOBean {
         return create(getKommunikationsServiceUIDPartKlassifikationDAO().loadDurchwahl());
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "load")
     @WebResult(name = "KommunikationsServiceUIDPartKlassifikationResult")
@@ -128,7 +126,7 @@ public class KommunikationsServiceUIDPartKlassifikationDAOBean {
     }
 
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "saveOrUpdateTX")
     @WebResult(name = "KommunikationsServiceUIDPartKlassifikationResult")
@@ -139,7 +137,7 @@ public class KommunikationsServiceUIDPartKlassifikationDAOBean {
         return crudExecuter.saveOrUpdate(sessionid, uid, entity);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "removeTX")
     @WebResult(name = "KommunikationsServiceUIDPartKlassifikationResult")
@@ -149,7 +147,7 @@ public class KommunikationsServiceUIDPartKlassifikationDAOBean {
 
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "findByID")
     @WebResult(name = "KommunikationsServiceUIDPartKlassifikationResult")
@@ -163,7 +161,7 @@ public class KommunikationsServiceUIDPartKlassifikationDAOBean {
         }
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadWithOIDList")
     @WebResult(name = "KommunikationsServiceUIDPartKlassifikationResult")
@@ -172,7 +170,7 @@ public class KommunikationsServiceUIDPartKlassifikationDAOBean {
         return create(getKommunikationsServiceUIDPartKlassifikationDAO().loadWithOIDList(oids));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadAllEntities")
     @WebResult(name = "KommunikationsServiceUIDPartKlassifikationResult")
