@@ -26,6 +26,7 @@ public class CreateAndInitializeDB {
     private final boolean debug;
     private GraphDatabaseService graphDb;
     private Node root;
+    private final DaoFactory daoFactory;
 
     private static final List<IssueStatus> statusList = new ArrayList<>();
     private static final List<IssuePriority> priorityList = new ArrayList<>();
@@ -44,6 +45,7 @@ public class CreateAndInitializeDB {
         this.debug = debug;
         deleteFileOrDirectory(true, new File(GraphDBFactory.DB_PATH));
         graphDb = GraphDBFactory.getInstance().getGraphDBService();
+        daoFactory = DaoFactorySingelton.getInstance();
         root = graphDb.getNodeById(0);
     }
 
@@ -140,97 +142,97 @@ public class CreateAndInitializeDB {
         IssueStatus status = new IssueStatus();
         status.setStatusName("Open");
         status.setStatusFileName("status_open.gif");
-        statusList.add(GraphDaoFactory.getIssueStatusDAO().persist(status));
+        statusList.add(daoFactory.getIssueStatusDAO().persist(status));
 
         status = new IssueStatus();
         status.setStatusName("In Progress");
         status.setStatusFileName("status_inprogress.gif");
-        statusList.add(GraphDaoFactory.getIssueStatusDAO().persist(status));
+        statusList.add(daoFactory.getIssueStatusDAO().persist(status));
 
         status = new IssueStatus();
         status.setStatusName("Resolved");
         status.setStatusFileName("status_resolved.gif");
-        statusList.add(GraphDaoFactory.getIssueStatusDAO().persist(status));
+        statusList.add(daoFactory.getIssueStatusDAO().persist(status));
 
         status = new IssueStatus();
         status.setStatusName("Closed");
         status.setStatusFileName("status_closed.gif");
-        statusList.add(GraphDaoFactory.getIssueStatusDAO().persist(status));
+        statusList.add(daoFactory.getIssueStatusDAO().persist(status));
 
         status = new IssueStatus();
         status.setStatusName("On Hold");
         status.setStatusFileName("status_onhold.gif");
-        statusList.add(GraphDaoFactory.getIssueStatusDAO().persist(status));
+        statusList.add(daoFactory.getIssueStatusDAO().persist(status));
 
 
         IssuePriority priority = new IssuePriority();
         priority.setPriorityName("Trivial");
         priority.setPriorityFileName("priority_trivial.gif");
         priority.setPrio(0);
-        priorityList.add(GraphDaoFactory.getIssuePriorityDAO().persist(priority));
+        priorityList.add(daoFactory.getIssuePriorityDAO().persist(priority));
 
         priority = new IssuePriority();
         priority.setPriorityName("Minor");
         priority.setPriorityFileName("priority_minor.gif");
         priority.setPrio(1);
-        priorityList.add(GraphDaoFactory.getIssuePriorityDAO().persist(priority));
+        priorityList.add(daoFactory.getIssuePriorityDAO().persist(priority));
 
         priority = new IssuePriority();
         priority.setPriorityName("Major");
         priority.setPriorityFileName("priority_major.gif");
         priority.setPrio(2);
-        priorityList.add(GraphDaoFactory.getIssuePriorityDAO().persist(priority));
+        priorityList.add(daoFactory.getIssuePriorityDAO().persist(priority));
 
         priority = new IssuePriority();
         priority.setPriorityName("Critical");
         priority.setPriorityFileName("priority_critical.gif");
         priority.setPrio(3);
-        priorityList.add(GraphDaoFactory.getIssuePriorityDAO().persist(priority));
+        priorityList.add(daoFactory.getIssuePriorityDAO().persist(priority));
 
         priority = new IssuePriority();
         priority.setPriorityName("Blocker");
         priority.setPriorityFileName("priority_blocker.gif");
         priority.setPrio(4);
-        priorityList.add(GraphDaoFactory.getIssuePriorityDAO().persist(priority));
+        priorityList.add(daoFactory.getIssuePriorityDAO().persist(priority));
 
 
 
         IssueType type = new IssueType();
         type.setTypeName("Bug");
-        typeList.add(GraphDaoFactory.getIssueTypeDAO().persist(type));
+        typeList.add(daoFactory.getIssueTypeDAO().persist(type));
 
         type = new IssueType();
         type.setTypeName("Task");
-        typeList.add(GraphDaoFactory.getIssueTypeDAO().persist(type));
+        typeList.add(daoFactory.getIssueTypeDAO().persist(type));
 
         type = new IssueType();
         type.setTypeName("Improvement");
-        typeList.add(GraphDaoFactory.getIssueTypeDAO().persist(type));
+        typeList.add(daoFactory.getIssueTypeDAO().persist(type));
 
         type = new IssueType();
         type.setTypeName("New Function");
-        typeList.add(GraphDaoFactory.getIssueTypeDAO().persist(type));
+        typeList.add(daoFactory.getIssueTypeDAO().persist(type));
 
         type = new IssueType();
         type.setTypeName("Epic");
-        typeList.add(GraphDaoFactory.getIssueTypeDAO().persist(type));
+        typeList.add(daoFactory.getIssueTypeDAO().persist(type));
 
         IssueVersion version = new IssueVersion(" - ");
-        versionList.add(GraphDaoFactory.getIssueVersionDAO().persist(version));
+        versionList.add(daoFactory.getIssueVersionDAO().persist(version));
 
         version = new IssueVersion("Alpha");
-        versionList.add(GraphDaoFactory.getIssueVersionDAO().persist(version));
+        versionList.add(daoFactory.getIssueVersionDAO().persist(version));
 
         version = new IssueVersion("1.0");
-        versionList.add(GraphDaoFactory.getIssueVersionDAO().persist(version));
+        versionList.add(daoFactory.getIssueVersionDAO().persist(version));
 
         version = new IssueVersion("2.0");
-        versionList.add(GraphDaoFactory.getIssueVersionDAO().persist(version));
+        versionList.add(daoFactory.getIssueVersionDAO().persist(version));
 
         IssueStoryPoint storypoint;
         for(int i = 1; i < 11; i++) {
             storypoint = new IssueStoryPoint(i);
-            storypointList.add(GraphDaoFactory.getIssueStoryPointDAO().persist(storypoint));
+            storypointList.add(daoFactory.getIssueStoryPointDAO().persist(storypoint));
         }
 
 
@@ -238,35 +240,35 @@ public class CreateAndInitializeDB {
         relation.setRelationName("Duplicate");
         relation.setOutgoingName("duplicates");
         relation.setIncomingName("is duplicated by");
-        relationList.add(GraphDaoFactory.getIssueRelationDAO().persist(relation));
+        relationList.add(daoFactory.getIssueRelationDAO().persist(relation));
 
         relation = new IssueRelation();
         relation.setRelationName("Block");
         relation.setOutgoingName("blocks");
         relation.setIncomingName("is blocked by");
-        relationList.add(GraphDaoFactory.getIssueRelationDAO().persist(relation));
+        relationList.add(daoFactory.getIssueRelationDAO().persist(relation));
 
         relation = new IssueRelation();
         relation.setRelationName("Dependance");
         relation.setOutgoingName("relates");
         relation.setIncomingName("depends on");
-        relationList.add(GraphDaoFactory.getIssueRelationDAO().persist(relation));
+        relationList.add(daoFactory.getIssueRelationDAO().persist(relation));
 
 
         IssueComponent component = new IssueComponent("GUI");
-        componentList.add(GraphDaoFactory.getIssueComponentDAO().persist(component));
+        componentList.add(daoFactory.getIssueComponentDAO().persist(component));
 
         component = new IssueComponent("IssueTracking");
-        componentList.add(GraphDaoFactory.getIssueComponentDAO().persist(component));
+        componentList.add(daoFactory.getIssueComponentDAO().persist(component));
 
         component = new IssueComponent("Planning");
-        componentList.add(GraphDaoFactory.getIssueComponentDAO().persist(component));
+        componentList.add(daoFactory.getIssueComponentDAO().persist(component));
 
         component = new IssueComponent("Controlling");
-        componentList.add(GraphDaoFactory.getIssueComponentDAO().persist(component));
+        componentList.add(daoFactory.getIssueComponentDAO().persist(component));
 
         component = new IssueComponent("Documentation");
-        componentList.add(GraphDaoFactory.getIssueComponentDAO().persist(component));
+        componentList.add(daoFactory.getIssueComponentDAO().persist(component));
     }
 
     private void initializeProject1() {
@@ -278,35 +280,35 @@ public class CreateAndInitializeDB {
 
         //status,priority,type,  reporter,assignee,  dueDate_planned(3),_resolved(3),_closed(3),   version,
         // storypoints,  components(2),
-        //-timeunit_estimated-,  -timeunit_used(3)-,  testcases(3),  comments(1),  risk,  planningunit
+        //-timeunit_estimated-,  -timeunit_used(3)-,  testcases(2),  comments(2),  risk,  planningunit
 
         //Month - 1;  January = 0 ; December = 11;
-issueAttr.add(Arrays.asList(0,2,4,  2,2,  2012, 7,12, 2012, 8,13, 2012, 8,21,  2, 2,  2,-1,  -1,-1,-1,  14,  25,  -1));
-issueAttr.add(Arrays.asList(3,3,1,  3,2,  2012, 7,12, 2012, 7,14, 2012, 7,15,  2, 1,  2,-1,  -1,-1,-1,  -1,  -1,  -1));
-issueAttr.add(Arrays.asList(2,3,1,  3,3,  2012, 7,12, 2012, 7,18, 2012, 7,19,  2, 6,  2,-1,  -1,-1,-1,   3,  -1,  -1));
-issueAttr.add(Arrays.asList(1,0,1,  2,5,  2012, 7,12, 2012, 8, 5, 2012, 8, 6,  2, 1,  2,-1,   1,-1,-1,  13,  -1,  -1));
-issueAttr.add(Arrays.asList(4,1,3,  4,2,  2012, 7,12, 2012, 8, 8, 2012, 8, 9,  2, 6,  2,-1,   2,17,-1,  -1,  -1,  -1));
-issueAttr.add(Arrays.asList(0,2,3,  2,4,  2012, 7,12, 2012, 8,13, 2012, 8,13,  2, 3,  2,-1,   5,-1,-1,   4,  -1,  -1));
-issueAttr.add(Arrays.asList(0,3,1,  3,2,  2012, 7,12, 2012, 8,13, 2012, 8,13,  2, 4,  2,-1,   4,16,-1,  -1,  -1,  -1));
+issueAttr.add(Arrays.asList(0,2,4,  2,2,  2012, 7,12, 2012, 8,13, 2012, 8,21,  2, 2,  2,-1,  -1,-1,  14,-1,  25,  -1));
+issueAttr.add(Arrays.asList(3,3,1,  3,2,  2012, 7,12, 2012, 7,14, 2012, 7,15,  2, 1,  2,-1,  -1,-1,   1, 2,  -1,  -1));
+issueAttr.add(Arrays.asList(2,3,1,  3,3,  2012, 7,12, 2012, 7,18, 2012, 7,19,  2, 6,  2,-1,  -1,-1,   3,-1,  -1,  -1));
+issueAttr.add(Arrays.asList(1,0,1,  2,5,  2012, 7,12, 2012, 8, 5, 2012, 8, 6,  2, 1,  2,-1,   1,-1,  13,-1,  -1,  -1));
+issueAttr.add(Arrays.asList(4,1,3,  4,2,  2012, 7,12, 2012, 8, 8, 2012, 8, 9,  2, 6,  2,-1,   2,17,   7,-1,  -1,  -1));
+issueAttr.add(Arrays.asList(0,2,3,  2,4,  2012, 7,12, 2012, 8,13, 2012, 8,13,  2, 3,  2,-1,   5,-1,   4,-1,  -1,  -1));
+issueAttr.add(Arrays.asList(0,3,1,  3,2,  2012, 7,12, 2012, 8,13, 2012, 8,13,  2, 4,  2,-1,   4,16,   8,-1,  -1,  -1));
 
-issueAttr.add(Arrays.asList(0,0,4,  2,2,  2012, 7,12, 2012, 8,30, 2012, 8,30,  2, 8,  3,-1,   6,-1,-1,  -1,  50,  -1));
-issueAttr.add(Arrays.asList(3,1,1,  5,4,  2012, 7,12, 2012, 8,18, 2012, 8,19,  2, 3,  3,-1,   7,-1,-1,   5,  -1,  -1));
-issueAttr.add(Arrays.asList(0,2,0,  4,5,  2012, 7,12, 2012, 8,22, 2012, 8,23,  2, 7,  3,-1,   8,-1,-1,  -1,  -1,  -1));
-issueAttr.add(Arrays.asList(0,3,2,  2,3,  2012, 7,12, 2012, 8,28, 2012, 8,28,  2, 4,  3,-1,   9,-1,-1,  12,  -1,  -1));
+issueAttr.add(Arrays.asList(0,0,4,  2,2,  2012, 7,12, 2012, 8,30, 2012, 8,30,  2, 8,  3,-1,   6,-1,  16,-1,  50,  -1));
+issueAttr.add(Arrays.asList(3,1,1,  5,4,  2012, 7,12, 2012, 8,18, 2012, 8,19,  2, 3,  3,-1,   7,-1,   5,-1,  -1,  -1));
+issueAttr.add(Arrays.asList(0,2,0,  4,5,  2012, 7,12, 2012, 8,22, 2012, 8,23,  2, 7,  3,-1,   8,-1,  17,18,  -1,  -1));
+issueAttr.add(Arrays.asList(0,3,2,  2,3,  2012, 7,12, 2012, 8,28, 2012, 8,28,  2, 4,  3,-1,   9,-1,  12,-1,  -1,  -1));
 
-issueAttr.add(Arrays.asList(0,4,4,  2,2,  2012, 7,12, 2013, 0,14, 2012, 0,17,  2,10,  1, 2,  10,-1,-1,  -1,  75,  -1));
-issueAttr.add(Arrays.asList(3,2,2,  4,5,  2012, 7,12, 2012, 9,04, 2012, 9, 5,  2, 3,  1,-1,  11,-1,-1,   6,  -1,  -1));
-issueAttr.add(Arrays.asList(2,3,3,  2,4,  2012, 7,12, 2012,11, 1, 2012,11, 2,  2, 6,  1,-1,   3,-1,-1,  -1,  -1,  -1));
-issueAttr.add(Arrays.asList(0,4,2,  3,2,  2012, 7,12, 2013, 0,13, 2012, 0,14,  2,10,  1,-1,  13,18,-1,  15,  -1,  -1));
+issueAttr.add(Arrays.asList(0,4,4,  2,2,  2012, 7,12, 2013, 0,14, 2012, 0,17,  2,10,  1, 2,  10,-1,  -1,-1,  75,  -1));
+issueAttr.add(Arrays.asList(3,2,2,  4,5,  2012, 7,12, 2012, 9, 4, 2012, 9, 5,  2, 3,  1,-1,  11,-1,   6,-1,  -1,  -1));
+issueAttr.add(Arrays.asList(2,3,3,  2,4,  2012, 7,12, 2012,11, 1, 2012,11, 2,  2, 6,  1,-1,   3,-1,  19,20,  -1,  -1));
+issueAttr.add(Arrays.asList(0,4,2,  3,2,  2012, 7,12, 2013, 0,13, 2012, 0,14,  2,10,  1,-1,  13,18,  15,-1,  -1,  -1));
 
-issueAttr.add(Arrays.asList(1,0,4,  3,1,  2012, 7,12, 2012, 2,31, 2012, 3, 9,  2, 5,  4, 2,  15,-1,-1,  -1, 100,  -1));
-issueAttr.add(Arrays.asList(2,1,1,  5,2,  2012, 7,12, 2012, 0,31, 2012, 1,14,  2, 2,  4,-1,  -1,-1,-1,   9,  -1,  -1));
-issueAttr.add(Arrays.asList(3,2,0,  4,4,  2012, 7,12, 2012, 1,12, 2012, 1,14,  2, 7,  4,-1,  14,19,20,  -1,  -1,  -1));
-issueAttr.add(Arrays.asList(0,3,2,  2,5,  2012, 7,12, 2012, 1,14, 2012, 1,14,  2, 6,  4,-1,  -1,-1,-1,  -1,  -1,  -1));
-issueAttr.add(Arrays.asList(1,4,1,  4,3,  2012, 7,12, 2012, 1,14, 2012, 1,14,  2, 1,  4,-1,  -1,-1,-1,  10,  -1,  -1));
-issueAttr.add(Arrays.asList(2,1,2,  2,2,  2012, 7,12, 2012, 2,12, 2012, 2,19,  2, 9,  4, 1,  -1,-1,-1,  11,  -1,  -1));
-issueAttr.add(Arrays.asList(3,2,4,  5,4,  2012, 7,12, 2012, 2,19, 2012, 2,19,  2, 6,  4,-1,  -1,-1,-1,  -1,  -1,  -1));
-issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2, 3,  4,-1,  -1,-1,-1,  -1,  -1,  -1));
+issueAttr.add(Arrays.asList(1,0,4,  3,1,  2012, 7,12, 2012, 2,31, 2012, 3, 9,  2, 5,  4, 2,  15,-1,  -1,-1, 100,  -1));
+issueAttr.add(Arrays.asList(2,1,1,  5,2,  2012, 7,12, 2012, 0,31, 2012, 1,14,  2, 2,  4,-1,  -1,-1,   9,-1,  -1,  -1));
+issueAttr.add(Arrays.asList(3,2,0,  4,4,  2012, 7,12, 2012, 1,12, 2012, 1,14,  2, 7,  4,-1,  14,19,  21,-1,  -1,  -1));
+issueAttr.add(Arrays.asList(0,3,2,  2,5,  2012, 7,12, 2012, 1,14, 2012, 1,14,  2, 6,  4,-1,  20,-1,  22,-1,  -1,  -1));
+issueAttr.add(Arrays.asList(1,4,1,  4,3,  2012, 7,12, 2012, 1,14, 2012, 1,14,  2, 1,  4,-1,  -1,-1,  10,-1,  -1,  -1));
+issueAttr.add(Arrays.asList(2,1,2,  2,2,  2012, 7,12, 2012, 2,12, 2012, 2,19,  2, 9,  4, 1,  -1,-1,  11,-1,  -1,  -1));
+issueAttr.add(Arrays.asList(3,2,4,  5,4,  2012, 7,12, 2012, 2,19, 2012, 2,19,  2, 6,  4,-1,  -1,-1,  23,24,  -1,  -1));
+issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2, 3,  4,-1,  -1,-1,  25,-1,  -1,  -1));
         
         //fill Issues with Attributes
         int i, x = 0;
@@ -341,19 +343,17 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
                 i++;
             }
 
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < 2; j++) {
                 if (attributes.get(i) != -1) {
-                    IssueTestCase testcase = new IssueTestCase();
-                    testcase.setId(new Long(attributes.get(i)));
+                    IssueTestCase testcase = daoFactory.getIssueTestCaseDAO().findByID(new Long(attributes.get(i)));
                     issue.addOrChangeTestCase(testcase);
                 }
                 i++;
             }
 
-            for (int j = 0; j < 1; j++) {
+            for (int j = 0; j < 2; j++) {
                 if (attributes.get(i) != -1) {
-                    IssueComment comment = new IssueComment();
-                    comment.setId(new Long(attributes.get(i)));
+                    IssueComment comment = daoFactory.getIssueCommentDAO().findByID(new Long(attributes.get(i)));
                     issue.addOrChangeComment(comment);
                 }
                 i++;
@@ -368,7 +368,7 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
                 pu.setId(new Long(attributes.get(i)));
                 issue.setPlanningUnit(pu);
             }
-            issues.add(GraphDaoFactory.getIssueBaseDAO(projectId).persist(issue));
+            issues.add(daoFactory.getIssueBaseDAO(projectId).persist(issue));
             x++;
         }
 
@@ -403,7 +403,7 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
         issues.get(1).connectToIssueAs(issues.get(2), relationList.get(0));
 
         for (IssueBase issue : issues) {
-            GraphDaoFactory.getIssueBaseDAO(projectId).persist(issue);
+            daoFactory.getIssueBaseDAO(projectId).persist(issue);
         }
 
         if (debug)
@@ -442,7 +442,7 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
             issueBase.setPriority(priorityList.get(i));
             issueBase.addComponent(componentList.get(i));
 
-            issueBase = GraphDaoFactory.getIssueBaseDAO(projectId).persist(issueBase);
+            issueBase = daoFactory.getIssueBaseDAO(projectId).persist(issueBase);
             if (debug)
                 System.out.println(issueBase.toString());
         }

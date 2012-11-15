@@ -2,7 +2,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ty
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.rapidpm.persistence.GraphDaoFactory;
+import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCase;
 import org.rapidpm.persistence.system.security.Benutzer;
@@ -21,11 +21,11 @@ import static org.junit.Assert.assertTrue;
  * Time: 14:48
  * To change this template use File | Settings | File Templates.
  */
-public class IssueBaseDAOTest {
+public class IssueBaseDAOTest implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssueBaseDAOTest.class);
 
     private final Long projectId = 1L;
-    private final IssueBaseDAO dao = GraphDaoFactory.getIssueBaseDAO(projectId);
+    private final IssueBaseDAO dao = daoFactory.getIssueBaseDAO(projectId);
 
     @Test
     public void addIssue() {
@@ -47,11 +47,11 @@ public class IssueBaseDAOTest {
         benutzer2.setLogin("testuser x");
         issueBase.setReporter(benutzer2);
 
-        issueBase.setStatus(GraphDaoFactory.getIssueStatusDAO().loadAllEntities().get(0));
-        issueBase.setType(GraphDaoFactory.getIssueTypeDAO().loadAllEntities().get(0));
-        issueBase.setPriority(GraphDaoFactory.getIssuePriorityDAO().loadAllEntities().get(0));
-        issueBase.setVersion(GraphDaoFactory.getIssueVersionDAO().loadAllEntities().get(0));
-        issueBase.setStoryPoints(GraphDaoFactory.getIssueStoryPointDAO().loadAllEntities().get(0));
+        issueBase.setStatus(daoFactory.getIssueStatusDAO().loadAllEntities().get(0));
+        issueBase.setType(daoFactory.getIssueTypeDAO().loadAllEntities().get(0));
+        issueBase.setPriority(daoFactory.getIssuePriorityDAO().loadAllEntities().get(0));
+        issueBase.setVersion(daoFactory.getIssueVersionDAO().loadAllEntities().get(0));
+        issueBase.setStoryPoints(daoFactory.getIssueStoryPointDAO().loadAllEntities().get(0));
 
         issueBase = dao.persist(issueBase);
         if (logger.isDebugEnabled())
@@ -74,9 +74,9 @@ public class IssueBaseDAOTest {
     @Test
     public void ChangeGraphAttributes() {
         IssueBase issue = dao.loadAllEntities().get(1);
-        issue.setStatus(GraphDaoFactory.getIssueStatusDAO().loadAllEntities().get(1));
-        issue.setType(GraphDaoFactory.getIssueTypeDAO().loadAllEntities().get(1));
-        issue.setPriority(GraphDaoFactory.getIssuePriorityDAO().loadAllEntities().get(1));
+        issue.setStatus(daoFactory.getIssueStatusDAO().loadAllEntities().get(1));
+        issue.setType(daoFactory.getIssueTypeDAO().loadAllEntities().get(1));
+        issue.setPriority(daoFactory.getIssuePriorityDAO().loadAllEntities().get(1));
 
         issue = dao.persist(issue);
         IssueBase proof = dao.findById(issue.getId());
@@ -113,7 +113,7 @@ public class IssueBaseDAOTest {
         comment2.setText("CommentB");
         issue.addOrChangeComment(comment2);
 
-        issue = GraphDaoFactory.getIssueBaseDAO(projectId).persist(issue);
+        issue = daoFactory.getIssueBaseDAO(projectId).persist(issue);
 
         assertTrue(issue.getComments().contains(comment2));
 
@@ -148,7 +148,7 @@ public class IssueBaseDAOTest {
         testCase2.setText("CommentB");
         issue.addOrChangeTestCase(testCase2);
 
-        issue = GraphDaoFactory.getIssueBaseDAO(projectId).persist(issue);
+        issue = daoFactory.getIssueBaseDAO(projectId).persist(issue);
 
         assertTrue(issue.getTestcases().contains(testCase2));
 

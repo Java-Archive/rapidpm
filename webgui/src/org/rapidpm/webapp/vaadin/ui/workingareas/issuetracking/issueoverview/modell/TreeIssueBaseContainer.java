@@ -2,7 +2,9 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.mo
 
 import com.vaadin.data.util.HierarchicalContainer;
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.GraphDaoFactory;
+//import org.rapidpm.persistence.GraphDaoFactory;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
@@ -23,6 +25,7 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
     public final static String PROPERTY_CAPTION = "caption";
     public final static String PROPERTY_ISSUEBASE = "issueBase";
     private final PlannedProject currentProject;
+    private DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
     public TreeIssueBaseContainer(final PlannedProject currentProject) {
         super();
@@ -35,7 +38,7 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
     private void filltree() {
         Object itemId;
         List<IssueBase> subIssueList;
-        for (IssueBase issue : GraphDaoFactory.getIssueBaseDAO(currentProject.getId()).loadTopLevelEntities()) {
+        for (IssueBase issue : daoFactory.getIssueBaseDAO(currentProject.getId()).loadTopLevelEntities()) {
             itemId = addItem();
             this.getContainerProperty(itemId, PROPERTY_CAPTION).setValue(issue.name());
             this.getContainerProperty(itemId, PROPERTY_ISSUEBASE).setValue(issue);
@@ -81,7 +84,7 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
             }
         }
 
-        if (GraphDaoFactory.getIssueBaseDAO(currentProject.getId()).delete(issue))
+        if (daoFactory.getIssueBaseDAO(currentProject.getId()).delete(issue))
             if (super.removeItem(itemId)) {
                 success = true;
                 if (!this.hasChildren(parentItem))

@@ -3,8 +3,9 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.mo
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.GraphBaseDAO;
-import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
 
 import java.lang.reflect.Field;
@@ -30,7 +31,7 @@ public class SettingsDataContainer<T> extends IndexedContainer {
     public SettingsDataContainer(Class aClass) {
         super();
         clazz = aClass;
-        dao = getGraphDAOInstance();
+        dao = getDAOInstance();
         visibleColumns = new ArrayList<>();
 
 
@@ -78,12 +79,12 @@ public class SettingsDataContainer<T> extends IndexedContainer {
         }
     }
 
-    private GraphBaseDAO<T> getGraphDAOInstance() {
+    private GraphBaseDAO<T> getDAOInstance() {
         GraphBaseDAO<T> dao = null;
         final Method method;
         try {
-            method = GraphDaoFactory.class.getDeclaredMethod("get" + clazz.getSimpleName() + "DAO");
-            dao = (GraphBaseDAO<T>)method.invoke(GraphDaoFactory.class);
+            method = DaoFactory.class.getDeclaredMethod("get" + clazz.getSimpleName() + "DAO");
+            dao = (GraphBaseDAO<T>)method.invoke(DaoFactorySingelton.getInstance());
         } catch (NoSuchMethodException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (InvocationTargetException e) {

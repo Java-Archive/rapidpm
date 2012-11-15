@@ -9,17 +9,17 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.rapidpm.persistence.GraphDaoFactory;
+import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class IssueStatusDAOTest {
+public class IssueStatusDAOTest implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssueStatusDAOTest.class);
 
-    private final IssueStatusDAO dao = GraphDaoFactory.getIssueStatusDAO();
+    private final IssueStatusDAO dao = daoFactory.getIssueStatusDAO();
     private final IssueStatus assignTo = dao.loadAllEntities().get(0);
 
     @Test
@@ -51,7 +51,7 @@ public class IssueStatusDAOTest {
     public void getConnectedIssus() {
         for (IssueStatus status : dao.loadAllEntities()) {
             List<IssueBase> issueList = status.getConnectedIssuesFromProject(1L);
-            for (IssueBase issue : GraphDaoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+            for (IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
                 if (issue.getStatus().equals(status))
                     assertTrue(issueList.contains(issue));
             }

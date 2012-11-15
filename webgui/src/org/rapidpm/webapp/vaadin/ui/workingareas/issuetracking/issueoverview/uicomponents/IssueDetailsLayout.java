@@ -11,7 +11,7 @@ import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
-import org.rapidpm.persistence.GraphDaoFactory;
+//import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.system.security.Benutzer;
@@ -72,12 +72,12 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     @Override
     protected AbstractOrderedLayout buildSaveableForm() {
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final List<IssueType> typeList = GraphDaoFactory.getIssueTypeDAO().loadAllEntities();
-        final List<IssueStatus> statusList = GraphDaoFactory.getIssueStatusDAO().loadAllEntities();
-        final List<IssuePriority> priorityList =  GraphDaoFactory.getIssuePriorityDAO().loadAllEntities();
-        final List<IssueVersion> versionList =  GraphDaoFactory.getIssueVersionDAO().loadAllEntities();
-        final List<IssueStoryPoint> storyPointList =  GraphDaoFactory.getIssueStoryPointDAO().loadAllEntities();
-        final List<IssueComponent> componentsList = GraphDaoFactory.getIssueComponentDAO().loadAllEntities();
+        final List<IssueType> typeList = daoFactory.getIssueTypeDAO().loadAllEntities();
+        final List<IssueStatus> statusList = daoFactory.getIssueStatusDAO().loadAllEntities();
+        final List<IssuePriority> priorityList =  daoFactory.getIssuePriorityDAO().loadAllEntities();
+        final List<IssueVersion> versionList =  daoFactory.getIssueVersionDAO().loadAllEntities();
+        final List<IssueStoryPoint> storyPointList =  daoFactory.getIssueStoryPointDAO().loadAllEntities();
+        final List<IssueComponent> componentsList = daoFactory.getIssueComponentDAO().loadAllEntities();
         final List<Benutzer> userList =  daoFactory.getBenutzerDAO().loadAllEntities();
 
         VerticalLayout formLayout = new VerticalLayout();
@@ -471,7 +471,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
         relContainer.resetTransactions();
 
-        issue = GraphDaoFactory.getIssueBaseDAO(screen.getCurrentProject().getId()).persist(issue);
+        issue = DaoFactorySingelton.getInstance().getIssueBaseDAO(screen.getCurrentProject().getId()).persist(issue);
         return issue;
     }
 

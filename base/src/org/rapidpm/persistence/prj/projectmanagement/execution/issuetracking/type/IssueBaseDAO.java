@@ -4,11 +4,14 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ty
 import org.apache.log4j.Logger;
 import org.neo4j.graphdb.*;
 import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.GraphBaseDAO;
-import org.rapidpm.persistence.GraphDaoFactory;
+//import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.GraphRelationRegistry;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponent;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
 import java.util.ArrayList;
@@ -420,7 +423,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
 
         final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueComponent.class);
         for (final Relationship rel : startNode.getRelationships(relType, Direction.OUTGOING)) {
-            componentList.add(GraphDaoFactory.getIssueComponentDAO().findById(rel.getOtherNode(startNode).getId()));
+            componentList.add(DaoFactorySingelton.getInstance().getIssueComponentDAO().findById(rel.getOtherNode(startNode).getId()));
         }
 
         if (logger.isDebugEnabled())
@@ -482,7 +485,42 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
 
     }
 
-    public boolean delete(final IssueBase entity) {
-        return super.deleteIssue(entity);
+    public boolean delete(final IssueBase issue) {
+        if (issue == null)
+            throw new NullPointerException("Object to delete can't be null.");
+
+        if (logger.isDebugEnabled())
+            logger.debug("delete: " + issue);
+
+        boolean success = false;
+
+        issue.setComments(new ArrayList<IssueComment>());
+        issue.setTestcases(new ArrayList<IssueTestCase>());
+        this.persist(issue);
+
+        final Long id = issue.getId();
+        final Transaction tx = graphDb.beginTx();
+        try{
+            Node node;
+            if (id != null && id != 0) {
+                node = graphDb.getNodeById(id);
+                //rearrange Subissues
+                final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
+                for (Relationship rel : node.getRelationships()) {
+                    if (rel.isType(relType) && rel.getStartNode().equals(node)) {
+                        for (Relationship parent : node.getRelationships(relType, Direction.INCOMING)) {
+                            parent.getStartNode().createRelationshipTo(rel.getEndNode(),relType);
+                        }
+                    }
+                    rel.delete();
+                }
+                node.delete();
+            }
+            tx.success();
+            success = true;
+        } finally {
+            tx.finish();
+            return success;
+        }
     }
 }

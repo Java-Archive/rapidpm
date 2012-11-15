@@ -2,7 +2,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ty
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.rapidpm.persistence.GraphDaoFactory;
+import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponent;
 
 import java.util.List;
@@ -18,16 +18,16 @@ import static org.junit.Assert.assertTrue;
  * Time: 14:46
  * To change this template use File | Settings | File Templates.
  */
-public class IssueBaseDAOTest_Components {
+public class IssueBaseDAOTest_Components implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssueBaseDAOTest_Components.class);
 
     private final Long projectId = 1L;
-    private final IssueBaseDAO dao = GraphDaoFactory.getIssueBaseDAO(projectId);
+    private final IssueBaseDAO dao = daoFactory.getIssueBaseDAO(projectId);
 
     @Test
     public void addComponent() {
         IssueBase issue = dao.loadAllEntities().get(0);
-        List<IssueComponent> componentList = GraphDaoFactory.getIssueComponentDAO().loadAllEntities();
+        List<IssueComponent> componentList = daoFactory.getIssueComponentDAO().loadAllEntities();
 
         boolean success = issue.addComponent(componentList.get(0));
         assertTrue(success);
@@ -59,7 +59,7 @@ public class IssueBaseDAOTest_Components {
     @Test
     public void addComponent2() {
         IssueBase issue = dao.loadAllEntities().get(0);
-        List<IssueComponent> componentList = GraphDaoFactory.getIssueComponentDAO().loadAllEntities();
+        List<IssueComponent> componentList = daoFactory.getIssueComponentDAO().loadAllEntities();
 
         boolean success;
 

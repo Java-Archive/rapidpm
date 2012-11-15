@@ -7,6 +7,8 @@ import org.neo4j.graphdb.traversal.Evaluators;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.graphdb.traversal.Traverser;
 import org.neo4j.kernel.Traversal;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -45,8 +47,8 @@ public class GraphBaseDAO<T> {
             throw new NullPointerException("ProjectId is null.");
         if (projectId < 0)
             throw new IllegalArgumentException("ProjectId must be positiv");
-//        if (relDaoFactory == null)
-//            throw new NullPointerException("Rel. DaoFactory is null.");
+        if (relDaoFactory == null)
+            throw new NullPointerException("Rel. DaoFactory is null.");
         this.graphDb = graphDb;
         this.relDaoFactory = relDaoFactory;
         this.clazz = clazz;
@@ -207,10 +209,11 @@ public class GraphBaseDAO<T> {
 
                         //remove deleted Objects from relDB
                         final long[] nodeIds = (long[])node.getProperty(field.getName(), new long[]{});
-                        boolean deleteInRel = false;
-                        for (long singleId : nodeIds) {
+                        boolean deleteInRel;
+                        for (long singleNodeId : nodeIds) {
+                            deleteInRel = true;
                             for (Object singleEntity : entityList) {
-                                if (getIdFromEntity(singleEntity, aClass).equals(singleId)) {
+                                if (getIdFromEntity(singleEntity, aClass) == (singleNodeId)) {
                                     deleteInRel = false;
                                     break;
                                 } else {
@@ -218,7 +221,7 @@ public class GraphBaseDAO<T> {
                                 }
                             }
                             if (deleteInRel) {
-                                relDaoFactory.remove(relDao.findByID((Long)singleId));
+                                relDaoFactory.removeTX(relDao.findByID(singleNodeId));
                             }
                         }
 
@@ -226,7 +229,7 @@ public class GraphBaseDAO<T> {
                         while (it.hasNext()) {
                             Object single = it.next();
                             if (relDao != null)
-                                relDaoFactory.saveOrUpdate(single);
+                                relDaoFactory.saveOrUpdateTX(single);
                             ids[i++] = getIdFromEntity(single, aClass);
                         }
                         node.setProperty(field.getName(), ids);
@@ -503,41 +506,6 @@ public class GraphBaseDAO<T> {
             }
         }
         return relDao;
-    }
-
-
-    public boolean deleteIssue(final T entity) {
-        if (entity == null)
-            throw new NullPointerException("Object to delete can't be null.");
-
-        if (logger.isDebugEnabled())
-            logger.debug("delete: " + entity);
-
-        boolean success = false;
-        final Long id = getIdFromEntity(entity);
-        final Transaction tx = graphDb.beginTx();
-        try{
-            Node node;
-            if (id != null && id != 0) {
-                node = graphDb.getNodeById(id);
-                //rearrange Subissues
-                final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
-                for (Relationship rel : node.getRelationships()) {
-                    if (rel.isType(relType) && rel.getStartNode().equals(node)) {
-                        for (Relationship parent : node.getRelationships(relType, Direction.INCOMING)) {
-                            parent.getStartNode().createRelationshipTo(rel.getEndNode(),relType);
-                        }
-                    }
-                    rel.delete();
-                }
-                node.delete();
-            }
-            tx.success();
-            success = true;
-        } finally {
-            tx.finish();
-            return success;
-        }
     }
 
 

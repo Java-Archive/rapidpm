@@ -2,7 +2,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.rapidpm.persistence.GraphDaoFactory;
+import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
 import java.util.List;
@@ -18,10 +18,10 @@ import static org.junit.Assert.assertTrue;
  * Time: 09:57
  * To change this template use File | Settings | File Templates.
  */
-public class IssueComponentDAOTest {
+public class IssueComponentDAOTest implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssueComponentDAOTest.class);
 
-    private final IssueComponentDAO dao = GraphDaoFactory.getIssueComponentDAO();
+    private final IssueComponentDAO dao = daoFactory.getIssueComponentDAO();
 
     @Test
     public void addChangeDelete() {
@@ -51,7 +51,7 @@ public class IssueComponentDAOTest {
         for (IssueComponent component : dao.loadAllEntities()) {
             List<IssueBase> issueList = component.getConnectedIssuesFromProject(1L);
 
-            for (IssueBase issue : GraphDaoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+            for (IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
                 for (IssueComponent comp : issue.getComponents())
                     if (comp.equals(component))
                         assertTrue(issueList.contains(issue));

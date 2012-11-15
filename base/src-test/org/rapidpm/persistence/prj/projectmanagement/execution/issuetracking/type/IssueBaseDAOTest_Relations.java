@@ -10,29 +10,26 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ty
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.neo4j.graphdb.Direction;
-import org.rapidpm.persistence.GraphDaoFactory;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponent;
+//import org.rapidpm.persistence.GraphDaoFactory;
+import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
-import org.rapidpm.persistence.system.security.Benutzer;
 
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.*;
 
-public class IssueBaseDAOTest_Relations {
+public class IssueBaseDAOTest_Relations implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssueBaseDAOTest_Relations.class);
 
     private final Long projectId = 1L;
-    private final IssueBaseDAO dao = GraphDaoFactory.getIssueBaseDAO(projectId);
+    private final IssueBaseDAO dao = daoFactory.getIssueBaseDAO(projectId);
 
     @Test
     public void connectWithDeleteRelation() {
         List<IssueBase> list = dao.loadAllEntities();
         IssueBase issue1 = list.get(1);
         IssueBase issue2 = list.get(2);
-        IssueRelation rel = GraphDaoFactory.getIssueRelationDAO().loadAllEntities().get(1);
+        IssueRelation rel = daoFactory.getIssueRelationDAO().loadAllEntities().get(1);
 
         boolean success = issue1.connectToIssueAs(issue2, rel);
         assertTrue(success);
@@ -149,7 +146,7 @@ public class IssueBaseDAOTest_Relations {
     @Test(expected = NullPointerException.class)
     public void deleteRelationOfEntities_ForthParameterNull() {
         dao.deleteRelationOfEntities(dao.loadAllEntities().get(0), dao.loadAllEntities().get(1),
-                GraphDaoFactory.getIssueRelationDAO().loadAllEntities().get(0), null);
+                daoFactory.getIssueRelationDAO().loadAllEntities().get(0), null);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -181,7 +178,7 @@ public class IssueBaseDAOTest_Relations {
 
     @Test(expected = NullPointerException.class)
     public void getConnectedIssuesWithRelation_ThirdParameterNull() {
-        dao.getConnectedIssuesWithRelation(dao.loadAllEntities().get(0), GraphDaoFactory.getIssueRelationDAO().loadAllEntities().get
+        dao.getConnectedIssuesWithRelation(dao.loadAllEntities().get(0), daoFactory.getIssueRelationDAO().loadAllEntities().get
                 (0), null);
     }
 }

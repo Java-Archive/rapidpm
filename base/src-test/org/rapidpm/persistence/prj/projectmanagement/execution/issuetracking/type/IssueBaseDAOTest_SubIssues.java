@@ -2,9 +2,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ty
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.neo4j.graphdb.Direction;
-import org.rapidpm.persistence.GraphDaoFactory;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
+import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
 
 import java.util.List;
 
@@ -18,11 +16,11 @@ import static org.junit.Assert.assertTrue;
  * Time: 14:51
  * To change this template use File | Settings | File Templates.
  */
-public class IssueBaseDAOTest_SubIssues {
+public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssueBaseDAOTest_SubIssues.class);
 
     private final Long projectId = 1L;
-    private final IssueBaseDAO dao = GraphDaoFactory.getIssueBaseDAO(projectId);
+    private final IssueBaseDAO dao = daoFactory.getIssueBaseDAO(projectId);
 
     @Test
     public void addSubIssue() {

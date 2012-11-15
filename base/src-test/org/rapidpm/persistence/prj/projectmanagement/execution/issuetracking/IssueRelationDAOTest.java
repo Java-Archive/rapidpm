@@ -2,7 +2,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.rapidpm.persistence.GraphDaoFactory;
+import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -15,10 +15,10 @@ import static org.junit.Assert.assertTrue;
  * Time: 13:46
  * To change this template use File | Settings | File Templates.
  */
-public class IssueRelationDAOTest {
+public class IssueRelationDAOTest implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssueRelationDAOTest.class);
 
-    private final IssueRelationDAO dao = GraphDaoFactory.getIssueRelationDAO();
+    private final IssueRelationDAO dao = daoFactory.getIssueRelationDAO();
 
     @Test
     public void addChangeDelete() {
