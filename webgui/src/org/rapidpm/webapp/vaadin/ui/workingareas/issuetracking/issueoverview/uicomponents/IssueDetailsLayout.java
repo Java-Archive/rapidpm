@@ -171,7 +171,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             item = assigneeSelect.addItem(user);
             item.getItemProperty(PROPERTY_CAPTION).setValue(user.getLogin());
         }
-        assigneeSelect.select(userList.get(0));
+        assigneeSelect.select(assigneeSelect.getItemIds().toArray()[0]);
         assigneeSelect.setTextInputAllowed(false);
         assigneeSelect.setNullSelectionAllowed(false);
         assigneeSelect.setReadOnly(true);
@@ -251,7 +251,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         }
         componentListSelect.setNullSelectionAllowed(true);
         componentListSelect.setMultiSelect(true);
-        componentListSelect.setRows(5);
+        componentListSelect.setRows(8);
         componentListSelect.setReadOnly(true);
         componentLayout.addComponent(componentListSelect);
 
@@ -408,9 +408,6 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
         ((RelationsDataContainer)tabRelations.getContainerDataSource()).fillContainer(issue);
         tabRelations.select(tabComments.getNullSelectionItemId());
-
-        issue.resetTransactions();
-
 
         setLayoutReadOnly(true);
     }

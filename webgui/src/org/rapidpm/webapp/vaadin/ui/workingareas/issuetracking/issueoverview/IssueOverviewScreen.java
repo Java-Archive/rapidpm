@@ -65,7 +65,7 @@ public class IssueOverviewScreen extends Screen{
     public void setComponents() {
         hSplitPanel.setFirstComponent(treeLayout);
         hSplitPanel.setSecondComponent(issueTabSheet);
-        hSplitPanel.setHeight("770px");
+        hSplitPanel.setHeight("775px");
         addComponent(hSplitPanel);
     }
 

@@ -158,4 +158,9 @@ public class IssueBaseDAOTest implements BaseDAOTest {
         assertFalse(issue.getTestcases().contains(testCase1));
         assertFalse(issue.getTestcases().contains(testCase2));
     }
+
+    @Test(expected = NullPointerException.class)
+    public void deleteException() {
+        dao.delete(null);
+    }
 }

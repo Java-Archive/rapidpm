@@ -131,10 +131,6 @@ public class IssueBase implements PersistInGraph {
         return success;
     }
 
-    public void resetTransactions() {
-        graphMap = null;
-    }
-
 
     public boolean connectToIssueAs(final IssueBase issue, final IssueRelation relation) {
         //return DaoFactorySingelton.getIssueBaseDAO(projectId).connectEntitiesWithRelationTx(this, issue, relation);
