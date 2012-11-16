@@ -64,13 +64,13 @@ public class IssueBase implements PersistInGraph {
     @Graph(clazz = IssueStoryPoint.class)
     private IssueStoryPoint storyPoints;
 
-    @Simple(clazz = "Date")
+    @Simple
     private Date dueDate_planned;
 
-    @Simple(clazz = "Date")
+    @Simple
     private Date dueDate_resolved;
 
-    @Simple(clazz = "Date")
+    @Simple
     private Date dueDate_closed;
 
     //@Relational

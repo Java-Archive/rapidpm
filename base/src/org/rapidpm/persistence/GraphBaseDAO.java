@@ -189,7 +189,7 @@ public class GraphBaseDAO<T> {
                 boolean isAccessible = field.isAccessible();
                 field.setAccessible(true);
                 if (field.isAnnotationPresent(Simple.class)) {
-                    if (field.getAnnotation(Simple.class).clazz().equals("Date")) {
+                    if (field.getType().equals(Date.class)) {
                         node.setProperty(field.getName(), field.get(entity) == null ? "0" : ((Date)field.get(entity)).getTime());
                     } else {
                         if (field.get(entity) != null)
@@ -407,7 +407,7 @@ public class GraphBaseDAO<T> {
                 }
 
                 if (field.isAnnotationPresent(Simple.class)) {
-                    if (field.getAnnotation(Simple.class).clazz().equals("Date")) {
+                    if (field.getType().equals(Date.class)) {
                         field.set(entity, new Date(Long.class.cast(node.getProperty(field.getName()))));
 
                     } else
