@@ -12,8 +12,8 @@ import javax.persistence.Transient;
 public class BaseControllingunit {
     private ControllingUnitContainer<Double> internalCosts;
     private ControllingUnitContainer<Double> externalCosts;
-    private  ControllingUnitContainer<Integer> duration;
-    private  ControllingUnitContainer<String> status;
+    private ControllingUnitContainer<Integer> duration;
+    private ControllingUnitContainer<String> status;
 
     public ControllingUnitContainer<Double> getInternalCosts() {
         return internalCosts;

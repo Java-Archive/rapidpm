@@ -14,11 +14,11 @@ public class Risk {
     @Id
     @TableGenerator(name = "PKGenRisk", table = "pk_gen", pkColumnName = "gen_key",
             pkColumnValue = "Risk_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenPlannedProject")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenRisk")
     private Long id;
 
     @Basic
-    double propabillity;
+    private double propabillity;
     @Basic
-    String name;
+    private String name;
 }
