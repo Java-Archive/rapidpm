@@ -50,10 +50,10 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
 //        bean = EJBFactory.getEjbInstance(PlanningRessourcesMyFormLayoutBean.class);
 //        baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        refreshEntities(daoFactory);
 
         final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().loadPlanningUnitByName
                 (thePlanningUnit.getPlanningUnitName());
+        daoFactory.getEntityManager().refresh(planningUnit);
         planningUnitElements = planningUnit.getPlanningUnitElementList();
         buildTable();
         buildForm();
@@ -97,7 +97,7 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
                                         planningUnitElement.setPlannedHours(Integer.parseInt(daysHoursMinutes[1]));
                                         planningUnitElement.setPlannedMinutes(Integer.parseInt(daysHoursMinutes[2]));
                                         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-                                        daoFactory.saveOrUpdate(planningUnitElement);
+                                        daoFactory.saveOrUpdateTX(planningUnitElement);
                                     }
                                 }
                             }
@@ -116,8 +116,6 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
 
     private void buildTable() {
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        refreshEntities(daoFactory);
-
         final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO().loadAllEntities();
         final String[] spaltenNamen = new String[ressourceGroups.size()];
         Integer index = 0;
@@ -155,22 +153,6 @@ public class PlanningRessourcesMyFormLayout extends MyFormLayout {
     @Override
     protected void buildForm() {
         componentsLayout.addComponent(tabelle);
-    }
-
-    private void refreshEntities(final DaoFactory baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
-            entityManager.refresh(planningUnit);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
     }
 
 }

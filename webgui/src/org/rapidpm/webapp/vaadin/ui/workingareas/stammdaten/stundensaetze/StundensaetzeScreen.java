@@ -151,35 +151,7 @@ public class StundensaetzeScreen extends Screen {
         return tabelle;
     }
 
-    public void setTabelle(Table tabelle) {
-        this.tabelle = tabelle;
-    }
-
-    public TextField getBetriebsWertField() {
-        return betriebsWertField;
-    }
-
-    public void setBetriebsWertField(TextField betriebsWertField) {
-        this.betriebsWertField = betriebsWertField;
-    }
-
-    public TextField getBetriebsstdField() {
-        return betriebsstdField;
-    }
-
-    public void setBetriebsstdField(TextField betriebsstdField) {
-        this.betriebsstdField = betriebsstdField;
-    }
-
     public VerticalLayout getSaveButtonLayout() {
         return saveButtonLayout;
     }
-
-    public void setSaveButtonLayout(VerticalLayout saveButtonLayout) {
-        this.saveButtonLayout = saveButtonLayout;
-    }
-
-//    public StundensaetzeScreenBean getScreenBean() {
-//        return screenBean;
-//    }
 }

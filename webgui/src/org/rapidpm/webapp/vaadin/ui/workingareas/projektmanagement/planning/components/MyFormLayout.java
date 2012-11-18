@@ -57,21 +57,4 @@ public abstract class MyFormLayout extends VerticalLayout {
 
 
     protected abstract void buildForm();
-
-
-    public FormLayout getComponentsLayout() {
-        return componentsLayout;
-    }
-
-    public void setComponentsLayout(FormLayout componentsLayout) {
-        this.componentsLayout = componentsLayout;
-    }
-
-    public HorizontalLayout getButtonLayout() {
-        return buttonLayout;
-    }
-
-    public void setButtonLayout(HorizontalLayout buttonLayout) {
-        this.buttonLayout = buttonLayout;
-    }
 }

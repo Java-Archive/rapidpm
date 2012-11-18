@@ -24,8 +24,7 @@ public class BenutzerDAOTest extends DAOTest {
 
 
         final BenutzerDAO dao = daoFactory.getBenutzerDAO();
-        dao.new Transaction(){
-            @Override
+        daoFactory.new Transaction(){
             public void doTask() {
                 final Benutzer byID = dao.findByID(-1L);
                 assertNotNull(byID);

@@ -49,7 +49,6 @@ public class SaveButtonClickListener implements ClickListener {
 //        bean = EJBFactory.getEjbInstance(SaveButtonClickListenerBean.class);
 //        baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        refreshEntities(daoFactory);
     }
 
     @Override
@@ -60,6 +59,7 @@ public class SaveButtonClickListener implements ClickListener {
             final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
             final PlanningUnitDAO planningUnitDAO = daoFactory.getPlanningUnitDAO();
             foundPlanningUnit = planningUnitDAO.loadPlanningUnitByName(planningUnitNameBeforeCommit);
+            daoFactory.getEntityManager().refresh(foundPlanningUnit);
 
             fieldGroup.commit();
             final String planningUnitNameAfterCommit = item.getItemProperty(messages.getString("aufgabe")).getValue().toString();
@@ -78,32 +78,16 @@ public class SaveButtonClickListener implements ClickListener {
                     planningUnitElement.setPlannedDays(plannedDays);
                     planningUnitElement.setPlannedHours(plannedHours);
                     planningUnitElement.setPlannedMinutes(plannedMinutes);
-                    daoFactory.saveOrUpdate(planningUnitElement);
+                    daoFactory.saveOrUpdateTX(planningUnitElement);
                 }
             }
-            daoFactory.saveOrUpdate(foundPlanningUnit);
+            daoFactory.saveOrUpdateTX(foundPlanningUnit);
             final MainUI ui = screen.getUi();
             ui.setWorkingArea(new AufwandProjInitScreen(ui));
         }catch (CommitException e){
             logger.info(COMMIT_EXCEPTION_MESSAGE);
         }catch(Exception e){
             logger.warn("Exception", e);
-        }
-    }
-
-    private void refreshEntities(final DaoFactory baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
-            entityManager.refresh(planningUnit);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
         }
     }
 

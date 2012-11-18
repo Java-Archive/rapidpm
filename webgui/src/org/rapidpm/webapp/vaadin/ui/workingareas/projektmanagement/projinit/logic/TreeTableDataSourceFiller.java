@@ -47,10 +47,6 @@ public class TreeTableDataSourceFiller {
         this.messages = bundle;
         dataSource = dSource;
 
-//        bean = EJBFactory.getEjbInstance(TreeTableDataSourceFillerBean.class);
-//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        refreshEntities();
-
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final RessourceGroupDAO ressourceGroupDAO = daoFactory.getRessourceGroupDAO();
         ressourceGroups = ressourceGroupDAO.loadAllEntities();
@@ -161,24 +157,6 @@ public class TreeTableDataSourceFiller {
         if (days > 0) {
             item.setDays(item.getDays() + days);
             item.setHours(item.getHours() - (days * HOURS_DAY));
-        }
-    }
-
-    private void refreshEntities() {
-//    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-//        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final EntityManager entityManager = daoFactory.getEntityManager();
-        for(final PlannedProject plannedProject : daoFactory.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        final PlanningUnitElementDAO planningUnitElementDAO = daoFactory.getPlanningUnitElementDAO();
-        for(final PlanningUnitElement planningUnitElement : planningUnitElementDAO.loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        final RessourceGroupDAO ressourceGroupDAO = daoFactory.getRessourceGroupDAO();
-        for(final RessourceGroup ressourceGroup : ressourceGroupDAO.loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
         }
     }
 }

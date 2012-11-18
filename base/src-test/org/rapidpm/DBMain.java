@@ -171,7 +171,7 @@ public class DBMain {
             }
 
 
-            daoFactoryFactory.getBenutzerDAO().saveOrUpdate(benutzer);
+            daoFactoryFactory.saveOrUpdate(benutzer);
         }
     }
 

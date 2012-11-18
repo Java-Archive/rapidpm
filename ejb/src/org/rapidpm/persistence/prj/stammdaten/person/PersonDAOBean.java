@@ -119,11 +119,11 @@ public class PersonDAOBean {
             if (personenNamen != null) {
                 final PersonenNameDAO personenNameDAO = daoFactoryBean.getPersonenNameDAO();
                 for (final PersonenName personenName : personenNamen) {
-                    personenNameDAO.remove(personenName);
+                    personenNameDAO.getEntityManager().remove(personenName);
                 }
             }
             // neue Namen eintragen
-            personenNamen = new ArrayList<>();
+            //personenNamen = new ArrayList<>();
             final NamensKlassifizierungDAO namensKlassifizierungDAO = daoFactoryBean.getNamensKlassifizierungDAO();
             personenNamen.addAll(convertStringListToPersonenNameList(personStammdaten.getVornamen(), namensKlassifizierungDAO.loadNamensKlassifizierungVorname()));
             personenNamen.addAll(convertStringListToPersonenNameList(personStammdaten.getNachnamen(), namensKlassifizierungDAO.loadNamensKlassifizierungNachname()));
@@ -134,7 +134,7 @@ public class PersonDAOBean {
             if (titelList != null) {
                 final TitelDAO titelDAO = daoFactoryBean.getTitelDAO();
                 for (final Titel titel : titelList) {
-                    titelDAO.remove(titel);
+                    titelDAO.getEntityManager().remove(titel);
                 }
             }
             person.setTitel(new ArrayList<Titel>());

@@ -26,38 +26,38 @@ public class BenutzerDAOBeanTest extends DaoFactoryBeanTest<BenutzerDAOBean> {
     public BenutzerDAOBeanTest() {
         super(BenutzerDAOBean.class, DaoFactoryBean.class);
     }
-
-    private Benutzer getTestBenutzer() {
-        return daoFactory.getBenutzerDAO().findByID(1L);
-    }
-
-    @Test
-    public void testChangePasswd() throws Exception {
-        BasicConfigurator.configure();
-
-        final Benutzer benutzer = getTestBenutzer();
-        daoFactory.getBenutzerDAO().new Transaction() {
-            @Override
-            public void doTask() {
-                final BenutzerDAOBean.BenutzerResult result = daoBean.changePasswd("sessionID", -1L, benutzer.getId(), "test");
-                DaoFactoryBeanTest.printLog(result);
-                assertTrue(result.getValid());
-            }
-        }.execute();
-    }
-
-    @Test
-    public void testChangeLogin() throws Exception {
-        BasicConfigurator.configure();
-
-        final Benutzer benutzer = getTestBenutzer();
-        daoFactory.getBenutzerDAO().new Transaction() {
-            @Override
-            public void doTask() {
-                final BenutzerDAOBean.BenutzerResult result = daoBean.changeLogin("sessionID", -1L, benutzer.getId(), "test.login");
-                DaoFactoryBeanTest.printLog(result);
-                assertTrue(result.getValid());
-            }
-        }.execute();
-    }
+//
+//    private Benutzer getTestBenutzer() {
+//        return daoFactory.getBenutzerDAO().findByID(1L);
+//    }
+//
+//    @Test
+//    public void testChangePasswd() throws Exception {
+//        BasicConfigurator.configure();
+//
+//        final Benutzer benutzer = getTestBenutzer();
+//        daoFactory.getBenutzerDAO().new Transaction() {
+//            @Override
+//            public void doTask() {
+//                final BenutzerDAOBean.BenutzerResult result = daoBean.changePasswd("sessionID", -1L, benutzer.getId(), "test");
+//                DaoFactoryBeanTest.printLog(result);
+//                assertTrue(result.getValid());
+//            }
+//        }.execute();
+//    }
+//
+//    @Test
+//    public void testChangeLogin() throws Exception {
+//        BasicConfigurator.configure();
+//
+//        final Benutzer benutzer = getTestBenutzer();
+//        daoFactory.getBenutzerDAO().new Transaction() {
+//            @Override
+//            public void doTask() {
+//                final BenutzerDAOBean.BenutzerResult result = daoBean.changeLogin("sessionID", -1L, benutzer.getId(), "test.login");
+//                DaoFactoryBeanTest.printLog(result);
+//                assertTrue(result.getValid());
+//            }
+//        }.execute();
+//    }
 }

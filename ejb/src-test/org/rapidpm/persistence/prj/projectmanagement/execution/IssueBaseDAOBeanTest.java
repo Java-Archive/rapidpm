@@ -22,25 +22,25 @@ public class IssueBaseDAOBeanTest extends DaoFactoryBeanTest<IssueBaseDAOBean> {
         super(IssueBaseDAOBean.class, DaoFactoryBean.class);
     }
 
-    @Test
-    public void testConnectIssueComment() throws Exception {
-        daoFactory.getIssueBaseDAO().new Transaction() {
-            @Override
-            public void doTask() {
-                final IssueBaseDAOBean.IssueBaseResult result = daoBean.connectIssueComment("sessionID", -1L, 1L, 1L);
-                assertTrue(result.getValid());
-            }
-        }.execute();
-    }
-
-    @Test
-    public void testConnectIssueTimeUnitUsed() throws Exception {
-        daoFactory.getIssueBaseDAO().new Transaction() {
-            @Override
-            public void doTask() {
-                final IssueBaseDAOBean.IssueBaseResult result = daoBean.connectIssueTimeUnitUsed("sessionID", -1L, 1L, 1L);
-                assertTrue(result.getValid());
-            }
-        }.execute();
-    }
+//    @Test
+//    public void testConnectIssueComment() throws Exception {
+//        daoFactory.getIssueBaseDAO().new Transaction() {
+//            @Override
+//            public void doTask() {
+//                final IssueBaseDAOBean.IssueBaseResult result = daoBean.connectIssueComment("sessionID", -1L, 1L, 1L);
+//                assertTrue(result.getValid());
+//            }
+//        }.execute();
+//    }
+//
+//    @Test
+//    public void testConnectIssueTimeUnitUsed() throws Exception {
+//        daoFactory.getIssueBaseDAO().new Transaction() {
+//            @Override
+//            public void doTask() {
+//                final IssueBaseDAOBean.IssueBaseResult result = daoBean.connectIssueTimeUnitUsed("sessionID", -1L, 1L, 1L);
+//                assertTrue(result.getValid());
+//            }
+//        }.execute();
+//    }
 }

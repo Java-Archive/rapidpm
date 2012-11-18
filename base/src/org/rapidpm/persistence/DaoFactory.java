@@ -8,6 +8,7 @@ package org.rapidpm.persistence;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
+import com.vaadin.ui.Notification;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.bewegungsdaten.RegistrationDAO;
 import org.rapidpm.persistence.prj.bewegungsdaten.RegistrationStatusDAO;
@@ -51,6 +52,7 @@ import org.rapidpm.persistence.system.logging.LogginEntityEntryDAO;
 import org.rapidpm.persistence.system.logging.LoggingEventEntryDAO;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.BerechtigungDAO;
+import org.rapidpm.webapp.vaadin.MainUI;
 
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -58,7 +60,7 @@ import javax.persistence.*;
 
 public class DaoFactory {
     private static final Logger logger = Logger.getLogger(DaoFactory.class);
-    private DAO.EntityUtils entityUtils;
+    private final DAO.EntityUtils entityUtils = new DAO.EntityUtils();
 
     public DaoFactory(final String persistenceUnitName) {
         final EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
@@ -97,8 +99,6 @@ public class DaoFactory {
 
 
     public <T> void saveOrUpdateTX(final T entity) {
-        Integer i = null;
-        i++;
         if (logger.isInfoEnabled()) {
             logger.info("saveOrUpdateTX entity " + entity);
         }
@@ -184,8 +184,7 @@ public class DaoFactory {
             }.execute();
         }
     }
-
-    @TransactionAttribute(value = TransactionAttributeType.REQUIRES_NEW)
+    xtttx
     public abstract class Transaction {
         private final EntityTransaction transaction = entityManager.getTransaction();
 
@@ -204,8 +203,10 @@ public class DaoFactory {
                     logger.warn("tx nicht mehr active.. ");
                 }
 
-            } catch (Exception e) {
+            } catch (PersistenceException e) {
+                Notification.show(MainUI.messages.getString("stdsatz_nodelete"));
                 logger.error(e);
+            } finally {
 //                System.out.println("e = " + e);
                 if (transaction != null && transaction.isActive()) {
                     transaction.rollback();
@@ -214,7 +215,6 @@ public class DaoFactory {
             }
         }
     }
-
 
     public <T> void removeTX(final T entity) {
         if (logger.isInfoEnabled()) {
