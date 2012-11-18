@@ -98,7 +98,7 @@ public class DaoFactory {
 //    }
 
 
-    public <T> void saveOrUpdateTX(final T entity) {
+    public <T> T saveOrUpdateTX(final T entity) {
         if (logger.isInfoEnabled()) {
             logger.info("saveOrUpdateTX entity " + entity);
         }
@@ -110,10 +110,13 @@ public class DaoFactory {
             final Long oid = entityUtils.getOIDFromEntity(entity);
             if (oid == null || oid == -1L) {
                 simplePersistTX(entity);
+                return entity;
             } else {
                 simpleMergeTX(entity);
+                return entity;
             }
         }
+        return null;
     }
 
 
@@ -184,7 +187,7 @@ public class DaoFactory {
             }.execute();
         }
     }
-    xtttx
+
     public abstract class Transaction {
         private final EntityTransaction transaction = entityManager.getTransaction();
 
