@@ -118,7 +118,8 @@ public class SettingsDataContainer<T> extends IndexedContainer {
                         prop = itemProps.get(i);
 
                         if (!field.getName().contains("FileName")) {
-                            if (prop == null || prop.equals("null") || prop.equals("")) {
+                            if (prop == null || prop.equals("null") || prop.equals("")
+                                    || prop.toString().trim().equals("")) {
                                 if (logger.isDebugEnabled())
                                     logger.debug("null value found: " + field.getName());
                                 return null;

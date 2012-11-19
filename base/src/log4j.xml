@@ -5,7 +5,7 @@
   -->
 
 <!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN"
-        "/Volumes/ssd128GB/workspace/NeoScio_Base Kopie/BaseORM/src/log4j.dtd">
+        "log4j.dtd">
 
 <log4j:configuration>
 

@@ -33,6 +33,7 @@ public class AddIssueWindow extends Window {
         setCaption(screen.getMessagesBundle().getString("issuetracking_issue_addwindow"));
         this.setModal(true);
         this.setResizable(false);
+        this.setWidth("100%");
         addDetailsLayout = new IssueDetailsLayout(screen, false);
         addDetailsLayout.addSaveButtonClickListener(new AddIssueSaveClickListener());
         addDetailsLayout.addCancelButtonClickListener(new AddIssueCancelClickListener());

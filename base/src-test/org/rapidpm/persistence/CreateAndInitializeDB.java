@@ -249,7 +249,7 @@ public class CreateAndInitializeDB {
         relationList.add(daoFactory.getIssueRelationDAO().persist(relation));
 
         relation = new IssueRelation();
-        relation.setRelationName("Dependance");
+        relation.setRelationName("Dependence");
         relation.setOutgoingName("relates");
         relation.setIncomingName("depends on");
         relationList.add(daoFactory.getIssueRelationDAO().persist(relation));
