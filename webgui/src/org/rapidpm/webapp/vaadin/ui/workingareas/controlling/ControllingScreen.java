@@ -2,11 +2,12 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.controlling;
 
 import com.vaadin.ui.*;
 import org.rapidpm.ejb3.EJBFactory;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
-import org.rapidpm.webapp.vaadin.ui.components.highchatrsjs.JsHighChart;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.componnents.ControllingProjectTab;
-import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.componnents.ControllingRessourceGroupsTab;
+import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.componnents.tabsheet.ControllingDataTabSheet;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,38 +18,59 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.componnents.Control
  */
 public class ControllingScreen extends Screen {
 
-    private final ControllingScreenBean controllingScreenBean;
-    private final HorizontalLayout mainLayout= new HorizontalLayout();
     private final HorizontalSplitPanel splitPanel = new HorizontalSplitPanel();
-
-    private final Tree projectStructureTree;
+//    private final Tree projectStructureTree;
+    private ControllingDataTabSheet controllingTabSheet;
+    private  final VerticalLayout testButtonLayout;
 
     public ControllingScreen(final MainUI ui) {
         super(ui);
 
-        controllingScreenBean = EJBFactory.getEjbInstance(ControllingScreenBean.class);
+//        projectStructureTree = new Tree("Projectstrutcture");
+        controllingTabSheet = new ControllingDataTabSheet();
 
+        testButtonLayout = new VerticalLayout();
+        initTestButtons();
 
-        JsHighChart chart = new JsHighChart();
-        chart.setId("myJSComponent");
-
-        TabSheet tabsheet = new TabSheet();
-        tabsheet.setSizeFull();
-        tabsheet.addTab(new ControllingProjectTab(),
-                "Dauer/Kosten");
-        tabsheet.addTab(new ControllingRessourceGroupsTab(),
-                "Ressourcengruppen");
-
-
-        projectStructureTree = new Tree("Projectstrutcture");
         splitPanel.setSizeFull();
         splitPanel.setSplitPosition(40, Unit.PERCENTAGE);
 
-        splitPanel.setFirstComponent(projectStructureTree);
-        splitPanel.setSecondComponent(tabsheet);
+//        splitPanel.setFirstComponent(projectStructureTree);
+        splitPanel.setFirstComponent(testButtonLayout);
+        splitPanel.setSecondComponent(controllingTabSheet);
+
         splitPanel.setHeight(String.valueOf(ui.getHeight()));
 
         setComponents();
+    }
+
+    private void initTestButtons() {
+        Button plannedProjectButton = new Button("PlannedProject");
+        plannedProjectButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                controllingTabSheet.setSelectedControllingClass(PlannedProject.class);
+            }
+        });
+        testButtonLayout.addComponent(plannedProjectButton);
+
+        Button planningUnitButton = new Button("PlanningUnit");
+        planningUnitButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                controllingTabSheet.setSelectedControllingClass(PlanningUnit.class);
+            }
+        });
+        testButtonLayout.addComponent(planningUnitButton);
+
+        Button issueBaseButton = new Button("IssueBase");
+        issueBaseButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                controllingTabSheet.setSelectedControllingClass(IssueBase.class);
+            }
+        });
+        testButtonLayout.addComponent(issueBaseButton);
     }
 
     @Override

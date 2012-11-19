@@ -1,9 +1,8 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.controlling.componnents;
+package org.rapidpm.webapp.vaadin.ui.workingareas.controlling.componnents.tabsheet.sheets;
 
-import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TreeTable;
-import com.vaadin.ui.VerticalLayout;
+import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.componnents.tabsheet.AbstractControllingTabLayout;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,19 +11,20 @@ import com.vaadin.ui.VerticalLayout;
  * Time: 15:10
  * To change this template use File | Settings | File Templates.
  */
-public class ControllingProjectTab extends VerticalLayout {
+public class ControllingProjectTab extends AbstractControllingTabLayout {
 
     private final Table totalControllingDataTable;
     private final TreeTable subPlanningUnitsControllingDataTreeTable;
 
     public ControllingProjectTab(){
-        setSizeFull();
+        super("Planned Project Dauer/Kosten");
 
         totalControllingDataTable = new Table("Gesamt");
         subPlanningUnitsControllingDataTreeTable = new TreeTable("Unterplaneinheiten");
 
         addComponent(totalControllingDataTable);
         addComponent(subPlanningUnitsControllingDataTreeTable);
+        setSizeFull();
     }
 
 }
