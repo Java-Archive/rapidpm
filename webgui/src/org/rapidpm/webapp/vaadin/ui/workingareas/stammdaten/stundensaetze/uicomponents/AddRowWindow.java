@@ -1,5 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents;
 
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
@@ -102,8 +103,9 @@ public class AddRowWindow extends Window {
                     }
                 }
                 if (allFilled) {
+                    try {
                         //final Table tabelle = screen.getTabelle();
-                        //fieldGroup.commit();
+                        fieldGroup.commit();
                         //RessourceGroupBeanItem mit der neuen (transienten) RessourceGroup
                         final BeanItem<RessourceGroup> beanItem = (BeanItem)fieldGroup.getItemDataSource();
                         //Bean aus dem BeanItem
@@ -111,11 +113,6 @@ public class AddRowWindow extends Window {
 
                         final RessourceGroup persistedRessourceGroup = baseDaoFactoryBean.saveOrUpdateTX
                                 (ressourceGroup);
-//                        baseDaoFactoryBean.getEntityManager().refresh(ressourceGroup);
-//                        final RessourceGroup group = baseDaoFactoryBean.getRessourceGroupDAO().loadRessourceGroupByName
-//                                (ressourceGroup
-//                                .getName
-//                                ())
                         final List<PlanningUnit> planningUnits = baseDaoFactoryBean.getPlanningUnitDAO()
                                 .loadAllEntities();
 
@@ -133,12 +130,14 @@ public class AddRowWindow extends Window {
                         screen.generateTableAndCalculate();
 
                         AddRowWindow.this.close();
+                    }catch(final FieldGroup.CommitException e){
+                          Notification.show("Benutzer konnte nicht angelegt werden");
+                    }
                 } else {
                     final Label lbl = new Label();
                     lbl.setValue(messages.getString("stdsatz_fillInAllFields"));
                     AddRowWindow.this.addComponent(lbl);
                 }
-
             }
 
         });

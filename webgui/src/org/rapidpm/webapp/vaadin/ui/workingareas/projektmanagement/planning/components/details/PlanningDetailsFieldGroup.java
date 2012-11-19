@@ -30,15 +30,10 @@ import java.util.ResourceBundle;
 public class PlanningDetailsFieldGroup extends FieldGroup {
 
     private List<AbstractField> fieldList = new ArrayList<>();
-
     private ResourceBundle messages;
-//    private PlanningDetailsFieldGroupBean bean;
-//    private DaoFactoryBean baseDaoFactoryBean;
 
     public PlanningDetailsFieldGroup(final ResourceBundle messages, final PlanningUnit thePlanningUnit) {
         this.messages = messages;
-//        bean = EJBFactory.getEjbInstance(PlanningDetailsFieldGroupBean.class);
-//        baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().loadPlanningUnitByName
                 (thePlanningUnit.getPlanningUnitName());

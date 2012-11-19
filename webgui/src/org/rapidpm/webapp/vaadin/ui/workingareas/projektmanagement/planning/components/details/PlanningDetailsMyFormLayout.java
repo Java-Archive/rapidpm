@@ -1,7 +1,10 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details;
 
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
@@ -60,11 +63,15 @@ public class PlanningDetailsMyFormLayout extends MyFormLayout {
             public void buttonClick(Button.ClickEvent event) {
                 try{
                     fieldGroup.commit();
+                    final BeanItem<PlanningUnit> beanItem = (BeanItem)fieldGroup.getItemDataSource();
+                    final PlanningUnit editedPlanningUnit = beanItem.getBean();
+                    final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+                    daoFactory.saveOrUpdateTX(editedPlanningUnit);
                     final MainUI ui = screen.getUi();
                     ui.setWorkingArea(new ProjektplanungScreen(ui));
-                }catch (NullPointerException e){
+                }catch (final NullPointerException e){
                     logger.info(COMMIT_EXCEPTION_MESSAGE);
-                }catch(Exception e){
+                }catch(final Exception e){
                     logger.warn("Exception", e);
                 }
             }
