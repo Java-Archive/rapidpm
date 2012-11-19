@@ -17,6 +17,7 @@ public class PlannedProject {
 
     public static final String ID = "id";
     public static final String NAME = "projektName";
+    public static final String TOKEN = "projektToken";
 
     @Id
     @TableGenerator(name = "PKGenPlannedProject", table = "pk_gen", pkColumnName = "gen_key",
@@ -29,6 +30,9 @@ public class PlannedProject {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<PlannedProjectName> plannedProjectName;
+
+    @Basic
+    private String projektToken;
 
     @Basic
     private String projektName;
@@ -211,5 +215,13 @@ public class PlannedProject {
 
     public void setProjektName(String projektName) {
         this.projektName = projektName;
+    }
+
+    public String getProjektToken() {
+        return projektToken;
+    }
+
+    public void setProjektToken(String projektToken) {
+        this.projektToken = projektToken;
     }
 }

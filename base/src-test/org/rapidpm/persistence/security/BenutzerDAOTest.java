@@ -21,11 +21,19 @@ public class BenutzerDAOTest extends DAOTest {
 
     @Test
     public void testFindbyID() throws Exception {
+
+
         final BenutzerDAO dao = daoFactory.getBenutzerDAO();
-        final Benutzer byID = dao.findByID(-1L);
-        assertNotNull(byID);
-        final Benutzer nullObj = dao.findByID(-2L);
-        assertNull(nullObj);
+        daoFactory.new Transaction(){
+            public void doTask() {
+                final Benutzer byID = dao.findByID(-1L);
+                assertNotNull(byID);
+                final Benutzer nullObj = dao.findByID(-2L);
+                assertNull(nullObj);
+            }
+        }.execute();
+
+
 
     }
 

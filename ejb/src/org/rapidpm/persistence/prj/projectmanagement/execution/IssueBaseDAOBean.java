@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
-import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
 import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.AbstractOneToManyConnectExecutor;
@@ -26,7 +25,6 @@ import org.rapidpm.persistence.system.security.Benutzer;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -118,7 +116,7 @@ public class IssueBaseDAOBean {
     }
 
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "saveOrUpdateTX")
     @WebResult(name = "IssueBaseResult")
@@ -127,7 +125,7 @@ public class IssueBaseDAOBean {
         return crudExecuter.saveOrUpdate(sessionid, uid, entity);
     }
 
-//    @Interceptors(LoggingInterceptor.class)
+//
 //    public
 //    @WebMethod(operationName = "addNewIssueToProject")
 //    @WebResult(name = "IssueBaseResult")
@@ -145,7 +143,7 @@ public class IssueBaseDAOBean {
 //        return result;
 //    }
 
-//    @Interceptors(LoggingInterceptor.class)
+//
 //    public
 //    @WebMethod(operationName = "addIssueToProject")
 //    @WebResult(name = "IssueBaseResult")
@@ -160,7 +158,7 @@ public class IssueBaseDAOBean {
 //        return new IssueBaseResult(); //TODO Logging
 //    }
 
-//    @Interceptors(LoggingInterceptor.class)
+//
 //    public
 //    @WebMethod(operationName = "removeIssueFromProject")
 //    @WebResult(name = "IssueBaseResult")
@@ -174,7 +172,7 @@ public class IssueBaseDAOBean {
 //        return new IssueBaseResult(); //TODO Logging
 //    }
 
-//    @Interceptors(LoggingInterceptor.class)
+//
 //    public
 //    @WebMethod(operationName = "moveIssueFromProjectToProject")
 //    @WebResult(name = "IssueBaseResult")
@@ -193,7 +191,7 @@ public class IssueBaseDAOBean {
 //        return new IssueBaseResult(); //TODO Logging
 //    }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "removeTX")
     @WebResult(name = "IssueBaseResult")
@@ -201,7 +199,7 @@ public class IssueBaseDAOBean {
         return crudExecuter.remove(sessionid, uid, oid);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "findByID")
     @WebResult(name = "IssueBaseResult")
@@ -214,7 +212,7 @@ public class IssueBaseDAOBean {
         }
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadWithOIDList")
     @WebResult(name = "IssueBaseResult")
@@ -223,7 +221,7 @@ public class IssueBaseDAOBean {
         return createResult(getEntityDAO().loadWithOIDList(oids));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadAllEntities")
     @WebResult(name = "IssueBaseResult")
@@ -231,7 +229,7 @@ public class IssueBaseDAOBean {
         return createResult(getEntityDAO().loadAllEntities());
     }
 
-//    @Interceptors(LoggingInterceptor.class)
+//
 //    public
 //    @WebMethod(operationName = "loadAllIssuesForBenutzer")
 //    @WebResult(name = "IssueBaseResult")
@@ -241,7 +239,7 @@ public class IssueBaseDAOBean {
 //        return createResult(getEntityDAO().loadAllIssuesForBenutzer(assignee));
 //    }
 //
-//    @Interceptors(LoggingInterceptor.class)
+//
 //    public
 //    @WebMethod(operationName = "loadAllIssuesForBenutzerOID")
 //    @WebResult(name = "IssueBaseResult")
@@ -251,7 +249,7 @@ public class IssueBaseDAOBean {
 //        return createResult(getEntityDAO().loadAllIssuesForBenutzer(assigneeOID));
 //    }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "connectIssueComment")
     @WebResult(name = "IssueBaseResult")
@@ -275,7 +273,7 @@ public class IssueBaseDAOBean {
         }.execute("connectIssueComment", logEventEntryWriterBean, sessionid, issueBaseOID, issueCommentOID);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "connectIssueTimeUnitUsed")
     @WebResult(name = "IssueBaseResult")

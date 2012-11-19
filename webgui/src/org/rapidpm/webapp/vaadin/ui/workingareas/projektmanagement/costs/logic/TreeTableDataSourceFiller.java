@@ -3,9 +3,12 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.HierarchicalContainer;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
@@ -19,13 +22,13 @@ import static org.rapidpm.Constants.STD_ANTEILE;
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco Ebbinghaus
+ * User: Marco
  * Date: 31.08.12
  * Time: 16:29
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 public class TreeTableDataSourceFiller {
-    private TreeTableDataSourceFillerBean bean;
+//    private TreeTableDataSourceFillerBean bean;
     private List<RessourceGroup> ressourceGroups;
     private final Map<RessourceGroup, Double> ressourceGroupsCostsMap = new HashMap<>();
     private ResourceBundle messages;
@@ -39,12 +42,12 @@ public class TreeTableDataSourceFiller {
         messages = bundle;
         dataSource = dSource;
 
-        bean = EJBFactory.getEjbInstance(TreeTableDataSourceFillerBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-
-        ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
-        for(RessourceGroup ressourceGroup : ressourceGroups){
-            baseDaoFactoryBean.getEntityManager().refresh(ressourceGroup);
+//        bean = EJBFactory.getEjbInstance(TreeTableDataSourceFillerBean.class);
+//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        ressourceGroups = daoFactory.getRessourceGroupDAO().loadAllEntities();
+        for(final RessourceGroup ressourceGroup : ressourceGroups){
+            daoFactory.getEntityManager().refresh(ressourceGroup);
         }
         dataSource.removeAllItems();
         dataSource.addContainerProperty(messages.getString("aufgabe"), String.class, null);
@@ -60,14 +63,15 @@ public class TreeTableDataSourceFiller {
 
     private void computePlanningUnitsAndTotalsAbsolut() {
         final PlannedProject projectFromSession = screen.getUi().getCurrentProject();
-        final PlannedProject projectFromDB = bean.getDaoFactoryBean().getPlannedProjectDAO().findByID
-                (projectFromSession.getId());
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
+        final PlannedProject projectFromDB = plannedProjectDAO.findByID(projectFromSession.getId());
         final Set<PlanningUnit> planningUnits = projectFromDB.getPlanningUnits();
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
             planningUnitItem.getItemProperty(messages.getString("aufgabe")).setValue(planningUnitName);
-            final List<PlanningUnit> planningUnitList = planningUnit.getKindPlanningUnits();
+            final Set<PlanningUnit> planningUnitList = planningUnit.getKindPlanningUnits();
             if (planningUnitList == null || planningUnitList.isEmpty()) {
                 for (final RessourceGroup spalte : ressourceGroups) {
                     final List<PlanningUnitElement> planningUnitElementList = planningUnit.getPlanningUnitElementList();
@@ -85,7 +89,7 @@ public class TreeTableDataSourceFiller {
     }
 
 
-    private void computePlanningUnits(final List<PlanningUnit> planningUnits, final String parent) {
+    private void computePlanningUnits(final Set<PlanningUnit> planningUnits, final String parent) {
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
@@ -105,7 +109,7 @@ public class TreeTableDataSourceFiller {
         for (final RessourceGroup spalte : ressourceGroups) {
             final Item dataSourceItem = dataSource.getItem(parent);
             final Double newValue = ressourceGroupsCostsMap.get(spalte);
-            final Property<?> itemProperty = dataSourceItem.getItemProperty(spalte.getName());
+            final Property<Double> itemProperty = dataSourceItem.getItemProperty(spalte.getName());
             itemProperty.setValue(newValue);
         }
     }

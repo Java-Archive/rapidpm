@@ -1,13 +1,15 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents;
 
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.server.VaadinSession;
+import com.vaadin.server.VaadinServiceSession;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Label;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
@@ -20,7 +22,7 @@ import java.util.ResourceBundle;
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco Ebbinghaus
+ * User: Marco
  * Date: 18.09.12
  * Time: 09:12
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
@@ -30,20 +32,19 @@ public class CurrentProjectPanel extends EditablePanel {
 
     private ComboBox currentProjectBox;
     private ProjectAdministrationScreen screen;
-    private CurrentProjectPanelBean bean;
+//    private CurrentProjectPanelBean bean;
 
 
     public CurrentProjectPanel(final ResourceBundle messagesBundle, final ProjectAdministrationScreen theScreen){
         super(messagesBundle);
         this.screen = theScreen;
-        bean = EJBFactory.getEjbInstance(CurrentProjectPanelBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+//        bean = EJBFactory.getEjbInstance(CurrentProjectPanelBean.class);
+//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+
         setCaption(messagesBundle.getString("pm_currentproject"));
-        removeAllComponents();
-        final List<PlannedProject> projects = baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities();
-        for(PlannedProject plannedProject : projects){
-            baseDaoFactoryBean.getEntityManager().refresh(plannedProject);
-        }
+        setContent(null);
+        final List<PlannedProject> projects = daoFactory.getPlannedProjectDAO().loadAllEntities();
         if(projects.isEmpty()){
             addComponent(new Label(messagesBundle.getString("pm_noprojects")));
         } else {
@@ -52,7 +53,7 @@ public class CurrentProjectPanel extends EditablePanel {
             currentProjectBox.setTextInputAllowed(false);
             currentProjectBox.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
             currentProjectBox.setItemCaptionPropertyId(PlannedProject.NAME);
-            final VaadinSession session = screen.getUi().getSession();
+            final VaadinServiceSession session = screen.getUi().getSession();
             final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
             if(currentProject != null){
                 currentProjectBox.select(currentProject);
@@ -93,8 +94,7 @@ public class CurrentProjectPanel extends EditablePanel {
 
     @Override
     public void setComponents() {
-        panelLayout.addComponent(currentProjectBox);
-        panelLayout.addComponent(buttonsLayout);
-        addComponent(panelLayout);
+        addComponent(currentProjectBox);
+        addComponent(buttonsLayout);
     }
 }

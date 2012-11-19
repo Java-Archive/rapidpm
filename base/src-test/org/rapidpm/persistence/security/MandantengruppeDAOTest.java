@@ -38,14 +38,14 @@ public class MandantengruppeDAOTest extends DAOTest {
     public void testAddMandantengruppe() throws Exception {
         final Mandantengruppe m = new Mandantengruppe();
         m.setMandantengruppe("TestMandantengruppe");
-        daoFactory.getMandantengruppeDAO().saveOrUpdateTX(m);
+        daoFactory.saveOrUpdateTX(m);
     }
 
     @Test
     public void testModifyMandantengruppe() throws Exception {
         final Mandantengruppe m = daoFactory.getMandantengruppeDAO().loadMandantengruppe("TestMandantengruppe");
         m.setMandantengruppe("TestMandantengruppe_Modified");
-        daoFactory.getMandantengruppeDAO().saveOrUpdateTX(m);
+        daoFactory.saveOrUpdateTX(m);
 
     }
 

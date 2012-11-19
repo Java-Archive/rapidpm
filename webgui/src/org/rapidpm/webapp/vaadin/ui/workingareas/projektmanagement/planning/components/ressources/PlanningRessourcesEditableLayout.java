@@ -8,9 +8,10 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import org.apache.log4j.Logger;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
@@ -18,7 +19,6 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinu
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.EditableLayout;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -27,7 +27,7 @@ import static org.rapidpm.Constants.DAYSHOURSMINUTES_REGEX;
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco Ebbinghaus
+ * User: Marco
  * Date: 30.08.12
  * Time: 11:24
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
@@ -39,18 +39,19 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
     private Table tabelle = new Table();
 
     private List<PlanningUnitElement> planningUnitElements;
-    private PlanningRessourcesMyFormLayoutBean bean;
-    private DaoFactoryBean baseDaoFactoryBean;
+//    private PlanningRessourcesMyFormLayoutBean bean;
+//    private DaoFactoryBean baseDaoFactoryBean;
 
     public PlanningRessourcesEditableLayout(final PlanningUnit thePlanningUnit, final ProjektplanungScreen screen,
-                                            final Panel screenPanel, boolean hasChildren,
-                                            final PlannedProject projekt) {
+                                            final Panel screenPanel, boolean hasChildren) {
         super(screen, screenPanel);
-        bean = EJBFactory.getEjbInstance(PlanningRessourcesMyFormLayoutBean.class);
-        baseDaoFactoryBean = bean.getDaoFactoryBean();
+//        bean = EJBFactory.getEjbInstance(PlanningRessourcesMyFormLayoutBean.class);
+//        baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
-        final PlanningUnit planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().findByID(thePlanningUnit.getId());
-        baseDaoFactoryBean.getEntityManager().refresh(planningUnit);
+        final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().loadPlanningUnitByName
+                (thePlanningUnit.getPlanningUnitName());
+        daoFactory.getEntityManager().refresh(planningUnit);
         planningUnitElements = planningUnit.getPlanningUnitElementList();
         buildTable();
         buildForm();
@@ -93,15 +94,12 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
                                         planningUnitElement.setPlannedDays(Integer.parseInt(daysHoursMinutes[0]));
                                         planningUnitElement.setPlannedHours(Integer.parseInt(daysHoursMinutes[1]));
                                         planningUnitElement.setPlannedMinutes(Integer.parseInt(daysHoursMinutes[2]));
-                                        baseDaoFactoryBean.saveOrUpdate(planningUnitElement);
+                                        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+                                        daoFactory.saveOrUpdateTX(planningUnitElement);
                                     }
                                 }
-                                baseDaoFactoryBean.saveOrUpdate(planningUnit);
                             }
                         }
-                        final PlannedProject projectFromDB = baseDaoFactoryBean.getPlannedProjectDAO().findByID(projekt
-                                .getId());
-                        baseDaoFactoryBean.saveOrUpdate(projectFromDB);
                         screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
                     } catch (CommitException e) {
                         logger.info(COMMIT_EXCEPTION_MESSAGE);
@@ -115,8 +113,8 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
     }
 
     private void buildTable() {
-
-        final List<RessourceGroup> ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO().loadAllEntities();
         final String[] spaltenNamen = new String[ressourceGroups.size()];
         Integer index = 0;
         for(final RessourceGroup ressourceGroup : ressourceGroups){

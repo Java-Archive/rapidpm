@@ -1,7 +1,9 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic;
 
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
@@ -15,7 +17,7 @@ import static org.rapidpm.Constants.*;
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco Ebbinghaus
+ * User: Marco
  * Date: 02.09.12
  * Time: 23:37
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
@@ -25,16 +27,17 @@ public class CostsCalculator {
 
     private final Map<RessourceGroup, Double> ressourceGroupsCostsMap = new HashMap<>();
     private ResourceBundle messages;
-    private CostsCalcutorBean bean;
+//    private CostsCalcutorBean bean;
     private PlannedProject projekt;
 
     private Double totalCostsExakt = 0.0;
 
     public CostsCalculator(final ResourceBundle bundle) {
-        bean = EJBFactory.getEjbInstance(CostsCalcutorBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        projekt = baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities().get(0);
-        baseDaoFactoryBean.getEntityManager().refresh(projekt);
+//        bean = EJBFactory.getEjbInstance(CostsCalcutorBean.class);
+//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        projekt = daoFactory.getPlannedProjectDAO().loadAllEntities().get(0);
+        daoFactory.getEntityManager().refresh(projekt);
         messages = bundle;
     }
 
@@ -59,7 +62,7 @@ public class CostsCalculator {
     }
 
 
-    private void calculatePlanningUnits(final List<PlanningUnit> planningUnits) {
+    private void calculatePlanningUnits(final Set<PlanningUnit> planningUnits) {
         for (final PlanningUnit planningUnit : planningUnits) {
             if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
                 addiereZeileZurRessourceMap(planningUnit);
@@ -104,5 +107,4 @@ public class CostsCalculator {
         final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
         return format.format(totalCostsExakt);
     }
-
 }

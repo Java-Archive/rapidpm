@@ -8,10 +8,8 @@ import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.logging.LoggerQualifier;
-import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
 import org.rapidpm.webapp.vaadin.MainUI;
@@ -33,9 +31,9 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
 
     private BeanItem<Benutzer> benutzerBean;
 
-    @Inject
-    @LoggerQualifier
-    private Logger logger;
+//    @Inject
+//    @LoggerQualifier
+//    private Logger logger;
 
     @Inject
     private UserTransaction userTransaction;
@@ -44,7 +42,7 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
     //REFAC per CDI ?
 //    @Inject
 //    private StammdatenScreensBean stammdatenScreenBean;
-    private final BenutzerEditorBean bean = EJBFactory.getEjbInstance(BenutzerEditorBean.class);
+//    private final BenutzerEditorBean bean = EJBFactory.getEjbInstance(BenutzerEditorBean.class);
 
     private Collection<Mandantengruppe> mandantengruppen;
     private Collection<BenutzerGruppe> benutzerGruppen;
@@ -147,14 +145,14 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
 
         saveButton = new Button();
         saveButton.addClickListener(new Button.ClickListener() {
-            private final DaoFactoryBean daoFactoryBean = bean.getDaoFactoryBean();
+            private final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
             @Override
             public void buttonClick(final Button.ClickEvent clickEvent) {
                 if (benutzerBean == null) {
                     benutzerBean = new BeanItem<>(new Benutzer());
                 } else {
-                    final BenutzerDAO benutzerDAO = daoFactoryBean.getBenutzerDAO();
+                    final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
                     final Benutzer benutzer = benutzerBean.getBean();
                 }
                 boolean valid = true;
@@ -190,13 +188,13 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
                     benutzerBean.getItemProperty("mandantengruppe").setValue(mandantengruppenSelect.getValue());
                     benutzerBean.getItemProperty("benutzerGruppe").setValue(benutzerGruppenSelect.getValue());
                     benutzerBean.getItemProperty("benutzerWebapplikation").setValue(benutzerWebapplikationenSelect.getValue());
-                    benutzerBean.getItemProperty("berechtigungen").setValue(berechtigungenList);
+//                    benutzerBean.getItemProperty("berechtigungen").setValue(berechtigungenList);
                     benutzerBean.getItemProperty("active").setValue(isActiveCheckbox.getValue());
                     benutzerBean.getItemProperty("hidden").setValue(isHiddenCheckBox.getValue());
 
                     // in die DB speichern
                     final Benutzer benutzer = benutzerBean.getBean();
-                    daoFactoryBean.saveOrUpdate(benutzer);
+                    daoFactory.saveOrUpdateTX(benutzer);
 
                     final MainUI ui = screen.getUi();
                     ui.setWorkingArea(new BenutzerScreen(ui));

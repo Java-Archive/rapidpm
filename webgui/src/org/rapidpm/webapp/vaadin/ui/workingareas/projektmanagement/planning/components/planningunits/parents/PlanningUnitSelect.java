@@ -3,13 +3,15 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.ListSelect;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -21,13 +23,11 @@ import java.util.Set;
  */
 public class PlanningUnitSelect extends ListSelect {
 
-    private PlanningUnitSelectBean bean;
-    private DaoFactoryBean baseDaoFactoryBean;
+    private DaoFactory baseDaoFactoryBean;
     private PlannedProject projectFromDB;
 
     public PlanningUnitSelect(final MainUI ui){
-        bean = EJBFactory.getEjbInstance(PlanningUnitSelectBean.class);
-        baseDaoFactoryBean = bean.getDaoFactoryBean();
+        baseDaoFactoryBean = DaoFactorySingelton.getInstance();
         final PlannedProject projectFromSession = ui.getCurrentProject();
         projectFromDB = baseDaoFactoryBean.getPlannedProjectDAO().findByID
                 (projectFromSession.getId());

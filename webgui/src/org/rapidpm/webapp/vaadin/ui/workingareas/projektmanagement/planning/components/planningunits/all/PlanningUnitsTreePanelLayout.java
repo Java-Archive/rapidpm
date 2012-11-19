@@ -2,8 +2,8 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
@@ -31,16 +31,14 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout {
     private Button addButton = new Button("+");
     private Button deleteButton = new Button("-");
     private ResourceBundle messages;
-    private PlanningUnitsTreePanelLayoutBean bean;
-    private DaoFactoryBean baseDaoFactoryBean;
+    private DaoFactory daoFactory;
 
     private ProjektplanungScreen screen;
 
     public PlanningUnitsTreePanelLayout(final PlannedProject projekt, final ProjektplanungScreen screen) {
         this.screen = screen;
         this.projekt = projekt;
-        bean = EJBFactory.getEjbInstance(PlanningUnitsTreePanelLayoutBean.class);
-        baseDaoFactoryBean = bean.getDaoFactoryBean();
+        daoFactory = DaoFactorySingelton.getInstance();
 
         messages = screen.getMessagesBundle();
         createDeleteButton();
@@ -64,27 +62,30 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout {
             public void buttonClick(Button.ClickEvent event) {
                 try {
                     final PlanningUnit planningUnit = (PlanningUnit) screen.getPlanningUnitsTree().getValue();
-                    final PlanningUnit managedPlanningUnit = baseDaoFactoryBean.getPlanningUnitDAO().findByID
+                    final PlanningUnit managedPlanningUnit = daoFactory.getPlanningUnitDAO().findByID
                             (planningUnit.getId());
                     if(managedPlanningUnit == null){
                         throw new PlatzhalterException();
                     }
                     if(managedPlanningUnit.getKindPlanningUnits() != null && !managedPlanningUnit.getKindPlanningUnits
-                            ().isEmpty())
+                            ().isEmpty()){
                         throw new Exception();
+                    }
                     final PlanningUnit parentPlanningUnit = managedPlanningUnit.getParent();
-                    projekt = baseDaoFactoryBean.getPlannedProjectDAO().findByID(projekt.getId());
+                    projekt = daoFactory.getPlannedProjectDAO().findByID(projekt.getId());
 
                     if(parentPlanningUnit == null){
                         projekt.getPlanningUnits().remove(managedPlanningUnit);
+                        daoFactory.saveOrUpdateTX(projekt);
                     }
                     else{
                         parentPlanningUnit.getKindPlanningUnits().remove(managedPlanningUnit);
+                        daoFactory.saveOrUpdateTX(parentPlanningUnit);
                     }
-                    baseDaoFactoryBean.getPlanningUnitDAO().remove(managedPlanningUnit);
-                    for(PlanningUnit pu : projekt.getPlanningUnits()){
+                    daoFactory.removeTX(managedPlanningUnit);
+                    for(final PlanningUnit pu : projekt.getPlanningUnits()){
                         logger.info(pu.getPlanningUnitName()+": "+pu.getKindPlanningUnits());
-                        for(PlanningUnit pu1 : pu.getKindPlanningUnits()){
+                        for(final PlanningUnit pu1 : pu.getKindPlanningUnits()){
                             logger.info("\t"+pu1.getPlanningUnitName()+": "+pu1.getKindPlanningUnits());
                         }
                     }

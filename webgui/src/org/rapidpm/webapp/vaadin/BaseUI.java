@@ -9,13 +9,13 @@ package org.rapidpm.webapp.vaadin;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.ThemeResource;
-import com.vaadin.server.VaadinSession;
-import com.vaadin.server.WrappedRequest;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinServiceSession;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.BaseTheme;
 import org.apache.log4j.Logger;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
@@ -50,22 +50,19 @@ public abstract class BaseUI extends UI {
     protected Benutzer currentUser;
     protected PlannedProject currentProject;
     protected Locale locale = new Locale("de","DE");
-    protected ResourceBundle messages;
+    public static ResourceBundle messages;
 
 
     @Override
-    public void init(final WrappedRequest request) {
+    public void init(final VaadinRequest request) {
         loadFirstProject();
         this.setSizeFull();
-        final VaadinSession session = getSession();
+        final VaadinServiceSession session = getSession();
         if (session.getAttribute(Benutzer.class) == null) {
             if (DEBUG_MODE) {
                 buildMainLayout();
             } else {
-//            removeAllComponents();
-//                final VerticalLayout layout = new VerticalLayout();
-                final LoginWindow window = new LoginWindow(this);
-                addWindow(window);
+                buildLoginScreen();
             }
         } else {
             currentUser = session.getAttribute(Benutzer.class);
@@ -78,9 +75,10 @@ public abstract class BaseUI extends UI {
     }
 
     private void loadFirstProject() {
-        final LoginBean bean = EJBFactory.getEjbInstance(LoginBean.class);
-        final VaadinSession session = this.getSession();
-        final List<PlannedProject> projects = bean.getDaoFactoryBean().getPlannedProjectDAO().loadAllEntities();
+//        final LoginBean bean = EJBFactory.getEjbInstance(LoginBean.class);
+        final VaadinServiceSession session = this.getSession();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final List<PlannedProject> projects = daoFactory.getPlannedProjectDAO().loadAllEntities();
         if(projects == null || projects.isEmpty()){
             session.setAttribute(PlannedProject.class, null);
         } else {
@@ -91,9 +89,10 @@ public abstract class BaseUI extends UI {
 
     public void authentication(final String enteredLogin, final String enteredPasswd) throws Exception {
 
-        final LoginBean bean = EJBFactory.getEjbInstance(LoginBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        final BenutzerDAO benutzerDAO = baseDaoFactoryBean.getBenutzerDAO();
+//        final LoginBean bean = EJBFactory.getEjbInstance(LoginBean.class);
+//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
         final List<Benutzer> benutzer = benutzerDAO.loadBenutzerForLogin(enteredLogin);
         final String enteredPasswdHashed = hash(enteredPasswd);
         for (final Benutzer user : benutzer) {
@@ -102,6 +101,7 @@ public abstract class BaseUI extends UI {
             if (userLogin.equals(enteredLogin) && userPasswd.equals(enteredPasswdHashed)) {
                 currentUser = user;
                 getSession().setAttribute(Benutzer.class, currentUser);
+                removeAllComponents();
                 loadProtectedRessources();
                 return;
             }
@@ -117,13 +117,12 @@ public abstract class BaseUI extends UI {
         switch (value.toString()) {
             case "GERMAN":
                 locale = new Locale("de", "DE");
-                messages = ResourceBundle.getBundle(MESSAGESBUNDLE, locale);
                 break;
             case "ENGLISH":
                 locale = new Locale("en", "US");
-                messages = ResourceBundle.getBundle(MESSAGESBUNDLE, locale);
                 break;
         }
+        messages = ResourceBundle.getBundle(MESSAGESBUNDLE, locale);
         //this.getSession().setLocale(messagesBundle);
     }
 
@@ -272,6 +271,7 @@ public abstract class BaseUI extends UI {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 getSession().close();
+                getPage().setLocation("/rapidpm");
             }
         });
         buttonKontakt.setStyleName(BaseTheme.BUTTON_LINK);
@@ -310,6 +310,12 @@ public abstract class BaseUI extends UI {
 //        buttonSitemap.addListener(this);
         hlHeaderLine.setComponentAlignment(buttonSitemap, Alignment.MIDDLE_RIGHT);
         return hlHeaderLine;
+    }
+
+    private void buildLoginScreen() {
+        final LoginMask mask = new LoginMask(this);
+        removeAllComponents();
+        addComponent(mask);
     }
 
 

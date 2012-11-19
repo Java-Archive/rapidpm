@@ -5,8 +5,8 @@ import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import org.rapidpm.Constants;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.system.security.Benutzer;
@@ -37,15 +37,13 @@ public class PlanningUnitFieldGroup extends FieldGroup {
 
     private ProjektplanungScreen screen;
     private ResourceBundle messages;
-    private PlanningUnitFieldGroupBean bean;
-    private DaoFactoryBean baseDaoFactoryBean;
+    private DaoFactory daoFactory;
     private boolean isnew = true;
 
     public PlanningUnitFieldGroup(final ProjektplanungScreen screen){
         this.screen = screen;
         this.messages = screen.getMessagesBundle();
-        bean = EJBFactory.getEjbInstance(PlanningUnitFieldGroupBean.class);
-        baseDaoFactoryBean = bean.getDaoFactoryBean();
+        daoFactory = DaoFactorySingelton.getInstance();
         final PlanningUnit planningUnit = new PlanningUnit();
         planningUnit.setTestcases(new ArrayList<String>());
         planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
@@ -58,9 +56,8 @@ public class PlanningUnitFieldGroup extends FieldGroup {
     public PlanningUnitFieldGroup(final ProjektplanungScreen screen, final PlanningUnit thePlanningUnit) {
         this.screen = screen;
         this.messages = screen.getMessagesBundle();
-        bean = EJBFactory.getEjbInstance(PlanningUnitFieldGroupBean.class);
-        baseDaoFactoryBean = bean.getDaoFactoryBean();
-        selectedPlanningUnit = baseDaoFactoryBean.getPlanningUnitDAO().findByID(thePlanningUnit.getId());
+        daoFactory = DaoFactorySingelton.getInstance();
+        selectedPlanningUnit = daoFactory.getPlanningUnitDAO().findByID(thePlanningUnit.getId());
         if(selectedPlanningUnit == null){
             selectedPlanningUnit = thePlanningUnit;
         }
@@ -69,11 +66,11 @@ public class PlanningUnitFieldGroup extends FieldGroup {
     }
 
     private void buildForm() {
-        final List<Benutzer> users = baseDaoFactoryBean.getBenutzerDAO().loadAllEntities();
-        final List<PlanningUnit> planningUnits = selectedPlanningUnit.getKindPlanningUnits();
+        final List<Benutzer> users = daoFactory.getBenutzerDAO().loadAllEntities();
+        final Set<PlanningUnit> planningUnits = selectedPlanningUnit.getKindPlanningUnits();
         final Set<PlanningUnit> managedPlanningUnits = new HashSet<>();
         for(final PlanningUnit planningUnit : planningUnits){
-           managedPlanningUnits.add(baseDaoFactoryBean.getPlanningUnitDAO().findByID(planningUnit.getId()));
+           managedPlanningUnits.add(daoFactory.getPlanningUnitDAO().findByID(planningUnit.getId()));
         }
 
         fieldList = new ArrayList<>();

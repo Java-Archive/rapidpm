@@ -10,7 +10,6 @@ import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.data.LoggingResult;
 import org.rapidpm.ejb3.CRUDExecuter;
-import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
 import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
@@ -24,7 +23,6 @@ import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -90,7 +88,7 @@ public class BenutzerDAOBean {
             for (final Long berechtigung : berechtigungen) {
                 berechtingunsObjList.add(daoFactoryBean.getBerechtigungDAO().findByID(berechtigung));
             }
-            b.setBerechtigungen(berechtingunsObjList);
+            //b.setBerechtigungen(berechtingunsObjList);
 
 //            b.setPerson(daoFactoryBean.getPersonDAO().findByID(flatTypeEntity.getPersonOID()));
             return b;
@@ -141,12 +139,12 @@ public class BenutzerDAOBean {
         ft.setBenutzerGruppeOID(b.getBenutzerGruppe().getId());
         ft.setBenutzerWebapplikationOID(b.getBenutzerWebapplikation().getId());
 
-        final List<Berechtigung> berechtigungen = b.getBerechtigungen();
-        if (berechtigungen != null) {
-            for (final Berechtigung berechtigung : berechtigungen) {
-                ft.getBerechtigungOIDs().add(berechtigung.getId());
-            }
-        }
+        //final List<Berechtigung> berechtigungen = b.getBerechtigungen();
+//        if (berechtigungen != null) {
+//            for (final Berechtigung berechtigung : berechtigungen) {
+//                ft.getBerechtigungOIDs().add(berechtigung.getId());
+//            }
+//        }
 //        ft.setFailedLogins(b.getFailedLogins());
         ft.setHidden(b.getHidden());
 //        ft.setLastLogin(b.getLastLogin());
@@ -166,7 +164,7 @@ public class BenutzerDAOBean {
     }
 
     @WebResult(name = "BenutzerResult")
-    @Interceptors(LoggingInterceptor.class)
+
     @WebMethod(operationName = "loadRevisionFor")
     public
     BenutzerResult loadRevisionFor(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid, @WebParam(name = "oid", mode = WebParam.Mode.IN) final Long oid) {
@@ -175,7 +173,7 @@ public class BenutzerDAOBean {
     }
 
     @WebResult(name = "BenutzerResult")
-    @Interceptors(LoggingInterceptor.class)
+
     @WebMethod(operationName = "loadBenutzerForLogin")
     public
     BenutzerResult loadBenutzerForLogin(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid,
@@ -186,7 +184,7 @@ public class BenutzerDAOBean {
     }
 
     @WebResult(name = "BenutzerResult")
-    @Interceptors(LoggingInterceptor.class)
+
     @WebMethod(operationName = "loadBenutzer")
     public
     BenutzerResult loadBenutzer(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid,
@@ -198,7 +196,7 @@ public class BenutzerDAOBean {
     }
 
     @WebResult(name = "BenutzerResult")
-    @Interceptors(LoggingInterceptor.class)
+
     @WebMethod(operationName = "loadBenutzerByMandantenGruppe")
     public
     BenutzerResult loadBenutzerByMandantenGruppe(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
@@ -208,7 +206,7 @@ public class BenutzerDAOBean {
     }
 
     @WebResult(name = "BenutzerResult")
-    @Interceptors(LoggingInterceptor.class)
+
     @WebMethod(operationName = "loadBenutzerByMandantenGruppeActiveHidden")
     public
     BenutzerResult loadBenutzerByMandantenGruppe(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
@@ -220,7 +218,7 @@ public class BenutzerDAOBean {
     }
 
     @WebResult(name = "BenutzerResult")
-    @Interceptors(LoggingInterceptor.class)
+
     @WebMethod(operationName = "loadBenutzerByMandantenGruppeActive")
     public
     BenutzerResult aktiveBenutzerByMandantenGruppe(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
@@ -231,7 +229,7 @@ public class BenutzerDAOBean {
     }
 
     @WebResult(name = "BenutzerResult")
-    @Interceptors(LoggingInterceptor.class)
+
     @WebMethod(operationName = "loadBenutzerByWebapp")
     public
     BenutzerResult loadBenutzer(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid, @WebParam(name = "login", mode = WebParam.Mode.IN) final String login,
@@ -243,7 +241,7 @@ public class BenutzerDAOBean {
 
 
     @WebResult(name = "BenutzerResult")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     BenutzerResult loadBenutzerInclSystemBenutzer(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                                   @WebParam(name = "login", mode = WebParam.Mode.IN) final String login, @WebParam(name = "passwd", mode = WebParam.Mode.IN) final String passwd,
@@ -254,7 +252,7 @@ public class BenutzerDAOBean {
     }
 
     @WebResult(name = "BenutzerResult")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     BenutzerResult loadAnonymousBenutzer(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                          @WebParam(name = "webappNameOID", mode = WebParam.Mode.IN) final Long webappName) {
@@ -264,7 +262,7 @@ public class BenutzerDAOBean {
 
 
     @WebResult(name = "CheckIfBenutzerLoginIsAvailableResult")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     CheckIfBenutzerLoginIsAvailableResult checkIfBenutzerLoginIsAvailable(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid,
                                                                           @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
@@ -284,7 +282,7 @@ public class BenutzerDAOBean {
 
     @WebResult(name = "CheckIfBenutzerLoginIsActiveAndValidResult")
     @WebMethod(operationName = "checkIfBenutzerLoginIsActiveAndValid")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     CheckIfBenutzerLoginIsActiveAndValidResult checkIfBenutzerLoginIsActiveAndValid(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid,
                                                                                     @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
@@ -305,7 +303,7 @@ public class BenutzerDAOBean {
 
     @WebResult(name = "BenutzerResult")
     @WebMethod(operationName = "saveOrUpdateTX")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     BenutzerResult saveOrUpdateTX(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                   @WebParam(name = "entity", mode = WebParam.Mode.IN) final FlatBenutzer entity) {
@@ -315,7 +313,7 @@ public class BenutzerDAOBean {
 
     @WebResult(name = "BenutzerResult")
     @WebMethod(operationName = "removeTX")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     BenutzerResult removeTX(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid, @WebParam(name = "oid", mode = WebParam.Mode.IN) final Long oid) {
         return crudExecuter.remove(sessionid, uid, oid);
@@ -323,7 +321,7 @@ public class BenutzerDAOBean {
 
     @WebResult(name = "BenutzerResult")
     @WebMethod(operationName = "findByID")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     BenutzerResult findByID(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid, @WebParam(name = "oid", mode = WebParam.Mode.IN) final Long oid) {
         final Benutzer byID = getBenutzerDAO().findByID(oid);
@@ -336,7 +334,7 @@ public class BenutzerDAOBean {
 
     @WebResult(name = "BenutzerResult")
     @WebMethod(operationName = "loadWithOIDList")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     BenutzerResult loadWithOIDList(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
                                    @WebParam(name = "oidliste", mode = WebParam.Mode.IN) final List<Long> oids) {
@@ -345,7 +343,7 @@ public class BenutzerDAOBean {
 
     @WebResult(name = "BenutzerResult")
     @WebMethod(operationName = "loadAllEntities")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     BenutzerResult loadAllEntities(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid, @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid) {
         return createResult(getBenutzerDAO().loadAllEntities());
@@ -353,7 +351,7 @@ public class BenutzerDAOBean {
 
     @WebResult(name = "BenutzerResult")
     @WebMethod(operationName = "loadBenutzerByEmail")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     BenutzerResult loadBenutzerByEmail(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid,
                                        @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
@@ -363,7 +361,7 @@ public class BenutzerDAOBean {
 
     @WebResult(name = "BenutzerResult")
     @WebMethod(operationName = "loadBenutzerByEmailAndMandantengruppeOID")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     BenutzerResult loadBenutzerByEmail(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid,
                                        @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
@@ -374,7 +372,7 @@ public class BenutzerDAOBean {
 
     @WebResult(name = "BenutzerResult")
     @WebMethod(operationName = "loadBenutzerByEmailAndMandantengruppe")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     BenutzerResult loadBenutzerByEmail(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid,
                                        @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
@@ -385,7 +383,7 @@ public class BenutzerDAOBean {
 
     @WebResult(name = "BenutzerResult")
     @WebMethod(operationName = "changePasswd")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     BenutzerResult changePasswd(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid,
                                 @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,
@@ -417,7 +415,7 @@ public class BenutzerDAOBean {
 
     @WebResult(name = "BenutzerResult")
     @WebMethod(operationName = "changeLogin")
-    @Interceptors(LoggingInterceptor.class)
+
     public
     BenutzerResult changeLogin(@WebParam(name = "sessionID", mode = WebParam.Mode.IN) final String sessionid,
                                @WebParam(name = "UID", mode = WebParam.Mode.IN) final Long uid,

@@ -4,8 +4,8 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
@@ -15,7 +15,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.Proj
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.DefaultValues;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -37,13 +37,13 @@ public class AddWindow extends Window {
 
     private MainUI ui;
 
+    private VerticalLayout singleLayout = new VerticalLayout();
     private FormLayout formLayout = new FormLayout();
     private HorizontalLayout horizontalButtonLayout = new HorizontalLayout();
     private Button saveButton = new Button();
     private Button cancelButton = new Button();
     private PlanningUnitFieldGroup fieldGroup;
     private ResourceBundle messages;
-    private AddWindowBean addRowWindowBean;
 
     public AddWindow(final MainUI ui, final ProjektplanungScreen screen) {
         this.ui = ui;
@@ -53,20 +53,19 @@ public class AddWindow extends Window {
         setPositionX(POSITION_X);
         setPositionY(POSITION_Y);
 
-        addRowWindowBean = EJBFactory.getEjbInstance(AddWindowBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = addRowWindowBean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
         fieldGroup = new PlanningUnitFieldGroup(screen);
 
         fillFormLayout();
-        addComponent(formLayout);
-
+        singleLayout.addComponent(formLayout);
         horizontalButtonLayout.addComponent(saveButton);
         horizontalButtonLayout.addComponent(cancelButton);
 
-        addComponent(horizontalButtonLayout);
-
-        addListeners(baseDaoFactoryBean, ui, screen);
+        singleLayout.addComponent(horizontalButtonLayout);
+        singleLayout.setSpacing(true);
+        setContent(singleLayout);
+        addListeners(daoFactory, ui, screen);
         doInternationalization();
 
     }
@@ -94,45 +93,46 @@ public class AddWindow extends Window {
         cancelButton.setCaption(messages.getString("cancel"));
     }
 
-    private void addListeners(final DaoFactoryBean baseDaoFactoryBean, final MainUI ui,
+    private void addListeners(final DaoFactory daoFactory, final MainUI ui,
                               final ProjektplanungScreen screen) {
         saveButton.addClickListener(new Button.ClickListener() {
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
                     try {
+                        final PlannedProject projekt = daoFactory.getPlannedProjectDAO().findByID(ui
+                                .getCurrentProject().getId());
                         fieldGroup.commit();
                         //PlanningUnitBeanItem mit der neuen (transienten) PlanningUnit
                         final BeanItem<PlanningUnit> beanItem = (BeanItem)fieldGroup.getItemDataSource();
                         //Bean aus dem BeanItem
                         final PlanningUnit planningUnit = beanItem.getBean();
-                        baseDaoFactoryBean.getEntityManager().persist(planningUnit);
-                        final PlanningUnit managedPlanningUnit = baseDaoFactoryBean.getPlanningUnitDAO().findByID
-                                (planningUnit.getId());
-                        System.out.println(managedPlanningUnit);
                         if(planningUnit.getParent() == null ){
-                            final PlannedProject projekt = baseDaoFactoryBean.getPlannedProjectDAO().findByID(ui
-                                    .getCurrentProject().getId());
-                            managedPlanningUnit.setKindPlanningUnits(new ArrayList<PlanningUnit>());
-                           projekt.getPlanningUnits().add(planningUnit);
+                            planningUnit.setKindPlanningUnits(new HashSet<PlanningUnit>());
+
+
                         } else {
-                            final PlanningUnit transientParentPlanningUnit = planningUnit.getParent();
-                            final PlanningUnit managedParentPlanningUnit = baseDaoFactoryBean.getPlanningUnitDAO()
-                                    .findByID(transientParentPlanningUnit.getId());
-                            managedParentPlanningUnit.getKindPlanningUnits().add(planningUnit);
+                            final PlanningUnit parentPlanningUnit = daoFactory.getPlanningUnitDAO().findByID
+                                    (planningUnit.getParent().getId());
+                            parentPlanningUnit.getKindPlanningUnits().add(planningUnit);
+                            daoFactory.saveOrUpdate(parentPlanningUnit);
                         }
-                        final List<RessourceGroup> ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO()
+                        final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO()
                                 .loadAllEntities();
                         for(final RessourceGroup ressourceGroup : ressourceGroups){
                             final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
-                            baseDaoFactoryBean.getEntityManager().persist(planningUnitElement);
+                            daoFactory.getEntityManager().persist(planningUnitElement);
                             planningUnitElement.setPlannedDays(0);
                             planningUnitElement.setPlannedHours(0);
                             planningUnitElement.setPlannedMinutes(0);
                             planningUnitElement.setRessourceGroup(ressourceGroup);
+                            daoFactory.saveOrUpdateTX(planningUnitElement);
                             planningUnit.getPlanningUnitElementList().add(planningUnitElement);
                         }
-                        baseDaoFactoryBean.getEntityManager().merge(planningUnit);
+                        daoFactory.saveOrUpdateTX(planningUnit);
+                        projekt.getPlanningUnits().add(planningUnit);
+                        daoFactory.saveOrUpdateTX(projekt);
+                        daoFactory.getEntityManager().refresh(projekt);
                         AddWindow.this.close();
                         final MainUI ui = screen.getUi();
                         ui.setWorkingArea(new ProjektplanungScreen(ui));

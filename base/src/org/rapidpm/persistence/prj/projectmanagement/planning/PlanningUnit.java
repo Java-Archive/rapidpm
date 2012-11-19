@@ -10,6 +10,7 @@ import org.rapidpm.persistence.system.security.Benutzer;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -47,14 +48,14 @@ public class PlanningUnit {
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private PlanningStatus planningStatus;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private Benutzer responsiblePerson;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private List<PlannedMeeting> plannedMeetingList;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    private List<PlanningUnit> kindPlanningUnits;
+    private Set<PlanningUnit> kindPlanningUnits;
 
     @Basic
     private int orderNumber;
@@ -142,11 +143,11 @@ public class PlanningUnit {
         this.planningUnitElementList = planningUnitElementList;
     }
 
-    public List<PlanningUnit> getKindPlanningUnits() {
+    public Set<PlanningUnit> getKindPlanningUnits() {
         return kindPlanningUnits;
     }
 
-    public void setKindPlanningUnits(List<PlanningUnit> kindPlanningUnits) {
+    public void setKindPlanningUnits(Set<PlanningUnit> kindPlanningUnits) {
         this.kindPlanningUnits = kindPlanningUnits;
     }
 

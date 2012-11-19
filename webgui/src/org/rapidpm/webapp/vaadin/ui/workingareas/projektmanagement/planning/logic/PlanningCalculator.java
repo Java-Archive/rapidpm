@@ -1,11 +1,11 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic;
 
 import org.apache.log4j.Logger;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.prj.projectmanagement.planning.*;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 
@@ -17,7 +17,7 @@ import static org.rapidpm.Constants.MINS_HOUR;
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco Ebbinghaus
+ * User: Marco
  * Date: 30.08.12
  * Time: 13:47
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
@@ -30,23 +30,24 @@ public class PlanningCalculator {
     private List<RessourceGroup> ressourceGroups;
     private PlannedProject projekt;
     private ResourceBundle messages;
-    private PlanningCalculatorBean planningCalculatorBean;
+//    private PlanningCalculatorBean planningCalculatorBean;
 
 
     public PlanningCalculator(final ResourceBundle bundle) {
         this.messages = bundle;
-        planningCalculatorBean = EJBFactory.getEjbInstance(PlanningCalculatorBean.class);
-        final DaoFactoryBean daoFactoryBean = planningCalculatorBean.getDaoFactoryBean();
-        final List<PlannedProject> plannedProjects = daoFactoryBean.getPlannedProjectDAO().loadAllEntities();
+//        planningCalculatorBean = EJBFactory.getEjbInstance(PlanningCalculatorBean.class);
+//        final DaoFactoryBean daoFactoryBean = planningCalculatorBean.getDaoFactoryBean();
+
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final EntityManager entityManager = daoFactory.getEntityManager();
+        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
+        final List<PlannedProject> plannedProjects = plannedProjectDAO.loadAllEntities();
         projekt = plannedProjects.get(0);
-        for(PlanningUnit pu : projekt.getPlanningUnits()){
-            System.out.println(pu.getPlanningUnitName()+": "+pu.getKindPlanningUnits());
-            for(PlanningUnit pu1 : pu.getKindPlanningUnits()){
-                System.out.println("\t"+pu1.getPlanningUnitName()+": "+pu1.getKindPlanningUnits());
-            }
+        daoFactory.getEntityManager().refresh(projekt);
+        ressourceGroups = daoFactory.getRessourceGroupDAO().loadAllEntities();
+        for(final RessourceGroup ressourceGroup : ressourceGroups){
+            daoFactory.getEntityManager().refresh(ressourceGroup);
         }
-        //daoFactoryBean.getEntityManager().refresh(projekt);
-        ressourceGroups = daoFactoryBean.getRessourceGroupDAO().loadAllEntities();
     }
 
     public void calculate() {
@@ -56,16 +57,19 @@ public class PlanningCalculator {
     private void calculatePlanningUnits() {
         for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
             final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
-            final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
+            final Set<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
+            final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
             if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
-//                for (final RessourceGroup spalte : ressourceGroups) {
-//                    final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
-//                    planningUnitElement.setPlannedDays(0);
-//                    planningUnitElement.setPlannedHours(0);
-//                    planningUnitElement.setPlannedMinutes(0);
-//                    planningUnitElement.setRessourceGroup(spalte);
-//                    planningUnit.getPlanningUnitElementList().add(planningUnitElement);
-//                }
+                for (final RessourceGroup spalte : ressourceGroups) {
+                    final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
+                    planningUnitElement.setPlannedDays(0);
+                    planningUnitElement.setPlannedHours(0);
+                    planningUnitElement.setPlannedMinutes(0);
+                    planningUnitElement.setRessourceGroup(spalte);
+                    daoFactory.saveOrUpdateTX(planningUnitElement);
+                    planningUnit.getPlanningUnitElementList().add(planningUnitElement);
+                    daoFactory.saveOrUpdateTX(planningUnit);
+                }
             } else {
                 this.calculatePlanningUnits(kindPlanningUnits, planningUnit,
                         ressourceGroupDaysHoursMinutesItemMap);
@@ -74,11 +78,10 @@ public class PlanningCalculator {
     }
 
 
-    private void calculatePlanningUnits(final List<PlanningUnit> planningUnits, final PlanningUnit parent,
+    private void calculatePlanningUnits(final Set<PlanningUnit> planningUnits, final PlanningUnit parent,
                                       final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap) {
-        for (final PlanningUnit planningUnit : planningUnits){
-//            planningCalculatorBean.getDaoFactoryBean().getEntityManager().merge(planningUnit);
-            final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
+        for (final PlanningUnit planningUnit : planningUnits) {
+            final Set<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
             if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
                 this.addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, planningUnit);
             } else {
@@ -86,6 +89,7 @@ public class PlanningCalculator {
                         ressourceGroupDaysHoursMinutesItemMap);
             }
         }
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
             Integer daysFromMap;
             Integer hoursFromMap;
@@ -94,24 +98,25 @@ public class PlanningCalculator {
                 daysFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getDays();
                 hoursFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getHours();
                 minutesFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup).getMinutes();
-            }catch(final NullPointerException e){
+            }catch(NullPointerException e){
                 daysFromMap = 0;
                 hoursFromMap = 0;
                 minutesFromMap = 0;
             }
 
-//            PlanningUnitElement element = new PlanningUnitElement();
-//            for (final PlanningUnitElement planningUnitElement : parent.getPlanningUnitElementList()) {
-//                if (planningUnitElement.getRessourceGroup().equals(ressourceGroup)) {
-//                    element = planningUnitElement;
-//                }
-//            }
-//            final int index = parent.getPlanningUnitElementList().indexOf(element);
-//            final PlanningUnitElement planningUnitElement = parent.getPlanningUnitElementList().get(index);
-//            planningUnitElement.setPlannedDays(daysFromMap);
-//            planningUnitElement.setPlannedHours(hoursFromMap);
-//            planningUnitElement.setPlannedMinutes(minutesFromMap);
-//            planningCalculatorBean.getDaoFactoryBean().saveOrUpdate(planningUnitElement);
+            PlanningUnitElement element = new PlanningUnitElement();
+            for (final PlanningUnitElement planningUnitElement : parent.getPlanningUnitElementList()) {
+                if (planningUnitElement.getRessourceGroup().equals(ressourceGroup)) {
+                    element = planningUnitElement;
+                }
+            }
+            final int index = parent.getPlanningUnitElementList().indexOf(element);
+            final PlanningUnitElement planningUnitElement = parent.getPlanningUnitElementList().get(index);
+            planningUnitElement.setPlannedDays(daysFromMap);
+            planningUnitElement.setPlannedHours(hoursFromMap);
+            planningUnitElement.setPlannedMinutes(minutesFromMap);
+
+            daoFactory.saveOrUpdateTX(planningUnitElement);
         }
     }
 

@@ -32,6 +32,7 @@
     </facet>
     <facet type="JRebel" name="JRebel">
       <configuration>
+        <option name="allPaths" value="false" />
         <option name="generateRebel" value="false" />
       </configuration>
     </facet>
@@ -45,8 +46,8 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="base" exported="" />
-    <orderEntry type="library" exported="" name="module-xmlrpc" level="project" />
-    <orderEntry type="library" exported="" name="lib-jee6" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="Java EE 6-Java EE 6" level="project" />
   </component>
 </module>
 

@@ -1,18 +1,12 @@
 <atlassian-ide-plugin>
   <project-configuration>
     <servers>
-      <jira>
-        <server-id>b1e24511-0400-4a8c-a991-6d1475d248c7</server-id>
-        <name>RapidPM</name>
-        <url>http://jira.rapidpm.org</url>
-        <shared>false</shared>
-      </jira>
       <crucible>
         <server-id>4542f3e9-c7b8-4d19-a0c2-f402d1706fa3</server-id>
         <name>FishEye</name>
         <url>http://fisheye.rapidpm.org</url>
         <shared>false</shared>
-        <isFisheyeInstance>false</isFisheyeInstance>
+        <isFisheyeInstance>true</isFisheyeInstance>
       </crucible>
       <bamboo>
         <server-id>8913a8c6-9a91-493e-8ab5-087f46ae0bcc</server-id>
@@ -25,6 +19,8 @@
       </bamboo>
     </servers>
     <default-crucible-server>279af2a2-00de-4935-a947-6661496654ad</default-crucible-server>
-    <default-jira-server>b1e24511-0400-4a8c-a991-6d1475d248c7</default-jira-server>
+    <default-fisheye-server>4542f3e9-c7b8-4d19-a0c2-f402d1706fa3</default-fisheye-server>
+    <default-fisheye-repo>RapidPM</default-fisheye-repo>
+    <default-jira-server>547bedf8-d61a-412a-a592-1b07ff57d721</default-jira-server>
   </project-configuration>
 </atlassian-ide-plugin>

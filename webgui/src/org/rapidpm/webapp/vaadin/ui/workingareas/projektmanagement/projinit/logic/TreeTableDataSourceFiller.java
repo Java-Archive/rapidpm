@@ -4,12 +4,13 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.HierarchicalContainer;
 import org.apache.log4j.Logger;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.prj.projectmanagement.planning.*;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 
@@ -21,7 +22,7 @@ import static org.rapidpm.Constants.MINS_HOUR;
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco Ebbinghaus
+ * User: Marco
  * Date: 31.08.12
  * Time: 16:29
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
@@ -30,7 +31,7 @@ public class TreeTableDataSourceFiller {
 
     private static final Logger logger = Logger.getLogger(TreeTableDataSourceFiller.class);
 
-    private TreeTableDataSourceFillerBean bean;
+//    private TreeTableDataSourceFillerBean bean;
     private List<RessourceGroup> ressourceGroups;
     private final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
     private ResourceBundle messages;
@@ -43,13 +44,9 @@ public class TreeTableDataSourceFiller {
         this.messages = bundle;
         dataSource = dSource;
 
-        bean = EJBFactory.getEjbInstance(TreeTableDataSourceFillerBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-
-        ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
-        for(RessourceGroup ressourceGroup : ressourceGroups){
-            baseDaoFactoryBean.getEntityManager().refresh(ressourceGroup);
-        }
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final RessourceGroupDAO ressourceGroupDAO = daoFactory.getRessourceGroupDAO();
+        ressourceGroups = ressourceGroupDAO.loadAllEntities();
 
         dataSource.removeAllItems();
         final String aufgabe = messages.getString("aufgabe");
@@ -65,15 +62,16 @@ public class TreeTableDataSourceFiller {
 
     private void computePlanningUnitsAndTotalsAbsolut() {
         final PlannedProject projectFromSession = screen.getUi().getCurrentProject();
-        final PlannedProject projectFromDB = bean.getDaoFactoryBean().getPlannedProjectDAO().findByID
-                (projectFromSession.getId());
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
+        final PlannedProject projectFromDB = plannedProjectDAO.findByID(projectFromSession.getId());
         final Set<PlanningUnit> planningUnits = projectFromDB.getPlanningUnits();
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
             final String aufgabe = messages.getString("aufgabe");
             planningUnitItem.getItemProperty(aufgabe).setValue(planningUnitName);
-            final List<PlanningUnit> planningUnitList = planningUnit.getKindPlanningUnits();
+            final Set<PlanningUnit> planningUnitList = planningUnit.getKindPlanningUnits();
             if (planningUnitList == null || planningUnitList.isEmpty()) {
                 for (final RessourceGroup spalte : ressourceGroups) {
                     for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
@@ -82,7 +80,7 @@ public class TreeTableDataSourceFiller {
                             planningUnitElement.setPlannedHours(0);
                             planningUnitElement.setPlannedMinutes(0);
                             final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem(planningUnitElement);
-                            final Property<?> itemProperty = planningUnitItem.getItemProperty(spalte.getName());
+                            final Property<String> itemProperty = planningUnitItem.getItemProperty(spalte.getName());
                             itemProperty.setValue(daysHoursMinutesItem.toString());
                         }
                     }
@@ -94,14 +92,14 @@ public class TreeTableDataSourceFiller {
     }
 
 
-    private void computePlanningUnits(final List<PlanningUnit> planningUnits, final String parent) {
+    private void computePlanningUnits(final Set<PlanningUnit> planningUnits, final String parent) {
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
             final String aufgabe = messages.getString("aufgabe");
             planningUnitItem.getItemProperty(aufgabe).setValue(planningUnitName);
             dataSource.setParent(planningUnitName, parent);
-            final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
+            final Set<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
             if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
                 for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
                     final DaysHoursMinutesItem item = new DaysHoursMinutesItem(planningUnitElement);

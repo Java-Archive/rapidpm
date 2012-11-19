@@ -4,8 +4,10 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
@@ -19,7 +21,7 @@ import java.util.ResourceBundle;
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco Ebbinghaus
+ * User: Marco
  * Date: 18.09.12
  * Time: 15:45
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
@@ -35,13 +37,14 @@ public class AddProjectWindow extends Window{
 
     private MainUI ui;
 
+    private VerticalLayout singleLayout = new VerticalLayout();
     private FormLayout formLayout = new FormLayout();
     private HorizontalLayout horizontalButtonLayout = new HorizontalLayout();
     private Button saveButton = new Button();
     private Button cancelButton = new Button();
     private ProjektFieldGroup fieldGroup;
     private ResourceBundle messages;
-    private AddProjectWindowBean bean;
+//    private AddProjectWindowBean bean;
 
     public AddProjectWindow(final MainUI ui, final ResourceBundle messages) {
         this.ui = ui;
@@ -51,21 +54,22 @@ public class AddProjectWindow extends Window{
         setPositionX(POSITION_X);
         setPositionY(POSITION_Y);
 
-        bean = EJBFactory.getEjbInstance(AddProjectWindowBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+//        bean = EJBFactory.getEjbInstance(AddProjectWindowBean.class);
+//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
         final PlannedProject projekt = new PlannedProject();
         fieldGroup = new ProjektFieldGroup(projekt);
 
         fillFormLayout();
-        addComponent(formLayout);
+        singleLayout.addComponent(formLayout);
 
         horizontalButtonLayout.addComponent(saveButton);
         horizontalButtonLayout.addComponent(cancelButton);
 
-        addComponent(horizontalButtonLayout);
-
-        addListeners(baseDaoFactoryBean, ui);
+        singleLayout.addComponent(horizontalButtonLayout);
+        setContent(singleLayout);
+        addListeners(daoFactory, ui);
         doInternationalization();
 
     }
@@ -89,7 +93,7 @@ public class AddProjectWindow extends Window{
         cancelButton.setCaption(messages.getString("cancel"));
     }
 
-    private void addListeners(final DaoFactoryBean baseDaoFactoryBean,final MainUI ui) {
+    private void addListeners(final DaoFactory baseDaoFactoryBean,final MainUI ui) {
         saveButton.addClickListener(new Button.ClickListener() {
 
             @Override
@@ -110,17 +114,18 @@ public class AddProjectWindow extends Window{
                         fieldGroup.commit();
                         final BeanItem<PlannedProject> beanItem = (BeanItem<PlannedProject>) fieldGroup
                                 .getItemDataSource();
-                        baseDaoFactoryBean.saveOrUpdate(beanItem.getBean());
+                        baseDaoFactoryBean.saveOrUpdateTX(beanItem.getBean());
                         AddProjectWindow.this.close();
                         ui.setWorkingArea(new ProjectAdministrationScreen(ui));
-                    } catch (FieldGroup.CommitException e) {
+                    } catch (final FieldGroup.CommitException e) {
                         logger.warn(e);
                     }
 
                 } else {
                     final Label lbl = new Label();
                     lbl.setValue(messages.getString("stdsatz_fillInAllFields"));
-                    AddProjectWindow.this.addComponent(lbl);
+                    singleLayout.addComponent(lbl);
+                    AddProjectWindow.this.setContent(singleLayout);
                 }
 
             }
@@ -140,5 +145,4 @@ public class AddProjectWindow extends Window{
     public void show() {
         ui.addWindow(this);
     }
-
 }

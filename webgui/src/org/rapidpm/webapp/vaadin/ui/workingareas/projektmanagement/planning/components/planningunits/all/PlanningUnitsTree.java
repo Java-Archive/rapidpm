@@ -10,6 +10,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.mode
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,7 +44,7 @@ public class PlanningUnitsTree extends Tree{
         }
     }
 
-    private void buildTree(final List<PlanningUnit> planningUnits, final PlanningUnit parentUnit) {
+    private void buildTree(final Set<PlanningUnit> planningUnits, final PlanningUnit parentUnit) {
         for (final PlanningUnit planningUnit : planningUnits) {
             container.addBean(planningUnit);
             container.setParent(planningUnit, parentUnit);

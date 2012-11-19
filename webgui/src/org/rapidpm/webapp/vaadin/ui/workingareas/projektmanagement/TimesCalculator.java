@@ -1,24 +1,25 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 
 import javax.persistence.EntityManager;
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static org.rapidpm.Constants.*;
 
 /**
 * RapidPM - www.rapidpm.org
-* User: Marco Ebbinghaus
+* User: Marco
 * Date: 31.08.12
 * Time: 14:34
 * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
@@ -32,16 +33,15 @@ public class TimesCalculator {
     private final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
     private Integer gesamtSummeInMin;
     private Double mannTageExakt;
-    private TimesCalculatorBean bean;
+//    private TimesCalculatorBean bean;
 
     public TimesCalculator(final ResourceBundle bundle) {
         this.messages = bundle;
-        bean = EJBFactory.getEjbInstance(TimesCalculatorBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        ressourceGroups = baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities();
-        for(RessourceGroup ressourceGroup : ressourceGroups){
-            baseDaoFactoryBean.getEntityManager().refresh(ressourceGroup);
-        }
+//        bean = EJBFactory.getEjbInstance(TimesCalculatorBean.class);
+//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final RessourceGroupDAO ressourceGroupDAO = daoFactory.getRessourceGroupDAO();
+        ressourceGroups = ressourceGroupDAO.loadAllEntities();
     }
 
     public void calculate() {
@@ -59,16 +59,18 @@ public class TimesCalculator {
     }
 
     private void calculatePlanningUnitsAndTotalsAbsolut() {
-        final PlannedProject projekt = bean.getDaoFactoryBean().getPlannedProjectDAO().loadAllEntities().get(0);
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
+        final PlannedProject projekt = plannedProjectDAO.loadAllEntities().get(0);
         for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
             calculatePlanningUnits(planningUnit.getKindPlanningUnits());
         }
     }
 
 
-    private void calculatePlanningUnits(final List<PlanningUnit> planningUnits) {
+    private void calculatePlanningUnits(final Set<PlanningUnit> planningUnits) {
         for (final PlanningUnit planningUnit : planningUnits) {
-            final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
+            final Set<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
             if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
                 addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, planningUnit);
             } else {
@@ -142,10 +144,6 @@ public class TimesCalculator {
         return ressourceGroupDaysHoursMinutesItemMap;
     }
 
-    public Integer getGesamtSummeInMin() {
-        return gesamtSummeInMin;
-    }
-
     public DaysHoursMinutesItem getGesamtSummeItem() {
         final DaysHoursMinutesItem item = new DaysHoursMinutesItem();
         item.setMinutes(gesamtSummeInMin);
@@ -153,13 +151,8 @@ public class TimesCalculator {
         return item;
     }
 
-    public Double getMannTageExakt() {
-        return mannTageExakt;
-    }
-
     public String getMannTageGerundet() {
         final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
         return format.format(mannTageExakt);
     }
-
 }
