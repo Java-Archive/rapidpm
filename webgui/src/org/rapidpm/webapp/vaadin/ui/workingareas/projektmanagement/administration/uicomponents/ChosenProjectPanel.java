@@ -13,7 +13,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administratio
 import java.util.ResourceBundle;
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 18.09.12
  * Time: 10:23
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
@@ -62,9 +62,10 @@ public class ChosenProjectPanel extends EditablePanel {
 
     @Override
     public void setComponents() {
-        addComponent(noSelectionLabel);
-        addComponent(formLayout);
-        addComponent(buttonsLayout);
+        panelLayout.addComponent(noSelectionLabel);
+        panelLayout.addComponent(formLayout);
+        panelLayout.addComponent(buttonsLayout);
+        setContent(panelLayout);
     }
 
     @Override
@@ -95,12 +96,14 @@ public class ChosenProjectPanel extends EditablePanel {
 
     @Override
     public void activate(boolean b){
-        for(Object propertyId : fieldGroup.getBoundPropertyIds()){
-            if(!propertyId.equals(PlannedProject.ID)){
-                final Field field = fieldGroup.getField(propertyId);
-                field.setReadOnly(!b);
+        if(fieldGroup != null){
+            for(Object propertyId : fieldGroup.getBoundPropertyIds()){
+                if(!propertyId.equals(PlannedProject.ID)){
+                    final Field field = fieldGroup.getField(propertyId);
+                    field.setReadOnly(!b);
+                }
             }
+            buttonsLayout.setVisible(b);
         }
-        buttonsLayout.setVisible(b);
     }
 }

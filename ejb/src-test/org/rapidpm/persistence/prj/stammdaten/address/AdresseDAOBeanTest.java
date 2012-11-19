@@ -33,13 +33,13 @@ public class AdresseDAOBeanTest extends BaseDAOBeanTest<AdresseDAOBean> {
         adresse.setGrosskundenplz(false);
         adresse.setStateOID(daoFactoryFactory.getStateDAO().loadStateForShortname("NRW").getId());
 
-        daoFactoryFactory.getAdresseDAO().new Transaction() {
-            @Override
-            public void doTask() {
-                final AdresseDAOBean.AdresseResult result = daoBean.saveOrUpdateTX("sessionID", -1L, adresse);
-                assertTrue(result.getValid());
-                printLog(result);
-            }
-        }.execute();
+//        daoFactoryFactory.getAdresseDAO().new Transaction() {
+//            @Override
+//            public void doTask() {
+//                final AdresseDAOBean.AdresseResult result = daoBean.saveOrUpdateTX("sessionID", -1L, adresse);
+//                assertTrue(result.getValid());
+//                printLog(result);
+//            }
+//        }.execute();
     }
 }

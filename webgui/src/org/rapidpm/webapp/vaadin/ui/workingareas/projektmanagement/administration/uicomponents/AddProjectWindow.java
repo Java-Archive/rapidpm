@@ -37,6 +37,7 @@ public class AddProjectWindow extends Window{
 
     private MainUI ui;
 
+    private VerticalLayout singleLayout = new VerticalLayout();
     private FormLayout formLayout = new FormLayout();
     private HorizontalLayout horizontalButtonLayout = new HorizontalLayout();
     private Button saveButton = new Button();
@@ -56,19 +57,18 @@ public class AddProjectWindow extends Window{
 //        bean = EJBFactory.getEjbInstance(AddProjectWindowBean.class);
 //        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        refreshEntities(daoFactory);
 
         final PlannedProject projekt = new PlannedProject();
         fieldGroup = new ProjektFieldGroup(projekt);
 
         fillFormLayout();
-        addComponent(formLayout);
+        singleLayout.addComponent(formLayout);
 
         horizontalButtonLayout.addComponent(saveButton);
         horizontalButtonLayout.addComponent(cancelButton);
 
-        addComponent(horizontalButtonLayout);
-
+        singleLayout.addComponent(horizontalButtonLayout);
+        setContent(singleLayout);
         addListeners(daoFactory, ui);
         doInternationalization();
 
@@ -114,17 +114,18 @@ public class AddProjectWindow extends Window{
                         fieldGroup.commit();
                         final BeanItem<PlannedProject> beanItem = (BeanItem<PlannedProject>) fieldGroup
                                 .getItemDataSource();
-                        baseDaoFactoryBean.saveOrUpdate(beanItem.getBean());
+                        baseDaoFactoryBean.saveOrUpdateTX(beanItem.getBean());
                         AddProjectWindow.this.close();
                         ui.setWorkingArea(new ProjectAdministrationScreen(ui));
-                    } catch (FieldGroup.CommitException e) {
+                    } catch (final FieldGroup.CommitException e) {
                         logger.warn(e);
                     }
 
                 } else {
                     final Label lbl = new Label();
                     lbl.setValue(messages.getString("stdsatz_fillInAllFields"));
-                    AddProjectWindow.this.addComponent(lbl);
+                    singleLayout.addComponent(lbl);
+                    AddProjectWindow.this.setContent(singleLayout);
                 }
 
             }
@@ -143,21 +144,5 @@ public class AddProjectWindow extends Window{
 
     public void show() {
         ui.addWindow(this);
-    }
-
-    private void refreshEntities(final DaoFactory baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
-            entityManager.refresh(planningUnit);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
     }
 }

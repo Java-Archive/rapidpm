@@ -26,11 +26,11 @@ public class ProjectFactory extends EntityFactory<PlannedProject> {
         plannedProject.setFakturierbar(RND.nextBoolean());
         plannedProject.setInfo(RND.nextSentence(5, 12, 5, 12));
 //        plannedProject.setMandantengruppe(); // TODO Mandantengruppe
-        plannedProject.setPlannedProjectName(new ArrayList<PlannedProjectName>() {{
-            final ProjectNameFactory factory = new ProjectNameFactory();
-            add(factory.createRandomEntity());
-            add(factory.createRandomEntity());
-        }});
+        //plannedProject.setPlannedProjectName(new ArrayList<PlannedProjectName>() {{
+        //    final ProjectNameFactory factory = new ProjectNameFactory();
+        //    add(factory.createRandomEntity());
+        //    add(factory.createRandomEntity());
+        //}});
 //        plannedProject.setResponsiblePerson(); // TODO Benutzer
         return plannedProject;
     }

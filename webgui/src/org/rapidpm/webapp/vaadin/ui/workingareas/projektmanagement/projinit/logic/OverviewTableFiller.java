@@ -46,7 +46,6 @@ public class OverviewTableFiller {
 //        bean = EJBFactory.getEjbInstance(OverviewTableFillerBean.class);
 //        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        refreshEntities(daoFactory);
         final RessourceGroupDAO ressourceGroupDAO = daoFactory.getRessourceGroupDAO();
         ressourceGroups = ressourceGroupDAO.loadAllEntities();
 
@@ -105,19 +104,6 @@ public class OverviewTableFiller {
                     }
                 }
             }
-        }
-    }
-
-    private void refreshEntities(final DaoFactory baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
         }
     }
 }

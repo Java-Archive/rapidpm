@@ -10,7 +10,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administratio
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 18.09.12
  * Time: 10:34
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de

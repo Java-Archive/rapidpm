@@ -16,7 +16,9 @@ import org.rapidpm.persistence.system.security.Benutzer;
 
 import javax.persistence.EntityTransaction;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -40,7 +42,7 @@ public class ProjectDAOTest extends BaseDAOTest {
         p.setFakturierbar(true);
         p.setInfo("Info");
 
-        final List<PlannedProjectName> namen = new ArrayList<PlannedProjectName>();
+        final Set<PlannedProjectName> namen = new HashSet<PlannedProjectName>();
         final PlannedProjectName n = new PlannedProjectName();
         n.setNamepart("PrjName");
         n.setOrdernr(0);

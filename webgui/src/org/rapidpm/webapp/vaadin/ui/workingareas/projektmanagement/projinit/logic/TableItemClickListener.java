@@ -23,6 +23,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.date
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 //TODO under construction!
 public class TableItemClickListener implements ItemClickListener {
@@ -33,8 +34,6 @@ public class TableItemClickListener implements ItemClickListener {
     private KnotenBlattEnum knotenBlattEnum;
 
     private ResourceBundle messages;
-//    private TableItemClickListenerBean bean;
-//    private DaoFactoryBean baseDaoFactoryBean;
 
     private PlannedProject projekt;
     private List<PlanningUnit> planningUnits;
@@ -44,10 +43,7 @@ public class TableItemClickListener implements ItemClickListener {
         this.messages = bundle;
         this.screen = screen;
 
-//        bean = EJBFactory.getEjbInstance(TableItemClickListenerBean.class);
-//        baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        refreshEntities(daoFactory);
 
         final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
         projekt = plannedProjectDAO.loadAllEntities().get(0);    //REFAC nicht NPE sicher
@@ -74,7 +70,7 @@ public class TableItemClickListener implements ItemClickListener {
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().loadPlanningUnitByName(planningUnitName);
         if (planningUnit != null) {
-            final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
+            final Set<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
             if (kindPlanningUnits != null && (!kindPlanningUnits.isEmpty()) ) {
                 knotenBlattEnum = KnotenBlattEnum.KNOTEN;
                 buildRequiredFields(formUnterlayout, fieldGroup);
@@ -108,19 +104,6 @@ public class TableItemClickListener implements ItemClickListener {
         }
         for (final Object propertyId : fieldGroup.getBoundPropertyIds()) {
             fieldGroup.getField(propertyId).setRequired(true);
-        }
-    }
-
-    private void refreshEntities(final DaoFactory baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
         }
     }
 

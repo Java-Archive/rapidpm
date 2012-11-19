@@ -117,15 +117,18 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
                     try {
 
                         //RessourceGroup in DB updaten
-                        daoFactory.saveOrUpdate(tabelle.getValue());
-
+                        final RessourceGroup ressouregroupFromTable = (RessourceGroup)tabelle.getValue();
+                        final RessourceGroup ressourceGroupFromDB = daoFactory.getRessourceGroupDAO().findByID
+                                (ressouregroupFromTable.getId());
+                        tabelle.commit();
+                        daoFactory.saveOrUpdateTX(ressouregroupFromTable);
                         screen.generateTableAndCalculate();
 
                         saveButtonLayout.setVisible(false);
                         tabelle.setEditable(false);
                         editGroup.setValue(messages.getString("stdsatz_rowmode"));
 
-                    } catch (Exception e) {
+                    } catch (final Exception e) {
                         logger.warn("Exception", e);
                     }
                 }
