@@ -1,12 +1,8 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuedelete;
 
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeContainerPlanningUnits;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsLayout;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTreeLayout;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,6 +17,7 @@ public class IssueDeleteWindow extends Window implements Internationalizationabl
     private Button yesButton;
     private Button noButton;
     private HorizontalLayout buttonLayout;
+    private VerticalLayout singleLayout = new VerticalLayout();
 
     private final IssueDeleteWindow self = this;
     private final Tree issueTree;
@@ -33,14 +30,14 @@ public class IssueDeleteWindow extends Window implements Internationalizationabl
         this.screen = screen;
         this.issueTree = issueTree;
         this.setModal(true);
-        setComponentens();
+        setComponents();
         doInternationalization();
     }
 
-    private void setComponentens() {
+    private void setComponents() {
         deleteLabel = new Label();
         deleteLabel.setWidth("100%");
-        addComponent(deleteLabel);
+        singleLayout.addComponent(deleteLabel);
 
         buttonLayout = new HorizontalLayout();
         buttonLayout.setMargin(true);
@@ -59,7 +56,7 @@ public class IssueDeleteWindow extends Window implements Internationalizationabl
         buttonLayout.setExpandRatio(noButton, 1.0f);
 
 
-        addComponent(buttonLayout);
+        singleLayout.addComponent(buttonLayout);
     }
 
 

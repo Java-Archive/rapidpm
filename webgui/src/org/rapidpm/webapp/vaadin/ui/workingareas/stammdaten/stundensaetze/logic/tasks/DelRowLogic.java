@@ -25,20 +25,15 @@ public class DelRowLogic {
     }
 
     public void execute() {
-
-        try {
-            //Bean aus dem BeanItem
+        //Bean aus dem BeanItem
 //        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-            final RessourceGroup ressourceGroup = (RessourceGroup) button.getItemId();
+        final RessourceGroup ressourceGroup = (RessourceGroup) button.getItemId();
 
-            //transiente RessourceGroup in DB löschen
-            final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-            daoFactory.remove(ressourceGroup);
+        //transiente RessourceGroup in DB löschen
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        daoFactory.removeTX(ressourceGroup);
 
-            screen.generateTableAndCalculate();
-            screen.getSaveButtonLayout().setVisible(false);
-        } catch (Exception e) {
-            Notification.show(messages.getString("stdsatz_nodelete"));
-        }
+        screen.generateTableAndCalculate();
+        screen.getSaveButtonLayout().setVisible(false);
     }
 }

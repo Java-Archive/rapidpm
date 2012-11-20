@@ -188,13 +188,13 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
                     benutzerBean.getItemProperty("mandantengruppe").setValue(mandantengruppenSelect.getValue());
                     benutzerBean.getItemProperty("benutzerGruppe").setValue(benutzerGruppenSelect.getValue());
                     benutzerBean.getItemProperty("benutzerWebapplikation").setValue(benutzerWebapplikationenSelect.getValue());
-                    benutzerBean.getItemProperty("berechtigungen").setValue(berechtigungenList);
+//                    benutzerBean.getItemProperty("berechtigungen").setValue(berechtigungenList);
                     benutzerBean.getItemProperty("active").setValue(isActiveCheckbox.getValue());
                     benutzerBean.getItemProperty("hidden").setValue(isHiddenCheckBox.getValue());
 
                     // in die DB speichern
                     final Benutzer benutzer = benutzerBean.getBean();
-                    daoFactory.saveOrUpdate(benutzer);
+                    daoFactory.saveOrUpdateTX(benutzer);
 
                     final MainUI ui = screen.getUi();
                     ui.setWorkingArea(new BenutzerScreen(ui));

@@ -10,7 +10,9 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.mod
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsLayout;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,7 +37,7 @@ public class IssueAddWindow extends Window {
         addDetailsLayout = new IssueDetailsLayout(screen);
         addDetailsLayout.addSaveButtonClickListener(new AddIssueSaveClickListener());
         addDetailsLayout.addCancelButtonClickListener(new AddIssueCancelClickListener());
-        this.addComponent(addDetailsLayout);
+        setContent(addDetailsLayout);
     }
 
     private class AddIssueSaveClickListener implements Button.ClickListener {
@@ -54,8 +56,8 @@ public class IssueAddWindow extends Window {
                     TreeContainerPlanningUnits.PROPERTY_CAPTION).setValue(planningUnit.getPlanningUnitName());
             issueTree.getContainerDataSource().getContainerProperty(itemId,
                     TreeContainerPlanningUnits.PROPERTY_PLANNINGUNIT).setValue(planningUnit);
-            List<PlanningUnit> childList = parentPlanningunit.getKindPlanningUnits();
-            if (childList == null) childList = new ArrayList<PlanningUnit>();
+            Set<PlanningUnit> childList = parentPlanningunit.getKindPlanningUnits();
+            if (childList == null) childList = new HashSet<PlanningUnit>();
             childList.add(planningUnit);
             parentPlanningunit.setKindPlanningUnits(childList);
             issueTree.setChildrenAllowed(parentItemId, true);

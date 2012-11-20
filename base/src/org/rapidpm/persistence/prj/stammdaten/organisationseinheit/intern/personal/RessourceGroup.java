@@ -229,14 +229,14 @@ public class RessourceGroup {
 
         RessourceGroup that = (RessourceGroup) o;
 
-        if (!name.equals(that.name)) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override

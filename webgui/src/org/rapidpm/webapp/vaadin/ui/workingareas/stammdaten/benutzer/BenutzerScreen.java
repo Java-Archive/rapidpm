@@ -121,7 +121,7 @@ public class BenutzerScreen extends Screen {
                             (selectedBenutzer.getLogin());
                     if(benutzerFromDB != null && !benutzerFromDB.isEmpty()){
                         try{
-                            daoFactory.remove(selectedBenutzer);
+                            daoFactory.removeTX(selectedBenutzer);
                             benutzerTable.removeItem(tableItemId);
                             benutzerEditor.setVisible(false);
                         } catch (Exception e){
