@@ -40,12 +40,11 @@
     <properties>
         <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
         <property name="hibernate.connection.url" value="jdbc:postgresql://127.0.0.1:5432/rapidpm"/>
-        <property name="hibernate.connection.username" value="postgres"/>
-        <property name="hibernate.connection.password" value="hallo"/>
+        <property name="hibernate.connection.username" value="rapidpm"/>
+        <property name="hibernate.connection.password" value="rapidpm"/>
         <!--<property status="hibernate.default_schema" value="public" />-->
         <!--<property name="hibernate.hbm2ddl.auto" value="update"/>-->
         <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL82Dialect"/>
-        <property name="hibernate.hbm2ddl.auto" value="update"/>
         <property name="hibernate.cache.use_second_level_cache" value="true"/>
         <property name="hibernate.id.new_generator_mappings" value="false"/>
         <property name="hibernate.connection.release_mode" value="on_close"/>

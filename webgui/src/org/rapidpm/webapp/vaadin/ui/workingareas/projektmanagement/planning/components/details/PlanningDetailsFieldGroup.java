@@ -32,12 +32,16 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
     private List<AbstractField> fieldList = new ArrayList<>();
     private ResourceBundle messages;
 
-    public PlanningDetailsFieldGroup(final ResourceBundle messages, final PlanningUnit thePlanningUnit) {
+    public PlanningDetailsFieldGroup(final ResourceBundle messages, final PlanningUnit unmanagedPlanningUnit) {
         this.messages = messages;
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().loadPlanningUnitByName
-                (thePlanningUnit.getPlanningUnitName());
-        setItemDataSource(new BeanItem<>(planningUnit));
+        final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().findByID(unmanagedPlanningUnit.getId());
+        if(planningUnit == null){
+            setItemDataSource(new BeanItem<>(unmanagedPlanningUnit));
+        } else {
+            setItemDataSource(new BeanItem<>(planningUnit));
+        }
+
         buildForm();
     }
 
