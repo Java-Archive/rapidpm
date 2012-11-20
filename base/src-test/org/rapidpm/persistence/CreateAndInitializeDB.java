@@ -54,16 +54,15 @@ public class CreateAndInitializeDB {
         root = graphDb.getNodeById(0);
     }
 
-    private void deleteRelationDependencies() {
-        IssueBaseDAO tmpDAO = DaoFactorySingelton.getInstance().getIssueBaseDAO(1L);
-        List<IssueBase> issueList = tmpDAO.loadAllEntities();
-        for (IssueBase issue : issueList) {
-            issue.setComments(new ArrayList<IssueComment>());
-            issue.setTestcases(new ArrayList<IssueTestCase>());
-            tmpDAO.persist(issue);
-        }
-        GraphDBFactory.getInstance().shutdownDB();
-    }
+//    private void deleteRelationDependencies() {
+//        IssueBaseDAO tmpDAO = DaoFactorySingelton.getInstance().getIssueBaseDAO(1L);
+//        List<IssueBase> issueList = tmpDAO.loadAllEntities();
+//        for (IssueBase issue : issueList) {
+//            issue.setComments(new ArrayList<IssueComment>());
+//            issue.setTestcases(new ArrayList<IssueTestCase>());
+//            tmpDAO.persist(issue);
+//        }
+//    }
 
     private void deleteFileOrDirectory( final boolean start, final File file ) {
         if (start) System.out.println("Removing old db");
