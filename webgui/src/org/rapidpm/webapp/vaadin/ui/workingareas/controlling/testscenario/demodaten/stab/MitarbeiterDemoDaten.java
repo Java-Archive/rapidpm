@@ -3,6 +3,9 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.demod
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.Mitarbeiter;
 import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.builder.stab.MitarbeiterBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: donnie
@@ -16,6 +19,7 @@ public class MitarbeiterDemoDaten {
     private Mitarbeiter karlSchmidtMA;
     private Mitarbeiter peterMuellerMA;
     private Mitarbeiter danielMacDonaldMA;
+    private List<Mitarbeiter> mitarbeiterList = new ArrayList<>();
 
     private PersonenDemoDaten personenDemoDaten;
     private RessourcengruppenDemoDaten ressourcengruppenDemoDaten;
@@ -44,6 +48,11 @@ public class MitarbeiterDemoDaten {
                 .setPerson(personenDemoDaten.getDanielMacDonald())
                 .setRessourcenGruppe(ressourcengruppenDemoDaten.getWorkingStudent())
                 .getMitarbeiter();
+
+        mitarbeiterList.add(ursulaBeckerMA);
+        mitarbeiterList.add(karlSchmidtMA);
+        mitarbeiterList.add(peterMuellerMA);
+        mitarbeiterList.add(danielMacDonaldMA);
     }
 
     public Mitarbeiter getUrsulaBeckerMA() {
@@ -60,5 +69,9 @@ public class MitarbeiterDemoDaten {
 
     public Mitarbeiter getDanielMacDonaldMA() {
         return danielMacDonaldMA;
+    }
+
+    public List<Mitarbeiter> getMitarbeiterList() {
+        return mitarbeiterList;
     }
 }

@@ -8,4 +8,9 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.demod
  * To change this template use File | Settings | File Templates.
  */
 public class ProjectDemoDaten {
+
+
+    public ProjectDemoDaten(){
+
+    }
 }
