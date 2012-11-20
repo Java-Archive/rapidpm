@@ -1,6 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents;
 
-import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
@@ -92,7 +92,7 @@ public class AddRowWindow extends Window {
             @Override
             public void buttonClick(ClickEvent event) {
                 boolean allFilled = true;
-                Iterator<Component> it = AddRowWindow.this.formLayout
+                final Iterator<Component> it = AddRowWindow.this.formLayout
                         .getComponentIterator();
                 while (it.hasNext()) {
                     final Component component = it.next();
@@ -104,23 +104,15 @@ public class AddRowWindow extends Window {
                 }
                 if (allFilled) {
                     try {
-                        final Table tabelle = screen.getTabelle();
+                        //final Table tabelle = screen.getTabelle();
                         fieldGroup.commit();
                         //RessourceGroupBeanItem mit der neuen (transienten) RessourceGroup
                         final BeanItem<RessourceGroup> beanItem = (BeanItem)fieldGroup.getItemDataSource();
                         //Bean aus dem BeanItem
                         final RessourceGroup ressourceGroup = beanItem.getBean();
 
-                        baseDaoFactoryBean.saveOrUpdate(ressourceGroup);
-//                        baseDaoFactoryBean.getEntityManager().refresh(ressourceGroup);
-//                        final RessourceGroup group = baseDaoFactoryBean.getRessourceGroupDAO().loadRessourceGroupByName
-//                                (ressourceGroup
-//                                .getName
-//                                ());
-                        final RessourceGroup group = baseDaoFactoryBean.getRessourceGroupDAO().loadRessourceGroupByName
-                                (ressourceGroup.getName());
-
-
+                        final RessourceGroup persistedRessourceGroup = baseDaoFactoryBean.saveOrUpdateTX
+                                (ressourceGroup);
                         final List<PlanningUnit> planningUnits = baseDaoFactoryBean.getPlanningUnitDAO()
                                 .loadAllEntities();
 
@@ -129,35 +121,23 @@ public class AddRowWindow extends Window {
                             planningUnitElement.setPlannedDays(0);
                             planningUnitElement.setPlannedHours(0);
                             planningUnitElement.setPlannedMinutes(0);
-                            planningUnitElement.setRessourceGroup(group);
-                            planningUnit.getPlanningUnitElementList().add(planningUnitElement);
-                            baseDaoFactoryBean.saveOrUpdate(planningUnit);
+                            planningUnitElement.setRessourceGroup(persistedRessourceGroup);
+                            final PlanningUnitElement persistedPlanningUnitElement = baseDaoFactoryBean.saveOrUpdateTX
+                                    (planningUnitElement);
+                            planningUnit.getPlanningUnitElementList().add(persistedPlanningUnitElement);
+                            baseDaoFactoryBean.saveOrUpdateTX(planningUnit);
                         }
-
-
-//                        final int planningUnitCount = baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities().size();
-//                        for(int i = 0; i < planningUnitCount; i++){
-//                            PlanningUnitElement planningUnitElement = new PlanningUnitElement();
-//                            planningUnitElement.setId(null);
-//                            planningUnitElement.setPlannedDays(0);
-//                            planningUnitElement.setPlannedHours(0);
-//                            planningUnitElement.setPlannedMinutes(0);
-//                            planningUnitElement.setRessourceGroup(ressourceGroup);
-//                            baseDaoFactoryBean.saveOrUpdate(planningUnitElement);
-//                        }
                         screen.generateTableAndCalculate();
 
                         AddRowWindow.this.close();
-                    } catch (CommitException e) {
-                        logger.warn(e);
+                    }catch(final FieldGroup.CommitException e){
+                          Notification.show("Benutzer konnte nicht angelegt werden");
                     }
-
                 } else {
                     final Label lbl = new Label();
                     lbl.setValue(messages.getString("stdsatz_fillInAllFields"));
                     AddRowWindow.this.addComponent(lbl);
                 }
-
             }
 
         });

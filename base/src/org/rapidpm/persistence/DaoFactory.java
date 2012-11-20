@@ -8,6 +8,7 @@ package org.rapidpm.persistence;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
+import com.vaadin.ui.Notification;
 import org.apache.log4j.Logger;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.rapidpm.persistence.prj.bewegungsdaten.RegistrationDAO;
@@ -49,6 +50,7 @@ import org.rapidpm.persistence.system.logging.LogginEntityEntryDAO;
 import org.rapidpm.persistence.system.logging.LoggingEventEntryDAO;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.BerechtigungDAO;
+import org.rapidpm.webapp.vaadin.MainUI;
 
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -95,7 +97,7 @@ public class DaoFactory {
 //    }
 
 
-    public <T> void saveOrUpdateTX(final T entity) {
+    public <T> T saveOrUpdateTX(final T entity) {
         if (logger.isInfoEnabled()) {
             logger.info("saveOrUpdateTX entity " + entity);
         }
@@ -107,10 +109,13 @@ public class DaoFactory {
             final Long oid = entityUtils.getOIDFromEntity(entity);
             if (oid == null || oid == -1L) {
                 simplePersistTX(entity);
+                return entity;
             } else {
                 simpleMergeTX(entity);
+                return entity;
             }
         }
+        return null;
     }
 
 
@@ -182,7 +187,6 @@ public class DaoFactory {
         }
     }
 
-    @TransactionAttribute(value = TransactionAttributeType.REQUIRES_NEW)
     public abstract class Transaction {
         private final EntityTransaction transaction = entityManager.getTransaction();
 
@@ -201,8 +205,10 @@ public class DaoFactory {
                     logger.warn("tx nicht mehr active.. ");
                 }
 
-            } catch (Exception e) {
+            } catch (PersistenceException e) {
+                Notification.show(MainUI.messages.getString("stdsatz_nodelete"));
                 logger.error(e);
+            } finally {
 //                System.out.println("e = " + e);
                 if (transaction != null && transaction.isActive()) {
                     transaction.rollback();
@@ -211,7 +217,6 @@ public class DaoFactory {
             }
         }
     }
-
 
     public <T> void removeTX(final T entity) {
         if (logger.isInfoEnabled()) {
@@ -418,18 +423,6 @@ public class DaoFactory {
         return new ProjectDAO(getEntityManager());
     }
 
-    public IssueCommentDAO getIssueCommentDAO() {
-        return new IssueCommentDAO(getEntityManager());
-    }
-
-    public IssueTestCaseDAO getIssueTestCaseDAO() {
-        return new IssueTestCaseDAO(getEntityManager());
-    }
-
-    public IssueTimeUnitDAO getTimeUnitDAO() {
-        return new IssueTimeUnitDAO(getEntityManager());
-    }
-
     public ProjectNameDAO getProjectNameDAO() {
         return new ProjectNameDAO(getEntityManager());
     }
@@ -438,8 +431,17 @@ public class DaoFactory {
         return new IssueTimeUnitDAO(getEntityManager());
     }
 
+    public IssueCommentDAO getIssueCommentDAO() {
+        return new IssueCommentDAO(getEntityManager());
+    }
 
-            //GraphDAOs
+    public IssueTestCaseDAO getIssueTestCaseDAO() {
+        return new IssueTestCaseDAO(getEntityManager());
+    }
+
+
+
+    //GraphDAOs
     public IssueBaseDAO getIssueBaseDAO(final Long projectId) {
         return new IssueBaseDAO(graphDb, this, projectId);
     }

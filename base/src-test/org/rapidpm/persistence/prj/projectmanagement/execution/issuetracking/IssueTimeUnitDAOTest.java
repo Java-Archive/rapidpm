@@ -21,7 +21,7 @@ public class IssueTimeUnitDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadTimeUnitsFor() throws Exception {
-        final IssueTimeUnitDAO issueTimeUnitDAO = daoFactoryFactory.getTimeUnitDAO();
+        final IssueTimeUnitDAO issueTimeUnitDAO = daoFactoryFactory.getIssueTimeUnitDAO();
         List<IssueTimeUnit> issueTimeUnits = issueTimeUnitDAO.loadTimeUnitsFor("NeoScioPortal", "sven.ruppert", null, null, null, null);
         assertNotNull(issueTimeUnits);
         assertEquals(2, issueTimeUnits.size());

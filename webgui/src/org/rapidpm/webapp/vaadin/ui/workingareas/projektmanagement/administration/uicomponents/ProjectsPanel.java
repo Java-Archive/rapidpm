@@ -32,6 +32,7 @@ public class ProjectsPanel extends Panel implements Internationalizationable, Co
     private ResourceBundle messagesBundle;
     private ChosenProjectPanel formPanel;
     private final MainUI ui;
+    private VerticalLayout singleLayout = new VerticalLayout();
 //    private ProjectsPanelBean bean;
 
 
@@ -50,7 +51,6 @@ public class ProjectsPanel extends Panel implements Internationalizationable, Co
 //        bean = EJBFactory.getEjbInstance(ProjectsPanelBean.class);
 //        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        refreshEntities(daoFactory);
 
         final List<PlannedProject> projects = daoFactory.getPlannedProjectDAO().loadAllEntities();
 
@@ -65,8 +65,8 @@ public class ProjectsPanel extends Panel implements Internationalizationable, Co
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 final PlannedProject projekt = (PlannedProject)projectSelect.getValue();
-                projects.remove(projekt);
-                daoFactory.remove(projekt);
+                final PlannedProject projektAusDB = daoFactory.getPlannedProjectDAO().findByID(projekt.getId());
+                daoFactory.removeTX(projektAusDB);
                 ui.setWorkingArea(new ProjectAdministrationScreen(ui));
             }
         });
@@ -103,27 +103,12 @@ public class ProjectsPanel extends Panel implements Internationalizationable, Co
 
     @Override
     public void setComponents() {
-        addComponent(projectSelect);
-        addComponent(buttonLayout);
+        singleLayout.addComponent(projectSelect);
+        singleLayout.addComponent(buttonLayout);
+        setContent(singleLayout);
     }
 
     public Button getDeleteProjectButton() {
         return deleteProjectButton;
-    }
-
-    private void refreshEntities(final DaoFactory baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
-            entityManager.refresh(planningUnit);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
     }
 }

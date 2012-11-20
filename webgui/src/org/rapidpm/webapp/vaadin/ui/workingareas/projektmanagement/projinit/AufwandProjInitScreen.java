@@ -64,7 +64,6 @@ public class AufwandProjInitScreen extends Screen {
 //        bean = EJBFactory.getEjbInstance(AufwandProjInitScreenBean.class);
 //        baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        refreshEntities(daoFactory);
         erstelleUnterschriftLayout();
         erstelleFelderLayout();
 
@@ -181,140 +180,20 @@ public class AufwandProjInitScreen extends Screen {
         addComponent(formLayout);
     }
 
-    private void refreshEntities(final DaoFactory baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
-            entityManager.refresh(planningUnit);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
-    }
-
-    public TextField getKundeField() {
-        return kundeField;
-    }
-
-    public void setKundeField(TextField kundeField) {
-        this.kundeField = kundeField;
-    }
-
-    public TextField getProjektField() {
-        return projektField;
-    }
-
-    public void setProjektField(TextField projektField) {
-        this.projektField = projektField;
-    }
-
-    public DateField getDatumField() {
-        return datumField;
-    }
-
-    public void setDatumField(DateField datumField) {
-        this.datumField = datumField;
-    }
-
-    public TextField getProjektLeiterField() {
-        return projektLeiterField;
-    }
-
-    public void setProjektLeiterField(TextField projektLeiterField) {
-        this.projektLeiterField = projektLeiterField;
-    }
-
-    public TextField getUnterschriftField() {
-        return unterschriftField;
-    }
-
-    public void setUnterschriftField(TextField unterschriftField) {
-        this.unterschriftField = unterschriftField;
-    }
-
-    public TextField getManntageField() {
-        return manntageField;
-    }
-
-    public void setManntageField(TextField manntageField) {
-        this.manntageField = manntageField;
-    }
-
-    public TextField getSummeField() {
-        return summeField;
-    }
-
-    public void setSummeField(TextField summeField) {
-        this.summeField = summeField;
-    }
-
     public VerticalLayout getFormLayout() {
         return formLayout;
-    }
-
-    public void setFormLayout(VerticalLayout formLayout) {
-        this.formLayout = formLayout;
     }
 
     public GridLayout getUpperFormLayout() {
         return upperFormLayout;
     }
 
-    public void setUpperFormLayout(GridLayout upperFormLayout) {
-        this.upperFormLayout = upperFormLayout;
-    }
-
-    public VerticalLayout getLowerFormLayout() {
-        return lowerFormLayout;
-    }
-
-    public void setLowerFormLayout(VerticalLayout lowerFormLayout) {
-        this.lowerFormLayout = lowerFormLayout;
-    }
-
     public Button getSaveButton() {
         return saveButton;
     }
 
-    public void setSaveButton(Button saveButton) {
-        this.saveButton = saveButton;
-    }
-
-    public MyTreeTable getTreeTable() {
-        return treeTable;
-    }
-
-    public void setTreeTable(MyTreeTable treeTable) {
-        this.treeTable = treeTable;
-    }
-
-    public MyTable getUebersichtTable() {
-        return uebersichtTable;
-    }
-
-    public void setUebersichtTable(MyTable uebersichtTable) {
-        this.uebersichtTable = uebersichtTable;
-    }
-
     public HierarchicalContainer getDataSource() {
         return dataSource;
-    }
-
-    public VerticalLayout getTable2layout() {
-        return table2layout;
-    }
-
-    public void setTable2layout(VerticalLayout table2layout) {
-        this.table2layout = table2layout;
-    }
-
-    public void setDataSource(HierarchicalContainer dataSource) {
-        this.dataSource = dataSource;
     }
 
 }

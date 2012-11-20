@@ -15,10 +15,7 @@ import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.person
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.CostsScreen;
 
 import javax.persistence.EntityManager;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static org.rapidpm.Constants.HOURS_DAY;
 import static org.rapidpm.Constants.STD_ANTEILE;
@@ -48,9 +45,10 @@ public class TreeTableDataSourceFiller {
 //        bean = EJBFactory.getEjbInstance(TreeTableDataSourceFillerBean.class);
 //        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        refreshEntities(daoFactory);
-
         ressourceGroups = daoFactory.getRessourceGroupDAO().loadAllEntities();
+        for(final RessourceGroup ressourceGroup : ressourceGroups){
+            daoFactory.getEntityManager().refresh(ressourceGroup);
+        }
         dataSource.removeAllItems();
         dataSource.addContainerProperty(messages.getString("aufgabe"), String.class, null);
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
@@ -68,12 +66,12 @@ public class TreeTableDataSourceFiller {
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
         final PlannedProject projectFromDB = plannedProjectDAO.findByID(projectFromSession.getId());
-        final List<PlanningUnit> planningUnits = projectFromDB.getPlanningUnits();
+        final Set<PlanningUnit> planningUnits = projectFromDB.getPlanningUnits();
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
             planningUnitItem.getItemProperty(messages.getString("aufgabe")).setValue(planningUnitName);
-            final List<PlanningUnit> planningUnitList = planningUnit.getKindPlanningUnits();
+            final Set<PlanningUnit> planningUnitList = planningUnit.getKindPlanningUnits();
             if (planningUnitList == null || planningUnitList.isEmpty()) {
                 for (final RessourceGroup spalte : ressourceGroups) {
                     final List<PlanningUnitElement> planningUnitElementList = planningUnit.getPlanningUnitElementList();
@@ -91,7 +89,7 @@ public class TreeTableDataSourceFiller {
     }
 
 
-    private void computePlanningUnits(final List<PlanningUnit> planningUnits, final String parent) {
+    private void computePlanningUnits(final Set<PlanningUnit> planningUnits, final String parent) {
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
@@ -141,19 +139,6 @@ public class TreeTableDataSourceFiller {
         final Double externalEurosPerHour = ressourceGroup.getExternalEurosPerHour();
 
         return totalHours * externalEurosPerHour;
-    }
-
-    private void refreshEntities(final DaoFactory baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
     }
 
 }

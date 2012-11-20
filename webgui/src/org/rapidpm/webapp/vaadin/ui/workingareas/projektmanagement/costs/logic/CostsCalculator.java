@@ -11,10 +11,7 @@ import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.person
 
 import javax.persistence.EntityManager;
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static org.rapidpm.Constants.*;
 
@@ -39,8 +36,8 @@ public class CostsCalculator {
 //        bean = EJBFactory.getEjbInstance(CostsCalcutorBean.class);
 //        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        refreshEntities(daoFactory);
         projekt = daoFactory.getPlannedProjectDAO().loadAllEntities().get(0);
+        daoFactory.getEntityManager().refresh(projekt);
         messages = bundle;
     }
 
@@ -58,14 +55,14 @@ public class CostsCalculator {
 
     private void calculatePlanningUnitsAndTotalsAbsolut() {
         //final Integer currentProjectIndex = bean.getCurrentProjectIndex();
-        final List<PlanningUnit> planningUnits = projekt.getPlanningUnits();
+        final Set<PlanningUnit> planningUnits = projekt.getPlanningUnits();
         for (final PlanningUnit planningUnit : planningUnits) {
             calculatePlanningUnits(planningUnit.getKindPlanningUnits());
         }
     }
 
 
-    private void calculatePlanningUnits(final List<PlanningUnit> planningUnits) {
+    private void calculatePlanningUnits(final Set<PlanningUnit> planningUnits) {
         for (final PlanningUnit planningUnit : planningUnits) {
             if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
                 addiereZeileZurRessourceMap(planningUnit);
@@ -109,18 +106,5 @@ public class CostsCalculator {
     public String getTotalCostsGerundet() {
         final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
         return format.format(totalCostsExakt);
-    }
-
-    private void refreshEntities(final DaoFactory baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
     }
 }

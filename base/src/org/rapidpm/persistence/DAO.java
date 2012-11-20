@@ -161,7 +161,8 @@ public class DAO<K extends Number, E> implements Serializable {
      * @return Die Entität oder null falls nichts gefunden wurde.
      */
     public E findByID(final Long id) {
-        final TypedQuery<E> query = entityManager.createQuery("from " + entityClass.getName() + " e where e.id=:id", entityClass);
+        final TypedQuery<E> query = entityManager.createQuery("from " + entityClass.getName() + " e where e.id=:id",
+                entityClass);
         final TypedQuery<E> typedQuery = query.setParameter("id", id);
         return getSingleResultOrNull(typedQuery);
     }

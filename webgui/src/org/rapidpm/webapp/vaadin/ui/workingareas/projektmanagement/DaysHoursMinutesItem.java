@@ -4,7 +4,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElemen
 
 /**
  * Created with IntelliJ IDEA.
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 19.08.12
  * Time: 11:11
  * To change this template use File | Settings | File Templates.

@@ -677,11 +677,11 @@
     <identifier-quote-string>"</identifier-quote-string>
     <jdbc-driver>org.postgresql.Driver</jdbc-driver>
     <jdbc-url>jdbc:postgresql://localhost:5432/rapidpm</jdbc-url>
-    <user-name>rapidpm</user-name>
-    <user-password>dfd8dfcbdfdadfc3dfcedfdadfc7</user-password>
+    <user-name>postgres</user-name>
+    <user-password>dfc2dfcbdfc6dfc6dfc5</user-password>
     <libraries>
       <library>
-        <url>jar:///prog/PostgreSQL/pgJDBC/postgresql-9.1-901.jdbc4.jar!/</url>
+        <url>file://$PROJECT_DIR$/../rapidpm_runtime/apache-tomcat-7.0.32/lib/postgresql-9.1-901.jdbc4.jar</url>
       </library>
     </libraries>
     <table name="_pg_foreign_data_wrappers" schema="information_schema" catalog="" type="SYSTEM VIEW">

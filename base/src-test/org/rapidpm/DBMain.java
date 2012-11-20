@@ -10,7 +10,6 @@ package org.rapidpm;
 
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
-
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;

@@ -50,7 +50,7 @@ public abstract class BaseUI extends UI {
     protected Benutzer currentUser;
     protected PlannedProject currentProject;
     protected Locale locale = new Locale("de","DE");
-    protected ResourceBundle messages;
+    public static ResourceBundle messages;
 
 
     @Override

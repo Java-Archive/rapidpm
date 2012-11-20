@@ -50,8 +50,7 @@ public class StundensaetzeScreen extends Screen {
         super(ui);
         betriebsstdField = new TextField();
         betriebsWertField = new TextField();
-        betriebsWertField.setEnabled(false);
-        betriebsstdField.setEnabled(false);
+
 
         betriebsFieldsLayout.addComponent(betriebsstdField);
         betriebsFieldsLayout.addComponent(betriebsWertField);
@@ -122,6 +121,9 @@ public class StundensaetzeScreen extends Screen {
         betriebsstdField.setValue(format.format(calculator.getBetriebsStunde()) + EUR);
         betriebsWertField.setValue(format.format(calculator.getBetriebsWert()) + EUR);
 
+        betriebsWertField.setReadOnly(true);
+        betriebsstdField.setReadOnly(true);
+
         tabelle.setEditable(false);
         tabelle.setSelectable(true);
     }
@@ -151,35 +153,7 @@ public class StundensaetzeScreen extends Screen {
         return tabelle;
     }
 
-    public void setTabelle(Table tabelle) {
-        this.tabelle = tabelle;
-    }
-
-    public TextField getBetriebsWertField() {
-        return betriebsWertField;
-    }
-
-    public void setBetriebsWertField(TextField betriebsWertField) {
-        this.betriebsWertField = betriebsWertField;
-    }
-
-    public TextField getBetriebsstdField() {
-        return betriebsstdField;
-    }
-
-    public void setBetriebsstdField(TextField betriebsstdField) {
-        this.betriebsstdField = betriebsstdField;
-    }
-
     public VerticalLayout getSaveButtonLayout() {
         return saveButtonLayout;
     }
-
-    public void setSaveButtonLayout(VerticalLayout saveButtonLayout) {
-        this.saveButtonLayout = saveButtonLayout;
-    }
-
-//    public StundensaetzeScreenBean getScreenBean() {
-//        return screenBean;
-//    }
 }
