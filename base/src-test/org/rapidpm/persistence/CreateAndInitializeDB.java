@@ -7,6 +7,7 @@ import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.system.security.Benutzer;
 
@@ -28,13 +29,16 @@ public class CreateAndInitializeDB {
     private Node root;
     private final DaoFactory daoFactory;
 
-    private static final List<IssueStatus> statusList = new ArrayList<>();
-    private static final List<IssuePriority> priorityList = new ArrayList<>();
-    private static final List<IssueType> typeList = new ArrayList<>();
-    private static final List<IssueComponent> componentList = new ArrayList<>();
-    private static final List<IssueRelation> relationList = new ArrayList<>();
-    private static final List<IssueVersion> versionList = new ArrayList<>();
-    private static final List<IssueStoryPoint> storypointList = new ArrayList<>();
+    private final Calendar calendar = Calendar.getInstance();
+    private final List<IssueStatus> statusList = new ArrayList<>();
+    private final List<IssuePriority> priorityList = new ArrayList<>();
+    private final List<IssueType> typeList = new ArrayList<>();
+    private final List<IssueComponent> componentList = new ArrayList<>();
+    private final List<IssueRelation> relationList = new ArrayList<>();
+    private final List<IssueVersion> versionList = new ArrayList<>();
+    private final List<IssueStoryPoint> storypointList = new ArrayList<>();
+    private final List<IssueComment> commentList = new ArrayList<>();
+    private final List<IssueTestCase> testCaseList = new ArrayList<>();
 
     public static void main(final String[] args) {
         CreateAndInitializeDB setUp = new CreateAndInitializeDB(true);
@@ -43,10 +47,22 @@ public class CreateAndInitializeDB {
 
     public CreateAndInitializeDB(boolean debug) {
         this.debug = debug;
+        //deleteRelationDependencies();
         deleteFileOrDirectory(true, new File(GraphDBFactory.DB_PATH));
         graphDb = GraphDBFactory.getInstance().getGraphDBService();
         daoFactory = DaoFactorySingelton.getInstance();
         root = graphDb.getNodeById(0);
+    }
+
+    private void deleteRelationDependencies() {
+        IssueBaseDAO tmpDAO = DaoFactorySingelton.getInstance().getIssueBaseDAO(1L);
+        List<IssueBase> issueList = tmpDAO.loadAllEntities();
+        for (IssueBase issue : issueList) {
+            issue.setComments(new ArrayList<IssueComment>());
+            issue.setTestcases(new ArrayList<IssueTestCase>());
+            tmpDAO.persist(issue);
+        }
+        GraphDBFactory.getInstance().shutdownDB();
     }
 
     private void deleteFileOrDirectory( final boolean start, final File file ) {
@@ -269,13 +285,63 @@ public class CreateAndInitializeDB {
 
         component = new IssueComponent("Documentation");
         componentList.add(daoFactory.getIssueComponentDAO().persist(component));
+
+        List<List<Integer>> commentValues = new ArrayList<>();
+        commentValues.add(Arrays.asList(4, 2012, 8, 8));
+        commentValues.add(Arrays.asList(3, 2012, 8, 14));
+        commentValues.add(Arrays.asList(2, 2012, 8, 28));
+        commentValues.add(Arrays.asList(5, 2012, 9, 2));
+        commentValues.add(Arrays.asList(5, 2012, 9, 13));
+        commentValues.add(Arrays.asList(4, 2012, 9, 20));
+        commentValues.add(Arrays.asList(4, 2012, 9, 29));
+        commentValues.add(Arrays.asList(3, 2012, 10, 19));
+        commentValues.add(Arrays.asList(3, 2012, 10, 20));
+        commentValues.add(Arrays.asList(2, 2012, 11, 11));
+        commentValues.add(Arrays.asList(2, 2012, 11, 12));
+        commentValues.add(Arrays.asList(3, 2012, 11, 13));
+        commentValues.add(Arrays.asList(2, 2012, 11, 14));
+        commentValues.add(Arrays.asList(5, 2012, 11, 15));
+        commentValues.add(Arrays.asList(4, 2012, 11, 16));
+        commentValues.add(Arrays.asList(4, 2012,  9, 29));
+        commentValues.add(Arrays.asList(5, 2012, 10, 19));
+        commentValues.add(Arrays.asList(3, 2012, 10, 20));
+        commentValues.add(Arrays.asList(2, 2012, 11, 11));
+        commentValues.add(Arrays.asList(2, 2012, 11, 12));
+        commentValues.add(Arrays.asList(3, 2012, 11, 13));
+        commentValues.add(Arrays.asList(2, 2012, 11, 14));
+        commentValues.add(Arrays.asList(5, 2012, 11, 15));
+        commentValues.add(Arrays.asList(4, 2012, 11, 16));
+        commentValues.add(Arrays.asList(4, 2012,  9, 29));
+
+
+        IssueComment comment;
+        int i, x = 0;
+        for (List<Integer> values : commentValues) {
+            i = 0;
+            comment = new IssueComment();
+            comment.setText("Comment " + (x + 1));
+            comment.setCreator(daoFactory.getBenutzerDAO().findByID(new Long(values.get(i++))));
+            calendar.set(values.get(i++), values.get(i++) - 1, values.get(i++));
+            comment.setCreated(calendar.getTime());
+            comment = daoFactory.saveOrUpdateTX(comment);
+            commentList.add(comment);
+            x++;
+        }
+
+
+        IssueTestCase testCase;
+        for (i = 0; i < 20; i++) {
+            testCase = new IssueTestCase("TestCase " + i);
+            testCase = daoFactory.saveOrUpdateTX(testCase);
+            testCaseList.add(testCase);
+        }
     }
 
     private void initializeProject1() {
         List<IssueBase> issues = new ArrayList<>();
         List<List<Integer>> issueAttr = new ArrayList<>();
         Long projectId = 1L;
-        Calendar calendar = Calendar.getInstance();
+
         Benutzer user;
 
         //status,priority,type,  reporter,assignee,  dueDate_planned(3),_resolved(3),_closed(3),   version,
@@ -307,7 +373,7 @@ issueAttr.add(Arrays.asList(3,2,0,  4,4,  2012, 7,12, 2012, 1,12, 2012, 1,14,  2
 issueAttr.add(Arrays.asList(0,3,2,  2,5,  2012, 7,12, 2012, 1,14, 2012, 1,14,  2, 6,  4,-1,  20,-1,  22,-1,  -1,  -1));
 issueAttr.add(Arrays.asList(1,4,1,  4,3,  2012, 7,12, 2012, 1,14, 2012, 1,14,  2, 1,  4,-1,  -1,-1,  10,-1,  -1,  -1));
 issueAttr.add(Arrays.asList(2,1,2,  2,2,  2012, 7,12, 2012, 2,12, 2012, 2,19,  2, 9,  4, 1,  -1,-1,  11,-1,  -1,  -1));
-issueAttr.add(Arrays.asList(3,2,4,  5,4,  2012, 7,12, 2012, 2,19, 2012, 2,19,  2, 6,  4,-1,  -1,-1,  23,24,  -1,  -1));
+issueAttr.add(Arrays.asList(3,2,4,  5,4,  2012, 7,12, 2012, 2,19, 2012, 2,19,  2, 6,  4,-1,  12,-1,  23,24,  -1,  -1));
 issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2, 3,  4,-1,  -1,-1,  25,-1,  -1,  -1));
         
         //fill Issues with Attributes
@@ -345,7 +411,7 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
 
             for (int j = 0; j < 2; j++) {
                 if (attributes.get(i) != -1) {
-                    IssueTestCase testcase = daoFactory.getIssueTestCaseDAO().findByID(new Long(attributes.get(i)));
+                    IssueTestCase testcase = testCaseList.get(attributes.get(i) - 1);
                     issue.addOrChangeTestCase(testcase);
                 }
                 i++;
@@ -353,7 +419,7 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
 
             for (int j = 0; j < 2; j++) {
                 if (attributes.get(i) != -1) {
-                    IssueComment comment = daoFactory.getIssueCommentDAO().findByID(new Long(attributes.get(i)));
+                    IssueComment comment = commentList.get(attributes.get(i) - 1);
                     issue.addOrChangeComment(comment);
                 }
                 i++;
