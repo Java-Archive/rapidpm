@@ -46,8 +46,7 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
             final boolean hasChildren = ((Tree) valueClickEvent.getProperty()).hasChildren(selectedId);
             if (selectedId != null) {
                 final PlanningUnitsTree tree = screen.getPlanningUnitsTree();
-                final BeanItem<PlanningUnit> selectedPlanningUnitBeanItem = (BeanItem) tree.getItem
-                        (selectedId);
+                final BeanItem<PlanningUnit> selectedPlanningUnitBeanItem = (BeanItem) tree.getItem(selectedId);
                 final PlanningUnit selectedPlanningUnit = selectedPlanningUnitBeanItem.getBean();
                 final Panel detailPanel = screen.getDetailPanel();
                 final Panel mainPanel = screen.getMainPanel();

@@ -58,22 +58,8 @@ public class PlanningCalculator {
         for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
             final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
             final Set<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
-            final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-            if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
-                for (final RessourceGroup spalte : ressourceGroups) {
-                    final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
-                    planningUnitElement.setPlannedDays(0);
-                    planningUnitElement.setPlannedHours(0);
-                    planningUnitElement.setPlannedMinutes(0);
-                    planningUnitElement.setRessourceGroup(spalte);
-                    daoFactory.saveOrUpdateTX(planningUnitElement);
-                    planningUnit.getPlanningUnitElementList().add(planningUnitElement);
-                    daoFactory.saveOrUpdateTX(planningUnit);
-                }
-            } else {
-                this.calculatePlanningUnits(kindPlanningUnits, planningUnit,
+            this.calculatePlanningUnits(kindPlanningUnits, planningUnit,
                         ressourceGroupDaysHoursMinutesItemMap);
-            }
         }
     }
 

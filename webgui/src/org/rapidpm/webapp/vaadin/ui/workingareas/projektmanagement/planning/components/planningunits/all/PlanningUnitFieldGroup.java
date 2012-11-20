@@ -7,6 +7,7 @@ import com.vaadin.ui.*;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.system.security.Benutzer;
@@ -67,9 +68,11 @@ public class PlanningUnitFieldGroup extends FieldGroup {
 
     private void buildForm() {
         final List<Benutzer> users = daoFactory.getBenutzerDAO().loadAllEntities();
-        final Set<PlanningUnit> planningUnits = selectedPlanningUnit.getKindPlanningUnits();
-        final Set<PlanningUnit> managedPlanningUnits = new HashSet<>();
-        for(final PlanningUnit planningUnit : planningUnits){
+        final PlannedProject project = daoFactory.getProjectDAO().findByID(screen.getUi().getCurrentProject().getId());
+        daoFactory.getEntityManager().refresh(project);
+        final Set<PlanningUnit> parentPlanningUnits = project.getPlanningUnits();
+        final Set<PlanningUnit> managedPlanningUnits = getAllPlanningUnits(parentPlanningUnits);
+        for(final PlanningUnit planningUnit : parentPlanningUnits){
            managedPlanningUnits.add(daoFactory.getPlanningUnitDAO().findByID(planningUnit.getId()));
         }
 
@@ -120,7 +123,7 @@ public class PlanningUnitFieldGroup extends FieldGroup {
                     parentBox.setTextInputAllowed(false);
                     bind(parentBox, propertyId);
                     parentBox.addItem(nullPlanningUnit);
-                    parentBox.addItem(selectedPlanningUnit);
+                    //parentBox.addItem(selectedPlanningUnit);
                     parentBox.setNullSelectionItemId(nullPlanningUnit);
                     fieldList.add(parentBox);
                     break;
@@ -151,6 +154,27 @@ public class PlanningUnitFieldGroup extends FieldGroup {
                     break;
                 default:
                     break;
+            }
+        }
+    }
+
+    private Set<PlanningUnit> getAllPlanningUnits(final Set<PlanningUnit> parentPlanningUnits) {
+        final Set<PlanningUnit> resultSet = new HashSet<>();
+        for(final PlanningUnit planningUnit : parentPlanningUnits){
+            getPlanningUnits(resultSet, planningUnit);
+        }
+        return resultSet;
+
+
+    }
+
+    private void getPlanningUnits(final Set<PlanningUnit> resultSet, final PlanningUnit planningUnit) {
+        resultSet.add(planningUnit);
+        final Set<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
+        if(kindPlanningUnits != null && !kindPlanningUnits.isEmpty()){
+            resultSet.addAll(kindPlanningUnits);
+            for(final PlanningUnit kindKindPlanningUnit : kindPlanningUnits){
+                getPlanningUnits(resultSet, kindKindPlanningUnit);
             }
         }
     }

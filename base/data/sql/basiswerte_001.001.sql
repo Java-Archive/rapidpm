@@ -64,7 +64,7 @@ INSERT INTO
                 validfrom, validuntil, benutzergruppe_id, benutzerwebapplikation_id,
                 mandantengruppe_id)
         VALUES (5, true , 'marco.ebbinghaus@rapidpm.org', 0, false , '2012-09-11',
-        'Marco Ebbinghaus.ebbinghaus', 'geheim',
+        'marco.ebbinghaus', 'geheim',
                 '2012-09-11',
                 '2013-09-11', 1, 1,1);
 
