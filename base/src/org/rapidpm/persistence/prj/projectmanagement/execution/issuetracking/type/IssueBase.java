@@ -1,14 +1,15 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type;
 
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
+import org.neo4j.graphdb.Direction;
+//import org.rapidpm.persistence.GraphDaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.system.security.Benutzer;
-import org.apache.log4j.Logger;
 
-import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
+import java.lang.reflect.Method;
+import java.util.*;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -22,169 +23,209 @@ import java.util.List;
  *        Time: 12:24:01
  */
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
-@Entity
-public class IssueBase {
 
-    public static final String SUMMARY ="summary";
-    public static final String TEXT = "text";
-    public static final String STORYPOINTS = "storyPoints";
-    public static final String DATE_PLANNED = "dueDate_planned";
-    public static final String DATE_RESOLVED = "dueDate_resolved";
-    public static final String DATE_CLOSED = "dueDate_closed";
-    public static final String PRIORITY = "priority";
-    public static final String STATUS = "status";
-    public static final String REPORTER ="reporter";
-    public static final String ASSIGNEE = "assignee";
-    public static final String VERSION = "version";
-    public static final String COMMENTS = "comments";
-    public static final String TESTCASES ="testcases";
+public class IssueBase implements PersistInGraph {
 
-    private static final Logger logger = Logger.getLogger(IssueBase.class);
+    //private static final Logger logger = Logger.getLogger(IssueBase.class);
 
-    //TODO TestCases definieren - Klasse erzeugen
-    @ElementCollection
-    private List<String> testcases;
-    public List<String> getTestcases() {
-        return testcases;
-    }
-    public void setTestcases(List<String> testcases) {
-        this.testcases = testcases;
-    }
-
-
-
-
-
-    @Id
-    @TableGenerator(name = "PKGenIssueBase", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "IssueBase_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE,
-            generator = "PKGenIssueBase")
+    @Identifier
     private Long id;
 
-    @Basic
-    private String summary;
-
-    @Basic
-    @Column(columnDefinition = "TEXT")
+    @Simple
     private String text;
 
-    @Basic
-    private Integer storyPoints;
+    @Simple
+    private Long projectId;
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @Simple
+    private String summary;
+
+    @Simple
+    private String story;
+
+    @Graph(clazz = IssuePriority.class)
     private IssuePriority priority;
 
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @Graph(clazz = IssueStatus.class)
     private IssueStatus status;
 
-    //@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.EAGER)
-    //private IssueTimeUnit issueTimeUnitEstimated;
+    @Graph(clazz = IssueType.class)
+    private IssueType type;
 
-    //@OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY)
-    //private List<IssueTimeUnit> issueTimeUnitsUsed;
-
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @Relational(clazz = Benutzer.class)
     private Benutzer reporter;
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @Relational(clazz = Benutzer.class)
     private Benutzer assignee;
 
-//    @Basic
-//    private float euro; //Stundensaetze und Co koennen hinterlegt werden.. Reporting
+    @Graph(clazz = IssueVersion.class)
+    private IssueVersion version;
 
-    @Basic
-    private String version;
-    @Basic
+    @Graph(clazz = IssueStoryPoint.class)
+    private IssueStoryPoint storyPoints;
+
+    @Simple
     private Date dueDate_planned;
-    @Basic
+
+    @Simple
     private Date dueDate_resolved;
 
-    @Basic
+    @Simple
     private Date dueDate_closed;
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    private List<IssueComment> comments;
+    //@Relational
+    private IssueTimeUnit timeUnitEstimated;
 
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("IssueBase");
-        sb.append("{id=").append(id);
-        sb.append(", summary='").append(summary).append('\'');
-        sb.append(", text='").append(text).append('\'');
-//        sb.append(", fakturierbar=").append(fakturierbar);
-        sb.append(", issuePriority=").append(priority);
-        sb.append(", issueStatus=").append(status);
-        //sb.append(", issueTimeUnitEstimated=").append(issueTimeUnitEstimated);
-        //sb.append(", issueTimeUnitsUsed=").append(issueTimeUnitsUsed);
-        sb.append(", reporter=").append(reporter);
-        sb.append(", assignee=").append(assignee);
-        //        sb.append(", mandantengruppe=").append(mandantengruppe);
-        //sb.append(", euro=").append(euro);
-        sb.append(", version=").append(version);
-        sb.append(", dueDate_planned=").append(dueDate_planned);
-        sb.append(", dueDate_resolved=").append(dueDate_resolved);
-        sb.append(", dueDate_closed=").append(dueDate_closed);
-        sb.append(", comments=").append(comments);
-        sb.append('}');
-        return sb.toString();
+    //@Relational
+    private List<IssueTimeUnit> timeUnitsUsed = new ArrayList<>();
+
+    @Relational(clazz = IssueComment.class)
+    private List<IssueComment> comments = new ArrayList<>();
+
+    @Relational(clazz = IssueTestCase.class)
+    private List<IssueTestCase> testcases = new ArrayList<>();
+
+    //private Risk risk;
+    @Simple
+    private Integer risk;
+
+    @Relational(clazz = PlanningUnit.class)
+    private PlanningUnit planningUnit;
+
+    @LazyGraphPersist
+    private Map<Method, List<Object[]>> graphMap;
+
+
+    public IssueBase(final Long projectId) {
+        setProjectId(projectId);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
 
-        IssueBase issueBase = (IssueBase) o;
+    private boolean addToMap(String methodName, Object[] args) {
+        boolean success = false;
+        if (graphMap == null) {
+            graphMap = new HashMap<>();
+        }
 
-        if (id != null ? !id.equals(issueBase.id) : issueBase.id != null) return false;
+        Class[] methodParams = new Class[args.length];
+        int i = 0;
+        for (Object obj : args) {
+            methodParams[i++] = obj.getClass();
+        }
 
-        return true;
+        try {
+            Method method = DaoFactorySingelton.getInstance().getIssueBaseDAO(projectId).getClass().getMethod(methodName,
+                    methodParams);
+            if (method != null) {
+                List<Object[]> list = graphMap.get(method);
+                if (list == null) {
+                    list = new ArrayList<>();
+                }
+                list.add(args);
+                graphMap.put(method, list);
+                success = true;
+            }
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return success;
     }
 
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+
+    public boolean connectToIssueAs(final IssueBase issue, final IssueRelation relation) {
+        //return DaoFactorySingelton.getIssueBaseDAO(projectId).connectEntitiesWithRelationTx(this, issue, relation);
+        return addToMap("connectEntitiesWithRelationTx", new Object[]{this, issue, relation});
     }
 
-    public Benutzer getAssignee() {
-        return assignee;
+    public List<IssueBase> getConnectedIssues(final IssueRelation relation) {
+        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectId).getConnectedIssuesWithRelation(this, relation, Direction.BOTH);
     }
 
-    public void setAssignee(final Benutzer assignee) {
-        this.assignee = assignee;
+    public List<IssueBase> getConnectedIssues(final IssueRelation relation, final Direction direction) {
+        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectId).getConnectedIssuesWithRelation(this, relation, direction);
     }
 
-    public List<IssueComment> getComments() {
-        return comments;
+    public boolean removeConnectionToIssue(final IssueBase issue, final IssueRelation relation) {
+//        return DaoFactorySingelton.getIssueBaseDAO(projectId).deleteRelationOfEntitiesTx(this, issue, relation, Direction.BOTH);
+        return removeConnectionToIssue(issue, relation, Direction.BOTH);
     }
 
-    public void setComments(final List<IssueComment> comments) {
-        this.comments = comments;
+    public boolean removeConnectionToIssue(final IssueBase issue, final IssueRelation relation, final Direction direction) {
+//        return DaoFactorySingelton.getIssueBaseDAO(projectId).deleteRelationOfEntitiesTx(this, issue, relation, direction);
+        return addToMap("deleteRelationOfEntitiesTx", new Object[]{this, issue, relation, direction});
     }
 
-    public Date getDueDate_closed() {
-        return dueDate_closed;
+
+    public boolean addSubIssue(final IssueBase subIssue) {
+        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectId).addSubIssueTx(this, subIssue);
+//        return addToMap("addSubIssueTx", new Object[]{this, subIssue});
     }
 
-    public void setDueDate_closed(final Date dueDate_closed) {
-        this.dueDate_closed = dueDate_closed;
+    public List<IssueBase> getSubIssues() {
+        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectId).getSubIssuesOf(this);
     }
 
-    public Date getDueDate_planned() {
-        return dueDate_planned;
+    public boolean removeSubIssue(final IssueBase subIssue) {
+        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectId).deleteSubIssueRelationTx(this, subIssue);
+//        return addToMap("deleteSubIssueRelationTx", new Object[]{this, subIssue});
     }
 
-    public void setDueDate_planned(final Date dueDate_planned) {
-        this.dueDate_planned = dueDate_planned;
+
+
+    public boolean addComponent(final IssueComponent component) {
+//        return DaoFactorySingelton.getIssueBaseDAO(projectId).addComponentToTx(this, component);
+        return addToMap("addComponentToTx", new Object[]{this, component});
     }
 
-    public Date getDueDate_resolved() {
-        return dueDate_resolved;
+    public List<IssueComponent> getComponents() {
+        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectId).getComponentsOf(this);
     }
 
-    public void setDueDate_resolved(final Date dueDate_resolved) {
-        this.dueDate_resolved = dueDate_resolved;
+    public boolean removeComponent(final IssueComponent component) {
+//        return DaoFactorySingelton.getIssueBaseDAO(projectId).deleteComponentRelationTx(this, component);
+        return addToMap("deleteComponentRelationTx", new Object[]{this, component});
     }
+
+
+    public boolean addOrChangeComment(final IssueComment comment) {
+        for (IssueComment com : comments)
+            if (comment.getId() != null && com.getId().equals(comment.getId())) {
+                comments.set(comments.indexOf(com), comment);
+                return true;
+            }
+        return comments.add(comment);
+    }
+
+    public boolean removeComment(final IssueComment comment) {
+
+        return comments.remove(comment);
+    }
+
+
+
+    public boolean addOrChangeTestCase(final IssueTestCase testcase) {
+        for (IssueTestCase tCase : testcases)
+            if (testcase.getId() != null && tCase.getId().equals(testcase.getId())) {
+                testcases.set(testcases.indexOf(tCase), testcase);
+                return true;
+            }
+        return testcases.add(testcase);
+    }
+
+    public boolean removeTestCase(final IssueTestCase testcase) {
+        return testcases.remove(testcase);
+    }
+
+
+    public boolean addTimeUnitUsed(final IssueTimeUnit timeUnit) {
+        return timeUnitsUsed.add(timeUnit);
+    }
+
+    public boolean removeTimeUnitUsed(final IssueTimeUnit timeUnit) {
+        return timeUnitsUsed.remove(timeUnit);
+    }
+
+
 
     public Long getId() {
         return id;
@@ -194,45 +235,12 @@ public class IssueBase {
         this.id = id;
     }
 
-    public IssuePriority getPriority() {
-        return priority;
+    public Long getProjectId() {
+        return projectId;
     }
 
-    public void setPriority(final IssuePriority issuePriority) {
-        this.priority = issuePriority;
-    }
-
-    public IssueStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(final IssueStatus issueStatus) {
-        this.status = issueStatus;
-    }
-
-//    public IssueTimeUnit getIssueTimeUnitEstimated() {
-//        return issueTimeUnitEstimated;
-//    }
-//
-//    public void setIssueTimeUnitEstimated(final IssueTimeUnit issueTimeUnitEstimated) {
-//        this.issueTimeUnitEstimated = issueTimeUnitEstimated;
-//    }
-//
-//    public List<IssueTimeUnit> getIssueTimeUnitsUsed() {
-//        return issueTimeUnitsUsed;
-//    }
-//
-//    public void setIssueTimeUnitsUsed(final List<IssueTimeUnit> issueTimeUnitsUsed) {
-//        this.issueTimeUnitsUsed = issueTimeUnitsUsed;
-//    }
-
-
-    public Benutzer getReporter() {
-        return reporter;
-    }
-
-    public void setReporter(final Benutzer reporter) {
-        this.reporter = reporter;
+    public void setProjectId(final Long projectId) {
+        this.projectId = projectId;
     }
 
     public String getSummary() {
@@ -251,19 +259,236 @@ public class IssueBase {
         this.text = text;
     }
 
-    public String getVersion() {
+    public String getStory() {
+        return story;
+    }
+
+    public void setStory(final String story) {
+        this.story = story;
+    }
+
+    public IssuePriority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(final IssuePriority priority) {
+        this.priority = priority;
+    }
+
+    public IssueStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(final IssueStatus status) {
+        this.status = status;
+    }
+
+    public IssueType getType() {
+        return type;
+    }
+
+    public void setType(final IssueType type) {
+        this.type = type;
+    }
+
+    public Benutzer getReporter() {
+        return reporter;
+    }
+
+    public void setReporter(final Benutzer reporter) {
+        this.reporter = reporter;
+    }
+
+    public Benutzer getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(final Benutzer assignee) {
+        this.assignee = assignee;
+    }
+
+    public IssueVersion getVersion() {
         return version;
     }
 
-    public void setVersion(final String version) {
+    public void setVersion(final IssueVersion version) {
         this.version = version;
     }
-    public Integer getStoryPoints() {
+
+    public IssueStoryPoint getStoryPoints() {
         return storyPoints;
     }
 
-    public void setStoryPoints(Integer storyPoints) {
+    public void setStoryPoints(final IssueStoryPoint storyPoints) {
         this.storyPoints = storyPoints;
     }
 
+    public Date getDueDate_planned() {
+        return dueDate_planned;
+    }
+
+    public void setDueDate_planned(final Date dueDate_planned) {
+        this.dueDate_planned = dueDate_planned;
+    }
+
+    public Date getDueDate_resolved() {
+        return dueDate_resolved;
+    }
+
+    public void setDueDate_resolved(final Date dueDate_resolved) {
+        this.dueDate_resolved = dueDate_resolved;
+    }
+
+    public Date getDueDate_closed() {
+        return dueDate_closed;
+    }
+
+    public void setDueDate_closed(final Date dueDate_closed) {
+        this.dueDate_closed = dueDate_closed;
+    }
+
+    public IssueTimeUnit getTimeUnitEstimated() {
+        return timeUnitEstimated;
+    }
+
+    public void setTimeUnitEstimated(final IssueTimeUnit timeUnitEstimated) {
+        this.timeUnitEstimated = timeUnitEstimated;
+    }
+
+    public List<IssueTimeUnit> getTimeUnitsUsed() {
+        return timeUnitsUsed;
+    }
+
+    public void setTimeUnitsUsed(final List<IssueTimeUnit> timeUnitsUsed) {
+        this.timeUnitsUsed = timeUnitsUsed;
+    }
+
+    public List<IssueComment> getComments() {
+        return comments;
+    }
+
+    public void setComments(final List<IssueComment> comments) {
+        this.comments = comments;
+    }
+
+    public List<IssueTestCase> getTestcases() {
+        return testcases;
+    }
+
+    public void setTestcases(final List<IssueTestCase> testcases) {
+        this.testcases = testcases;
+    }
+
+    public Integer getRisk() {
+        return risk;
+    }
+
+    public void setRisk(final Integer risk) {
+        this.risk = risk;
+    }
+
+    public PlanningUnit getPlanningUnit() {
+        return planningUnit;
+    }
+
+    public void setPlanningUnit(final PlanningUnit planningUnit) {
+        this.planningUnit = planningUnit;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IssueBase issueBase = (IssueBase) o;
+
+        if (assignee != null ? !assignee.equals(issueBase.assignee) : issueBase.assignee != null) return false;
+        if (comments != null ? !comments.equals(issueBase.comments) : issueBase.comments != null) return false;
+        if (dueDate_closed != null ? !dueDate_closed.equals(issueBase.dueDate_closed) : issueBase.dueDate_closed != null)
+            return false;
+        if (dueDate_planned != null ? !dueDate_planned.equals(issueBase.dueDate_planned) : issueBase.dueDate_planned != null)
+            return false;
+        if (dueDate_resolved != null ? !dueDate_resolved.equals(issueBase.dueDate_resolved) : issueBase.dueDate_resolved != null)
+            return false;
+        if (id != null ? !id.equals(issueBase.id) : issueBase.id != null) return false;
+        if (planningUnit != null ? !planningUnit.equals(issueBase.planningUnit) : issueBase.planningUnit != null)
+            return false;
+        if (priority != null ? !priority.equals(issueBase.priority) : issueBase.priority != null) return false;
+        if (projectId != null ? !projectId.equals(issueBase.projectId) : issueBase.projectId != null) return false;
+        if (reporter != null ? !reporter.equals(issueBase.reporter) : issueBase.reporter != null) return false;
+        if (risk != null ? !risk.equals(issueBase.risk) : issueBase.risk != null) return false;
+        if (status != null ? !status.equals(issueBase.status) : issueBase.status != null) return false;
+        if (story != null ? !story.equals(issueBase.story) : issueBase.story != null) return false;
+        if (storyPoints != null ? !storyPoints.equals(issueBase.storyPoints) : issueBase.storyPoints != null)
+            return false;
+        if (summary != null ? !summary.equals(issueBase.summary) : issueBase.summary != null) return false;
+        if (testcases != null ? !testcases.equals(issueBase.testcases) : issueBase.testcases != null) return false;
+        if (text != null ? !text.equals(issueBase.text) : issueBase.text != null) return false;
+        if (timeUnitEstimated != null ? !timeUnitEstimated.equals(issueBase.timeUnitEstimated) : issueBase.timeUnitEstimated != null)
+            return false;
+        if (timeUnitsUsed != null ? !timeUnitsUsed.equals(issueBase.timeUnitsUsed) : issueBase.timeUnitsUsed != null)
+            return false;
+        if (type != null ? !type.equals(issueBase.type) : issueBase.type != null) return false;
+        if (version != null ? !version.equals(issueBase.version) : issueBase.version != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (text != null ? text.hashCode() : 0);
+        result = 31 * result + (projectId != null ? projectId.hashCode() : 0);
+        result = 31 * result + (summary != null ? summary.hashCode() : 0);
+        result = 31 * result + (story != null ? story.hashCode() : 0);
+        result = 31 * result + (priority != null ? priority.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        result = 31 * result + (reporter != null ? reporter.hashCode() : 0);
+        result = 31 * result + (assignee != null ? assignee.hashCode() : 0);
+        result = 31 * result + (version != null ? version.hashCode() : 0);
+        result = 31 * result + (storyPoints != null ? storyPoints.hashCode() : 0);
+        result = 31 * result + (dueDate_planned != null ? dueDate_planned.hashCode() : 0);
+        result = 31 * result + (dueDate_resolved != null ? dueDate_resolved.hashCode() : 0);
+        result = 31 * result + (dueDate_closed != null ? dueDate_closed.hashCode() : 0);
+        result = 31 * result + (timeUnitEstimated != null ? timeUnitEstimated.hashCode() : 0);
+        result = 31 * result + (timeUnitsUsed != null ? timeUnitsUsed.hashCode() : 0);
+        result = 31 * result + (comments != null ? comments.hashCode() : 0);
+        result = 31 * result + (testcases != null ? testcases.hashCode() : 0);
+        result = 31 * result + (risk != null ? risk.hashCode() : 0);
+        result = 31 * result + (planningUnit != null ? planningUnit.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IssueBase{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", projectId=" + projectId +
+                ", summary='" + summary + '\'' +
+                ", story='" + story + '\'' +
+                ", priority=" + priority +
+                ", status=" + status +
+                ", type=" + type +
+                ", reporter=" + reporter +
+                ", assignee=" + assignee +
+                ", version=" + version +
+                ", storyPoints=" + storyPoints +
+                ", dueDate_planned=" + dueDate_planned +
+                ", dueDate_resolved=" + dueDate_resolved +
+                ", dueDate_closed=" + dueDate_closed +
+                ", timeUnitEstimated=" + timeUnitEstimated +
+                ", timeUnitsUsed=" + timeUnitsUsed +
+                ", comments=" + comments +
+                ", testcases=" + testcases +
+                ", risk=" + risk +
+                ", planningUnit=" + planningUnit +
+                '}';
+    }
+
+    @Override
+    public String name() {
+        return getText() + " - " + getSummary();
+    }
 }

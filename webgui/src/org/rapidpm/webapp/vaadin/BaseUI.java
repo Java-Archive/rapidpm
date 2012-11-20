@@ -327,4 +327,8 @@ public abstract class BaseUI extends UI {
         currentProject = getSession().getAttribute(PlannedProject.class);
         return currentProject;
     }
+
+    public Benutzer getCurrentUser(){
+        return currentUser;
+    }
 }

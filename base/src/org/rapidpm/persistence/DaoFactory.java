@@ -10,6 +10,7 @@ package org.rapidpm.persistence;
 
 import com.vaadin.ui.Notification;
 import org.apache.log4j.Logger;
+import org.neo4j.graphdb.GraphDatabaseService;
 import org.rapidpm.persistence.prj.bewegungsdaten.RegistrationDAO;
 import org.rapidpm.persistence.prj.bewegungsdaten.RegistrationStatusDAO;
 import org.rapidpm.persistence.prj.bewegungsdaten.anfragen.KontaktAnfrageDAO;
@@ -25,10 +26,7 @@ import org.rapidpm.persistence.prj.book.kommentar.BuchKommentarDAO;
 import org.rapidpm.persistence.prj.book.kommentar.BuchSeitenKommentarDAO;
 import org.rapidpm.persistence.prj.projectmanagement.ProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.ProjectNameDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueCommentDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriorityDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatusDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnitDAO;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitDAO;
@@ -60,7 +58,8 @@ import javax.persistence.*;
 
 public class DaoFactory {
     private static final Logger logger = Logger.getLogger(DaoFactory.class);
-    private final DAO.EntityUtils entityUtils = new DAO.EntityUtils();
+    private DAO.EntityUtils entityUtils = new DAO.EntityUtils();
+    private static final GraphDatabaseService graphDb = GraphDBFactory.getInstance().getGraphDBService();
 
     public DaoFactory(final String persistenceUnitName) {
         final EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
@@ -420,29 +419,8 @@ public class DaoFactory {
 
 
     //IssueTracking
-
-    public IssueBaseDAO getIssueBaseDAO() {
-        return new IssueBaseDAO(getEntityManager());
-    }
-
-    public IssueCommentDAO getIssueCommentDAO() {
-        return new IssueCommentDAO(getEntityManager());
-    }
-
     public ProjectDAO getProjectDAO() {
         return new ProjectDAO(getEntityManager());
-    }
-
-    public IssueTimeUnitDAO getTimeUnitDAO() {
-        return new IssueTimeUnitDAO(getEntityManager());
-    }
-
-    public IssuePriorityDAO getIssuePriorityDAO() {
-        return new IssuePriorityDAO(getEntityManager());
-    }
-
-    public IssueStatusDAO getIssueStatusDAO() {
-        return new IssueStatusDAO(getEntityManager());
     }
 
     public ProjectNameDAO getProjectNameDAO() {
@@ -451,6 +429,49 @@ public class DaoFactory {
 
     public IssueTimeUnitDAO getIssueTimeUnitDAO() {
         return new IssueTimeUnitDAO(getEntityManager());
+    }
+
+    public IssueCommentDAO getIssueCommentDAO() {
+        return new IssueCommentDAO(getEntityManager());
+    }
+
+    public IssueTestCaseDAO getIssueTestCaseDAO() {
+        return new IssueTestCaseDAO(getEntityManager());
+    }
+
+
+
+    //GraphDAOs
+    public IssueBaseDAO getIssueBaseDAO(final Long projectId) {
+        return new IssueBaseDAO(graphDb, this, projectId);
+    }
+
+    public IssueStatusDAO getIssueStatusDAO() {
+        return new IssueStatusDAO(graphDb, this);
+    }
+
+    public IssuePriorityDAO getIssuePriorityDAO() {
+        return new IssuePriorityDAO(graphDb, this);
+    }
+
+    public IssueTypeDAO getIssueTypeDAO() {
+        return new IssueTypeDAO(graphDb, this);
+    }
+
+    public IssueComponentDAO getIssueComponentDAO() {
+        return new IssueComponentDAO(graphDb, this);
+    }
+
+    public IssueRelationDAO getIssueRelationDAO() {
+        return new IssueRelationDAO(graphDb, this);
+    }
+
+    public IssueVersionDAO getIssueVersionDAO() {
+        return new IssueVersionDAO(graphDb, this);
+    }
+
+    public IssueStoryPointDAO getIssueStoryPointDAO() {
+        return new IssueStoryPointDAO(graphDb, this);
     }
 
 

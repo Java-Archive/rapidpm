@@ -28,10 +28,6 @@ public class IssueOverviewScreen extends Screen{
     private IssueTreeLayout treeLayout;
     private IssueTabSheet issueTabSheet;
 
-    private Button saveButton;
-    private Button cancelButton;
-    private HorizontalLayout buttonLayout;
-
 //    private DaoFactoryBean baseDaoFactoryBean;
 
     public IssueOverviewScreen(MainUI ui) {
@@ -41,7 +37,6 @@ public class IssueOverviewScreen extends Screen{
         this.setSizeFull();
         hSplitPanel = new HorizontalSplitPanel();
         hSplitPanel.setSplitPosition(30, Unit.PERCENTAGE);
-        hSplitPanel.setSizeFull();
         issueTabSheet = new IssueTabSheet(this);
         treeLayout = new IssueTreeLayout(this, issueTabSheet);
         doInternationalization();
@@ -58,11 +53,19 @@ public class IssueOverviewScreen extends Screen{
         return plannedProjectDAO.findByID(ui.getCurrentProject().getId());
     }
 
+    public IssueTabSheet getIssueTabSheet() {
+        return issueTabSheet;
+    }
+
+    public IssueTreeLayout getIssueTreeLayout() {
+        return treeLayout;
+    }
 
     @Override
     public void setComponents() {
         hSplitPanel.setFirstComponent(treeLayout);
         hSplitPanel.setSecondComponent(issueTabSheet);
+        hSplitPanel.setHeight("775px");
         addComponent(hSplitPanel);
     }
 

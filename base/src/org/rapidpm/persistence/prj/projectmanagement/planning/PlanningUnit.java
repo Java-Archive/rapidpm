@@ -210,25 +210,41 @@ public class PlanningUnit {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PlanningUnit)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         PlanningUnit that = (PlanningUnit) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (planningUnitName != null ? !planningUnitName.equals(that.planningUnitName) : that.planningUnitName != null)
+            return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        int result = planningUnitName != null ? planningUnitName.hashCode() : 0;
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
         return "PlanningUnit{" +
-                "id=" + id +
+                "id='" + id + '\'' +
+                ", description='" + description + '\'' +
+                ", estimatedStoryPoints=" + estimatedStoryPoints +
+                ", komplexitaet=" + komplexitaet +
+                ", planningUnitElementList=" + planningUnitElementList +
+                ", parent=" + parent +
                 ", planningUnitName='" + planningUnitName + '\'' +
+                ", orderNumber=" + orderNumber +
+                ", kindPlanningUnits=" + kindPlanningUnits +
+                ", plannedMeetingList=" + plannedMeetingList +
+                ", responsiblePerson=" + responsiblePerson +
+                ", planningStatus=" + planningStatus +
+                ", plannedTravelList=" + plannedTravelList +
+                ", testcases=" + testcases +
                 '}';
     }
 }

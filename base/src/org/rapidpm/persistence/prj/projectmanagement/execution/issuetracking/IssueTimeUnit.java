@@ -31,17 +31,9 @@ public class IssueTimeUnit {
             generator = "PKGenIssueTimeUnit")
     private Long id;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-
     @Basic
-    private Date datum;
+    private Date date;
+
     @Basic
     private int minutes;
 
@@ -51,64 +43,24 @@ public class IssueTimeUnit {
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private Benutzer worker;
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("IssueTimeUnit");
-        sb.append("{id=").append(getId());
-        sb.append(", datum=").append(datum);
-        sb.append(", minutes=").append(minutes);
-        sb.append(", comment='").append(comment).append('\'');
-        sb.append(", worker=").append(worker);
-        sb.append('}');
-        return sb.toString();
+    public IssueTimeUnit() {
+        //empty on purpose
     }
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof IssueTimeUnit)) {
-            return false;
-        }
-
-        final IssueTimeUnit issueTimeUnit = (IssueTimeUnit) o;
-        if (getId() != issueTimeUnit.getId()) {
-            return false;
-        }
-        if (minutes != issueTimeUnit.minutes) {
-            return false;
-        }
-        if (!comment.equals(issueTimeUnit.comment)) {
-            return false;
-        }
-        if (!datum.equals(issueTimeUnit.datum)) {
-            return false;
-        }
-        if (!worker.equals(issueTimeUnit.worker)) {
-            return false;
-        }
-
-        return true;
+    public Long getId() {
+        return id;
     }
 
-    @Override
-    public int hashCode() {
-        int result = (int) (getId() ^ (getId() >>> 32));
-        result = 31 * result + datum.hashCode();
-        result = 31 * result + minutes;
-        result = 31 * result + comment.hashCode();
-        result = 31 * result + worker.hashCode();
-        return result;
+    public void setId(final Long id) {
+        this.id = id;
     }
 
-    public Date getDatum() {
-        return datum;
+    public Date getDate() {
+        return date;
     }
 
-    public void setDatum(final Date datum) {
-        this.datum = datum;
+    public void setDate(final Date date) {
+        this.date = date;
     }
 
     public Benutzer getWorker() {
@@ -133,5 +85,42 @@ public class IssueTimeUnit {
 
     public void setMinutes(final int minutes) {
         this.minutes = minutes;
+    }
+
+    @Override
+    public String toString() {
+        return "IssueTimeUnit{" +
+                "id=" + id +
+                ", date=" + date +
+                ", minutes=" + minutes +
+                ", comment='" + comment + '\'' +
+                ", worker=" + worker +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IssueTimeUnit that = (IssueTimeUnit) o;
+
+        if (minutes != that.minutes) return false;
+        if (comment != null ? !comment.equals(that.comment) : that.comment != null) return false;
+        if (date != null ? !date.equals(that.date) : that.date != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (worker != null ? !worker.equals(that.worker) : that.worker != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (date != null ? date.hashCode() : 0);
+        result = 31 * result + minutes;
+        result = 31 * result + (comment != null ? comment.hashCode() : 0);
+        result = 31 * result + (worker != null ? worker.hashCode() : 0);
+        return result;
     }
 }

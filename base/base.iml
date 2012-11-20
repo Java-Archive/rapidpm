@@ -33,6 +33,8 @@
     <orderEntry type="library" name="lib-vaadin" level="project" />
     <orderEntry type="module" module-name="webgui" />
     <orderEntry type="library" name="postgresql-9.1-901.jdbc4" level="project" />
+    <orderEntry type="library" name="lib-neo4j" level="project" />
+    <orderEntry type="library" name="lib-lucene" level="project" />
   </component>
 </module>
 

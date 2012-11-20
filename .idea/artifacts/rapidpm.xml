@@ -11,6 +11,8 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="lib-vaadin" />
+          <element id="library" level="project" name="lib-neo4j" />
+          <element id="library" level="project" name="lib-lucene" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="ejb/ejb/EJB" />
