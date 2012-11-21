@@ -207,6 +207,14 @@ public class GraphBaseDAO<T> {
                         Long[] ids = new Long[entityList.size()];
                         int i = 0;
 
+                        //persist comments
+                        while (it.hasNext()) {
+                            Object single = it.next();
+                            if (relDao != null)
+                                relDaoFactory.saveOrUpdateTX(single);
+                            ids[i++] = getIdFromEntity(single, aClass);
+                        }
+
                         //remove deleted Objects from relDB
                         final long[] nodeIds = (long[])node.getProperty(field.getName(), new long[]{});
                         boolean deleteInRel;
@@ -225,13 +233,6 @@ public class GraphBaseDAO<T> {
                             }
                         }
 
-                        //persist comments
-                        while (it.hasNext()) {
-                            Object single = it.next();
-                            if (relDao != null)
-                                relDaoFactory.saveOrUpdateTX(single);
-                            ids[i++] = getIdFromEntity(single, aClass);
-                        }
                         node.setProperty(field.getName(), ids);
                     } else {
                         if (field.get(entity) != null)

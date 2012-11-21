@@ -448,8 +448,15 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         issue.setRisk((Integer) riskSelect.getValue());
         issue.setStory(descriptionTextArea.getValue());
 
-        for (final IssueComponent component : (Set<IssueComponent>) componentListSelect.getValue())
+        Set<IssueComponent> comps = (Set<IssueComponent>) componentListSelect.getValue();
+        for (final IssueComponent issueComponent : issue.getComponents()) {
+            if (!comps.contains(issueComponent)) {
+                issue.removeComponent(issueComponent);
+            }
+        }
+        for (final IssueComponent component : comps) {
             issue.addComponent(component);
+        }
 
         final List<IssueComment> comments = new ArrayList<>((Collection<IssueComment>)tabComments.getItemIds());
         issue.setComments(comments);

@@ -398,8 +398,10 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         final RelationshipType relShipType = GraphRelationRegistry.getRelationshipTypeForClass(IssueComponent.class);
 
         for (final Relationship rel : issueNode.getRelationships())
-            if (rel.getOtherNode(issueNode).equals(componentNode))
+            if (rel.getOtherNode(issueNode).equals(componentNode)) {
                 exists = true;
+                break;
+            }
 
         if(!exists)
             issueNode.createRelationshipTo(componentNode, relShipType);
