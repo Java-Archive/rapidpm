@@ -210,22 +210,18 @@ public class PlanningUnit {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof PlanningUnit)) return false;
 
         PlanningUnit that = (PlanningUnit) o;
 
-        if (description != null ? !description.equals(that.description) : that.description != null) return false;
-        if (planningUnitName != null ? !planningUnitName.equals(that.planningUnitName) : that.planningUnitName != null)
-            return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = planningUnitName != null ? planningUnitName.hashCode() : 0;
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override
@@ -235,11 +231,8 @@ public class PlanningUnit {
                 ", description='" + description + '\'' +
                 ", estimatedStoryPoints=" + estimatedStoryPoints +
                 ", komplexitaet=" + komplexitaet +
-                ", planningUnitElementList=" + planningUnitElementList +
-                ", parent=" + parent +
                 ", planningUnitName='" + planningUnitName + '\'' +
                 ", orderNumber=" + orderNumber +
-                ", kindPlanningUnits=" + kindPlanningUnits +
                 ", plannedMeetingList=" + plannedMeetingList +
                 ", responsiblePerson=" + responsiblePerson +
                 ", planningStatus=" + planningStatus +

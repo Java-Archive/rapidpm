@@ -4,6 +4,7 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
+import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -12,8 +13,10 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElemen
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.exceptions.SameNameException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.DefaultValues;
 
+import javax.naming.InvalidNameException;
 import java.util.*;
 
 /**
@@ -104,6 +107,15 @@ public class AddWindow extends Window {
                         final BeanItem<PlanningUnit> beanItem = (BeanItem)fieldGroup.getItemDataSource();
                         //Bean aus dem BeanItem
                         final PlanningUnit newPlanningUnit = beanItem.getBean();
+                        final String newPlanningUnitName = newPlanningUnit.getPlanningUnitName();
+                        if(newPlanningUnitName.matches(Constants.EMPTY_OR_SPACES_ONLY_PATTERN))
+                            throw new InvalidNameException();
+                        if(newPlanningUnit.getParent() != null ){
+                            final String parentsPlanningUnitName = newPlanningUnit.getParent().getPlanningUnitName();
+                            if(newPlanningUnitName.equals(parentsPlanningUnitName)){
+                                throw new SameNameException();
+                            }
+                        }
                         daoFactory.saveOrUpdateTX(newPlanningUnit);
                         newPlanningUnit.setKindPlanningUnits(new HashSet<PlanningUnit>());
                         if(newPlanningUnit.getParent() != null ){
@@ -146,9 +158,13 @@ public class AddWindow extends Window {
                         AddWindow.this.close();
                         final MainUI ui = screen.getUi();
                         ui.setWorkingArea(new ProjektplanungScreen(ui));
-                    } catch (FieldGroup.CommitException e) {
+                    } catch (final FieldGroup.CommitException e) {
                         logger.warn(e);
                         Notification.show(messages.getString("incompletedata"));
+                    } catch (final InvalidNameException e) {
+                        Notification.show(messages.getString("planning_invalidname"));
+                    } catch (final SameNameException e) {
+                        Notification.show(messages.getString("planning_samename"));
                     }
             }
         });

@@ -197,29 +197,13 @@ public class Benutzer {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Benutzer)) return false;
 
         Benutzer benutzer = (Benutzer) o;
 
-        if (active != null ? !active.equals(benutzer.active) : benutzer.active != null) return false;
-        if (benutzerGruppe != null ? !benutzerGruppe.equals(benutzer.benutzerGruppe) : benutzer.benutzerGruppe != null)
-            return false;
-        if (benutzerWebapplikation != null ? !benutzerWebapplikation.equals(benutzer.benutzerWebapplikation) : benutzer.benutzerWebapplikation != null)
-            return false;
-        if (berechtigungen != null ? !berechtigungen.equals(benutzer.berechtigungen) : benutzer.berechtigungen != null)
-            return false;
-        if (email != null ? !email.equals(benutzer.email) : benutzer.email != null) return false;
-        if (failedLogins != null ? !failedLogins.equals(benutzer.failedLogins) : benutzer.failedLogins != null)
-            return false;
-        if (hidden != null ? !hidden.equals(benutzer.hidden) : benutzer.hidden != null) return false;
+        if (!email.equals(benutzer.email)) return false;
         if (id != null ? !id.equals(benutzer.id) : benutzer.id != null) return false;
-        if (lastLogin != null ? !lastLogin.equals(benutzer.lastLogin) : benutzer.lastLogin != null) return false;
-        if (login != null ? !login.equals(benutzer.login) : benutzer.login != null) return false;
-        if (mandantengruppe != null ? !mandantengruppe.equals(benutzer.mandantengruppe) : benutzer.mandantengruppe != null)
-            return false;
-        if (passwd != null ? !passwd.equals(benutzer.passwd) : benutzer.passwd != null) return false;
-        if (validFrom != null ? !validFrom.equals(benutzer.validFrom) : benutzer.validFrom != null) return false;
-        if (validUntil != null ? !validUntil.equals(benutzer.validUntil) : benutzer.validUntil != null) return false;
+        if (!login.equals(benutzer.login)) return false;
 
         return true;
     }
@@ -227,19 +211,8 @@ public class Benutzer {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (hidden != null ? hidden.hashCode() : 0);
-        result = 31 * result + (login != null ? login.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (passwd != null ? passwd.hashCode() : 0);
-        result = 31 * result + (lastLogin != null ? lastLogin.hashCode() : 0);
-        result = 31 * result + (failedLogins != null ? failedLogins.hashCode() : 0);
-        result = 31 * result + (active != null ? active.hashCode() : 0);
-        result = 31 * result + (validFrom != null ? validFrom.hashCode() : 0);
-        result = 31 * result + (validUntil != null ? validUntil.hashCode() : 0);
-        result = 31 * result + (mandantengruppe != null ? mandantengruppe.hashCode() : 0);
-        result = 31 * result + (benutzerGruppe != null ? benutzerGruppe.hashCode() : 0);
-        result = 31 * result + (benutzerWebapplikation != null ? benutzerWebapplikation.hashCode() : 0);
-        result = 31 * result + (berechtigungen != null ? berechtigungen.hashCode() : 0);
+        result = 31 * result + login.hashCode();
+        result = 31 * result + email.hashCode();
         return result;
     }
 
