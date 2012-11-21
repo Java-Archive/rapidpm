@@ -7,7 +7,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
-import org.apache.log4j.Logger;
+import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.system.security.*;
@@ -15,11 +15,16 @@ import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.BenutzerScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.exceptions.AlreadyExistsException;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.exceptions.EmailAlreadyExistsException;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.exceptions.UsernameAlreadyExistsException;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.exceptions.WrongLoginNameException;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.transaction.UserTransaction;
 import java.util.*;
+import java.util.regex.Matcher;
 
 /**
  * Created by IntelliJ IDEA.
@@ -166,41 +171,71 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
                         }
                     }
                 }
-                if (valid) {
-                    final List<Berechtigung> berechtigungenList = new ArrayList<>();
-                    final Object berechtigungenSelectValue = berechtigungenSelect.getValue();
-                    if (berechtigungenSelectValue instanceof Berechtigung) {
-                        berechtigungenList.add((Berechtigung) berechtigungenSelectValue);
-                    } else if (berechtigungenSelectValue instanceof Collection) {
-                        final Collection<Berechtigung> berechtigungsCollection = (Collection<Berechtigung>) berechtigungenSelectValue;
-                        berechtigungenList.addAll(berechtigungsCollection);
+                try {
+                    if (valid) {
+                        final List<String> userNames = new ArrayList<>();
+                        final List<String> userEmails = new ArrayList<>();
+                        final List<Benutzer> users = daoFactory.getBenutzerDAO().loadAllEntities();
+                        for(final Benutzer user : users){
+                            daoFactory.getEntityManager().refresh(user);
+                            userNames.add(user.getLogin());
+                            userEmails.add(user.getEmail());
+                        }
+                        final String enteredLoginName = loginTextField.getValue().toString();
+                        if (userNames.contains(enteredLoginName)){
+                            throw new UsernameAlreadyExistsException();
+                        }
+                        if(userEmails.contains(emailTextField.getValue().toString())){
+                            throw new EmailAlreadyExistsException();
+                        }
+                        if(enteredLoginName.matches(Constants.EMPTY_OR_SPACES_ONLY_PATTERN) || enteredLoginName
+                                .toCharArray().length <= 2){
+                            throw new WrongLoginNameException();
+                        }
+                        final List<Berechtigung> berechtigungenList = new ArrayList<>();
+                        final Object berechtigungenSelectValue = berechtigungenSelect.getValue();
+                        if (berechtigungenSelectValue instanceof Berechtigung) {
+                            berechtigungenList.add((Berechtigung) berechtigungenSelectValue);
+                        } else if (berechtigungenSelectValue instanceof Collection) {
+                            final Collection<Berechtigung> berechtigungsCollection = (Collection<Berechtigung>) berechtigungenSelectValue;
+                            berechtigungenList.addAll(berechtigungsCollection);
+                        }
+
+                        // Tabelle aktualisieren
+    //                    benutzerBean.getItemProperty("id").setValue(Long.parseLong(idTextField.getValue().toString())); // ID wird von der DB verwaltet
+                        benutzerBean.getItemProperty("validFrom").setValue(validFromDateField.getValue());
+                        benutzerBean.getItemProperty("validUntil").setValue(validUntilDateFiled.getValue());
+                        benutzerBean.getItemProperty("login").setValue(loginTextField.getValue());
+                        benutzerBean.getItemProperty("passwd").setValue(passwdTextField.getValue());
+                        benutzerBean.getItemProperty("email").setValue(emailTextField.getValue());
+                        benutzerBean.getItemProperty("lastLogin").setValue(lastLoginDateField.getValue());
+                        //REFAC beheben von detached persistent Beans
+                        benutzerBean.getItemProperty("mandantengruppe").setValue(mandantengruppenSelect.getValue());
+                        benutzerBean.getItemProperty("benutzerGruppe").setValue(benutzerGruppenSelect.getValue());
+                        benutzerBean.getItemProperty("benutzerWebapplikation").setValue(benutzerWebapplikationenSelect.getValue());
+    //                    benutzerBean.getItemProperty("berechtigungen").setValue(berechtigungenList);
+                        benutzerBean.getItemProperty("active").setValue(isActiveCheckbox.getValue());
+                        benutzerBean.getItemProperty("hidden").setValue(isHiddenCheckBox.getValue());
+
+                        // in die DB speichern
+                        final Benutzer benutzer = benutzerBean.getBean();
+                        daoFactory.saveOrUpdateTX(benutzer);
+
+                        final MainUI ui = screen.getUi();
+                        ui.setWorkingArea(new BenutzerScreen(ui));
+                        setVisible(false);
+                    } else {
+                        Notification.show(messages.getString("incompletedata"));
                     }
-
-                    // Tabelle aktualisieren
-//                    benutzerBean.getItemProperty("id").setValue(Long.parseLong(idTextField.getValue().toString())); // ID wird von der DB verwaltet
-                    benutzerBean.getItemProperty("validFrom").setValue(validFromDateField.getValue());
-                    benutzerBean.getItemProperty("validUntil").setValue(validUntilDateFiled.getValue());
-                    benutzerBean.getItemProperty("login").setValue(loginTextField.getValue());
-                    benutzerBean.getItemProperty("passwd").setValue(passwdTextField.getValue());
-                    benutzerBean.getItemProperty("email").setValue(emailTextField.getValue());
-                    benutzerBean.getItemProperty("lastLogin").setValue(lastLoginDateField.getValue());
-                    //REFAC beheben von detached persistent Beans
-                    benutzerBean.getItemProperty("mandantengruppe").setValue(mandantengruppenSelect.getValue());
-                    benutzerBean.getItemProperty("benutzerGruppe").setValue(benutzerGruppenSelect.getValue());
-                    benutzerBean.getItemProperty("benutzerWebapplikation").setValue(benutzerWebapplikationenSelect.getValue());
-//                    benutzerBean.getItemProperty("berechtigungen").setValue(berechtigungenList);
-                    benutzerBean.getItemProperty("active").setValue(isActiveCheckbox.getValue());
-                    benutzerBean.getItemProperty("hidden").setValue(isHiddenCheckBox.getValue());
-
-                    // in die DB speichern
-                    final Benutzer benutzer = benutzerBean.getBean();
-                    daoFactory.saveOrUpdateTX(benutzer);
-
-                    final MainUI ui = screen.getUi();
-                    ui.setWorkingArea(new BenutzerScreen(ui));
-                    setVisible(false);
-                } else {
-                    Notification.show(messages.getString("incompletedata"));
+                } catch(final AlreadyExistsException e){
+                    if(e instanceof EmailAlreadyExistsException){
+                        Notification.show(messages.getString("users_emailexists"));
+                    }
+                    if(e instanceof UsernameAlreadyExistsException){
+                        Notification.show(messages.getString("users_nameexists"));
+                    }
+                } catch (final WrongLoginNameException e) {
+                    Notification.show(messages.getString("users_namenotaccepted"));
                 }
             }
         });

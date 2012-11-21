@@ -85,6 +85,7 @@ public class PlanningUnitFieldGroup extends FieldGroup {
                     nameField.setRequired(true);
                     nameField.setMaxLength(Constants.FIELDLENGTH_LONG_NAME);
                     bind(nameField, propertyId);
+                    nameField.setNullRepresentation("");
                     fieldList.add(nameField);
                     break;
                 case (PlanningUnit.DESCPRIPTION):

@@ -231,11 +231,8 @@ public class PlanningUnit {
                 ", description='" + description + '\'' +
                 ", estimatedStoryPoints=" + estimatedStoryPoints +
                 ", komplexitaet=" + komplexitaet +
-                ", planningUnitElementList=" + planningUnitElementList +
-                ", parent=" + parent +
                 ", planningUnitName='" + planningUnitName + '\'' +
                 ", orderNumber=" + orderNumber +
-                ", kindPlanningUnits=" + kindPlanningUnits +
                 ", plannedMeetingList=" + plannedMeetingList +
                 ", responsiblePerson=" + responsiblePerson +
                 ", planningStatus=" + planningStatus +
