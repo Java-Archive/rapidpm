@@ -1,0 +1,20 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="rapidpmws">
+    <output-path>$PROJECT_DIR$/out/artifacts/rapidpmws</output-path>
+    <root id="archive" name="rapidpmws.war">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="webservice" />
+          <element id="module-output" name="base" />
+          <element id="jpa-descriptors" facet="base/jpa/JPA" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="lib-neo4j" />
+          <element id="library" level="project" name="lib-lucene" />
+          <element id="library" level="project" name="lib-jaxws" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="webservice/web/Web" />
+    </root>
+  </artifact>
+</component>

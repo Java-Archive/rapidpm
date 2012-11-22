@@ -481,4 +481,11 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
 //        return getSingleResultOrNull(typedQuery);
 //    }
 
+    public Benutzer authenticate(final String login, final String passwd) {
+        final TypedQuery<Benutzer> typedQuery = entityManager.createQuery(
+                "select b from Benutzer b where b.login=:login and b.passwd=:passwd", Benutzer.class)
+                .setParameter("login", login)
+                .setParameter("passwd", passwd);
+        return getSingleResultOrNull(typedQuery);
+    }
 }
