@@ -27,11 +27,11 @@ public class IssueComponentDAOTest implements BaseDAOTest {
     public void addChangeDelete() {
         IssueComponent component = new IssueComponent("test");
         component = dao.persist(component);
-        assertEquals(component, dao.findById(component.getId()));
+        assertEquals(component, dao.findByID(component.getId()));
 
         component.setComponentName("second_test");
         component = dao.persist(component);
-        assertEquals(component, dao.findById(component.getId()));
+        assertEquals(component, dao.findByID(component.getId()));
 
         dao.delete(component);
         assertFalse(dao.loadAllEntities().contains(component));

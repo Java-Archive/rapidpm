@@ -7,13 +7,10 @@ import org.neo4j.graphdb.traversal.Evaluators;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.graphdb.traversal.Traverser;
 import org.neo4j.kernel.Traversal;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
-import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -349,9 +346,9 @@ public class GraphBaseDAO<T> {
         return entityList;
     }
 
-    public T findById(final Long id) {
+    public T findByID(final Long id) {
         if (logger.isDebugEnabled())
-            logger.debug("findById");
+            logger.debug("findByID");
 
         if (id == null)
             throw new NullPointerException("Id object is null.");
@@ -366,7 +363,7 @@ public class GraphBaseDAO<T> {
         if (entity == null)
             throw new NullPointerException("Entity object is null.");
 
-        return findById(getIdFromEntity(entity));
+        return findByID(getIdFromEntity(entity));
     }
 
     protected T getObjectFromNode(final Node node) {

@@ -28,11 +28,11 @@ public class IssueStoryPointDAOTest implements BaseDAOTest {
     public void addChangeDelete() {
         IssueStoryPoint storyPoint = new IssueStoryPoint(1000);
         storyPoint = dao.persist(storyPoint);
-        assertEquals(storyPoint, dao.findById(storyPoint.getId()));
+        assertEquals(storyPoint, dao.findByID(storyPoint.getId()));
 
         storyPoint.setStorypoint(1001);
         storyPoint = dao.persist(storyPoint);
-        assertEquals(storyPoint, dao.findById(storyPoint.getId()));
+        assertEquals(storyPoint, dao.findByID(storyPoint.getId()));
 
         dao.delete(storyPoint, assignTo);
         assertFalse(dao.loadAllEntities().contains(storyPoint));
