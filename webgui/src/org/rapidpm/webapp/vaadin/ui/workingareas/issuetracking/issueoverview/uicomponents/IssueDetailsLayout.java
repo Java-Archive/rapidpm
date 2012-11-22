@@ -449,9 +449,11 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         issue.setStory(descriptionTextArea.getValue());
 
         Set<IssueComponent> comps = (Set<IssueComponent>) componentListSelect.getValue();
-        for (final IssueComponent issueComponent : issue.getComponents()) {
-            if (!comps.contains(issueComponent)) {
-                issue.removeComponent(issueComponent);
+        if (!newIssue) {
+            for (final IssueComponent issueComponent : issue.getComponents()) {
+                if (!comps.contains(issueComponent)) {
+                    issue.removeComponent(issueComponent);
+                }
             }
         }
         for (final IssueComponent component : comps) {
