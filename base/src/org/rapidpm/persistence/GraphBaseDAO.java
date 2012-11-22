@@ -136,15 +136,22 @@ public class GraphBaseDAO<T> {
             if (id == null || id == 0) {
                 node = graphDb.createNode();
                 class_root_node.createRelationshipTo(node, GraphRelationRegistry.getClassRootToChildRelType());
-                clazz.getDeclaredMethod("setId", Long.class).invoke(entity, node.getId());
+                final Method setIdMethod = clazz.getDeclaredMethod("setId", Long.class);
+                boolean isAccessible = setIdMethod.isAccessible();
+                setIdMethod.setAccessible(true);
+                setIdMethod.invoke(entity, node.getId());
+                setIdMethod.setAccessible(isAccessible);
 
                 try {
-                    Method singleMethod = clazz.getDeclaredMethod("setText", String.class);
+                    final Method setTextMethod = clazz.getDeclaredMethod("setText", String.class);
+                    isAccessible = setTextMethod.isAccessible();
                     final String text;
                     text = class_root_node.getProperty(GraphRelationRegistry.getRelationAttributeProjectToken()).toString();
                     final Integer textId;
                     textId= (Integer) class_root_node.getProperty(GraphRelationRegistry.getRelationAttributeTokenId());
-                    singleMethod.invoke(entity, text + "-" + textId);
+                    setTextMethod.setAccessible(true);
+                    setTextMethod.invoke(entity, text + "-" + textId);
+                    setTextMethod.setAccessible(isAccessible);
                     class_root_node.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), (textId + 1));
                 } catch (NoSuchMethodException e) {
                     if (logger.isDebugEnabled())
