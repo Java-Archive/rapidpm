@@ -25,6 +25,7 @@ public class IssueBaseBuilder {
     private IssueStatus status;
     private String text;
 
+
     private List<IssueTimeUnit> timeUnitsUsed;
 
     public IssueBaseBuilder setAssignee(final Benutzer assignee) {
@@ -77,13 +78,14 @@ public class IssueBaseBuilder {
 
         final IssueBase issueBase = new IssueBase();
         issueBase.setAssignee(assignee);
-        issueBase.setDueDate_closed(dueDateClosed);
-        issueBase.setDueDate_planned(dueDatePlanned);
-        issueBase.setDueDate_resolved(dueDateResolved);
+//        issueBase.setD(dueDateClosed);
+//        issueBase.setDueDate_planned(dueDatePlanned);
+//        issueBase.setDueDate_resolved(dueDateResolved);
         issueBase.setReporter(reporter);
         issueBase.setStatus(status);
         issueBase.setText(text);
-        issueBase.setIssueTimeUnitsUsed(timeUnitsUsed);
+        for(IssueTimeUnit issueTimeUnit : timeUnitsUsed)
+            issueBase.addTimeUnitUsed(issueTimeUnit);
         return issueBase;
     }
 }

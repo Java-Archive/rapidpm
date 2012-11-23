@@ -42,7 +42,7 @@ public class IssueTimeUnitBuilder {
         
             
         final IssueTimeUnit issueTimeUnit = new IssueTimeUnit();
-        issueTimeUnit.setDatum(datum);
+        issueTimeUnit.setDate(datum);
         issueTimeUnit.setMinutes(minutes);
         issueTimeUnit.setWorker(worker);
 

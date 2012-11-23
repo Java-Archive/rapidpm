@@ -5,6 +5,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.system.security.Benutzer;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +17,7 @@ import java.util.List;
 public class PlannedProjectBuilder {
     private Benutzer creator;
     private Benutzer responsiblePerson;
-    private List<PlanningUnit> planningUnitList;
+    private Set<PlanningUnit> planningUnitList;
     private String projectName;
 
     public PlannedProjectBuilder setCreator(final Benutzer creator) {
@@ -29,7 +30,7 @@ public class PlannedProjectBuilder {
         return this;
     }
 
-    public PlannedProjectBuilder setPlanningUnitList(final List<PlanningUnit> planningUnitList) {
+    public PlannedProjectBuilder setPlanningUnitList(final Set<PlanningUnit> planningUnitList) {
         this.planningUnitList = planningUnitList;
         return this;
     }

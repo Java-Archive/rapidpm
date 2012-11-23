@@ -112,6 +112,9 @@ public class IssueBase implements PersistInGraph {
         setProjectId(projectId);
     }
 
+    public IssueBase(){
+        this.setId(0L);
+    }
 
     private boolean addToMap(String methodName, Object[] args) {
         boolean success = false;
@@ -259,7 +262,7 @@ public class IssueBase implements PersistInGraph {
         return text;
     }
 
-    private void setText(final String text) {
+    public void setText(final String text) {
         this.text = text;
     }
 
@@ -363,5 +366,12 @@ public class IssueBase implements PersistInGraph {
     public String name() {
         return getText() + " - " + getSummary();
     }
-    
+
+    public void setComments(List<IssueComment> issueComments) {
+        this.comments = issueComments;
+    }
+
+    public void setTestcases(List<IssueTestCase> issueTestCases) {
+        this.setTestcases(issueTestCases);
+    }
 }

@@ -7,7 +7,9 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.builde
 import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.demodaten.stab.BenutzerDemoDaten;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,13 +43,13 @@ public class PlanningUnitDemoDaten {
     private PlanningUnit planningUnit_1_2;
     private PlanningUnit planningUnit_2;
 
-    private List<PlanningUnit> topLevelPlanningUnits;
+    private Set<PlanningUnit> topLevelPlanningUnits;
 
     private TestCaseDemoDaten testCaseDemoDaten = new TestCaseDemoDaten();
     private BenutzerDemoDaten benutzerDemoDaten = new BenutzerDemoDaten();
     private IssueBaseDemoDaten issueBaseDemoDaten = new IssueBaseDemoDaten();
 
-    public List<PlanningUnit> getTopLevelPlanningUnits() {
+    public Set<PlanningUnit> getTopLevelPlanningUnits() {
         return topLevelPlanningUnits;
     }
 
@@ -81,7 +83,7 @@ public class PlanningUnitDemoDaten {
                 .setIssueBaseList(issueBaseDemoDaten.getPlanningUnit1_2_issueBaseList())
                 .getPlanningUnit();
 
-        List<PlanningUnit> planingUnit1KindPlaningUitList = new ArrayList<>();
+        Set<PlanningUnit> planingUnit1KindPlaningUitList = new HashSet<>();
         planingUnit1KindPlaningUitList.add(planningUnit_1_1);
         planingUnit1KindPlaningUitList.add(planningUnit_1_2);
         planningUnit_1.setKindPlanningUnits(planingUnit1KindPlaningUitList);
