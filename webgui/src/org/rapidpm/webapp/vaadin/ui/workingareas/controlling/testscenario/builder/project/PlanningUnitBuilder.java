@@ -1,5 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.builder.project;
 
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningStatus;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.system.security.Benutzer;
@@ -21,6 +22,42 @@ public class PlanningUnitBuilder {
     private Benutzer responsiblePerson;
     private List<String> testCaseList;
     private PlanningStatus planingStatus;
+    private List<IssueBase> issueBaseList;
+
+    public PlanningUnitBuilder setDescription(final String description) {
+        this.description = description;
+        return this;
+    }
+
+    public PlanningUnitBuilder setEstimatedStorypoints( final int estimatedStorypoints) {
+        this.estimatedStorypoints = estimatedStorypoints;
+        return this;
+    }
+
+    public PlanningUnitBuilder setKindPlanningUnitList(final List<PlanningUnit> kindPlanningUnitList) {
+        this.kindPlanningUnitList = kindPlanningUnitList;
+        return this;
+    }
+
+    public PlanningUnitBuilder setParendPlanningUnit(final PlanningUnit parendPlanningUnit) {
+        this.parendPlanningUnit = parendPlanningUnit;
+        return this;
+    }
+
+    public PlanningUnitBuilder setResponsiblePerson(final Benutzer responsiblePerson) {
+        this.responsiblePerson = responsiblePerson;
+        return this;
+    }
+
+    public PlanningUnitBuilder setPlaningStatus(final PlanningStatus planingStatus) {
+        this.planingStatus = planingStatus;
+        return this;
+    }
+
+    public PlanningUnitBuilder setTestCaseList(final List<String> testCaseList) {
+        this.testCaseList = testCaseList;
+        return this;
+    }
 
     public PlanningUnit getPlanningUnit(){
         if(description.isEmpty()
@@ -31,9 +68,10 @@ public class PlanningUnitBuilder {
                 || testCaseList == null
                 || planingStatus == null
                 )
-            throw new IllegalStateException("");
+            throw new IllegalStateException("PlanningUnitBuilder: Nicht alle benötigten Daten angegeben.");
 
-        PlanningUnit planningUnit = new PlanningUnit();
+
+        final PlanningUnit planningUnit = new PlanningUnit();
         planningUnit.setDescription(description);
         planningUnit.setEstimatedStoryPoints(estimatedStorypoints);
         planningUnit.setKindPlanningUnits(kindPlanningUnitList);
@@ -41,6 +79,12 @@ public class PlanningUnitBuilder {
         planningUnit.setPlanningStatus(planingStatus);
         planningUnit.setResponsiblePerson(responsiblePerson);
         planningUnit.setTestcases(testCaseList);
+        planningUnit.setIssueBaseList(issueBaseList);
         return planningUnit;
+    }
+
+    public PlanningUnitBuilder setIssueBaseList(List<IssueBase> planningUnit1_issueBaseList) {
+        this.issueBaseList = planningUnit1_issueBaseList;
+        return this;
     }
 }

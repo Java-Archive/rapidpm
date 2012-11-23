@@ -13,36 +13,37 @@ import java.util.List;
  * Time: 10:52
  * To change this template use File | Settings | File Templates.
  */
-public class ProjectBuilder {
+public class PlannedProjectBuilder {
     private Benutzer creator;
     private Benutzer responsiblePerson;
     private List<PlanningUnit> planningUnitList;
     private String projectName;
 
-    public ProjectBuilder setCreator(Benutzer creator) {
+    public PlannedProjectBuilder setCreator(final Benutzer creator) {
         this.creator = creator;
         return this;
     }
 
-    public ProjectBuilder setResponsiblePerson(Benutzer responsiblePerson) {
+    public PlannedProjectBuilder setResponsiblePerson(final Benutzer responsiblePerson) {
         this.responsiblePerson = responsiblePerson;
         return this;
     }
 
-    public ProjectBuilder setPlanningUnitList(List<PlanningUnit> planningUnitList) {
+    public PlannedProjectBuilder setPlanningUnitList(final List<PlanningUnit> planningUnitList) {
         this.planningUnitList = planningUnitList;
         return this;
     }
 
-    public ProjectBuilder setProjectName(String projectName) {
+    public PlannedProjectBuilder setProjectName(final String projectName) {
         this.projectName = projectName;
         return this;
     }
 
     public PlannedProject getPlannedProject(){
         if(creator == null || responsiblePerson == null || planningUnitList == null || projectName.isEmpty())
-            throw new IllegalStateException("ProjectBuilder: Es wurden nicht alle notwendigen Daten angegeben.");
-        PlannedProject plannedProject = new PlannedProject();
+            throw new IllegalStateException("PlannedProjectBuilder: Es wurden nicht alle notwendigen Daten angegeben.");
+
+        final PlannedProject plannedProject = new PlannedProject();
         plannedProject.setCreator(creator);
         plannedProject.setResponsiblePerson(responsiblePerson);
         plannedProject.setPlanningUnits(planningUnitList);

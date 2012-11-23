@@ -18,27 +18,27 @@ public class RessourceGroupBuilder {
     private String ressourcenGruppenName;
 
 
-    public RessourceGroupBuilder setBruttoJahresGehalt(double bruttoJahresGehalt) {
+    public RessourceGroupBuilder setBruttoJahresGehalt(final double bruttoJahresGehalt) {
         this.bruttoJahresGehalt = bruttoJahresGehalt;
         return this;
     }
 
-    public RessourceGroupBuilder setStundenProJahrm(double stundenProJahrm) {
+    public RessourceGroupBuilder setStundenProJahrm(final double stundenProJahrm) {
         this.stundenProJahrm = stundenProJahrm;
         return this;
     }
 
-    public RessourceGroupBuilder setStundenProWoche(int stundenProWoche) {
+    public RessourceGroupBuilder setStundenProWoche(final int stundenProWoche) {
         this.stundenProWoche = stundenProWoche;
         return this;
     }
 
-    public RessourceGroupBuilder setFakturierbar(double fakturierbar) {
+    public RessourceGroupBuilder setFakturierbar(final double fakturierbar) {
         this.fakturierbar = fakturierbar;
         return this;
     }
 
-    public RessourceGroupBuilder setRessourcenGruppenName(String ressourcenGruppenName) {
+    public RessourceGroupBuilder setRessourcenGruppenName(final String ressourcenGruppenName) {
         this.ressourcenGruppenName = ressourcenGruppenName;
         return this;
     }
@@ -50,7 +50,7 @@ public class RessourceGroupBuilder {
         if(bruttoJahresGehalt == 0)
             throw new IllegalArgumentException("RessourceGroupBuilder: Keine brutto Jahresgehalt angegeben");
 
-        RessourceGroup ressourcenGruppe = new RessourceGroup();
+        final RessourceGroup ressourcenGruppe = new RessourceGroup();
         ressourcenGruppe.setBruttoGehalt(bruttoJahresGehalt);
         ressourcenGruppe.setExternalEurosPerHour(stundenProJahrm);
         ressourcenGruppe.setHoursPerWeek(stundenProWoche);

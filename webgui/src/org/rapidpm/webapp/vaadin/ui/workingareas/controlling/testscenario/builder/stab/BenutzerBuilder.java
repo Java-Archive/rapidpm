@@ -11,9 +11,35 @@ import org.rapidpm.persistence.system.security.Benutzer;
  */
 public class BenutzerBuilder {
 
+    private String login;
+    private String passwd;
+    private String email;
+
+    public BenutzerBuilder setLogin(final String login) {
+        this.login = login;
+        return this;
+    }
+
+    public BenutzerBuilder setPasswd(final String passwd) {
+        this.passwd = passwd;
+        return this;
+    }
+
+    public BenutzerBuilder setEmail(final String email) {
+        this.email = email;
+        return this;
+    }
 
     public Benutzer getBenutzer(){
-        Benutzer benutzer = new Benutzer();
+        if(login.isEmpty()
+                || passwd.isEmpty()
+                || email.isEmpty())
+            throw new IllegalStateException("BenutzerBuilder: nicht alle benötigten Daten angegeben:");
+
+        final Benutzer benutzer = new Benutzer();
+        benutzer.setLogin(login);
+        benutzer.setPasswd(passwd);
+        benutzer.setEmail(email);
         return benutzer;
     }
 }

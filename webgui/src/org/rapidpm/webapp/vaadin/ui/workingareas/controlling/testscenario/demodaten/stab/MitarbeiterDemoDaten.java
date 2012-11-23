@@ -21,32 +21,37 @@ public class MitarbeiterDemoDaten {
     private Mitarbeiter danielMacDonaldMA;
     private List<Mitarbeiter> mitarbeiterList = new ArrayList<>();
 
-    private PersonenDemoDaten personenDemoDaten;
-    private RessourcengruppenDemoDaten ressourcengruppenDemoDaten;
+    private PersonenDemoDaten personenDemoDaten = new PersonenDemoDaten();
+    private RessourcengruppenDemoDaten ressourcengruppenDemoDaten = new RessourcengruppenDemoDaten();
+    private BenutzerDemoDaten benutzerDemoDaten = new BenutzerDemoDaten();
 
-    public void initMitarbeiter(){
+    public MitarbeiterDemoDaten(){
         ursulaBeckerMA = new MitarbeiterBuilder()
                 .setJahresGehalt(72_000)
                 .setPerson(personenDemoDaten.getUrsulaBecker())
                 .setRessourcenGruppe(ressourcengruppenDemoDaten.getScrumMaster())
+                .setBenutzer(benutzerDemoDaten.getUrsulaBeckerBenutzer())
                 .getMitarbeiter();
 
         karlSchmidtMA = new MitarbeiterBuilder()
                 .setJahresGehalt(72_000)
                 .setPerson(personenDemoDaten.getKarlSchmidt())
                 .setRessourcenGruppe(ressourcengruppenDemoDaten.getSeniorProjectCollaborator())
+                .setBenutzer(benutzerDemoDaten.getKarlSchmidtBenutzer())
                 .getMitarbeiter();
 
         peterMuellerMA = new MitarbeiterBuilder()
                 .setJahresGehalt(45_000)
                 .setPerson(personenDemoDaten.getPeterMueller())
                 .setRessourcenGruppe(ressourcengruppenDemoDaten.getJuniorProjectCollaborator())
+                .setBenutzer(benutzerDemoDaten.getPeterMuellerBenutzer())
                 .getMitarbeiter();
 
         danielMacDonaldMA = new MitarbeiterBuilder()
                 .setJahresGehalt(17_000)
                 .setPerson(personenDemoDaten.getDanielMacDonald())
                 .setRessourcenGruppe(ressourcengruppenDemoDaten.getWorkingStudent())
+                .setBenutzer(benutzerDemoDaten.getDanielMacDonaldBenutzer())
                 .getMitarbeiter();
 
         mitarbeiterList.add(ursulaBeckerMA);

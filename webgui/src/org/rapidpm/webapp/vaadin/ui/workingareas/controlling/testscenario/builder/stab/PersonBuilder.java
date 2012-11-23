@@ -45,7 +45,7 @@ public class PersonBuilder {
         return this;
     }
 
-    public PersonBuilder setName(String vorname, String nachname){
+    public PersonBuilder setName(final String vorname, final String nachname){
         this.vorname = vorname;
         this.nachname = nachname;
         return this;
@@ -55,21 +55,21 @@ public class PersonBuilder {
         if(geschlecht == null || anrede == null || vorname.isEmpty() || nachname.isEmpty())
             throw new IllegalStateException("PersonBuilder: Es wurden nicht alle Notwendigen Daten angegeben.");
 
-        PersonenName personNameNachname = new PersonenName();
+        final PersonenName personNameNachname = new PersonenName();
         personNameNachname.setName(vorname);
         personNameNachname.setReihenfolge(0);
         personNameNachname.setNamensKlassifizierung(namensKlassifizierungVorname);
 
-        PersonenName personNameVorname = new PersonenName();
+        final PersonenName personNameVorname = new PersonenName();
         personNameVorname.setName(nachname);
         personNameVorname.setReihenfolge(1);
         personNameVorname.setNamensKlassifizierung(namensKlassifizierungNachname);
 
-        List<PersonenName> namensListe = new ArrayList<PersonenName>();
+        final List<PersonenName> namensListe = new ArrayList<PersonenName>();
         namensListe.add(personNameNachname);
         namensListe.add(personNameVorname);
 
-        Person person = new Person();
+        final Person person = new Person();
         person.setGeschlecht(geschlecht);
         person.setAnrede(anrede);
         person.setNamen(namensListe);

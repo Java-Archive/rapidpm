@@ -45,7 +45,7 @@ public class ControllingScreen extends Screen {
     }
 
     private void initTestButtons() {
-        Button plannedProjectButton = new Button("PlannedProject");
+        Button plannedProjectButton = new Button("PlannedProjectDemoDaten");
         plannedProjectButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {

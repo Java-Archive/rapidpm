@@ -5,6 +5,7 @@ import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.person
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.MitarbeiterRessourceGroupAssoc;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.person.Person;
+import org.rapidpm.persistence.system.security.Benutzer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,19 +21,25 @@ public class MitarbeiterBuilder {
     private Person person;
     private RessourceGroup ressourcenGruppe;
     private float jahresGehalt;
+    private Benutzer benutzer;
 
-    public MitarbeiterBuilder setPerson(Person person) {
+    public MitarbeiterBuilder setPerson(final Person person) {
         this.person = person;
         return this;
     }
 
-    public MitarbeiterBuilder setRessourcenGruppe(RessourceGroup ressourcenGruppe) {
+    public MitarbeiterBuilder setRessourcenGruppe(final RessourceGroup ressourcenGruppe) {
         this.ressourcenGruppe = ressourcenGruppe;
         return this;
     }
 
-    public MitarbeiterBuilder setJahresGehalt(float jahresGehalt) {
+    public MitarbeiterBuilder setJahresGehalt(final float jahresGehalt) {
         this.jahresGehalt = jahresGehalt;
+        return this;
+    }
+
+    public MitarbeiterBuilder setBenutzer(final Benutzer benutzer) {
+        this.benutzer = benutzer;
         return this;
     }
 
@@ -40,20 +47,22 @@ public class MitarbeiterBuilder {
         if(person == null || ressourcenGruppe == null || jahresGehalt <= 0)
             throw new IllegalStateException("MitarbeiterBuilder: Es wurden nicht alle notwendigen Daten angegegeben");
 
-        Mitarbeiter mitarbeiter = new Mitarbeiter();
+        final Mitarbeiter mitarbeiter = new Mitarbeiter();
         mitarbeiter.setPerson(person);
 
-        MitarbeiterRessourceGroupAssoc mitarbeiterRessourcengruppenAssoziation = new MitarbeiterRessourceGroupAssoc();
+        final MitarbeiterRessourceGroupAssoc mitarbeiterRessourcengruppenAssoziation
+                = new MitarbeiterRessourceGroupAssoc();
         mitarbeiterRessourcengruppenAssoziation.setMitarbeiter(mitarbeiter);
         mitarbeiterRessourcengruppenAssoziation.setRessourceGroup(ressourcenGruppe);
 
-        List<MitarbeiterRessourceGroupAssoc> mitarbeiterRessourceGroupAssocsListe = new ArrayList<>();
+        final List<MitarbeiterRessourceGroupAssoc> mitarbeiterRessourceGroupAssocsListe = new ArrayList<>();
         mitarbeiterRessourceGroupAssocsListe.add(mitarbeiterRessourcengruppenAssoziation);
         mitarbeiter.setMitarbeiterRessourceGroupAssocListe(mitarbeiterRessourceGroupAssocsListe);
 
-        MitarbeiterGehalt gehalt = new MitarbeiterGehalt();
+        final MitarbeiterGehalt gehalt = new MitarbeiterGehalt();
         gehalt.setJahresgehalt(jahresGehalt);
-        List<MitarbeiterGehalt> gehaltsListe = new ArrayList<>();
+
+        final List<MitarbeiterGehalt> gehaltsListe = new ArrayList<>();
         gehaltsListe.add(gehalt);
         mitarbeiter.setMitarbeiterGehaltsListe(gehaltsListe);
 
