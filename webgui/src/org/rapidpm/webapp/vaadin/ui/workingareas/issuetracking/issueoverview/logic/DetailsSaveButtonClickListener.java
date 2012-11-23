@@ -1,6 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic;
 
 import com.vaadin.ui.Button;
+import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsLayout;
 
 /**
@@ -11,6 +12,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uic
  * To change this template use File | Settings | File Templates.
  */
 public class DetailsSaveButtonClickListener implements Button.ClickListener {
+    private static Logger logger = Logger.getLogger(DetailsSaveButtonClickListener.class);
 
     private final IssueDetailsLayout detailsLayout;
 
@@ -21,5 +23,6 @@ public class DetailsSaveButtonClickListener implements Button.ClickListener {
     @Override
     public void buttonClick(Button.ClickEvent event) {
         detailsLayout.setLayoutReadOnly(true);
+        detailsLayout.setDetailsFromIssue(detailsLayout.setIssueProperties(false));
     }
 }

@@ -6,6 +6,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import org.apache.log4j.Logger;
+import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
@@ -13,7 +14,10 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElemen
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.exceptions.NameExistsException;
 
+import javax.naming.InvalidNameException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -104,12 +108,28 @@ public class AddRowWindow extends Window {
                 }
                 if (allFilled) {
                     try {
+                        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+                        final List<String> ressourceGroupNames = new ArrayList<>();
+                        final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO()
+                                .loadAllEntities();
+                        for(final RessourceGroup ressourceGroup : ressourceGroups){
+                            daoFactory.getEntityManager().refresh(ressourceGroup);
+                            ressourceGroupNames.add(ressourceGroup.getName());
+                        }
                         //final Table tabelle = screen.getTabelle();
                         fieldGroup.commit();
                         //RessourceGroupBeanItem mit der neuen (transienten) RessourceGroup
                         final BeanItem<RessourceGroup> beanItem = (BeanItem)fieldGroup.getItemDataSource();
                         //Bean aus dem BeanItem
                         final RessourceGroup ressourceGroup = beanItem.getBean();
+
+                        final String ressourceGroupName = ressourceGroup.getName();
+                        if(ressourceGroupNames.contains(ressourceGroupName)){
+                            throw new NameExistsException();
+                        }
+                        if(ressourceGroupName.matches(Constants.EMPTY_OR_SPACES_ONLY_PATTERN)){
+                            throw new InvalidNameException();
+                        }
 
                         final RessourceGroup persistedRessourceGroup = baseDaoFactoryBean.saveOrUpdateTX
                                 (ressourceGroup);
@@ -131,7 +151,11 @@ public class AddRowWindow extends Window {
 
                         AddRowWindow.this.close();
                     }catch(final FieldGroup.CommitException e){
-                          Notification.show("Benutzer konnte nicht angelegt werden");
+                          Notification.show(messages.getString("stdsatz_addfail"));
+                    } catch (final NameExistsException e) {
+                        Notification.show(messages.getString("stdsatz_nameexists"));
+                    } catch (InvalidNameException e) {
+                        Notification.show(messages.getString("stdsatz_invalidname"));
                     }
                 } else {
                     final Label lbl = new Label();

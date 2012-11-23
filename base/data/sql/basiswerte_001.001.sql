@@ -1,7 +1,8 @@
-INSERT INTO
+﻿INSERT INTO
         mandantengruppe(id, mandantengruppe) VALUES (1, 'RapidPM');
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('Mandantengruppe_id', 1);
+
 
 INSERT INTO
         benutzergruppe(id, gruppenname)VALUES (1, 'User');
@@ -12,12 +13,14 @@ INSERT INTO
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('BenutzerGruppe_id', 3);
 
+
 INSERT INTO
         benutzerwebapplikation(id, webappname)VALUES (1, 'RapidPM');
 INSERT INTO
         benutzerwebapplikation(id, webappname)VALUES (2, 'RapidPMBeta');
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('BenutzerWebapplikation_id', 2);
+
 
 INSERT INTO
         benutzer(
@@ -61,11 +64,12 @@ INSERT INTO
                 validfrom, validuntil, benutzergruppe_id, benutzerwebapplikation_id,
                 mandantengruppe_id)
         VALUES (5, true , 'marco.ebbinghaus@rapidpm.org', 0, false , '2012-09-11',
-        'Marco Ebbinghaus.ebbinghaus', 'geheim',
+        'marco.ebbinghaus', 'geheim',
                 '2012-09-11',
                 '2013-09-11', 1, 1,1);
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('Benutzer_id', 6);
+
 
 INSERT INTO
         ressourcegroup(id, name, hoursPerWeek, weeksPerYear, planAnzahl, facturizable, externalEurosPerHour, bruttoGehalt)
@@ -105,24 +109,25 @@ INSERT INTO pk_gen(gen_key, gen_value) VALUES ('RessourceGroup_id', 9);
 INSERT INTO
         plannedproject(id, active, fakturierbar, info,projektname,projekttoken,creator_id,mandantengruppe_id,
         responsibleperson_id)
-        VALUES (1, true, true, 'erstes testprojekt', 'Projekt Nr 1','PRO-1', 1, 1,1);
+        VALUES (1, true, true, 'erstes testprojekt', 'Projekt Nr 1','PRO1', 1, 1,1);
 
 INSERT INTO
         plannedproject(id, active, fakturierbar, info,projektname,projekttoken,creator_id,mandantengruppe_id,
         responsibleperson_id)
-        VALUES (2, true, true, 'zweites testprojekt', 'Projekt Nr 2', 'PRO-2', 1, 1,1);
+        VALUES (2, true, true, 'zweites testprojekt', 'Projekt Nr 2', 'PRO2', 1, 1,1);
 
 INSERT INTO
         plannedproject(id, active, fakturierbar, info,projektname,projekttoken,creator_id,mandantengruppe_id,
         responsibleperson_id)
-        VALUES (3, true, true, 'drittes testprojekt', 'Projekt Nr 3','PRO-3', 1, 1,1);
+        VALUES (3, true, true, 'drittes testprojekt', 'Projekt Nr 3','PRO3', 1, 1,1);
 
 INSERT INTO
         plannedproject(id, active, fakturierbar, info,projektname,projekttoken,creator_id,mandantengruppe_id,
         responsibleperson_id)
-        VALUES (4, true, true, 'viertes testprojekt', 'Projekt Nr 4','PRO-4', 1, 1,1);
+        VALUES (4, true, true, 'viertes testprojekt', 'Projekt Nr 4','PRO4', 1, 1,1);
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlannedProject_id', 5);
+
 
 INSERT INTO
         planningstatus(id, name, ordernumber)
@@ -130,107 +135,6 @@ INSERT INTO
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningStatus_id', 1);
 
-INSERT INTO
-        issuepriority(id, prio, priorityname, priorityfilename)
-        VALUES (1, 1 ,'Minor', 'priority_minor.gif');
-
-INSERT INTO
-        issuepriority(id, prio, priorityname, priorityfilename)
-        VALUES (2, 2 ,'Trivial', 'priority_trivial.gif');
-
-INSERT INTO
-        issuepriority(id, prio, priorityname, priorityfilename)
-        VALUES (3, 3 ,'Major', 'priority_major.gif');
-
-INSERT INTO
-        issuepriority(id, prio, priorityname, priorityfilename)
-        VALUES (4, 4 ,'Critical', 'priority_critical.gif');
-
-INSERT INTO
-        issuepriority(id, prio, priorityname, priorityfilename)
-        VALUES (5, 5 ,'Blocker', 'priority_blocker.gif');
-
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('IssuePriority_id', 5);
-
-INSERT INTO
-        issuestatus(id, statusname, statusfilename)
-        VALUES (1, 'OnHold', 'status_onhold.gif');
-
-INSERT INTO
-        issuestatus(id, statusname, statusfilename)
-        VALUES (2, 'Closed', 'status_closed.gif');
-
-INSERT INTO
-        issuestatus(id, statusname, statusfilename)
-        VALUES (3, 'Resolved', 'status_resolved.gif');
-
-INSERT INTO
-        issuestatus(id, statusname, statusfilename)
-        VALUES (4, 'InProgress', 'status_inprogress.gif');
-
-INSERT INTO
-        issuestatus(id, statusname, statusfilename)
-        VALUES (5, 'Open', 'status_open.gif');
-
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('IssueStatus_id', 5);
-
-INSERT INTO
-        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
-        VALUES (1,6,1,1,1,1);
-
-INSERT INTO
-        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
-        VALUES (2,6,1,4,1,1);
-
-INSERT INTO
-        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
-        VALUES (3,3,1,3,1,2);
-
-INSERT INTO
-        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
-        VALUES (4,5,1,3,1,3);
-
-INSERT INTO
-        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
-        VALUES (5,3,1,2,1,4);
-
-INSERT INTO
-        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
-        VALUES (6,1,1,1,1,3);
-
-INSERT INTO
-        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
-        VALUES (7,8,1,4,1,2);
-
-INSERT INTO
-        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
-        VALUES (8,6,2,1,3,1);
-
-INSERT INTO
-        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
-        VALUES (9,6,1,4,4,1);
-
-INSERT INTO
-        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
-        VALUES (10,3,4,3,1,2);
-
-INSERT INTO
-        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
-        VALUES (11,5,2,3,2,3);
-
-INSERT INTO
-        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
-        VALUES (12,3,4,2,3,4);
-
-INSERT INTO
-        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
-        VALUES (13,1,2,1,4,3);
-
-INSERT INTO
-        issuebase(id,storypoints,assignee_id,priority_id,reporter_id,status_id)
-        VALUES (14,8,3,4,4,2);
-
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('IssueBase_id', 15);
 
 INSERT INTO anrede(id,anrede)
 VALUES (1,'Herr');
@@ -240,6 +144,7 @@ VALUES (2,'Frau');
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('Anrede_id', 2);
 
+
 INSERT INTO geschlecht(id,geschlecht)
 VALUES (1,'männlich');
 
@@ -248,6 +153,7 @@ VALUES (2,'weiblich');
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('Geschlecht_id', 2);
 
+
 INSERT INTO person(id,anrede_id,geschlecht_id)
 VALUES (1,1,1);
 
@@ -255,6 +161,7 @@ INSERT INTO person(id,anrede_id,geschlecht_id)
 VALUES (2,1,1);
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('Person_id', 2);
+
 
 INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
 VALUES (1,1,'Vorbereitungen',1,1,null,1,1);
@@ -298,8 +205,8 @@ VALUES (13,13,'Durchführung',13,1,null,1,1);
 INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
 VALUES (14,14,'Beendigung',14,1,null,1,1);
 
-
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_id', 15);
+
 
 INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
 VALUES (1, 1);
@@ -314,6 +221,8 @@ INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
 VALUES (2, 14);
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlannedProject_PlanningUnit_id', 5);
+
+
 
 INSERT INTO planningunit_planningunit(planningunit_id,kindplanningunits_id)
 VALUES (1, 2);
@@ -345,7 +254,8 @@ VALUES (9, 10);
 INSERT INTO planningunit_planningunit(planningunit_id,kindplanningunits_id)
 VALUES (9, 11);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_PlanningUnit_id', 11); 
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_PlanningUnit_id', 11);
+
 
 INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
 VALUES (1, 3, 4, 20, 1);
@@ -685,6 +595,7 @@ VALUES (112, 5, 10, 30, 8);
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnitElement_id', 113);
 
+
 INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
 VALUES (1, 1);
 
@@ -1022,3 +933,4 @@ INSERT INTO planningunit_planningunitelement (planningunit_id, planninguniteleme
 VALUES (14, 112);
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_PlanningUnitElement_id', 113);
+

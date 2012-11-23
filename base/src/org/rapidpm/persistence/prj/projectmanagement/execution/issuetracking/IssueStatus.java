@@ -1,6 +1,14 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
+//import org.rapidpm.persistence.GraphDaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.PersistInGraph;
+
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -14,31 +22,31 @@ import javax.persistence.*;
  *        Time: 12:21:28
  */
 
+public class IssueStatus  implements PersistInGraph {
 
-//@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
-@Entity
-public class IssueStatus {
-
-    public static final String NAME = "statusName";
-    public static final String ID = "id";
-
-    @Id
-    @TableGenerator(name = "PKGenIssueStatus", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "IssueStatus_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenIssueStatus")
+    @Identifier
     private Long id;
 
-    @Basic
+    @Simple
     private String statusName;
 
-    @Basic
+    @Simple
     private String statusFileName;
 
     public IssueStatus() {
+        //empty on purpose
     }
 
-    public IssueStatus(long id, String statusName) {
-        this.id = id;
+    public IssueStatus(final String statusName) {
         this.statusName = statusName;
+    }
+
+//    public List<IssueBase> getConnectedIssues() {
+//        return GraphDaoFactory.getIssueStatusDAO().getConnectedIssues(this);
+//    }
+
+    public List<IssueBase> getConnectedIssuesFromProject(final Long projectId) {
+        return DaoFactorySingelton.getInstance().getIssueStatusDAO().getConnectedIssuesFromProject(this, projectId);
     }
 
     public Long getId() {
@@ -49,15 +57,11 @@ public class IssueStatus {
         this.id = id;
     }
 
-    public IssueStatus(final String statusName) {
-        this.statusName = statusName;
-    }
-
     public String getStatusName() {
         return statusName;
     }
 
-    public void setStatusName(String name) {
+    public void setStatusName(final String name) {
         this.statusName = name;
     }
 
@@ -65,8 +69,17 @@ public class IssueStatus {
         return statusFileName;
     }
 
-    public void setStatusFileName(String statusFileName) {
+    public void setStatusFileName(final String statusFileName) {
         this.statusFileName = statusFileName;
+    }
+
+    @Override
+    public String toString() {
+        return "IssueStatus{" +
+                "id=" + id +
+                ", statusName='" + statusName + '\'' +
+                ", statusFileName='" + statusFileName + '\'' +
+                '}';
     }
 
     @Override
@@ -74,15 +87,25 @@ public class IssueStatus {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        IssueStatus that = (IssueStatus) o;
+        IssueStatus status = (IssueStatus) o;
 
-        if (statusName != null ? !statusName.equals(that.statusName) : that.statusName != null) return false;
+        if (id != null ? !id.equals(status.id) : status.id != null) return false;
+        if (statusFileName != null ? !statusFileName.equals(status.statusFileName) : status.statusFileName != null) return false;
+        if (statusName != null ? !statusName.equals(status.statusName) : status.statusName != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return statusName != null ? statusName.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (statusName != null ? statusName.hashCode() : 0);
+        result = 31 * result + (statusFileName != null ? statusFileName.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String name() {
+        return getStatusName();
     }
 }

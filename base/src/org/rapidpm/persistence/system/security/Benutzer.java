@@ -201,21 +201,38 @@ public class Benutzer {
 
         Benutzer benutzer = (Benutzer) o;
 
+        if (!email.equals(benutzer.email)) return false;
         if (id != null ? !id.equals(benutzer.id) : benutzer.id != null) return false;
+        if (!login.equals(benutzer.login)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + login.hashCode();
+        result = 31 * result + email.hashCode();
+        return result;
     }
 
     @Override
     public String toString() {
         return "Benutzer{" +
                 "id=" + id +
+                ", hidden=" + hidden +
                 ", login='" + login + '\'' +
+                ", email='" + email + '\'' +
+                ", passwd='" + passwd + '\'' +
+                ", lastLogin=" + lastLogin +
+                ", failedLogins=" + failedLogins +
+                ", active=" + active +
+                ", validFrom=" + validFrom +
+                ", validUntil=" + validUntil +
+                ", mandantengruppe=" + mandantengruppe +
+                ", benutzerGruppe=" + benutzerGruppe +
+                ", benutzerWebapplikation=" + benutzerWebapplikation +
+                ", berechtigungen=" + berechtigungen +
                 '}';
     }
 

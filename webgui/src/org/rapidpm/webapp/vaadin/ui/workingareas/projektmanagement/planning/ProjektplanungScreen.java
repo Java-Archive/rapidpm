@@ -127,11 +127,11 @@ public class ProjektplanungScreen extends Screen {
         if (ids != null && !ids.isEmpty()) {
             planningUnitSelect.setValue(ids.get(0));
         } else {
-            //tempPlanningUnit.setId(666l);
+            tempPlanningUnit.setId(666l);
             tempPlanningUnit.setPlanningUnitName("Platzhalter");
             tempPlanningUnit.setTestcases(new ArrayList<String>());
-            tempPlanningUnit.setDescription("Bitte dem Projekt Ã¼ber den \"+\"-Button neue Planungseinheiten " +
-                    "hinzufÃ¼gen.");
+            tempPlanningUnit.setDescription("Bitte dem Projekt über den \"+\"-Button neue Planungseinheiten " +
+                    "hinzufügen.");
             tempPlanningUnit.setKindPlanningUnits(new HashSet<PlanningUnit>());
             planningUnitSelect.addItem(tempPlanningUnit);
             planningUnitSelect.setValue(tempPlanningUnit);

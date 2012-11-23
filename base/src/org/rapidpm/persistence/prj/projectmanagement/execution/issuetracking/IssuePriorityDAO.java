@@ -1,34 +1,38 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
-import org.rapidpm.persistence.DAO;
+import org.apache.log4j.Logger;
+import org.neo4j.graphdb.*;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.GraphBaseDAO;
+import org.rapidpm.persistence.GraphRelationRegistry;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * RapidPM - www.rapidpm.org
- * User: svenruppert
- * Date: 11/23/10
- * Time: 11:31 AM
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * Created with IntelliJ IDEA.
+ * User: Alvin
+ * Date: 17.10.12
+ * Time: 12:04
+ * To change this template use File | Settings | File Templates.
  */
-public class IssuePriorityDAO extends DAO<Long, IssuePriority> {
-    public IssuePriorityDAO(final EntityManager entityManager) {
-        super(entityManager, IssuePriority.class);
+public class IssuePriorityDAO extends GraphBaseDAO<IssuePriority> {
+    private static final Logger logger = Logger.getLogger(IssuePriorityDAO.class);
+
+    public IssuePriorityDAO(GraphDatabaseService graphDb, DaoFactory relDaoFactory) {
+        super(graphDb, IssuePriority.class, relDaoFactory);
     }
 
-    public IssuePriority loadPriority(final String priority) {
-        final TypedQuery<IssuePriority> typedQuery = entityManager.createQuery("from IssuePriority  p where p.name=:priority", IssuePriority.class).setParameter(
-                "priority",
-                priority);
-        return getSingleResultOrNull(typedQuery);
-        //        return createWhereClause().eq("name", priority).findUnique();
+//    public List<IssueBase> getConnectedIssues(final IssuePriority priority) {
+//        return getConnectedIssuesFromProject(priority, 0L);
+//    }
+
+    public List<IssueBase> getConnectedIssuesFromProject(final IssuePriority priority, final Long projectId) {
+        return super.getConnectedIssuesFromProject(priority, projectId);
     }
 
-    public IssuePriority loadPriorityDringend_u_Wichtig() {
-        return loadPriority("dringend und wichtig");
-        //        return createWhereClause().eq("name", "dringend und wichtig").findUnique();
+    public boolean delete(final IssuePriority entity, final IssuePriority assignTo){
+        return super.deleteAttribute(entity, assignTo);
     }
-
-
 }

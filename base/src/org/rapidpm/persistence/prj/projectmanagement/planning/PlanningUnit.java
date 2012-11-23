@@ -227,8 +227,17 @@ public class PlanningUnit {
     @Override
     public String toString() {
         return "PlanningUnit{" +
-                "id=" + id +
+                "id='" + id + '\'' +
+                ", description='" + description + '\'' +
+                ", estimatedStoryPoints=" + estimatedStoryPoints +
+                ", komplexitaet=" + komplexitaet +
                 ", planningUnitName='" + planningUnitName + '\'' +
+                ", orderNumber=" + orderNumber +
+                ", plannedMeetingList=" + plannedMeetingList +
+                ", responsiblePerson=" + responsiblePerson +
+                ", planningStatus=" + planningStatus +
+                ", plannedTravelList=" + plannedTravelList +
+                ", testcases=" + testcases +
                 '}';
     }
 }

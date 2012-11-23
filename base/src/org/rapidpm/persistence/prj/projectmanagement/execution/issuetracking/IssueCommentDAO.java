@@ -1,4 +1,5 @@
-package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking; /**
+package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
+/**
  * RapidPM - www.rapidpm.org
  * User: svenruppert
  * Date: 06.07.11

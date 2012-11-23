@@ -12,7 +12,7 @@ package org.rapidpm.persistence;
 public class DaoFactorySingelton {
 //    private static DaoFactorySingelton ourInstance = new DaoFactorySingelton();
 
-    private static DaoFactory daoFactoryFactory = new DaoFactory("baseormJDBC");;
+    private static DaoFactory daoFactoryFactory = new DaoFactory("baseormJDBC");
     private static boolean init = false;
 
     public static DaoFactory getInstance() {
