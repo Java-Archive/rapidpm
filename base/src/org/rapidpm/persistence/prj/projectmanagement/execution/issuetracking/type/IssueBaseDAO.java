@@ -12,7 +12,6 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.Iss
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponent;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCase;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -425,7 +424,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
 
         final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueComponent.class);
         for (final Relationship rel : startNode.getRelationships(relType, Direction.OUTGOING)) {
-            componentList.add(DaoFactorySingelton.getInstance().getIssueComponentDAO().findById(rel.getOtherNode(startNode).getId()));
+            componentList.add(DaoFactorySingelton.getInstance().getIssueComponentDAO().findByID(rel.getOtherNode(startNode).getId()));
         }
 
         if (logger.isDebugEnabled())

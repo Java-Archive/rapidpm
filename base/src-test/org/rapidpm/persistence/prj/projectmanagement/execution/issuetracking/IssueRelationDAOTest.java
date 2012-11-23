@@ -27,13 +27,13 @@ public class IssueRelationDAOTest implements BaseDAOTest {
         relation.setOutgoingName("outgoing_Test");
         relation.setIncomingName("incoming_Test");
         relation = dao.persist(relation);
-        assertEquals(relation, dao.findById(relation.getId()));
+        assertEquals(relation, dao.findByID(relation.getId()));
 
         relation.setRelationName("second_test");
         relation.setOutgoingName("second_outgoing_Test");
         relation.setIncomingName("second_incoming_Test");
         relation = dao.persist(relation);
-        assertEquals(relation, dao.findById(relation.getId()));
+        assertEquals(relation, dao.findByID(relation.getId()));
 
         dao.delete(relation);
         assertFalse(dao.loadAllEntities().contains(relation));

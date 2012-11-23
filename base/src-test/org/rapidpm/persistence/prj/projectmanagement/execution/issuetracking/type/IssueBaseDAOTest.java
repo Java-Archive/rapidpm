@@ -56,7 +56,7 @@ public class IssueBaseDAOTest implements BaseDAOTest {
         issueBase = dao.persist(issueBase);
         if (logger.isDebugEnabled())
             logger.debug(issueBase.toString());
-        //assertTrue(issueBase.equals(dao.findById(issueBase.getId()).hashCode()));
+        //assertTrue(issueBase.equals(dao.findByID(issueBase.getId()).hashCode()));
 
         dao.delete(issueBase);
     }
@@ -79,7 +79,7 @@ public class IssueBaseDAOTest implements BaseDAOTest {
         issue.setPriority(daoFactory.getIssuePriorityDAO().loadAllEntities().get(1));
 
         issue = dao.persist(issue);
-        IssueBase proof = dao.findById(issue.getId());
+        IssueBase proof = dao.findByID(issue.getId());
         assertEquals(issue.getStatus(), proof.getStatus());
         assertEquals(issue.getType(), proof.getType());
         assertEquals(issue.getPriority(), proof.getPriority());

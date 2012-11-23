@@ -27,12 +27,12 @@ public class IssueStatusDAOTest implements BaseDAOTest {
         IssueStatus status = new IssueStatus("test");
         status.setStatusFileName("test_filename");
         status = dao.persist(status);
-        assertEquals(status, dao.findById(status.getId()));
+        assertEquals(status, dao.findByID(status.getId()));
 
         status.setStatusName("second_test");
         status.setStatusFileName("second_test_filename");
         status = dao.persist(status);
-        assertEquals(status, dao.findById(status.getId()));
+        assertEquals(status, dao.findByID(status.getId()));
 
         dao.delete(status, assignTo);
         assertFalse(dao.loadAllEntities().contains(status));

@@ -27,13 +27,13 @@ public class IssuePriorityDAOTest implements BaseDAOTest {
         IssuePriority priority = new IssuePriority(1, "test");
         priority.setPriorityFileName("test_filename");
         priority = dao.persist(priority);
-        assertEquals(priority, dao.findById(priority.getId()));
+        assertEquals(priority, dao.findByID(priority.getId()));
 
         priority.setPrio(2);
         priority.setPriorityName("second_test");
         priority.setPriorityFileName("second_test_filename");
         priority = dao.persist(priority);
-        assertEquals(priority, dao.findById(priority.getId()));
+        assertEquals(priority, dao.findByID(priority.getId()));
 
         dao.delete(priority, assignTo);
         assertFalse(dao.loadAllEntities().contains(priority));

@@ -28,11 +28,11 @@ public class IssueVersionDAOTest implements BaseDAOTest {
     public void addChangeDelete() {
         IssueVersion version = new IssueVersion("test");
         version = dao.persist(version);
-        assertEquals(version, dao.findById(version.getId()));
+        assertEquals(version, dao.findByID(version.getId()));
 
         version.setVersionName("second_test");
         version = dao.persist(version);
-        assertEquals(version, dao.findById(version.getId()));
+        assertEquals(version, dao.findByID(version.getId()));
 
         dao.delete(version, assignTo);
         assertFalse(dao.loadAllEntities().contains(version));

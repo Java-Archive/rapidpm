@@ -231,7 +231,7 @@ public class IssueBase implements PersistInGraph {
         return id;
     }
 
-    public void setId(final Long id) {
+    private void setId(final Long id) {
         this.id = id;
     }
 
@@ -239,8 +239,16 @@ public class IssueBase implements PersistInGraph {
         return projectId;
     }
 
-    public void setProjectId(final Long projectId) {
+    private void setProjectId(final Long projectId) {
         this.projectId = projectId;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    private void setText(final String text) {
+        this.text = text;
     }
 
     public String getSummary() {
@@ -249,14 +257,6 @@ public class IssueBase implements PersistInGraph {
 
     public void setSummary(final String summary) {
         this.summary = summary;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(final String text) {
-        this.text = text;
     }
 
     public String getStory() {

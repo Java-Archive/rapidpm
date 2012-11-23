@@ -27,12 +27,12 @@ public class IssueTypeDAOTest implements BaseDAOTest {
         IssueType type = new IssueType("test");
         type.setTypeFileName("test_filename");
         type = dao.persist(type);
-        assertEquals(type, dao.findById(type.getId()));
+        assertEquals(type, dao.findByID(type.getId()));
 
         type.setTypeName("second_test");
         type.setTypeFileName("second_test_filename");
         type = dao.persist(type);
-        assertEquals(type, dao.findById(type.getId()));
+        assertEquals(type, dao.findByID(type.getId()));
 
         dao.delete(type, assignTo);
         assertFalse(dao.loadAllEntities().contains(type));
