@@ -233,4 +233,20 @@ public class PlannedProject {
     public void setProjektToken(String projektToken) {
         this.projektToken = projektToken;
     }
+
+    public BaseControllingunit getTotalProjectControllingunit() {
+        return totalProjectControllingunit;
+    }
+
+    public void setTotalProjectControllingunit(BaseControllingunit totalProjectControllingunit) {
+        this.totalProjectControllingunit = totalProjectControllingunit;
+    }
+
+    public Map<RessourceGroup, BaseControllingunit> getResourceGroupControllingMap() {
+        return resourceGroupControllingMap;
+    }
+
+    public void setResourceGroupControllingMap(Map<RessourceGroup, BaseControllingunit> resourceGroupControllingMap) {
+        this.resourceGroupControllingMap = resourceGroupControllingMap;
+    }
 }

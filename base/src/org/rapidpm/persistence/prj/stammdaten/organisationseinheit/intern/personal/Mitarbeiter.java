@@ -1,6 +1,7 @@
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal;
 
 import org.rapidpm.persistence.prj.stammdaten.person.Person;
+import org.rapidpm.persistence.system.security.Benutzer;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -28,6 +29,8 @@ public class Mitarbeiter {
     private String mitarbeiternummer;
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private Person person;
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    private Benutzer benutzer;
     @Basic
     private Date einstellungsDatum;
     @Basic
@@ -125,5 +128,13 @@ public class Mitarbeiter {
 
     public void setMitarbeiterRessourceGroupAssocListe(List<MitarbeiterRessourceGroupAssoc> mitarbeiterRessourceGroupAssocListe) {
         this.mitarbeiterRessourceGroupAssocListe = mitarbeiterRessourceGroupAssocListe;
+    }
+
+    public Benutzer getBenutzer() {
+        return benutzer;
+    }
+
+    public void setBenutzer(Benutzer benutzer) {
+        this.benutzer = benutzer;
     }
 }

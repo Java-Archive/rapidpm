@@ -1,6 +1,7 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning;
 
 import org.rapidpm.persistence.prj.projectmanagement.controlling.BaseControllingunit;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.PlannedMeeting;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedTravel;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
@@ -38,6 +39,9 @@ public class PlanningUnit {
     private BaseControllingunit totalOwnIssuesCotntrollingUnit;
     @Transient
     private BaseControllingunit totalSubPlaningUnitsControllingUnit;
+
+    @Transient
+    private List<IssueBase> issueBaseList;
 
     @Transient
     Map<RessourceGroup, BaseControllingunit> resourceGroupControllingMap;
@@ -213,6 +217,46 @@ public class PlanningUnit {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public BaseControllingunit getTotalControllingUnit() {
+        return totalControllingUnit;
+    }
+
+    public void setTotalControllingUnit(BaseControllingunit totalControllingUnit) {
+        this.totalControllingUnit = totalControllingUnit;
+    }
+
+    public BaseControllingunit getTotalOwnIssuesCotntrollingUnit() {
+        return totalOwnIssuesCotntrollingUnit;
+    }
+
+    public void setTotalOwnIssuesCotntrollingUnit(BaseControllingunit totalOwnIssuesCotntrollingUnit) {
+        this.totalOwnIssuesCotntrollingUnit = totalOwnIssuesCotntrollingUnit;
+    }
+
+    public BaseControllingunit getTotalSubPlaningUnitsControllingUnit() {
+        return totalSubPlaningUnitsControllingUnit;
+    }
+
+    public void setTotalSubPlaningUnitsControllingUnit(BaseControllingunit totalSubPlaningUnitsControllingUnit) {
+        this.totalSubPlaningUnitsControllingUnit = totalSubPlaningUnitsControllingUnit;
+    }
+
+    public List<IssueBase> getIssueBaseList() {
+        return issueBaseList;
+    }
+
+    public void setIssueBaseList(List<IssueBase> issueBaseList) {
+        this.issueBaseList = issueBaseList;
+    }
+
+    public Map<RessourceGroup, BaseControllingunit> getResourceGroupControllingMap() {
+        return resourceGroupControllingMap;
+    }
+
+    public void setResourceGroupControllingMap(Map<RessourceGroup, BaseControllingunit> resourceGroupControllingMap) {
+        this.resourceGroupControllingMap = resourceGroupControllingMap;
     }
 
     @Override

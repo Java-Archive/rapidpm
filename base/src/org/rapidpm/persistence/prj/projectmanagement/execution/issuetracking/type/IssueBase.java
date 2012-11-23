@@ -4,6 +4,7 @@ import org.rapidpm.persistence.prj.projectmanagement.controlling.BaseControlling
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnit;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.apache.log4j.Logger;
 
@@ -83,11 +84,12 @@ public class IssueBase {
     @OneToOne(cascade = CascadeType.REFRESH)
     private IssueStatus status;
 
-    //@OneToOne(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.EAGER)
-    //private IssueTimeUnit issueTimeUnitEstimated;
+//    @OneToOne(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+//    private IssueTimeUnit issueTimeUnitEstimated;
 
-    //@OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY)
-    //private List<IssueTimeUnit> issueTimeUnitsUsed;
+//    @OneToMany(cascade = {CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @Transient
+    private List<IssueTimeUnit> issueTimeUnitsUsed;
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private Benutzer reporter;
@@ -224,13 +226,13 @@ public class IssueBase {
 //        this.issueTimeUnitEstimated = issueTimeUnitEstimated;
 //    }
 //
-//    public List<IssueTimeUnit> getIssueTimeUnitsUsed() {
-//        return issueTimeUnitsUsed;
-//    }
-//
-//    public void setIssueTimeUnitsUsed(final List<IssueTimeUnit> issueTimeUnitsUsed) {
-//        this.issueTimeUnitsUsed = issueTimeUnitsUsed;
-//    }
+    public List<IssueTimeUnit> getIssueTimeUnitsUsed() {
+        return issueTimeUnitsUsed;
+    }
+
+    public void setIssueTimeUnitsUsed(final List<IssueTimeUnit> issueTimeUnitsUsed) {
+        this.issueTimeUnitsUsed = issueTimeUnitsUsed;
+    }
 
 
     public Benutzer getReporter() {
@@ -272,4 +274,27 @@ public class IssueBase {
         this.storyPoints = storyPoints;
     }
 
+    public BaseControllingunit getTotalControllingUnit() {
+        return totalControllingUnit;
+    }
+
+    public void setTotalControllingUnit(BaseControllingunit totalControllingUnit) {
+        this.totalControllingUnit = totalControllingUnit;
+    }
+
+    public BaseControllingunit getTotalOwnCotntrollingUnit() {
+        return totalOwnCotntrollingUnit;
+    }
+
+    public void setTotalOwnCotntrollingUnit(BaseControllingunit totalOwnCotntrollingUnit) {
+        this.totalOwnCotntrollingUnit = totalOwnCotntrollingUnit;
+    }
+
+    public BaseControllingunit getTotalSubIssuesBaseControllingUnit() {
+        return totalSubIssuesBaseControllingUnit;
+    }
+
+    public void setTotalSubIssuesBaseControllingUnit(BaseControllingunit totalSubIssuesBaseControllingUnit) {
+        this.totalSubIssuesBaseControllingUnit = totalSubIssuesBaseControllingUnit;
+    }
 }
