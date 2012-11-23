@@ -1,6 +1,14 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
+//import org.rapidpm.persistence.GraphDaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.PersistInGraph;
+
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -15,25 +23,38 @@ import javax.persistence.*;
  *        Time: 12:19:00
  */
 
-//@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
-@Entity
-public class IssuePriority {
-    //    private String name;
+public class IssuePriority  implements PersistInGraph {
 
-    public static final String NAME = "priorityName";
+    @Identifier
+    private Long id;
+
+    @Simple
+    private Integer prio;
+
+    @Simple
+    private String priorityName;
+
+    @Simple
+    private String priorityFileName;
 
     public IssuePriority() {
+        //empty on purpose
     }
+
     public IssuePriority(final int prio, final String priorityName) {
         this.prio = prio;
         this.priorityName = priorityName;
     }
 
+//    public List<IssueBase> getConnectedIssues() {
+//        return GraphDaoFactory.getIssuePriorityDAO().getConnectedIssues(this);
+//    }    public List<IssueBase> getConnectedIssues() {
+//        return GraphDaoFactory.getIssuePriorityDAO().getConnectedIssues(this);
+//    }
 
-    @Id
-    @TableGenerator(name = "PKGenIssuePriority", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "IssuePriority_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenIssuePriority")
-    private Long id;
+    public List<IssueBase> getConnectedIssuesFromProject(final Long projectId) {
+        return DaoFactorySingelton.getInstance().getIssuePriorityDAO().getConnectedIssuesFromProject(this, projectId);
+    }
 
     public Long getId() {
         return id;
@@ -42,15 +63,6 @@ public class IssuePriority {
     public void setId(final Long id) {
         this.id = id;
     }
-
-    @Basic
-    private int prio;
-
-    @Basic
-    private String priorityName;
-
-    @Basic
-    private String priorityFileName;
 
     public int getPrio() {
         return prio;
@@ -64,7 +76,7 @@ public class IssuePriority {
         return priorityName;
     }
 
-    public void setPriorityName(String name) {
+    public void setPriorityName(final String name) {
         this.priorityName = name;
     }
 
@@ -72,8 +84,18 @@ public class IssuePriority {
         return priorityFileName;
     }
 
-    public void setPriorityFileName(String priorityFileName) {
+    public void setPriorityFileName(final String priorityFileName) {
         this.priorityFileName = priorityFileName;
+    }
+
+    @Override
+    public String toString() {
+        return "IssuePriority{" +
+                "id=" + id +
+                ", prio=" + prio +
+                ", priorityName='" + priorityName + '\'' +
+                ", priorityFileName='" + priorityFileName + '\'' +
+                '}';
     }
 
     @Override
@@ -83,6 +105,10 @@ public class IssuePriority {
 
         IssuePriority that = (IssuePriority) o;
 
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (prio != null ? !prio.equals(that.prio) : that.prio != null) return false;
+        if (priorityFileName != null ? !priorityFileName.equals(that.priorityFileName) : that.priorityFileName != null)
+            return false;
         if (priorityName != null ? !priorityName.equals(that.priorityName) : that.priorityName != null) return false;
 
         return true;
@@ -90,13 +116,15 @@ public class IssuePriority {
 
     @Override
     public int hashCode() {
-        return priorityName != null ? priorityName.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (prio != null ? prio.hashCode() : 0);
+        result = 31 * result + (priorityName != null ? priorityName.hashCode() : 0);
+        result = 31 * result + (priorityFileName != null ? priorityFileName.hashCode() : 0);
+        return result;
     }
 
     @Override
-    public String toString() {
-        return "IssuePriority{" +
-                "priorityName='" + priorityName + '\'' +
-                '}';
+    public String name() {
+        return getPriorityName();
     }
 }

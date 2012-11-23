@@ -1,5 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic;
 
+import com.vaadin.data.Item;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.event.ItemClickEvent;
@@ -9,11 +10,11 @@ import com.vaadin.ui.Component.Event;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.GridLayout;
 import org.apache.log4j.Logger;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.prj.projectmanagement.planning.*;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesFieldValidator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
@@ -22,6 +23,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.date
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 //TODO under construction!
 public class TableItemClickListener implements ItemClickListener {
@@ -32,8 +34,6 @@ public class TableItemClickListener implements ItemClickListener {
     private KnotenBlattEnum knotenBlattEnum;
 
     private ResourceBundle messages;
-    private TableItemClickListenerBean bean;
-    private DaoFactoryBean baseDaoFactoryBean;
 
     private PlannedProject projekt;
     private List<PlanningUnit> planningUnits;
@@ -43,12 +43,12 @@ public class TableItemClickListener implements ItemClickListener {
         this.messages = bundle;
         this.screen = screen;
 
-        bean = EJBFactory.getEjbInstance(TableItemClickListenerBean.class);
-        baseDaoFactoryBean = bean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
-        projekt = baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities().get(0);
-        planningUnits = baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities();
+        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
+        projekt = plannedProjectDAO.loadAllEntities().get(0);    //REFAC nicht NPE sicher
+        final PlanningUnitDAO planningUnitDAO = daoFactory.getPlanningUnitDAO();
+        planningUnits = planningUnitDAO.loadAllEntities();
     }
 
     @Override
@@ -65,11 +65,12 @@ public class TableItemClickListener implements ItemClickListener {
         final Object itemId = event.getItemId();
         final HierarchicalContainer dataSource = screen.getDataSource();
         final String aufgabeFromBundle = messages.getString("aufgabe");
-        final String planningUnitName = dataSource.getItem(itemId).getItemProperty(aufgabeFromBundle).getValue()
-                .toString();
-        final PlanningUnit planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().loadPlanningUnitByName(planningUnitName);
+        final Item item = dataSource.getItem(itemId);
+        final String planningUnitName = item.getItemProperty(aufgabeFromBundle).getValue().toString();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().loadPlanningUnitByName(planningUnitName);
         if (planningUnit != null) {
-            final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
+            final Set<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
             if (kindPlanningUnits != null && (!kindPlanningUnits.isEmpty()) ) {
                 knotenBlattEnum = KnotenBlattEnum.KNOTEN;
                 buildRequiredFields(formUnterlayout, fieldGroup);
@@ -103,19 +104,6 @@ public class TableItemClickListener implements ItemClickListener {
         }
         for (final Object propertyId : fieldGroup.getBoundPropertyIds()) {
             fieldGroup.getField(propertyId).setRequired(true);
-        }
-    }
-
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
         }
     }
 

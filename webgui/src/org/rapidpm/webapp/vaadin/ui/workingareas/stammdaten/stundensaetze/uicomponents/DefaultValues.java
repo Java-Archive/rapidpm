@@ -2,7 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicom
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 13.09.12
  * Time: 12:03
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de

@@ -1,43 +1,38 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
-import org.rapidpm.persistence.DAO;
+import org.apache.log4j.Logger;
+import org.neo4j.graphdb.*;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.GraphBaseDAO;
+import org.rapidpm.persistence.GraphRelationRegistry;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * RapidPM - www.rapidpm.org
- * User: svenruppert
- * Date: 11/23/10
- * Time: 11:59 AM
- * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
+ * Created with IntelliJ IDEA.
+ * User: Alvin
+ * Date: 16.10.12
+ * Time: 18:47
+ * To change this template use File | Settings | File Templates.
  */
-public class IssueStatusDAO extends DAO<Long, IssueStatus> {
+public class IssueStatusDAO extends GraphBaseDAO<IssueStatus> {
+    private static final Logger logger = Logger.getLogger(IssueStatusDAO.class);
 
-    public IssueStatusDAO(final EntityManager entityManager) {
-        super(entityManager, IssueStatus.class);
+    public IssueStatusDAO(GraphDatabaseService graphDb, DaoFactory relDaoFactory) {
+        super(graphDb, IssueStatus.class, relDaoFactory);
     }
 
-    public IssueStatus loadStatus(final String status) {
-        final TypedQuery<IssueStatus> typedQuery = entityManager.createQuery("from IssueStatus s where s.name=:status", IssueStatus.class).setParameter("status",
-                status);
-        return getSingleResultOrNull(typedQuery);
-        //        return createWhereClause().eq("name", status).findUnique();
+//    public List<IssueBase> getConnectedIssues(final IssueStatus status) {
+//        return getConnectedIssuesFromProject(status, 0L);
+//    }
+
+    public List<IssueBase> getConnectedIssuesFromProject(final IssueStatus status, final Long projectId) {
+        return super.getConnectedIssuesFromProject(status, projectId);
     }
 
-    public IssueStatus loadStatusOpen() {
-        return loadStatus("open");
-        //        return createWhereClause().eq("name", "open").findUnique();
-    }
-
-    public List<String> loadAllAsString() {
-        final List<String> statusList = new ArrayList<>();
-        final List<IssueStatus> issueStatusListe = this.loadAllEntities();
-        for (final IssueStatus issueStatusObj : issueStatusListe) {
-            statusList.add(issueStatusObj.getStatusName());
-        }
-        return statusList;
+    public boolean delete(final IssueStatus entity, final IssueStatus assignTo){
+        return super.deleteAttribute(entity, assignTo);
     }
 }

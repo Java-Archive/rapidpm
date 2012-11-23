@@ -46,13 +46,13 @@ public class RegistrationDAOBeanTest extends BaseDAOBeanTest<RegistrationDAOBean
         registration.setMandantengruppeOID(daoFactoryFactory.getMandantengruppeDAO().loadMandantengruppe("NeoScioPortal").getId());
         registration.setBenutzerWebapplikationOID(daoFactoryFactory.getBenutzerWebapplikationDAO().loadBenutzerWebapplikation("NeoScioPortal_App").getId());
 
-        daoFactoryFactory.getRegistrationDAO().new Transaction() {
-            @Override
-            public void doTask() {
-                final RegistrationDAOBean.RegistrationResult result = daoBean.saveOrUpdateTX("sessionID", -1L, registration);
-                assertTrue(result.getValid());
-                printLog(result);
-            }
-        }.execute();
+//        daoFactoryFactory.getRegistrationDAO().new Transaction() {
+//            @Override
+//            public void doTask() {
+//                final RegistrationDAOBean.RegistrationResult result = daoBean.saveOrUpdateTX("sessionID", -1L, registration);
+//                assertTrue(result.getValid());
+//                printLog(result);
+//            }
+//        }.execute();
     }
 }

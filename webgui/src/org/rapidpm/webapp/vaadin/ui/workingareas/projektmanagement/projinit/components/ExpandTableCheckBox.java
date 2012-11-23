@@ -8,7 +8,7 @@ import java.util.Collection;
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 07.09.12
  * Time: 14:46
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de

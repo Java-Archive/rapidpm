@@ -2,7 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.com
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 28.08.12
  * Time: 10:56
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de

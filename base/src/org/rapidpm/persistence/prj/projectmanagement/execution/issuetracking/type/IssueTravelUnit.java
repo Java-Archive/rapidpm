@@ -34,6 +34,10 @@ public class IssueTravelUnit extends IssueBase {
     @OneToOne(cascade = CascadeType.REFRESH, fetch=FetchType.LAZY)
     private PlannedTravelUnit plannedTravelUnit;
 
+    public IssueTravelUnit(final Long projectId) {
+        super(projectId);
+    }
+
     public Long getId() {
         return id;
     }

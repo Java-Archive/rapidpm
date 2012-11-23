@@ -11,7 +11,7 @@ import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.person
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 13.09.12
  * Time: 09:23
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de

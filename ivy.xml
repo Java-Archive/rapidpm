@@ -1,0 +1,56 @@
+<!--
+  ~ Copyright (c) 2012.
+  ~ This is part of the project "PrometaJava"
+  ~ from Sven Ruppert for infotraX GmbH, please contact chef@sven-ruppert.de
+  -->
+<ivy-module version="2.0">
+    <info organisation="org.rapidpm" module="rapidpm"/>
+    <dependencies>
+        <dependency org="junit" name="junit" rev="4.10"/>
+        <!--<dependency org="javax.ejb" name="ejb-api" rev="3.0"/>-->
+        <!--<dependency org="javax.enterprise" name="cdi-api" rev="1.1.EDR1.2"/>-->
+        <dependency org="javax.inject" name="javax.inject" rev="1"/>
+
+        <!--<dependency org="javax" name="javaee-api" rev="6.0"/>-->
+        <!--<dependency org="javax.servlet" name="servlet-api" rev="2.5"/>-->
+        <!--<dependency org="javax.servlet" name="javax.servlet-api" rev="3.0.1"/>-->
+
+
+        <dependency org="log4j" name="log4j" rev="1.2.17"/>
+        <dependency org="org.slf4j" name="slf4j-simple" rev="1.6.6"/>
+        <dependency org="commons-cli" name="commons-cli" rev="1.0"/>
+        <dependency org="commons-lang" name="commons-lang" rev="2.6"/>
+        <dependency org="commons-io" name="commons-io" rev="2.4"/>
+        <dependency org="org.apache.commons" name="commons-compress" rev="1.4.1"/>
+        <dependency org="joda-time" name="joda-time" rev="2.1"/>
+
+        <dependency org="com.google.guava" name="guava" rev="13.0.1"/>
+        <dependency org="org.hibernate" name="hibernate-core" rev="4.1.7.Final"/>
+        <dependency org="org.hibernate" name="hibernate-entitymanager" rev="4.1.7.Final"/>
+        <dependency org="org.hibernate" name="hibernate-envers" rev="4.1.7.Final"/>
+        <dependency org="org.hibernate" name="hibernate-validator" rev="4.3.0.Final"/>
+        <!--<dependency org="org.hibernate" name="hibernate-commons-annotations" rev="3.3.0.ga"/>-->
+
+
+        <dependency org="org.apache.poi" name="poi" rev="3.8"/>
+        <dependency org="org.apache.poi" name="poi-ooxml" rev="3.8"/>
+        <dependency org="org.apache.poi" name="poi-scratchpad" rev="3.8"/>
+
+        <!--<dependency org="org.jdom" name="jdom2" rev="2.0.3"/>-->
+        <!--<dependency org="org.jdom" name="jdom-contrib" rev="1.1.3"/>-->
+        <dependency org="org.jopendocument" name="jdom" rev="1.1.1"/>
+
+        <!--<dependency org="com.vaadin" name="vaadin" rev="7.0.0.beta7"/>-->
+
+        <!--<dependency org="xerces" name="xercesImpl" rev="2.10.0"/>-->
+        <!--<dependency org="org.apache.httpcomponents" name="httpclient" rev="4.2.1"/>-->
+        <!--<dependency org="org.apache.httpcomponents" name="httpmime" rev="4.2.1"/>-->
+        <!--<dependency org="org.apache.tika" name="tika-parsers" rev="1.2"/>-->
+        <!--<dependency org="org.apache.solr" name="solr-solrj" rev="3.5.0"/>-->
+        <dependency org="org.apache.xmlrpc" name="xmlrpc-client" rev="3.0"/>
+
+
+
+    </dependencies>
+
+</ivy-module>

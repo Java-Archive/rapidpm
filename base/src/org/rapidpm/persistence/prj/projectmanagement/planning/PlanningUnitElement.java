@@ -87,6 +87,17 @@ public class PlanningUnitElement {
     }
 
     @Override
+    public String toString() {
+        return "PlanningUnitElement{" +
+                "id=" + id +
+                ", plannedDays=" + plannedDays +
+                ", plannedHours=" + plannedHours +
+                ", plannedMinutes=" + plannedMinutes +
+                ", ressourceGroup=" + ressourceGroup +
+                '}';
+    }
+
+    @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }

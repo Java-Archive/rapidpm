@@ -30,8 +30,8 @@ public class DaoFactoryTest {
         entity.setId(23L);
         final DAO.EntityUtils entityUtils = new DAO.EntityUtils();
         final Long oid = entityUtils.getOIDFromEntity(entity);
-        assertEquals(new Long(23L), oid);
-        assertEquals(new Long(-1L), entityUtils.getOIDFromEntity("keine Entity"));
+        assertEquals(new Long(23), oid);
+        assertEquals(new Long(-1), entityUtils.getOIDFromEntity("keine Entity"));
     }
 
     @Test

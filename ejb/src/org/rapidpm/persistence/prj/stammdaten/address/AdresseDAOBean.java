@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
-import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
 import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
@@ -12,7 +11,6 @@ import org.rapidpm.persistence.DaoFactoryBean;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -88,7 +86,7 @@ public class AdresseDAOBean {
     };
 
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "saveOrUpdateTX")
     @WebResult(name = "AdresseResult")
@@ -97,7 +95,7 @@ public class AdresseDAOBean {
         return crudExecuter.saveOrUpdate(sessionid, uid, entity);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "removeTX")
     @WebResult(name = "AdresseResult")
@@ -117,7 +115,7 @@ public class AdresseDAOBean {
         }
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadWithOIDList")
     @WebResult(name = "AdresseResult")
@@ -126,7 +124,7 @@ public class AdresseDAOBean {
         return create(getAdresseDAO().loadWithOIDList(oids));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadAllEntities")
     @WebResult(name = "AdresseResult")
@@ -134,7 +132,7 @@ public class AdresseDAOBean {
         return create(getAdresseDAO().loadAllEntities());
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "getAdressenForPerson")
     @WebResult(name = "AdresseResult")

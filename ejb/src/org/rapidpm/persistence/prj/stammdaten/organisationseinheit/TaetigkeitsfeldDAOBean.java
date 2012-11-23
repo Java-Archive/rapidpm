@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
-import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
 import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
@@ -18,7 +17,6 @@ import org.rapidpm.persistence.DaoFactoryBean;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -80,7 +78,7 @@ public class TaetigkeitsfeldDAOBean {
     }
 
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "saveOrUpdateTX")
     @WebResult(name = "TaetigkeitsfeldResult")
@@ -90,7 +88,7 @@ public class TaetigkeitsfeldDAOBean {
         return crudExecuter.saveOrUpdate(sessionid, uid, entity);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "removeTX")
     @WebResult(name = "TaetigkeitsfeldResult")
@@ -98,7 +96,7 @@ public class TaetigkeitsfeldDAOBean {
         return crudExecuter.remove(sessionid, uid, oid);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "findByID")
     @WebResult(name = "TaetigkeitsfeldResult")
@@ -111,7 +109,7 @@ public class TaetigkeitsfeldDAOBean {
         }
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadWithOIDList")
     @WebResult(name = "TaetigkeitsfeldResult")
@@ -120,7 +118,7 @@ public class TaetigkeitsfeldDAOBean {
         return createResult(getEntityDAO().loadWithOIDList(oids));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadAllEntities")
     @WebResult(name = "TaetigkeitsfeldResult")
@@ -128,7 +126,7 @@ public class TaetigkeitsfeldDAOBean {
         return createResult(getEntityDAO().loadAllEntities());
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadTaetigkeitsfelderForMandantengruppe")
     @WebResult(name = "TaetigkeitsfeldResult")

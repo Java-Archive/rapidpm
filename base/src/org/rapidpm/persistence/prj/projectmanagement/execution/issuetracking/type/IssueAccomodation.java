@@ -13,7 +13,6 @@ import javax.persistence.*;
  *
  */
 
-//@Entity
 public class IssueAccomodation extends IssueBase {
 
     @Id
@@ -24,6 +23,10 @@ public class IssueAccomodation extends IssueBase {
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private PlannedAccomodation accommodation;
+
+    public IssueAccomodation(final Long projectId) {
+        super(projectId);
+    }
 
     public Long getId() {
         return id;

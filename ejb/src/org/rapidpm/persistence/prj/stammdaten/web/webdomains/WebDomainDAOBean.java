@@ -11,7 +11,6 @@ import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
-import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
 import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
@@ -23,7 +22,6 @@ import org.rapidpm.persistence.prj.stammdaten.web.WebDomainMetaData;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -90,7 +88,7 @@ public class WebDomainDAOBean {
         return daoFactoryBean.getWebDomainDAO();
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadWebDomainsForSuchmaschinenmodulAndTaetigkeitsfeld")
     @WebResult(name = "WebDomainResult")
@@ -99,7 +97,7 @@ public class WebDomainDAOBean {
         return createResult(getEntityDAO().loadWebDomainsFor(suchmaschinenmodul, taetigkeitsfeld));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadWebDomainsForSuchmaschinenmodulName")
     @WebResult(name = "WebDomainResult")
@@ -108,7 +106,7 @@ public class WebDomainDAOBean {
         return createResult(getEntityDAO().loadWebDomainsFor(suchmaschinenmodul));
     }
 
-//    @Interceptors(LoggingInterceptor.class)
+//
 //    public
 //    @WebMethod(operationName = "loadWebDomainsForSuchmaschinenmodul")
 //    @WebResult(name = "WebDomainResult")
@@ -120,7 +118,7 @@ public class WebDomainDAOBean {
 //        return createResult(getEntityDAO().loadWebDomainsFor(byID.getSuchmodulname()));
 //    }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "saveOrUpdateTX")
     @WebResult(name = "WebDomainResult")
@@ -130,7 +128,7 @@ public class WebDomainDAOBean {
         return crudExecuter.saveOrUpdate(sessionid, uid, entity);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "removeTX")
     @WebResult(name = "WebDomainResult")
@@ -138,7 +136,7 @@ public class WebDomainDAOBean {
         return crudExecuter.remove(sessionid, uid, oid);
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "findByID")
     @WebResult(name = "WebDomainResult")
@@ -151,7 +149,7 @@ public class WebDomainDAOBean {
         }
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadWithOIDList")
     @WebResult(name = "WebDomainResult")
@@ -160,7 +158,7 @@ public class WebDomainDAOBean {
         return createResult(getEntityDAO().loadWithOIDList(oids));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadAllEntities")
     @WebResult(name = "WebDomainResult")

@@ -10,6 +10,7 @@ import org.rapidpm.persistence.system.security.Benutzer;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -28,9 +29,10 @@ public class PlanningUnit {
     public static final String STORYPTS = "estimatedStoryPoints";
     public static final String COMPLEXITY = "komplexitaet";
     public static final String RESPONSIBLE = "responsiblePerson";
-    public static final String TESTCASES = "testCases";
+    public static final String TESTCASES = "testcases";
     public static final String ORDERNUMBER = "orderNumber";
     public static final String DESCPRIPTION = "description";
+    public static final String PARENT = "parent";
 
 
     @Transient
@@ -52,8 +54,6 @@ public class PlanningUnit {
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenPlanningUnit")
     private Long id;
 
-
-
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private List<PlannedTravel> plannedTravelList;
 
@@ -67,7 +67,7 @@ public class PlanningUnit {
     private List<PlannedMeeting> plannedMeetingList;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    private List<PlanningUnit> kindPlanningUnits;
+    private Set<PlanningUnit> kindPlanningUnits;
 
     @Basic
     private int orderNumber;
@@ -75,10 +75,10 @@ public class PlanningUnit {
     @Basic
     private String planningUnitName;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private PlanningUnit parent;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private List<PlanningUnitElement> planningUnitElementList;
 
 
@@ -155,11 +155,11 @@ public class PlanningUnit {
         this.planningUnitElementList = planningUnitElementList;
     }
 
-    public List<PlanningUnit> getKindPlanningUnits() {
+    public Set<PlanningUnit> getKindPlanningUnits() {
         return kindPlanningUnits;
     }
 
-    public void setKindPlanningUnits(List<PlanningUnit> kindPlanningUnits) {
+    public void setKindPlanningUnits(Set<PlanningUnit> kindPlanningUnits) {
         this.kindPlanningUnits = kindPlanningUnits;
     }
 
@@ -193,14 +193,6 @@ public class PlanningUnit {
 
     public void setPlannedMeetingList(List<PlannedMeeting> plannedMeetingList) {
         this.plannedMeetingList = plannedMeetingList;
-    }
-
-    public PlanningUnit getParent() {
-        return parent;
-    }
-
-    public void setParent(PlanningUnit parent) {
-        this.parent = parent;
     }
 
     public List<String> getTestcases() {
@@ -259,25 +251,45 @@ public class PlanningUnit {
         this.resourceGroupControllingMap = resourceGroupControllingMap;
     }
 
+    public PlanningUnit getParent() {
+        return parent;
+    }
+
+    public void setParent(PlanningUnit parent) {
+        this.parent = parent;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof PlanningUnit)) return false;
 
         PlanningUnit that = (PlanningUnit) o;
 
-        if (!id.equals(that.id)) return false;
-        if (!planningUnitName.equals(that.planningUnitName)) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + planningUnitName.hashCode();
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
 
-
+    @Override
+    public String toString() {
+        return "PlanningUnit{" +
+                "id='" + id + '\'' +
+                ", description='" + description + '\'' +
+                ", estimatedStoryPoints=" + estimatedStoryPoints +
+                ", komplexitaet=" + komplexitaet +
+                ", planningUnitName='" + planningUnitName + '\'' +
+                ", orderNumber=" + orderNumber +
+                ", plannedMeetingList=" + plannedMeetingList +
+                ", responsiblePerson=" + responsiblePerson +
+                ", planningStatus=" + planningStatus +
+                ", plannedTravelList=" + plannedTravelList +
+                ", testcases=" + testcases +
+                '}';
+    }
 }

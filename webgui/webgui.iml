@@ -35,11 +35,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="ejb" exported="" />
-    <orderEntry type="library" exported="" name="module-vaadin" level="project" />
-    <orderEntry type="library" name="lib-vaadin" level="project" />
-    <orderEntry type="library" name="lib-jason" level="project" />
     <orderEntry type="module" module-name="base" />
+    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="lib-neo4j" level="project" />
+    <orderEntry type="library" name="lib-vaadin" level="project" />
   </component>
 </module>
 

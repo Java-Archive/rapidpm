@@ -6,8 +6,10 @@ import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Label;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
@@ -30,19 +32,19 @@ public class CurrentProjectPanel extends EditablePanel {
 
     private ComboBox currentProjectBox;
     private ProjectAdministrationScreen screen;
-    private CurrentProjectPanelBean bean;
+//    private CurrentProjectPanelBean bean;
 
 
     public CurrentProjectPanel(final ResourceBundle messagesBundle, final ProjectAdministrationScreen theScreen){
         super(messagesBundle);
         this.screen = theScreen;
-        bean = EJBFactory.getEjbInstance(CurrentProjectPanelBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
+//        bean = EJBFactory.getEjbInstance(CurrentProjectPanelBean.class);
+//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
         setCaption(messagesBundle.getString("pm_currentproject"));
-        removeAllComponents();
-        final List<PlannedProject> projects = baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities();
+        setContent(null);
+        final List<PlannedProject> projects = daoFactory.getPlannedProjectDAO().loadAllEntities();
         if(projects.isEmpty()){
             addComponent(new Label(messagesBundle.getString("pm_noprojects")));
         } else {
@@ -94,21 +96,5 @@ public class CurrentProjectPanel extends EditablePanel {
     public void setComponents() {
         addComponent(currentProjectBox);
         addComponent(buttonsLayout);
-    }
-
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
-            entityManager.refresh(planningUnit);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
     }
 }

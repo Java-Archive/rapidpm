@@ -7,7 +7,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 18.09.12
  * Time: 11:24
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
