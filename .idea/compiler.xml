@@ -9,7 +9,6 @@
     <excludeFromCompile>
       <directory url="file://$PROJECT_DIR$/ejb/src/org/rapidpm/persistence/prj/projectmanagement/execution" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/ejb/src-test" includeSubdirectories="true" />
-      <directory url="file://$PROJECT_DIR$/base/src-test" includeSubdirectories="true" />
     </excludeFromCompile>
     <resourceExtensions />
     <wildcardResourcePatterns>
