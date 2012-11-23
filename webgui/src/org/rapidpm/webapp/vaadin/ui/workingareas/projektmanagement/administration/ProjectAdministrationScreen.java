@@ -1,11 +1,18 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration;
 
 import com.vaadin.ui.HorizontalLayout;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents.ChosenProjectPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents.CurrentProjectPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents.ProjectsPanel;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsException;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsScreen;
+
+import java.util.List;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -24,14 +31,24 @@ public class ProjectAdministrationScreen extends Screen {
 
     public ProjectAdministrationScreen(final MainUI ui){
         super(ui);
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        try{
+            final List<PlannedProject> plannedProjects = daoFactory.getPlannedProjectDAO().loadAllEntities();
+            if(plannedProjects == null || plannedProjects.isEmpty()){
+                throw new NoProjectsException();
+            }
+            chosenProjectPanel = new ChosenProjectPanel(ui, messagesBundle);
+            projectsPanel = new ProjectsPanel(ui, messagesBundle, chosenProjectPanel);
+            currentProjectPanel = new CurrentProjectPanel(messagesBundle, this);
 
-        chosenProjectPanel = new ChosenProjectPanel(ui, messagesBundle);
-        projectsPanel = new ProjectsPanel(ui, messagesBundle, chosenProjectPanel);
-        currentProjectPanel = new CurrentProjectPanel(messagesBundle, this);
-
-        buildScreen();
-        doInternationalization();
-        setComponents();
+            buildScreen();
+            doInternationalization();
+            setComponents();
+        } catch (final NoProjectsException e){
+            removeAllComponents();
+            final NoProjectsScreen noProjectsScreen = new NoProjectsScreen(ui);
+            addComponent(noProjectsScreen);
+        }
     }
 
     private void buildScreen() {
