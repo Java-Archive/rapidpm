@@ -17,8 +17,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administratio
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.logic.ProjectsListsValueChangeListener;
 
 import javax.persistence.EntityManager;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -66,6 +65,21 @@ public class ProjectsPanel extends Panel implements Internationalizationable, Co
             public void buttonClick(Button.ClickEvent event) {
                 final PlannedProject projekt = (PlannedProject)projectSelect.getValue();
                 final PlannedProject projektAusDB = daoFactory.getPlannedProjectDAO().findByID(projekt.getId());
+                final Set<PlanningUnit> planningUnits = projektAusDB.getPlanningUnits();
+                projektAusDB.setPlanningUnits(new HashSet<PlanningUnit>());
+                daoFactory.saveOrUpdateTX(projektAusDB);
+                final List<PlanningUnitElement> planningUnitElements = new ArrayList<>();
+                for(final PlanningUnit planningUnit : planningUnits){
+                    planningUnitElements.addAll(planningUnit.getPlanningUnitElementList());
+                    planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
+                    daoFactory.saveOrUpdateTX(planningUnit);
+                }
+                for(final PlanningUnitElement planningUnitElement : planningUnitElements){
+                    daoFactory.removeTX(planningUnitElement);
+                }
+                for (final PlanningUnit planningUnit : planningUnits){
+                    daoFactory.removeTX(planningUnit);
+                }
                 daoFactory.removeTX(projektAusDB);
                 ui.setWorkingArea(new ProjectAdministrationScreen(ui));
             }

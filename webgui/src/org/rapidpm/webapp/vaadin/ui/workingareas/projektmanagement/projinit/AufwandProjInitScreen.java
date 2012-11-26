@@ -8,9 +8,6 @@ import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
@@ -24,7 +21,6 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.comp
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.OverviewTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.TreeTableFiller;
 
-import javax.persistence.EntityManager;
 import java.util.Date;
 import java.util.List;
 
@@ -82,7 +78,8 @@ public class AufwandProjInitScreen extends Screen {
             final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, treeTable, dataSource);
             treeTableFiller.fill();
 
-            final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable);
+            final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable,
+                    this.getUi());
             overviewTableFiller.fill();
 
             fillFields();
@@ -136,7 +133,7 @@ public class AufwandProjInitScreen extends Screen {
     }
 
     public void fillFields() {
-        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle);
+        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle, this.getUi());
         timesCalculator.calculate();
         manntageField.setReadOnly(false);
         summeField.setReadOnly(false);

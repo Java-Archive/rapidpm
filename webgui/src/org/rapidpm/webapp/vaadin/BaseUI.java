@@ -147,6 +147,10 @@ public abstract class BaseUI extends UI {
         return hlWorkingAreaContainer;
     }
 
+    public void setCurrentProject(final PlannedProject currentProject) {
+        this.currentProject = currentProject;
+    }
+
     public void setWorkingArea(final Component workingArea) {
         workingArea.setSizeFull();
         hlWorkingAreaContainer.setSizeFull();

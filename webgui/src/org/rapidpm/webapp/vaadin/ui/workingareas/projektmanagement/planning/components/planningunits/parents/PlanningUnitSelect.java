@@ -28,7 +28,7 @@ public class PlanningUnitSelect extends ListSelect {
 
     public PlanningUnitSelect(final MainUI ui){
         baseDaoFactoryBean = DaoFactorySingelton.getInstance();
-        final PlannedProject projectFromSession = ui.getCurrentProject();
+        final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
         projectFromDB = baseDaoFactoryBean.getPlannedProjectDAO().findByID
                 (projectFromSession.getId());
         baseDaoFactoryBean.getEntityManager().refresh(projectFromDB);

@@ -206,6 +206,7 @@ public class DaoFactory {
                 }
 
             } catch (PersistenceException e) {
+                e.printStackTrace();
                 Notification.show(MainUI.messages.getString("stdsatz_nodelete"));
                 logger.error(e);
             } finally {

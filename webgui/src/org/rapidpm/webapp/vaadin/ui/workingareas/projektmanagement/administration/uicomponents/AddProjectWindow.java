@@ -17,6 +17,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administratio
 
 import javax.persistence.EntityManager;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -44,6 +45,7 @@ public class AddProjectWindow extends Window{
     private Button cancelButton = new Button();
     private ProjektFieldGroup fieldGroup;
     private ResourceBundle messages;
+    private CheckBox makeCurrentProjectCheckBox;
 //    private AddProjectWindowBean bean;
 
     public AddProjectWindow(final MainUI ui, final ResourceBundle messages) {
@@ -60,6 +62,12 @@ public class AddProjectWindow extends Window{
 
         final PlannedProject projekt = new PlannedProject();
         fieldGroup = new ProjektFieldGroup(projekt);
+        makeCurrentProjectCheckBox = new CheckBox(messages.getString("makeCurrentProject"));
+        final List<PlannedProject> projectList = daoFactory.getPlannedProjectDAO().loadAllEntities();
+        if(projectList == null || projectList.isEmpty()){
+            makeCurrentProjectCheckBox.setValue(true);
+            makeCurrentProjectCheckBox.setEnabled(false);
+        }
 
         fillFormLayout();
         singleLayout.addComponent(formLayout);
@@ -85,6 +93,7 @@ public class AddProjectWindow extends Window{
             field.setReadOnly(false);
             formLayout.addComponent(field);
         }
+        formLayout.addComponent(makeCurrentProjectCheckBox);
     }
 
     private void doInternationalization() {
@@ -104,17 +113,20 @@ public class AddProjectWindow extends Window{
                 while (it.hasNext()) {
                     final Component component = it.next();
                     if (component instanceof AbstractField) {
-                        if (((TextField) component).getValue() == null
-                                || ((TextField) component).getValue().equals(""))
+                        if (((AbstractField) component).getValue() == null
+                                || ((AbstractField) component).getValue().equals(""))
                             allFilled = false;
                     }
                 }
                 if (allFilled) {
                     try {
                         fieldGroup.commit();
-                        final BeanItem<PlannedProject> beanItem = (BeanItem<PlannedProject>) fieldGroup
+                        final BeanItem<PlannedProject> newProjectBeanItem = (BeanItem<PlannedProject>) fieldGroup
                                 .getItemDataSource();
-                        baseDaoFactoryBean.saveOrUpdateTX(beanItem.getBean());
+                        baseDaoFactoryBean.saveOrUpdateTX(newProjectBeanItem.getBean());
+                        if(makeCurrentProjectCheckBox.getValue() == true){
+                            ui.getSession().setAttribute(PlannedProject.class, newProjectBeanItem.getBean());
+                        }
                         AddProjectWindow.this.close();
                         ui.setWorkingArea(new ProjectAdministrationScreen(ui));
                     } catch (final FieldGroup.CommitException e) {

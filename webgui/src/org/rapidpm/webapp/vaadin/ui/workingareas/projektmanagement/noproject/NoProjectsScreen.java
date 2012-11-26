@@ -56,7 +56,8 @@ public class NoProjectsScreen extends Screen {
         manualButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                NoProjectsScreen.this.addComponent(new AddProjectWindow(ui, messagesBundle));
+                final AddProjectWindow addProjectWindow = new AddProjectWindow(ui, messagesBundle);
+                addProjectWindow.show();
             }
         });
     }
