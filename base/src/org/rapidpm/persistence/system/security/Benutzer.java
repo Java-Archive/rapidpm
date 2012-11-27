@@ -14,15 +14,14 @@ package org.rapidpm.persistence.system.security;
  *
  */
 
-import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
 import org.apache.log4j.Logger;
 import org.hibernate.envers.Audited;
+import org.rapidpm.persistence.system.security.berechtigungen.Rolle;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
@@ -82,6 +81,7 @@ public class Benutzer {
     @ManyToOne(cascade = {CascadeType.REFRESH}, optional = false, fetch = FetchType.EAGER)
     private Mandantengruppe mandantengruppe;
 
+    // TODO entfernen?
     @ManyToOne(cascade = {CascadeType.REFRESH}, optional = false, fetch = FetchType.EAGER)
     private BenutzerGruppe benutzerGruppe;
 
@@ -89,7 +89,7 @@ public class Benutzer {
     private BenutzerWebapplikation benutzerWebapplikation;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Berechtigung> berechtigungen;
+    private Set<Rolle> rollen;
 
 
     public Long getId() {
@@ -185,12 +185,12 @@ public class Benutzer {
         this.benutzerWebapplikation = benutzerWebapplikation;
     }
 
-    public Set<Berechtigung> getBerechtigungen() {
-        return berechtigungen;
+    public Set<Rolle> getRollen() {
+        return rollen;
     }
 
-    public void setBerechtigungen(final Set<Berechtigung> berechtigungen) {
-        this.berechtigungen = berechtigungen;
+    public void setRollen(final Set<Rolle> rollen) {
+        this.rollen = rollen;
     }
 
 
@@ -206,7 +206,7 @@ public class Benutzer {
             return false;
         if (benutzerWebapplikation != null ? !benutzerWebapplikation.equals(benutzer.benutzerWebapplikation) : benutzer.benutzerWebapplikation != null)
             return false;
-        if (berechtigungen != null ? !berechtigungen.equals(benutzer.berechtigungen) : benutzer.berechtigungen != null)
+        if (rollen != null ? !rollen.equals(benutzer.rollen) : benutzer.rollen != null)
             return false;
         if (email != null ? !email.equals(benutzer.email) : benutzer.email != null) return false;
         if (failedLogins != null ? !failedLogins.equals(benutzer.failedLogins) : benutzer.failedLogins != null)
@@ -239,7 +239,7 @@ public class Benutzer {
         result = 31 * result + (mandantengruppe != null ? mandantengruppe.hashCode() : 0);
         result = 31 * result + (benutzerGruppe != null ? benutzerGruppe.hashCode() : 0);
         result = 31 * result + (benutzerWebapplikation != null ? benutzerWebapplikation.hashCode() : 0);
-        result = 31 * result + (berechtigungen != null ? berechtigungen.hashCode() : 0);
+        result = 31 * result + (rollen != null ? rollen.hashCode() : 0);
         return result;
     }
 
@@ -259,7 +259,7 @@ public class Benutzer {
                 ", mandantengruppe=" + mandantengruppe +
                 ", benutzerGruppe=" + benutzerGruppe +
                 ", benutzerWebapplikation=" + benutzerWebapplikation +
-                ", berechtigungen=" + berechtigungen +
+                ", rollen=" + rollen +
                 '}';
     }
 

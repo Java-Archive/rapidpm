@@ -50,10 +50,9 @@ import org.rapidpm.persistence.system.logging.LogginEntityEntryDAO;
 import org.rapidpm.persistence.system.logging.LoggingEventEntryDAO;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.BerechtigungDAO;
+import org.rapidpm.persistence.system.security.berechtigungen.RolleDAO;
 import org.rapidpm.webapp.vaadin.MainUI;
 
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.persistence.*;
 
 public class DaoFactory {
@@ -331,6 +330,9 @@ public class DaoFactory {
         return new PlanningUnitElementDAO(getEntityManager());
     }
 
+    public RolleDAO getRolleDAO() {
+        return new RolleDAO(getEntityManager());
+    }
 
     public BerechtigungDAO getBerechtigungDAO() {
         return new BerechtigungDAO(getEntityManager());

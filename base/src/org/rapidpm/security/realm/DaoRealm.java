@@ -10,6 +10,8 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
+import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
+import org.rapidpm.persistence.system.security.berechtigungen.Rolle;
 
 import java.util.HashSet;
 import java.util.List;
@@ -53,9 +55,18 @@ public class DaoRealm extends AuthorizingRealm {
         final String username = (String) getAvailablePrincipal(principals);
         final Set<String> roles = new HashSet<>();
         final Set<String> permissions = new HashSet<>();
-        // TODO query roles and permissions
-        roles.add("admin");
-        permissions.add("perm");
+        final List<Benutzer> benutzerList = benutzerDAO.loadBenutzerForLogin(username);
+        if (benutzerList.isEmpty()) {
+            throw new AuthorizationException("No account found for user [" + username + "]");
+        }
+        final Benutzer benutzer = benutzerList.get(0);
+        final Set<Rolle> rollen = benutzer.getRollen();
+        for (final Rolle rolle : rollen) {
+            roles.add(rolle.getName());
+            for (final Berechtigung berechtigung : rolle.getBerechtigungen()) {
+                permissions.add(berechtigung.getName());
+            }
+        }
         final SimpleAuthorizationInfo info = new SimpleAuthorizationInfo(roles);
         info.setStringPermissions(permissions);
         return info;

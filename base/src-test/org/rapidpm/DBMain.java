@@ -165,9 +165,9 @@ public class DBMain {
             //
             //benutzer.setBerechtigungen(new ArrayList<Berechtigung>());
             if (mandantengruppe.getMandantengruppe().equals("NeoScioPortal")) {
-                benutzer.getBerechtigungen().addAll(berechtigungDAO.loadAllEntities());
+//                benutzer.getBerechtigungen().addAll(berechtigungDAO.loadAllEntities());
             } else {
-                benutzer.getBerechtigungen().add(berechtigungDAO.loadBerechtigung(mandantengruppe.getMandantengruppe()));
+//                benutzer.getBerechtigungen().add(berechtigungDAO.loadBerechtigung(mandantengruppe.getMandantengruppe()));
             }
 
 

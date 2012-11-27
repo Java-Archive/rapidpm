@@ -88,6 +88,18 @@ public abstract class BaseUI extends UI {
     }
 
     public void authentication(final String enteredLogin, final String enteredPasswd) throws Exception {
+//        final Subject user = SecurityUtils.getSubject();
+//        if (!user.isAuthenticated()) {
+//            final UsernamePasswordToken token = new UsernamePasswordToken(enteredLogin, enteredPasswd);
+////            token.setRememberMe(true);
+//            user.login(token); // throws AuthenticationException on failure
+////            final Benutzer benutzer = (Benutzer) user.getPrincipal();
+////            currentUser = benutzer;
+////            getSession().setAttribute(Benutzer.class, currentUser);
+////            removeAllComponents();
+////            loadProtectedRessources();
+//            logger.info("User [" + user.getPrincipal() + "] logged in successfully.");
+//        }
 
 //        final LoginBean bean = EJBFactory.getEjbInstance(LoginBean.class);
 //        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
