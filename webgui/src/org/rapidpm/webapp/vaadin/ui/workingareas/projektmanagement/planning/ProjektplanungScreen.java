@@ -57,7 +57,7 @@ public class ProjektplanungScreen extends Screen {
         super(ui);
 
 
-        final PlannedProject projectFromSession = ui.getCurrentProject();
+        final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
         final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
 
         try{
@@ -67,7 +67,7 @@ public class ProjektplanungScreen extends Screen {
             }
             final PlannedProject projectFromDB = plannedProjectDAO.findByID(projectFromSession.getId());
 
-            final PlanningCalculator calculator = new PlanningCalculator(messagesBundle);
+            final PlanningCalculator calculator = new PlanningCalculator(messagesBundle, ui);
             calculator.calculate();
 //        daoFactory.new Transaction() {
 //            @Override

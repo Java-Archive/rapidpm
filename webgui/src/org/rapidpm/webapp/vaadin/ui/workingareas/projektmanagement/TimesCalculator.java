@@ -11,9 +11,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElemen
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.MainUI;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 
-import javax.persistence.EntityManager;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -69,21 +67,24 @@ public class TimesCalculator {
         final PlannedProject projekt = plannedProjectDAO.findByID(plannedProjectFromSession.getId());
         for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
             daoFactory.getEntityManager().refresh(planningUnit);
-            calculatePlanningUnits(planningUnit.getKindPlanningUnits());
+            calculatePlanningUnits(planningUnit, planningUnit.getKindPlanningUnits());
         }
     }
 
 
-    private void calculatePlanningUnits(final Set<PlanningUnit> planningUnits) {
-        for (final PlanningUnit planningUnit : planningUnits) {
-            final Set<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
-            if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
-                addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, planningUnit);
-            } else {
-                calculatePlanningUnits(kindPlanningUnits);
+    private void calculatePlanningUnits(PlanningUnit parentPlanningUnit, final Set<PlanningUnit> planningUnits) {
+        if(planningUnits == null || planningUnits.isEmpty()){
+            addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, parentPlanningUnit);
+        } else {
+            for (final PlanningUnit planningUnit : planningUnits) {
+                final Set<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
+                if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
+                    addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, planningUnit);
+                } else {
+                    calculatePlanningUnits(planningUnit, kindPlanningUnits);
+                }
             }
         }
-
     }
 
     private void addiereZeileZurRessourceMap(final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap,

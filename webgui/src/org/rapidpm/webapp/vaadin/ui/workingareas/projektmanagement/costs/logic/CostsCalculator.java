@@ -57,17 +57,21 @@ public class CostsCalculator {
         //final Integer currentProjectIndex = bean.getCurrentProjectIndex();
         final Set<PlanningUnit> planningUnits = projekt.getPlanningUnits();
         for (final PlanningUnit planningUnit : planningUnits) {
-            calculatePlanningUnits(planningUnit.getKindPlanningUnits());
+            calculatePlanningUnits(planningUnit, planningUnit.getKindPlanningUnits());
         }
     }
 
 
-    private void calculatePlanningUnits(final Set<PlanningUnit> planningUnits) {
-        for (final PlanningUnit planningUnit : planningUnits) {
-            if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
-                addiereZeileZurRessourceMap(planningUnit);
-            } else {
-                calculatePlanningUnits(planningUnit.getKindPlanningUnits());
+    private void calculatePlanningUnits(final PlanningUnit parentPlanningUnit, final Set<PlanningUnit> planningUnits) {
+        if(planningUnits == null || planningUnits.isEmpty()){
+            addiereZeileZurRessourceMap(parentPlanningUnit);
+        } else {
+            for (final PlanningUnit planningUnit : planningUnits) {
+                if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
+                    addiereZeileZurRessourceMap(planningUnit);
+                } else {
+                    calculatePlanningUnits(planningUnit, planningUnit.getKindPlanningUnits());
+                }
             }
         }
     }
