@@ -64,7 +64,7 @@ public class DeleteRelationWindow extends Window implements Internationalization
     public void doInternationalization() {
         setCaption(screen.getMessagesBundle().getString("issuetracking_issue_deleterelationswindow"));
 
-        questionLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_delete_question"));
+        questionLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_deletequestion"));
         final Collection<?> ids = relationTable.getItem(removeItemId).getItemPropertyIds();
         String labelValue = "-      ";
         Object value;

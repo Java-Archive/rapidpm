@@ -80,7 +80,7 @@ public class DeleteIssueWindow extends Window implements Internationalizationabl
     public void doInternationalization() {
         setCaption(screen.getMessagesBundle().getString("issuetracking_issue_deletewindow"));
 
-        deleteLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_delete_question"));
+        deleteLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_deletequestion"));
         deleteLabel.setValue(issueTree.getItemCaption(issueTree.getValue()));
 
         deleteRecursive.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_deleterecursive"));
@@ -94,12 +94,17 @@ public class DeleteIssueWindow extends Window implements Internationalizationabl
 
         @Override
         public void buttonClick(Button.ClickEvent event) {
+            boolean success;
             Object item = issueTree.getValue();
             issueTree.setValue(issueTree.getParent(item));
-            boolean success = ((TreeIssueBaseContainer)issueTree.getContainerDataSource()).removeItem(item,
-                    deleteRecursive.getValue());
+            if (deleteRecursive.getValue()) {
+                success = ((TreeIssueBaseContainer)issueTree.getContainerDataSource()).removeItemRecursively(item);
+            } else {
+                success = issueTree.removeItem(item);
+            }
+
             if (!success)
-                Notification.show("Fehler beim Löschen!");
+                Notification.show(screen.getMessagesBundle().getString("issuetracking_issue_deleteerror"));
             self.close();
         }
     }

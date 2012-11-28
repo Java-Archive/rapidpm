@@ -96,25 +96,22 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
         return success;
     }
 
-    public boolean removeItem(Object itemId, boolean recursive) {
+
+
+    @Override
+    public boolean removeItemRecursively(Object itemId) {
         boolean success;
-        if (!recursive) {
-            success = removeItem(itemId);
-        } else {
-            HierarchicalContainer backup = this;
-            System.out.println("Vor" + backup.equals(this));
-            success = removeItemRecusivly(itemId);
-            System.out.println("Nach" + backup.equals(this));
-        }
+        //TODO Bei Fehler ausgangszustand wiederherstellen.
+        success = removeRecusively(itemId);
         return success;
     }
 
 
-    private boolean removeItemRecusivly(Object itemId) {
+    private boolean removeRecusively(Object itemId) {
         if (this.hasChildren(itemId)) {
             Object[] children = this.getChildren(itemId).toArray();
             for (Object child : children) {
-                boolean success = removeItemRecusivly(child);
+                boolean success = removeRecusively(child);
                 if (!success)
                     return false;
             }

@@ -64,7 +64,7 @@ public class DeleteCommentWindow extends Window implements Internationalizationa
     public void doInternationalization() {
         setCaption(screen.getMessagesBundle().getString("issuetracking_issue_deletecommentwindow"));
 
-        questionLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_delete_question"));
+        questionLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_deletequestion"));
         final Collection<?> ids = commentTable.getItem(removeItemId).getItemPropertyIds();
         String labelValue = "-      ";
         Object value;
