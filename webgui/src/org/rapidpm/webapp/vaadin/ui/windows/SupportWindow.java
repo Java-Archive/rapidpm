@@ -11,8 +11,9 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Window;
 import org.apache.log4j.Logger;
+import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 
-public class SupportWindow extends Window {
+public class SupportWindow extends RapidWindow {
     private static final Logger logger = Logger.getLogger(SupportWindow.class);
 
     private static final String SUPPORT_HTML_SNIPPET = "Support </br> stellen Sie Ihre Anfrage.... hier kommt dann och ein Ticket Fenster..";

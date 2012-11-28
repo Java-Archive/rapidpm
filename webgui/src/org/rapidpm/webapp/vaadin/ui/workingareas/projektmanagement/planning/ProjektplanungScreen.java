@@ -14,6 +14,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsScreen;
@@ -38,11 +39,11 @@ public class ProjektplanungScreen extends Screen {
 
     private HorizontalSplitPanel splitPanel;
     private VerticalLayout menuLayout;
-    private Panel mainPanel;
-    private Panel ressourcesPanel;
-    private Panel planningUnitPanel;
-    private Panel treePanel;
-    private Panel detailPanel;
+    private RapidPanel mainPanel;
+    private RapidPanel ressourcesPanel;
+    private RapidPanel planningUnitPanel;
+    private RapidPanel treePanel;
+    private RapidPanel detailsPanel;
     private PlanningUnitSelect planningUnitSelect;
     private VerticalLayout mainLayout;
     private PlanningUnitsTree planningUnitsTree;
@@ -81,18 +82,18 @@ public class ProjektplanungScreen extends Screen {
             splitPanel.setSizeFull();
             splitPanel.setSplitPosition(40, Unit.PERCENTAGE);
 
-            planningUnitPanel = new Panel();
-            treePanel = new Panel();
-            detailPanel = new Panel();
+            planningUnitPanel = new RapidPanel();
+            treePanel = new RapidPanel();
+            detailsPanel = new RapidPanel();
 
             menuLayout = new VerticalLayout();
             menuLayout.setSpacing(true);
             menuLayout.addComponent(planningUnitPanel);
             menuLayout.addComponent(treePanel);
-            menuLayout.addComponent(detailPanel);
+            menuLayout.addComponent(detailsPanel);
 
-            mainPanel = new Panel();
-            ressourcesPanel = new Panel();
+            mainPanel = new RapidPanel();
+            ressourcesPanel = new RapidPanel();
             ressourcesPanel.setSizeFull();
 
             mainLayout = new VerticalLayout();
@@ -129,8 +130,8 @@ public class ProjektplanungScreen extends Screen {
                 }else{
                     planningUnitFromDB = planningUnitFromSelect;
                 }
-                treePanel.getContent().removeAllComponents();
-                detailPanel.getContent().removeAllComponents();
+                treePanel.removeAllComponents();
+                detailsPanel.removeAllComponents();
                 treePanel.setCaption(planningUnitFromSelect.getPlanningUnitName());
                 fillTreePanel(planningUnitFromDB, projectFromDB);
             }
@@ -156,7 +157,7 @@ public class ProjektplanungScreen extends Screen {
 
     @Override
     public void doInternationalization() {
-        detailPanel.setCaption(messagesBundle.getString("details"));
+        detailsPanel.setCaption(messagesBundle.getString("details"));
     }
 
     public void fillTreePanel(final PlanningUnit selectedPlanningUnit, final PlannedProject projekt) {
@@ -167,8 +168,8 @@ public class ProjektplanungScreen extends Screen {
 //            @Override
 //            public void valueChange(Property.ValueChangeEvent event) {
 //                planningDetailsEditableLayout = new PlanningDetailsEditableLayout((PlanningUnit)planningUnitsTree.getValue
-//                        (),ProjektplanungScreen.this,detailPanel);
-//                detailPanel.addComponent(planningDetailsEditableLayout);
+//                        (),ProjektplanungScreen.this,detailsPanel);
+//                detailsPanel.addComponent(planningDetailsEditableLayout);
 //            }
 //        });
         treePanel.removeAllComponents();
@@ -184,15 +185,15 @@ public class ProjektplanungScreen extends Screen {
         return planningUnitsTree;
     }
 
-    public Panel getDetailPanel() {
-        return detailPanel;
+    public RapidPanel getDetailsPanel() {
+        return detailsPanel;
     }
 
-    public Panel getMainPanel() {
+    public RapidPanel getMainPanel() {
         return mainPanel;
     }
 
-    public Panel getRessourcesPanel() {
+    public RapidPanel getRessourcesPanel() {
         return ressourcesPanel;
     }
 
