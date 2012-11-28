@@ -64,7 +64,7 @@ public class DeleteTestcaseWindow extends Window implements Internationalization
     public void doInternationalization() {
         setCaption(screen.getMessagesBundle().getString("issuetracking_issue_deletetestcasewindow"));
 
-        questionLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_delete_question"));
+        questionLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_deletequestion"));
         final Collection<?> ids = testcaseTable.getItem(removeItemId).getItemPropertyIds();
         String labelValue = "-      ";
         Object value;

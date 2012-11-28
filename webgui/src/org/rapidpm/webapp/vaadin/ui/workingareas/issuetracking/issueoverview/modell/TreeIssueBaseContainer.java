@@ -9,6 +9,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -70,6 +71,7 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
         }
     }
 
+
     @Override
     public boolean removeItem(Object itemId) {
         boolean success = false;
@@ -92,5 +94,28 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
             }
 
         return success;
+    }
+
+
+
+    @Override
+    public boolean removeItemRecursively(Object itemId) {
+        boolean success;
+        //TODO Bei Fehler ausgangszustand wiederherstellen.
+        success = removeRecusively(itemId);
+        return success;
+    }
+
+
+    private boolean removeRecusively(Object itemId) {
+        if (this.hasChildren(itemId)) {
+            Object[] children = this.getChildren(itemId).toArray();
+            for (Object child : children) {
+                boolean success = removeRecusively(child);
+                if (!success)
+                    return false;
+            }
+        }
+        return removeItem(itemId);
     }
 }

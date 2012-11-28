@@ -10,6 +10,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.system.security.Benutzer;
+import org.rapidpm.persistence.system.security.BenutzerDAO;
 
 import java.io.File;
 import java.util.*;
@@ -374,7 +375,8 @@ issueAttr.add(Arrays.asList(1,4,1,  4,3,  2012, 7,12, 2012, 1,14, 2012, 1,14,  2
 issueAttr.add(Arrays.asList(2,1,2,  2,2,  2012, 7,12, 2012, 2,12, 2012, 2,19,  2, 9,  4, 1,  -1,-1,  11,-1,  -1,  -1));
 issueAttr.add(Arrays.asList(3,2,4,  5,4,  2012, 7,12, 2012, 2,19, 2012, 2,19,  2, 6,  4,-1,  12,-1,  23,24,  -1,  -1));
 issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2, 3,  4,-1,  -1,-1,  25,-1,  -1,  -1));
-        
+
+        BenutzerDAO benutzerDao = daoFactory.getBenutzerDAO();
         //fill Issues with Attributes
         int i, x = 0;
         for (List<Integer> attributes : issueAttr) {
@@ -386,12 +388,8 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
             issue.setStatus(statusList.get(attributes.get(i++)));
             issue.setPriority(priorityList.get(attributes.get(i++)));
             issue.setType(typeList.get(attributes.get(i++)));
-            user = new Benutzer();
-            user.setId(new Long(attributes.get(i++)));
-            issue.setReporter(user);
-            user = new Benutzer();
-            user.setId(new Long(attributes.get(i++)));
-            issue.setAssignee(user);
+            issue.setReporter(benutzerDao.findByID(new Long(attributes.get(i++))));
+            issue.setAssignee(benutzerDao.findByID(new Long(attributes.get(i++))));
 
             calendar.set(attributes.get(i++), attributes.get(i++), attributes.get(i++));
             issue.setDueDate_planned(calendar.getTime());
