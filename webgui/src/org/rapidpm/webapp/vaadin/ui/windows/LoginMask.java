@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.BaseUI;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.Languages;
+import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 
 import java.util.Arrays;
@@ -24,7 +25,7 @@ public class LoginMask extends VerticalLayout {
     private TextField usernameField;
     private PasswordField passwordField;
     private ComboBox languageBox;
-    private Panel frame;
+    private RapidPanel frame;
 
     private FormLayout loginLayout;
     private Button loginButton;
@@ -33,7 +34,7 @@ public class LoginMask extends VerticalLayout {
         this.ui = ui;
         setSizeFull();
 //        initUI();
-        frame = new Panel();
+        frame = new RapidPanel();
         frame.setSizeUndefined();
         loginLayout = new FormLayout();
         usernameField = new TextField("username");

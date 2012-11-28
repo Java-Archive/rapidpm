@@ -42,11 +42,11 @@ public class CurrentProjectPanel extends EditablePanel {
 //        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
-        setCaption(messagesBundle.getString("pm_currentproject"));
+        setCaption(messagesBundle.getString("project_currentproject"));
         setContent(null);
         final List<PlannedProject> projects = daoFactory.getPlannedProjectDAO().loadAllEntities();
         if(projects.isEmpty()){
-            addComponent(new Label(messagesBundle.getString("pm_noprojects")));
+            addComponent(new Label(messagesBundle.getString("project_noprojects")));
         } else {
             currentProjectBox = new ComboBox("", new BeanItemContainer<>(PlannedProject.class, projects));
             currentProjectBox.setNullSelectionAllowed(false);

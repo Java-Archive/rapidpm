@@ -35,7 +35,7 @@ public class TreeTableFiller {
     }
 
     public void fill() {
-        final TimesCalculator timesCalculator = new TimesCalculator(messages);
+        final TimesCalculator timesCalculator = new TimesCalculator(messages, screen.getUi());
         final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(screen, messages,
                 dataSource);
         timesCalculator.calculate();

@@ -1,7 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning;
 
 import com.vaadin.data.Property;
-import com.vaadin.data.util.BeanItemContainer;
 //import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
 //import org.rapidpm.Constants;
@@ -16,17 +15,17 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsException;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsEditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitsTree;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitsTreePanelLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.parents.PlanningUnitSelect;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.PlanningUnitBeanItemContainer;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -58,49 +57,61 @@ public class ProjektplanungScreen extends Screen {
         super(ui);
 
 
-        final PlannedProject projectFromSession = ui.getCurrentProject();
+        final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
         final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
-        final PlannedProject projectFromDB = plannedProjectDAO.findByID(projectFromSession.getId());
 
-        final PlanningCalculator calculator = new PlanningCalculator(messagesBundle);
-        calculator.calculate();
+        try{
+            final List<PlannedProject> plannedProjects = daoFactory.getPlannedProjectDAO().loadAllEntities();
+            if(plannedProjects == null || plannedProjects.isEmpty()){
+                throw new NoProjectsException();
+            }
+            final PlannedProject projectFromDB = plannedProjectDAO.findByID(projectFromSession.getId());
+
+            final PlanningCalculator calculator = new PlanningCalculator(messagesBundle, ui);
+            calculator.calculate();
 //        daoFactory.new Transaction() {
 //            @Override
 //            public void doTask() {
 //                daoFactory.getEntityManager().refresh(projectFromDB);
 //            }
 //        }.execute();
-        //daoFactory.getEntityManager().refresh(projectFromDB);
+            //daoFactory.getEntityManager().refresh(projectFromDB);
 
-        splitPanel = new HorizontalSplitPanel();
-        splitPanel.setSizeFull();
-        splitPanel.setSplitPosition(40, Unit.PERCENTAGE);
+            splitPanel = new HorizontalSplitPanel();
+            splitPanel.setSizeFull();
+            splitPanel.setSplitPosition(40, Unit.PERCENTAGE);
 
-        planningUnitPanel = new Panel();
-        treePanel = new Panel();
-        detailPanel = new Panel();
+            planningUnitPanel = new Panel();
+            treePanel = new Panel();
+            detailPanel = new Panel();
 
-        menuLayout = new VerticalLayout();
-        menuLayout.setSpacing(true);
-        menuLayout.addComponent(planningUnitPanel);
-        menuLayout.addComponent(treePanel);
-        menuLayout.addComponent(detailPanel);
+            menuLayout = new VerticalLayout();
+            menuLayout.setSpacing(true);
+            menuLayout.addComponent(planningUnitPanel);
+            menuLayout.addComponent(treePanel);
+            menuLayout.addComponent(detailPanel);
 
-        mainPanel = new Panel();
-        ressourcesPanel = new Panel();
-        ressourcesPanel.setSizeFull();
+            mainPanel = new Panel();
+            ressourcesPanel = new Panel();
+            ressourcesPanel.setSizeFull();
 
-        mainLayout = new VerticalLayout();
-        mainLayout.setSpacing(true);
-        mainLayout.addComponent(ressourcesPanel);
-        mainLayout.addComponent(mainPanel);
+            mainLayout = new VerticalLayout();
+            mainLayout.setSpacing(true);
+            mainLayout.addComponent(ressourcesPanel);
+            mainLayout.addComponent(mainPanel);
 
-        splitPanel.addComponent(menuLayout);
-        splitPanel.addComponent(mainLayout);
+            splitPanel.addComponent(menuLayout);
+            splitPanel.addComponent(mainLayout);
 
-        buildPlanningUnitPanel();
-        doInternationalization();
-        setComponents();
+            buildPlanningUnitPanel();
+            doInternationalization();
+            setComponents();
+        } catch (final NoProjectsException e){
+            removeAllComponents();
+            final NoProjectsScreen noProjectsScreen = new NoProjectsScreen(ui);
+            addComponent(noProjectsScreen);
+        }
+
     }
 
     private void buildPlanningUnitPanel() {
@@ -125,7 +136,10 @@ public class ProjektplanungScreen extends Screen {
             }
         });
         if (ids != null && !ids.isEmpty()) {
-            planningUnitSelect.setValue(ids.get(0));
+            final PlanningUnit firstPlanningUnit = daoFactory.getPlanningUnitDAO().findByID(((PlanningUnit)ids.get(0))
+                    .getId());
+            daoFactory.getEntityManager().refresh(firstPlanningUnit);
+            planningUnitSelect.setValue(firstPlanningUnit);
         } else {
             tempPlanningUnit.setId(666l);
             tempPlanningUnit.setPlanningUnitName("Platzhalter");

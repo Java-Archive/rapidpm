@@ -29,7 +29,7 @@ public class ChosenProjectPanel extends EditablePanel {
 
     public ChosenProjectPanel(final MainUI ui, final ResourceBundle messagesBundle) {
         super(messagesBundle);
-        noSelectionLabel = new Label(messagesBundle.getString("pm_noselection"));
+        noSelectionLabel = new Label(messagesBundle.getString("project_noselection"));
 
         cancelButton.addClickListener(new Button.ClickListener() {
             @Override
@@ -70,7 +70,7 @@ public class ChosenProjectPanel extends EditablePanel {
 
     @Override
     public void doInternationalization() {
-        setCaption(messagesBundle.getString("pm_editproject"));
+        setCaption(messagesBundle.getString("project_editproject"));
         saveButton.setCaption(messagesBundle.getString("save"));
         cancelButton.setCaption(messagesBundle.getString("cancel"));
     }
