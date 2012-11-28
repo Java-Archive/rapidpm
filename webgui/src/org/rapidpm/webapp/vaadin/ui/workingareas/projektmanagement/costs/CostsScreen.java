@@ -132,7 +132,7 @@ public class CostsScreen extends Screen {
 
     private void fillFields() {
         final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle, this.getUi());
-        final CostsCalculator costsCalculator = new CostsCalculator(messagesBundle);
+        final CostsCalculator costsCalculator = new CostsCalculator(ui, messagesBundle);
         costsCalculator.calculate();
         timesCalculator.calculate();
         summeInMinField = new TextField();

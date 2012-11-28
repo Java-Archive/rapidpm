@@ -19,6 +19,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.FormattedDateStringToDateConver
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.uicomponents.BenutzerEditor;
 
+import javax.persistence.PersistenceException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -124,7 +125,7 @@ public class BenutzerScreen extends Screen {
                             daoFactory.removeTX(selectedBenutzer);
                             benutzerTable.removeItem(tableItemId);
                             benutzerEditor.setVisible(false);
-                        } catch (Exception e){
+                        } catch (final PersistenceException e){
                             Notification.show(messagesBundle.getString("users_userinuse"));
                         }
 
@@ -134,6 +135,9 @@ public class BenutzerScreen extends Screen {
                         logger.warn(selectedBenutzer.toString() + "war nur transient vorhanden");
                     }
 
+                }
+                else{
+                    Notification.show(messagesBundle.getString("users_selfdelete"));
                 }
             }
         });

@@ -201,19 +201,14 @@ public class Benutzer {
 
         Benutzer benutzer = (Benutzer) o;
 
-        if (!email.equals(benutzer.email)) return false;
         if (id != null ? !id.equals(benutzer.id) : benutzer.id != null) return false;
-        if (!login.equals(benutzer.login)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + login.hashCode();
-        result = 31 * result + email.hashCode();
-        return result;
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override

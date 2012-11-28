@@ -136,7 +136,10 @@ public class ProjektplanungScreen extends Screen {
             }
         });
         if (ids != null && !ids.isEmpty()) {
-            planningUnitSelect.setValue(ids.get(0));
+            final PlanningUnit firstPlanningUnit = daoFactory.getPlanningUnitDAO().findByID(((PlanningUnit)ids.get(0))
+                    .getId());
+            daoFactory.getEntityManager().refresh(firstPlanningUnit);
+            planningUnitSelect.setValue(firstPlanningUnit);
         } else {
             tempPlanningUnit.setId(666l);
             tempPlanningUnit.setPlanningUnitName("Platzhalter");

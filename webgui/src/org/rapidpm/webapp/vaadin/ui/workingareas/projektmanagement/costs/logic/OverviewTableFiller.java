@@ -10,8 +10,6 @@ import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.person
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.CostsScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 
 import java.text.DecimalFormat;
@@ -74,7 +72,7 @@ public class OverviewTableFiller {
         final TimesCalculator timesCalculator = new TimesCalculator(messages, ui);
         timesCalculator.calculate();
 
-        final CostsCalculator costsCalculator = new CostsCalculator(messages);
+        final CostsCalculator costsCalculator = new CostsCalculator(ui, messages);
         costsCalculator.calculate();
 
         final Item externItem = table.addItem(EXTERN);

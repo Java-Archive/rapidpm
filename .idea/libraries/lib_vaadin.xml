@@ -3,6 +3,7 @@
     <CLASSES>
       <root url="file://$PROJECT_DIR$/lib/lib-vaadin" />
       <root url="file://$PROJECT_DIR$/lib/lib-vaadin" />
+      <root url="file://$PROJECT_DIR$/lib/lib-vaadin/addons" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
@@ -10,6 +11,7 @@
       <root url="file://$PROJECT_DIR$/lib/lib-vaadin" />
     </SOURCES>
     <jarDirectory url="file://$PROJECT_DIR$/lib/lib-vaadin" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/lib/lib-vaadin/addons" recursive="false" />
     <jarDirectory url="file://$PROJECT_DIR$/lib/lib-vaadin" recursive="false" type="SOURCES" />
   </library>
 </component>
