@@ -11,6 +11,7 @@ import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsEditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.information.PlanningInformationEditableLayout;
@@ -48,9 +49,9 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                 final PlanningUnitsTree tree = screen.getPlanningUnitsTree();
                 final BeanItem<PlanningUnit> selectedPlanningUnitBeanItem = (BeanItem) tree.getItem(selectedId);
                 final PlanningUnit selectedPlanningUnit = selectedPlanningUnitBeanItem.getBean();
-                final Panel detailPanel = screen.getDetailPanel();
-                final Panel mainPanel = screen.getMainPanel();
-                final Panel ressourcesPanel = screen.getRessourcesPanel();
+                final RapidPanel detailPanel = screen.getDetailsPanel();
+                final RapidPanel mainPanel = screen.getMainPanel();
+                final RapidPanel ressourcesPanel = screen.getRessourcesPanel();
 
                 detailPanel.removeAllComponents();
                 mainPanel.removeAllComponents();

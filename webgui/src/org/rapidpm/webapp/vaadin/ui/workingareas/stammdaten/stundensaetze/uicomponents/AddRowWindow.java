@@ -13,6 +13,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.exceptions.NameExistsException;
 
@@ -22,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AddRowWindow extends Window {
+public class AddRowWindow extends RapidWindow {
     public static final String HEIGHT = "400px";
     public static final String WIDTH = "400px";
     public static final int POSITION_X = 50;

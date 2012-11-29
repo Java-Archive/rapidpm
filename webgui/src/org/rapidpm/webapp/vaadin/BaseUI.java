@@ -10,7 +10,7 @@ package org.rapidpm.webapp.vaadin;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServiceSession;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.BaseTheme;
 import org.apache.log4j.Logger;
@@ -57,7 +57,7 @@ public abstract class BaseUI extends UI {
     public void init(final VaadinRequest request) {
         loadFirstProject();
         this.setSizeFull();
-        final VaadinServiceSession session = getSession();
+        final VaadinSession session = getSession();
         if (session.getAttribute(Benutzer.class) == null) {
             if (DEBUG_MODE) {
                 buildMainLayout();
@@ -76,7 +76,7 @@ public abstract class BaseUI extends UI {
 
     private void loadFirstProject() {
 //        final LoginBean bean = EJBFactory.getEjbInstance(LoginBean.class);
-        final VaadinServiceSession session = this.getSession();
+        final VaadinSession session = this.getSession();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final List<PlannedProject> projects = daoFactory.getPlannedProjectDAO().loadAllEntities();
         if(projects == null || projects.isEmpty()){
@@ -101,7 +101,7 @@ public abstract class BaseUI extends UI {
             if (userLogin.equals(enteredLogin) && userPasswd.equals(enteredPasswdHashed)) {
                 currentUser = user;
                 getSession().setAttribute(Benutzer.class, currentUser);
-                removeAllComponents();
+                setContent(null);
                 loadProtectedRessources();
                 return;
             }
@@ -162,7 +162,8 @@ public abstract class BaseUI extends UI {
     private void buildMainLayout() {
 
         final VerticalLayout mainlayout = new VerticalLayout();
-        mainlayout.setSizeFull();
+        mainlayout.setSizeUndefined();
+        mainlayout.setWidth("100%");
 
         final VerticalLayout vlMiddle = new VerticalLayout();
         vlMiddle.setSizeFull();
@@ -184,14 +185,14 @@ public abstract class BaseUI extends UI {
         vlMiddleInner.addComponent(hlHeaderLineContainer);
         vlMiddleInner.setComponentAlignment(hlHeaderLineContainer, Alignment.TOP_RIGHT);
 
-        final HorizontalLayout hlHeader = new HorizontalLayout();
+        final HorizontalLayout hlHeader = new HorizontalLayout();   // --> line mit icons
         vlMiddleInner.addComponent(hlHeader);
         hlHeader.setSizeFull();
 
 
         final HorizontalLayout hlHeaderBottomLine = new HorizontalLayout();
         hlHeaderBottomLine.setSizeFull();
-        vlMiddleInner.addComponent(hlHeaderBottomLine);
+        vlMiddleInner.addComponent(hlHeaderBottomLine); // --> hlHeaderBottomLine --> menubar
 
 //        hlWorkingAreaContainer.setSizeFull();
         vlMiddleInner.addComponent(hlWorkingAreaContainer);
@@ -201,7 +202,7 @@ public abstract class BaseUI extends UI {
         vlMiddleInner.setComponentAlignment(hlBottomLine, Alignment.BOTTOM_CENTER);
 
         //HeaderLine
-        final HorizontalLayout headerLine = createStdHeaderLine();
+        final HorizontalLayout headerLine = createStdHeaderLine(); // --> links
         setHeaderLine(headerLine);
 
         //Header
@@ -219,7 +220,7 @@ public abstract class BaseUI extends UI {
         hlHeaderBottomLine.addComponent(menubar);
 
 
-        addComponent(mainlayout);
+        setContent(mainlayout);
     }
 
     protected abstract void initMenuBar(MenuBar menuBar);
@@ -318,8 +319,8 @@ public abstract class BaseUI extends UI {
 
     private void buildLoginScreen() {
         final LoginMask mask = new LoginMask(this);
-        removeAllComponents();
-        addComponent(mask);
+        setContent(null);
+        setContent(mask);
     }
 
 

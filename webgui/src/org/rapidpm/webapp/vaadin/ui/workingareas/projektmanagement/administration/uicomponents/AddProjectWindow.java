@@ -13,6 +13,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.ProjectAdministrationScreen;
 
 import javax.persistence.EntityManager;
@@ -27,7 +28,7 @@ import java.util.ResourceBundle;
  * Time: 15:45
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class AddProjectWindow extends Window{
+public class AddProjectWindow extends RapidWindow{
 
     public static final String HEIGHT = "400px";
     public static final String WIDTH = "400px";
@@ -38,7 +39,6 @@ public class AddProjectWindow extends Window{
 
     private MainUI ui;
 
-    private VerticalLayout singleLayout = new VerticalLayout();
     private FormLayout formLayout = new FormLayout();
     private HorizontalLayout horizontalButtonLayout = new HorizontalLayout();
     private Button saveButton = new Button();
@@ -70,13 +70,12 @@ public class AddProjectWindow extends Window{
         }
 
         fillFormLayout();
-        singleLayout.addComponent(formLayout);
+        addComponent(formLayout);
 
         horizontalButtonLayout.addComponent(saveButton);
         horizontalButtonLayout.addComponent(cancelButton);
 
-        singleLayout.addComponent(horizontalButtonLayout);
-        setContent(singleLayout);
+        addComponent(horizontalButtonLayout);
         addListeners(daoFactory, ui);
         doInternationalization();
 
@@ -136,8 +135,7 @@ public class AddProjectWindow extends Window{
                 } else {
                     final Label lbl = new Label();
                     lbl.setValue(messages.getString("stdsatz_fillInAllFields"));
-                    singleLayout.addComponent(lbl);
-                    AddProjectWindow.this.setContent(singleLayout);
+                    addComponent(lbl);
                 }
 
             }
