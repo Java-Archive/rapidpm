@@ -22,6 +22,7 @@ public class IssueSettingsScreen  extends Screen {
     public IssueSettingsScreen(final MainUI ui) {
         super(ui);
         setSizeFull();
+        setMargin(true);
         setComponents();
         doInternationalization();
     }
