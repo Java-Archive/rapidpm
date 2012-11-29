@@ -1,6 +1,5 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.builder.project;
 
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriority;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnit;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
@@ -24,9 +23,16 @@ public class IssueBaseBuilder {
     private Benutzer reporter;
     private IssueStatus status;
     private String text;
+    private long projectId;
 
-
+    private IssueTimeUnit timeUnitEstimated;
     private List<IssueTimeUnit> timeUnitsUsed;
+
+
+    public IssueBaseBuilder setProjectId(long projectId) {
+        this.projectId = projectId;
+        return this;
+    }
 
     public IssueBaseBuilder setAssignee(final Benutzer assignee) {
         this.assignee = assignee;
@@ -64,6 +70,11 @@ public class IssueBaseBuilder {
         return this;
     }
 
+    public IssueBaseBuilder setTimeUnitEstimated(IssueTimeUnit timeUnitEstimated) {
+        this.timeUnitEstimated = timeUnitEstimated;
+        return this;
+    }
+
     public IssueBaseBuilder setTimeUnitsUsed(final List<IssueTimeUnit> timeUnitsUsed) {
         this.timeUnitsUsed = timeUnitsUsed;
         return this;
@@ -76,14 +87,14 @@ public class IssueBaseBuilder {
 
             throw new  IllegalStateException("IssueBaseBuilder: Nicht alle Daten angegegen.");
 
-        final IssueBase issueBase = new IssueBase();
+        final IssueBase issueBase = new IssueBase(projectId);
         issueBase.setAssignee(assignee);
 //        issueBase.setD(dueDateClosed);
 //        issueBase.setDueDate_planned(dueDatePlanned);
 //        issueBase.setDueDate_resolved(dueDateResolved);
         issueBase.setReporter(reporter);
         issueBase.setStatus(status);
-        issueBase.setText(text);
+        issueBase.setTimeUnitEstimated(timeUnitEstimated);
         for(IssueTimeUnit issueTimeUnit : timeUnitsUsed)
             issueBase.addTimeUnitUsed(issueTimeUnit);
         return issueBase;

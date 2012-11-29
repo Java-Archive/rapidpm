@@ -19,6 +19,12 @@ public class PlannedProjectBuilder {
     private Benutzer responsiblePerson;
     private Set<PlanningUnit> planningUnitList;
     private String projectName;
+    private long id;
+
+    public PlannedProjectBuilder setId(long id) {
+        this.id = id;
+        return this;
+    }
 
     public PlannedProjectBuilder setCreator(final Benutzer creator) {
         this.creator = creator;
@@ -45,6 +51,7 @@ public class PlannedProjectBuilder {
             throw new IllegalStateException("PlannedProjectBuilder: Es wurden nicht alle notwendigen Daten angegeben.");
 
         final PlannedProject plannedProject = new PlannedProject();
+        plannedProject.setId(id);
         plannedProject.setCreator(creator);
         plannedProject.setResponsiblePerson(responsiblePerson);
         plannedProject.setPlanningUnits(planningUnitList);

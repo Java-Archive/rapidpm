@@ -112,10 +112,6 @@ public class IssueBase implements PersistInGraph {
         setProjectId(projectId);
     }
 
-    public IssueBase(){
-        this.setId(0L);
-    }
-
     private boolean addToMap(String methodName, Object[] args) {
         boolean success = false;
         if (graphMap == null) {
@@ -262,7 +258,7 @@ public class IssueBase implements PersistInGraph {
         return text;
     }
 
-    public void setText(final String text) {
+    private void setText(final String text) {
         this.text = text;
     }
 
@@ -373,5 +369,61 @@ public class IssueBase implements PersistInGraph {
 
     public void setTestcases(List<IssueTestCase> issueTestCases) {
         this.setTestcases(issueTestCases);
+    }
+
+    public void setDueDate_closed(Date dueDate_closed) {
+        this.dueDate_closed = dueDate_closed;
+    }
+
+    public void setDueDate_planned(Date dueDate_planned) {
+        this.dueDate_planned = dueDate_planned;
+    }
+
+    public void setDueDate_resolved(Date dueDate_resolved) {
+        this.dueDate_resolved = dueDate_resolved;
+    }
+
+    public Date getDueDate_planned() {
+        return dueDate_planned;
+    }
+
+    public Date getDueDate_resolved() {
+        return dueDate_resolved;
+    }
+
+    public Date getDueDate_closed() {
+        return dueDate_closed;
+    }
+
+    public Integer getRisk() {
+        return risk;
+    }
+
+    public void setRisk(Integer risk) {
+        this.risk = risk;
+    }
+
+    public List<IssueTestCase> getTestcases() {
+        return testcases;
+    }
+
+    public void setTimeUnitEstimated(IssueTimeUnit timeUnitEstimated) {
+        this.timeUnitEstimated = timeUnitEstimated;
+    }
+
+    public IssueTimeUnit getTimeUnitEstimated() {
+        return timeUnitEstimated;
+    }
+
+    public List<IssueTimeUnit> getTimeUnitsUsed() {
+        return timeUnitsUsed;
+    }
+
+    public PlanningUnit getPlanningUnit() {
+        return planningUnit;
+    }
+
+    public void setPlanningUnit(PlanningUnit planningUnit) {
+        this.planningUnit = planningUnit;
     }
 }

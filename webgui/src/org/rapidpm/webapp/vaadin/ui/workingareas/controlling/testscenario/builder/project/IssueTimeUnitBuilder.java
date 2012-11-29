@@ -45,7 +45,6 @@ public class IssueTimeUnitBuilder {
         issueTimeUnit.setDate(datum);
         issueTimeUnit.setMinutes(minutes);
         issueTimeUnit.setWorker(worker);
-
         return issueTimeUnit;
     }
 }

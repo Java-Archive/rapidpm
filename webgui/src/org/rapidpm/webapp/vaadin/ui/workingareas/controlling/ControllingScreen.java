@@ -1,7 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.controlling;
 
 import com.vaadin.ui.*;
-import org.rapidpm.ejb3.EJBFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;

@@ -37,9 +37,10 @@ public class IssueBaseDemoDaten {
     private List<IssueBase> planningUnit2_issueBaseList;
 
     private final BenutzerDemoDaten benutzerDemoDaten = new BenutzerDemoDaten();
-    private final IssueTimeUnitDemoDatata issueTimeUnitDemoDatata = new IssueTimeUnitDemoDatata();
+    private final IssueTimeUnitsUsedDemoDaten issueTimeUnitsUsedDemoDaten = new IssueTimeUnitsUsedDemoDaten();
+    private final IssueTimeUnitEstimatedDemoDaten issueTimeUnitEstimatedDemoDaten = new IssueTimeUnitEstimatedDemoDaten();
 
-    public IssueBaseDemoDaten(){
+    public IssueBaseDemoDaten(long projectId){
         final IssueBase rpm_1_issue = new IssueBaseBuilder()
                 .setAssignee(benutzerDemoDaten.getDanielMacDonaldBenutzer())
                 .setText("Test Issue 1")
@@ -48,7 +49,8 @@ public class IssueBaseDemoDaten {
                 .setDueDateResolved(Date.valueOf("01.10.2012"))
                 .setReporter(benutzerDemoDaten.getUrsulaBeckerBenutzer())
                 .setStatus(closedIssueStatus)
-                .setTimeUnitsUsed(issueTimeUnitDemoDatata.getRpm1_timeUnitsUsedList())
+                .setTimeUnitsUsed(issueTimeUnitsUsedDemoDaten.getRpm1_timeUnitsUsedList())
+                .setTimeUnitEstimated(issueTimeUnitEstimatedDemoDaten.getRpm1_timeUnitEstimated())
                 .getIssueBase();
         planningUnit1_issueBaseList.add(rpm_1_issue);
 
@@ -60,7 +62,8 @@ public class IssueBaseDemoDaten {
                 .setDueDateResolved(Date.valueOf("06.10.2012"))
                 .setReporter(benutzerDemoDaten.getUrsulaBeckerBenutzer())
                 .setStatus(closedIssueStatus)
-                .setTimeUnitsUsed(issueTimeUnitDemoDatata.getRpm2_timeUnitsUsedList())
+                .setTimeUnitsUsed(issueTimeUnitsUsedDemoDaten.getRpm2_timeUnitsUsedList())
+                .setTimeUnitEstimated(issueTimeUnitEstimatedDemoDaten.getRpm2_timeUnitEstimated())
                 .getIssueBase();
         planningUnit1_1_issueBaseList.add(rpm_2_issue);
 
@@ -72,7 +75,8 @@ public class IssueBaseDemoDaten {
                 .setDueDateResolved(Date.valueOf("07.10.2012"))
                 .setReporter(benutzerDemoDaten.getUrsulaBeckerBenutzer())
                 .setStatus(closedIssueStatus)
-                .setTimeUnitsUsed(issueTimeUnitDemoDatata.getRpm3_timeUnitsUsedList())
+                .setTimeUnitsUsed(issueTimeUnitsUsedDemoDaten.getRpm3_timeUnitsUsedList())
+                .setTimeUnitEstimated(issueTimeUnitEstimatedDemoDaten.getRpm3_timeUnitEstimated())
                 .getIssueBase();
         planningUnit1_1_issueBaseList.add(rpm_3_issue);
 
@@ -84,7 +88,8 @@ public class IssueBaseDemoDaten {
                 .setDueDateResolved(Date.valueOf("07.10.2012"))
                 .setReporter(benutzerDemoDaten.getUrsulaBeckerBenutzer())
                 .setStatus(closedIssueStatus)
-                .setTimeUnitsUsed(issueTimeUnitDemoDatata.getRpm4_timeUnitsUsedList())
+                .setTimeUnitsUsed(issueTimeUnitsUsedDemoDaten.getRpm4_timeUnitsUsedList())
+                .setTimeUnitEstimated(issueTimeUnitEstimatedDemoDaten.getRpm4_timeUnitEstimated())
                 .getIssueBase();
         planningUnit1_1_issueBaseList.add(rpm_4_issue);
 
@@ -96,7 +101,8 @@ public class IssueBaseDemoDaten {
                 .setDueDateResolved(Date.valueOf("08.10.2012"))
                 .setReporter(benutzerDemoDaten.getUrsulaBeckerBenutzer())
                 .setStatus(closedIssueStatus)
-                .setTimeUnitsUsed(issueTimeUnitDemoDatata.getRpm5_timeUnitsUsedList())
+                .setTimeUnitsUsed(issueTimeUnitsUsedDemoDaten.getRpm5_timeUnitsUsedList())
+                .setTimeUnitEstimated(issueTimeUnitEstimatedDemoDaten.getRpm5_timeUnitEstimated())
                 .getIssueBase();
         planningUnit1_1_issueBaseList.add(rpm_5_issue);
 
@@ -108,7 +114,8 @@ public class IssueBaseDemoDaten {
                 .setDueDateResolved(null)
                 .setReporter(benutzerDemoDaten.getUrsulaBeckerBenutzer())
                 .setStatus(resolvedIssueStatus)
-                .setTimeUnitsUsed(issueTimeUnitDemoDatata.getRpm6_timeUnitsUsedList())
+                .setTimeUnitsUsed(issueTimeUnitsUsedDemoDaten.getRpm6_timeUnitsUsedList())
+                .setTimeUnitEstimated(issueTimeUnitEstimatedDemoDaten.getRpm6_timeUnitEstimated())
                 .getIssueBase();
         planningUnit1_2_issueBaseList.add(rpm_6_issue);
 
@@ -120,7 +127,8 @@ public class IssueBaseDemoDaten {
                 .setDueDateResolved(Date.valueOf("11.10.2012"))
                 .setReporter(benutzerDemoDaten.getUrsulaBeckerBenutzer())
                 .setStatus(resolvedIssueStatus)
-                .setTimeUnitsUsed(issueTimeUnitDemoDatata.getRpm7_timeUnitsUsedList())
+                .setTimeUnitsUsed(issueTimeUnitsUsedDemoDaten.getRpm7_timeUnitsUsedList())
+                .setTimeUnitEstimated(issueTimeUnitEstimatedDemoDaten.getRpm7_timeUnitEstimated())
                 .getIssueBase();
         planningUnit2_issueBaseList.add(rpm_7_issue);
     }

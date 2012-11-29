@@ -234,4 +234,6 @@ public class PlannedProject {
     public void setProjektToken(String projektToken) {
         this.projektToken = projektToken;
     }
+
+
 }

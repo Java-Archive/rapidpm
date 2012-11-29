@@ -19,7 +19,6 @@ import java.util.Set;
  * To change this template use File | Settings | File Templates.
  */
 public class PlanningUnitDemoDaten {
-
     private final static PlanningStatus pendingPlanningStatus;
     private final static PlanningStatus inprogressPlanningStatus;
     private final static PlanningStatus resolvedPlanningStatus;
@@ -47,13 +46,15 @@ public class PlanningUnitDemoDaten {
 
     private TestCaseDemoDaten testCaseDemoDaten = new TestCaseDemoDaten();
     private BenutzerDemoDaten benutzerDemoDaten = new BenutzerDemoDaten();
-    private IssueBaseDemoDaten issueBaseDemoDaten = new IssueBaseDemoDaten();
+    private IssueBaseDemoDaten issueBaseDemoDaten;
 
     public Set<PlanningUnit> getTopLevelPlanningUnits() {
         return topLevelPlanningUnits;
     }
 
-    public PlanningUnitDemoDaten(){
+    public PlanningUnitDemoDaten(long projectId){
+        issueBaseDemoDaten = new IssueBaseDemoDaten(projectId);
+
         planningUnit_1 = new PlanningUnitBuilder()
                 .setDescription("Planeinheit 1")
                 .setEstimatedStorypoints(25)

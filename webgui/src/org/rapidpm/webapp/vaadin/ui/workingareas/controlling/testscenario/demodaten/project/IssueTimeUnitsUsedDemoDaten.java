@@ -15,7 +15,7 @@ import java.util.List;
  * Time: 18:49
  * To change this template use File | Settings | File Templates.
  */
-public class IssueTimeUnitDemoDatata {
+public class IssueTimeUnitsUsedDemoDaten {
 
     private List<IssueTimeUnit> rpm1_timeUnitsUsedList = new ArrayList<>();
     private List<IssueTimeUnit> rpm2_timeUnitsUsedList = new ArrayList<>();
@@ -27,7 +27,7 @@ public class IssueTimeUnitDemoDatata {
 
     private final BenutzerDemoDaten benutzerDemoDaten = new BenutzerDemoDaten();
 
-    public IssueTimeUnitDemoDatata(){
+    public IssueTimeUnitsUsedDemoDaten(){
         final IssueTimeUnit rpm1_1_TimeUnit = new IssueTimeUnitBuilder()
                 .setDatum(Date.valueOf("02.10.2012"))
                 .setMinutes(120)

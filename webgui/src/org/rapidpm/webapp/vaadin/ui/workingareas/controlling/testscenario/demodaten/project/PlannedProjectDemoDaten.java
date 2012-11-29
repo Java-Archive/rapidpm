@@ -12,10 +12,10 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.demoda
  * To change this template use File | Settings | File Templates.
  */
 public class PlannedProjectDemoDaten {
-
+    private static long projectIdCounter=0;
     private PlannedProject plannedProject;
     private BenutzerDemoDaten benutzerDemoDaten = new BenutzerDemoDaten();
-    private PlanningUnitDemoDaten planningUnitDemoDaten = new PlanningUnitDemoDaten();
+    private PlanningUnitDemoDaten planningUnitDemoDaten;
 
 
     public PlannedProject getPlannedProject() {
@@ -23,7 +23,10 @@ public class PlannedProjectDemoDaten {
     }
 
     public PlannedProjectDemoDaten(){
+        projectIdCounter++;
+        planningUnitDemoDaten = new PlanningUnitDemoDaten(projectIdCounter);
         plannedProject = new PlannedProjectBuilder()
+                 .setId(projectIdCounter)
                 .setCreator(benutzerDemoDaten.getUrsulaBeckerBenutzer())
                 .setPlanningUnitList(planningUnitDemoDaten.getTopLevelPlanningUnits())
                 .setProjectName("Testscenario Projecteinheit")

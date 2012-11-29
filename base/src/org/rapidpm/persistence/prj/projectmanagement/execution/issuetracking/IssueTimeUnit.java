@@ -35,11 +35,6 @@ public class IssueTimeUnit {
     @Basic
     private Date date;
 
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-
     @Basic
     private Date datum;
     @Basic

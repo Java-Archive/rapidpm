@@ -48,9 +48,9 @@ public class CommentsDataContainer extends AbstractIssueDataContainer {
     public void fillContainer(IssueBase issue) {
         setCurrentIssue(issue);
         this.removeAllItems();
-        for (IssueComment comment : issue.getComments()) {
-            addComment(comment);
-        }
+//        for (IssueComment comment : issue.getComments()) {
+//            addComment(comment);
+//        }
     }
 
     public boolean addComment(IssueComment comment) {
