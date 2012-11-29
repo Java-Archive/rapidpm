@@ -76,7 +76,7 @@ public class LoginMask extends VerticalLayout {
 
     public void setComponents() {
         addComponent(frame);
-        setComponentAlignment(frame, Alignment.BOTTOM_CENTER);
+        setComponentAlignment(frame, Alignment.MIDDLE_CENTER);
     }
 
 }

@@ -20,10 +20,23 @@ public class RapidPanel extends Panel {
         contentLayout.setSpacing(true);
         contentLayout.setMargin(true);
         setContent(contentLayout);
+        contentLayout.removeAllComponents();
+    }
+
+    protected void turnEditableDesignOn(boolean b) {
+        if(b){
+            contentLayout.setStyleName("abc");
+        } else {
+            contentLayout.setStyleName(null);
+        }
     }
 
     public void addComponent(final Component component){
         contentLayout.addComponent(component);
+    }
+
+    public void removeAllComponents(){
+        contentLayout.removeAllComponents();
     }
 
 }

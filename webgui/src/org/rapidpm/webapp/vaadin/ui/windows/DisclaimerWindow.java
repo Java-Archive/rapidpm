@@ -11,8 +11,9 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Window;
 import org.apache.log4j.Logger;
+import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 
-public class DisclaimerWindow extends Window {
+public class DisclaimerWindow extends RapidWindow {
     private static final Logger logger = Logger.getLogger(DisclaimerWindow.class);
 
     public DisclaimerWindow() {

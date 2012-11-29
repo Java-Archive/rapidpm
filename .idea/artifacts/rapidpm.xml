@@ -10,9 +10,9 @@
           <element id="file-copy" path="$PROJECT_DIR$/webgui/conf/rebel.xml" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="lib-vaadin" />
           <element id="library" level="project" name="lib-neo4j" />
           <element id="library" level="project" name="lib-lucene" />
+          <element id="library" level="project" name="lib-vaadin" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="ejb/ejb/EJB" />

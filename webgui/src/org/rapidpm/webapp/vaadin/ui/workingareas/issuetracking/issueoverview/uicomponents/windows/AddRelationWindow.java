@@ -10,6 +10,7 @@ import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.AbstractIssueDataContainer;
@@ -24,7 +25,7 @@ import java.util.List;
  * Time: 12:19
  * To change this template use File | Settings | File Templates.
  */
-public class AddRelationWindow extends Window implements Internationalizationable {
+public class AddRelationWindow extends RapidWindow implements Internationalizationable {
     private static Logger logger = Logger.getLogger(AddRelationWindow.class);
     private DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 

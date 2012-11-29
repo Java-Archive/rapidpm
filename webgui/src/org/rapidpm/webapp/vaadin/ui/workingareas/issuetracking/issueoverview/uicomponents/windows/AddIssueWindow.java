@@ -5,6 +5,7 @@ import com.vaadin.ui.Tree;
 import com.vaadin.ui.Window;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeIssueBaseContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsLayout;
@@ -16,7 +17,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uic
  * Time: 11:19
  * To change this template use File | Settings | File Templates.
  */
-public class AddIssueWindow extends Window {
+public class AddIssueWindow extends RapidWindow {
     private static Logger logger = Logger.getLogger(AddIssueWindow.class);
 
     private final IssueOverviewScreen screen;
