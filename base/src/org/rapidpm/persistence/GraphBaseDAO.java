@@ -194,7 +194,8 @@ public class GraphBaseDAO<T> {
                 field.setAccessible(true);
                 if (field.isAnnotationPresent(Simple.class)) {
                     if (field.getType().equals(Date.class)) {
-                        node.setProperty(field.getName(), field.get(entity) == null ? "0" : ((Date)field.get(entity)).getTime());
+                        node.setProperty(field.getName(), field.get(entity) == null ? 0L : ((Date)field.get(entity))
+                                .getTime());
                     } else {
                         if (field.get(entity) != null)
                             node.setProperty(field.getName(), field.get(entity));
