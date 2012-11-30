@@ -66,7 +66,6 @@ public class ProjektplanungScreen extends Screen {
             if(plannedProjects == null || plannedProjects.isEmpty()){
                 throw new NoProjectsException();
             }
-            final PlannedProject projectFromDB = plannedProjectDAO.findByID(projectFromSession.getId());
 
             final PlanningCalculator calculator = new PlanningCalculator(messagesBundle, ui);
             calculator.calculate();
@@ -105,6 +104,7 @@ public class ProjektplanungScreen extends Screen {
             splitPanel.addComponent(mainLayout);
 
             buildPlanningUnitPanel();
+            detailsPanel.getClass();
             doInternationalization();
             setComponents();
         } catch (final NoProjectsException e){
