@@ -120,4 +120,7 @@ public class Constants {
 
     public static final String DAYSHOURSMINUTES_VALIDATOR_EXCEPTION_MESSAGE = "Format: [d*]d:hh:mm! (hh = 23 max., mm = 59 max.)";
     public static final String COMMIT_EXCEPTION_MESSAGE = "ungueltiger Wert in min. einem Feld.";
+    public static final int FIELDLENGTH_LONG_NAME = 50;
+    public static final int FIELDLENGTH_SMALL_NUMBER = 5;
+    public static final String EMPTY_OR_SPACES_ONLY_PATTERN = "^\\s*$";
 }

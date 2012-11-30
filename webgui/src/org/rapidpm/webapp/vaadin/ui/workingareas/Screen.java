@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 03.08.12
  * Time: 11:07
  * To change this template use File | Settings | File Templates.

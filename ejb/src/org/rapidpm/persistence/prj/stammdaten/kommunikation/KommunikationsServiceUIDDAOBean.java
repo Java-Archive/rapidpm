@@ -10,7 +10,6 @@ import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.data.LoggingResult;
 import org.rapidpm.ejb3.CRUDExecuter;
-import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
 import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
@@ -18,7 +17,6 @@ import org.rapidpm.persistence.DaoFactoryBean;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -137,7 +135,7 @@ public class KommunikationsServiceUIDDAOBean {
         return create(getKommunikationServiceUIDDAO().loadAllEntities());
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadServiceUIDsForOrganisationseinheit")
     @WebResult(name = "KommunikationsServiceUIDResult")
@@ -148,7 +146,7 @@ public class KommunikationsServiceUIDDAOBean {
     }
 
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "isEmailRegistered")
     @WebResult(name = "IsEmailRegisteredResult")
@@ -160,7 +158,7 @@ public class KommunikationsServiceUIDDAOBean {
         return result;
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "isEmailRegisteredForMandantengruppeOID")
     @WebResult(name = "IsEmailRegisteredResult")
@@ -173,7 +171,7 @@ public class KommunikationsServiceUIDDAOBean {
         return result;
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "isEmailRegisteredForMandantengruppe")
     @WebResult(name = "IsEmailRegisteredResult")

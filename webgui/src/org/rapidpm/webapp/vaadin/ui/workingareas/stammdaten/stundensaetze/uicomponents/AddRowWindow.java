@@ -1,24 +1,29 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents;
 
-import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import org.apache.log4j.Logger;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.Constants;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.exceptions.NameExistsException;
 
+import javax.naming.InvalidNameException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class AddRowWindow extends Window {
+public class AddRowWindow extends RapidWindow {
     public static final String HEIGHT = "400px";
     public static final String WIDTH = "400px";
     public static final int POSITION_X = 50;
@@ -34,7 +39,7 @@ public class AddRowWindow extends Window {
     private Button cancelButton = new Button();
     private RowFieldGroup fieldGroup;
     private ResourceBundle messages;
-    private AddRowWindowBean addRowWindowBean;
+//    private AddRowWindowBean addRowWindowBean;
 
     public AddRowWindow(final MainUI ui, final StundensaetzeScreen screen) {
         this.ui = ui;
@@ -44,8 +49,8 @@ public class AddRowWindow extends Window {
         setPositionX(POSITION_X);
         setPositionY(POSITION_Y);
 
-        addRowWindowBean = EJBFactory.getEjbInstance(AddRowWindowBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = addRowWindowBean.getDaoFactoryBean();
+//        addRowWindowBean = EJBFactory.getEjbInstance(AddRowWindowBean.class);
+//        final DaoFactoryBean baseDaoFactoryBean = addRowWindowBean.getDaoFactoryBean();
 
         fieldGroup = new RowFieldGroup();
 
@@ -57,7 +62,8 @@ public class AddRowWindow extends Window {
 
         addComponent(horizontalButtonLayout);
 
-        addListeners(baseDaoFactoryBean, ui, screen);
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        addListeners(daoFactory, ui, screen);
         doInternationalization();
 
     }
@@ -84,14 +90,14 @@ public class AddRowWindow extends Window {
         cancelButton.setCaption(messages.getString("cancel"));
     }
 
-    private void addListeners(final DaoFactoryBean baseDaoFactoryBean, final MainUI ui,
+    private void addListeners(final DaoFactory baseDaoFactoryBean, final MainUI ui,
                               final StundensaetzeScreen screen) {
         saveButton.addClickListener(new ClickListener() {
 
             @Override
             public void buttonClick(ClickEvent event) {
                 boolean allFilled = true;
-                Iterator<Component> it = AddRowWindow.this.formLayout
+                final Iterator<Component> it = AddRowWindow.this.formLayout
                         .getComponentIterator();
                 while (it.hasNext()) {
                     final Component component = it.next();
@@ -103,23 +109,31 @@ public class AddRowWindow extends Window {
                 }
                 if (allFilled) {
                     try {
-                        final Table tabelle = screen.getTabelle();
+                        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+                        final List<String> ressourceGroupNames = new ArrayList<>();
+                        final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO()
+                                .loadAllEntities();
+                        for(final RessourceGroup ressourceGroup : ressourceGroups){
+                            daoFactory.getEntityManager().refresh(ressourceGroup);
+                            ressourceGroupNames.add(ressourceGroup.getName());
+                        }
+                        //final Table tabelle = screen.getTabelle();
                         fieldGroup.commit();
                         //RessourceGroupBeanItem mit der neuen (transienten) RessourceGroup
                         final BeanItem<RessourceGroup> beanItem = (BeanItem)fieldGroup.getItemDataSource();
                         //Bean aus dem BeanItem
                         final RessourceGroup ressourceGroup = beanItem.getBean();
 
-                        baseDaoFactoryBean.saveOrUpdate(ressourceGroup);
-//                        baseDaoFactoryBean.getEntityManager().refresh(ressourceGroup);
-//                        final RessourceGroup group = baseDaoFactoryBean.getRessourceGroupDAO().loadRessourceGroupByName
-//                                (ressourceGroup
-//                                .getName
-//                                ());
-                        final RessourceGroup group = baseDaoFactoryBean.getRessourceGroupDAO().loadRessourceGroupByName
-                                (ressourceGroup.getName());
+                        final String ressourceGroupName = ressourceGroup.getName();
+                        if(ressourceGroupNames.contains(ressourceGroupName)){
+                            throw new NameExistsException();
+                        }
+                        if(ressourceGroupName.matches(Constants.EMPTY_OR_SPACES_ONLY_PATTERN)){
+                            throw new InvalidNameException();
+                        }
 
-
+                        final RessourceGroup persistedRessourceGroup = baseDaoFactoryBean.saveOrUpdateTX
+                                (ressourceGroup);
                         final List<PlanningUnit> planningUnits = baseDaoFactoryBean.getPlanningUnitDAO()
                                 .loadAllEntities();
 
@@ -128,35 +142,27 @@ public class AddRowWindow extends Window {
                             planningUnitElement.setPlannedDays(0);
                             planningUnitElement.setPlannedHours(0);
                             planningUnitElement.setPlannedMinutes(0);
-                            planningUnitElement.setRessourceGroup(group);
-                            planningUnit.getPlanningUnitElementList().add(planningUnitElement);
-                            baseDaoFactoryBean.saveOrUpdate(planningUnit);
+                            planningUnitElement.setRessourceGroup(persistedRessourceGroup);
+                            final PlanningUnitElement persistedPlanningUnitElement = baseDaoFactoryBean.saveOrUpdateTX
+                                    (planningUnitElement);
+                            planningUnit.getPlanningUnitElementList().add(persistedPlanningUnitElement);
+                            baseDaoFactoryBean.saveOrUpdateTX(planningUnit);
                         }
-
-
-//                        final int planningUnitCount = baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities().size();
-//                        for(int i = 0; i < planningUnitCount; i++){
-//                            PlanningUnitElement planningUnitElement = new PlanningUnitElement();
-//                            planningUnitElement.setId(null);
-//                            planningUnitElement.setPlannedDays(0);
-//                            planningUnitElement.setPlannedHours(0);
-//                            planningUnitElement.setPlannedMinutes(0);
-//                            planningUnitElement.setRessourceGroup(ressourceGroup);
-//                            baseDaoFactoryBean.saveOrUpdate(planningUnitElement);
-//                        }
                         screen.generateTableAndCalculate();
 
                         AddRowWindow.this.close();
-                    } catch (CommitException e) {
-                        logger.warn(e);
+                    }catch(final FieldGroup.CommitException e){
+                          Notification.show(messages.getString("stdsatz_addfail"));
+                    } catch (final NameExistsException e) {
+                        Notification.show(messages.getString("stdsatz_nameexists"));
+                    } catch (InvalidNameException e) {
+                        Notification.show(messages.getString("stdsatz_invalidname"));
                     }
-
                 } else {
                     final Label lbl = new Label();
                     lbl.setValue(messages.getString("stdsatz_fillInAllFields"));
                     AddRowWindow.this.addComponent(lbl);
                 }
-
             }
 
         });

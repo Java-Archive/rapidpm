@@ -14,7 +14,7 @@ import static org.rapidpm.Constants.EUR;
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 31.08.12
  * Time: 15:52
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
@@ -41,7 +41,7 @@ public class TreeTableFiller {
             treeTable.setConverter(id, null);
         }
         final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
-        final CostsCalculator costsCalculator = new CostsCalculator(messages);
+        final CostsCalculator costsCalculator = new CostsCalculator(screen.getUi(), messages);
         final CostsConverterAdder costsConverterAdder = new CostsConverterAdder(messages);
         final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(screen, messages,
                 dataSource);

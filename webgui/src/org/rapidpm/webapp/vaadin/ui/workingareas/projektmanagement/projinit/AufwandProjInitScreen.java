@@ -2,16 +2,18 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit;
 
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TreeTableHeaderClickListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsException;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.ExpandTableCheckBox;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
@@ -19,8 +21,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.comp
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.OverviewTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.TreeTableFiller;
 
-import javax.persistence.EntityManager;
 import java.util.Date;
+import java.util.List;
 
 import static org.rapidpm.Constants.DATE_FORMAT;
 
@@ -42,8 +44,8 @@ public class AufwandProjInitScreen extends Screen {
     private HierarchicalContainer dataSource = new HierarchicalContainer();
     private MyTreeTable treeTable = new MyTreeTable();
     private MyTable uebersichtTable = new MyTable();
-    private AufwandProjInitScreenBean bean;
-    private DaoFactoryBean baseDaoFactoryBean;
+//    private AufwandProjInitScreenBean bean;
+//    private DaoFactoryBean baseDaoFactoryBean;
 
     private static final String ABSOLUTE_WIDTH = "700px";
 
@@ -58,50 +60,61 @@ public class AufwandProjInitScreen extends Screen {
     public AufwandProjInitScreen(final MainUI ui) {
         super(ui);
 
-        bean = EJBFactory.getEjbInstance(AufwandProjInitScreenBean.class);
-        baseDaoFactoryBean = bean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
-        erstelleUnterschriftLayout();
-        erstelleFelderLayout();
+//        bean = EJBFactory.getEjbInstance(AufwandProjInitScreenBean.class);
+//        baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        try{
+            final List<PlannedProject> plannedProjects = daoFactory.getPlannedProjectDAO().loadAllEntities();
+            if(plannedProjects == null || plannedProjects.isEmpty()){
+                throw new NoProjectsException();
+            }
+            erstelleUnterschriftLayout();
+            erstelleFelderLayout();
 
-        expandCheckBox = new ExpandTableCheckBox(treeTable, dataSource);
-        undoButton = new UndoButton(this, treeTable, dataSource);
-        undoButton.setVisible(false);
+            expandCheckBox = new ExpandTableCheckBox(treeTable, dataSource);
+            undoButton = new UndoButton(this, treeTable, dataSource);
+            undoButton.setVisible(false);
 
-        final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, treeTable, dataSource);
-        treeTableFiller.fill();
+            final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, treeTable, dataSource);
+            treeTableFiller.fill();
 
-        final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable);
-        overviewTableFiller.fill();
+            final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable,
+                    this.getUi());
+            overviewTableFiller.fill();
 
-        fillFields();
+            fillFields();
 
-        uebersichtTable.setPageLength(4);
-        uebersichtTable.setConnectedTable(treeTable);
-        uebersichtTable.setSizeFull();
-        treeTable.setConnectedTable(uebersichtTable);
-        treeTable.addHeaderClickListener(new TreeTableHeaderClickListener(undoButton));
-        treeTable.setSizeFull();
+            uebersichtTable.setPageLength(4);
+            uebersichtTable.setConnectedTable(treeTable);
+            uebersichtTable.setSizeFull();
+            treeTable.setConnectedTable(uebersichtTable);
+            treeTable.addHeaderClickListener(new TreeTableHeaderClickListener(undoButton));
+            treeTable.setSizeFull();
 
-        table1layout.addComponent(uebersichtTable);
-        table1layout.setSizeFull();
-        table1layout.setMargin(true);
+            table1layout.addComponent(uebersichtTable);
+            table1layout.setSizeFull();
+            table1layout.setMargin(true);
 
-        table2layout.addComponent(expandCheckBox);
-        table2layout.addComponent(undoButton);
-        table2layout.addComponent(treeTable);
-        table2layout.setSizeFull();
-        table2layout.setMargin(true);
+            table2layout.addComponent(expandCheckBox);
+            table2layout.addComponent(undoButton);
+            table2layout.addComponent(treeTable);
+            table2layout.setSizeFull();
+            table2layout.setMargin(true);
 
 
-        lowerFormLayout.addComponent(saveButton);
+            lowerFormLayout.addComponent(saveButton);
 
-        formLayout.addComponent(upperFormLayout);
-        formLayout.addComponent(lowerFormLayout);
-        formLayout.setVisible(false);
-        setComponents();
+            formLayout.addComponent(upperFormLayout);
+            formLayout.addComponent(lowerFormLayout);
+            formLayout.setVisible(false);
+            setComponents();
 
-        doInternationalization();
+            doInternationalization();
+        } catch (final NoProjectsException e){
+        removeAllComponents();
+        final NoProjectsScreen noProjectsScreen = new NoProjectsScreen(ui);
+        addComponent(noProjectsScreen);
+    }
 
     }
 
@@ -120,7 +133,7 @@ public class AufwandProjInitScreen extends Screen {
     }
 
     public void fillFields() {
-        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle);
+        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle, this.getUi());
         timesCalculator.calculate();
         manntageField.setReadOnly(false);
         summeField.setReadOnly(false);
@@ -129,8 +142,9 @@ public class AufwandProjInitScreen extends Screen {
         manntageField.setReadOnly(true);
         summeField.setReadOnly(true);
         final PlannedProject projectFromSession = ui.getCurrentProject();
-        final PlannedProject projekt = baseDaoFactoryBean.getPlannedProjectDAO().findByID
-                (projectFromSession.getId());
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
+        final PlannedProject projekt = plannedProjectDAO.findByID(projectFromSession.getId());
         projektField.setValue(projekt.getProjektName());
     }
 
@@ -176,140 +190,20 @@ public class AufwandProjInitScreen extends Screen {
         addComponent(formLayout);
     }
 
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
-            entityManager.refresh(planningUnit);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
-    }
-
-    public TextField getKundeField() {
-        return kundeField;
-    }
-
-    public void setKundeField(TextField kundeField) {
-        this.kundeField = kundeField;
-    }
-
-    public TextField getProjektField() {
-        return projektField;
-    }
-
-    public void setProjektField(TextField projektField) {
-        this.projektField = projektField;
-    }
-
-    public DateField getDatumField() {
-        return datumField;
-    }
-
-    public void setDatumField(DateField datumField) {
-        this.datumField = datumField;
-    }
-
-    public TextField getProjektLeiterField() {
-        return projektLeiterField;
-    }
-
-    public void setProjektLeiterField(TextField projektLeiterField) {
-        this.projektLeiterField = projektLeiterField;
-    }
-
-    public TextField getUnterschriftField() {
-        return unterschriftField;
-    }
-
-    public void setUnterschriftField(TextField unterschriftField) {
-        this.unterschriftField = unterschriftField;
-    }
-
-    public TextField getManntageField() {
-        return manntageField;
-    }
-
-    public void setManntageField(TextField manntageField) {
-        this.manntageField = manntageField;
-    }
-
-    public TextField getSummeField() {
-        return summeField;
-    }
-
-    public void setSummeField(TextField summeField) {
-        this.summeField = summeField;
-    }
-
     public VerticalLayout getFormLayout() {
         return formLayout;
-    }
-
-    public void setFormLayout(VerticalLayout formLayout) {
-        this.formLayout = formLayout;
     }
 
     public GridLayout getUpperFormLayout() {
         return upperFormLayout;
     }
 
-    public void setUpperFormLayout(GridLayout upperFormLayout) {
-        this.upperFormLayout = upperFormLayout;
-    }
-
-    public VerticalLayout getLowerFormLayout() {
-        return lowerFormLayout;
-    }
-
-    public void setLowerFormLayout(VerticalLayout lowerFormLayout) {
-        this.lowerFormLayout = lowerFormLayout;
-    }
-
     public Button getSaveButton() {
         return saveButton;
     }
 
-    public void setSaveButton(Button saveButton) {
-        this.saveButton = saveButton;
-    }
-
-    public MyTreeTable getTreeTable() {
-        return treeTable;
-    }
-
-    public void setTreeTable(MyTreeTable treeTable) {
-        this.treeTable = treeTable;
-    }
-
-    public MyTable getUebersichtTable() {
-        return uebersichtTable;
-    }
-
-    public void setUebersichtTable(MyTable uebersichtTable) {
-        this.uebersichtTable = uebersichtTable;
-    }
-
     public HierarchicalContainer getDataSource() {
         return dataSource;
-    }
-
-    public VerticalLayout getTable2layout() {
-        return table2layout;
-    }
-
-    public void setTable2layout(VerticalLayout table2layout) {
-        this.table2layout = table2layout;
-    }
-
-    public void setDataSource(HierarchicalContainer dataSource) {
-        this.dataSource = dataSource;
     }
 
 }

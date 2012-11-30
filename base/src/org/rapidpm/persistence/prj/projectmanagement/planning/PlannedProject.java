@@ -9,6 +9,7 @@ import org.rapidpm.persistence.system.security.Mandantengruppe;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class PlannedProject {
@@ -28,7 +29,7 @@ public class PlannedProject {
     private Mandantengruppe mandantengruppe;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<PlannedProjectName> plannedProjectName;
+    private Set<PlannedProjectName> plannedProjectName;
 
     @Basic
     private String projektToken;
@@ -36,8 +37,8 @@ public class PlannedProject {
     @Basic
     private String projektName;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PlanningUnit> planningUnits;
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    private Set<PlanningUnit> planningUnits;
 
     @Basic
     private boolean active;
@@ -184,11 +185,11 @@ public class PlannedProject {
         this.mandantengruppe = mandantengruppe;
     }
 
-    public List<PlannedProjectName> getPlannedProjectName() {
+    public Set<PlannedProjectName> getPlannedProjectName() {
         return plannedProjectName;
     }
 
-    public void setPlannedProjectName(final List<PlannedProjectName> plannedProjectName) {
+    public void setPlannedProjectName(final Set<PlannedProjectName> plannedProjectName) {
         this.plannedProjectName = plannedProjectName;
     }
 
@@ -200,11 +201,11 @@ public class PlannedProject {
         this.responsiblePerson = responsiblePerson;
     }
 
-    public List<PlanningUnit> getPlanningUnits() {
+    public Set<PlanningUnit> getPlanningUnits() {
         return planningUnits;
     }
 
-    public void setPlanningUnits(List<PlanningUnit> planningUnits) {
+    public void setPlanningUnits(Set<PlanningUnit> planningUnits) {
         this.planningUnits = planningUnits;
     }
 

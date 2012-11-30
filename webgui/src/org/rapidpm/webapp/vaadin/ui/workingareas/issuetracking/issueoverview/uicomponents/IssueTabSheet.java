@@ -3,6 +3,8 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.ui
 import com.vaadin.ui.TabSheet;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DetailsCancelButtonClickListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DetailsSaveButtonClickListener;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,16 +21,18 @@ public class IssueTabSheet extends TabSheet implements Internationalizationable{
     private Tab tableTab;
 
     public IssueTabSheet(final IssueOverviewScreen screen) {
+        super();
         this.screen = screen;
-        this.setSizeFull();
-        this.setImmediate(true);
+        this.setHeight("100%");
         setComponents();
         doInternationalization();
     }
 
     private void setComponents() {
-        tableLayout = new IssueTableLayout(screen);
-        detailsLayout = new IssueDetailsLayout(screen);
+        tableLayout = new IssueTableLayout(screen, true);
+        detailsLayout = new IssueDetailsLayout(screen, true);
+        detailsLayout.addSaveButtonClickListener(new DetailsSaveButtonClickListener(detailsLayout));
+        detailsLayout.addCancelButtonClickListener(new DetailsCancelButtonClickListener(detailsLayout));
         tableTab = this.addTab(tableLayout);
         detailsTab = this.addTab(detailsLayout);
     }
@@ -45,8 +49,8 @@ public class IssueTabSheet extends TabSheet implements Internationalizationable{
 
     @Override
     public void doInternationalization() {
-        tableTab.setCaption(screen.getMessagesBundle().getString("issue_table"));
-        detailsTab.setCaption(screen.getMessagesBundle().getString("issue_detail"));
+        tableTab.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_table"));
+        detailsTab.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_detail"));
     }
 
     public IssueDetailsLayout getDetailsLayout() {

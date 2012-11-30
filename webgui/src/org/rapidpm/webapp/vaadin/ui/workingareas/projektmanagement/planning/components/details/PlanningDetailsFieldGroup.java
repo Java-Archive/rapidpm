@@ -3,10 +3,12 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.server.ThemeResource;
+//import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
@@ -28,24 +30,24 @@ import java.util.ResourceBundle;
 public class PlanningDetailsFieldGroup extends FieldGroup {
 
     private List<AbstractField> fieldList = new ArrayList<>();
-
     private ResourceBundle messages;
-    private PlanningDetailsFieldGroupBean bean;
-    private DaoFactoryBean baseDaoFactoryBean;
 
-    public PlanningDetailsFieldGroup(final ResourceBundle messages, final PlanningUnit thePlanningUnit) {
+    public PlanningDetailsFieldGroup(final ResourceBundle messages, final PlanningUnit unmanagedPlanningUnit) {
         this.messages = messages;
-        bean = EJBFactory.getEjbInstance(PlanningDetailsFieldGroupBean.class);
-        baseDaoFactoryBean = bean.getDaoFactoryBean();
-        final PlanningUnit planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().loadPlanningUnitByName
-                (thePlanningUnit.getPlanningUnitName());
-        setItemDataSource(new BeanItem<>(planningUnit));
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().findByID(unmanagedPlanningUnit.getId());
+        if(planningUnit == null){
+            setItemDataSource(new BeanItem<>(unmanagedPlanningUnit));
+        } else {
+            setItemDataSource(new BeanItem<>(planningUnit));
+        }
+
         buildForm();
     }
 
     private void buildForm() {
-        refreshEntities(baseDaoFactoryBean);
-        final List<Benutzer> users = baseDaoFactoryBean.getBenutzerDAO().loadAllEntities();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final List<Benutzer> users = daoFactory.getBenutzerDAO().loadAllEntities();
         for (final Object propertyId : getUnboundPropertyIds()) {
             final String spaltenName = propertyId.toString();
             switch(spaltenName){
@@ -82,25 +84,6 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
         box.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
         box.setItemCaptionPropertyId(itemCaptionPropertyId);
         return box;
-    }
-
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
-            entityManager.refresh(planningUnit);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
-        for(final Benutzer benutzer : baseDaoFactoryBean.getBenutzerDAO().loadAllEntities()){
-            entityManager.refresh(benutzer);
-        }
     }
 
     public List<AbstractField> getFieldList() {

@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 
 /**
  * RapidPM - www.rapidpm.org
- * User: Marco
+ * User: Marco Ebbinghaus
  * Date: 31.08.12
  * Time: 15:52
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
@@ -35,7 +35,7 @@ public class TreeTableFiller {
     }
 
     public void fill() {
-        final TimesCalculator timesCalculator = new TimesCalculator(messages);
+        final TimesCalculator timesCalculator = new TimesCalculator(messages, screen.getUi());
         final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(screen, messages,
                 dataSource);
         timesCalculator.calculate();

@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.rapidpm.data.BaseFlatEntity;
 import org.rapidpm.data.BaseOrmResult;
 import org.rapidpm.ejb3.CRUDExecuter;
-import org.rapidpm.ejb3.interceptor.LoggingInterceptor;
 import org.rapidpm.logging.LogEventEntryWriterBean;
 import org.rapidpm.logging.LoggerQualifier;
 import org.rapidpm.persistence.DaoFactoryBean;
@@ -12,7 +11,6 @@ import org.rapidpm.persistence.DaoFactoryBean;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
@@ -77,7 +75,7 @@ public class KommunikationsServiceKlassifizierungDAOBean {
                 }
             };
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "load")
     @WebResult(name = "KommunikationsServiceKlassifizierungResult")
@@ -86,7 +84,7 @@ public class KommunikationsServiceKlassifizierungDAOBean {
         return create(getKommunikationsServiceKlassifizierungDAO().load(klassifizierung));
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadKlassifizierungPrivat")
     @WebResult(name = "KommunikationsServiceKlassifizierungResult")
@@ -94,7 +92,7 @@ public class KommunikationsServiceKlassifizierungDAOBean {
         return create(getKommunikationsServiceKlassifizierungDAO().loadKlassifizierungPrivat());
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadKlassifizierungBeruflich")
     @WebResult(name = "KommunikationsServiceKlassifizierungResult")
@@ -103,7 +101,7 @@ public class KommunikationsServiceKlassifizierungDAOBean {
     }
 
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "saveOrUpdateTX")
     @WebResult(name = "KommunikationsServiceKlassifizierungResult")
@@ -123,7 +121,7 @@ public class KommunikationsServiceKlassifizierungDAOBean {
 
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "findByID")
     @WebResult(name = "KommunikationsServiceKlassifizierungResult")
@@ -137,7 +135,7 @@ public class KommunikationsServiceKlassifizierungDAOBean {
         }
     }
 
-    @Interceptors(LoggingInterceptor.class)
+
     public
     @WebMethod(operationName = "loadWithOIDList")
     @WebResult(name = "KommunikationsServiceKlassifizierungResult")

@@ -4,17 +4,21 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
-import org.rapidpm.ejb3.EJBFactory;
-import org.rapidpm.persistence.DaoFactoryBean;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.ProjectAdministrationScreen;
 
 import javax.persistence.EntityManager;
 import java.util.Iterator;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -24,7 +28,7 @@ import java.util.ResourceBundle;
  * Time: 15:45
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class AddProjectWindow extends Window{
+public class AddProjectWindow extends RapidWindow{
 
     public static final String HEIGHT = "400px";
     public static final String WIDTH = "400px";
@@ -41,7 +45,8 @@ public class AddProjectWindow extends Window{
     private Button cancelButton = new Button();
     private ProjektFieldGroup fieldGroup;
     private ResourceBundle messages;
-    private AddProjectWindowBean bean;
+    private CheckBox makeCurrentProjectCheckBox;
+//    private AddProjectWindowBean bean;
 
     public AddProjectWindow(final MainUI ui, final ResourceBundle messages) {
         this.ui = ui;
@@ -51,12 +56,18 @@ public class AddProjectWindow extends Window{
         setPositionX(POSITION_X);
         setPositionY(POSITION_Y);
 
-        bean = EJBFactory.getEjbInstance(AddProjectWindowBean.class);
-        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        refreshEntities(baseDaoFactoryBean);
+//        bean = EJBFactory.getEjbInstance(AddProjectWindowBean.class);
+//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
         final PlannedProject projekt = new PlannedProject();
         fieldGroup = new ProjektFieldGroup(projekt);
+        makeCurrentProjectCheckBox = new CheckBox(messages.getString("makeCurrentProject"));
+        final List<PlannedProject> projectList = daoFactory.getPlannedProjectDAO().loadAllEntities();
+        if(projectList == null || projectList.isEmpty()){
+            makeCurrentProjectCheckBox.setValue(true);
+            makeCurrentProjectCheckBox.setEnabled(false);
+        }
 
         fillFormLayout();
         addComponent(formLayout);
@@ -65,8 +76,7 @@ public class AddProjectWindow extends Window{
         horizontalButtonLayout.addComponent(cancelButton);
 
         addComponent(horizontalButtonLayout);
-
-        addListeners(baseDaoFactoryBean, ui);
+        addListeners(daoFactory, ui);
         doInternationalization();
 
     }
@@ -82,15 +92,16 @@ public class AddProjectWindow extends Window{
             field.setReadOnly(false);
             formLayout.addComponent(field);
         }
+        formLayout.addComponent(makeCurrentProjectCheckBox);
     }
 
     private void doInternationalization() {
-        this.setCaption(messages.getString("pm_addproject"));
+        this.setCaption(messages.getString("project_addproject"));
         saveButton.setCaption(messages.getString("save"));
         cancelButton.setCaption(messages.getString("cancel"));
     }
 
-    private void addListeners(final DaoFactoryBean baseDaoFactoryBean,final MainUI ui) {
+    private void addListeners(final DaoFactory baseDaoFactoryBean,final MainUI ui) {
         saveButton.addClickListener(new Button.ClickListener() {
 
             @Override
@@ -101,27 +112,30 @@ public class AddProjectWindow extends Window{
                 while (it.hasNext()) {
                     final Component component = it.next();
                     if (component instanceof AbstractField) {
-                        if (((TextField) component).getValue() == null
-                                || ((TextField) component).getValue().equals(""))
+                        if (((AbstractField) component).getValue() == null
+                                || ((AbstractField) component).getValue().equals(""))
                             allFilled = false;
                     }
                 }
                 if (allFilled) {
                     try {
                         fieldGroup.commit();
-                        final BeanItem<PlannedProject> beanItem = (BeanItem<PlannedProject>) fieldGroup
+                        final BeanItem<PlannedProject> newProjectBeanItem = (BeanItem<PlannedProject>) fieldGroup
                                 .getItemDataSource();
-                        baseDaoFactoryBean.saveOrUpdate(beanItem.getBean());
+                        baseDaoFactoryBean.saveOrUpdateTX(newProjectBeanItem.getBean());
+                        if(makeCurrentProjectCheckBox.getValue() == true){
+                            ui.getSession().setAttribute(PlannedProject.class, newProjectBeanItem.getBean());
+                        }
                         AddProjectWindow.this.close();
                         ui.setWorkingArea(new ProjectAdministrationScreen(ui));
-                    } catch (FieldGroup.CommitException e) {
+                    } catch (final FieldGroup.CommitException e) {
                         logger.warn(e);
                     }
 
                 } else {
                     final Label lbl = new Label();
                     lbl.setValue(messages.getString("stdsatz_fillInAllFields"));
-                    AddProjectWindow.this.addComponent(lbl);
+                    addComponent(lbl);
                 }
 
             }
@@ -140,21 +154,5 @@ public class AddProjectWindow extends Window{
 
     public void show() {
         ui.addWindow(this);
-    }
-
-    private void refreshEntities(final DaoFactoryBean baseDaoFactoryBean) {
-        final EntityManager entityManager = baseDaoFactoryBean.getEntityManager();
-        for(final PlannedProject plannedProject : baseDaoFactoryBean.getPlannedProjectDAO().loadAllEntities()){
-            entityManager.refresh(plannedProject);
-        }
-        for(final PlanningUnit planningUnit : baseDaoFactoryBean.getPlanningUnitDAO().loadAllEntities()){
-            entityManager.refresh(planningUnit);
-        }
-        for(final PlanningUnitElement planningUnitElement : baseDaoFactoryBean.getPlanningUnitElementDAO().loadAllEntities()){
-            entityManager.refresh(planningUnitElement);
-        }
-        for(final RessourceGroup ressourceGroup : baseDaoFactoryBean.getRessourceGroupDAO().loadAllEntities()){
-            entityManager.refresh(ressourceGroup);
-        }
     }
 }

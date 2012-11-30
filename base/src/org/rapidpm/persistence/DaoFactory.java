@@ -9,6 +9,7 @@ package org.rapidpm.persistence;
  */
 
 import org.apache.log4j.Logger;
+import org.neo4j.graphdb.GraphDatabaseService;
 import org.rapidpm.persistence.prj.bewegungsdaten.RegistrationDAO;
 import org.rapidpm.persistence.prj.bewegungsdaten.RegistrationStatusDAO;
 import org.rapidpm.persistence.prj.bewegungsdaten.anfragen.KontaktAnfrageDAO;
@@ -24,10 +25,7 @@ import org.rapidpm.persistence.prj.book.kommentar.BuchKommentarDAO;
 import org.rapidpm.persistence.prj.book.kommentar.BuchSeitenKommentarDAO;
 import org.rapidpm.persistence.prj.projectmanagement.ProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.ProjectNameDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueCommentDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssuePriorityDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatusDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnitDAO;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitDAO;
@@ -52,13 +50,15 @@ import org.rapidpm.persistence.system.logging.LoggingEventEntryDAO;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.BerechtigungDAO;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
+import javax.persistence.*;
+import java.util.InputMismatchException;
 
 public class DaoFactory {
     private static final Logger logger = Logger.getLogger(DaoFactory.class);
-    private DAO.EntityUtils entityUtils;
+    private DAO.EntityUtils entityUtils = new DAO.EntityUtils();
+    private static final GraphDatabaseService graphDb = GraphDBFactory.getInstance().getGraphDBService();
 
     public DaoFactory(final String persistenceUnitName) {
         final EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
@@ -77,6 +77,215 @@ public class DaoFactory {
 
     public DaoFactory() {
     }
+
+//    public <T> void remove(T entity) {
+//        T theentity = this.getEntityManager().merge(entity);
+//        this.getEntityManager().remove(theentity);
+//    }
+
+//    public <T> void saveOrUpdate(T entity) {
+//        if (logger.isInfoEnabled()) {
+//            logger.info("saveOrUpdateTX entity " + entity);
+//        }
+//        if (entity != null) {
+//            getEntityManager().merge(entity);
+//        }
+//        else{
+//            logger.warn("entity was null.");
+//        }
+//    }
+
+
+    public <T> T saveOrUpdateTX(final T entity) {
+        if (logger.isInfoEnabled()) {
+            logger.info("saveOrUpdateTX entity " + entity);
+        }
+        if (entity == null) {
+            if (logger.isInfoEnabled()) {
+                logger.info("Entity war null....");
+            }
+        } else {
+            final Long oid = entityUtils.getOIDFromEntity(entity);
+            if (oid == null || oid == -1L) {
+                simplePersistTX(entity);
+                return entity;
+            } else {
+                simpleMergeTX(entity);
+                return entity;
+            }
+        }
+        return null;
+    }
+
+
+    private <T> void simpleRemoveTX(final T entity) {
+        if (logger.isInfoEnabled()) {
+            logger.info("simpleRemove entity : " + entity);
+        }
+        new SimpleRemoveTransaction<T>().remove(entity);
+    }
+
+    private <T> void simplePersistTX(final T entity) {
+        if (logger.isInfoEnabled()) {
+            logger.info("simplePersist entity : " + entity);
+        }
+        new SimplePersistTransaction<T>().persist(entity);
+    }
+
+    private <T> void simpleMergeTX(final T entity) {
+        if (logger.isInfoEnabled()) {
+            logger.info("simpleMerge entity : " + entity);
+        }
+        new SimpleMergeTransaction<T>().persist(entity);
+    }
+
+    private class SimpleRemoveTransaction<T> {
+        private SimpleRemoveTransaction() {
+        }
+
+        public void remove(final T entity) {
+            new Transaction() {
+
+                public void doTask() {
+                    final EntityManager entityManager = getEntityManager();
+                    entityManager.remove(entity);
+                    //                    entityManager.refresh(entity);
+                }
+            }.execute();
+        }
+    }
+
+    private class SimplePersistTransaction<T> {
+        private SimplePersistTransaction() {
+        }
+
+        public void persist(final T entity) {
+            new Transaction() {
+
+                public void doTask() {
+                    final EntityManager entityManager = getEntityManager();
+                    entityManager.persist(entity);
+                    //                    entityManager.refresh(entity);
+                }
+            }.execute();
+        }
+    }
+    private class SimpleMergeTransaction<T> {
+        private SimpleMergeTransaction() {
+        }
+
+        public void persist(final T entity) {
+            new Transaction() {
+
+                public void doTask() {
+                    final EntityManager entityManager = getEntityManager();
+                    entityManager.merge(entity);
+                    //                    entityManager.refresh(entity);
+                }
+            }.execute();
+        }
+    }
+
+    public abstract class Transaction{
+        private final EntityTransaction transaction = entityManager.getTransaction();
+
+        protected Transaction() {
+        }
+
+        public abstract void doTask();
+
+        public void execute() throws InputMismatchException{
+            try {
+                transaction.begin();
+                doTask();
+                if (transaction.isActive()) {
+                    transaction.commit();
+                } else {
+                    logger.warn("tx nicht mehr active.. ");
+                }
+
+            } catch (PersistenceException e) {
+                e.printStackTrace();
+                logger.error(e);
+                throw new PersistenceException();
+            } finally {
+//                System.out.println("e = " + e);
+                if (transaction != null && transaction.isActive()) {
+                    transaction.rollback();
+                } else {
+                }
+            }
+
+        }
+    }
+
+    public <T> void removeTX(final T entity) {
+        if (logger.isInfoEnabled()) {
+            logger.info("removeTX entity: " + entity);
+        }
+        if (entity == null) {
+            if (logger.isInfoEnabled()) {
+                logger.info("Entity war null....");
+            }
+        } else {
+            final Class<?> aClass = entity.getClass();
+            final Entity annotation = aClass.getAnnotation(Entity.class);
+            //noinspection VariableNotUsedInsideIf
+            if (annotation == null) {
+                if (logger.isInfoEnabled()) {
+                    logger.info("Obj ist keine Entity.." + entity);
+                }
+            } else {
+                simpleRemoveTX(entity);
+            }
+        }
+    }
+
+
+    public <T> void saveOrUpdate(final T entity) {
+        if (logger.isInfoEnabled()) {
+            logger.info("saveOrUpdateTX entity " + entity);
+        }
+        if (entity == null) {
+            if (logger.isInfoEnabled()) {
+                logger.info("Entity war null....");
+            }
+        } else {
+            final Long oid = entityUtils.getOIDFromEntity(entity);
+            if (oid == null || oid == -1L) {
+                entityManager.persist(entity);
+            } else {
+                entityManager.merge(entity);
+            }
+        }
+    }
+
+
+    public <T> void remove(final T entity) {
+        if (logger.isInfoEnabled()) {
+            logger.info("remove entity: " + entity);
+        }
+        if (entity == null) {
+            if (logger.isInfoEnabled()) {
+                logger.info("Entity war null....");
+            }
+        } else {
+            final Class<?> aClass = entity.getClass();
+            final Entity annotation = aClass.getAnnotation(Entity.class);
+            //noinspection VariableNotUsedInsideIf
+            if (annotation == null) {
+                if (logger.isInfoEnabled()) {
+                    logger.info("Obj ist keine Entity..");
+                }
+            } else {
+                final T theentity = this.entityManager.merge(entity);
+                this.entityManager.remove(theentity);
+            }
+        }
+    }
+
+
+
 
     // pkg logging
 
@@ -211,29 +420,8 @@ public class DaoFactory {
 
 
     //IssueTracking
-
-    public IssueBaseDAO getIssueBaseDAO() {
-        return new IssueBaseDAO(getEntityManager());
-    }
-
-    public IssueCommentDAO getIssueCommentDAO() {
-        return new IssueCommentDAO(getEntityManager());
-    }
-
     public ProjectDAO getProjectDAO() {
         return new ProjectDAO(getEntityManager());
-    }
-
-    public IssueTimeUnitDAO getTimeUnitDAO() {
-        return new IssueTimeUnitDAO(getEntityManager());
-    }
-
-    public IssuePriorityDAO getIssuePriorityDAO() {
-        return new IssuePriorityDAO(getEntityManager());
-    }
-
-    public IssueStatusDAO getIssueStatusDAO() {
-        return new IssueStatusDAO(getEntityManager());
     }
 
     public ProjectNameDAO getProjectNameDAO() {
@@ -242,6 +430,49 @@ public class DaoFactory {
 
     public IssueTimeUnitDAO getIssueTimeUnitDAO() {
         return new IssueTimeUnitDAO(getEntityManager());
+    }
+
+    public IssueCommentDAO getIssueCommentDAO() {
+        return new IssueCommentDAO(getEntityManager());
+    }
+
+    public IssueTestCaseDAO getIssueTestCaseDAO() {
+        return new IssueTestCaseDAO(getEntityManager());
+    }
+
+
+
+    //GraphDAOs
+    public IssueBaseDAO getIssueBaseDAO(final Long projectId) {
+        return new IssueBaseDAO(graphDb, this, projectId);
+    }
+
+    public IssueStatusDAO getIssueStatusDAO() {
+        return new IssueStatusDAO(graphDb, this);
+    }
+
+    public IssuePriorityDAO getIssuePriorityDAO() {
+        return new IssuePriorityDAO(graphDb, this);
+    }
+
+    public IssueTypeDAO getIssueTypeDAO() {
+        return new IssueTypeDAO(graphDb, this);
+    }
+
+    public IssueComponentDAO getIssueComponentDAO() {
+        return new IssueComponentDAO(graphDb, this);
+    }
+
+    public IssueRelationDAO getIssueRelationDAO() {
+        return new IssueRelationDAO(graphDb, this);
+    }
+
+    public IssueVersionDAO getIssueVersionDAO() {
+        return new IssueVersionDAO(graphDb, this);
+    }
+
+    public IssueStoryPointDAO getIssueStoryPointDAO() {
+        return new IssueStoryPointDAO(graphDb, this);
     }
 
 
@@ -393,22 +624,6 @@ public class DaoFactory {
         return new ProjektanfrageDAO(getEntityManager());
     }
 
-    public <T> void remove(T entity) {
-        T theentity = this.getEntityManager().merge(entity);
-        this.getEntityManager().remove(theentity);
-    }
-
-    public <T> void saveOrUpdate(T entity) {
-        if (logger.isInfoEnabled()) {
-            logger.info("saveOrUpdateTX entity " + entity);
-        }
-        if (entity != null) {
-            getEntityManager().merge(entity);
-        }
-        else{
-            logger.warn("entity was null.");
-        }
-    }
 
     public DAO.EntityUtils getEntityUtils() {
         return entityUtils;

@@ -29,16 +29,16 @@ public class DemodatenGenerator extends BaseDAOTest {
 
         final Mandantengruppe mandantengruppe = new Mandantengruppe();
         mandantengruppe.setMandantengruppe("NeoMeta");
-        daoFactoryFactory.getMandantengruppeDAO().saveOrUpdate(mandantengruppe);
+        daoFactoryFactory.saveOrUpdate(mandantengruppe);
 
         final BenutzerWebapplikation benutzerWebapplikation = new BenutzerWebapplikation();
         benutzerWebapplikation.setWebappName("NeoMeta_App");
-        daoFactoryFactory.getBenutzerWebapplikationDAO().saveOrUpdate(benutzerWebapplikation);
+        daoFactoryFactory.saveOrUpdate(benutzerWebapplikation);
 
         final String gruppenname = "admin";
         final BenutzerGruppe benutzerGruppe = new BenutzerGruppe();
         benutzerGruppe.setGruppenname(gruppenname);
-        daoFactoryFactory.getBenutzerGruppeDAO().saveOrUpdate(benutzerGruppe);
+        daoFactoryFactory.saveOrUpdate(benutzerGruppe);
 
 
     }
