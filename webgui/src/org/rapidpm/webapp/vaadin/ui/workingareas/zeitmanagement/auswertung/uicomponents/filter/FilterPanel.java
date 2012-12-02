@@ -2,6 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.uico
 
 import com.vaadin.data.Property;
 import com.vaadin.ui.*;
+import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.ZeitauswertungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.ZeitauswertungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.uicomponents.filter.listeners.ListSelectImmediateValueChangeListener;
@@ -19,7 +20,7 @@ import java.util.Set;
  * Date: 29.10.12
  * Time: 10:02
  */
-public class FilterPanel extends Panel {
+public class FilterPanel extends RapidPanel {
 
     private VerticalLayout angezeigteSpaltenLayout;
     private VerticalLayout bedingungsZeilenLayout;

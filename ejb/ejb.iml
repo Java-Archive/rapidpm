@@ -46,7 +46,10 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="base" exported="" />
-    <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" exported="" name="module-xmlrpc" level="project" />
+    <orderEntry type="library" exported="" name="lib-jee6" level="project" />
+    <orderEntry type="library" name="log4j-1.2.17-javadoc" level="project" />
+    <orderEntry type="library" name="lib-neo4j1" level="project" />
   </component>
 </module>
 

@@ -2,6 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.uico
 
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.logic.jira.JiraSoapClientVaadin;
 import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.ExportTypes;
 
@@ -12,7 +13,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model
  * Time: 13:09
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class ExportPanel extends Panel {
+public class ExportPanel extends RapidPanel {
 
    private VerticalLayout exportLayout;
    private ExportButton exportButton;
