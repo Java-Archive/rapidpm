@@ -677,11 +677,11 @@
     <identifier-quote-string>"</identifier-quote-string>
     <jdbc-driver>org.postgresql.Driver</jdbc-driver>
     <jdbc-url>jdbc:postgresql://localhost:5432/rapidpm</jdbc-url>
-    <user-name>postgres</user-name>
-    <user-password>dfc2dfcbdfc6dfc6dfc5</user-password>
+    <user-name>rapidpm</user-name>
+    <user-password>dfd8dfcbdfdadfc3dfcedfdadfc7</user-password>
     <libraries>
       <library>
-        <url>file://$PROJECT_DIR$/../rapidpm_runtime/apache-tomcat-7.0.32/lib/postgresql-9.1-901.jdbc4.jar</url>
+        <url>jar:///prog/PostgreSQL/pgJDBC/postgresql-9.1-901.jdbc4.jar!/</url>
       </library>
     </libraries>
     <table name="_pg_foreign_data_wrappers" schema="information_schema" catalog="" type="SYSTEM VIEW">
@@ -3233,6 +3233,7 @@
       <column name="created" sqlType="timestamp" length="29" precision="6" nullable="true" jdbcType="93" />
       <column name="txt" sqlType="text" length="2147483647" precision="0" nullable="true" jdbcType="12" />
       <column name="creator_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="text" sqlType="text" length="2147483647" precision="0" nullable="true" jdbcType="12" />
       <primary-key name="issuecomment_pkey" columns="id" />
       <foreign-key name="fk2c5e3b66830c528" columns="creator_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>
@@ -3249,12 +3250,18 @@
       <column name="statusname" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
       <primary-key name="issuestatus_pkey" columns="id" />
     </table>
+    <table name="issuetestcase" schema="public" catalog="" type="TABLE">
+      <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
+      <column name="text" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
+      <primary-key name="issuetestcase_pkey" columns="id" />
+    </table>
     <table name="issuetimeunit" schema="public" catalog="" type="TABLE">
       <column name="id" sqlType="int8" length="19" precision="0" nullable="false" jdbcType="-5" />
       <column name="comment" sqlType="varchar" length="255" precision="0" nullable="true" jdbcType="12" />
       <column name="datum" sqlType="timestamp" length="29" precision="6" nullable="true" jdbcType="93" />
       <column name="minutes" sqlType="int4" length="10" precision="0" nullable="false" jdbcType="4" />
       <column name="worker_id" sqlType="int8" length="19" precision="0" nullable="true" jdbcType="-5" />
+      <column name="date" sqlType="timestamp" length="29" precision="6" nullable="true" jdbcType="93" />
       <primary-key name="issuetimeunit_pkey" columns="id" />
       <foreign-key name="fk77fc5caf74d5896" columns="worker_id" ref-table="benutzer" ref-schema="public" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2" />
     </table>

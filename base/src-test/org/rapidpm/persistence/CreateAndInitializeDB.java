@@ -50,7 +50,8 @@ public class CreateAndInitializeDB {
         this.debug = debug;
         //deleteRelationDependencies();
         deleteFileOrDirectory(true, new File(GraphDBFactory.DB_PATH));
-        graphDb = GraphDBFactory.getInstance().getGraphDBService();
+        final GraphDBFactory instance = GraphDBFactory.getInstance();
+        graphDb = instance.getGraphDBService();
         daoFactory = DaoFactorySingelton.getInstance();
         root = graphDb.getNodeById(0);
     }
