@@ -12,9 +12,6 @@
         <webroots>
           <root url="file://$MODULE_DIR$/web" relative="/" />
         </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/src" />
-        </sourceRoots>
       </configuration>
       <facet type="Vaadin" name="Vaadin Application">
         <configuration vaadinUsedWebRootPathUrl="file://$MODULE_DIR$/web" vaadinGWTLocationPath="/prog/gwt-2.5.0.rc1" vaadinVMOptions="-Xss8M -Xmx512M -XX:MaxPermSize=512M" vaadinJavaScriptStyle="Pretty" vaadinCompilerThreads="4" />
@@ -38,12 +35,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="base" exported="" />
     <orderEntry type="library" exported="" name="lib-vaadin" level="project" />
-    <orderEntry type="library" name="lib-neo4j" level="project" />
-    <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="library" name="lib-axis" level="project" />
     <orderEntry type="library" name="lib-tablemodell" level="project" />
-    <orderEntry type="library" name="log4j-1.2.17-javadoc" level="project" />
-    <orderEntry type="library" name="lib-neo4j1" level="project" />
   </component>
 </module>
 
