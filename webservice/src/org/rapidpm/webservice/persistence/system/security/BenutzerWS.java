@@ -2,8 +2,14 @@ package org.rapidpm.webservice.persistence.system.security;
 
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
+import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.system.security.Benutzer;
+import org.rapidpm.persistence.system.security.BenutzerDAO;
+import org.rapidpm.webservice.mapping.FlatBaseWS;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -15,31 +21,45 @@ import javax.jws.WebService;
  * Time: 13:59
  */
 @WebService(serviceName = "BenutzerWS")
-public class BenutzerWS {
+public class BenutzerWS extends FlatBaseWS<Benutzer, BenutzerDAO, FlatBenutzer> {
     private static final Logger logger = Logger.getLogger(BenutzerWS.class);
 
+    public BenutzerWS() {
+        super(DaoFactorySingelton.getInstance().getBenutzerDAO());
+    }
+
+    @Override
+    protected FlatBenutzer toFlatObject(final Benutzer benutzer) {
+        if (benutzer == null) {
+            return null;
+        }
+        final FlatBenutzer flatBenutzer = new FlatBenutzer();
+        flatBenutzer.setId(benutzer.getId());
+        flatBenutzer.setLogin(benutzer.getLogin());
+        flatBenutzer.setEmail(benutzer.getEmail());
+        return flatBenutzer;
+    }
+
     // TODO hashed passwd, return SessionID
-    @WebMethod(operationName = "authenticate")
-    public boolean authenticate(@WebParam(name = "login") final String login,
-                                @WebParam(name = "passwd") final String passwd) {
+    @WebMethod
+    public FlatBenutzer authenticate(@WebParam(name = "login") final String login,
+                                     @WebParam(name = "passwd") final String passwd) throws AuthenticationException {
         final Subject user = SecurityUtils.getSubject();
+        final Session session = user.getSession(); // new session with every request!?
         if (!user.isAuthenticated()) {
             final UsernamePasswordToken token = new UsernamePasswordToken(login, passwd);
             token.setRememberMe(true);
-            try {
-                user.login(token);
-                logger.info("User [" + user.getPrincipal() + "] logged in successfully.");
-            } catch (UnknownAccountException uae) {
-                logger.info("There is no user with username of " + token.getPrincipal());
-            } catch (IncorrectCredentialsException ice) {
-                logger.info("Password for account " + token.getPrincipal() + " was incorrect!");
-            } catch (LockedAccountException lae) {
-                logger.info("The account for username " + token.getPrincipal() + " is locked.  " +
-                        "Please contact your administrator to unlock it.");
-            } catch (AuthenticationException ae) {
-                logger.info(ae.getLocalizedMessage());
-            }
+            user.login(token); // throws AuthenticationException on failure
         }
-        return user.isAuthenticated();
+        // Authentication successful
+        // TODO get Benutzer from Shiro?
+        final Benutzer benutzer = dao.authenticate(login, passwd);
+        return toFlatObject(benutzer);
+    }
+
+    @WebMethod
+    public void logout() {
+        final Subject user = SecurityUtils.getSubject();
+        user.logout();
     }
 }

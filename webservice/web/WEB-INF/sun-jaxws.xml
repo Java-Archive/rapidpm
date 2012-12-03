@@ -3,4 +3,10 @@
     <endpoint name="BenutzerWS"
               implementation="org.rapidpm.webservice.persistence.system.security.BenutzerWS"
               url-pattern="/webservice/BenutzerWS"/>
+    <endpoint name="PlannedProjectWS"
+              implementation="org.rapidpm.webservice.persistence.prj.projectmanagement.planning.PlannedProjectWS"
+              url-pattern="/webservice/PlannedProjectWS"/>
+    <endpoint name="IssueTrackingWS"
+              implementation="org.rapidpm.webservice.persistence.prj.projectmanagement.execution.issuetracking.IssueTrackingWS"
+              url-pattern="/webservice/IssueTrackingWS"/>
 </endpoints>
