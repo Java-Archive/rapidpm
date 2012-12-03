@@ -164,6 +164,7 @@ public abstract class BaseUI extends UI {
         final VerticalLayout mainlayout = new VerticalLayout();
         mainlayout.setSizeUndefined();
         mainlayout.setWidth("100%");
+        mainlayout.setReadOnly(false);
 
         final VerticalLayout vlMiddle = new VerticalLayout();
         vlMiddle.setSizeFull();

@@ -90,8 +90,10 @@ public class ChosenProjectEditableRapidPanel extends EditableRapidPanel {
     public void buildForm() {
         noSelectionLabel.setVisible(false);
         formLayout.removeAllComponents();
+        final Field tokenField = fieldGroup.getField(PlannedProject.TOKEN);
+        tokenField.setEnabled(false);
+        formLayout.addComponent(tokenField);
         formLayout.addComponent(fieldGroup.getField(PlannedProject.NAME));
-        formLayout.addComponent(fieldGroup.getField(PlannedProject.TOKEN));
     }
 
     @Override

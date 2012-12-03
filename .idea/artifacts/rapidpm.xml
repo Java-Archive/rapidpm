@@ -10,6 +10,7 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="lib-vaadin" />
+          <element id="library" level="project" name="lib-axis" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="webgui/web/Web" />

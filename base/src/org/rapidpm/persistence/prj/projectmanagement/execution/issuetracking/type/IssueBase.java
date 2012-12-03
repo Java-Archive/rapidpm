@@ -1,7 +1,8 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type;
 
-import org.neo4j.graphdb.Direction;
+
 //import org.rapidpm.persistence.GraphDaoFactory;
+import org.neo4j.graphdb.Direction;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
