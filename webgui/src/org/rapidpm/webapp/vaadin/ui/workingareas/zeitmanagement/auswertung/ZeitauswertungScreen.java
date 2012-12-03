@@ -35,7 +35,7 @@ public class ZeitauswertungScreen extends Screen {
         queryLayout = new HorizontalLayout();
         queryButton = new Button("Abfrage starten");
         queryField = new TextField();
-        queryField.setValue("project = \"JTEL Developer\" AND updatedDate >= \"2012-10-01\"");
+        queryField.setValue("project = \"RPM\" AND updatedDate >= \"2012-10-01\"");
         queryLayout.addComponent(new Label("Abfrage: "));
         queryLayout.addComponent(queryField);
         queryLayout.addComponent(queryButton);

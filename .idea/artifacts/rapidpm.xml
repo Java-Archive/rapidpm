@@ -14,6 +14,7 @@
           <element id="library" level="project" name="lib-lucene" />
           <element id="library" level="project" name="lib-vaadin" />
           <element id="library" level="project" name="lib-axis" />
+          <element id="library" level="project" name="lib-tablemodell" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="ejb/ejb/EJB" />

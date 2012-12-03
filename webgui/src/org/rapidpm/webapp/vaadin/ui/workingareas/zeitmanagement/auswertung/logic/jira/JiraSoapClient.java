@@ -1,5 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.logic.jira;
 
+import com.vaadin.server.FileDownloader;
+import com.vaadin.server.FileResource;
 import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.UserWorkLog;
 import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.JirasoapserviceV2SoapBindingStub;
 import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.model.jira.generated.RemoteIssue;
@@ -20,8 +22,8 @@ import java.util.List;
  */
 public class JiraSoapClient {
 
-    public static final String USER = "xxx";
-    public static final String PASSWD = "???";
+    public static final String USER = "marco.ebbinghaus";
+    public static final String PASSWD = "Opafe2Awet14";
 
     private JiraRequestExecutor<List<UserWorkLog>> executor;
     private List<UserWorkLog> userWorkLogs;
@@ -33,8 +35,11 @@ public class JiraSoapClient {
 //                final String query = "project=\"CDTMS\" and type = Story and status = Open";
                 final List<UserWorkLog> userWorkLogs = new ArrayList<>();
 
+                //FileResource fileResource = new FileResource()
+                //FileDownloader fileDownloader = new FileDownloader()
                 //final String query = "project = \"JTEL Developer\" AND updatedDate >= \"2012-10-01\"";
-                final RemoteIssue[] issuesFromJqlSearch = binding.getIssuesFromJqlSearch(secureToken, query, Integer.MAX_VALUE);
+              final RemoteIssue[] issuesFromJqlSearch = binding.getIssuesFromJqlSearch(secureToken, query,
+                        Integer.MAX_VALUE);
                 for (final RemoteIssue remoteIssue : issuesFromJqlSearch) {
                     final String remoteIssueKey = remoteIssue.getKey();
                     final RemoteWorklog[] worklogs = binding.getWorklogs(secureToken, remoteIssueKey);
