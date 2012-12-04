@@ -34,17 +34,22 @@ public class IssueTabSheet extends TabSheet implements Internationalizationable{
         detailsLayout.addSaveButtonClickListener(new DetailsSaveButtonClickListener(detailsLayout));
         detailsLayout.addCancelButtonClickListener(new DetailsCancelButtonClickListener(detailsLayout));
         tableTab = this.addTab(tableLayout);
+        tableTab.setEnabled(false);
         detailsTab = this.addTab(detailsLayout);
+        detailsTab.setEnabled(false);
     }
 
-    public boolean isTableTabDisabled() {
-        return !tableTab.isEnabled();
-    }
-
-    public void disableTableTab(boolean value) {
-        tableTab.setEnabled(!value);
+    public void setTableTabOnlyEnabled(boolean value) {
+        tableTab.setEnabled(value);
+        detailsTab.setEnabled(true);
         if (value) this.setSelectedTab(detailsTab);
         else  this.setSelectedTab(tableTab);
+    }
+
+    public void setAllTabsEnabled(boolean value) {
+        tableTab.setEnabled(value);
+        detailsTab.setEnabled(value);
+        this.setSelectedTab(tableTab);
     }
 
     @Override

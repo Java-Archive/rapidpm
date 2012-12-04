@@ -74,8 +74,7 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         if (issueTabSheet != null) {
             issueTree.addValueChangeListener(new TreeValueChangeListener(issueTabSheet, issueTree));
         }
-        issueTree.addValueChangeListener(new TreeActivateOnValueChangeListener(new Button[]{deleteButton,
-                addButton}));
+        issueTree.addValueChangeListener(new TreeActivateOnValueChangeListener(new Button[]{deleteButton}));
 
 
 

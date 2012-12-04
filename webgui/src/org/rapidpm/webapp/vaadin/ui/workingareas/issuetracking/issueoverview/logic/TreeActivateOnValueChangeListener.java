@@ -26,7 +26,7 @@ public class TreeActivateOnValueChangeListener implements Tree.ValueChangeListen
 
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
-        if (event.getProperty() != null)
+        if (event.getProperty() != null && event.getProperty().getValue() != null)
             for (Button button : buttonList)
                 button.setEnabled(true);
         else
