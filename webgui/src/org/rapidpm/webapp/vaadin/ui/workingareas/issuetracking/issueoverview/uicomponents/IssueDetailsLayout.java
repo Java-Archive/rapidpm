@@ -377,6 +377,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             throw new NullPointerException("Details can't be set from null.");
         this.issue = issue;
         setLayoutReadOnly(false);
+        headerSummaryField.setRequired(false);
 
         headerTextField.setValue(issue.getText());
         headerSummaryField.setValue(issue.getSummary());
@@ -428,12 +429,14 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         }
 
 
-        if (headerSummaryField.getValue() == "") {
+        if (headerSummaryField.getValue().equals("")) {
             headerSummaryField.setRequired(true);
             headerSummaryField.setRequiredError("Issue must have a name!");
-            logger.warn("Issue must have a name");
+            logger.warn("");
+            Notification.show("Issue must have a name", Notification.Type.WARNING_MESSAGE);
             return null;
         }
+
 
         issue.setSummary(headerSummaryField.getValue());
         issue.setStatus((IssueStatus) statusSelect.getValue());

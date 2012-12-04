@@ -2,6 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.lo
 
 import com.vaadin.ui.Button;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsLayout;
 
 /**
@@ -22,7 +23,14 @@ public class DetailsSaveButtonClickListener implements Button.ClickListener {
 
     @Override
     public void buttonClick(Button.ClickEvent event) {
-        detailsLayout.setLayoutReadOnly(true);
-        detailsLayout.setDetailsFromIssue(detailsLayout.setIssueProperties(false));
-    }
+
+        final IssueBase issue = detailsLayout.setIssueProperties(false);
+        if (issue != null) {
+            detailsLayout.setDetailsFromIssue(issue);
+            detailsLayout.setLayoutReadOnly(true);
+        } else {
+            if (logger.isDebugEnabled())
+                logger.debug("Issue couldn't be saved. Attributes missing.");
+            }
+        }
 }

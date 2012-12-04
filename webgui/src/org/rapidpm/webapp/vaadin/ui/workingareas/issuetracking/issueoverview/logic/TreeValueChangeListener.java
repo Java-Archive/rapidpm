@@ -42,9 +42,7 @@ public class TreeValueChangeListener implements Tree.ValueChangeListener {
     private void changeDetails(Object itemId) {
         IssueBase issueBase = (IssueBase)issueTree.getContainerDataSource().getContainerProperty(itemId,
                 TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
-        if (issueBase == null) {
-            issueTabSheet.setAllTabsEnabled(false);
-        } else {
+        if (issueBase != null) {
             issueTabSheet.getDetailsLayout().setDetailsFromIssue(issueBase);
 
             if (!issueTree.hasChildren(itemId)) {
@@ -57,6 +55,8 @@ public class TreeValueChangeListener implements Tree.ValueChangeListener {
                 }
                 issueTabSheet.getTableLayout().setPropertiesFromIssueList(issues);
             }
+        } else {
+            logger.error("Chosen issue is null");
         }
     }
 
