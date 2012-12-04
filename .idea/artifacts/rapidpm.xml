@@ -12,6 +12,7 @@
           <element id="library" level="project" name="lib-vaadin" />
           <element id="library" level="project" name="lib-axis" />
           <element id="library" level="project" name="lib-tablemodell" />
+          <element id="library" level="project" name="lib-lucene" />
         </element>
       </element>
       <element id="javaee-facet-resources" facet="webgui/web/Web" />

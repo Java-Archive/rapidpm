@@ -41,17 +41,17 @@ public class IssueTypeDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        IssueType priority = dao.loadAllEntities().get(0);
-        IssueType prioTest = new IssueType();
+        final IssueType priority = dao.loadAllEntities().get(0);
+        final IssueType prioTest = new IssueType();
         prioTest.setTypeName(priority.getTypeName());
         dao.persist(prioTest);
     }
 
     @Test
     public void getConnectedIssus() {
-        for (IssueType type : dao.loadAllEntities()) {
-            List<IssueBase> issueList = type.getConnectedIssuesFromProject(1L);
-            for (IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+        for (final IssueType type : dao.loadAllEntities()) {
+            final List<IssueBase> issueList = type.getConnectedIssuesFromProject(1L);
+            for (final IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
                 if (issue.getType().equals(type))
                     assertTrue(issueList.contains(issue));
             }

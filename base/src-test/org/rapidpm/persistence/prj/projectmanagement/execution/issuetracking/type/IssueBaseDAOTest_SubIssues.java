@@ -25,7 +25,7 @@ public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
     @Test
     public void addSubIssue() {
         IssueBase issue = dao.loadAllEntities().get(0);
-        IssueBase sub = dao.loadAllEntities().get(1);
+        final IssueBase sub = dao.loadAllEntities().get(1);
 
         boolean success = issue.addSubIssue(sub);
         assertTrue(success);
@@ -39,7 +39,7 @@ public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
         assertTrue(issue.getSubIssues().contains(sub));
         List<IssueBase> connected = issue.getSubIssues();
         int i = 0;
-        for (IssueBase subIssues : connected) {
+        for (final IssueBase subIssues : connected) {
             if (subIssues.equals(sub))
                 i++;
         }

@@ -41,8 +41,8 @@ public class IssueRelationDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        IssueRelation relation = dao.loadAllEntities().get(0);
-        IssueRelation relTest = new IssueRelation();
+        final IssueRelation relation = dao.loadAllEntities().get(0);
+        final IssueRelation relTest = new IssueRelation();
         relTest.setRelationName(relation.getRelationName());
         dao.persist(relTest);
     }

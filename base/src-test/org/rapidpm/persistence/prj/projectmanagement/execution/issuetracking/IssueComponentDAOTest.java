@@ -40,19 +40,19 @@ public class IssueComponentDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        IssueComponent component = dao.loadAllEntities().get(0);
-        IssueComponent compTest = new IssueComponent();
+        final IssueComponent component = dao.loadAllEntities().get(0);
+        final IssueComponent compTest = new IssueComponent();
         compTest.setComponentName(component.getComponentName());
         dao.persist(compTest);
     }
 
     @Test
     public void getConnectedIssus() {
-        for (IssueComponent component : dao.loadAllEntities()) {
-            List<IssueBase> issueList = component.getConnectedIssuesFromProject(1L);
+        for (final IssueComponent component : dao.loadAllEntities()) {
+            final List<IssueBase> issueList = component.getConnectedIssuesFromProject(1L);
 
-            for (IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
-                for (IssueComponent comp : issue.getComponents())
+            for (final IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+                for (final IssueComponent comp : issue.getComponents())
                     if (comp.equals(component))
                         assertTrue(issueList.contains(issue));
             }

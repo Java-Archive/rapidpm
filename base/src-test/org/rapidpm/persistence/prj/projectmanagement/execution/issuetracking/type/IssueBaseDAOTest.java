@@ -37,12 +37,12 @@ public class IssueBaseDAOTest implements BaseDAOTest {
         issueBase.setDueDate_planned(new Date());
         issueBase.setDueDate_resolved(new Date());
 
-        Benutzer benutzer = new Benutzer();
+        final Benutzer benutzer = new Benutzer();
         benutzer.setId(1000L);
         benutzer.setLogin("testuser x");
         issueBase.setAssignee(benutzer);
 
-        Benutzer benutzer2 = new Benutzer();
+        final Benutzer benutzer2 = new Benutzer();
         benutzer2.setId(new Long(1001));
         benutzer2.setLogin("testuser x");
         issueBase.setReporter(benutzer2);
@@ -64,9 +64,9 @@ public class IssueBaseDAOTest implements BaseDAOTest {
 
     @Test
     public void loadAll() {
-        List<IssueBase> list = dao.loadAllEntities();
+        final List<IssueBase> list = dao.loadAllEntities();
         if (logger.isDebugEnabled())
-            for (IssueBase issue : list)
+            for (final IssueBase issue : list)
                 logger.debug(issue.toString());
         assertEquals(list, dao.loadAllEntities());
     }
@@ -79,7 +79,7 @@ public class IssueBaseDAOTest implements BaseDAOTest {
         issue.setPriority(daoFactory.getIssuePriorityDAO().loadAllEntities().get(1));
 
         issue = dao.persist(issue);
-        IssueBase proof = dao.findByID(issue.getId());
+        final IssueBase proof = dao.findByID(issue.getId());
         assertEquals(issue.getStatus(), proof.getStatus());
         assertEquals(issue.getType(), proof.getType());
         assertEquals(issue.getPriority(), proof.getPriority());
@@ -94,7 +94,7 @@ public class IssueBaseDAOTest implements BaseDAOTest {
         comment1.setCreated(new Date());
         comment1.setCreator(issue.getAssignee());
 
-        IssueComment comment2 = new IssueComment();
+        final IssueComment comment2 = new IssueComment();
         comment2.setId(1001L);
         comment2.setText("comment2");
         comment2.setCreated(new Date());
@@ -113,7 +113,7 @@ public class IssueBaseDAOTest implements BaseDAOTest {
         comment2.setText("CommentB");
         issue.addOrChangeComment(comment2);
 
-        issue = daoFactory.getIssueBaseDAO(projectId).persist(issue);
+        issue = dao.persist(issue);
 
         assertTrue(issue.getComments().contains(comment2));
 
@@ -127,11 +127,11 @@ public class IssueBaseDAOTest implements BaseDAOTest {
     @Test
     public void addTestCases() {
         IssueBase issue = dao.loadAllEntities().get(0);
-        IssueTestCase testCase1 = new IssueTestCase();
+        final IssueTestCase testCase1 = new IssueTestCase();
         testCase1.setId(1000L);
         testCase1.setText("testcase1");
 
-        IssueTestCase testCase2 = new IssueTestCase();
+        final IssueTestCase testCase2 = new IssueTestCase();
         testCase2.setId(1001L);
         testCase2.setText("testcase2");
 
@@ -148,7 +148,7 @@ public class IssueBaseDAOTest implements BaseDAOTest {
         testCase2.setText("CommentB");
         issue.addOrChangeTestCase(testCase2);
 
-        issue = daoFactory.getIssueBaseDAO(projectId).persist(issue);
+        issue = dao.persist(issue);
 
         assertTrue(issue.getTestcases().contains(testCase2));
 
