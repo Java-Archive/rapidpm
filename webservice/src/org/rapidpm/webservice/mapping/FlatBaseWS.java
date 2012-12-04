@@ -90,13 +90,13 @@ public abstract class FlatBaseWS<T, DT extends DAO<Long, T>, FT extends FlatEnti
     }
 
     protected void checkPermission(final String permission) throws AuthorizationException {
-        final Subject user = SecurityUtils.getSubject();
         final String className = entityType.getSimpleName();
         final String permissionString = className + ':' + permission;
         if (logger.isDebugEnabled()) {
             logger.debug("checkPermission(\"" + permission + "\"): " + permissionString);
         }
-        // user.checkPermission(permissionString); // TODO Session not working yet...
+//        final Subject user = SecurityUtils.getSubject();
+//        user.checkPermission(permissionString); // TODO Session not working yet...
     }
 
     @WebMethod
