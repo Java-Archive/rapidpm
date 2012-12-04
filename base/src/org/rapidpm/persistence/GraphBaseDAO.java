@@ -357,6 +357,22 @@ public class GraphBaseDAO<T> {
         return getObjectFromNode(graphDb.getNodeById(id));
     }
 
+    public boolean existInDatabase(final Long id) {
+        if (logger.isDebugEnabled())
+            logger.debug("existInDatabase");
+
+        if (id == null)
+            throw new NullPointerException("Id object is null.");
+
+        try {
+            graphDb.getNodeById(id);
+        } catch (NotFoundException e){
+            logger.warn("Issue has been deleted");
+            return false;
+        }
+        return true;
+    }
+
     protected T getObjectFromNode(final Node node) {
         if (logger.isDebugEnabled())
             logger.debug("getObjectFromNode: " + clazz.getSimpleName());

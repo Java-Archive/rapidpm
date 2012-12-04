@@ -95,13 +95,17 @@ public class DeleteIssueWindow extends RapidWindow implements Internationalizati
 
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            boolean success;
-            Object item = issueTree.getValue();
+            boolean success = false;
+            final Object item = issueTree.getValue();
+            final TreeIssueBaseContainer container = ((TreeIssueBaseContainer)issueTree.getContainerDataSource());
             issueTree.setValue(issueTree.getParent(item));
-            if (deleteRecursive.getValue()) {
-                success = ((TreeIssueBaseContainer)issueTree.getContainerDataSource()).removeItemRecursively(item);
-            } else {
-                success = issueTree.removeItem(item);
+
+            if (container.containsId(item)) {
+                if (deleteRecursive.getValue()) {
+                    success = container.removeItemRecursively(item);
+                } else {
+                    success = issueTree.removeItem(item);
+                }
             }
 
             if (!success)

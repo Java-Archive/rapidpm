@@ -118,4 +118,12 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
         }
         return removeItem(itemId);
     }
+
+//     public boolean containsIssue(IssueBase issue) {
+//        for (Object itemId : this.getItemIds()) {
+//            if (issue.equals(this.getContainerProperty(itemId, PROPERTY_ISSUEBASE)))
+//                return true;
+//        }
+//        return false;
+//     }
 }
