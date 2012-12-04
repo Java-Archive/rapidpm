@@ -1,7 +1,6 @@
 package org.rapidpm.webservice.persistence.prj.projectmanagement.planning;
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.webservice.mapping.FlatBaseWS;
@@ -20,25 +19,20 @@ public class PlannedProjectWS extends FlatBaseWS<PlannedProject, PlannedProjectD
     private static final Logger logger = Logger.getLogger(PlannedProjectWS.class);
 
     public PlannedProjectWS() {
-        super(DaoFactorySingelton.getInstance().getPlannedProjectDAO());
+        super(PlannedProject.class, FlatPlannedProject.class);
     }
 
     @Override
-    protected FlatPlannedProject toFlatObject(final PlannedProject plannedProject) {
-        if (plannedProject == null) {
-            return null;
-        }
-        final FlatPlannedProject project = new FlatPlannedProject();
-        project.setId(plannedProject.getId());
-        project.setProjektName(plannedProject.getProjektName());
-        return project;
+    protected PlannedProjectDAO getDao() {
+        return daoFactory.getPlannedProjectDAO();
     }
 
     @WebMethod
     public FlatPlannedProject getFirstProject() {
+        checkPermission(PERMISSION_SELECT);
         final List<PlannedProject> plannedProjects = dao.loadAllEntities();
         if (plannedProjects != null && !plannedProjects.isEmpty()) {
-            return toFlatObject(plannedProjects.get(0));
+            return toFlatEntity(plannedProjects.get(0));
         }
         return null;
     }

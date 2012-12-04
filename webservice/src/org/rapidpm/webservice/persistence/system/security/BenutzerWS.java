@@ -6,7 +6,6 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
-import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webservice.mapping.FlatBaseWS;
@@ -25,19 +24,12 @@ public class BenutzerWS extends FlatBaseWS<Benutzer, BenutzerDAO, FlatBenutzer> 
     private static final Logger logger = Logger.getLogger(BenutzerWS.class);
 
     public BenutzerWS() {
-        super(DaoFactorySingelton.getInstance().getBenutzerDAO());
+        super(Benutzer.class, FlatBenutzer.class);
     }
 
     @Override
-    protected FlatBenutzer toFlatObject(final Benutzer benutzer) {
-        if (benutzer == null) {
-            return null;
-        }
-        final FlatBenutzer flatBenutzer = new FlatBenutzer();
-        flatBenutzer.setId(benutzer.getId());
-        flatBenutzer.setLogin(benutzer.getLogin());
-        flatBenutzer.setEmail(benutzer.getEmail());
-        return flatBenutzer;
+    protected BenutzerDAO getDao() {
+        return daoFactory.getBenutzerDAO();
     }
 
     // TODO hashed passwd, return SessionID
@@ -54,7 +46,7 @@ public class BenutzerWS extends FlatBaseWS<Benutzer, BenutzerDAO, FlatBenutzer> 
         // Authentication successful
         // TODO get Benutzer from Shiro?
         final Benutzer benutzer = dao.authenticate(login, passwd);
-        return toFlatObject(benutzer);
+        return toFlatEntity(benutzer);
     }
 
     @WebMethod
