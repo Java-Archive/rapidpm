@@ -90,6 +90,7 @@ public class CreateAndInitializeDB {
         graphDb.shutdown();
     }
 
+
     public void createDB() {
         final Transaction tx = graphDb.beginTx();
         try{
@@ -150,7 +151,6 @@ public class CreateAndInitializeDB {
             tx.finish();
         }
     }
-
 
     private void initializeAttributes(){
 

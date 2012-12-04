@@ -2,7 +2,15 @@ package org.rapidpm.persistence;
 
 import org.apache.log4j.Logger;
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.RelationshipType;
+import org.neo4j.graphdb.Transaction;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,6 +38,40 @@ public class GraphDBFactory {
     private GraphDBFactory() {
         graphDb = new EmbeddedGraphDatabase(DB_PATH);
         registerShutdownHook(graphDb);
+        if (!createDB())
+            throw new IllegalStateException("GraphDB couldn't be created.");
+    }
+
+    private boolean createDB() {
+        boolean success = true;
+        final Node root_node = graphDb.getNodeById(0);
+        if (!root_node.hasRelationship()) {
+            success= false;
+            final List<Class> classList = new ArrayList<>();
+            classList.add(IssueBase.class);
+            classList.add(IssueStatus.class);
+            classList.add(IssuePriority.class);
+            classList.add(IssueType.class);
+            classList.add(IssueComponent.class);
+            classList.add(IssueRelation.class);
+            classList.add(IssueVersion.class);
+            classList.add(IssueStoryPoint.class);
+
+            final Transaction tx = graphDb.beginTx();
+            try{
+                for (Class clazz : classList) {
+                    final RelationshipType rel = GraphRelationRegistry.getRootToClassRootRelType(clazz);
+                    Node class_root = graphDb.createNode();
+                    class_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), rel.name());
+                    root_node.createRelationshipTo(class_root, rel);
+                }
+                tx.success();
+                success = true;
+            } finally {
+                tx.finish();
+            }
+        }
+        return success;
     }
 
     public GraphDatabaseService getGraphDBService() {

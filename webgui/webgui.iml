@@ -36,6 +36,7 @@
     <orderEntry type="module" module-name="base" exported="" />
     <orderEntry type="library" exported="" name="lib-vaadin" level="project" />
     <orderEntry type="library" name="lib-tablemodell" level="project" />
+    <orderEntry type="library" name="lib-neo4j" level="project" />
   </component>
 </module>
 

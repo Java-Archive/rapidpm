@@ -119,8 +119,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             item = typeSelect.addItem(type);
             item.getItemProperty(PROPERTY_CAPTION).setValue(type.getTypeName());
             typeSelect.setItemIcon(type, new ThemeResource("images/" + type.getTypeFileName()));
+            typeSelect.select(typeList.get(0));
         }
-        typeSelect.select(typeList.get(0));
         typeSelect.setTextInputAllowed(false);
         typeSelect.setNullSelectionAllowed(false);
         typeSelect.setReadOnly(true);
@@ -134,8 +134,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             item = statusSelect.addItem(status);
             item.getItemProperty(PROPERTY_CAPTION).setValue(status.getStatusName());
             statusSelect.setItemIcon(status, new ThemeResource("images/" + status.getStatusFileName()));
+            statusSelect.select(statusList.get(0));
         }
-        statusSelect.select(statusList.get(0));
         statusSelect.setTextInputAllowed(false);
         statusSelect.setNullSelectionAllowed(false);
         statusSelect.setReadOnly(true);
@@ -149,8 +149,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             item = prioritySelect.addItem(priority);
             item.getItemProperty(PROPERTY_CAPTION).setValue(priority.getPriorityName());
             prioritySelect.setItemIcon(priority, new ThemeResource("images/" + priority.getPriorityFileName()));
+            prioritySelect.select(priorityList.get(0));
         }
-        prioritySelect.select(priorityList.get(0));
         prioritySelect.setTextInputAllowed(false);
         prioritySelect.setNullSelectionAllowed(false);
         prioritySelect.setReadOnly(true);
@@ -173,8 +173,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             }
             item = assigneeSelect.addItem(user);
             item.getItemProperty(PROPERTY_CAPTION).setValue(user.getLogin());
+            assigneeSelect.select(assigneeSelect.getItemIds().toArray()[0]);
         }
-        assigneeSelect.select(assigneeSelect.getItemIds().toArray()[0]);
         assigneeSelect.setTextInputAllowed(false);
         assigneeSelect.setNullSelectionAllowed(false);
         assigneeSelect.setReadOnly(true);
@@ -204,8 +204,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         for (IssueStoryPoint storypoint : storyPointList) {
             item = storyPointSelect.addItem(storypoint);
             item.getItemProperty(PROPERTY_CAPTION).setValue(storypoint.getStorypoint());
+            storyPointSelect.select(storyPointList.get(0));
         }
-        storyPointSelect.select(storyPointList.get(0));
         storyPointSelect.setTextInputAllowed(false);
         storyPointSelect.setNullSelectionAllowed(false);
         storyPointSelect.setReadOnly(true);
@@ -219,8 +219,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         for (IssueVersion version : versionList) {
             item = versionSelect.addItem(version);
             item.getItemProperty(PROPERTY_CAPTION).setValue(version.getVersionName());
+            versionSelect.select(versionList.get(0));
         }
-        versionSelect.select(versionList.get(0));
         versionSelect.setTextInputAllowed(false);
         versionSelect.setNullSelectionAllowed(false);
         versionSelect.setReadOnly(true);
@@ -233,8 +233,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         List<Integer> riskarray = new ArrayList<>(Arrays.asList(0, 25, 50, 75, 100));
         for (Integer version : riskarray) {
             riskSelect.addItem(version);
+            riskSelect.select(riskarray.get(0));
         }
-        riskSelect.select(riskarray.get(0));
         riskSelect.setTextInputAllowed(false);
         riskSelect.setNullSelectionAllowed(true);
         riskSelect.setReadOnly(true);
