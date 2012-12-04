@@ -27,9 +27,9 @@ public class GraphBaseDAO<T> {
     private static final Logger logger = Logger.getLogger(GraphBaseDAO.class);
 
     protected final GraphDatabaseService graphDb;
-    protected final DaoFactory relDaoFactory;
-    protected final Index<Node> index_name;
-    protected final Node root_node;
+    private final DaoFactory relDaoFactory;
+    private final Index<Node> index_name;
+    private final Node root_node;
     protected final Node class_root_node;
 
     private final Class clazz;
