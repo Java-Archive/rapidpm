@@ -26,7 +26,7 @@ public class IssueCommentDAOTest implements BaseDAOTest {
 
     @Test
     public void addChangeDelete() {
-        IssueComment comment = new IssueComment();
+        final IssueComment comment = new IssueComment();
         comment.setText("test");
         comment.setCreated(new Date());
         comment.setCreator(daoFactory.getBenutzerDAO().loadAllEntities().get(0));

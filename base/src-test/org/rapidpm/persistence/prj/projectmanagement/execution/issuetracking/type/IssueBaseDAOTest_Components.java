@@ -27,7 +27,7 @@ public class IssueBaseDAOTest_Components implements BaseDAOTest {
     @Test
     public void addComponent() {
         IssueBase issue = dao.loadAllEntities().get(0);
-        List<IssueComponent> componentList = daoFactory.getIssueComponentDAO().loadAllEntities();
+        final List<IssueComponent> componentList = daoFactory.getIssueComponentDAO().loadAllEntities();
 
         boolean success = issue.addComponent(componentList.get(0));
         assertTrue(success);
@@ -38,7 +38,7 @@ public class IssueBaseDAOTest_Components implements BaseDAOTest {
         success = issue.addComponent(componentList.get(1));
         assertTrue(success);
         issue = dao.persist(issue);
-        connected= issue.getComponents();
+        connected = issue.getComponents();
         assertTrue(connected.contains(componentList.get(0)) && connected.contains(componentList.get(1)));
 
 
@@ -59,18 +59,18 @@ public class IssueBaseDAOTest_Components implements BaseDAOTest {
     @Test
     public void addComponent2() {
         IssueBase issue = dao.loadAllEntities().get(0);
-        List<IssueComponent> componentList = daoFactory.getIssueComponentDAO().loadAllEntities();
+        final List<IssueComponent> componentList = daoFactory.getIssueComponentDAO().loadAllEntities();
 
         boolean success;
 
-        for (IssueComponent component : componentList) {
+        for (final IssueComponent component : componentList) {
             success = issue.addComponent(component);
             assertTrue(success);
             issue = dao.persist(issue);
         }
 
-        List<IssueComponent> connected = issue.getComponents();
-        for (IssueComponent comp : connected) {
+        final List<IssueComponent> connected = issue.getComponents();
+        for (final IssueComponent comp : connected) {
             assertTrue(componentList.contains(comp));
         }
 
@@ -81,7 +81,7 @@ public class IssueBaseDAOTest_Components implements BaseDAOTest {
 
         assertEquals(connected.size(), issue.getComponents().size());
 
-        for (IssueComponent comp : componentList) {
+        for (final IssueComponent comp : componentList) {
             success = issue.removeComponent(comp);
             assertTrue(success);
         }

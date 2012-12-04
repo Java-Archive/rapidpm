@@ -26,10 +26,10 @@ public class IssueBaseDAOTest_Relations implements BaseDAOTest {
 
     @Test
     public void connectWithDeleteRelation() {
-        List<IssueBase> list = dao.loadAllEntities();
+        final List<IssueBase> list = dao.loadAllEntities();
         IssueBase issue1 = list.get(1);
         IssueBase issue2 = list.get(2);
-        IssueRelation rel = daoFactory.getIssueRelationDAO().loadAllEntities().get(1);
+        final IssueRelation rel = daoFactory.getIssueRelationDAO().loadAllEntities().get(1);
 
         boolean success = issue1.connectToIssueAs(issue2, rel);
         assertTrue(success);
@@ -43,7 +43,7 @@ public class IssueBaseDAOTest_Relations implements BaseDAOTest {
         issue1 = dao.persist(issue1);
         connected = issue1.getConnectedIssues(rel, Direction.OUTGOING);
         int i = 0;
-        for (IssueBase issueCon : connected) {
+        for (final IssueBase issueCon : connected) {
             if (issueCon.equals(issue2))
                 i++;
         }
@@ -62,7 +62,7 @@ public class IssueBaseDAOTest_Relations implements BaseDAOTest {
         success = issue1.removeConnectionToIssue(issue2, rel);
         assertTrue(success);
         issue1 = dao.persist(issue1);
-        connected= issue1.getConnectedIssues(rel);
+        connected = issue1.getConnectedIssues(rel);
         assertFalse(connected.contains(issue2));
     }
 

@@ -26,8 +26,8 @@ public class CreateAndInitializeDB {
     private static final Logger logger = Logger.getLogger(CreateAndInitializeDB.class);
 
     private final boolean debug;
-    private GraphDatabaseService graphDb;
-    private Node root;
+    private final GraphDatabaseService graphDb;
+    private final Node root;
     private final DaoFactory daoFactory;
 
     private final Calendar calendar = Calendar.getInstance();
@@ -42,16 +42,15 @@ public class CreateAndInitializeDB {
     private final List<IssueTestCase> testCaseList = new ArrayList<>();
 
     public static void main(final String[] args) {
-        CreateAndInitializeDB setUp = new CreateAndInitializeDB(true);
+        final CreateAndInitializeDB setUp = new CreateAndInitializeDB(true);
         setUp.CreateAndInitialize();
     }
 
-    public CreateAndInitializeDB(boolean debug) {
+    public CreateAndInitializeDB(final boolean debug) {
         this.debug = debug;
         //deleteRelationDependencies();
         deleteFileOrDirectory(true, new File(GraphDBFactory.DB_PATH));
-        final GraphDBFactory instance = GraphDBFactory.getInstance();
-        graphDb = instance.getGraphDBService();
+        graphDb = GraphDBFactory.getInstance().getGraphDBService();
         daoFactory = DaoFactorySingelton.getInstance();
         root = graphDb.getNodeById(0);
     }
@@ -92,60 +91,59 @@ public class CreateAndInitializeDB {
     }
 
     public void createDB() {
-        Transaction tx = graphDb.beginTx();
+        final Transaction tx = graphDb.beginTx();
         try{
-            RelationshipType rel = GraphRelationRegistry.getRootToClassRootRelType(IssueBase.class);
+            final RelationshipType relProject = GraphRelationRegistry.getRootToClassRootRelType(IssueBase.class);
             Node project_root = graphDb.createNode();
-            project_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), rel.name());
-            root.createRelationshipTo(project_root, rel);
+            project_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relProject.name());
+            root.createRelationshipTo(project_root, relProject);
 
             Node project1 = graphDb.createNode();
             project1.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), 1L);
             project1.setProperty(GraphRelationRegistry.getRelationAttributeProjectToken(), "PRO1");
             project1.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), 1);
-            project_root.createRelationshipTo(project1, rel);
+            project_root.createRelationshipTo(project1, relProject);
 
             Node project2 = graphDb.createNode();
             project2.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), 2L);
             project2.setProperty(GraphRelationRegistry.getRelationAttributeProjectToken(), "PRO2");
             project2.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), 1);
-            project_root.createRelationshipTo(project2, rel);
+            project_root.createRelationshipTo(project2, relProject);
 
-            rel = GraphRelationRegistry.getRootToClassRootRelType(IssueStatus.class);
+            final RelationshipType relStatus = GraphRelationRegistry.getRootToClassRootRelType(IssueStatus.class);
             Node status_root = graphDb.createNode();
-            status_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), rel.name());
-            root.createRelationshipTo(status_root, rel);
+            status_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relStatus.name());
+            root.createRelationshipTo(status_root, relStatus);
 
-            rel = GraphRelationRegistry.getRootToClassRootRelType(IssuePriority.class);
+            final RelationshipType relPriority = GraphRelationRegistry.getRootToClassRootRelType(IssuePriority.class);
             Node priority_root = graphDb.createNode();
-            priority_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), rel.name());
-            root.createRelationshipTo(priority_root, rel);
+            priority_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relPriority.name());
+            root.createRelationshipTo(priority_root, relPriority);
 
-            rel = GraphRelationRegistry.getRootToClassRootRelType(IssueType.class);
+            final RelationshipType relType = GraphRelationRegistry.getRootToClassRootRelType(IssueType.class);
             Node type_root = graphDb.createNode();
-            type_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), rel.name());
-            root.createRelationshipTo(type_root, rel);
+            type_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relType.name());
+            root.createRelationshipTo(type_root, relType);
 
-            rel = GraphRelationRegistry.getRootToClassRootRelType(IssueComponent.class);
+            final RelationshipType relComponent = GraphRelationRegistry.getRootToClassRootRelType(IssueComponent.class);
             Node component_root = graphDb.createNode();
-            component_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), rel.name());
-            root.createRelationshipTo(component_root, rel);
+            component_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relComponent.name());
+            root.createRelationshipTo(component_root, relComponent);
 
-            rel = GraphRelationRegistry.getRootToClassRootRelType(IssueRelation.class);
+            final RelationshipType relRelation = GraphRelationRegistry.getRootToClassRootRelType(IssueRelation.class);
             Node issueRelation_root = graphDb.createNode();
-            issueRelation_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), rel.name());
-            root.createRelationshipTo(issueRelation_root, rel);
+            issueRelation_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relRelation.name());
+            root.createRelationshipTo(issueRelation_root, relRelation);
 
-            rel = GraphRelationRegistry.getRootToClassRootRelType(IssueVersion.class);
+            final RelationshipType relVersion = GraphRelationRegistry.getRootToClassRootRelType(IssueVersion.class);
             Node issueversion_root = graphDb.createNode();
-            issueversion_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), rel.name());
-            root.createRelationshipTo(issueversion_root, rel);
+            issueversion_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relVersion.name());
+            root.createRelationshipTo(issueversion_root, relVersion);
 
-            rel = GraphRelationRegistry.getRootToClassRootRelType(IssueStoryPoint.class);
+            final RelationshipType relStoryPoint = GraphRelationRegistry.getRootToClassRootRelType(IssueStoryPoint.class);
             Node issuestorypoint_root = graphDb.createNode();
-            issuestorypoint_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), rel.name());
-            root.createRelationshipTo(issuestorypoint_root, rel);
-
+            issuestorypoint_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relStoryPoint.name());
+            root.createRelationshipTo(issuestorypoint_root, relStoryPoint);
 
             tx.success();
         } finally {
@@ -156,136 +154,137 @@ public class CreateAndInitializeDB {
 
     private void initializeAttributes(){
 
-        IssueStatus status = new IssueStatus();
-        status.setStatusName("Open");
-        status.setStatusFileName("status_open.gif");
-        statusList.add(daoFactory.getIssueStatusDAO().persist(status));
+        final IssueStatus status1 = new IssueStatus();
+        status1.setStatusName("Open");
+        status1.setStatusFileName("status_open.gif");
+        statusList.add(daoFactory.getIssueStatusDAO().persist(status1));
 
-        status = new IssueStatus();
-        status.setStatusName("In Progress");
-        status.setStatusFileName("status_inprogress.gif");
-        statusList.add(daoFactory.getIssueStatusDAO().persist(status));
+        final IssueStatus status2 = new IssueStatus();
+        status2.setStatusName("In Progress");
+        status2.setStatusFileName("status_inprogress.gif");
+        statusList.add(daoFactory.getIssueStatusDAO().persist(status2));
 
-        status = new IssueStatus();
-        status.setStatusName("Resolved");
-        status.setStatusFileName("status_resolved.gif");
-        statusList.add(daoFactory.getIssueStatusDAO().persist(status));
+        final IssueStatus status3 = new IssueStatus();
+        status3.setStatusName("Resolved");
+        status3.setStatusFileName("status_resolved.gif");
+        statusList.add(daoFactory.getIssueStatusDAO().persist(status3));
 
-        status = new IssueStatus();
-        status.setStatusName("Closed");
-        status.setStatusFileName("status_closed.gif");
-        statusList.add(daoFactory.getIssueStatusDAO().persist(status));
+        final IssueStatus status4 = new IssueStatus();
+        status4.setStatusName("Closed");
+        status4.setStatusFileName("status_closed.gif");
+        statusList.add(daoFactory.getIssueStatusDAO().persist(status4));
 
-        status = new IssueStatus();
-        status.setStatusName("On Hold");
-        status.setStatusFileName("status_onhold.gif");
-        statusList.add(daoFactory.getIssueStatusDAO().persist(status));
-
-
-        IssuePriority priority = new IssuePriority();
-        priority.setPriorityName("Trivial");
-        priority.setPriorityFileName("priority_trivial.gif");
-        priority.setPrio(0);
-        priorityList.add(daoFactory.getIssuePriorityDAO().persist(priority));
-
-        priority = new IssuePriority();
-        priority.setPriorityName("Minor");
-        priority.setPriorityFileName("priority_minor.gif");
-        priority.setPrio(1);
-        priorityList.add(daoFactory.getIssuePriorityDAO().persist(priority));
-
-        priority = new IssuePriority();
-        priority.setPriorityName("Major");
-        priority.setPriorityFileName("priority_major.gif");
-        priority.setPrio(2);
-        priorityList.add(daoFactory.getIssuePriorityDAO().persist(priority));
-
-        priority = new IssuePriority();
-        priority.setPriorityName("Critical");
-        priority.setPriorityFileName("priority_critical.gif");
-        priority.setPrio(3);
-        priorityList.add(daoFactory.getIssuePriorityDAO().persist(priority));
-
-        priority = new IssuePriority();
-        priority.setPriorityName("Blocker");
-        priority.setPriorityFileName("priority_blocker.gif");
-        priority.setPrio(4);
-        priorityList.add(daoFactory.getIssuePriorityDAO().persist(priority));
+        final IssueStatus status5 = new IssueStatus();
+        status5.setStatusName("On Hold");
+        status5.setStatusFileName("status_onhold.gif");
+        statusList.add(daoFactory.getIssueStatusDAO().persist(status5));
 
 
 
-        IssueType type = new IssueType();
-        type.setTypeName("Bug");
-        typeList.add(daoFactory.getIssueTypeDAO().persist(type));
+        final IssuePriority priority1 = new IssuePriority();
+        priority1.setPriorityName("Trivial");
+        priority1.setPriorityFileName("priority_trivial.gif");
+        priority1.setPrio(0);
+        priorityList.add(daoFactory.getIssuePriorityDAO().persist(priority1));
 
-        type = new IssueType();
-        type.setTypeName("Task");
-        typeList.add(daoFactory.getIssueTypeDAO().persist(type));
+        final IssuePriority priority2 = new IssuePriority();
+        priority2.setPriorityName("Minor");
+        priority2.setPriorityFileName("priority_minor.gif");
+        priority2.setPrio(1);
+        priorityList.add(daoFactory.getIssuePriorityDAO().persist(priority2));
 
-        type = new IssueType();
-        type.setTypeName("Improvement");
-        typeList.add(daoFactory.getIssueTypeDAO().persist(type));
+        final IssuePriority priority3 = new IssuePriority();
+        priority3.setPriorityName("Major");
+        priority3.setPriorityFileName("priority_major.gif");
+        priority3.setPrio(2);
+        priorityList.add(daoFactory.getIssuePriorityDAO().persist(priority3));
 
-        type = new IssueType();
-        type.setTypeName("New Function");
-        typeList.add(daoFactory.getIssueTypeDAO().persist(type));
+        final IssuePriority priority4 = new IssuePriority();
+        priority4.setPriorityName("Critical");
+        priority4.setPriorityFileName("priority_critical.gif");
+        priority4.setPrio(3);
+        priorityList.add(daoFactory.getIssuePriorityDAO().persist(priority4));
 
-        type = new IssueType();
-        type.setTypeName("Epic");
-        typeList.add(daoFactory.getIssueTypeDAO().persist(type));
+        final IssuePriority priority5 = new IssuePriority();
+        priority5.setPriorityName("Blocker");
+        priority5.setPriorityFileName("priority_blocker.gif");
+        priority5.setPrio(4);
+        priorityList.add(daoFactory.getIssuePriorityDAO().persist(priority5));
 
-        IssueVersion version = new IssueVersion(" - ");
-        versionList.add(daoFactory.getIssueVersionDAO().persist(version));
 
-        version = new IssueVersion("Alpha");
-        versionList.add(daoFactory.getIssueVersionDAO().persist(version));
 
-        version = new IssueVersion("1.0");
-        versionList.add(daoFactory.getIssueVersionDAO().persist(version));
+        final IssueType type1 = new IssueType("Bug");
+        typeList.add(daoFactory.getIssueTypeDAO().persist(type1));
 
-        version = new IssueVersion("2.0");
-        versionList.add(daoFactory.getIssueVersionDAO().persist(version));
+        final IssueType type2 = new IssueType("Task");
+        typeList.add(daoFactory.getIssueTypeDAO().persist(type2));
 
-        IssueStoryPoint storypoint;
+        final IssueType type3 = new IssueType("Improvement");
+        typeList.add(daoFactory.getIssueTypeDAO().persist(type3));
+
+        final IssueType type4 = new IssueType("New Function");
+        typeList.add(daoFactory.getIssueTypeDAO().persist(type4));
+
+        final IssueType type5 = new IssueType("Epic");
+        typeList.add(daoFactory.getIssueTypeDAO().persist(type5));
+
+
+
+        final IssueVersion version1 = new IssueVersion(" - ");
+        versionList.add(daoFactory.getIssueVersionDAO().persist(version1));
+
+        final IssueVersion version2 = new IssueVersion("Alpha");
+        versionList.add(daoFactory.getIssueVersionDAO().persist(version2));
+
+        final IssueVersion version3 = new IssueVersion("1.0");
+        versionList.add(daoFactory.getIssueVersionDAO().persist(version3));
+
+        final IssueVersion version4 = new IssueVersion("2.0");
+        versionList.add(daoFactory.getIssueVersionDAO().persist(version4));
+
+
+
         for(int i = 1; i < 11; i++) {
-            storypoint = new IssueStoryPoint(i);
+            final IssueStoryPoint storypoint = new IssueStoryPoint(i);
             storypointList.add(daoFactory.getIssueStoryPointDAO().persist(storypoint));
         }
 
 
-        IssueRelation relation = new IssueRelation();
-        relation.setRelationName("Duplicate");
-        relation.setOutgoingName("duplicates");
-        relation.setIncomingName("is duplicated by");
-        relationList.add(daoFactory.getIssueRelationDAO().persist(relation));
 
-        relation = new IssueRelation();
-        relation.setRelationName("Block");
-        relation.setOutgoingName("blocks");
-        relation.setIncomingName("is blocked by");
-        relationList.add(daoFactory.getIssueRelationDAO().persist(relation));
+        final IssueRelation relation1 = new IssueRelation();
+        relation1.setRelationName("Duplicate");
+        relation1.setOutgoingName("duplicates");
+        relation1.setIncomingName("is duplicated by");
+        relationList.add(daoFactory.getIssueRelationDAO().persist(relation1));
 
-        relation = new IssueRelation();
-        relation.setRelationName("Dependence");
-        relation.setOutgoingName("relates");
-        relation.setIncomingName("depends on");
-        relationList.add(daoFactory.getIssueRelationDAO().persist(relation));
+        final IssueRelation relation2 = new IssueRelation();
+        relation2.setRelationName("Block");
+        relation2.setOutgoingName("blocks");
+        relation2.setIncomingName("is blocked by");
+        relationList.add(daoFactory.getIssueRelationDAO().persist(relation2));
+
+        final IssueRelation relation3 = new IssueRelation();
+        relation3.setRelationName("Dependence");
+        relation3.setOutgoingName("relates");
+        relation3.setIncomingName("depends on");
+        relationList.add(daoFactory.getIssueRelationDAO().persist(relation3));
 
 
-        IssueComponent component = new IssueComponent("GUI");
-        componentList.add(daoFactory.getIssueComponentDAO().persist(component));
+        final IssueComponent component1 = new IssueComponent("GUI");
+        componentList.add(daoFactory.getIssueComponentDAO().persist(component1));
 
-        component = new IssueComponent("IssueTracking");
-        componentList.add(daoFactory.getIssueComponentDAO().persist(component));
+        final IssueComponent component2 = new IssueComponent("IssueTracking");
+        componentList.add(daoFactory.getIssueComponentDAO().persist(component2));
 
-        component = new IssueComponent("Planning");
-        componentList.add(daoFactory.getIssueComponentDAO().persist(component));
+        final IssueComponent component3 = new IssueComponent("Planning");
+        componentList.add(daoFactory.getIssueComponentDAO().persist(component3));
 
-        component = new IssueComponent("Controlling");
-        componentList.add(daoFactory.getIssueComponentDAO().persist(component));
+        final IssueComponent component4 = new IssueComponent("Controlling");
+        componentList.add(daoFactory.getIssueComponentDAO().persist(component4));
 
-        component = new IssueComponent("Documentation");
-        componentList.add(daoFactory.getIssueComponentDAO().persist(component));
+        final IssueComponent component5 = new IssueComponent("Documentation");
+        componentList.add(daoFactory.getIssueComponentDAO().persist(component5));
+
 
         List<List<Integer>> commentValues = new ArrayList<>();
         commentValues.add(Arrays.asList(4, 2012, 8, 8));
@@ -315,11 +314,11 @@ public class CreateAndInitializeDB {
         commentValues.add(Arrays.asList(4, 2012,  9, 29));
 
 
-        IssueComment comment;
+
         int i, x = 0;
         for (List<Integer> values : commentValues) {
             i = 0;
-            comment = new IssueComment();
+            IssueComment comment = new IssueComment();
             comment.setText("Comment " + (x + 1));
             comment.setCreator(daoFactory.getBenutzerDAO().findByID(new Long(values.get(i++))));
             calendar.set(values.get(i++), values.get(i++) - 1, values.get(i++));
@@ -330,20 +329,17 @@ public class CreateAndInitializeDB {
         }
 
 
-        IssueTestCase testCase;
         for (i = 0; i < 20; i++) {
-            testCase = new IssueTestCase("TestCase " + i);
+            IssueTestCase testCase = new IssueTestCase("TestCase " + i);
             testCase = daoFactory.saveOrUpdateTX(testCase);
             testCaseList.add(testCase);
         }
     }
 
     private void initializeProject1() {
-        List<IssueBase> issues = new ArrayList<>();
-        List<List<Integer>> issueAttr = new ArrayList<>();
-        Long projectId = 1L;
-
-        Benutzer user;
+        final List<IssueBase> issues = new ArrayList<>();
+        final List<List<Integer>> issueAttr = new ArrayList<>();
+        final Long projectId = 1L;
 
         //status,priority,type,  reporter,assignee,  dueDate_planned(3),_resolved(3),_closed(3),   version,
         // storypoints,  components(2),
@@ -377,12 +373,12 @@ issueAttr.add(Arrays.asList(2,1,2,  2,2,  2012, 7,12, 2012, 2,12, 2012, 2,19,  2
 issueAttr.add(Arrays.asList(3,2,4,  5,4,  2012, 7,12, 2012, 2,19, 2012, 2,19,  2, 6,  4,-1,  12,-1,  23,24,  -1,  -1));
 issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2, 3,  4,-1,  -1,-1,  25,-1,  -1,  -1));
 
-        BenutzerDAO benutzerDao = daoFactory.getBenutzerDAO();
+        final BenutzerDAO benutzerDao = daoFactory.getBenutzerDAO();
         //fill Issues with Attributes
         int i, x = 0;
-        for (List<Integer> attributes : issueAttr) {
+        for (final List<Integer> attributes : issueAttr) {
             i = 0;
-            IssueBase issue = new IssueBase(projectId);
+            final IssueBase issue = new IssueBase(projectId);
             //issue.setText("TPR-" + x);
             issue.setSummary("Issue Summary " + x);
             issue.setStory("Issue Story " + x);
@@ -409,7 +405,7 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
 
             for (int j = 0; j < 2; j++) {
                 if (attributes.get(i) != -1) {
-                    IssueTestCase testcase = testCaseList.get(attributes.get(i) - 1);
+                    final IssueTestCase testcase = testCaseList.get(attributes.get(i) - 1);
                     issue.addOrChangeTestCase(testcase);
                 }
                 i++;
@@ -417,7 +413,7 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
 
             for (int j = 0; j < 2; j++) {
                 if (attributes.get(i) != -1) {
-                    IssueComment comment = commentList.get(attributes.get(i) - 1);
+                    final IssueComment comment = commentList.get(attributes.get(i) - 1);
                     issue.addOrChangeComment(comment);
                 }
                 i++;
@@ -428,7 +424,7 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
             i++;
 
             if (attributes.get(i) != -1) {
-                PlanningUnit pu = new PlanningUnit();
+                final PlanningUnit pu = new PlanningUnit();
                 pu.setId(new Long(attributes.get(i)));
                 issue.setPlanningUnit(pu);
             }
@@ -466,12 +462,12 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
         issues.get(2).connectToIssueAs(issues.get(1), relationList.get(1));
         issues.get(1).connectToIssueAs(issues.get(2), relationList.get(0));
 
-        for (IssueBase issue : issues) {
+        for (final IssueBase issue : issues) {
             daoFactory.getIssueBaseDAO(projectId).persist(issue);
         }
 
         if (debug)
-            for (IssueBase singleIssue : issues)
+            for (final IssueBase singleIssue : issues)
                 System.out.println(singleIssue.toString());
 
     }
@@ -479,12 +475,11 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
 
 
     private void initializeProject2() {
-        Long projectId = 2L;
-
+        final Long projectId = 2L;
+        final BenutzerDAO benutzerDao = daoFactory.getBenutzerDAO();
 
         for (int i = 0; i<3 ;i++) {
             IssueBase issueBase = new IssueBase(projectId);
-            //issueBase.setText("PR2 " + projectId + " " + i);
             issueBase.setSummary("Issue Summary" + projectId + " " + i);
             issueBase.setStory("Issue Story" + projectId + " " + i);
             issueBase.setDueDate_closed(new Date());
@@ -493,13 +488,8 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
             issueBase.setVersion(versionList.get(0));
             issueBase.setStoryPoints(storypointList.get(i));
 
-            Benutzer benutzer = new Benutzer();
-            benutzer.setId(new Long(i+projectId));
-            issueBase.setAssignee(benutzer);
-
-            benutzer = new Benutzer();
-            benutzer.setId(new Long(0+projectId));
-            issueBase.setReporter(benutzer);
+            issueBase.setAssignee(benutzerDao.findByID(i + projectId));
+            issueBase.setReporter(benutzerDao.findByID(0 + projectId));
 
             issueBase.setStatus(statusList.get(i));
             issueBase.setType(typeList.get(i));

@@ -40,18 +40,18 @@ public class IssueStoryPointDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        IssueStoryPoint storyPoint = dao.loadAllEntities().get(0);
-        IssueStoryPoint stpTest = new IssueStoryPoint();
+        final IssueStoryPoint storyPoint = dao.loadAllEntities().get(0);
+        final IssueStoryPoint stpTest = new IssueStoryPoint();
         stpTest.setStorypoint(storyPoint.getStorypoint());
         dao.persist(stpTest);
     }
 
     @Test
     public void getConnectedIssus() {
-        for (IssueStoryPoint storyPoint : dao.loadAllEntities()) {
-            List<IssueBase> issueList = storyPoint.getConnectedIssuesFromProject(1L);
+        for (final IssueStoryPoint storyPoint : dao.loadAllEntities()) {
+            final List<IssueBase> issueList = storyPoint.getConnectedIssuesFromProject(1L);
 
-            for (IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+            for (final IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
                 if (issue.getStoryPoints().equals(storyPoint))
                     assertTrue(issueList.contains(issue));
             }

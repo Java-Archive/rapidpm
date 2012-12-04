@@ -27,9 +27,9 @@ public class GraphBaseDAO<T> {
     private static final Logger logger = Logger.getLogger(GraphBaseDAO.class);
 
     protected final GraphDatabaseService graphDb;
-    protected final DaoFactory relDaoFactory;
-    protected final Index<Node> index_name;
-    protected final Node root_node;
+    private final DaoFactory relDaoFactory;
+    private final Index<Node> index_name;
+    private final Node root_node;
     protected final Node class_root_node;
 
     private final Class clazz;
@@ -357,16 +357,6 @@ public class GraphBaseDAO<T> {
         return getObjectFromNode(graphDb.getNodeById(id));
     }
 
-    public T findByEntity(final T entity) {
-        if (logger.isDebugEnabled())
-            logger.debug("findByEntity");
-
-        if (entity == null)
-            throw new NullPointerException("Entity object is null.");
-
-        return findByID(getIdFromEntity(entity));
-    }
-
     protected T getObjectFromNode(final Node node) {
         if (logger.isDebugEnabled())
             logger.debug("getObjectFromNode: " + clazz.getSimpleName());
@@ -578,33 +568,6 @@ public class GraphBaseDAO<T> {
         }
     }
 
-    public boolean deleteRelations(final T entity) {
-        if (entity == null)
-            throw new NullPointerException("Object to delete can't be null.");
-
-        if (logger.isDebugEnabled())
-            logger.debug("delete: " + entity);
-
-        boolean success = false;
-        final Long id = getIdFromEntity(entity);
-        final Transaction tx = graphDb.beginTx();
-        try{
-            Node node;
-            if (id != null && id != 0) {
-                node = graphDb.getNodeById(id);
-                final RelationshipType relType = GraphRelationRegistry.getClassRootToChildRelType();
-                for (Relationship rel : node.getRelationships(relType)) {
-                    rel.delete();
-                }
-                node.delete();
-            }
-            tx.success();
-            success = true;
-        } finally {
-            tx.finish();
-            return success;
-        }
-    }
 
     protected List<IssueBase> getConnectedIssuesFromProject(final T entity, final Long projectId) {
         if (entity == null)

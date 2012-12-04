@@ -20,6 +20,6 @@ public class IssueRelationDAO extends GraphBaseDAO<IssueRelation> {
     }
 
     public boolean delete(final IssueRelation entity) {
-        return super.deleteRelations(entity);
+        return super.deleteSimpleAttribute(entity);
     }
 }

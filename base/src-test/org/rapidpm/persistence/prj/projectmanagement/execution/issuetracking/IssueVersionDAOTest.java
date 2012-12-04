@@ -40,18 +40,18 @@ public class IssueVersionDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        IssueVersion version = dao.loadAllEntities().get(0);
-        IssueVersion verTest = new IssueVersion();
+        final IssueVersion version = dao.loadAllEntities().get(0);
+        final IssueVersion verTest = new IssueVersion();
         verTest.setVersionName(version.getVersionName());
         dao.persist(verTest);
     }
 
     @Test
     public void getConnectedIssus() {
-        for (IssueVersion version : dao.loadAllEntities()) {
-            List<IssueBase> issueList = version.getConnectedIssuesFromProject(1L);
+        for (final IssueVersion version : dao.loadAllEntities()) {
+            final List<IssueBase> issueList = version.getConnectedIssuesFromProject(1L);
 
-            for (IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+            for (final IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
                 if (issue.getVersion().equals(version))
                     assertTrue(issueList.contains(issue));
             }
