@@ -39,7 +39,7 @@ public class GraphDBFactory {
         graphDb = new EmbeddedGraphDatabase(DB_PATH);
         registerShutdownHook(graphDb);
         if (!createDB())
-            throw new IllegalStateException("GraphDB couldn't be created.");
+            throw new IllegalStateException("GraphDB couldn't be created/initialized.");
     }
 
     private boolean createDB() {
@@ -73,6 +73,47 @@ public class GraphDBFactory {
         }
         return success;
     }
+
+
+//    private boolean initializeBasicAttributes() {
+//        boolean success = false;
+//        try {
+//            final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+//
+//            final IssueStatus status = new IssueStatus();
+//            status.setStatusName("Open");
+//            status.setStatusFileName("status_open.gif");
+//            daoFactory.getIssueStatusDAO().persist(status);
+//
+//            final IssuePriority priority = new IssuePriority();
+//            priority.setPriorityName("Trivial");
+//            priority.setPriorityFileName("priority_trivial.gif");
+//            priority.setPrio(0);
+//            daoFactory.getIssuePriorityDAO().persist(priority);
+//
+//            final IssueType type = new IssueType("Bug");
+//            daoFactory.getIssueTypeDAO().persist(type);
+//
+//            final IssueVersion version = new IssueVersion(" - ");
+//            daoFactory.getIssueVersionDAO().persist(version);
+//
+//            final IssueStoryPoint storypoint = new IssueStoryPoint(1);
+//            daoFactory.getIssueStoryPointDAO().persist(storypoint);
+//
+//            final IssueRelation relation = new IssueRelation();
+//            relation.setRelationName("Duplicate");
+//            relation.setOutgoingName("duplicates");
+//            relation.setIncomingName("is duplicated by");
+//            daoFactory.getIssueRelationDAO().persist(relation);
+//
+//            final IssueComponent component = new IssueComponent("Documentation");
+//            daoFactory.getIssueComponentDAO().persist(component);
+//            success = true;
+//        } finally {
+//
+//        }
+//        return success;
+//    }
 
     public GraphDatabaseService getGraphDBService() {
         return graphDb;
