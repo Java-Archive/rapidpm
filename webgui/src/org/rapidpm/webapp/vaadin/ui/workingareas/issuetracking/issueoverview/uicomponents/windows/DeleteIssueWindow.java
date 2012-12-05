@@ -2,11 +2,10 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.ui
 
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
-import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeIssueBaseContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainer;
 
 /**
  * Created with IntelliJ IDEA.
@@ -95,15 +94,18 @@ public class DeleteIssueWindow extends RapidWindow implements Internationalizati
 
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            boolean success;
-            Object item = issueTree.getValue();
+            boolean success = false;
+            final Object item = issueTree.getValue();
+            final TreeIssueBaseContainer container = ((TreeIssueBaseContainer)issueTree.getContainerDataSource());
             issueTree.setValue(issueTree.getParent(item));
-            if (deleteRecursive.getValue()) {
-                success = ((TreeIssueBaseContainer)issueTree.getContainerDataSource()).removeItemRecursively(item);
-            } else {
-                success = issueTree.removeItem(item);
-            }
 
+            if (container.containsId(item)) {
+                if (deleteRecursive.getValue()) {
+                    success = container.removeItemRecursively(item);
+                } else {
+                    success = issueTree.removeItem(item);
+                }
+            }
             if (!success)
                 Notification.show(screen.getMessagesBundle().getString("issuetracking_issue_deleteerror"));
             self.close();

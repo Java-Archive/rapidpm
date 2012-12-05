@@ -356,6 +356,22 @@ public class GraphBaseDAO<T> {
         return getObjectFromNode(graphDb.getNodeById(id));
     }
 
+    public boolean existInDatabase(final Long id) {
+        if (logger.isDebugEnabled())
+            logger.debug("existInDatabase");
+
+        if (id == null)
+            throw new NullPointerException("Id object is null.");
+
+        try {
+            graphDb.getNodeById(id);
+        } catch (NotFoundException e){
+            logger.warn("Issue has been deleted");
+            return false;
+        }
+        return true;
+    }
+
     protected T getObjectFromNode(final Node node) {
         if (logger.isDebugEnabled())
             logger.debug("getObjectFromNode: " + clazz.getSimpleName());
@@ -589,7 +605,7 @@ public class GraphBaseDAO<T> {
         final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(clazz);
         for (Relationship rel : statusNode.getRelationships(relType, Direction.INCOMING)) {
             issue = getObjectFromNode(rel.getOtherNode(statusNode), IssueBase.class);
-            if (issue != null && (projectId == 0 || issue.getProjectId().equals(projectId))) {
+            if (issue != null && (projectId == 0 || issue.getProjectid().equals(projectId))) {
                 issueList.add(issue);
                 if (logger.isDebugEnabled())
                     logger.debug("Is connected Issues: " + issue);

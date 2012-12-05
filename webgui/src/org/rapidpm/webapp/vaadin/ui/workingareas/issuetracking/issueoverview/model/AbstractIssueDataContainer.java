@@ -1,6 +1,5 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell;
+package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model;
 
-import com.vaadin.data.Container;
 import com.vaadin.data.util.IndexedContainer;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;

@@ -4,9 +4,9 @@ import org.junit.Test;
 import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
 
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,6 +18,17 @@ import static org.junit.Assert.assertTrue;
 public class IssueTestCasesDAOTest implements BaseDAOTest {
 
     private final IssueTestCaseDAO dao = daoFactory.getIssueTestCaseDAO();
+
+    @Test
+    public void equalsAndHashCodeTest() {
+        List<IssueTestCase> testCaseList = dao.loadAllEntities();
+        assertTrue(testCaseList.get(0).equals(testCaseList.get(0)));
+        assertEquals(testCaseList.get(0).hashCode(), testCaseList.get(0).hashCode());
+
+        assertFalse(testCaseList.get(0).equals(new IssueComment()));
+        assertNotSame(new IssueComment().hashCode(), testCaseList.get(0).hashCode());
+    }
+
 
     @Test
     public void addChangeDelete() {

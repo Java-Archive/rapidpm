@@ -10,9 +10,7 @@ import org.rapidpm.persistence.system.security.Benutzer;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,6 +26,16 @@ public class IssueBaseDAOTest implements BaseDAOTest {
     private final IssueBaseDAO dao = daoFactory.getIssueBaseDAO(projectId);
 
     @Test
+    public void equalsAndHashCodeTest() {
+        List<IssueBase> issueBaseList = dao.loadAllEntities();
+        assertTrue(issueBaseList.get(0).equals(issueBaseList.get(0)));
+        assertEquals(issueBaseList.get(0).hashCode(), issueBaseList.get(0).hashCode());
+
+        assertFalse(issueBaseList.get(0).equals(new IssueComment()));
+        assertNotSame(new IssueComment().hashCode(), issueBaseList.get(0).hashCode());
+    }
+
+    @Test
     public void addIssue() {
         IssueBase issueBase = new IssueBase(projectId);
 
@@ -37,15 +45,8 @@ public class IssueBaseDAOTest implements BaseDAOTest {
         issueBase.setDueDate_planned(new Date());
         issueBase.setDueDate_resolved(new Date());
 
-        final Benutzer benutzer = new Benutzer();
-        benutzer.setId(1000L);
-        benutzer.setLogin("testuser x");
-        issueBase.setAssignee(benutzer);
-
-        final Benutzer benutzer2 = new Benutzer();
-        benutzer2.setId(new Long(1001));
-        benutzer2.setLogin("testuser x");
-        issueBase.setReporter(benutzer2);
+        issueBase.setAssignee(daoFactory.getBenutzerDAO().loadAllEntities().get(0));
+        issueBase.setReporter(daoFactory.getBenutzerDAO().loadAllEntities().get(0));
 
         issueBase.setStatus(daoFactory.getIssueStatusDAO().loadAllEntities().get(0));
         issueBase.setType(daoFactory.getIssueTypeDAO().loadAllEntities().get(0));
@@ -59,6 +60,7 @@ public class IssueBaseDAOTest implements BaseDAOTest {
         //assertTrue(issueBase.equals(dao.findByID(issueBase.getId()).hashCode()));
 
         dao.delete(issueBase);
+        assertFalse(dao.loadAllEntities().contains(issueBase));
     }
 
 

@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell;
+package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model;
 
 import com.vaadin.data.util.HierarchicalContainer;
 import org.apache.log4j.Logger;
@@ -9,7 +9,6 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -118,4 +117,12 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
         }
         return removeItem(itemId);
     }
+
+//     public boolean containsIssue(IssueBase issue) {
+//        for (Object itemId : this.getItemIds()) {
+//            if (issue.equals(this.getContainerProperty(itemId, PROPERTY_ISSUEBASE)))
+//                return true;
+//        }
+//        return false;
+//     }
 }

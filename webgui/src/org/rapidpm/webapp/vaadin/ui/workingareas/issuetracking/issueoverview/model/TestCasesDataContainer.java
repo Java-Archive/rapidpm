@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell;
+package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model;
 
 import com.vaadin.data.Item;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCase;

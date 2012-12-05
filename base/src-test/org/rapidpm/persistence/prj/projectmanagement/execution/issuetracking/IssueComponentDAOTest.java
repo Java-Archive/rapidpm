@@ -7,9 +7,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,6 +20,17 @@ public class IssueComponentDAOTest implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssueComponentDAOTest.class);
 
     private final IssueComponentDAO dao = daoFactory.getIssueComponentDAO();
+
+    @Test
+    public void equalsAndHashCodeTest() {
+        List<IssueComponent> componentList = dao.loadAllEntities();
+        assertTrue(componentList.get(0).equals(componentList.get(0)));
+        assertEquals(componentList.get(0).hashCode(), componentList.get(0).hashCode());
+
+        assertFalse(componentList.get(0).equals(new IssueComment()));
+        assertNotSame(new IssueComment().hashCode(), componentList.get(0).hashCode());
+    }
+
 
     @Test
     public void addChangeDelete() {
