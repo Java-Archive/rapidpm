@@ -106,7 +106,6 @@ public class DeleteIssueWindow extends RapidWindow implements Internationalizati
                     success = issueTree.removeItem(item);
                 }
             }
-
             if (!success)
                 Notification.show(screen.getMessagesBundle().getString("issuetracking_issue_deleteerror"));
             self.close();

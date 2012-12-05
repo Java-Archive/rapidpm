@@ -19,11 +19,9 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uic
 public class DetailsSaveButtonClickListener implements Button.ClickListener {
     private static Logger logger = Logger.getLogger(DetailsSaveButtonClickListener.class);
 
-    private final IssueOverviewScreen screen;
     private final IssueDetailsLayout detailsLayout;
 
-    public DetailsSaveButtonClickListener(final IssueOverviewScreen screen, final IssueDetailsLayout detailsLayout) {
-        this.screen = screen;
+    public DetailsSaveButtonClickListener(final IssueDetailsLayout detailsLayout) {
         this.detailsLayout = detailsLayout;
     }
 
