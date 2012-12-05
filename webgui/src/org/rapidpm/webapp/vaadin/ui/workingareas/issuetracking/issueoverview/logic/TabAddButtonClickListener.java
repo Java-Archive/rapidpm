@@ -3,10 +3,10 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.lo
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.AbstractIssueDataContainer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.CommentsDataContainer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.RelationsDataContainer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TestCasesDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.AbstractIssueDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.CommentsDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.RelationsDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TestCasesDataContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.AddCommentWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.AddRelationWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.AddTestcaseWindow;

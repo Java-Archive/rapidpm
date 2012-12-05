@@ -6,7 +6,6 @@ import com.vaadin.ui.DefaultFieldFactory;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.TableFieldFactory;
 import org.apache.log4j.Logger;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.modell.SettingsDataContainer;
 
 /**
  * Created with IntelliJ IDEA.

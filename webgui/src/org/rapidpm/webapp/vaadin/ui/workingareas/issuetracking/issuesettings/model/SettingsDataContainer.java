@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.modell;
+package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.model;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;

@@ -1,6 +1,5 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows;
 
-import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
@@ -13,8 +12,8 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.AbstractIssueDataContainer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.RelationsDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.AbstractIssueDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.RelationsDataContainer;
 
 import java.util.List;
 

@@ -1,13 +1,5 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents;
 
-import com.vaadin.data.util.HierarchicalContainer;
-import com.vaadin.event.DataBoundTransferable;
-import com.vaadin.event.Transferable;
-import com.vaadin.event.dd.DragAndDropEvent;
-import com.vaadin.event.dd.DropHandler;
-import com.vaadin.event.dd.acceptcriteria.AcceptAll;
-import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
-import com.vaadin.shared.ui.dd.VerticalDropLocation;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
@@ -17,8 +9,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.log
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DeleteButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeActivateOnValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeValueChangeListener;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.ModelSingleton;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeIssueBaseContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.ModelSingleton;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainer;
 
 
 /**

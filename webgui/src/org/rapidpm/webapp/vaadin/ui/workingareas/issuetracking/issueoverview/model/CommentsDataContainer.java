@@ -1,15 +1,12 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell;
+package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model;
 
 import com.vaadin.data.Item;
-import org.neo4j.graphdb.Direction;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**

@@ -3,13 +3,11 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.ui
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.AbstractIssueDataContainer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.CommentsDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.AbstractIssueDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.CommentsDataContainer;
 
 import java.util.Date;
 

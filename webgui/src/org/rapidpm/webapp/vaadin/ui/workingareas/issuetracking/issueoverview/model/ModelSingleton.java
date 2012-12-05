@@ -1,4 +1,4 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell;
+package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model;
 
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
