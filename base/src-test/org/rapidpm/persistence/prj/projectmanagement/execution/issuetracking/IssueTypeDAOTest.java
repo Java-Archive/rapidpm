@@ -23,6 +23,16 @@ public class IssueTypeDAOTest implements BaseDAOTest {
     private final IssueType assignTo = dao.loadAllEntities().get(0);
 
     @Test
+    public void equalsAndHashCodeTest() {
+        List<IssueType> typeList = dao.loadAllEntities();
+        assertTrue(typeList.get(0).equals(typeList.get(0)));
+        assertEquals(typeList.get(0).hashCode(), typeList.get(0).hashCode());
+
+        assertFalse(typeList.get(0).equals(new IssueComment()));
+        assertNotSame(new IssueComment().hashCode(), typeList.get(0).hashCode());
+    }
+
+    @Test
     public void addChangeDelete() {
         IssueType type = new IssueType("test");
         type.setTypeFileName("test_filename");
@@ -44,6 +54,7 @@ public class IssueTypeDAOTest implements BaseDAOTest {
         final IssueType priority = dao.loadAllEntities().get(0);
         final IssueType prioTest = new IssueType();
         prioTest.setTypeName(priority.getTypeName());
+        prioTest.setTypeFileName(priority.getTypeFileName());
         dao.persist(prioTest);
     }
 
