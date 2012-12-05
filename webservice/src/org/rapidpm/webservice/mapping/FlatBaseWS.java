@@ -1,9 +1,7 @@
 package org.rapidpm.webservice.mapping;
 
 import org.apache.log4j.Logger;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.AuthorizationException;
-import org.apache.shiro.subject.Subject;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
@@ -123,13 +121,13 @@ public abstract class FlatBaseWS<T, DT extends DAO<Long, T>, FT extends FlatEnti
     public void save(@WebParam(name = "entity") final FT flatEntity) {
         checkPermission(PERMISSION_UPDATE);
         final T entity = toEntity(flatEntity);
-        daoFactory.saveOrUpdate(entity);
+        daoFactory.saveOrUpdateTX(entity);
     }
 
     @WebMethod
     public void delete(@WebParam(name = "id") final Long id) {
         checkPermission(PERMISSION_DELETE);
         final T entity = dao.findByID(id);
-        daoFactory.remove(entity);
+        daoFactory.removeTX(entity);
     }
 }

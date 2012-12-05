@@ -19,10 +19,7 @@ import javax.persistence.TypedQuery;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -250,10 +247,30 @@ public class DAO<K extends Number, E> implements Serializable {
         return entityliste;
     }
 
+    @Deprecated
     public List<E> loadWithOIDList(final Set<Long> oids) {
         final List<Long> oidlist = new ArrayList<>();
         oidlist.addAll(oids);
         return loadWithOIDList(oidlist);
+    }
+
+    public Set<E> loadWithOIDSet(final Set<Long> oids) {
+        final Set<E> entitySet = new HashSet<>();
+        if (oids == null || oids.isEmpty()) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("OID-Set war leer bzw. null..");
+            }
+        } else {
+            final StringBuilder oidBuilder = new StringBuilder();
+            for (final Long oid : oids) {
+                oidBuilder.append(oid).append(',');
+            }
+            final String oidtxt = oidBuilder.substring(0, oidBuilder.length() - 1); // ignore last ','
+            final TypedQuery<E> query = entityManager.createQuery("from " + entityClass.getName() + " e where e.id in (" + oidtxt + ")", entityClass);
+            final List<E> resultList = query.getResultList();
+            entitySet.addAll(resultList);
+        }
+        return entitySet;
     }
 
 
