@@ -1,4 +1,4 @@
-package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
+package org.rapidpm.persistence.prj.projectmanagement;
 /**
  * Created by IntelliJ IDEA.
  * User: svenruppert

@@ -252,11 +252,10 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
 
 
         graphDb.getNodeById(parentId).createRelationshipTo(childNode, relType);
-
-           Relationship relToDel = childNode.getSingleRelationship(GraphRelationRegistry.getClassRootToChildRelType(),
-                   Direction.INCOMING);
-            if (relToDel != null)
-                relToDel.delete();
+        if (childNode.hasRelationship(GraphRelationRegistry.getClassRootToChildRelType(), Direction.INCOMING)) {
+            childNode.getSingleRelationship(GraphRelationRegistry.getClassRootToChildRelType(), Direction.INCOMING)
+                    .delete();
+        }
     }
 
     public List<IssueBase> getSubIssuesOf(IssueBase issue) {
@@ -342,12 +341,11 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
                 if (logger.isDebugEnabled())
                     logger.debug("Delete Subissue");
                 rel.delete();
+                class_root_node.createRelationshipTo(childNode, GraphRelationRegistry.getClassRootToChildRelType());
             } else
                 if (logger.isDebugEnabled())
                     logger.debug("Is no Subissue");
         }
-
-        class_root_node.createRelationshipTo(childNode, GraphRelationRegistry.getClassRootToChildRelType());
     }
 
 

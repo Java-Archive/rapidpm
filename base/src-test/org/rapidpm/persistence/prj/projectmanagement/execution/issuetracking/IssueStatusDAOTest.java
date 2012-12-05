@@ -23,6 +23,17 @@ public class IssueStatusDAOTest implements BaseDAOTest {
     private final IssueStatus assignTo = dao.loadAllEntities().get(0);
 
     @Test
+    public void equalsAndHashCodeTest() {
+        List<IssueStatus> statusList = dao.loadAllEntities();
+        assertTrue(statusList.get(0).equals(statusList.get(0)));
+        assertEquals(statusList.get(0).hashCode(), statusList.get(0).hashCode());
+
+        assertFalse(statusList.get(0).equals(new IssueComment()));
+        assertNotSame(new IssueComment().hashCode(), statusList.get(0).hashCode());
+    }
+
+
+    @Test
     public void addChangeDelete() {
         IssueStatus status = new IssueStatus("test");
         status.setStatusFileName("test_filename");
@@ -44,6 +55,7 @@ public class IssueStatusDAOTest implements BaseDAOTest {
         final IssueStatus priority = dao.loadAllEntities().get(0);
         final IssueStatus prioTest = new IssueStatus();
         prioTest.setStatusName(priority.getStatusName());
+        prioTest.setStatusFileName(priority.getStatusFileName());
         dao.persist(prioTest);
     }
 

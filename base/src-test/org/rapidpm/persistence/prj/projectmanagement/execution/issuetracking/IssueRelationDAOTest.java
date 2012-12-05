@@ -4,9 +4,9 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,6 +19,16 @@ public class IssueRelationDAOTest implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssueRelationDAOTest.class);
 
     private final IssueRelationDAO dao = daoFactory.getIssueRelationDAO();
+
+    @Test
+    public void equalsAndHashCodeTest() {
+        List<IssueRelation> relationList = dao.loadAllEntities();
+        assertTrue(relationList.get(0).equals(relationList.get(0)));
+        assertEquals(relationList.get(0).hashCode(), relationList.get(0).hashCode());
+
+        assertFalse(relationList.get(0).equals(new IssueComment()));
+        assertNotSame(new IssueComment().hashCode(), relationList.get(0).hashCode());
+    }
 
     @Test
     public void addChangeDelete() {
@@ -44,6 +54,8 @@ public class IssueRelationDAOTest implements BaseDAOTest {
         final IssueRelation relation = dao.loadAllEntities().get(0);
         final IssueRelation relTest = new IssueRelation();
         relTest.setRelationName(relation.getRelationName());
+        relTest.setOutgoingName(relation.getOutgoingName());
+        relTest.setIncomingName(relation.getIncomingName());
         dao.persist(relTest);
     }
 }

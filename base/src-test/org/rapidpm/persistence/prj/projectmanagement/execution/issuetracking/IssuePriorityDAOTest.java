@@ -22,6 +22,17 @@ public class IssuePriorityDAOTest implements BaseDAOTest {
     private final IssuePriorityDAO dao = daoFactory.getIssuePriorityDAO();
     private final IssuePriority assignTo = dao.loadAllEntities().get(0);
 
+
+    @Test
+    public void equalsAndHashCodeTest() {
+        List<IssuePriority> priorityList = dao.loadAllEntities();
+        assertTrue(priorityList.get(0).equals(priorityList.get(0)));
+        assertEquals(priorityList.get(0).hashCode(), priorityList.get(0).hashCode());
+
+        assertFalse(priorityList.get(0).equals(new IssueComment()));
+        assertNotSame(new IssueComment().hashCode(), priorityList.get(0).hashCode());
+    }
+
     @Test
     public void addChangeDelete() {
         IssuePriority priority = new IssuePriority(1, "test");
@@ -44,6 +55,8 @@ public class IssuePriorityDAOTest implements BaseDAOTest {
         final IssuePriority priority = dao.loadAllEntities().get(0);
         final IssuePriority prioTest = new IssuePriority();
         prioTest.setPriorityName(priority.getPriorityName());
+        prioTest.setPriorityFileName(priority.getPriorityFileName());
+        prioTest.setPrio(priority.getPrio());
         dao.persist(prioTest);
     }
 
