@@ -5,6 +5,7 @@
 
 package org.rapidpm.persistence;
 
+import com.google.common.base.Joiner;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.query.AuditEntity;
@@ -261,11 +262,7 @@ public class DAO<K extends Number, E> implements Serializable {
                 logger.debug("OID-Set war leer bzw. null..");
             }
         } else {
-            final StringBuilder oidBuilder = new StringBuilder();
-            for (final Long oid : oids) {
-                oidBuilder.append(oid).append(',');
-            }
-            final String oidtxt = oidBuilder.substring(0, oidBuilder.length() - 1); // ignore last ','
+            final String oidtxt = Joiner.on(',').skipNulls().join(oids);
             final TypedQuery<E> query = entityManager.createQuery("from " + entityClass.getName() + " e where e.id in (" + oidtxt + ")", entityClass);
             final List<E> resultList = query.getResultList();
             entitySet.addAll(resultList);

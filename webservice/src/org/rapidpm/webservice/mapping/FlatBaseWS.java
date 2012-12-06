@@ -80,7 +80,7 @@ public abstract class FlatBaseWS<T, DT extends DAO<Long, T>, FT extends FlatEnti
     }
 
     protected List<FT> toFlatEntityList(final Iterable<? extends T> entities) {
-        final ArrayList<FT> flatEntityList = new ArrayList<>();
+        final List<FT> flatEntityList = new ArrayList<>();
         for (final T entity : entities) {
             flatEntityList.add(toFlatEntity(entity));
         }

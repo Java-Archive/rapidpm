@@ -22,7 +22,7 @@ public class Rolle {
     @Basic(optional = false)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Berechtigung> berechtigungen;
 
     public Rolle() {

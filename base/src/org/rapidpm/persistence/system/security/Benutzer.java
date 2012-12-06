@@ -88,7 +88,7 @@ public class Benutzer {
     @ManyToOne(cascade = {CascadeType.REFRESH}, optional = false, fetch = FetchType.EAGER)
     private BenutzerWebapplikation benutzerWebapplikation;
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private Set<Rolle> rollen;
 
 
