@@ -192,10 +192,6 @@ public class AufwandProjInitScreen extends Screen {
         addComponent(table1layout);
         addComponent(table2layout);
         addComponent(formLayout);
-        //setExpandRatio(felderLayout,15);
-        //setExpandRatio(unterschriftLayout,10);
-        //setExpandRatio(table1layout,37.5f);
-        //setExpandRatio(table2layout,37.5f);
     }
 
     public VerticalLayout getFormLayout() {

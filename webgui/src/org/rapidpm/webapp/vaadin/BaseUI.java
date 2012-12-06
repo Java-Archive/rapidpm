@@ -19,6 +19,7 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
+import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.windows.*;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public abstract class BaseUI extends UI {
     private final HorizontalLayout linkLeistenLayout = new HorizontalLayout(); //obere buttonLeiste
     private final HorizontalLayout iconsLayout = new HorizontalLayout();
     private final MenuBar menubar = new MenuBar();
-    private final VerticalLayout workingAreaLayout = new VerticalLayout();
+    private final RapidPanel workingArea = new RapidPanel();
     private final VerticalLayout mainlayout = new VerticalLayout();
 
     protected Benutzer currentUser;
@@ -123,8 +124,8 @@ public abstract class BaseUI extends UI {
     }
 
 
-    public VerticalLayout getWorkingAreaContainer() {
-        return workingAreaLayout;
+    public RapidPanel getWorkingAreaContainer() {
+        return workingArea;
     }
 
     public void setCurrentProject(final PlannedProject currentProject) {
@@ -133,8 +134,8 @@ public abstract class BaseUI extends UI {
 
     public void setWorkingArea(final Component workingArea) {
         workingArea.setSizeFull();
-        workingAreaLayout.removeAllComponents();
-        workingAreaLayout.addComponent(workingArea);
+        this.workingArea.removeAllComponents();
+        this.workingArea.addComponent(workingArea);
     }
 
 
@@ -142,7 +143,7 @@ public abstract class BaseUI extends UI {
 
 
         mainlayout.setSizeFull();
-        workingAreaLayout.setSizeFull();
+        workingArea.setSizeFull();
 
         createLinkLeistenLayout();
         createIconsLayout();
@@ -161,12 +162,61 @@ public abstract class BaseUI extends UI {
         upperScreenLayout.addComponent(menubar);
         mainlayout.addComponent(upperScreenLayout);
         //mainlayout.addComponent(menubar);
-        mainlayout.addComponent(workingAreaLayout);
+        mainlayout.addComponent(workingArea);
         mainlayout.setExpandRatio(upperScreenLayout,17);
         //mainlayout.setExpandRatio(menubar, 2);
-        mainlayout.setExpandRatio(workingAreaLayout,85);
+        mainlayout.setExpandRatio(workingArea,85);
         mainlayout.setSpacing(false);
-
+//        RapidPanel panel = new RapidPanel();
+//        panel.setSizeFull();
+//        Table table = new Table();
+//        table.addContainerProperty("blub", String.class, null);
+//        table.addContainerProperty("bl32ub", String.class, null);
+//        table.addContainerProperty("blsdfub", String.class, null);
+//        table.addContainerProperty("bfsdlub", String.class, null);
+//        table.addContainerProperty("bdsub", String.class, null);
+//        table.addContainerProperty("blfdfvub", String.class, null);
+//        table.addContainerProperty("bcxvlub", String.class, null);
+//        table.addContainerProperty("blcv vub", String.class, null);
+//        table.addContainerProperty("blxcyub", String.class, null);
+//        table.addContainerProperty("b xcv lub", String.class, null);
+//        table.addContainerProperty("b lub", String.class, null);
+//        table.addContainerProperty("bl xc ub", String.class, null);
+//        table.addContainerProperty("blsfsaasub", String.class, null);
+//        table.addContainerProperty("sfserwerdfsfdf", String.class, null);
+//        table.addContainerProperty("sfsdfserwrfdf", String.class, null);
+//        table.addContainerProperty("serwrfsdfsfdf", String.class, null);
+//        table.addContainerProperty("sfsdfwerwerwsfdf", String.class, null);
+//        table.addContainerProperty("ewrw", String.class, null);
+//        table.addContainerProperty("ewrwerewr", String.class, null);
+//        table.addContainerProperty("sfsdwerwfsfdf", String.class, null);
+//        table.addContainerProperty("sfdsfssdfsfdf", String.class, null);
+//        table.addContainerProperty("sfssdfsddfsfdf", String.class, null);
+//        table.addContainerProperty("sfssfsdfsfdf", String.class, null);
+//        table.addContainerProperty("sfssdfsfsdfdfsfdf", String.class, null);
+//        table.addContainerProperty("qqqeqwe", String.class, null);table.addContainerProperty("aefdsgdg",
+//                String.class, null);
+//        table.addContainerProperty("weqeweqeqw", String.class, null);
+//        table.addContainerProperty("qewqewqew", String.class, null);
+//        table.addContainerProperty("fgdgerg", String.class, null);
+//        table.addContainerProperty("dfgdsg", String.class, null);
+//
+//        //table.setSizeFull();
+//        panel.addComponent(table);
+//        for (int i = 0; i < 20; i++) {
+//             Button button = new Button("test");
+//
+//            if(i%2 == 0){
+//                VerticalLayout layout = new VerticalLayout();
+//                layout.setSizeUndefined();
+//                layout.addComponent(button);
+//                layout.setComponentAlignment(button, Alignment.MIDDLE_CENTER);
+//                panel.addComponent(layout);
+//            } else {
+//                panel.addComponent(button);
+//            }
+//
+//        }
         setContent(mainlayout);
     }
 
