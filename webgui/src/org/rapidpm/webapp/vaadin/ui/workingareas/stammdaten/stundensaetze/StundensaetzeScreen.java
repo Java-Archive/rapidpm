@@ -148,6 +148,10 @@ public class StundensaetzeScreen extends Screen {
         addComponent(tabellenTasksLayout);
         addComponent(saveButtonLayout);
         addComponent(tabellenLayout);
+        setExpandRatio(betriebsFieldsLayout, 15);
+        setExpandRatio(tabellenTasksLayout, 15);
+        setExpandRatio(saveButtonLayout, 5);
+        setExpandRatio(tabellenLayout, 65);
     }
 
     /* getters and setters */
