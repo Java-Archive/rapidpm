@@ -28,6 +28,7 @@ public class AnfragenmanagementWorkingArea extends VerticalLayout {
         table.setSelectable(true);
         table.setColumnCollapsingAllowed(true);
         table.setColumnReorderingAllowed(true);
+        table.setSizeFull();
         addComponent(table);
     }
 
