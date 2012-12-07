@@ -29,8 +29,10 @@ public class GraphDBFactory {
     public static GraphDBFactory getInstance() {
         if (instance == null) {
             if (logger.isDebugEnabled())
-                logger.debug("Create new GrapgDBFactory instance");
+                logger.debug("Create new GraphDBFactory instance");
             instance = new GraphDBFactory();
+            if (!instance.initDb())
+                throw new IllegalStateException("GraphDB couldn't be created/initialized.");
         }
         return instance;
     }
@@ -38,11 +40,9 @@ public class GraphDBFactory {
     private GraphDBFactory() {
         graphDb = new EmbeddedGraphDatabase(DB_PATH);
         registerShutdownHook(graphDb);
-        if (!createDB())
-            throw new IllegalStateException("GraphDB couldn't be created/initialized.");
     }
 
-    private boolean createDB() {
+    public boolean initDb() {
         boolean success = true;
         final Node root_node = graphDb.getNodeById(0);
         if (!root_node.hasRelationship()) {
@@ -65,6 +65,40 @@ public class GraphDBFactory {
                     class_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), rel.name());
                     root_node.createRelationshipTo(class_root, rel);
                 }
+
+
+//                final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+//
+//                final IssueStatus status1 = new IssueStatus();
+//                status1.setStatusName("Open");
+//                status1.setStatusFileName("status_open.gif");
+//                daoFactory.getIssueStatusDAO().persist(status1);
+//
+//                final IssuePriority priority1 = new IssuePriority();
+//                priority1.setPriorityName("Trivial");
+//                priority1.setPriorityFileName("priority_trivial.gif");
+//                priority1.setPrio(0);
+//                daoFactory.getIssuePriorityDAO().persist(priority1);
+//
+//                final IssueType type1 = new IssueType("Bug");
+//                daoFactory.getIssueTypeDAO().persist(type1);
+//
+//                final IssueVersion version1 = new IssueVersion(" - ");
+//                daoFactory.getIssueVersionDAO().persist(version1);
+//
+//                final IssueStoryPoint storypoint = new IssueStoryPoint(1);
+//                daoFactory.getIssueStoryPointDAO().persist(storypoint);
+//
+//                final IssueRelation relation1 = new IssueRelation();
+//                relation1.setRelationName("Duplicate");
+//                relation1.setOutgoingName("duplicates");
+//                relation1.setIncomingName("is duplicated by");
+//                daoFactory.getIssueRelationDAO().persist(relation1);
+//
+//                final IssueComponent component5 = new IssueComponent("Documentation");
+//                daoFactory.getIssueComponentDAO().persist(component5);
+
+
                 tx.success();
                 success = true;
             } finally {
@@ -73,47 +107,6 @@ public class GraphDBFactory {
         }
         return success;
     }
-
-
-//    private boolean initializeBasicAttributes() {
-//        boolean success = false;
-//        try {
-//            final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-//
-//            final IssueStatus status = new IssueStatus();
-//            status.setStatusName("Open");
-//            status.setStatusFileName("status_open.gif");
-//            daoFactory.getIssueStatusDAO().persist(status);
-//
-//            final IssuePriority priority = new IssuePriority();
-//            priority.setPriorityName("Trivial");
-//            priority.setPriorityFileName("priority_trivial.gif");
-//            priority.setPrio(0);
-//            daoFactory.getIssuePriorityDAO().persist(priority);
-//
-//            final IssueType type = new IssueType("Bug");
-//            daoFactory.getIssueTypeDAO().persist(type);
-//
-//            final IssueVersion version = new IssueVersion(" - ");
-//            daoFactory.getIssueVersionDAO().persist(version);
-//
-//            final IssueStoryPoint storypoint = new IssueStoryPoint(1);
-//            daoFactory.getIssueStoryPointDAO().persist(storypoint);
-//
-//            final IssueRelation relation = new IssueRelation();
-//            relation.setRelationName("Duplicate");
-//            relation.setOutgoingName("duplicates");
-//            relation.setIncomingName("is duplicated by");
-//            daoFactory.getIssueRelationDAO().persist(relation);
-//
-//            final IssueComponent component = new IssueComponent("Documentation");
-//            daoFactory.getIssueComponentDAO().persist(component);
-//            success = true;
-//        } finally {
-//
-//        }
-//        return success;
-//    }
 
     public GraphDatabaseService getGraphDBService() {
         return graphDb;
