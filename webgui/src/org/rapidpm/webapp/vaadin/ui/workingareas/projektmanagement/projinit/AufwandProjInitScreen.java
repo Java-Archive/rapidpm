@@ -26,8 +26,6 @@ import java.util.List;
 
 import static org.rapidpm.Constants.DATE_FORMAT;
 
-//import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
-
 public class AufwandProjInitScreen extends Screen {
 
     private Button saveButton = new Button();
@@ -84,12 +82,13 @@ public class AufwandProjInitScreen extends Screen {
 
             fillFields();
 
-            uebersichtTable.setPageLength(4);
+            uebersichtTable.setPageLength(2);
             uebersichtTable.setConnectedTable(treeTable);
             uebersichtTable.setSizeFull();
             treeTable.setConnectedTable(uebersichtTable);
             treeTable.addHeaderClickListener(new TreeTableHeaderClickListener(undoButton));
             treeTable.setSizeFull();
+            treeTable.setPageLength(10);
 
             table1layout.addComponent(uebersichtTable);
             table1layout.setSizeFull();
@@ -98,6 +97,9 @@ public class AufwandProjInitScreen extends Screen {
             table2layout.addComponent(expandCheckBox);
             table2layout.addComponent(undoButton);
             table2layout.addComponent(treeTable);
+            table2layout.setExpandRatio(expandCheckBox, 10);
+            table2layout.setExpandRatio(undoButton, 10);
+            table2layout.setExpandRatio(treeTable, 80);
             table2layout.setSizeFull();
             table2layout.setMargin(true);
 
@@ -158,6 +160,7 @@ public class AufwandProjInitScreen extends Screen {
         datumField.setDateFormat(DATE_FORMAT.toPattern());
         manntageField = new TextField();
         summeField = new TextField();
+        felderLayout.setSizeUndefined();
         felderLayout.setWidth(ABSOLUTE_WIDTH);
 
         layoutLinks.addComponent(kundeField);
@@ -175,6 +178,7 @@ public class AufwandProjInitScreen extends Screen {
     private void erstelleUnterschriftLayout() {
         projektLeiterField = new TextField();
         unterschriftField = new TextField();
+        unterschriftLayout.setSizeUndefined();
         unterschriftLayout.setWidth("350px");
 
         unterschriftLayout.addComponent(projektLeiterField);

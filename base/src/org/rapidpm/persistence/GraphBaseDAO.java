@@ -122,7 +122,7 @@ public class GraphBaseDAO<T> {
         try{
             final Node node;
             final Method method = clazz.getDeclaredMethod("name");
-            final String nameAtt = (String) method.invoke(entity);
+            final String nameAtt = ((String) method.invoke(entity)).toLowerCase();
             final Long id = getIdFromEntity(entity);
             final Node indexNode = index_name.get(method.getName(), nameAtt).getSingle();
             if (indexNode != null) {
