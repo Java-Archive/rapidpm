@@ -26,7 +26,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="module" module-name="base" />
-    <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="lib-jaxws" level="project" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
