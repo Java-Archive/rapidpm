@@ -18,8 +18,7 @@ public class Berechtigung {
 
     @Id
     @TableGenerator(name = "PKGenBerechtigung", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "Berechtigung_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE,
-            generator = "PKGenBerechtigung")
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenBerechtigung")
     private Long id;
 
     public Long getId() {
@@ -31,8 +30,8 @@ public class Berechtigung {
     }
 
 
-    @Column(unique = true)
-    @Basic
+    @Column(unique = true, nullable = false)
+    @Basic(optional = false)
     private String name;
 
     public Berechtigung() {
@@ -79,7 +78,8 @@ public class Berechtigung {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Berechtigung");
-        sb.append("{name='").append(name).append('\'');
+        sb.append("{id=").append(id);
+        sb.append(", name='").append(name).append('\'');
         sb.append('}');
         return sb.toString();
     }

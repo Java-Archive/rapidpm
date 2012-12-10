@@ -14,15 +14,14 @@ package org.rapidpm.persistence.system.security;
  *
  */
 
-import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
 import org.apache.log4j.Logger;
 import org.hibernate.envers.Audited;
+import org.rapidpm.persistence.system.security.berechtigungen.Rolle;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
@@ -82,14 +81,15 @@ public class Benutzer {
     @ManyToOne(cascade = {CascadeType.REFRESH}, optional = false, fetch = FetchType.EAGER)
     private Mandantengruppe mandantengruppe;
 
+    // TODO entfernen?
     @ManyToOne(cascade = {CascadeType.REFRESH}, optional = false, fetch = FetchType.EAGER)
     private BenutzerGruppe benutzerGruppe;
 
     @ManyToOne(cascade = {CascadeType.REFRESH}, optional = false, fetch = FetchType.EAGER)
     private BenutzerWebapplikation benutzerWebapplikation;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Berechtigung> berechtigungen;
+    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    private Set<Rolle> rollen;
 
 
     public Long getId() {
@@ -185,30 +185,62 @@ public class Benutzer {
         this.benutzerWebapplikation = benutzerWebapplikation;
     }
 
-    public Set<Berechtigung> getBerechtigungen() {
-        return berechtigungen;
+    public Set<Rolle> getRollen() {
+        return rollen;
     }
 
-    public void setBerechtigungen(final Set<Berechtigung> berechtigungen) {
-        this.berechtigungen = berechtigungen;
+    public void setRollen(final Set<Rolle> rollen) {
+        this.rollen = rollen;
     }
 
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Benutzer)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Benutzer benutzer = (Benutzer) o;
 
+        if (active != null ? !active.equals(benutzer.active) : benutzer.active != null) return false;
+        if (benutzerGruppe != null ? !benutzerGruppe.equals(benutzer.benutzerGruppe) : benutzer.benutzerGruppe != null)
+            return false;
+        if (benutzerWebapplikation != null ? !benutzerWebapplikation.equals(benutzer.benutzerWebapplikation) : benutzer.benutzerWebapplikation != null)
+            return false;
+        if (rollen != null ? !rollen.equals(benutzer.rollen) : benutzer.rollen != null)
+            return false;
+        if (email != null ? !email.equals(benutzer.email) : benutzer.email != null) return false;
+        if (failedLogins != null ? !failedLogins.equals(benutzer.failedLogins) : benutzer.failedLogins != null)
+            return false;
+        if (hidden != null ? !hidden.equals(benutzer.hidden) : benutzer.hidden != null) return false;
         if (id != null ? !id.equals(benutzer.id) : benutzer.id != null) return false;
+        if (lastLogin != null ? !lastLogin.equals(benutzer.lastLogin) : benutzer.lastLogin != null) return false;
+        if (login != null ? !login.equals(benutzer.login) : benutzer.login != null) return false;
+        if (mandantengruppe != null ? !mandantengruppe.equals(benutzer.mandantengruppe) : benutzer.mandantengruppe != null)
+            return false;
+        if (passwd != null ? !passwd.equals(benutzer.passwd) : benutzer.passwd != null) return false;
+        if (validFrom != null ? !validFrom.equals(benutzer.validFrom) : benutzer.validFrom != null) return false;
+        if (validUntil != null ? !validUntil.equals(benutzer.validUntil) : benutzer.validUntil != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (hidden != null ? hidden.hashCode() : 0);
+        result = 31 * result + (login != null ? login.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (passwd != null ? passwd.hashCode() : 0);
+        result = 31 * result + (lastLogin != null ? lastLogin.hashCode() : 0);
+        result = 31 * result + (failedLogins != null ? failedLogins.hashCode() : 0);
+        result = 31 * result + (active != null ? active.hashCode() : 0);
+        result = 31 * result + (validFrom != null ? validFrom.hashCode() : 0);
+        result = 31 * result + (validUntil != null ? validUntil.hashCode() : 0);
+        result = 31 * result + (mandantengruppe != null ? mandantengruppe.hashCode() : 0);
+        result = 31 * result + (benutzerGruppe != null ? benutzerGruppe.hashCode() : 0);
+        result = 31 * result + (benutzerWebapplikation != null ? benutzerWebapplikation.hashCode() : 0);
+        result = 31 * result + (rollen != null ? rollen.hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -227,7 +259,7 @@ public class Benutzer {
                 ", mandantengruppe=" + mandantengruppe +
                 ", benutzerGruppe=" + benutzerGruppe +
                 ", benutzerWebapplikation=" + benutzerWebapplikation +
-                ", berechtigungen=" + berechtigungen +
+                ", rollen=" + rollen +
                 '}';
     }
 
