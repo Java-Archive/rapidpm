@@ -36,16 +36,16 @@ import java.util.List;
  * Time: 09:43
  */
 public class ProjektplanungScreen extends Screen {
-
-    private HorizontalSplitPanel splitPanel;
-    private VerticalLayout menuLayout;
+    private HorizontalLayout borderLayout = new HorizontalLayout();
+    private RapidPanel leftColumn = new RapidPanel();
+    private RapidPanel centerColumn = new RapidPanel();
+    private RapidPanel rightColumn = new RapidPanel();
     private RapidPanel mainPanel;
     private RapidPanel ressourcesPanel;
     private RapidPanel planningUnitPanel;
     private RapidPanel treePanel;
     private RapidPanel detailsPanel;
     private PlanningUnitSelect planningUnitSelect;
-    private VerticalLayout mainLayout;
     private PlanningUnitsTree planningUnitsTree;
     private PlanningUnitsTreePanelLayout planningUnitsTreePanelLayout;
     private PlanningDetailsEditableLayout planningDetailsEditableLayout;
@@ -56,7 +56,6 @@ public class ProjektplanungScreen extends Screen {
 
     public ProjektplanungScreen(MainUI ui) {
         super(ui);
-
 
         final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
         final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
@@ -77,31 +76,26 @@ public class ProjektplanungScreen extends Screen {
 //        }.execute();
             //daoFactory.getEntityManager().refresh(projectFromDB);
 
-            splitPanel = new HorizontalSplitPanel();
-            splitPanel.setSizeFull();
-            splitPanel.setSplitPosition(40, Unit.PERCENTAGE);
+            leftColumn.setSizeFull();
+            centerColumn.setSizeFull();
+            rightColumn.setSizeFull();
 
             planningUnitPanel = new RapidPanel();
             treePanel = new RapidPanel();
             detailsPanel = new RapidPanel();
 
-            menuLayout = new VerticalLayout();
-            menuLayout.setSpacing(true);
-            menuLayout.addComponent(planningUnitPanel);
-            menuLayout.addComponent(treePanel);
-            menuLayout.addComponent(detailsPanel);
+            leftColumn.addComponent(planningUnitPanel);
+            leftColumn.addComponent(treePanel);
 
+            centerColumn.addComponent(detailsPanel);
+            //centerColumn.addComponent(ressourcesPanel);
             mainPanel = new RapidPanel();
             ressourcesPanel = new RapidPanel();
             ressourcesPanel.setSizeFull();
 
-            mainLayout = new VerticalLayout();
-            mainLayout.setSpacing(true);
-            mainLayout.addComponent(ressourcesPanel);
-            mainLayout.addComponent(mainPanel);
+            borderLayout.setSizeFull();
 
-            splitPanel.addComponent(menuLayout);
-            splitPanel.addComponent(mainLayout);
+            //rightColumn.addComponent();
 
             buildPlanningUnitPanel();
             detailsPanel.getClass();
@@ -164,21 +158,20 @@ public class ProjektplanungScreen extends Screen {
         planningUnitsTree = new PlanningUnitsTree(this, selectedPlanningUnit, projekt);
         planningUnitsTree.select(selectedPlanningUnit);
         planningUnitsTreePanelLayout = new PlanningUnitsTreePanelLayout(projekt, ProjektplanungScreen.this);
-//        planningUnitsTree.addValueChangeListener(new Property.ValueChangeListener() {
-//            @Override
-//            public void valueChange(Property.ValueChangeEvent event) {
-//                planningDetailsEditableLayout = new PlanningDetailsEditableLayout((PlanningUnit)planningUnitsTree.getValue
-//                        (),ProjektplanungScreen.this,detailsPanel);
-//                detailsPanel.addComponent(planningDetailsEditableLayout);
-//            }
-//        });
         treePanel.removeAllComponents();
         treePanel.addComponent(planningUnitsTreePanelLayout);
     }
 
     @Override
     public void setComponents() {
-        addComponent(splitPanel);
+        activeVerticalFullScreenSize(true);
+        borderLayout.addComponent(leftColumn);
+        borderLayout.addComponent(centerColumn);
+        borderLayout.addComponent(rightColumn);
+        borderLayout.setExpandRatio(leftColumn, 1);
+        borderLayout.setExpandRatio(centerColumn, 1);
+        borderLayout.setExpandRatio(rightColumn, 1);
+        addComponent(borderLayout);
     }
 
     public PlanningUnitsTree getPlanningUnitsTree() {

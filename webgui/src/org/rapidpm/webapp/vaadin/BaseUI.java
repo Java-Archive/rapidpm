@@ -133,15 +133,14 @@ public abstract class BaseUI extends UI {
     }
 
     public void setWorkingArea(final Component workingArea) {
-        workingArea.setSizeFull();
         this.workingArea.removeAllComponents();
         this.workingArea.addComponent(workingArea);
+        this.workingArea.getContent().setSizeFull();
+        this.workingArea.setSizeFull();
     }
 
 
     private void buildMainLayout() {
-
-
         mainlayout.setSizeFull();
         workingArea.setSizeFull();
 
@@ -149,74 +148,21 @@ public abstract class BaseUI extends UI {
         createIconsLayout();
 
         initMenuBar(menubar);
-        menubar.setWidth("100%");
+        menubar.setSizeUndefined();
+
 
         linkLeistenLayout.setSizeUndefined();
         iconsLayout.setSizeUndefined();
         iconsLayout.setWidth("100%");
-        upperScreenLayout.addComponent(linkLeistenLayout);
-        upperScreenLayout.setComponentAlignment(linkLeistenLayout, Alignment.BOTTOM_LEFT);
-        upperScreenLayout.addComponent(iconsLayout);
-        upperScreenLayout.setComponentAlignment(iconsLayout, Alignment.TOP_LEFT);
-        upperScreenLayout.setSpacing(false);
-        upperScreenLayout.addComponent(menubar);
-        mainlayout.addComponent(upperScreenLayout);
-        //mainlayout.addComponent(menubar);
-        mainlayout.addComponent(workingArea);
-        mainlayout.setExpandRatio(upperScreenLayout,17);
-        //mainlayout.setExpandRatio(menubar, 2);
-        mainlayout.setExpandRatio(workingArea,85);
+        menubar.setWidth("100%");
         mainlayout.setSpacing(false);
-//        RapidPanel panel = new RapidPanel();
-//        panel.setSizeFull();
-//        Table table = new Table();
-//        table.addContainerProperty("blub", String.class, null);
-//        table.addContainerProperty("bl32ub", String.class, null);
-//        table.addContainerProperty("blsdfub", String.class, null);
-//        table.addContainerProperty("bfsdlub", String.class, null);
-//        table.addContainerProperty("bdsub", String.class, null);
-//        table.addContainerProperty("blfdfvub", String.class, null);
-//        table.addContainerProperty("bcxvlub", String.class, null);
-//        table.addContainerProperty("blcv vub", String.class, null);
-//        table.addContainerProperty("blxcyub", String.class, null);
-//        table.addContainerProperty("b xcv lub", String.class, null);
-//        table.addContainerProperty("b lub", String.class, null);
-//        table.addContainerProperty("bl xc ub", String.class, null);
-//        table.addContainerProperty("blsfsaasub", String.class, null);
-//        table.addContainerProperty("sfserwerdfsfdf", String.class, null);
-//        table.addContainerProperty("sfsdfserwrfdf", String.class, null);
-//        table.addContainerProperty("serwrfsdfsfdf", String.class, null);
-//        table.addContainerProperty("sfsdfwerwerwsfdf", String.class, null);
-//        table.addContainerProperty("ewrw", String.class, null);
-//        table.addContainerProperty("ewrwerewr", String.class, null);
-//        table.addContainerProperty("sfsdwerwfsfdf", String.class, null);
-//        table.addContainerProperty("sfdsfssdfsfdf", String.class, null);
-//        table.addContainerProperty("sfssdfsddfsfdf", String.class, null);
-//        table.addContainerProperty("sfssfsdfsfdf", String.class, null);
-//        table.addContainerProperty("sfssdfsfsdfdfsfdf", String.class, null);
-//        table.addContainerProperty("qqqeqwe", String.class, null);table.addContainerProperty("aefdsgdg",
-//                String.class, null);
-//        table.addContainerProperty("weqeweqeqw", String.class, null);
-//        table.addContainerProperty("qewqewqew", String.class, null);
-//        table.addContainerProperty("fgdgerg", String.class, null);
-//        table.addContainerProperty("dfgdsg", String.class, null);
-//
-//        //table.setSizeFull();
-//        panel.addComponent(table);
-//        for (int i = 0; i < 20; i++) {
-//             Button button = new Button("test");
-//
-//            if(i%2 == 0){
-//                VerticalLayout layout = new VerticalLayout();
-//                layout.setSizeUndefined();
-//                layout.addComponent(button);
-//                layout.setComponentAlignment(button, Alignment.MIDDLE_CENTER);
-//                panel.addComponent(layout);
-//            } else {
-//                panel.addComponent(button);
-//            }
-//
-//        }
+        mainlayout.addComponent(linkLeistenLayout);
+        mainlayout.addComponent(iconsLayout);
+        mainlayout.addComponent(menubar);
+        mainlayout.addComponent(workingArea);
+        mainlayout.setExpandRatio(workingArea, 1);
+        workingArea.setSizeFull();
+        mainlayout.setSpacing(false);
         setContent(mainlayout);
     }
 
@@ -321,7 +267,6 @@ public abstract class BaseUI extends UI {
         final LoginMask mask = new LoginMask(this);
         setContent(null);
         setContent(mask);
-        System.out.println("hallo");
     }
 
 
