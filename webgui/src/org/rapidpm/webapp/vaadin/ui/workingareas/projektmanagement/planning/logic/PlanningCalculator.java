@@ -45,10 +45,6 @@ public class PlanningCalculator {
         final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
         projekt = plannedProjectDAO.findByID(projectFromSession.getId());
         daoFactory.getEntityManager().refresh(projekt);
-        ressourceGroups = daoFactory.getRessourceGroupDAO().loadAllEntities();
-        for(final RessourceGroup ressourceGroup : ressourceGroups){
-            daoFactory.getEntityManager().refresh(ressourceGroup);
-        }
     }
 
     public void calculate() {
