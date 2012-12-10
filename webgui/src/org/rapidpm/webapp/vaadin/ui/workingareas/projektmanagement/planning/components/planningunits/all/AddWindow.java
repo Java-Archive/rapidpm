@@ -181,7 +181,9 @@ public class AddWindow extends Window {
     }
 
     //Erzeugt neue 00:00:00-PlanningUnitElements für die neue PlanningUnit und weist diese der PlanningUnit zu.
-    private void createNewPlanningUnitElements(PlanningUnit planningUnit, List<RessourceGroup> ressourceGroups, DaoFactory daoFactory) {
+    private void createNewPlanningUnitElements(final PlanningUnit planningUnit,
+                                               final List<RessourceGroup> ressourceGroups,
+                                               final DaoFactory daoFactory) {
         planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
         for(final RessourceGroup ressourceGroup : ressourceGroups){
             final PlanningUnitElement planningUnitElement = new PlanningUnitElement();

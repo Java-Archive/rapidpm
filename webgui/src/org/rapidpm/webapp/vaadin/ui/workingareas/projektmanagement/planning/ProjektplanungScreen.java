@@ -2,17 +2,22 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning;
 
 import com.vaadin.data.Property;
 //import com.vaadin.server.ThemeResource;
+import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.ui.*;
 //import org.rapidpm.Constants;
 //import org.rapidpm.ejb3.EJBFactory;
 //import org.rapidpm.persistence.DaoFactoryBean;
 //import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
 //import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.apache.log4j.Logger;
+import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
@@ -21,13 +26,16 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoP
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsEditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitsTree;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitsTreePanelLayout;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.exceptions.SameNameException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.parents.PlanningUnitSelect;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.PlanningUnitBeanItemContainer;
 
+import javax.naming.InvalidNameException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.
@@ -36,6 +44,8 @@ import java.util.List;
  * Time: 09:43
  */
 public class ProjektplanungScreen extends Screen {
+
+    public static final Logger logger = Logger.getLogger(ProjektplanungScreen.class);
     private HorizontalLayout borderLayout = new HorizontalLayout();
     private RapidPanel leftColumn = new RapidPanel();
     private RapidPanel centerColumn = new RapidPanel();
@@ -48,6 +58,9 @@ public class ProjektplanungScreen extends Screen {
     private PlanningUnitSelect planningUnitSelect;
     private PlanningUnitsTree planningUnitsTree;
     private PlanningUnitsTreePanelLayout planningUnitsTreePanelLayout;
+    private HorizontalLayout addParentPlanningUnitLayout = new HorizontalLayout();
+    private TextField addParentPlanningUnitField = new TextField();
+    private Button addParentButton = new Button();
     private PlanningDetailsEditableLayout planningDetailsEditableLayout;
     private PlanningUnitBeanItemContainer container;
     private PlanningUnit tempPlanningUnit = new PlanningUnit();
@@ -60,9 +73,9 @@ public class ProjektplanungScreen extends Screen {
         final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
         final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
 
-        try{
+        try {
             final List<PlannedProject> plannedProjects = daoFactory.getPlannedProjectDAO().loadAllEntities();
-            if(plannedProjects == null || plannedProjects.isEmpty()){
+            if (plannedProjects == null || plannedProjects.isEmpty()) {
                 throw new NoProjectsException();
             }
 
@@ -83,25 +96,24 @@ public class ProjektplanungScreen extends Screen {
             planningUnitPanel = new RapidPanel();
             treePanel = new RapidPanel();
             detailsPanel = new RapidPanel();
+            ressourcesPanel = new RapidPanel();
 
             leftColumn.addComponent(planningUnitPanel);
             leftColumn.addComponent(treePanel);
 
             centerColumn.addComponent(detailsPanel);
-            //centerColumn.addComponent(ressourcesPanel);
+            centerColumn.addComponent(ressourcesPanel);
             mainPanel = new RapidPanel();
-            ressourcesPanel = new RapidPanel();
-            ressourcesPanel.setSizeFull();
 
+            ressourcesPanel.setSizeFull();
             borderLayout.setSizeFull();
 
             //rightColumn.addComponent();
 
             buildPlanningUnitPanel();
-            detailsPanel.getClass();
             doInternationalization();
             setComponents();
-        } catch (final NoProjectsException e){
+        } catch (final NoProjectsException e) {
             removeAllComponents();
             final NoProjectsScreen noProjectsScreen = new NoProjectsScreen(ui);
             addComponent(noProjectsScreen);
@@ -110,7 +122,84 @@ public class ProjektplanungScreen extends Screen {
     }
 
     private void buildPlanningUnitPanel() {
+        addParentButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                try {
+                    final PlannedProject projekt = daoFactory.getPlannedProjectDAO().findByID(ui
+                            .getCurrentProject().getId());
+                    final PlanningUnit newPlanningUnit = new PlanningUnit();
+                    final String newPlanningUnitName = addParentPlanningUnitField.getValue();
+                    if (newPlanningUnitName.matches(Constants.EMPTY_OR_SPACES_ONLY_PATTERN)){
+                        throw new InvalidNameException();
+                    } else {
+                        newPlanningUnit.setPlanningUnitName(newPlanningUnitName);
+                    }
+                    if (newPlanningUnit.getParent() != null) {
+                        final String parentsPlanningUnitName = newPlanningUnit.getParent().getPlanningUnitName();
+                        if (newPlanningUnitName.equals(parentsPlanningUnitName)) {
+                            throw new SameNameException();
+                        }
+                    }
+                    final PlanningUnit foundPlanningUnit = daoFactory.getPlanningUnitDAO().loadPlanningUnitByName
+                            (newPlanningUnitName);
+                    if(foundPlanningUnit != null && foundPlanningUnit.getParent() == null){
+                        throw new SameNameException();
+                    }
+                    daoFactory.saveOrUpdateTX(newPlanningUnit);
+                    newPlanningUnit.setKindPlanningUnits(new HashSet<PlanningUnit>());
+                    if (newPlanningUnit.getParent() != null) {
+                        final PlanningUnit parentPlanningUnit = daoFactory.getPlanningUnitDAO().findByID
+                                (newPlanningUnit.getParent().getId());
+                        parentPlanningUnit.getKindPlanningUnits().add(newPlanningUnit);
+                        daoFactory.saveOrUpdateTX(parentPlanningUnit);
+                    }
+
+                    final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO()
+                            .loadAllEntities();
+                    if (newPlanningUnit.getParent() != null) {
+                        final Set<PlanningUnit> geschwisterPlanningUnits = newPlanningUnit.getParent().getKindPlanningUnits();
+                        if (geschwisterPlanningUnits == null || geschwisterPlanningUnits.size() <= 1) {
+                            newPlanningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
+                            for (final PlanningUnitElement planningUnitElementFromParent : newPlanningUnit.getParent()
+                                    .getPlanningUnitElementList()) {
+                                final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
+                                planningUnitElement.setRessourceGroup(planningUnitElementFromParent.getRessourceGroup());
+                                planningUnitElement.setPlannedDays(planningUnitElementFromParent.getPlannedDays());
+                                planningUnitElement.setPlannedHours(planningUnitElementFromParent.getPlannedHours());
+                                planningUnitElement.setPlannedMinutes(planningUnitElementFromParent.getPlannedMinutes());
+                                daoFactory.saveOrUpdateTX(planningUnitElement);
+                                newPlanningUnit.getPlanningUnitElementList().add(planningUnitElement);
+                            }
+                        } else {
+                            createNewPlanningUnitElements(newPlanningUnit, ressourceGroups, daoFactory);
+                        }
+                    } else {
+                        createNewPlanningUnitElements(newPlanningUnit, ressourceGroups, daoFactory);
+                    }
+
+
+                    daoFactory.saveOrUpdateTX(newPlanningUnit);
+                    if (newPlanningUnit.getParent() == null) {
+                        projekt.getPlanningUnits().add(newPlanningUnit);
+                    }
+                    daoFactory.saveOrUpdateTX(projekt);
+                    daoFactory.getEntityManager().refresh(projekt);
+                    final MainUI ui = getUi();
+                    ui.setWorkingArea(new ProjektplanungScreen(ui));
+                } catch (final InvalidNameException e) {
+                    Notification.show(messagesBundle.getString("planning_invalidname"));
+                } catch (final SameNameException e) {
+                    Notification.show(messagesBundle.getString("planning_samename"));
+                }
+            }
+        });
+        addParentPlanningUnitLayout.addComponent(addParentPlanningUnitField);
+        addParentPlanningUnitLayout.addComponent(addParentButton);
+        addParentButton.setSizeUndefined();
+        addParentPlanningUnitLayout.setComponentAlignment(addParentButton, Alignment.BOTTOM_LEFT);
         planningUnitSelect = new PlanningUnitSelect(ui);
+        addParentPlanningUnitField.setWidth("160px");
         final PlannedProject projectFromDB = planningUnitSelect.getProjectFromDB();
         final List<?> ids = (List<?>) planningUnitSelect.getItemIds();
         planningUnitSelect.addValueChangeListener(new Property.ValueChangeListener() {
@@ -119,9 +208,9 @@ public class ProjektplanungScreen extends Screen {
                 final PlanningUnit planningUnitFromSelect = (PlanningUnit) valueChangeEvent.getProperty().getValue();
                 PlanningUnit planningUnitFromDB = daoFactory.getPlanningUnitDAO().findByID
                         (planningUnitFromSelect.getId());
-                if(planningUnitFromDB != null){
+                if (planningUnitFromDB != null) {
                     daoFactory.getEntityManager().refresh(planningUnitFromDB);
-                }else{
+                } else {
                     planningUnitFromDB = planningUnitFromSelect;
                 }
                 treePanel.removeAllComponents();
@@ -131,7 +220,7 @@ public class ProjektplanungScreen extends Screen {
             }
         });
         if (ids != null && !ids.isEmpty()) {
-            final PlanningUnit firstPlanningUnit = daoFactory.getPlanningUnitDAO().findByID(((PlanningUnit)ids.get(0))
+            final PlanningUnit firstPlanningUnit = daoFactory.getPlanningUnitDAO().findByID(((PlanningUnit) ids.get(0))
                     .getId());
             daoFactory.getEntityManager().refresh(firstPlanningUnit);
             planningUnitSelect.setValue(firstPlanningUnit);
@@ -146,12 +235,15 @@ public class ProjektplanungScreen extends Screen {
             planningUnitSelect.setValue(tempPlanningUnit);
         }
         planningUnitPanel.setCaption(projectFromDB.getProjektName());
+        planningUnitPanel.addComponent(addParentPlanningUnitLayout);
         planningUnitPanel.addComponent(planningUnitSelect);
     }
 
     @Override
     public void doInternationalization() {
         detailsPanel.setCaption(messagesBundle.getString("details"));
+        addParentPlanningUnitField.setCaption(messagesBundle.getString("planning_fastadd"));
+        addParentButton.setCaption("+");
     }
 
     public void fillTreePanel(final PlanningUnit selectedPlanningUnit, final PlannedProject projekt) {
@@ -172,6 +264,21 @@ public class ProjektplanungScreen extends Screen {
         borderLayout.setExpandRatio(centerColumn, 1);
         borderLayout.setExpandRatio(rightColumn, 1);
         addComponent(borderLayout);
+    }
+
+    private void createNewPlanningUnitElements(final PlanningUnit planningUnit,
+                                               final List<RessourceGroup> ressourceGroups,
+                                               final DaoFactory daoFactory) {
+        planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
+        for(final RessourceGroup ressourceGroup : ressourceGroups){
+            final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
+            planningUnitElement.setPlannedDays(0);
+            planningUnitElement.setPlannedHours(0);
+            planningUnitElement.setPlannedMinutes(0);
+            planningUnitElement.setRessourceGroup(ressourceGroup);
+            daoFactory.saveOrUpdateTX(planningUnitElement);
+            planningUnit.getPlanningUnitElementList().add(planningUnitElement);
+        }
     }
 
     public PlanningUnitsTree getPlanningUnitsTree() {

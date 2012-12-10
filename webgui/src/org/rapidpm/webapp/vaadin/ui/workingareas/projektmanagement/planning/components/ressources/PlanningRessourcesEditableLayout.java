@@ -1,29 +1,21 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.ressources;
 
-import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.event.MouseEvents;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.Table;
-import org.apache.log4j.Logger;
-//import org.rapidpm.ejb3.EJBFactory;
-//import org.rapidpm.persistence.DaoFactoryBean;
+import com.vaadin.ui.*;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.EditableLayout;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesFieldValidator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Pattern;
-
-import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
-import static org.rapidpm.Constants.DAYSHOURSMINUTES_REGEX;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -34,25 +26,16 @@ import static org.rapidpm.Constants.DAYSHOURSMINUTES_REGEX;
  */
 public class PlanningRessourcesEditableLayout extends EditableLayout {
 
-    private static final Logger logger = Logger.getLogger(PlanningRessourcesEditableLayout.class);
+    private List<TextField> ressourceGroupFields = new ArrayList<>();
 
-    private Table tabelle = new Table();
-
-    private List<PlanningUnitElement> planningUnitElements;
-//    private PlanningRessourcesMyFormLayoutBean bean;
-//    private DaoFactoryBean baseDaoFactoryBean;
-
-    public PlanningRessourcesEditableLayout(final PlanningUnit thePlanningUnit, final ProjektplanungScreen screen,
-                                            final Panel screenPanel, boolean hasChildren) {
+    public PlanningRessourcesEditableLayout(final PlanningUnit planningUnit, final ProjektplanungScreen screen,
+                                          final Panel screenPanel, boolean hasChildren) {
         super(screen, screenPanel);
-//        bean = EJBFactory.getEjbInstance(PlanningRessourcesMyFormLayoutBean.class);
-//        baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-
-        final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().findByID(thePlanningUnit.getId());
-        daoFactory.getEntityManager().refresh(planningUnit);
-        planningUnitElements = planningUnit.getPlanningUnitElementList();
-        buildTable();
+        final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO().loadAllEntities();
+        for (final RessourceGroup ressourceGroup : ressourceGroups) {
+            buildField(ressourceGroup, planningUnit);
+        }
         buildForm();
         if (hasChildren) {
             for (final Object listener : screenPanel.getListeners(MouseEvents.ClickEvent.class)) {
@@ -62,94 +45,81 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
             cancelButton.addClickListener(new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    buildTable();
+                    for (final TextField textField : ressourceGroupFields) {
+                        for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+                            if (planningUnitElement.getRessourceGroup().getName().equals(textField.getCaption())) {
+                                DaysHoursMinutesItem item = new DaysHoursMinutesItem();
+                                item.setDays(planningUnitElement.getPlannedDays());
+                                item.setHours(planningUnitElement.getPlannedHours());
+                                item.setMinutes(planningUnitElement.getPlannedMinutes());
+                                textField.setValue(item.toString());
+                            }
+                        }
+                    }
+                    final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
+                    while (componentIterator.hasNext()) {
+                        final Component component = componentIterator.next();
+                        if (component instanceof Field) {
+                            component.setReadOnly(true);
+                        }
+                    }
                     buttonLayout.setVisible(false);
-                    tabelle.setEditable(false);
                 }
             });
 
             saveButton.addClickListener(new Button.ClickListener() {
-
-                private final Pattern COMPILE = Pattern.compile(DAYSHOURSMINUTES_REGEX);
-                private final Pattern SPLIT = Pattern.compile(":");
-
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    try {
-
-                        tabelle.commit();
-                        for (final Object spalte : tabelle.getContainerPropertyIds()) {
-                            for (final Object zeile : tabelle.getItemIds()) {
-                                final String cellContent = tabelle.getItem(zeile).getItemProperty(spalte)
-                                        .getValue().toString();
-                                if (!COMPILE.matcher(cellContent).matches()) {
-                                    throw new FieldGroup.CommitException();
-                                }
-                                final List<PlanningUnitElement> planningUnitElementList = planningUnit.getPlanningUnitElementList();
-                                for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
-                                    final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
-                                    if (ressourceGroup.getName().equals(spalte.toString())) {
-                                        final String[] daysHoursMinutes = SPLIT.split(cellContent);
-                                        planningUnitElement.setPlannedDays(Integer.parseInt(daysHoursMinutes[0]));
-                                        planningUnitElement.setPlannedHours(Integer.parseInt(daysHoursMinutes[1]));
-                                        planningUnitElement.setPlannedMinutes(Integer.parseInt(daysHoursMinutes[2]));
-                                        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-                                        daoFactory.saveOrUpdateTX(planningUnitElement);
-                                    }
-                                }
+                    for (TextField textField : ressourceGroupFields) {
+                        for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+                            if (planningUnitElement.getRessourceGroup().getName().equals(textField.getCaption())) {
+                                final String[] daysHoursMinutes = textField.getValue().split(":");
+                                planningUnitElement.setPlannedDays(Integer.parseInt(daysHoursMinutes[0]));
+                                planningUnitElement.setPlannedHours(Integer.parseInt(daysHoursMinutes[1]));
+                                planningUnitElement.setPlannedMinutes(Integer.parseInt(daysHoursMinutes[2]));
                             }
                         }
-                        screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
-                    } catch (CommitException e) {
-                        logger.info(COMMIT_EXCEPTION_MESSAGE);
-                        Notification.show(messages.getString("planning_ressourcespattern"));
-                    } catch (Exception e) {
-                        logger.warn("Exception", e);
                     }
+                    final TimesCalculator calculator = new TimesCalculator(messages,screen.getUi());
+                    calculator.calculate();
+                    final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
+                    while (componentIterator.hasNext()) {
+                        final Component component = componentIterator.next();
+                        if (component instanceof Field) {
+                            component.setReadOnly(true);
+                        }
+                    }
+                    buttonLayout.setVisible(false);
                 }
             });
         }
     }
 
-    private void buildTable() {
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO().loadAllEntities();
-        final String[] spaltenNamen = new String[ressourceGroups.size()];
-        Integer index = 0;
-        for(final RessourceGroup ressourceGroup : ressourceGroups){
-            spaltenNamen[index] = ressourceGroup.getName();
-            index++;
-        }
-
-        tabelle.removeAllItems();
-        tabelle.setPageLength(2);
-        tabelle.setColumnCollapsingAllowed(true);
+    private void buildField(final RessourceGroup ressourceGroup, final PlanningUnit planningUnit) {
+        final TextField field = new TextField(ressourceGroup.getName());
         final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
-        final String[] cells = new String[planningUnitElements.size()];
-        Integer counter = 0;
-        for (final PlanningUnitElement element : planningUnitElements) {
-            final String spaltenName = element.getRessourceGroup().getName();
-            tabelle.addContainerProperty(spaltenName, String.class, null);
-            daysHoursMinutesItem.setDays(element.getPlannedDays());
-            daysHoursMinutesItem.setHours(element.getPlannedHours());
-            daysHoursMinutesItem.setMinutes(element.getPlannedMinutes());
-            cells[counter] = daysHoursMinutesItem.toString();
-            counter++;
-        }
-        try {
-            final Object itemId = tabelle.addItem(cells, null);
-            tabelle.setVisibleColumns(spaltenNamen);
-            if (itemId == null) {
-                throw new NullPointerException();
+        PlanningUnitElement element = new PlanningUnitElement();
+        for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+            final String elementRessourceGroupName = planningUnitElement.getRessourceGroup().getName();
+            if (elementRessourceGroupName.equals(ressourceGroup.getName())) {
+                element = planningUnitElement;
             }
-        } catch (NullPointerException e) {
-            logger.warn("tabelle konnte nicht erstellt werden");
         }
+        final int index = planningUnit.getPlanningUnitElementList().indexOf(element);
+        final PlanningUnitElement planningUnitElement = planningUnit.getPlanningUnitElementList().get(index);
+        daysHoursMinutesItem.setDays(planningUnitElement.getPlannedDays());
+        daysHoursMinutesItem.setHours(planningUnitElement.getPlannedHours());
+        daysHoursMinutesItem.setMinutes(planningUnitElement.getPlannedMinutes());
+        field.setValue(daysHoursMinutesItem.toString());
+        field.setReadOnly(true);
+        field.addValidator(new DaysHoursMinutesFieldValidator());
+        ressourceGroupFields.add(field);
     }
 
     @Override
     protected void buildForm() {
-        componentsLayout.addComponent(tabelle);
+        for (final TextField field : ressourceGroupFields) {
+            componentsLayout.addComponent(field);
+        }
     }
-
 }
