@@ -2,7 +2,7 @@ package org.rapidpm.webservice.persistence.system.security;
 
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.system.security.Benutzer;
-import org.rapidpm.persistence.system.security.berechtigungen.RolleDAO;
+import org.rapidpm.persistence.system.security.berechtigungen.Rolle;
 import org.rapidpm.webservice.mapping.FlatEntity;
 
 import java.util.Set;
@@ -16,7 +16,7 @@ public class FlatBenutzer extends FlatEntity<Benutzer> {
     // TODO
     private String login;
     private String email;
-    private Set<Long> rolleIds;
+    private Set<Rolle> rollen;
 
     public String getLogin() {
         return login;
@@ -34,12 +34,12 @@ public class FlatBenutzer extends FlatEntity<Benutzer> {
         this.email = email;
     }
 
-    public Set<Long> getRolleIds() {
-        return rolleIds;
+    public Set<Rolle> getRollen() {
+        return rollen;
     }
 
-    public void setRolleIds(final Set<Long> rolleIds) {
-        this.rolleIds = rolleIds;
+    public void setRollen(final Set<Rolle> rollen) {
+        this.rollen = rollen;
     }
 
     @Override
@@ -47,14 +47,13 @@ public class FlatBenutzer extends FlatEntity<Benutzer> {
         id = benutzer.getId();
         login = benutzer.getLogin();
         email = benutzer.getEmail();
-        rolleIds = entitiesToIds(benutzer.getRollen());
+        rollen = benutzer.getRollen();
     }
 
     @Override
     public void toEntity(final Benutzer benutzer, final DaoFactory daoFactory) {
         benutzer.setLogin(login);
         benutzer.setEmail(email);
-        final RolleDAO rolleDAO = daoFactory.getRolleDAO();
-        benutzer.setRollen(rolleDAO.loadWithOIDSet(rolleIds));
+        benutzer.setRollen(rollen);
     }
 }
