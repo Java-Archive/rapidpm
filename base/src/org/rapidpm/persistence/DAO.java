@@ -34,7 +34,6 @@ import java.util.*;
  *        Time: 22:27:47
  */
 
-@SuppressWarnings("EjbInterceptorInspection")
 public class DAO<K extends Number, E> implements Serializable {
     private static final Logger logger = Logger.getLogger(DAO.class);
 
