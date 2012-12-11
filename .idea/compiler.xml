@@ -6,11 +6,6 @@
   </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
-    <excludeFromCompile>
-      <directory url="file://$PROJECT_DIR$/ejb/src/org/rapidpm/persistence/prj/projectmanagement/execution" includeSubdirectories="true" />
-      <directory url="file://$PROJECT_DIR$/ejb/src-test" includeSubdirectories="true" />
-      <directory url="file://$PROJECT_DIR$/ejb/src" includeSubdirectories="true" />
-    </excludeFromCompile>
     <resourceExtensions />
     <wildcardResourcePatterns>
       <entry name="?*.properties" />
