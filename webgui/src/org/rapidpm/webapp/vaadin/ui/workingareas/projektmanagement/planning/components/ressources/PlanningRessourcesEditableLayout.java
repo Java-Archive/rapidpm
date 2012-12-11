@@ -70,26 +70,19 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
             saveButton.addClickListener(new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    for (TextField textField : ressourceGroupFields) {
-                        for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+                    for (final TextField textField : ressourceGroupFields) {
+                        for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()
+                                ) {
                             if (planningUnitElement.getRessourceGroup().getName().equals(textField.getCaption())) {
                                 final String[] daysHoursMinutes = textField.getValue().split(":");
                                 planningUnitElement.setPlannedDays(Integer.parseInt(daysHoursMinutes[0]));
                                 planningUnitElement.setPlannedHours(Integer.parseInt(daysHoursMinutes[1]));
                                 planningUnitElement.setPlannedMinutes(Integer.parseInt(daysHoursMinutes[2]));
+                                daoFactory.saveOrUpdateTX(planningUnitElement);
                             }
                         }
                     }
-                    final TimesCalculator calculator = new TimesCalculator(messages,screen.getUi());
-                    calculator.calculate();
-                    final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
-                    while (componentIterator.hasNext()) {
-                        final Component component = componentIterator.next();
-                        if (component instanceof Field) {
-                            component.setReadOnly(true);
-                        }
-                    }
-                    buttonLayout.setVisible(false);
+                    screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
                 }
             });
         }

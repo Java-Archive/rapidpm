@@ -65,7 +65,7 @@ public class DaoFactory {
         this.entityManager = emf.createEntityManager();
     }
 
-    private EntityManager entityManager;
+    protected EntityManager entityManager;
 
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;

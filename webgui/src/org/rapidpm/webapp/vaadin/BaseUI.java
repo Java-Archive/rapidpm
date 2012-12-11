@@ -34,7 +34,6 @@ public abstract class BaseUI extends UI {
     private static final Logger logger = Logger.getLogger(BaseUI.class);
 
     private static final boolean DEBUG_MODE = false;
-    private final VerticalLayout upperScreenLayout = new VerticalLayout();
     private final HorizontalLayout linkLeistenLayout = new HorizontalLayout(); //obere buttonLeiste
     private final HorizontalLayout iconsLayout = new HorizontalLayout();
     private final MenuBar menubar = new MenuBar();
@@ -167,14 +166,13 @@ public abstract class BaseUI extends UI {
     }
 
     private void createIconsLayout() {
-        final Embedded emLeft = new Embedded("", new ThemeResource(IMAGE_LOGO));
-        final Embedded emRight = new Embedded("", new ThemeResource(IMAGE_LOGO));
-
+        final Image iconLeft = new Image("", new ThemeResource(IMAGE_LOGO));
+        final Image iconRight = new Image("", new ThemeResource(IMAGE_LOGO));
         iconsLayout.setWidth("100%");
-        iconsLayout.addComponent(emLeft);
-        iconsLayout.setComponentAlignment(emLeft, Alignment.TOP_LEFT);
-        iconsLayout.addComponent(emRight);
-        iconsLayout.setComponentAlignment(emRight, Alignment.TOP_RIGHT);
+        iconsLayout.addComponent(iconLeft);
+        iconsLayout.setComponentAlignment(iconLeft, Alignment.TOP_LEFT);
+        iconsLayout.addComponent(iconRight);
+        iconsLayout.setComponentAlignment(iconRight, Alignment.TOP_RIGHT);
     }
 
     protected abstract void initMenuBar(MenuBar menuBar);
@@ -235,32 +233,15 @@ public abstract class BaseUI extends UI {
 
         linkLeistenLayout.addComponent(buttonAbmelden);
         linkLeistenLayout.addComponent(new Label("|"));
-//        buttonAbmelden.addListener(this);
-//        linkLeistenLayout.setComponentAlignment(buttonAbmelden, Alignment.MIDDLE_RIGHT);
-
         linkLeistenLayout.addComponent(buttonKontakt);
         linkLeistenLayout.addComponent(new Label("|"));
-//        buttonKontakt.addListener(this);
-//        linkLeistenLayout.setComponentAlignment(buttonKontakt, Alignment.MIDDLE_RIGHT);
-
         linkLeistenLayout.addComponent(buttonSupport);
         linkLeistenLayout.addComponent(new Label("|"));
-//        buttonSupport.addListener(this);
-//        linkLeistenLayout.setComponentAlignment(buttonSupport, Alignment.MIDDLE_RIGHT);
-
         linkLeistenLayout.addComponent(buttonImpressum);
         linkLeistenLayout.addComponent(new Label("|"));
-//        buttonImpressum.addListener(this);
-//        linkLeistenLayout.setComponentAlignment(buttonImpressum, Alignment.MIDDLE_RIGHT);
-
         linkLeistenLayout.addComponent(buttonDisclaimer);
         linkLeistenLayout.addComponent(new Label("|"));
-//        buttonDisclaimer.addListener(this);
-//        linkLeistenLayout.setComponentAlignment(buttonDisclaimer, Alignment.MIDDLE_RIGHT);
-
         linkLeistenLayout.addComponent(buttonSitemap);
-//        buttonSitemap.addListener(this);
-//        linkLeistenLayout.setComponentAlignment(buttonSitemap, Alignment.MIDDLE_RIGHT);
     }
 
     private void buildLoginScreen() {
@@ -268,7 +249,6 @@ public abstract class BaseUI extends UI {
         setContent(null);
         setContent(mask);
     }
-
 
     public ResourceBundle getResourceBundle() {
         return messages;

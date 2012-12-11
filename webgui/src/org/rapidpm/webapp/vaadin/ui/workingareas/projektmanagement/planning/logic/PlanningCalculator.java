@@ -32,6 +32,9 @@ public class PlanningCalculator {
     private PlannedProject projekt;
     private ResourceBundle messages;
     private DaoFactory daoFactory;
+
+    private List<PlanningUnitElement> planningUnitElements2 = new ArrayList<>();
+    private List<PlanningUnitElement> planningUnitElements1 = new ArrayList<>();
 //    private PlanningCalculatorBean planningCalculatorBean;
 
 
@@ -51,20 +54,42 @@ public class PlanningCalculator {
         for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
             resetParents(planningUnit);
             calculateRessources(planningUnit);
+            daoFactory.new Transaction() {
+                @Override
+                public void doTask() {
+                    final EntityManager entityManager = daoFactory.getEntityManager();
+                    for(final PlanningUnitElement planningUnitElement : planningUnitElements2){
+                        entityManager.merge(planningUnitElement);
+                    }
+                    entityManager.refresh(projekt);
+                }
+            }.execute();
         }
+
     }
 
     private void resetParents(final PlanningUnit planningUnit) {
+
         if(planningUnit.getKindPlanningUnits() != null && !planningUnit.getKindPlanningUnits().isEmpty()){
             for(final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()){
                 planningUnitElement.setPlannedDays(0);
                 planningUnitElement.setPlannedHours(0);
                 planningUnitElement.setPlannedMinutes(0);
-                daoFactory.saveOrUpdateTX(planningUnitElement);
+                //daoFactory.saveOrUpdateTX(planningUnitElement);
+                planningUnitElements1.add(planningUnitElement);
             }
             for(final PlanningUnit kindPlanningUnit : planningUnit.getKindPlanningUnits()){
                 resetParents(kindPlanningUnit);
             }
+            daoFactory.new Transaction() {
+                @Override
+                public void doTask() {
+                    final EntityManager entityManager = daoFactory.getEntityManager();
+                    for(final PlanningUnitElement planningUnitElement : planningUnitElements1){
+                        entityManager.merge(planningUnitElement);
+                    }
+                }
+            }.execute();
         } else {
             //do nothing
         }
@@ -82,11 +107,12 @@ public class PlanningCalculator {
     }
 
     private void generateCells(final PlanningUnit planningUnit, final PlanningUnit kindPlanningUnit) {
-        for(final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()){
+
+        for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
             final RessourceGroup parentPlanningUnitRessourceGroup = planningUnitElement.getRessourceGroup();
-            for(final PlanningUnitElement kindPlanningUnitElement : kindPlanningUnit.getPlanningUnitElementList()){
+            for (final PlanningUnitElement kindPlanningUnitElement : kindPlanningUnit.getPlanningUnitElementList()) {
                 final RessourceGroup kindPlanningUnitElementRessourceGroup = kindPlanningUnitElement.getRessourceGroup();
-                if(kindPlanningUnitElementRessourceGroup.equals(parentPlanningUnitRessourceGroup)){
+                if (kindPlanningUnitElementRessourceGroup.equals(parentPlanningUnitRessourceGroup)) {
                     final DaysHoursMinutesItem planningUnitElementItem = new DaysHoursMinutesItem(planningUnitElement);
                     final DaysHoursMinutesItem childPlanningUnitElementItem = new DaysHoursMinutesItem
                             (kindPlanningUnitElement);
@@ -104,7 +130,8 @@ public class PlanningCalculator {
                     planningUnitElement.setPlannedHours(planningUnitElementItem.getHours());
                     planningUnitElement.setPlannedMinutes(planningUnitElementItem.getMinutes());
                 }
-                daoFactory.saveOrUpdateTX(planningUnitElement);
+                planningUnitElements2.add(planningUnitElement);
+                //
             }
         }
     }

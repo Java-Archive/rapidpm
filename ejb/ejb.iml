@@ -4,9 +4,6 @@
     <connections />
   </component>
   <component name="FacetManager">
-    <facet type="WebBeans" name="CDI">
-      <configuration />
-    </facet>
     <facet type="ejb" name="EJB">
       <configuration>
         <descriptors>
