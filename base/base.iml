@@ -34,6 +34,7 @@
     <orderEntry type="library" exported="" name="lib" level="project" />
     <orderEntry type="library" exported="" name="lib-neo4j" level="project" />
     <orderEntry type="library" name="lib-lucene" level="project" />
+    <orderEntry type="library" exported="" name="lib-shiro" level="project" />
   </component>
 </module>
 

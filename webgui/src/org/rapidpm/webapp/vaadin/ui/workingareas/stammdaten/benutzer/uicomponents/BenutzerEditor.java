@@ -11,7 +11,7 @@ import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.system.security.*;
-import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
+import org.rapidpm.persistence.system.security.berechtigungen.Rolle;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.BenutzerScreen;
@@ -21,10 +21,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.exceptions.
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.exceptions.WrongLoginNameException;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
 import javax.transaction.UserTransaction;
 import java.util.*;
-import java.util.regex.Matcher;
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,7 +30,7 @@ import java.util.regex.Matcher;
  * Date: 05.04.12
  * Time: 12:01
  */
-public class BenutzerEditor extends FormLayout implements Internationalizationable{
+public class BenutzerEditor extends FormLayout implements Internationalizationable {
 
     private BeanItem<Benutzer> benutzerBean;
 
@@ -52,8 +50,8 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
     private Collection<Mandantengruppe> mandantengruppen;
     private Collection<BenutzerGruppe> benutzerGruppen;
     private Collection<BenutzerWebapplikation> benutzerWebapplikationen;
-    private Collection<Berechtigung> berechtigungen;
-//
+    private Collection<Rolle> rollen;
+
     private TextField idTextField;
     private TextField loginTextField;
     private PasswordField passwdTextField;
@@ -64,7 +62,7 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
     private ComboBox mandantengruppenSelect;
     private ComboBox benutzerGruppenSelect;
     private ComboBox benutzerWebapplikationenSelect;
-    private ListSelect berechtigungenSelect;
+    private ListSelect rollenSelect;
     private CheckBox isActiveCheckbox;
     private CheckBox isHiddenCheckBox;
     private Button saveButton;
@@ -136,11 +134,11 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
         benutzerWebapplikationenSelect.setFilteringMode(FilteringMode.CONTAINS);
         addComponent(benutzerWebapplikationenSelect);
 
-        berechtigungenSelect = new ListSelect();
-        berechtigungenSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.ID);
-        berechtigungenSelect.setItemCaptionPropertyId("name");
-        berechtigungenSelect.setMultiSelect(true);
-        addComponent(berechtigungenSelect);
+        rollenSelect = new ListSelect();
+        rollenSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.ID);
+        rollenSelect.setItemCaptionPropertyId("name");
+        rollenSelect.setMultiSelect(true);
+        addComponent(rollenSelect);
 
         isActiveCheckbox = new CheckBox();
         addComponent(isActiveCheckbox);
@@ -176,33 +174,33 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
                         final List<String> userNames = new ArrayList<>();
                         final List<String> userEmails = new ArrayList<>();
                         final List<Benutzer> users = daoFactory.getBenutzerDAO().loadAllEntities();
-                        for(final Benutzer user : users){
+                        for (final Benutzer user : users) {
                             daoFactory.getEntityManager().refresh(user);
                             userNames.add(user.getLogin());
                             userEmails.add(user.getEmail());
                         }
                         final String enteredLoginName = loginTextField.getValue().toString();
-                        if (userNames.contains(enteredLoginName)){
+                        if (userNames.contains(enteredLoginName)) {
                             throw new UsernameAlreadyExistsException();
                         }
-                        if(userEmails.contains(emailTextField.getValue().toString())){
+                        if (userEmails.contains(emailTextField.getValue().toString())) {
                             throw new EmailAlreadyExistsException();
                         }
-                        if(enteredLoginName.matches(Constants.EMPTY_OR_SPACES_ONLY_PATTERN) || enteredLoginName
-                                .toCharArray().length <= 2){
+                        if (enteredLoginName.matches(Constants.EMPTY_OR_SPACES_ONLY_PATTERN) || enteredLoginName
+                                .toCharArray().length <= 2) {
                             throw new WrongLoginNameException();
                         }
-                        final List<Berechtigung> berechtigungenList = new ArrayList<>();
-                        final Object berechtigungenSelectValue = berechtigungenSelect.getValue();
-                        if (berechtigungenSelectValue instanceof Berechtigung) {
-                            berechtigungenList.add((Berechtigung) berechtigungenSelectValue);
-                        } else if (berechtigungenSelectValue instanceof Collection) {
-                            final Collection<Berechtigung> berechtigungsCollection = (Collection<Berechtigung>) berechtigungenSelectValue;
-                            berechtigungenList.addAll(berechtigungsCollection);
+                        final Set<Rolle> rolleSet = new HashSet<>();
+                        final Object rollenSelectValue = rollenSelect.getValue();
+                        if (rollenSelectValue instanceof Rolle) {
+                            rolleSet.add((Rolle) rollenSelectValue);
+                        } else if (rollenSelectValue instanceof Collection) {
+                            final Collection<Rolle> rollenCollection = (Collection<Rolle>) rollenSelectValue;
+                            rolleSet.addAll(rollenCollection);
                         }
 
                         // Tabelle aktualisieren
-    //                    benutzerBean.getItemProperty("id").setValue(Long.parseLong(idTextField.getValue().toString())); // ID wird von der DB verwaltet
+                        //                    benutzerBean.getItemProperty("id").setValue(Long.parseLong(idTextField.getValue().toString())); // ID wird von der DB verwaltet
                         benutzerBean.getItemProperty("validFrom").setValue(validFromDateField.getValue());
                         benutzerBean.getItemProperty("validUntil").setValue(validUntilDateFiled.getValue());
                         benutzerBean.getItemProperty("login").setValue(loginTextField.getValue());
@@ -213,7 +211,7 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
                         benutzerBean.getItemProperty("mandantengruppe").setValue(mandantengruppenSelect.getValue());
                         benutzerBean.getItemProperty("benutzerGruppe").setValue(benutzerGruppenSelect.getValue());
                         benutzerBean.getItemProperty("benutzerWebapplikation").setValue(benutzerWebapplikationenSelect.getValue());
-    //                    benutzerBean.getItemProperty("berechtigungen").setValue(berechtigungenList);
+                        benutzerBean.getItemProperty("rollen").setValue(rolleSet);
                         benutzerBean.getItemProperty("active").setValue(isActiveCheckbox.getValue());
                         benutzerBean.getItemProperty("hidden").setValue(isHiddenCheckBox.getValue());
 
@@ -227,11 +225,11 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
                     } else {
                         Notification.show(messages.getString("incompletedata"));
                     }
-                } catch(final AlreadyExistsException e){
-                    if(e instanceof EmailAlreadyExistsException){
+                } catch (final AlreadyExistsException e) {
+                    if (e instanceof EmailAlreadyExistsException) {
                         Notification.show(messages.getString("users_emailexists"));
                     }
-                    if(e instanceof UsernameAlreadyExistsException){
+                    if (e instanceof UsernameAlreadyExistsException) {
                         Notification.show(messages.getString("users_nameexists"));
                     }
                 } catch (final WrongLoginNameException e) {
@@ -267,10 +265,10 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
         mandantengruppenSelect.select(benutzer.getMandantengruppe());
         benutzerGruppenSelect.select(benutzer.getBenutzerGruppe());
         benutzerWebapplikationenSelect.select(benutzer.getBenutzerWebapplikation());
-        berechtigungenSelect.setValue(null); // Selektion aufheben
-        if (benutzer.getBerechtigungen() != null) {
-            for (final Berechtigung berechtigung : benutzer.getBerechtigungen()) {
-                berechtigungenSelect.select(berechtigung);
+        rollenSelect.setValue(null); // Selektion aufheben
+        if (benutzer.getRollen() != null) {
+            for (final Rolle rolle : benutzer.getRollen()) {
+                rollenSelect.select(rolle);
             }
         }
         isActiveCheckbox.setValue(benutzer.getActive());
@@ -293,9 +291,9 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
         this.benutzerWebapplikationenSelect.setContainerDataSource(new BeanItemContainer<>(BenutzerWebapplikation.class, benutzerWebapplikationen));
     }
 
-    public void setBerechtigungen(final Collection<Berechtigung> berechtigungen) {
-        this.berechtigungen = berechtigungen;
-        this.berechtigungenSelect.setContainerDataSource(new BeanItemContainer<>(Berechtigung.class, berechtigungen));
+    public void setRollen(final Collection<Rolle> rollen) {
+        this.rollen = rollen;
+        this.rollenSelect.setContainerDataSource(new BeanItemContainer<>(Rolle.class, rollen));
     }
 
     @Override
@@ -303,7 +301,7 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
         isActiveCheckbox.setCaption(messages.getString("users_active"));
         isHiddenCheckBox.setCaption(messages.getString("users_hidden"));
         saveButton.setCaption(messages.getString("save"));
-        berechtigungenSelect.setCaption(messages.getString("users_permissions"));
+        rollenSelect.setCaption(messages.getString("users_roles"));
         benutzerWebapplikationenSelect.setCaption(messages.getString("users_webapp"));
         benutzerGruppenSelect.setCaption(messages.getString("users_usergroups"));
         mandantengruppenSelect.setCaption(messages.getString("users_mandantgroups"));

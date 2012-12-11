@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="lib-shiro">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/lib/lib-shiro" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="http://shiro.apache.org/static/current/apidocs/" />
+    </JAVADOC>
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/lib/lib-shiro" recursive="false" />
+  </library>
+</component>
