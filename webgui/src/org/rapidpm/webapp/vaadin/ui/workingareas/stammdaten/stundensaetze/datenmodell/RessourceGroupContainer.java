@@ -12,7 +12,7 @@ import java.util.List;
  * User: Marco Ebbinghaus
  * Date: 27.08.12
  * Time: 09:03
- * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
+ * This is part of the RapidPM - www.rapidpm.org internalcosts. please contact chef@sven-ruppert.de
  */
 public class RessourceGroupContainer extends BeanItemContainer<RessourceGroup> implements
         Serializable {

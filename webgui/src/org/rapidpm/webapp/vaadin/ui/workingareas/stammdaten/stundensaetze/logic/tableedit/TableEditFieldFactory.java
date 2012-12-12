@@ -11,7 +11,7 @@ import com.vaadin.ui.TextField;
  * User: Marco Ebbinghaus
  * Date: 12.09.12
  * Time: 12:03
- * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
+ * This is part of the RapidPM - www.rapidpm.org internalcosts. please contact chef@sven-ruppert.de
  */
 public class TableEditFieldFactory implements TableFieldFactory {
 
