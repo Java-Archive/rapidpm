@@ -40,6 +40,7 @@
     <properties>
         <property name="hibernate.connection.driver_class" value="org.postgresql.Driver"/>
         <property name="hibernate.connection.url" value="jdbc:postgresql://127.0.0.1:5432/rapidpm"/>
+        <!--<property name="hibernate.connection.url" value="jdbc:postgresql://postgres-rapidpm001.jelastic.dogado.eu/rapidpm"/>-->
         <property name="hibernate.connection.username" value="rapidpm"/>
         <property name="hibernate.connection.password" value="rapidpm"/>
         <!--<property status="hibernate.default_schema" value="public" />-->
