@@ -110,6 +110,7 @@ public class AddRootPlanningUnitsWindow extends RapidWindow {
                             project.getPlanningUnits().add(newPlanningUnit);
                         }
                         entityManager.merge(project);
+                        entityManager.flush();
                         entityManager.refresh(project);
                     }
                 }.execute();

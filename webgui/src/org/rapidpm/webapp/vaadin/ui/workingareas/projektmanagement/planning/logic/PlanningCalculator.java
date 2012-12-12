@@ -75,7 +75,6 @@ public class PlanningCalculator {
                 planningUnitElement.setPlannedDays(0);
                 planningUnitElement.setPlannedHours(0);
                 planningUnitElement.setPlannedMinutes(0);
-                //daoFactory.saveOrUpdateTX(planningUnitElement);
                 planningUnitElements1.add(planningUnitElement);
             }
             for(final PlanningUnit kindPlanningUnit : planningUnit.getKindPlanningUnits()){
