@@ -7,6 +7,8 @@ import org.neo4j.graphdb.traversal.Evaluators;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.graphdb.traversal.Traverser;
 import org.neo4j.kernel.Traversal;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -571,6 +573,63 @@ public class GraphBaseDAO<T> {
                 for (Relationship rel : node.getRelationships()) {
                     if (rel.isType(relType) && rel.getEndNode().equals(node)) {
                            rel.getStartNode().createRelationshipTo(assignToNode, relType);
+                    }
+                    rel.delete();
+                }
+                node.delete();
+            }
+            tx.success();
+            success = true;
+        } finally {
+            tx.finish();
+            return success;
+        }
+    }
+
+    protected boolean deleteIssue(final T entity) {
+        if (entity == null)
+            throw new NullPointerException("Object to delete can't be null.");
+
+        if (logger.isDebugEnabled())
+            logger.debug("delete: " + entity);
+
+        boolean success = false;
+
+        final Field[] fieldNames = entity.getClass().getDeclaredFields();
+        for (final Field field : fieldNames) {
+            if (field.isAnnotationPresent(Relational.class)) {
+                if (field.getAnnotation(Relational.class).onDeleteCascade()) {
+                    boolean isAccessible = field.isAccessible();
+                    field.setAccessible(true);
+                    try {
+                        field.set(entity, field.getType().newInstance());
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    }
+                    field.setAccessible(isAccessible);
+                }
+
+            }
+        }
+//        entity.setComments(new ArrayList<IssueComment>());
+//        entity.setTestcases(new ArrayList<IssueTestCase>());
+        this.persist(entity);
+
+        final Long id = getIdFromEntity(entity);
+        final Transaction tx = graphDb.beginTx();
+        try{
+            Node node;
+            if (id != null && id != 0) {
+                node = graphDb.getNodeById(id);
+                //rearrange Subissues
+                final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
+                for (Relationship rel : node.getRelationships()) {
+                    if (rel.isType(relType) && rel.getStartNode().equals(node)) {
+                        for (Relationship parent : node.getRelationships(relType, Direction.INCOMING)) {
+                            parent.getStartNode().createRelationshipTo(rel.getEndNode(),relType);
+                        }
                     }
                     rel.delete();
                 }

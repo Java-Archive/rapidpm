@@ -421,7 +421,7 @@ public class DaoFactory {
     }
 
 
-    //IssueTracking
+
     public ProjectDAO getProjectDAO() {
         return new ProjectDAO(getEntityManager());
     }
@@ -430,6 +430,7 @@ public class DaoFactory {
         return new ProjectNameDAO(getEntityManager());
     }
 
+    //IssueTracking - Relational
     public IssueTimeUnitDAO getIssueTimeUnitDAO() {
         return new IssueTimeUnitDAO(getEntityManager());
     }
@@ -444,7 +445,7 @@ public class DaoFactory {
 
 
 
-    //GraphDAOs
+    //IssueTracking - Graph
     public IssueBaseDAO getIssueBaseDAO(final Long projectId) {
         return new IssueBaseDAO(graphDb, this, projectId);
     }
