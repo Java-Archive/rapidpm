@@ -9,8 +9,6 @@
           <element id="jpa-descriptors" facet="base/jpa/JPA" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="lib-neo4j" />
-          <element id="library" level="project" name="lib-lucene" />
           <element id="library" level="project" name="lib-jaxws" />
           <element id="library" level="project" name="lib-shiro" />
         </element>
