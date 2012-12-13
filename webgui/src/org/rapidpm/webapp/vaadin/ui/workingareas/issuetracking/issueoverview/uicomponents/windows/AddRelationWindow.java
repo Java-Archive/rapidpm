@@ -68,7 +68,7 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
         }
         relationsSelect.setNullSelectionAllowed(false);
         relationsSelect.setScrollToSelectedItem(true);
-        relationsSelect.setFilteringMode(FilteringMode.STARTSWITH);
+        relationsSelect.setFilteringMode(FilteringMode.CONTAINS);
         baseLayout.addComponent(relationsSelect);
 
         final List<IssueBase> issueList = daoFactory.getIssueBaseDAO(screen.getCurrentProject().getId())
@@ -86,7 +86,7 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
         }
         issueSelect.setNullSelectionAllowed(false);
         issueSelect.setScrollToSelectedItem(true);
-        issueSelect.setFilteringMode(FilteringMode.STARTSWITH);
+        issueSelect.setFilteringMode(FilteringMode.CONTAINS);
         baseLayout.addComponent(issueSelect);
 
         final HorizontalLayout buttonLayout = new HorizontalLayout();
