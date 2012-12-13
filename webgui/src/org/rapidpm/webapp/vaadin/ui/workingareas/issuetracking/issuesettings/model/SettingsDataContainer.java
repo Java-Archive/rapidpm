@@ -162,6 +162,7 @@ public class SettingsDataContainer<T> extends IndexedContainer {
         boolean success = false;
         logger.info("delete item: " + entity);
 
+        //TODO auf konkrete DAO umbauen
         if (dao.deleteSimpleAttribute((T) entity))
             if (this.removeItem(entity))
                 success = true;
