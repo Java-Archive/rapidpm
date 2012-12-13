@@ -4,6 +4,8 @@ import org.apache.log4j.Logger;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 
+import java.io.File;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Alvin
@@ -14,7 +16,7 @@ import org.neo4j.kernel.EmbeddedGraphDatabase;
 public class GraphDBFactory {
     private static final Logger logger = Logger.getLogger(GraphDBFactory.class);
 
-    public static final String DB_PATH = "../data/graphDB/";
+    public static final String DB_PATH = "./data/graphDB/";
     private final GraphDatabaseService graphDb;
     private static GraphDBFactory instance;
 
