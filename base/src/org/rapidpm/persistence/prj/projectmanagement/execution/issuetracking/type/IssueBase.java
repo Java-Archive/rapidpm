@@ -80,14 +80,14 @@ public class IssueBase implements PersistInGraph {
     //@Relational
     private List<IssueTimeUnit> timeUnitsUsed = new ArrayList<>();
 
-    @Relational(clazz = IssueComment.class)
+    @Relational(clazz = IssueComment.class, onDeleteCascade = true)
     private List<IssueComment> comments = new ArrayList<>();
 
-    @Relational(clazz = IssueTestCase.class)
+    @Relational(clazz = IssueTestCase.class, onDeleteCascade = true)
     private List<IssueTestCase> testcases = new ArrayList<>();
 
-    //private Risk risk;
     @Simple
+    //private Risk risk;
     private Integer risk;
 
     @Relational(clazz = PlanningUnit.class)
@@ -115,7 +115,7 @@ public class IssueBase implements PersistInGraph {
         }
 
         try {
-            Method method = DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).getClass().getMethod(methodName,
+            Method method = IssueBaseDAO.class.getMethod(methodName,
                     methodParams);
             if (method != null) {
                 List<Object[]> list = graphMap.get(method);

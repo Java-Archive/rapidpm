@@ -321,7 +321,6 @@ public abstract class BaseUI extends UI {
         final LoginMask mask = new LoginMask(this);
         setContent(null);
         setContent(mask);
-        System.out.println("hallo");
     }
 
 

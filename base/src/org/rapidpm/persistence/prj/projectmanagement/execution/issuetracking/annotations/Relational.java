@@ -16,4 +16,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Relational {
     Class clazz();
+    boolean onDeleteCascade() default false;
 }
