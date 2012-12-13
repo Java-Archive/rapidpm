@@ -598,14 +598,12 @@ public class GraphBaseDAO<T> {
         final Field[] fieldNames = entity.getClass().getDeclaredFields();
         for (final Field field : fieldNames) {
             if (field.isAnnotationPresent(Relational.class)) {
-                if (field.getAnnotation(Relational.class).onDeleteCascade()) {
+                if (field.getType().equals(List.class) && field.getAnnotation(Relational.class).onDeleteCascade()) {
                     boolean isAccessible = field.isAccessible();
                     field.setAccessible(true);
                     try {
-                        field.set(entity, field.getType().newInstance());
+                        field.set(entity, new ArrayList<>());
                     } catch (IllegalAccessException e) {
-                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                    } catch (InstantiationException e) {
                         e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                     }
                     field.setAccessible(isAccessible);
@@ -613,8 +611,6 @@ public class GraphBaseDAO<T> {
 
             }
         }
-//        entity.setComments(new ArrayList<IssueComment>());
-//        entity.setTestcases(new ArrayList<IssueTestCase>());
         this.persist(entity);
 
         final Long id = getIdFromEntity(entity);
