@@ -3,6 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.ui
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.AddButtonClickListener;
@@ -36,7 +37,7 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
     public IssueTreeLayout(final IssueOverviewScreen screen, final IssueTabSheet issueTabSheet) {
         super();
         this.screen = screen;
-
+        this.setSizeFull();
         setComponents(issueTabSheet);
         doInternationalization();
     }
@@ -59,6 +60,11 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         addComponent(buttonLayout);
         addComponent(expandButton);
 
+        final RapidPanel treePanel = new RapidPanel();
+        //TODO Fixe größe sollte vermieden werden
+        treePanel.setHeight("700px");
+        treePanel.setWidth("100%");
+
         issueTree = new Tree("IssueTree");
         issueTree.setNullSelectionAllowed(false);
         issueTree.setContainerDataSource(ModelSingleton.getInstance(screen.getCurrentProject()));
@@ -68,8 +74,6 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         }
         issueTree.addValueChangeListener(new TreeActivateOnValueChangeListener(new Button[]{deleteButton}));
 
-
-
         issueTree.setItemCaptionPropertyId(TreeIssueBaseContainer.PROPERTY_CAPTION);
         for (Object id : issueTree.rootItemIds())
             issueTree.expandItemsRecursively(id);
@@ -78,7 +82,8 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 
 //        issueTree.setDragMode(Tree.TreeDragMode.NODE);
 //        issueTree.setDropHandler(new TreeSortDropHandler(issueTree));
-        addComponent(issueTree);
+        treePanel.addComponent(issueTree);
+        addComponent(treePanel);
 
         addButton.addClickListener(new AddButtonClickListener(screen, issueTree));
         deleteButton.addClickListener(new DeleteButtonClickListener(screen, issueTree));
