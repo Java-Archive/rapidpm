@@ -2,7 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning;
 
 import com.vaadin.data.Property;
 //import com.vaadin.server.ThemeResource;
-import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.event.FieldEvents;
 import com.vaadin.ui.*;
 //import org.rapidpm.Constants;
 //import org.rapidpm.ejb3.EJBFactory;
@@ -14,7 +14,6 @@ import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
@@ -73,7 +72,7 @@ public class ProjektplanungScreen extends Screen {
 
     public ProjektplanungScreen(MainUI ui) {
         super(ui);
-
+        addParentPlanningUnitField.focus();
         rootPlanningUnitsAtScreenLoad = daoFactory.getPlanningUnitDAO().loadAllEntities();
 
         try {
@@ -127,6 +126,7 @@ public class ProjektplanungScreen extends Screen {
     private void buildPlanningUnitPanel() {
         setAddParentButtonListener();
         setAddParentsButtonListener();
+        addParentButton.setEnabled(false);
         addParentPlanningUnitLayout.addComponents(addParentPlanningUnitField, addParentButton, addParentsButton);
         addParentButton.setSizeUndefined();
         addParentsButton.setSizeUndefined();

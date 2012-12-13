@@ -1,7 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.parents;
 
 import com.vaadin.data.Property;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import org.rapidpm.Constants;
@@ -47,6 +46,8 @@ public class AddRootPlanningUnitsWindow extends RapidWindow {
         this.ui = ui;
         this.messages = messages;
         setModal(true);
+        setCaption(messages.getString("planning_addPlanningUnit"));
+        newPlanningUnitField.focus();
         transientIdCounter = 0l;
         project = DaoFactorySingelton.getInstance().getProjectDAO().findByID(ui.getSession().getAttribute(PlannedProject.class).getId());
         container = new BeanItemContainer<>(PlanningUnit.class);
@@ -165,6 +166,7 @@ public class AddRootPlanningUnitsWindow extends RapidWindow {
                     container.addBean(newPlanningUnit);
                     transientIdCounter++;
                     newPlanningUnitField.setValue("");
+                    newPlanningUnitField.focus();
                 } catch (final InvalidNameException e) {
                     Notification.show(messages.getString("planning_invalidname"));
                 } catch (final SameNameException e) {

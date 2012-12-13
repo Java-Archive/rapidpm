@@ -133,6 +133,7 @@ public abstract class BaseUI extends UI {
 
     public void setWorkingArea(final Component workingArea) {
         this.workingArea.removeAllComponents();
+        this.workingArea.getContentLayout().setMargin(false);
         this.workingArea.addComponent(workingArea);
         this.workingArea.getContent().setSizeFull();
         this.workingArea.setSizeFull();

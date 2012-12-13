@@ -88,7 +88,7 @@ public class AddWindow extends Window {
     }
 
     private void doInternationalization() {
-        this.setCaption(messages.getString("stdsatz_addRessource"));
+        this.setCaption(messages.getString("planning_addPlanningUnit"));
         saveButton.setCaption(messages.getString("save"));
         cancelButton.setCaption(messages.getString("cancel"));
     }

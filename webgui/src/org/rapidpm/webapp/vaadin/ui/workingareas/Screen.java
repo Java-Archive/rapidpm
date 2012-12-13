@@ -23,6 +23,7 @@ public abstract class Screen extends RapidPanel implements Internationalizationa
         this.messagesBundle = ui.getResourceBundle();
         this.ui = ui;
         this.setStyleName(Reindeer.PANEL_LIGHT);
+        //this.addStyleName("medsizemargin");
         this.setSizeFull();
     }
 

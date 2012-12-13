@@ -18,8 +18,6 @@ import org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.MessageDAO;
 import org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.msg.PersonalMessageDAO;
 import org.rapidpm.persistence.prj.book.BuchDAO;
 import org.rapidpm.persistence.prj.book.BuchKapitelDAO;
-import org.rapidpm.persistence.prj.book.BuchSeiteDAO;
-import org.rapidpm.persistence.prj.book.BuchSeitenFussnoteDAO;
 import org.rapidpm.persistence.prj.book.kommentar.BuchKapitelKommentarDAO;
 import org.rapidpm.persistence.prj.book.kommentar.BuchKommentarDAO;
 import org.rapidpm.persistence.prj.book.kommentar.BuchSeitenKommentarDAO;
@@ -50,8 +48,6 @@ import org.rapidpm.persistence.system.logging.LoggingEventEntryDAO;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.BerechtigungDAO;
 
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.persistence.*;
 import java.util.InputMismatchException;
 
@@ -396,14 +392,6 @@ public class DaoFactory {
 
     public BuchKapitelDAO getBuchKapitelDAO() {
         return new BuchKapitelDAO(getEntityManager());
-    }
-
-    public BuchSeiteDAO getBuchSeiteDAO() {
-        return new BuchSeiteDAO(getEntityManager());
-    }
-
-    public BuchSeitenFussnoteDAO getBuchSeitenFussnoteDAO() {
-        return new BuchSeitenFussnoteDAO(getEntityManager());
     }
 
     public BuchKommentarDAO getBuchKommentarDAO() {
