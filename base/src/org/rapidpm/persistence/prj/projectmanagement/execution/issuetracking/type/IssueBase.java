@@ -115,7 +115,7 @@ public class IssueBase implements PersistInGraph {
         }
 
         try {
-            Method method = DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).getClass().getMethod(methodName,
+            Method method = IssueBaseDAO.class.getMethod(methodName,
                     methodParams);
             if (method != null) {
                 List<Object[]> list = graphMap.get(method);
