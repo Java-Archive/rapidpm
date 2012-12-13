@@ -595,14 +595,23 @@ public class GraphBaseDAO<T> {
         final Long id = getIdFromEntity(entity);
         final Transaction tx = graphDb.beginTx();
         try{
-            Node node;
+            final TraversalDescription td = Traversal.description()
+                    .depthFirst()
+                    .relationships((RelationshipType) entity)
+                    .evaluator(Evaluators.excludeStartPosition());
+            final Traverser trav = td.traverse( root_node );
+            for (final Path path : trav) {
+                System.out.println(path);
+            }
+
+            Node relNode;
             if (id != null && id != 0) {
 
-                node = graphDb.getNodeById(id);
-                for (Relationship rel : node.getRelationships()) {
+                relNode = graphDb.getNodeById(id);
+                for (Relationship rel : relNode.getRelationships()) {
                     rel.delete();
                 }
-                node.delete();
+                relNode.delete();
             }
             tx.success();
             success = true;
