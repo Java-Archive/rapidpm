@@ -35,6 +35,7 @@ public class IssueOverviewScreen extends Screen{
 //        baseDaoFactoryBean = EJBFactory.getEjbInstance(IssueOverviewScreenBean.class).getDaoFactoryBean();
 //        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         this.setSizeFull();
+        //this.setMargin(true);
         hSplitPanel = new HorizontalSplitPanel();
         hSplitPanel.setSplitPosition(30, Unit.PERCENTAGE);
         issueTabSheet = new IssueTabSheet(this);

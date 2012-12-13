@@ -17,7 +17,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElemen
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.EditableLayout;
+import org.rapidpm.webapp.vaadin.ui.EditableLayout;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -49,8 +49,7 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
 //        baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
-        final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().loadPlanningUnitByName
-                (thePlanningUnit.getPlanningUnitName());
+        final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().findByID(thePlanningUnit.getId());
         daoFactory.getEntityManager().refresh(planningUnit);
         planningUnitElements = planningUnit.getPlanningUnitElementList();
         buildTable();

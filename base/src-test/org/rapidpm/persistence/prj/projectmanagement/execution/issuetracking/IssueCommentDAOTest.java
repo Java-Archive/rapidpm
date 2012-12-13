@@ -9,9 +9,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,8 +23,18 @@ public class IssueCommentDAOTest implements BaseDAOTest {
     private final IssueCommentDAO dao = daoFactory.getIssueCommentDAO();
 
     @Test
+    public void equalsAndHashCodeTest() {
+        List<IssueComment> commentList = dao.loadAllEntities();
+        assertTrue(commentList.get(0).equals(commentList.get(0)));
+        assertEquals(commentList.get(0).hashCode(), commentList.get(0).hashCode());
+
+        assertFalse(commentList.get(0).equals(new IssueComment()));
+        assertNotSame(new IssueComment().hashCode(), commentList.get(0).hashCode());
+    }
+
+    @Test
     public void addChangeDelete() {
-        IssueComment comment = new IssueComment();
+        final IssueComment comment = new IssueComment();
         comment.setText("test");
         comment.setCreated(new Date());
         comment.setCreator(daoFactory.getBenutzerDAO().loadAllEntities().get(0));

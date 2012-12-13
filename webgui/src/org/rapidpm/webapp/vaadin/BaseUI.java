@@ -10,7 +10,7 @@ package org.rapidpm.webapp.vaadin;
 import com.vaadin.annotations.Theme;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServiceSession;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.BaseTheme;
 import org.apache.log4j.Logger;
@@ -19,6 +19,7 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
+import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.windows.*;
 
 import java.util.List;
@@ -33,31 +34,23 @@ public abstract class BaseUI extends UI {
     private static final Logger logger = Logger.getLogger(BaseUI.class);
 
     private static final boolean DEBUG_MODE = false;
-//    private static final int DEFAULT_WINDOW_WIDTH = 1024;
-//    private static final String LEFT_STRIPE_WITH = "20px";
-//    private static final String RIGHT_STRIPE_WITH = "20px";
-
-//    private int windowWidth = DEFAULT_WINDOW_WIDTH;
-//    private final List<WindowSizeChangeListener> windowSizeChangeListeners = new ArrayList<>();
-
-    //globale referenzen -> in eine reg oder so..
-    private final HorizontalLayout hlHeaderLineContainer = new HorizontalLayout(); //obere buttonLeiste
+    private final VerticalLayout upperScreenLayout = new VerticalLayout();
+    private final HorizontalLayout linkLeistenLayout = new HorizontalLayout(); //obere buttonLeiste
+    private final HorizontalLayout iconsLayout = new HorizontalLayout();
     private final MenuBar menubar = new MenuBar();
-    //InfoPanel
-    //MessagePanel
-    private final VerticalLayout hlWorkingAreaContainer = new VerticalLayout();
+    private final RapidPanel workingArea = new RapidPanel();
+    private final VerticalLayout mainlayout = new VerticalLayout();
 
     protected Benutzer currentUser;
     protected PlannedProject currentProject;
     protected Locale locale = new Locale("de","DE");
     public static ResourceBundle messages;
 
-
     @Override
     public void init(final VaadinRequest request) {
         loadFirstProject();
         this.setSizeFull();
-        final VaadinServiceSession session = getSession();
+        final VaadinSession session = getSession();
         if (session.getAttribute(Benutzer.class) == null) {
             if (DEBUG_MODE) {
                 buildMainLayout();
@@ -76,7 +69,7 @@ public abstract class BaseUI extends UI {
 
     private void loadFirstProject() {
 //        final LoginBean bean = EJBFactory.getEjbInstance(LoginBean.class);
-        final VaadinServiceSession session = this.getSession();
+        final VaadinSession session = this.getSession();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final List<PlannedProject> projects = daoFactory.getPlannedProjectDAO().loadAllEntities();
         if(projects == null || projects.isEmpty()){
@@ -88,9 +81,6 @@ public abstract class BaseUI extends UI {
     }
 
     public void authentication(final String enteredLogin, final String enteredPasswd) throws Exception {
-
-//        final LoginBean bean = EJBFactory.getEjbInstance(LoginBean.class);
-//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
         final List<Benutzer> benutzer = benutzerDAO.loadBenutzerForLogin(enteredLogin);
@@ -101,7 +91,7 @@ public abstract class BaseUI extends UI {
             if (userLogin.equals(enteredLogin) && userPasswd.equals(enteredPasswdHashed)) {
                 currentUser = user;
                 getSession().setAttribute(Benutzer.class, currentUser);
-                removeAllComponents();
+                setContent(null);
                 loadProtectedRessources();
                 return;
             }
@@ -110,7 +100,7 @@ public abstract class BaseUI extends UI {
     }
 
     private String hash(final String enteredPasswd) {
-        return enteredPasswd;        //TODO später gehashtes PW zurückgeben
+        return enteredPasswd;        //TODO spÃ¤ter gehashtes PW zurÃ¼ckgeben
     }
 
     public void localization(final Object value) {
@@ -123,7 +113,6 @@ public abstract class BaseUI extends UI {
                 break;
         }
         messages = ResourceBundle.getBundle(MESSAGESBUNDLE, locale);
-        //this.getSession().setLocale(messagesBundle);
     }
 
     private void loadProtectedRessources() {
@@ -134,102 +123,119 @@ public abstract class BaseUI extends UI {
         return menubar;
     }
 
-    public HorizontalLayout getHeaderLineContainer() {
-        return hlHeaderLineContainer;
+
+    public RapidPanel getWorkingAreaContainer() {
+        return workingArea;
     }
 
-    public void setHeaderLine(final Component headerLine) {
-        hlHeaderLineContainer.removeAllComponents();
-        hlHeaderLineContainer.addComponent(headerLine);
-    }
-
-    public VerticalLayout getWorkingAreaContainer() {
-        return hlWorkingAreaContainer;
+    public void setCurrentProject(final PlannedProject currentProject) {
+        this.currentProject = currentProject;
     }
 
     public void setWorkingArea(final Component workingArea) {
         workingArea.setSizeFull();
-        hlWorkingAreaContainer.setSizeFull();
-        hlWorkingAreaContainer.removeAllComponents();
-        hlWorkingAreaContainer.addComponent(workingArea);
+        this.workingArea.removeAllComponents();
+        this.workingArea.addComponent(workingArea);
     }
 
 
     private void buildMainLayout() {
 
-        final VerticalLayout mainlayout = new VerticalLayout();
+
         mainlayout.setSizeFull();
+        workingArea.setSizeFull();
 
-        final VerticalLayout vlMiddle = new VerticalLayout();
-        vlMiddle.setSizeFull();
+        createLinkLeistenLayout();
+        createIconsLayout();
 
-        final HorizontalLayout gl = new HorizontalLayout();
-        gl.setSizeFull();
-        gl.setSpacing(true);
-        gl.addComponent(vlMiddle);
-        gl.setExpandRatio(vlMiddle, 1.0f);
-        gl.setComponentAlignment(vlMiddle, Alignment.TOP_CENTER);
-        mainlayout.addComponent(gl);
+        initMenuBar(menubar);
+        menubar.setWidth("100%");
 
+        linkLeistenLayout.setSizeUndefined();
+        iconsLayout.setSizeUndefined();
+        iconsLayout.setWidth("100%");
+        upperScreenLayout.addComponent(linkLeistenLayout);
+        upperScreenLayout.setComponentAlignment(linkLeistenLayout, Alignment.BOTTOM_LEFT);
+        upperScreenLayout.addComponent(iconsLayout);
+        upperScreenLayout.setComponentAlignment(iconsLayout, Alignment.TOP_LEFT);
+        upperScreenLayout.setSpacing(false);
+        upperScreenLayout.addComponent(menubar);
+        mainlayout.addComponent(upperScreenLayout);
+        //mainlayout.addComponent(menubar);
+        mainlayout.addComponent(workingArea);
+        mainlayout.setExpandRatio(upperScreenLayout,17);
+        //mainlayout.setExpandRatio(menubar, 2);
+        mainlayout.setExpandRatio(workingArea,85);
+        mainlayout.setSpacing(false);
+//        RapidPanel panel = new RapidPanel();
+//        panel.setSizeFull();
+//        Table table = new Table();
+//        table.addContainerProperty("blub", String.class, null);
+//        table.addContainerProperty("bl32ub", String.class, null);
+//        table.addContainerProperty("blsdfub", String.class, null);
+//        table.addContainerProperty("bfsdlub", String.class, null);
+//        table.addContainerProperty("bdsub", String.class, null);
+//        table.addContainerProperty("blfdfvub", String.class, null);
+//        table.addContainerProperty("bcxvlub", String.class, null);
+//        table.addContainerProperty("blcv vub", String.class, null);
+//        table.addContainerProperty("blxcyub", String.class, null);
+//        table.addContainerProperty("b xcv lub", String.class, null);
+//        table.addContainerProperty("b lub", String.class, null);
+//        table.addContainerProperty("bl xc ub", String.class, null);
+//        table.addContainerProperty("blsfsaasub", String.class, null);
+//        table.addContainerProperty("sfserwerdfsfdf", String.class, null);
+//        table.addContainerProperty("sfsdfserwrfdf", String.class, null);
+//        table.addContainerProperty("serwrfsdfsfdf", String.class, null);
+//        table.addContainerProperty("sfsdfwerwerwsfdf", String.class, null);
+//        table.addContainerProperty("ewrw", String.class, null);
+//        table.addContainerProperty("ewrwerewr", String.class, null);
+//        table.addContainerProperty("sfsdwerwfsfdf", String.class, null);
+//        table.addContainerProperty("sfdsfssdfsfdf", String.class, null);
+//        table.addContainerProperty("sfssdfsddfsfdf", String.class, null);
+//        table.addContainerProperty("sfssfsdfsfdf", String.class, null);
+//        table.addContainerProperty("sfssdfsfsdfdfsfdf", String.class, null);
+//        table.addContainerProperty("qqqeqwe", String.class, null);table.addContainerProperty("aefdsgdg",
+//                String.class, null);
+//        table.addContainerProperty("weqeweqeqw", String.class, null);
+//        table.addContainerProperty("qewqewqew", String.class, null);
+//        table.addContainerProperty("fgdgerg", String.class, null);
+//        table.addContainerProperty("dfgdsg", String.class, null);
+//
+//        //table.setSizeFull();
+//        panel.addComponent(table);
+//        for (int i = 0; i < 20; i++) {
+//             Button button = new Button("test");
+//
+//            if(i%2 == 0){
+//                VerticalLayout layout = new VerticalLayout();
+//                layout.setSizeUndefined();
+//                layout.addComponent(button);
+//                layout.setComponentAlignment(button, Alignment.MIDDLE_CENTER);
+//                panel.addComponent(layout);
+//            } else {
+//                panel.addComponent(button);
+//            }
+//
+//        }
+        setContent(mainlayout);
+    }
 
-        //Innere Bereich komplett
-        final VerticalLayout vlMiddleInner = new VerticalLayout(); //
-        vlMiddleInner.setSizeFull();
-        vlMiddle.addComponent(vlMiddleInner);
-
-        vlMiddleInner.addComponent(hlHeaderLineContainer);
-        vlMiddleInner.setComponentAlignment(hlHeaderLineContainer, Alignment.TOP_RIGHT);
-
-        final HorizontalLayout hlHeader = new HorizontalLayout();
-        vlMiddleInner.addComponent(hlHeader);
-        hlHeader.setSizeFull();
-
-
-        final HorizontalLayout hlHeaderBottomLine = new HorizontalLayout();
-        hlHeaderBottomLine.setSizeFull();
-        vlMiddleInner.addComponent(hlHeaderBottomLine);
-
-//        hlWorkingAreaContainer.setSizeFull();
-        vlMiddleInner.addComponent(hlWorkingAreaContainer);
-
-        final HorizontalLayout hlBottomLine = new HorizontalLayout();
-        vlMiddleInner.addComponent(hlBottomLine);
-        vlMiddleInner.setComponentAlignment(hlBottomLine, Alignment.BOTTOM_CENTER);
-
-        //HeaderLine
-        final HorizontalLayout headerLine = createStdHeaderLine();
-        setHeaderLine(headerLine);
-
-        //Header
+    private void createIconsLayout() {
         final Embedded emLeft = new Embedded("", new ThemeResource(IMAGE_LOGO));
-        hlHeader.addComponent(emLeft);
-        hlHeader.setComponentAlignment(emLeft, Alignment.TOP_LEFT);
-
-        //InfoPanel - MessagePanel
         final Embedded emRight = new Embedded("", new ThemeResource(IMAGE_LOGO));
-        hlHeader.addComponent(emRight);
-        hlHeader.setComponentAlignment(emRight, Alignment.TOP_RIGHT);
 
-        //hlHeaderBottomLine
-        initMenuBarIntern(menubar);
-        hlHeaderBottomLine.addComponent(menubar);
-
-
-        addComponent(mainlayout);
+        iconsLayout.setWidth("100%");
+        iconsLayout.addComponent(emLeft);
+        iconsLayout.setComponentAlignment(emLeft, Alignment.TOP_LEFT);
+        iconsLayout.addComponent(emRight);
+        iconsLayout.setComponentAlignment(emRight, Alignment.TOP_RIGHT);
     }
 
     protected abstract void initMenuBar(MenuBar menuBar);
 
-    //TODO hier anhand des Users den Context entscheiden
-    private void initMenuBarIntern(final MenuBar menuBar) {
-        initMenuBar(menuBar);
-        menuBar.setSizeFull();
-    }
-
-    private HorizontalLayout createStdHeaderLine() {
-        final HorizontalLayout hlHeaderLine = new HorizontalLayout();
-        hlHeaderLine.setSizeFull();
-        hlHeaderLine.setSpacing(true);
+    private void createLinkLeistenLayout() {
+        linkLeistenLayout.setSizeFull();
+        linkLeistenLayout.setSpacing(true);
         final Button buttonKontakt = new Button("Kontakt", new Button.ClickListener() {
 
             @Override
@@ -281,41 +287,40 @@ public abstract class BaseUI extends UI {
         buttonSitemap.setStyleName(BaseTheme.BUTTON_LINK);
         buttonAbmelden.setStyleName(BaseTheme.BUTTON_LINK);
 
-        hlHeaderLine.addComponent(buttonAbmelden);
-        hlHeaderLine.addComponent(new Label("|"));
+        linkLeistenLayout.addComponent(buttonAbmelden);
+        linkLeistenLayout.addComponent(new Label("|"));
 //        buttonAbmelden.addListener(this);
-        hlHeaderLine.setComponentAlignment(buttonAbmelden, Alignment.MIDDLE_RIGHT);
+//        linkLeistenLayout.setComponentAlignment(buttonAbmelden, Alignment.MIDDLE_RIGHT);
 
-        hlHeaderLine.addComponent(buttonKontakt);
-        hlHeaderLine.addComponent(new Label("|"));
+        linkLeistenLayout.addComponent(buttonKontakt);
+        linkLeistenLayout.addComponent(new Label("|"));
 //        buttonKontakt.addListener(this);
-        hlHeaderLine.setComponentAlignment(buttonKontakt, Alignment.MIDDLE_RIGHT);
+//        linkLeistenLayout.setComponentAlignment(buttonKontakt, Alignment.MIDDLE_RIGHT);
 
-        hlHeaderLine.addComponent(buttonSupport);
-        hlHeaderLine.addComponent(new Label("|"));
+        linkLeistenLayout.addComponent(buttonSupport);
+        linkLeistenLayout.addComponent(new Label("|"));
 //        buttonSupport.addListener(this);
-        hlHeaderLine.setComponentAlignment(buttonSupport, Alignment.MIDDLE_RIGHT);
+//        linkLeistenLayout.setComponentAlignment(buttonSupport, Alignment.MIDDLE_RIGHT);
 
-        hlHeaderLine.addComponent(buttonImpressum);
-        hlHeaderLine.addComponent(new Label("|"));
+        linkLeistenLayout.addComponent(buttonImpressum);
+        linkLeistenLayout.addComponent(new Label("|"));
 //        buttonImpressum.addListener(this);
-        hlHeaderLine.setComponentAlignment(buttonImpressum, Alignment.MIDDLE_RIGHT);
+//        linkLeistenLayout.setComponentAlignment(buttonImpressum, Alignment.MIDDLE_RIGHT);
 
-        hlHeaderLine.addComponent(buttonDisclaimer);
-        hlHeaderLine.addComponent(new Label("|"));
+        linkLeistenLayout.addComponent(buttonDisclaimer);
+        linkLeistenLayout.addComponent(new Label("|"));
 //        buttonDisclaimer.addListener(this);
-        hlHeaderLine.setComponentAlignment(buttonDisclaimer, Alignment.MIDDLE_RIGHT);
+//        linkLeistenLayout.setComponentAlignment(buttonDisclaimer, Alignment.MIDDLE_RIGHT);
 
-        hlHeaderLine.addComponent(buttonSitemap);
+        linkLeistenLayout.addComponent(buttonSitemap);
 //        buttonSitemap.addListener(this);
-        hlHeaderLine.setComponentAlignment(buttonSitemap, Alignment.MIDDLE_RIGHT);
-        return hlHeaderLine;
+//        linkLeistenLayout.setComponentAlignment(buttonSitemap, Alignment.MIDDLE_RIGHT);
     }
 
     private void buildLoginScreen() {
         final LoginMask mask = new LoginMask(this);
-        removeAllComponents();
-        addComponent(mask);
+        setContent(null);
+        setContent(mask);
     }
 
 

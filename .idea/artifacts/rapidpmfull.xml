@@ -1,0 +1,26 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="rapidpmfull">
+    <output-path>$PROJECT_DIR$/out/artifacts/rapidpmfull</output-path>
+    <root id="archive" name="rapidpmfull.war">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="webgui" />
+          <element id="module-output" name="base" />
+          <element id="jpa-descriptors" facet="base/jpa/JPA" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="lib-database-postgresql" />
+          <element id="library" level="project" name="log4j-1.2.17-javadoc" />
+          <element id="library" level="project" name="lib" />
+          <element id="library" level="project" name="lib-neo4j" />
+          <element id="library" level="project" name="lib-lucene" />
+          <element id="library" level="project" name="lib-shiro" />
+          <element id="library" level="project" name="lib-vaadin" />
+          <element id="library" level="project" name="lib-tablemodell" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="webgui/web/Web" />
+      <element id="vaadin.resources" include-widgetset-compilation="true" vaadin-facet-name="Vaadin Application (on Web)" web-root-dir="$PROJECT_DIR$/webgui/web" />
+    </root>
+  </artifact>
+</component>

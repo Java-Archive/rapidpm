@@ -23,6 +23,17 @@ public class IssueStatusDAOTest implements BaseDAOTest {
     private final IssueStatus assignTo = dao.loadAllEntities().get(0);
 
     @Test
+    public void equalsAndHashCodeTest() {
+        List<IssueStatus> statusList = dao.loadAllEntities();
+        assertTrue(statusList.get(0).equals(statusList.get(0)));
+        assertEquals(statusList.get(0).hashCode(), statusList.get(0).hashCode());
+
+        assertFalse(statusList.get(0).equals(new IssueComment()));
+        assertNotSame(new IssueComment().hashCode(), statusList.get(0).hashCode());
+    }
+
+
+    @Test
     public void addChangeDelete() {
         IssueStatus status = new IssueStatus("test");
         status.setStatusFileName("test_filename");
@@ -41,17 +52,18 @@ public class IssueStatusDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        IssueStatus priority = dao.loadAllEntities().get(0);
-        IssueStatus prioTest = new IssueStatus();
+        final IssueStatus priority = dao.loadAllEntities().get(0);
+        final IssueStatus prioTest = new IssueStatus();
         prioTest.setStatusName(priority.getStatusName());
+        prioTest.setStatusFileName(priority.getStatusFileName());
         dao.persist(prioTest);
     }
 
     @Test
     public void getConnectedIssus() {
-        for (IssueStatus status : dao.loadAllEntities()) {
-            List<IssueBase> issueList = status.getConnectedIssuesFromProject(1L);
-            for (IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+        for (final IssueStatus status : dao.loadAllEntities()) {
+            final List<IssueBase> issueList = status.getConnectedIssuesFromProject(1L);
+            for (final IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
                 if (issue.getStatus().equals(status))
                     assertTrue(issueList.contains(issue));
             }

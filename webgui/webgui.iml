@@ -12,9 +12,6 @@
         <webroots>
           <root url="file://$MODULE_DIR$/web" relative="/" />
         </webroots>
-        <sourceRoots>
-          <root url="file://$MODULE_DIR$/src" />
-        </sourceRoots>
       </configuration>
       <facet type="Vaadin" name="Vaadin Application">
         <configuration vaadinUsedWebRootPathUrl="file://$MODULE_DIR$/web" vaadinGWTLocationPath="/prog/gwt-2.5.0.rc1" vaadinVMOptions="-Xss8M -Xmx512M -XX:MaxPermSize=512M" vaadinJavaScriptStyle="Pretty" vaadinCompilerThreads="4" />
@@ -22,7 +19,7 @@
     </facet>
     <facet type="JRebel" name="JRebel">
       <configuration>
-        <option name="allPaths" value="false" />
+        <option name="allPaths" value="true" />
         <option name="generateRebel" value="false" />
       </configuration>
     </facet>
@@ -32,14 +29,14 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/conf" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src-test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src-wsdl" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="base" />
-    <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="library" name="lib-neo4j" level="project" />
-    <orderEntry type="library" name="lib-vaadin" level="project" />
+    <orderEntry type="module" module-name="base" exported="" />
+    <orderEntry type="library" exported="" name="lib-vaadin" level="project" />
+    <orderEntry type="library" name="lib-tablemodell" level="project" />
+    <orderEntry type="library" name="lib-vaadin-compile" level="project" />
   </component>
 </module>
 

@@ -9,6 +9,7 @@
     <excludeFromCompile>
       <directory url="file://$PROJECT_DIR$/ejb/src/org/rapidpm/persistence/prj/projectmanagement/execution" includeSubdirectories="true" />
       <directory url="file://$PROJECT_DIR$/ejb/src-test" includeSubdirectories="true" />
+      <directory url="file://$PROJECT_DIR$/ejb/src" includeSubdirectories="true" />
     </excludeFromCompile>
     <resourceExtensions />
     <wildcardResourcePatterns>
@@ -32,7 +33,7 @@
     <option name="MAXIMUM_HEAP_SIZE" value="1024" />
   </component>
   <component name="JavacSettings">
-    <option name="MAXIMUM_HEAP_SIZE" value="1024" />
+    <option name="MAXIMUM_HEAP_SIZE" value="512" />
   </component>
 </project>
 

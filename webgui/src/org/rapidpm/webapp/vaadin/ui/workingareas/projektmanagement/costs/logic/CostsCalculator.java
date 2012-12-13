@@ -8,6 +8,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.webapp.vaadin.MainUI;
 
 import javax.persistence.EntityManager;
 import java.text.DecimalFormat;
@@ -32,11 +33,12 @@ public class CostsCalculator {
 
     private Double totalCostsExakt = 0.0;
 
-    public CostsCalculator(final ResourceBundle bundle) {
+    public CostsCalculator(MainUI ui, final ResourceBundle bundle) {
 //        bean = EJBFactory.getEjbInstance(CostsCalcutorBean.class);
 //        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        projekt = daoFactory.getPlannedProjectDAO().loadAllEntities().get(0);
+        final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
+        projekt = daoFactory.getPlannedProjectDAO().findByID(projectFromSession.getId());
         daoFactory.getEntityManager().refresh(projekt);
         messages = bundle;
     }
@@ -57,17 +59,21 @@ public class CostsCalculator {
         //final Integer currentProjectIndex = bean.getCurrentProjectIndex();
         final Set<PlanningUnit> planningUnits = projekt.getPlanningUnits();
         for (final PlanningUnit planningUnit : planningUnits) {
-            calculatePlanningUnits(planningUnit.getKindPlanningUnits());
+            calculatePlanningUnits(planningUnit, planningUnit.getKindPlanningUnits());
         }
     }
 
 
-    private void calculatePlanningUnits(final Set<PlanningUnit> planningUnits) {
-        for (final PlanningUnit planningUnit : planningUnits) {
-            if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
-                addiereZeileZurRessourceMap(planningUnit);
-            } else {
-                calculatePlanningUnits(planningUnit.getKindPlanningUnits());
+    private void calculatePlanningUnits(final PlanningUnit parentPlanningUnit, final Set<PlanningUnit> planningUnits) {
+        if(planningUnits == null || planningUnits.isEmpty()){
+            addiereZeileZurRessourceMap(parentPlanningUnit);
+        } else {
+            for (final PlanningUnit planningUnit : planningUnits) {
+                if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
+                    addiereZeileZurRessourceMap(planningUnit);
+                } else {
+                    calculatePlanningUnits(planningUnit, planningUnit.getKindPlanningUnits());
+                }
             }
         }
     }

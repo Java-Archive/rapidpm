@@ -1,4 +1,4 @@
-@import url(../reindeer/styles.css);
+@import "../reindeer/legacy-styles.css";
 
 .abc{
     background: #e4fcf3;

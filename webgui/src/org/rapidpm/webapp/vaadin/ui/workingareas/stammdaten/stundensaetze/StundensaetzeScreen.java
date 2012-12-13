@@ -118,6 +118,9 @@ public class StundensaetzeScreen extends Screen {
         tabelle.setColumnFooter(RessourceGroup.SUM_PER_DAY, format.format(calculator.getSummeProTag()) + EUR);
         tabelle.setColumnFooter(RessourceGroup.NAME, StundensaetzeCalculator.GESAMTSUMMEN);
 
+        betriebsWertField.setReadOnly(false);
+        betriebsstdField.setReadOnly(false);
+
         betriebsstdField.setValue(format.format(calculator.getBetriebsStunde()) + EUR);
         betriebsWertField.setValue(format.format(calculator.getBetriebsWert()) + EUR);
 

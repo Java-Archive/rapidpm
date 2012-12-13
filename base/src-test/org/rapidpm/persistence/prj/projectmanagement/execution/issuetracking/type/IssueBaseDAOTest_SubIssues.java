@@ -3,7 +3,9 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ty
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
+import org.rapidpm.persistence.system.security.Benutzer;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertFalse;
@@ -25,21 +27,21 @@ public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
     @Test
     public void addSubIssue() {
         IssueBase issue = dao.loadAllEntities().get(0);
-        IssueBase sub = dao.loadAllEntities().get(1);
+        final IssueBase sub = dao.loadAllEntities().get(1);
 
         boolean success = issue.addSubIssue(sub);
         assertTrue(success);
-        issue = dao.persist(issue);
+        //issue = dao.persist(issue);
         assertTrue(issue.getSubIssues().contains(sub));
 
         //try to add subissue again
         success = issue.addSubIssue(sub);
         assertTrue(success);
-        issue = dao.persist(issue);
+        //issue = dao.persist(issue);
         assertTrue(issue.getSubIssues().contains(sub));
         List<IssueBase> connected = issue.getSubIssues();
         int i = 0;
-        for (IssueBase subIssues : connected) {
+        for (final IssueBase subIssues : connected) {
             if (subIssues.equals(sub))
                 i++;
         }
@@ -47,16 +49,71 @@ public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
 
         success = issue.removeSubIssue(sub);
         assertTrue(success);
-        issue = dao.persist(issue);
+        //issue = dao.persist(issue);
         assertFalse(issue.getSubIssues().contains(sub));
 
         //try to delete non existing subissue
         success = issue.removeSubIssue(sub);
         assertTrue(success);
-        issue = dao.persist(issue);
+        //issue = dao.persist(issue);
         assertFalse(issue.getSubIssues().contains(sub));
 
         assertTrue(dao.loadAllEntities().contains(sub));
+    }
+
+    @Test
+    public void deleteParentOfSubIssue() {
+        IssueBase issueBase1 = new IssueBase(projectId);
+        issueBase1.setSummary("Issue y");
+        issueBase1.setStory("Story y");
+        issueBase1.setDueDate_closed(new Date());
+        issueBase1.setDueDate_planned(new Date());
+        issueBase1.setDueDate_resolved(new Date());
+        issueBase1.setAssignee(daoFactory.getBenutzerDAO().loadAllEntities().get(0));
+        issueBase1.setReporter(daoFactory.getBenutzerDAO().loadAllEntities().get(0));
+        issueBase1.setStatus(daoFactory.getIssueStatusDAO().loadAllEntities().get(0));
+        issueBase1.setType(daoFactory.getIssueTypeDAO().loadAllEntities().get(0));
+        issueBase1.setPriority(daoFactory.getIssuePriorityDAO().loadAllEntities().get(0));
+        issueBase1.setVersion(daoFactory.getIssueVersionDAO().loadAllEntities().get(0));
+        issueBase1.setStoryPoints(daoFactory.getIssueStoryPointDAO().loadAllEntities().get(0));
+        issueBase1 = dao.persist(issueBase1);
+
+        IssueBase issueBase2 = new IssueBase(projectId);
+        issueBase2.setSummary("Issue z");
+        issueBase2.setStory("Story z");
+        issueBase2.setDueDate_closed(new Date());
+        issueBase2.setDueDate_planned(new Date());
+        issueBase2.setDueDate_resolved(new Date());
+        issueBase2.setAssignee(daoFactory.getBenutzerDAO().loadAllEntities().get(0));
+        issueBase2.setReporter(daoFactory.getBenutzerDAO().loadAllEntities().get(0));
+        issueBase2.setStatus(daoFactory.getIssueStatusDAO().loadAllEntities().get(0));
+        issueBase2.setType(daoFactory.getIssueTypeDAO().loadAllEntities().get(0));
+        issueBase2.setPriority(daoFactory.getIssuePriorityDAO().loadAllEntities().get(0));
+        issueBase2.setVersion(daoFactory.getIssueVersionDAO().loadAllEntities().get(0));
+        issueBase2.setStoryPoints(daoFactory.getIssueStoryPointDAO().loadAllEntities().get(0));
+        issueBase2 = dao.persist(issueBase2);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug(issueBase1.toString());
+            logger.debug(issueBase2.toString());
+        }
+
+        assertTrue(issueBase1.equals(dao.findByID(issueBase1.getId())));
+        assertTrue(issueBase2.equals(dao.findByID(issueBase2.getId())));
+        IssueBase toplevelIssue = dao.loadTopLevelEntities().get(0);
+        toplevelIssue.addSubIssue(issueBase1);
+        issueBase1.addSubIssue(issueBase2);
+
+        assertTrue(toplevelIssue.getSubIssues().contains(issueBase1));
+        assertTrue(issueBase1.getSubIssues().contains(issueBase2));
+
+        dao.delete(issueBase1);
+        assertFalse(dao.loadAllEntities().contains(issueBase1));
+
+        assertTrue(toplevelIssue.getSubIssues().contains(issueBase2));
+
+        dao.delete(issueBase2);
+        assertFalse(dao.loadAllEntities().contains(issueBase2));
     }
 
 

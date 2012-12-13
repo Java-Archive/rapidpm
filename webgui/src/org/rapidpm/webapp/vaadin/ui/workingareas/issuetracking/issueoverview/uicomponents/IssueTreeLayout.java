@@ -1,13 +1,5 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents;
 
-import com.vaadin.data.util.HierarchicalContainer;
-import com.vaadin.event.DataBoundTransferable;
-import com.vaadin.event.Transferable;
-import com.vaadin.event.dd.DragAndDropEvent;
-import com.vaadin.event.dd.DropHandler;
-import com.vaadin.event.dd.acceptcriteria.AcceptAll;
-import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
-import com.vaadin.shared.ui.dd.VerticalDropLocation;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
@@ -17,7 +9,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.log
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DeleteButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeActivateOnValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeValueChangeListener;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TreeIssueBaseContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.ModelSingleton;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainer;
 
 
 /**
@@ -68,13 +61,12 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 
         issueTree = new Tree("IssueTree");
         issueTree.setNullSelectionAllowed(false);
-        issueTree.setContainerDataSource(new TreeIssueBaseContainer(screen.getCurrentProject()));
+        issueTree.setContainerDataSource(ModelSingleton.getInstance(screen.getCurrentProject()));
         issueTree.setImmediate(true);
         if (issueTabSheet != null) {
             issueTree.addValueChangeListener(new TreeValueChangeListener(issueTabSheet, issueTree));
         }
-        issueTree.addValueChangeListener(new TreeActivateOnValueChangeListener(new Button[]{deleteButton,
-                addButton}));
+        issueTree.addValueChangeListener(new TreeActivateOnValueChangeListener(new Button[]{deleteButton}));
 
 
 

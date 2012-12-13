@@ -2,6 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.ui
 
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
+import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 
@@ -14,7 +15,7 @@ import java.util.Collection;
  * Time: 19:02
  * To change this template use File | Settings | File Templates.
  */
-public class DeleteRelationWindow extends Window implements Internationalizationable {
+public class DeleteRelationWindow extends RapidWindow implements Internationalizationable {
     private static Logger logger = Logger.getLogger(DeleteRelationWindow.class);
 
     private final IssueOverviewScreen screen;
@@ -64,7 +65,7 @@ public class DeleteRelationWindow extends Window implements Internationalization
     public void doInternationalization() {
         setCaption(screen.getMessagesBundle().getString("issuetracking_issue_deleterelationswindow"));
 
-        questionLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_delete_question"));
+        questionLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_deletequestion"));
         final Collection<?> ids = relationTable.getItem(removeItemId).getItemPropertyIds();
         String labelValue = "-      ";
         Object value;

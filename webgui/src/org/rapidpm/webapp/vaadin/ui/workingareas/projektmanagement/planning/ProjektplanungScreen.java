@@ -1,7 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning;
 
 import com.vaadin.data.Property;
-import com.vaadin.data.util.BeanItemContainer;
 //import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
 //import org.rapidpm.Constants;
@@ -15,18 +14,19 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsException;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsEditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitsTree;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitsTreePanelLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.parents.PlanningUnitSelect;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.PlanningUnitBeanItemContainer;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -39,11 +39,11 @@ public class ProjektplanungScreen extends Screen {
 
     private HorizontalSplitPanel splitPanel;
     private VerticalLayout menuLayout;
-    private Panel mainPanel;
-    private Panel ressourcesPanel;
-    private Panel planningUnitPanel;
-    private Panel treePanel;
-    private Panel detailPanel;
+    private RapidPanel mainPanel;
+    private RapidPanel ressourcesPanel;
+    private RapidPanel planningUnitPanel;
+    private RapidPanel treePanel;
+    private RapidPanel detailsPanel;
     private PlanningUnitSelect planningUnitSelect;
     private VerticalLayout mainLayout;
     private PlanningUnitsTree planningUnitsTree;
@@ -58,49 +58,61 @@ public class ProjektplanungScreen extends Screen {
         super(ui);
 
 
-        final PlannedProject projectFromSession = ui.getCurrentProject();
+        final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
         final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
-        final PlannedProject projectFromDB = plannedProjectDAO.findByID(projectFromSession.getId());
 
-        final PlanningCalculator calculator = new PlanningCalculator(messagesBundle);
-        calculator.calculate();
+        try{
+            final List<PlannedProject> plannedProjects = daoFactory.getPlannedProjectDAO().loadAllEntities();
+            if(plannedProjects == null || plannedProjects.isEmpty()){
+                throw new NoProjectsException();
+            }
+
+            final PlanningCalculator calculator = new PlanningCalculator(messagesBundle, ui);
+            calculator.calculate();
 //        daoFactory.new Transaction() {
 //            @Override
 //            public void doTask() {
 //                daoFactory.getEntityManager().refresh(projectFromDB);
 //            }
 //        }.execute();
-        //daoFactory.getEntityManager().refresh(projectFromDB);
+            //daoFactory.getEntityManager().refresh(projectFromDB);
 
-        splitPanel = new HorizontalSplitPanel();
-        splitPanel.setSizeFull();
-        splitPanel.setSplitPosition(40, Unit.PERCENTAGE);
+            splitPanel = new HorizontalSplitPanel();
+            splitPanel.setSizeFull();
+            splitPanel.setSplitPosition(40, Unit.PERCENTAGE);
 
-        planningUnitPanel = new Panel();
-        treePanel = new Panel();
-        detailPanel = new Panel();
+            planningUnitPanel = new RapidPanel();
+            treePanel = new RapidPanel();
+            detailsPanel = new RapidPanel();
 
-        menuLayout = new VerticalLayout();
-        menuLayout.setSpacing(true);
-        menuLayout.addComponent(planningUnitPanel);
-        menuLayout.addComponent(treePanel);
-        menuLayout.addComponent(detailPanel);
+            menuLayout = new VerticalLayout();
+            menuLayout.setSpacing(true);
+            menuLayout.addComponent(planningUnitPanel);
+            menuLayout.addComponent(treePanel);
+            menuLayout.addComponent(detailsPanel);
 
-        mainPanel = new Panel();
-        ressourcesPanel = new Panel();
-        ressourcesPanel.setSizeFull();
+            mainPanel = new RapidPanel();
+            ressourcesPanel = new RapidPanel();
+            ressourcesPanel.setSizeFull();
 
-        mainLayout = new VerticalLayout();
-        mainLayout.setSpacing(true);
-        mainLayout.addComponent(ressourcesPanel);
-        mainLayout.addComponent(mainPanel);
+            mainLayout = new VerticalLayout();
+            mainLayout.setSpacing(true);
+            mainLayout.addComponent(ressourcesPanel);
+            mainLayout.addComponent(mainPanel);
 
-        splitPanel.addComponent(menuLayout);
-        splitPanel.addComponent(mainLayout);
+            splitPanel.addComponent(menuLayout);
+            splitPanel.addComponent(mainLayout);
 
-        buildPlanningUnitPanel();
-        doInternationalization();
-        setComponents();
+            buildPlanningUnitPanel();
+            detailsPanel.getClass();
+            doInternationalization();
+            setComponents();
+        } catch (final NoProjectsException e){
+            removeAllComponents();
+            final NoProjectsScreen noProjectsScreen = new NoProjectsScreen(ui);
+            addComponent(noProjectsScreen);
+        }
+
     }
 
     private void buildPlanningUnitPanel() {
@@ -118,14 +130,17 @@ public class ProjektplanungScreen extends Screen {
                 }else{
                     planningUnitFromDB = planningUnitFromSelect;
                 }
-                treePanel.getContent().removeAllComponents();
-                detailPanel.getContent().removeAllComponents();
+                treePanel.removeAllComponents();
+                detailsPanel.removeAllComponents();
                 treePanel.setCaption(planningUnitFromSelect.getPlanningUnitName());
                 fillTreePanel(planningUnitFromDB, projectFromDB);
             }
         });
         if (ids != null && !ids.isEmpty()) {
-            planningUnitSelect.setValue(ids.get(0));
+            final PlanningUnit firstPlanningUnit = daoFactory.getPlanningUnitDAO().findByID(((PlanningUnit)ids.get(0))
+                    .getId());
+            daoFactory.getEntityManager().refresh(firstPlanningUnit);
+            planningUnitSelect.setValue(firstPlanningUnit);
         } else {
             tempPlanningUnit.setId(666l);
             tempPlanningUnit.setPlanningUnitName("Platzhalter");
@@ -142,7 +157,7 @@ public class ProjektplanungScreen extends Screen {
 
     @Override
     public void doInternationalization() {
-        detailPanel.setCaption(messagesBundle.getString("details"));
+        detailsPanel.setCaption(messagesBundle.getString("details"));
     }
 
     public void fillTreePanel(final PlanningUnit selectedPlanningUnit, final PlannedProject projekt) {
@@ -153,8 +168,8 @@ public class ProjektplanungScreen extends Screen {
 //            @Override
 //            public void valueChange(Property.ValueChangeEvent event) {
 //                planningDetailsEditableLayout = new PlanningDetailsEditableLayout((PlanningUnit)planningUnitsTree.getValue
-//                        (),ProjektplanungScreen.this,detailPanel);
-//                detailPanel.addComponent(planningDetailsEditableLayout);
+//                        (),ProjektplanungScreen.this,detailsPanel);
+//                detailsPanel.addComponent(planningDetailsEditableLayout);
 //            }
 //        });
         treePanel.removeAllComponents();
@@ -170,15 +185,15 @@ public class ProjektplanungScreen extends Screen {
         return planningUnitsTree;
     }
 
-    public Panel getDetailPanel() {
-        return detailPanel;
+    public RapidPanel getDetailsPanel() {
+        return detailsPanel;
     }
 
-    public Panel getMainPanel() {
+    public RapidPanel getMainPanel() {
         return mainPanel;
     }
 
-    public Panel getRessourcesPanel() {
+    public RapidPanel getRessourcesPanel() {
         return ressourcesPanel;
     }
 

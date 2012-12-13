@@ -4,9 +4,6 @@
     <connections />
   </component>
   <component name="FacetManager">
-    <facet type="WebBeans" name="CDI">
-      <configuration />
-    </facet>
     <facet type="ejb" name="EJB">
       <configuration>
         <descriptors>
@@ -46,8 +43,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="base" exported="" />
-    <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="library" name="Java EE 6-Java EE 6" level="project" />
+    <orderEntry type="library" name="log4j-1.2.17-javadoc" level="project" />
   </component>
 </module>
 

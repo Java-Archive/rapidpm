@@ -8,13 +8,12 @@ import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TreeTableHeaderClickListener;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsException;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.ExpandTableCheckBox;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
@@ -22,12 +21,10 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.comp
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.OverviewTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.TreeTableFiller;
 
-import javax.persistence.EntityManager;
 import java.util.Date;
+import java.util.List;
 
 import static org.rapidpm.Constants.DATE_FORMAT;
-
-//import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 
 public class AufwandProjInitScreen extends Screen {
 
@@ -64,47 +61,62 @@ public class AufwandProjInitScreen extends Screen {
 //        bean = EJBFactory.getEjbInstance(AufwandProjInitScreenBean.class);
 //        baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        erstelleUnterschriftLayout();
-        erstelleFelderLayout();
+        try{
+            final List<PlannedProject> plannedProjects = daoFactory.getPlannedProjectDAO().loadAllEntities();
+            if(plannedProjects == null || plannedProjects.isEmpty()){
+                throw new NoProjectsException();
+            }
+            erstelleUnterschriftLayout();
+            erstelleFelderLayout();
 
-        expandCheckBox = new ExpandTableCheckBox(treeTable, dataSource);
-        undoButton = new UndoButton(this, treeTable, dataSource);
-        undoButton.setVisible(false);
+            expandCheckBox = new ExpandTableCheckBox(treeTable, dataSource);
+            undoButton = new UndoButton(this, treeTable, dataSource);
+            undoButton.setVisible(false);
 
-        final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, treeTable, dataSource);
-        treeTableFiller.fill();
+            final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, treeTable, dataSource);
+            treeTableFiller.fill();
 
-        final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable);
-        overviewTableFiller.fill();
+            final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable,
+                    this.getUi());
+            overviewTableFiller.fill();
 
-        fillFields();
+            fillFields();
 
-        uebersichtTable.setPageLength(4);
-        uebersichtTable.setConnectedTable(treeTable);
-        uebersichtTable.setSizeFull();
-        treeTable.setConnectedTable(uebersichtTable);
-        treeTable.addHeaderClickListener(new TreeTableHeaderClickListener(undoButton));
-        treeTable.setSizeFull();
+            uebersichtTable.setPageLength(2);
+            uebersichtTable.setConnectedTable(treeTable);
+            uebersichtTable.setSizeFull();
+            treeTable.setConnectedTable(uebersichtTable);
+            treeTable.addHeaderClickListener(new TreeTableHeaderClickListener(undoButton));
+            treeTable.setSizeFull();
+            treeTable.setPageLength(10);
 
-        table1layout.addComponent(uebersichtTable);
-        table1layout.setSizeFull();
-        table1layout.setMargin(true);
+            table1layout.addComponent(uebersichtTable);
+            table1layout.setSizeFull();
+            table1layout.setMargin(true);
 
-        table2layout.addComponent(expandCheckBox);
-        table2layout.addComponent(undoButton);
-        table2layout.addComponent(treeTable);
-        table2layout.setSizeFull();
-        table2layout.setMargin(true);
+            table2layout.addComponent(expandCheckBox);
+            table2layout.addComponent(undoButton);
+            table2layout.addComponent(treeTable);
+            table2layout.setExpandRatio(expandCheckBox, 10);
+            table2layout.setExpandRatio(undoButton, 10);
+            table2layout.setExpandRatio(treeTable, 80);
+            table2layout.setSizeFull();
+            table2layout.setMargin(true);
 
 
-        lowerFormLayout.addComponent(saveButton);
+            lowerFormLayout.addComponent(saveButton);
 
-        formLayout.addComponent(upperFormLayout);
-        formLayout.addComponent(lowerFormLayout);
-        formLayout.setVisible(false);
-        setComponents();
+            formLayout.addComponent(upperFormLayout);
+            formLayout.addComponent(lowerFormLayout);
+            formLayout.setVisible(false);
+            setComponents();
 
-        doInternationalization();
+            doInternationalization();
+        } catch (final NoProjectsException e){
+        removeAllComponents();
+        final NoProjectsScreen noProjectsScreen = new NoProjectsScreen(ui);
+        addComponent(noProjectsScreen);
+    }
 
     }
 
@@ -123,7 +135,7 @@ public class AufwandProjInitScreen extends Screen {
     }
 
     public void fillFields() {
-        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle);
+        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle, this.getUi());
         timesCalculator.calculate();
         manntageField.setReadOnly(false);
         summeField.setReadOnly(false);
@@ -148,6 +160,7 @@ public class AufwandProjInitScreen extends Screen {
         datumField.setDateFormat(DATE_FORMAT.toPattern());
         manntageField = new TextField();
         summeField = new TextField();
+        felderLayout.setSizeUndefined();
         felderLayout.setWidth(ABSOLUTE_WIDTH);
 
         layoutLinks.addComponent(kundeField);
@@ -165,6 +178,7 @@ public class AufwandProjInitScreen extends Screen {
     private void erstelleUnterschriftLayout() {
         projektLeiterField = new TextField();
         unterschriftField = new TextField();
+        unterschriftLayout.setSizeUndefined();
         unterschriftLayout.setWidth("350px");
 
         unterschriftLayout.addComponent(projektLeiterField);

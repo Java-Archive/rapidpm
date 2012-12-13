@@ -55,7 +55,7 @@ public class StundensaetzeItemClickListener implements ItemClickListener {
 
     private void informComponents(final boolean state) {
         for (final ItemClickDependentComponent component : components) {
-            component.getState(state);
+            component.getTheState(state);
         }
     }
 

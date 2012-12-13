@@ -8,7 +8,6 @@ package org.rapidpm.persistence;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
-import com.vaadin.ui.Notification;
 import org.apache.log4j.Logger;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.rapidpm.persistence.prj.bewegungsdaten.RegistrationDAO;
@@ -50,11 +49,10 @@ import org.rapidpm.persistence.system.logging.LogginEntityEntryDAO;
 import org.rapidpm.persistence.system.logging.LoggingEventEntryDAO;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.BerechtigungDAO;
-import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.persistence.system.security.berechtigungen.RolleDAO;
 
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.persistence.*;
+import java.util.InputMismatchException;
 
 public class DaoFactory {
     private static final Logger logger = Logger.getLogger(DaoFactory.class);
@@ -195,7 +193,7 @@ public class DaoFactory {
 
         public abstract void doTask();
 
-        public void execute() {
+        public void execute() throws InputMismatchException{
             try {
                 transaction.begin();
                 doTask();
@@ -206,8 +204,9 @@ public class DaoFactory {
                 }
 
             } catch (PersistenceException e) {
-                Notification.show(MainUI.messages.getString("stdsatz_nodelete"));
+                e.printStackTrace();
                 logger.error(e);
+                throw new PersistenceException();
             } finally {
 //                System.out.println("e = " + e);
                 if (transaction != null && transaction.isActive()) {
@@ -215,6 +214,7 @@ public class DaoFactory {
                 } else {
                 }
             }
+
         }
     }
 
@@ -331,6 +331,9 @@ public class DaoFactory {
         return new PlanningUnitElementDAO(getEntityManager());
     }
 
+    public RolleDAO getRolleDAO() {
+        return new RolleDAO(getEntityManager());
+    }
 
     public BerechtigungDAO getBerechtigungDAO() {
         return new BerechtigungDAO(getEntityManager());
@@ -418,7 +421,7 @@ public class DaoFactory {
     }
 
 
-    //IssueTracking
+
     public ProjectDAO getProjectDAO() {
         return new ProjectDAO(getEntityManager());
     }
@@ -427,6 +430,7 @@ public class DaoFactory {
         return new ProjectNameDAO(getEntityManager());
     }
 
+    //IssueTracking - Relational
     public IssueTimeUnitDAO getIssueTimeUnitDAO() {
         return new IssueTimeUnitDAO(getEntityManager());
     }
@@ -441,7 +445,7 @@ public class DaoFactory {
 
 
 
-    //GraphDAOs
+    //IssueTracking - Graph
     public IssueBaseDAO getIssueBaseDAO(final Long projectId) {
         return new IssueBaseDAO(graphDb, this, projectId);
     }

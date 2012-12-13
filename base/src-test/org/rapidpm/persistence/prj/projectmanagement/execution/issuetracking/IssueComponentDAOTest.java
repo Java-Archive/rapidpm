@@ -7,9 +7,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,6 +20,17 @@ public class IssueComponentDAOTest implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssueComponentDAOTest.class);
 
     private final IssueComponentDAO dao = daoFactory.getIssueComponentDAO();
+
+    @Test
+    public void equalsAndHashCodeTest() {
+        List<IssueComponent> componentList = dao.loadAllEntities();
+        assertTrue(componentList.get(0).equals(componentList.get(0)));
+        assertEquals(componentList.get(0).hashCode(), componentList.get(0).hashCode());
+
+        assertFalse(componentList.get(0).equals(new IssueComment()));
+        assertNotSame(new IssueComment().hashCode(), componentList.get(0).hashCode());
+    }
+
 
     @Test
     public void addChangeDelete() {
@@ -40,19 +49,19 @@ public class IssueComponentDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        IssueComponent component = dao.loadAllEntities().get(0);
-        IssueComponent compTest = new IssueComponent();
+        final IssueComponent component = dao.loadAllEntities().get(0);
+        final IssueComponent compTest = new IssueComponent();
         compTest.setComponentName(component.getComponentName());
         dao.persist(compTest);
     }
 
     @Test
     public void getConnectedIssus() {
-        for (IssueComponent component : dao.loadAllEntities()) {
-            List<IssueBase> issueList = component.getConnectedIssuesFromProject(1L);
+        for (final IssueComponent component : dao.loadAllEntities()) {
+            final List<IssueBase> issueList = component.getConnectedIssuesFromProject(1L);
 
-            for (IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
-                for (IssueComponent comp : issue.getComponents())
+            for (final IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+                for (final IssueComponent comp : issue.getComponents())
                     if (comp.equals(component))
                         assertTrue(issueList.contains(issue));
             }

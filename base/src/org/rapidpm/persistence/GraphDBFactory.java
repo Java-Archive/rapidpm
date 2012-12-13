@@ -14,7 +14,7 @@ import org.neo4j.kernel.EmbeddedGraphDatabase;
 public class GraphDBFactory {
     private static final Logger logger = Logger.getLogger(GraphDBFactory.class);
 
-    public static final String DB_PATH = "C:/out/graphDB";
+    public static final String DB_PATH = "../data/graphDB/";
     private final GraphDatabaseService graphDb;
     private static GraphDBFactory instance;
 

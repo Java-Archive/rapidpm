@@ -7,9 +7,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,6 +21,16 @@ public class IssueVersionDAOTest implements BaseDAOTest {
 
     private final IssueVersionDAO dao = daoFactory.getIssueVersionDAO();
     private final IssueVersion assignTo = dao.loadAllEntities().get(0);
+
+    @Test
+    public void equalsAndHashCodeTest() {
+        List<IssueVersion> versionList = dao.loadAllEntities();
+        assertTrue(versionList.get(0).equals(versionList.get(0)));
+        assertEquals(versionList.get(0).hashCode(), versionList.get(0).hashCode());
+
+        assertFalse(versionList.get(0).equals(new IssueComment()));
+        assertNotSame(new IssueComment().hashCode(), versionList.get(0).hashCode());
+    }
 
     @Test
     public void addChangeDelete() {
@@ -40,18 +48,18 @@ public class IssueVersionDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        IssueVersion version = dao.loadAllEntities().get(0);
-        IssueVersion verTest = new IssueVersion();
+        final IssueVersion version = dao.loadAllEntities().get(0);
+        final IssueVersion verTest = new IssueVersion();
         verTest.setVersionName(version.getVersionName());
         dao.persist(verTest);
     }
 
     @Test
     public void getConnectedIssus() {
-        for (IssueVersion version : dao.loadAllEntities()) {
-            List<IssueBase> issueList = version.getConnectedIssuesFromProject(1L);
+        for (final IssueVersion version : dao.loadAllEntities()) {
+            final List<IssueBase> issueList = version.getConnectedIssuesFromProject(1L);
 
-            for (IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+            for (final IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
                 if (issue.getVersion().equals(version))
                     assertTrue(issueList.contains(issue));
             }

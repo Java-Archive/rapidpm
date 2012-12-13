@@ -48,6 +48,7 @@
         <!--<dependency org="org.apache.tika" name="tika-parsers" rev="1.2"/>-->
         <!--<dependency org="org.apache.solr" name="solr-solrj" rev="3.5.0"/>-->
         <dependency org="org.apache.xmlrpc" name="xmlrpc-client" rev="3.0"/>
+        <dependency org="org.apache.axis" name="axis" rev="1.4"/>
 
 
 

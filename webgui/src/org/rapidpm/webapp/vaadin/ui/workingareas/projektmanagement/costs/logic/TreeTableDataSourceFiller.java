@@ -62,7 +62,7 @@ public class TreeTableDataSourceFiller {
     }
 
     private void computePlanningUnitsAndTotalsAbsolut() {
-        final PlannedProject projectFromSession = screen.getUi().getCurrentProject();
+        final PlannedProject projectFromSession = screen.getUi().getSession().getAttribute(PlannedProject.class);
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
         final PlannedProject projectFromDB = plannedProjectDAO.findByID(projectFromSession.getId());
@@ -78,7 +78,7 @@ public class TreeTableDataSourceFiller {
                     for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
                         final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
                         if (ressourceGroup.equals(spalte)) {
-                            planningUnitItem.getItemProperty(spalte.getName()).setValue(0.0);
+                            planningUnitItem.getItemProperty(spalte.getName()).setValue(getCosts(planningUnitElement));
                         }
                     }
                 }

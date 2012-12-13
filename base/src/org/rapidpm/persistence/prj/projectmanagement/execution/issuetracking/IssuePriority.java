@@ -107,8 +107,7 @@ public class IssuePriority  implements PersistInGraph {
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (prio != null ? !prio.equals(that.prio) : that.prio != null) return false;
-        if (priorityFileName != null ? !priorityFileName.equals(that.priorityFileName) : that.priorityFileName != null)
-            return false;
+        if (priorityFileName != null ? !priorityFileName.equals(that.priorityFileName) : that.priorityFileName != null) return false;
         if (priorityName != null ? !priorityName.equals(that.priorityName) : that.priorityName != null) return false;
 
         return true;

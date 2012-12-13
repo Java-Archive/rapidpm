@@ -7,9 +7,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,6 +21,16 @@ public class IssueStoryPointDAOTest implements BaseDAOTest {
 
     private final IssueStoryPointDAO dao = daoFactory.getIssueStoryPointDAO();
     private final IssueStoryPoint assignTo = dao.loadAllEntities().get(0);
+
+    @Test
+    public void equalsAndHashCodeTest() {
+        List<IssueStoryPoint> storyPointList = dao.loadAllEntities();
+        assertTrue(storyPointList.get(0).equals(storyPointList.get(0)));
+        assertEquals(storyPointList.get(0).hashCode(), storyPointList.get(0).hashCode());
+
+        assertFalse(storyPointList.get(0).equals(new IssueComment()));
+        assertNotSame(new IssueComment().hashCode(), storyPointList.get(0).hashCode());
+    }
 
     @Test
     public void addChangeDelete() {
@@ -40,18 +48,18 @@ public class IssueStoryPointDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        IssueStoryPoint storyPoint = dao.loadAllEntities().get(0);
-        IssueStoryPoint stpTest = new IssueStoryPoint();
+        final IssueStoryPoint storyPoint = dao.loadAllEntities().get(0);
+        final IssueStoryPoint stpTest = new IssueStoryPoint();
         stpTest.setStorypoint(storyPoint.getStorypoint());
         dao.persist(stpTest);
     }
 
     @Test
     public void getConnectedIssus() {
-        for (IssueStoryPoint storyPoint : dao.loadAllEntities()) {
-            List<IssueBase> issueList = storyPoint.getConnectedIssuesFromProject(1L);
+        for (final IssueStoryPoint storyPoint : dao.loadAllEntities()) {
+            final List<IssueBase> issueList = storyPoint.getConnectedIssuesFromProject(1L);
 
-            for (IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+            for (final IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
                 if (issue.getStoryPoints().equals(storyPoint))
                     assertTrue(issueList.contains(issue));
             }

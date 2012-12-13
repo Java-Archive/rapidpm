@@ -29,11 +29,12 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="library" name="lib-vaadin" level="project" />
-    <orderEntry type="module" module-name="webgui" />
-    <orderEntry type="library" name="lib-neo4j" level="project" />
+    <orderEntry type="library" exported="" name="lib-database-postgresql" level="project" />
+    <orderEntry type="library" name="log4j-1.2.17-javadoc" level="project" />
+    <orderEntry type="library" exported="" name="lib" level="project" />
+    <orderEntry type="library" exported="" name="lib-neo4j" level="project" />
     <orderEntry type="library" name="lib-lucene" level="project" />
+    <orderEntry type="library" exported="" name="lib-shiro" level="project" />
   </component>
 </module>
 

@@ -13,10 +13,11 @@ import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
+import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 
 import java.util.Iterator;
 
-public class KontaktWindow extends Window {
+public class KontaktWindow extends RapidWindow {
     private static final Logger logger = Logger.getLogger(KontaktWindow.class);
 
     private static final String KONTAKT_HTML_SNIPPET = "RapidPM HQ</br>Tannenstr. 9</br>82049 Pullach</br></br></br>";

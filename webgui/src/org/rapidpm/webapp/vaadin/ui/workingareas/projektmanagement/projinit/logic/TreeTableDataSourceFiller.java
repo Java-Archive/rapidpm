@@ -61,7 +61,7 @@ public class TreeTableDataSourceFiller {
     }
 
     private void computePlanningUnitsAndTotalsAbsolut() {
-        final PlannedProject projectFromSession = screen.getUi().getCurrentProject();
+        final PlannedProject projectFromSession = screen.getUi().getSession().getAttribute(PlannedProject.class);
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
         final PlannedProject projectFromDB = plannedProjectDAO.findByID(projectFromSession.getId());
@@ -76,9 +76,9 @@ public class TreeTableDataSourceFiller {
                 for (final RessourceGroup spalte : ressourceGroups) {
                     for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
                         if (planningUnitElement.getRessourceGroup().equals(spalte)) {
-                            planningUnitElement.setPlannedDays(0);
-                            planningUnitElement.setPlannedHours(0);
-                            planningUnitElement.setPlannedMinutes(0);
+                            planningUnitElement.setPlannedDays(planningUnitElement.getPlannedDays());
+                            planningUnitElement.setPlannedHours(planningUnitElement.getPlannedHours());
+                            planningUnitElement.setPlannedMinutes(planningUnitElement.getPlannedMinutes());
                             final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem(planningUnitElement);
                             final Property<String> itemProperty = planningUnitItem.getItemProperty(spalte.getName());
                             itemProperty.setValue(daysHoursMinutesItem.toString());

@@ -155,6 +155,7 @@ public class AddWindow extends Window {
                             projekt.getPlanningUnits().add(newPlanningUnit);
                         }
                         daoFactory.saveOrUpdateTX(projekt);
+                        daoFactory.getEntityManager().refresh(projekt);
                         AddWindow.this.close();
                         final MainUI ui = screen.getUi();
                         ui.setWorkingArea(new ProjektplanungScreen(ui));

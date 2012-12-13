@@ -3,10 +3,11 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.ui
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCase;
+import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.AbstractIssueDataContainer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.TestCasesDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.AbstractIssueDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TestCasesDataContainer;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +16,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.mod
  * Time: 08:14
  * To change this template use File | Settings | File Templates.
  */
-public class AddTestcaseWindow extends Window implements Internationalizationable {
+public class AddTestcaseWindow extends RapidWindow implements Internationalizationable {
     private static Logger logger = Logger.getLogger(AddTestcaseWindow.class);
 
     private final IssueOverviewScreen screen;

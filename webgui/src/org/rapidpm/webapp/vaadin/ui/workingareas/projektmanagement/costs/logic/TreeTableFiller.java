@@ -41,7 +41,7 @@ public class TreeTableFiller {
             treeTable.setConverter(id, null);
         }
         final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
-        final CostsCalculator costsCalculator = new CostsCalculator(messages);
+        final CostsCalculator costsCalculator = new CostsCalculator(screen.getUi(), messages);
         final CostsConverterAdder costsConverterAdder = new CostsConverterAdder(messages);
         final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(screen, messages,
                 dataSource);

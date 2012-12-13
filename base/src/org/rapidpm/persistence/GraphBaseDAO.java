@@ -7,6 +7,8 @@ import org.neo4j.graphdb.traversal.Evaluators;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.graphdb.traversal.Traverser;
 import org.neo4j.kernel.Traversal;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -27,9 +29,9 @@ public class GraphBaseDAO<T> {
     private static final Logger logger = Logger.getLogger(GraphBaseDAO.class);
 
     protected final GraphDatabaseService graphDb;
-    protected final DaoFactory relDaoFactory;
-    protected final Index<Node> index_name;
-    protected final Node root_node;
+    private final DaoFactory relDaoFactory;
+    private final Index<Node> index_name;
+    private final Node root_node;
     protected final Node class_root_node;
 
     private final Class clazz;
@@ -123,7 +125,7 @@ public class GraphBaseDAO<T> {
         try{
             final Node node;
             final Method method = clazz.getDeclaredMethod("name");
-            final String nameAtt = (String) method.invoke(entity);
+            final String nameAtt = ((String) method.invoke(entity)).toLowerCase();
             final Long id = getIdFromEntity(entity);
             final Node indexNode = index_name.get(method.getName(), nameAtt).getSingle();
             if (indexNode != null) {
@@ -194,7 +196,8 @@ public class GraphBaseDAO<T> {
                 field.setAccessible(true);
                 if (field.isAnnotationPresent(Simple.class)) {
                     if (field.getType().equals(Date.class)) {
-                        node.setProperty(field.getName(), field.get(entity) == null ? "0" : ((Date)field.get(entity)).getTime());
+                        node.setProperty(field.getName(), field.get(entity) == null ? 0L : ((Date)field.get(entity))
+                                .getTime());
                     } else {
                         if (field.get(entity) != null)
                             node.setProperty(field.getName(), field.get(entity));
@@ -316,7 +319,7 @@ public class GraphBaseDAO<T> {
             logger.debug("loadAllEntities");
 
         final TraversalDescription td = Traversal.description()
-                .breadthFirst()
+                .depthFirst()
                 .relationships(GraphRelationRegistry.getClassRootToChildRelType(), Direction.OUTGOING )
                 .relationships(GraphRelationRegistry.getRelationshipTypeForClass(clazz), Direction.OUTGOING )
                 .evaluator(Evaluators.excludeStartPosition());
@@ -356,14 +359,20 @@ public class GraphBaseDAO<T> {
         return getObjectFromNode(graphDb.getNodeById(id));
     }
 
-    public T findByEntity(final T entity) {
+    public boolean existInDatabase(final Long id) {
         if (logger.isDebugEnabled())
-            logger.debug("findByEntity");
+            logger.debug("existInDatabase");
 
-        if (entity == null)
-            throw new NullPointerException("Entity object is null.");
+        if (id == null)
+            throw new NullPointerException("Id object is null.");
 
-        return findByID(getIdFromEntity(entity));
+        try {
+            graphDb.getNodeById(id);
+        } catch (NotFoundException e){
+            logger.warn("Issue has been deleted");
+            return false;
+        }
+        return true;
     }
 
     protected T getObjectFromNode(final Node node) {
@@ -577,7 +586,7 @@ public class GraphBaseDAO<T> {
         }
     }
 
-    public boolean deleteRelations(final T entity) {
+    protected boolean deleteIssue(final T entity) {
         if (entity == null)
             throw new NullPointerException("Object to delete can't be null.");
 
@@ -585,14 +594,39 @@ public class GraphBaseDAO<T> {
             logger.debug("delete: " + entity);
 
         boolean success = false;
+
+        final Field[] fieldNames = entity.getClass().getDeclaredFields();
+        for (final Field field : fieldNames) {
+            if (field.isAnnotationPresent(Relational.class)) {
+                if (field.getType().equals(List.class) && field.getAnnotation(Relational.class).onDeleteCascade()) {
+                    boolean isAccessible = field.isAccessible();
+                    field.setAccessible(true);
+                    try {
+                        field.set(entity, new ArrayList<>());
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    }
+                    field.setAccessible(isAccessible);
+                }
+
+            }
+        }
+        this.persist(entity);
+
         final Long id = getIdFromEntity(entity);
         final Transaction tx = graphDb.beginTx();
         try{
             Node node;
             if (id != null && id != 0) {
                 node = graphDb.getNodeById(id);
-                final RelationshipType relType = GraphRelationRegistry.getClassRootToChildRelType();
-                for (Relationship rel : node.getRelationships(relType)) {
+                //rearrange Subissues
+                final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
+                for (Relationship rel : node.getRelationships()) {
+                    if (rel.isType(relType) && rel.getStartNode().equals(node)) {
+                        for (Relationship parent : node.getRelationships(relType, Direction.INCOMING)) {
+                            parent.getStartNode().createRelationshipTo(rel.getEndNode(),relType);
+                        }
+                    }
                     rel.delete();
                 }
                 node.delete();
@@ -604,6 +638,7 @@ public class GraphBaseDAO<T> {
             return success;
         }
     }
+
 
     protected List<IssueBase> getConnectedIssuesFromProject(final T entity, final Long projectId) {
         if (entity == null)
@@ -626,7 +661,7 @@ public class GraphBaseDAO<T> {
         final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(clazz);
         for (Relationship rel : statusNode.getRelationships(relType, Direction.INCOMING)) {
             issue = getObjectFromNode(rel.getOtherNode(statusNode), IssueBase.class);
-            if (issue != null && (projectId == 0 || issue.getProjectId().equals(projectId))) {
+            if (issue != null && (projectId == 0 || issue.getProjectid().equals(projectId))) {
                 issueList.add(issue);
                 if (logger.isDebugEnabled())
                     logger.debug("Is connected Issues: " + issue);

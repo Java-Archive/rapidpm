@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="LogSupport">
+    <option name="logConfigurations">
+      <ProjectLogConfigurations>
+        <option name="defaultLogConfiguration">
+          <DefaultLogConfiguration>
+            <option name="conditionFormat" value="blockWithNewLine" />
+            <option name="conditionalLogLevels">
+              <set>
+                <option value="trace" />
+                <option value="debug" />
+                <option value="info" />
+              </set>
+            </option>
+            <option name="defaultFrameworkName" value="log4j-1.2" />
+            <option name="forceUsingDefaultLogFramework" value="true" />
+            <option name="logIdName" value="&lt;html&gt;&lt;i&gt;Disabled&lt;/i&gt;&lt;/html&gt;" />
+          </DefaultLogConfiguration>
+        </option>
+      </ProjectLogConfigurations>
+    </option>
+  </component>
+</project>
+

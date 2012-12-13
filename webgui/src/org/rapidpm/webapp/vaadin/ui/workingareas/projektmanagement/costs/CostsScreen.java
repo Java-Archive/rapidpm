@@ -2,6 +2,9 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs;
 
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
@@ -10,11 +13,14 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.compone
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.CostsCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.OverviewTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.TreeTableFiller;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsException;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.ExpandTableCheckBox;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
 
 import java.util.Date;
+import java.util.List;
 
 import static org.rapidpm.Constants.DATE_FORMAT;
 import static org.rapidpm.Constants.EUR;
@@ -51,46 +57,57 @@ public class CostsScreen extends Screen {
 
     public CostsScreen(MainUI ui) {
         super(ui);
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        try{
+            final List<PlannedProject> plannedProjects = daoFactory.getPlannedProjectDAO().loadAllEntities();
+            if(plannedProjects == null || plannedProjects.isEmpty()){
+                throw new NoProjectsException();
+            }
+            erstelleUnterschriftLayout();
+            erstelleFelderLayout();
 
-        erstelleUnterschriftLayout();
-        erstelleFelderLayout();
+            undoButton = new UndoButton(this, treeTable, dataSource);
+            undoButton.setVisible(false);
 
-        undoButton = new UndoButton(this, treeTable, dataSource);
-        undoButton.setVisible(false);
+            expandCheckBox = new ExpandTableCheckBox(treeTable, dataSource);
 
-        expandCheckBox = new ExpandTableCheckBox(treeTable, dataSource);
+            final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, treeTable, dataSource);
+            treeTableFiller.fill();
 
-        final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, treeTable, dataSource);
-        treeTableFiller.fill();
+            final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable,
+                    this.getUi());
+            overviewTableFiller.fill();
 
-        final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable);
-        overviewTableFiller.fill();
+            uebersichtTable.setPageLength(4);
+            uebersichtTable.setConnectedTable(treeTable);
+            uebersichtTable.setSizeFull();
+            treeTable.setConnectedTable(uebersichtTable);
+            treeTable.addHeaderClickListener(new TreeTableHeaderClickListener(undoButton));
+            treeTable.setSizeFull();
 
-        uebersichtTable.setPageLength(4);
-        uebersichtTable.setConnectedTable(treeTable);
-        uebersichtTable.setSizeFull();
-        treeTable.setConnectedTable(uebersichtTable);
-        treeTable.addHeaderClickListener(new TreeTableHeaderClickListener(undoButton));
-        treeTable.setSizeFull();
+            table1layout.setMargin(true);
+            table1layout.addComponent(uebersichtTable);
+            table1layout.setSizeFull();
 
-        table1layout.setMargin(true);
-        table1layout.addComponent(uebersichtTable);
-        table1layout.setSizeFull();
+            table2layout.setMargin(true);
+            table2layout.addComponent(expandCheckBox);
+            table2layout.addComponent(undoButton);
+            table2layout.addComponent(treeTable);
+            table2layout.setSizeFull();
 
-        table2layout.setMargin(true);
-        table2layout.addComponent(expandCheckBox);
-        table2layout.addComponent(undoButton);
-        table2layout.addComponent(treeTable);
-        table2layout.setSizeFull();
+            lowerFormLayout.addComponent(saveButton);
 
-        lowerFormLayout.addComponent(saveButton);
+            formLayout.addComponent(upperFormLayout);
+            formLayout.addComponent(lowerFormLayout);
+            formLayout.setVisible(false);
 
-        formLayout.addComponent(upperFormLayout);
-        formLayout.addComponent(lowerFormLayout);
-        formLayout.setVisible(false);
-
-        doInternationalization();
-        setComponents();
+            doInternationalization();
+            setComponents();
+        } catch (final NoProjectsException e){
+            removeAllComponents();
+            final NoProjectsScreen noProjectsScreen = new NoProjectsScreen(ui);
+            addComponent(noProjectsScreen);
+        }
 
     }
 
@@ -114,8 +131,8 @@ public class CostsScreen extends Screen {
     }
 
     private void fillFields() {
-        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle);
-        final CostsCalculator costsCalculator = new CostsCalculator(messagesBundle);
+        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle, this.getUi());
+        final CostsCalculator costsCalculator = new CostsCalculator(ui, messagesBundle);
         costsCalculator.calculate();
         timesCalculator.calculate();
         summeInMinField = new TextField();

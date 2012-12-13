@@ -1,7 +1,9 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas;
 
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.Reindeer;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 
 import java.util.ResourceBundle;
 
@@ -12,7 +14,7 @@ import java.util.ResourceBundle;
  * Time: 11:07
  * To change this template use File | Settings | File Templates.
  */
-public abstract class Screen extends VerticalLayout implements Internationalizationable,Componentssetable {
+public abstract class Screen extends RapidPanel implements Internationalizationable,Componentssetable {
 
     protected ResourceBundle messagesBundle;
     protected MainUI ui;
@@ -20,6 +22,7 @@ public abstract class Screen extends VerticalLayout implements Internationalizat
     public Screen(final MainUI ui){
         this.messagesBundle = ui.getResourceBundle();
         this.ui = ui;
+        this.setStyleName(Reindeer.PANEL_LIGHT);
     }
 
     public Screen getScreen() {

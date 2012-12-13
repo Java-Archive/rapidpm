@@ -8,6 +8,7 @@ import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.person
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.ButtonComponent;
 
+import javax.persistence.PersistenceException;
 import java.util.ResourceBundle;
 
 public class DelRowLogic {
@@ -29,11 +30,15 @@ public class DelRowLogic {
 //        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final RessourceGroup ressourceGroup = (RessourceGroup) button.getItemId();
 
-        //transiente RessourceGroup in DB löschen
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        daoFactory.removeTX(ressourceGroup);
+        try{
+            final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+            daoFactory.removeTX(ressourceGroup);
 
-        screen.generateTableAndCalculate();
-        screen.getSaveButtonLayout().setVisible(false);
+            screen.generateTableAndCalculate();
+            screen.getSaveButtonLayout().setVisible(false);
+        } catch (final PersistenceException e){
+            Notification.show(messages.getString("stdsatz_nodelete"));
+        }
+
     }
 }

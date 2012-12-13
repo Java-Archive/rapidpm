@@ -7,15 +7,15 @@
           <element id="module-output" name="base" />
           <element id="jpa-descriptors" facet="base/jpa/JPA" />
           <element id="module-output" name="webgui" />
-          <element id="file-copy" path="$PROJECT_DIR$/webgui/conf/rebel.xml" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="lib-vaadin" />
+          <element id="library" level="project" name="lib-axis" />
+          <element id="library" level="project" name="lib-tablemodell" />
           <element id="library" level="project" name="lib-neo4j" />
           <element id="library" level="project" name="lib-lucene" />
         </element>
       </element>
-      <element id="javaee-facet-resources" facet="ejb/ejb/EJB" />
       <element id="javaee-facet-resources" facet="webgui/web/Web" />
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/webgui/META-INF/MANIFEST.MF" />

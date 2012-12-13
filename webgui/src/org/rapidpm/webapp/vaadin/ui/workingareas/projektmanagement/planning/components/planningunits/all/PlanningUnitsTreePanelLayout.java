@@ -111,12 +111,4 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout {
         leftLayout.addComponent(screen.getPlanningUnitsTree());
         addComponent(leftLayout);
     }
-
-    private void printchildren(PlanningUnit planningUnitFromDB) {
-        for(PlanningUnit pu : planningUnitFromDB.getKindPlanningUnits()){
-            logger.info("children of "+pu+": "+pu.getKindPlanningUnits());
-            printchildren(pu);
-        }
-    }
-
 }

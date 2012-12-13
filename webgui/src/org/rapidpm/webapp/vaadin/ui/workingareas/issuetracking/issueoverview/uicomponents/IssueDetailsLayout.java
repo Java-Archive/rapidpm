@@ -6,7 +6,6 @@ import com.vaadin.data.Property;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.datefield.Resolution;
-import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
@@ -15,12 +14,14 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.system.security.Benutzer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.FormattedDateStringToDateConverter;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabAddButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabDeleteButtonClickListener;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.modell.*;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -43,7 +44,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     private ComboBox prioritySelect;
     private ComboBox assigneeSelect;
     private Label reporterLabel;
-    private DateField plannedDateField;
+    private Label plannedDateLabel;
     private DateField resolvedDateField;
     private DateField closedDateField;
     private ComboBox storyPointSelect;
@@ -61,6 +62,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     private Button tabDeleteButton;
 
     private IssueBase issue;
+    private FormattedDateStringToDateConverter converter;
 
 
     public IssueDetailsLayout(final IssueOverviewScreen screen, final boolean componentsReadOnlyInit) {
@@ -71,6 +73,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
     @Override
     protected AbstractOrderedLayout buildSaveableForm() {
+        converter = new FormattedDateStringToDateConverter(new SimpleDateFormat("dd.MM.yy"));
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final List<IssueType> typeList = daoFactory.getIssueTypeDAO().loadAllEntities();
         final List<IssueStatus> statusList = daoFactory.getIssueStatusDAO().loadAllEntities();
@@ -179,21 +182,18 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         detailLayout.addComponent(assigneeSelect);
 
 
-        plannedDateField = new DateField();
-        plannedDateField.setResolution(Resolution.DAY);
-        plannedDateField.setValue(new Date());
-        plannedDateField.setReadOnly(true);
-        dateLayout.addComponent(plannedDateField);
+        plannedDateLabel = new Label();
+        plannedDateLabel.setValue(converter.convertToPresentation(new Date(), Locale.getDefault()));
+//        plannedDateLabel.setReadOnly(true);
+        dateLayout.addComponent(plannedDateLabel);
 
         resolvedDateField = new DateField();
         resolvedDateField.setResolution(Resolution.DAY);
-        resolvedDateField.setValue(new Date());
         resolvedDateField.setReadOnly(true);
         dateLayout.addComponent(resolvedDateField);
 
         closedDateField = new DateField();
         closedDateField.setResolution(Resolution.DAY);
-        closedDateField.setValue(new Date());
         closedDateField.setReadOnly(true);
         dateLayout.addComponent(closedDateField);
 
@@ -356,7 +356,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         assigneeSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_assignee"));
         reporterLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_reporter"));
         componentListSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_components"));
-        plannedDateField.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_planned"));
+        plannedDateLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_planned"));
         resolvedDateField.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_resolved"));
         closedDateField.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_closed"));
         storyPointSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_storypoints"));
@@ -377,6 +377,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             throw new NullPointerException("Details can't be set from null.");
         this.issue = issue;
         setLayoutReadOnly(false);
+        headerSummaryField.setRequired(false);
 
         headerTextField.setValue(issue.getText());
         headerSummaryField.setValue(issue.getSummary());
@@ -385,9 +386,9 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         prioritySelect.select(issue.getPriority());
         assigneeSelect.setValue(issue.getAssignee());
         reporterLabel.setValue(issue.getReporter().getLogin());
-        plannedDateField.setValue(issue.getDueDate_planned());
-        resolvedDateField.setValue(issue.getDueDate_resolved());
-        closedDateField.setValue(issue.getDueDate_closed());
+        plannedDateLabel.setValue(converter.convertToPresentation(issue.getDueDate_planned(), Locale.getDefault()));
+        resolvedDateField.setValue(issue.getDueDate_resolved().getTime() == 0L ? null : issue.getDueDate_resolved());
+        closedDateField.setValue(issue.getDueDate_closed().getTime() == 0L ? null : issue.getDueDate_closed());
         storyPointSelect.select(issue.getStoryPoints());
         versionSelect.select(issue.getVersion());
         riskSelect.select(issue.getRisk());
@@ -428,21 +429,23 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         }
 
 
-        if (headerSummaryField.getValue() == "") {
+        if (headerSummaryField.getValue().equals("")) {
             headerSummaryField.setRequired(true);
             headerSummaryField.setRequiredError("Issue must have a name!");
-            logger.warn("Issue must have a name");
+            logger.warn("");
+            Notification.show("Issue must have a name", Notification.Type.WARNING_MESSAGE);
             return null;
         }
+
 
         issue.setSummary(headerSummaryField.getValue());
         issue.setStatus((IssueStatus) statusSelect.getValue());
         issue.setPriority((IssuePriority) prioritySelect.getValue());
         issue.setType((IssueType) typeSelect.getValue());
         issue.setAssignee((Benutzer) assigneeSelect.getValue());
-        issue.setDueDate_planned(plannedDateField.getValue());
-        issue.setDueDate_resolved(resolvedDateField.getValue());
-        issue.setDueDate_closed(closedDateField.getValue());
+        issue.setDueDate_planned(converter.convertToModel(plannedDateLabel.getValue(), Locale.getDefault()));
+        issue.setDueDate_resolved(resolvedDateField.getValue() == null ? new Date(0) : resolvedDateField.getValue());
+        issue.setDueDate_closed(closedDateField.getValue() == null ? new Date(0) : closedDateField.getValue());
         issue.setStoryPoints((IssueStoryPoint) storyPointSelect.getValue());
         issue.setVersion((IssueVersion) versionSelect.getValue());
         issue.setRisk((Integer) riskSelect.getValue());

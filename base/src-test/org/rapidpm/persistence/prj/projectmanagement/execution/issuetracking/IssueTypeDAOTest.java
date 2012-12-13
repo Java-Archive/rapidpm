@@ -23,6 +23,16 @@ public class IssueTypeDAOTest implements BaseDAOTest {
     private final IssueType assignTo = dao.loadAllEntities().get(0);
 
     @Test
+    public void equalsAndHashCodeTest() {
+        List<IssueType> typeList = dao.loadAllEntities();
+        assertTrue(typeList.get(0).equals(typeList.get(0)));
+        assertEquals(typeList.get(0).hashCode(), typeList.get(0).hashCode());
+
+        assertFalse(typeList.get(0).equals(new IssueComment()));
+        assertNotSame(new IssueComment().hashCode(), typeList.get(0).hashCode());
+    }
+
+    @Test
     public void addChangeDelete() {
         IssueType type = new IssueType("test");
         type.setTypeFileName("test_filename");
@@ -41,17 +51,18 @@ public class IssueTypeDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        IssueType priority = dao.loadAllEntities().get(0);
-        IssueType prioTest = new IssueType();
+        final IssueType priority = dao.loadAllEntities().get(0);
+        final IssueType prioTest = new IssueType();
         prioTest.setTypeName(priority.getTypeName());
+        prioTest.setTypeFileName(priority.getTypeFileName());
         dao.persist(prioTest);
     }
 
     @Test
     public void getConnectedIssus() {
-        for (IssueType type : dao.loadAllEntities()) {
-            List<IssueBase> issueList = type.getConnectedIssuesFromProject(1L);
-            for (IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+        for (final IssueType type : dao.loadAllEntities()) {
+            final List<IssueBase> issueList = type.getConnectedIssuesFromProject(1L);
+            for (final IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
                 if (issue.getType().equals(type))
                     assertTrue(issueList.contains(issue));
             }

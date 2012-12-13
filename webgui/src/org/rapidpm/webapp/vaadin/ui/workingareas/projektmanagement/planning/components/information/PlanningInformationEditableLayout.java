@@ -8,7 +8,7 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.EditableLayout;
+import org.rapidpm.webapp.vaadin.ui.EditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitFieldGroup;
 
 import java.util.*;
@@ -78,8 +78,9 @@ public class PlanningInformationEditableLayout extends EditableLayout {
 
     @Override
     protected void buildForm() {
+        //setReadOnly(true) veursacht javascriptexception seit beta10
         for(final AbstractField field : fieldList){
-            field.setReadOnly(true);
+            field.setReadOnly(false);
             if(field instanceof AbstractSelect){
                 ((ComboBox)field).setNullSelectionAllowed(false);
                 ((ComboBox)field).setTextInputAllowed(false);

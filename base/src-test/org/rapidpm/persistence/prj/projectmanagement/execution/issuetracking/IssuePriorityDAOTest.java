@@ -22,6 +22,17 @@ public class IssuePriorityDAOTest implements BaseDAOTest {
     private final IssuePriorityDAO dao = daoFactory.getIssuePriorityDAO();
     private final IssuePriority assignTo = dao.loadAllEntities().get(0);
 
+
+    @Test
+    public void equalsAndHashCodeTest() {
+        List<IssuePriority> priorityList = dao.loadAllEntities();
+        assertTrue(priorityList.get(0).equals(priorityList.get(0)));
+        assertEquals(priorityList.get(0).hashCode(), priorityList.get(0).hashCode());
+
+        assertFalse(priorityList.get(0).equals(new IssueComment()));
+        assertNotSame(new IssueComment().hashCode(), priorityList.get(0).hashCode());
+    }
+
     @Test
     public void addChangeDelete() {
         IssuePriority priority = new IssuePriority(1, "test");
@@ -41,18 +52,20 @@ public class IssuePriorityDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        IssuePriority priority = dao.loadAllEntities().get(0);
-        IssuePriority prioTest = new IssuePriority();
+        final IssuePriority priority = dao.loadAllEntities().get(0);
+        final IssuePriority prioTest = new IssuePriority();
         prioTest.setPriorityName(priority.getPriorityName());
+        prioTest.setPriorityFileName(priority.getPriorityFileName());
+        prioTest.setPrio(priority.getPrio());
         dao.persist(prioTest);
     }
 
     @Test
     public void getConnectedIssus() {
-        for (IssuePriority priority : dao.loadAllEntities()) {
-            List<IssueBase> issueList = priority.getConnectedIssuesFromProject(1L);
+        for (final IssuePriority priority : dao.loadAllEntities()) {
+            final List<IssueBase> issueList = priority.getConnectedIssuesFromProject(1L);
 
-            for (IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+            for (final IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
                 if (issue.getPriority().equals(priority))
                     assertTrue(issueList.contains(issue));
             }

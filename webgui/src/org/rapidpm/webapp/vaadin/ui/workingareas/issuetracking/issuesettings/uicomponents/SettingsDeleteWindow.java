@@ -2,9 +2,10 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.ui
 
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
+import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.IssueSettingsScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.modell.SettingsDataContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.model.SettingsDataContainer;
 
 import java.util.Collection;
 
@@ -15,7 +16,7 @@ import java.util.Collection;
 * Time: 09:54
 * To change this template use File | Settings | File Templates.
 */
-public class SettingsDeleteWindow<T> extends Window implements Internationalizationable {
+public class SettingsDeleteWindow<T> extends RapidWindow implements Internationalizationable {
     private static Logger logger = Logger.getLogger(SettingsDeleteWindow.class);
 
     private final IssueSettingsScreen screen;
