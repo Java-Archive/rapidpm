@@ -10,7 +10,6 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="lib-database-postgresql" />
-          <element id="library" level="project" name="log4j-1.2.17-javadoc" />
           <element id="library" level="project" name="lib" />
           <element id="library" level="project" name="lib-neo4j" />
           <element id="library" level="project" name="lib-lucene" />
