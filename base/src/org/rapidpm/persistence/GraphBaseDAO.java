@@ -319,7 +319,7 @@ public class GraphBaseDAO<T> {
             logger.debug("loadAllEntities");
 
         final TraversalDescription td = Traversal.description()
-                .breadthFirst()
+                .depthFirst()
                 .relationships(GraphRelationRegistry.getClassRootToChildRelType(), Direction.OUTGOING )
                 .relationships(GraphRelationRegistry.getRelationshipTypeForClass(clazz), Direction.OUTGOING )
                 .evaluator(Evaluators.excludeStartPosition());

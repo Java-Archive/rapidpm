@@ -77,9 +77,12 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
         issueSelect.setWidth("100%");
         issueSelect.addContainerProperty(PROPERTY_NAME, String.class, null);
         issueSelect.setItemCaptionPropertyId(PROPERTY_NAME);
+        final IssueBase selectedIssue = relationContainer.getCurrentIssue();
         for (final IssueBase connIssue : issueList) {
-            Item item = issueSelect.addItem(connIssue);
-            item.getItemProperty(PROPERTY_NAME).setValue(connIssue.name());
+            if (selectedIssue != null && !connIssue.equals(selectedIssue)) {
+                Item item = issueSelect.addItem(connIssue);
+                item.getItemProperty(PROPERTY_NAME).setValue(connIssue.name());
+            }
         }
         issueSelect.setNullSelectionAllowed(false);
         issueSelect.setScrollToSelectedItem(true);
