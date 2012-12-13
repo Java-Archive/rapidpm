@@ -125,7 +125,7 @@ public class AddRelationWindow extends Window implements Internationalizationabl
                 if (connIssue != null && connIssue != "")  {
                     if (!relationContainer.addRelation((IssueBase) connIssue, (IssueRelation)relation))
                         //TODO Show Errormessage to User
-                        logger.error("Connecting issues failed");
+                        logger.error("Connecting issue failed");
                     self.close();
                 } else {
                     if (logger.isDebugEnabled())
@@ -135,9 +135,9 @@ public class AddRelationWindow extends Window implements Internationalizationabl
                 }
             } else {
                 if (logger.isDebugEnabled())
-                    logger.debug("Relations to connect issues is needed");
+                    logger.debug("Relations to connect issue is needed");
                 relationsSelect.setRequired(true);
-                relationsSelect.setRequiredError("Relations to connect issues is needed");
+                relationsSelect.setRequiredError("Relations to connect issue is needed");
             }
 
         }

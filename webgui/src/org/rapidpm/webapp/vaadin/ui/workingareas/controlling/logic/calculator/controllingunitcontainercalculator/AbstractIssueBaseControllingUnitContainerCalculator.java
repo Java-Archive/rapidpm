@@ -1,7 +1,6 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.controlling.logic.calculators;
+package org.rapidpm.webapp.vaadin.ui.workingareas.controlling.logic.calculator.controllingunitcontainercalculator;
 
 import org.rapidpm.persistence.prj.projectmanagement.controlling.ControllingUnitContainer;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,18 +9,14 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
  * Time: 15:03
  * To change this template use File | Settings | File Templates.
  */
-public abstract class IssueBaseControllingUnitContainerCalculator<C, E> {
-    protected E baseEntitiy;
+public abstract class AbstractIssueBaseControllingUnitContainerCalculator<C, E>
+        extends  AbstractPlannedProjectControllingUnitContainerCalculator<C, E> {
 
     protected final ControllingUnitContainer<C> totalSubIssueControllingContainer = new ControllingUnitContainer<>();
     protected final ControllingUnitContainer<C> ownControllingUnitContainer = new ControllingUnitContainer<>();
-    protected final ControllingUnitContainer<C> totalControllingUnitContainer = new ControllingUnitContainer<>();
 
-    public IssueBaseControllingUnitContainerCalculator(E baseEntitiy) {
-        this.baseEntitiy = baseEntitiy;
-    }
-
-    protected IssueBaseControllingUnitContainerCalculator() {
+    public AbstractIssueBaseControllingUnitContainerCalculator(E baseEntitiy) {
+        super(baseEntitiy);
     }
 
     public void calculate(){
@@ -30,17 +25,12 @@ public abstract class IssueBaseControllingUnitContainerCalculator<C, E> {
         calculateTotal();
     }
 
-    protected abstract void calculateTotal();
     protected abstract void calculateOwn();
     protected abstract void calculateSubIssues();
     protected abstract void setControllingUnitContainer(ControllingUnitContainer container, C actual, C planned);
 
     public ControllingUnitContainer<C> getOwnControllingUnitContainer() {
         return ownControllingUnitContainer;
-    }
-
-    public ControllingUnitContainer<C> getTotalControllingUnitContainer() {
-            return totalControllingUnitContainer;
     }
 
     public ControllingUnitContainer<C> getTotalSubIssueControllingContainer() {

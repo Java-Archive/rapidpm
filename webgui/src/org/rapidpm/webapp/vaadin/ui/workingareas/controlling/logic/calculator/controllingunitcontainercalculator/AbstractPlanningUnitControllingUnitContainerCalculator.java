@@ -1,8 +1,6 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.controlling.logic.calculators;
+package org.rapidpm.webapp.vaadin.ui.workingareas.controlling.logic.calculator.controllingunitcontainercalculator;
 
 import org.rapidpm.persistence.prj.projectmanagement.controlling.ControllingUnitContainer;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,12 +9,12 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
  * Time: 15:36
  * To change this template use File | Settings | File Templates.
  */
-public abstract class PlanningUnitControllingUnitContainerCalculator<C,E>
-    extends IssueBaseControllingUnitContainerCalculator<C,E>{
+public abstract class AbstractPlanningUnitControllingUnitContainerCalculator<C,E>
+    extends AbstractIssueBaseControllingUnitContainerCalculator<C,E> {
 
     protected ControllingUnitContainer<C> totalSubPlanningUnitControllingContainer;
 
-    public PlanningUnitControllingUnitContainerCalculator(E baseEntity) {
+    public AbstractPlanningUnitControllingUnitContainerCalculator(E baseEntity) {
         super(baseEntity);
         calculateSubIssues();
         calculateSubPlanningUnits();

@@ -1,11 +1,10 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.controlling.logic.calculators.planningunit;
+package org.rapidpm.webapp.vaadin.ui.workingareas.controlling.logic.calculator.controllingunitcontainercalculator.impl.planningunit;
 
 import org.rapidpm.persistence.prj.projectmanagement.controlling.ControllingUnitContainer;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.logic.calculators.IssueBaseControllingUnitContainerCalculator;
-import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.logic.calculators.PlanningUnitControllingUnitContainerCalculator;
-import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.logic.calculators.issues.IssueDurationControllingUnitContainerCalculator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.logic.calculator.controllingunitcontainercalculator.AbstractPlanningUnitControllingUnitContainerCalculator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.logic.calculator.controllingunitcontainercalculator.impl.issue.IssueDurationCalulatorTest;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,10 +13,10 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.logic.calculators.i
  * Time: 16:24
  * To change this template use File | Settings | File Templates.
  */
-public class PlanningUnitDurationControllingUnitContainerCalculator extends
-        PlanningUnitControllingUnitContainerCalculator<Integer, PlanningUnit> {
+public class PlanningUnitDurationCalculatorTest extends
+        AbstractPlanningUnitControllingUnitContainerCalculator<Integer, PlanningUnit> {
 
-    public PlanningUnitDurationControllingUnitContainerCalculator(PlanningUnit baseEntity) {
+    public PlanningUnitDurationCalculatorTest(PlanningUnit baseEntity) {
         super(baseEntity);
     }
 
@@ -26,9 +25,9 @@ public class PlanningUnitDurationControllingUnitContainerCalculator extends
         int plannedTotalDuration = 0;
         int actualTotalDuration  = 0;
 
-        for(PlanningUnit subPlanningUnit : baseEntitiy.getKindPlanningUnits()){
-            ControllingUnitContainer<Integer> subIssueControllingUnitContainer
-                    = new PlanningUnitDurationControllingUnitContainerCalculator(subPlanningUnit)
+        for(final PlanningUnit subPlanningUnit : baseEntitiy.getKindPlanningUnits()){
+            final ControllingUnitContainer<Integer> subIssueControllingUnitContainer
+                    = new PlanningUnitDurationCalculatorTest(subPlanningUnit)
                     .getTotalControllingUnitContainer();
 
             plannedTotalDuration += subIssueControllingUnitContainer.getPlannedAbsolutte();
@@ -67,9 +66,9 @@ public class PlanningUnitDurationControllingUnitContainerCalculator extends
         int plannedTotalDuration = 0;
         int actualTotalDuration  = 0;
 
-        for(IssueBase subIssue : baseEntitiy.getIssueBaseList()){
+        for(final IssueBase subIssue : baseEntitiy.getIssueBaseList()){
             ControllingUnitContainer<Integer> subIssueControllingUnitContainer
-                    = new IssueDurationControllingUnitContainerCalculator(subIssue)
+                    = new IssueDurationCalulatorTest(subIssue)
                     .getTotalControllingUnitContainer();
 
             plannedTotalDuration += subIssueControllingUnitContainer.getPlannedAbsolutte();
@@ -84,8 +83,8 @@ public class PlanningUnitDurationControllingUnitContainerCalculator extends
         totalControllingUnitContainer.setPlannedAbsolutte(planned);
         totalControllingUnitContainer.setActualAbsolute(actual);
         totalControllingUnitContainer.setRemainingAbsolute(planned - actual);
-        double usedRelative = (double) planned / (double) actual;
-        double remainingRelative = 1 - usedRelative;
+        final double usedRelative = (double) planned / (double) actual;
+        final double remainingRelative = 1 - usedRelative;
         totalControllingUnitContainer.setUsedRelative((usedRelative));
         totalControllingUnitContainer.setRemainingRelative(remainingRelative);
     }

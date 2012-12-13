@@ -1,9 +1,9 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.controlling.logic.calculators.issues;
+package org.rapidpm.webapp.vaadin.ui.workingareas.controlling.logic.calculator.controllingunitcontainercalculator.impl.issue;
 
 import org.rapidpm.persistence.prj.projectmanagement.controlling.ControllingUnitContainer;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTimeUnit;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.logic.calculators.IssueBaseControllingUnitContainerCalculator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.logic.calculator.controllingunitcontainercalculator.AbstractIssueBaseControllingUnitContainerCalculator;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,10 +12,10 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.logic.calculators.I
  * Time: 15:57
  * To change this template use File | Settings | File Templates.
  */
-public class IssueDurationControllingUnitContainerCalculator extends IssueBaseControllingUnitContainerCalculator<Integer,
+public class IssueDurationCalulator extends AbstractIssueBaseControllingUnitContainerCalculator<Integer,
         IssueBase> {
 
-    public IssueDurationControllingUnitContainerCalculator(IssueBase issueBase) {
+    public IssueDurationCalulator(IssueBase issueBase) {
         super(issueBase);
     }
 
@@ -35,7 +35,7 @@ public class IssueDurationControllingUnitContainerCalculator extends IssueBaseCo
         int plannedDuration = baseEntitiy.getTimeUnitEstimated().getMinutes();
         int actualDuration  = 0;
 
-        for(IssueTimeUnit issueTimeUnit : baseEntitiy.getTimeUnitsUsed())
+        for(final IssueTimeUnit issueTimeUnit : baseEntitiy.getTimeUnitsUsed())
             actualDuration += issueTimeUnit.getMinutes();
 
         setControllingUnitContainer(totalControllingUnitContainer, plannedDuration, actualDuration);
@@ -46,9 +46,9 @@ public class IssueDurationControllingUnitContainerCalculator extends IssueBaseCo
         int plannedTotalDuration = 0;
         int actualTotalDuration  = 0;
 
-        for(IssueBase subIssue : baseEntitiy.getSubIssues()){
-            ControllingUnitContainer<Integer> subIssueControllingUnitContainer
-                    = new IssueDurationControllingUnitContainerCalculator(subIssue).getTotalControllingUnitContainer();
+        for(final IssueBase subIssue : baseEntitiy.getSubIssues()){
+            final ControllingUnitContainer<Integer> subIssueControllingUnitContainer
+                    = subIssue.getTotalControllingUnit().getDuration();
 
             plannedTotalDuration += subIssueControllingUnitContainer.getPlannedAbsolutte();
             actualTotalDuration += subIssueControllingUnitContainer.getActualAbsolute();
@@ -62,8 +62,8 @@ public class IssueDurationControllingUnitContainerCalculator extends IssueBaseCo
         totalControllingUnitContainer.setPlannedAbsolutte(planned);
         totalControllingUnitContainer.setActualAbsolute(actual);
         totalControllingUnitContainer.setRemainingAbsolute(planned - actual);
-        double usedRelative = (double) planned / (double) actual;
-        double remainingRelative = 1 - usedRelative;
+        final double usedRelative = (double) planned / (double) actual;
+        final double remainingRelative = 1 - usedRelative;
         totalControllingUnitContainer.setUsedRelative((usedRelative));
         totalControllingUnitContainer.setRemainingRelative(remainingRelative);
     }
