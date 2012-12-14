@@ -56,4 +56,30 @@ public class BaseControllingunit {
                 ", status=" + status +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BaseControllingunit that = (BaseControllingunit) o;
+
+        if (duration != null ? !duration.equals(that.duration) : that.duration != null) return false;
+        if (externalCosts != null ? !externalCosts.equals(that.externalCosts) : that.externalCosts != null)
+            return false;
+        if (internalCosts != null ? !internalCosts.equals(that.internalCosts) : that.internalCosts != null)
+            return false;
+        if (status != null ? !status.equals(that.status) : that.status != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = internalCosts != null ? internalCosts.hashCode() : 0;
+        result = 31 * result + (externalCosts != null ? externalCosts.hashCode() : 0);
+        result = 31 * result + (duration != null ? duration.hashCode() : 0);
+        result = 31 * result + (status != null ? status.hashCode() : 0);
+        return result;
+    }
 }

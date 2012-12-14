@@ -27,7 +27,6 @@ public abstract class AbstractIssueBaseControllingUnitContainerCalculator<C, E>
 
     protected abstract void calculateOwn();
     protected abstract void calculateSubIssues();
-    protected abstract void setControllingUnitContainer(ControllingUnitContainer container, C actual, C planned);
 
     public ControllingUnitContainer<C> getOwnControllingUnitContainer() {
         return ownControllingUnitContainer;
