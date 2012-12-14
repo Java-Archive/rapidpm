@@ -21,4 +21,29 @@ public class Risk {
     private double propabillity;
     @Basic
     private String name;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Risk risk = (Risk) o;
+
+        if (Double.compare(risk.propabillity, propabillity) != 0) return false;
+        if (id != null ? !id.equals(risk.id) : risk.id != null) return false;
+        if (name != null ? !name.equals(risk.name) : risk.name != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = id != null ? id.hashCode() : 0;
+        temp = propabillity != +0.0d ? Double.doubleToLongBits(propabillity) : 0L;
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
+    }
 }
