@@ -17,6 +17,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.persistence.prj.textelement.TextElement;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
@@ -61,19 +62,15 @@ public class ProjektplanungScreen extends Screen {
     private HorizontalLayout addParentPlanningUnitLayout = new HorizontalLayout();
     private TextField addParentPlanningUnitField = new TextField();
     private Button addParentButton = new Button();
-    private PlanningDetailsEditableLayout planningDetailsEditableLayout;
-    private PlanningUnitBeanItemContainer container;
     private PlanningUnit tempPlanningUnit = new PlanningUnit();
     private DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
-    private List<PlanningUnit> rootPlanningUnitsAtScreenLoad;
     private Button addParentsButton = new Button();
 
 
     public ProjektplanungScreen(MainUI ui) {
         super(ui);
         addParentPlanningUnitField.focus();
-        rootPlanningUnitsAtScreenLoad = daoFactory.getPlanningUnitDAO().loadAllEntities();
 
         try {
             final List<PlannedProject> plannedProjects = daoFactory.getPlannedProjectDAO().loadAllEntities();
@@ -126,7 +123,6 @@ public class ProjektplanungScreen extends Screen {
     private void buildPlanningUnitPanel() {
         setAddParentButtonListener();
         setAddParentsButtonListener();
-        addParentButton.setEnabled(false);
         addParentPlanningUnitLayout.addComponents(addParentPlanningUnitField, addParentButton, addParentsButton);
         addParentButton.setSizeUndefined();
         addParentsButton.setSizeUndefined();
@@ -161,9 +157,8 @@ public class ProjektplanungScreen extends Screen {
         } else {
             tempPlanningUnit.setId(666l);
             tempPlanningUnit.setPlanningUnitName("Platzhalter");
-            tempPlanningUnit.setTestcases(new ArrayList<String>());
-            tempPlanningUnit.setDescription("Bitte dem Projekt über den \"+\"-Button neue Planungseinheiten " +
-                    "hinzufügen.");
+            tempPlanningUnit.setTestcases(new ArrayList<TextElement>());
+            tempPlanningUnit.setDescriptions(new ArrayList<TextElement>());
             tempPlanningUnit.setKindPlanningUnits(new HashSet<PlanningUnit>());
             planningUnitSelect.addItem(tempPlanningUnit);
             planningUnitSelect.setValue(tempPlanningUnit);
@@ -264,6 +259,9 @@ public class ProjektplanungScreen extends Screen {
         addParentPlanningUnitField.setCaption(messagesBundle.getString("planning_fastadd"));
         addParentButton.setCaption("+");
         addParentsButton.setCaption("++");
+        leftColumn.setCaption(messagesBundle.getString("planning_planningunits"));
+        centerColumn.setCaption(messagesBundle.getString("planning_detailsandressources"));
+        rightColumn.setCaption(messagesBundle.getString("planning_descriptionandtestcases"));
     }
 
     public void fillTreePanel(final PlanningUnit selectedPlanningUnit, final PlannedProject projekt) {
@@ -329,5 +327,7 @@ public class ProjektplanungScreen extends Screen {
         return planningUnitSelect;
     }
 
-
+    public RapidPanel getRightColumn() {
+        return rightColumn;
+    }
 }

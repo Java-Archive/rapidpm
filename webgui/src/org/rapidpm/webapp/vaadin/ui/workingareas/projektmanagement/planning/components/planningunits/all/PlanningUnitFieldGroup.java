@@ -10,6 +10,7 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
+import org.rapidpm.persistence.prj.textelement.TextElement;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
@@ -46,7 +47,7 @@ public class PlanningUnitFieldGroup extends FieldGroup {
         this.messages = screen.getMessagesBundle();
         daoFactory = DaoFactorySingelton.getInstance();
         final PlanningUnit planningUnit = new PlanningUnit();
-        planningUnit.setTestcases(new ArrayList<String>());
+        planningUnit.setTestcases(new ArrayList<TextElement>());
         planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
         setItemDataSource(new BeanItem<>(planningUnit));
         isnew = true;
@@ -88,7 +89,7 @@ public class PlanningUnitFieldGroup extends FieldGroup {
                     nameField.setNullRepresentation("");
                     fieldList.add(nameField);
                     break;
-                case (PlanningUnit.DESCPRIPTION):
+                case (PlanningUnit.DESCRIPTIONS):
                     descriptionArea = new RichTextArea(messages.getString("planning_description"));
                     descriptionArea.setNullRepresentation(messages.getString("planning_nodescription"));
                     bind(descriptionArea, propertyId);
@@ -142,10 +143,10 @@ public class PlanningUnitFieldGroup extends FieldGroup {
                 case (PlanningUnit.TESTCASES):
                     testcaseAreas = new ArrayList<>();
                     Integer i = 1;
-                    for(final String testcase : selectedPlanningUnit.getTestcases()){
+                    for(final TextElement testcase : selectedPlanningUnit.getTestcases()){
                         final RichTextArea testcaseArea = new RichTextArea(messages.getString("planning_testcase")+
                                 i++);
-                        testcaseArea.setValue(testcase);
+                        testcaseArea.setValue(testcase.getBezeichnung());
                         testcaseAreas.add(testcaseArea);
 
                     }

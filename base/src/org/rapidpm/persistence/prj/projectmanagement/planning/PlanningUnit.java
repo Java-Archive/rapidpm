@@ -1,11 +1,8 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.PlannedMeeting;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedTravel;
-import org.rapidpm.persistence.prj.stammdaten.person.Person;
+import org.rapidpm.persistence.prj.textelement.TextElement;
 import org.rapidpm.persistence.system.security.Benutzer;
 
 import javax.persistence.*;
@@ -30,8 +27,8 @@ public class PlanningUnit {
     public static final String COMPLEXITY = "komplexitaet";
     public static final String RESPONSIBLE = "responsiblePerson";
     public static final String TESTCASES = "testcases";
+    public static final String DESCRIPTIONS = "descriptions";
     public static final String ORDERNUMBER = "orderNumber";
-    public static final String DESCPRIPTION = "description";
     public static final String PARENT = "parent";
 
 
@@ -76,11 +73,11 @@ public class PlanningUnit {
     @Basic
     private int estimatedStoryPoints;
 
-    @Basic
-    private String description;
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    private List<TextElement> testcases;
 
-    @ElementCollection
-    private List<String> testcases;
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    private List<TextElement> descriptions;
 
 
     //@OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
@@ -183,20 +180,20 @@ public class PlanningUnit {
         this.plannedMeetingList = plannedMeetingList;
     }
 
-    public List<String> getTestcases() {
+    public List<TextElement> getTestcases() {
         return testcases;
     }
 
-    public void setTestcases(List<String> testcases) {
+    public void setTestcases(List<TextElement> testcases) {
         this.testcases = testcases;
     }
 
-    public String getDescription() {
-        return description;
+    public List<TextElement> getDescriptions() {
+        return descriptions;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescriptions(List<TextElement> descriptions) {
+        this.descriptions = descriptions;
     }
 
     public PlanningUnit getParent() {
@@ -228,7 +225,6 @@ public class PlanningUnit {
     public String toString() {
         return "PlanningUnit{" +
                 "id='" + id + '\'' +
-                ", description='" + description + '\'' +
                 ", estimatedStoryPoints=" + estimatedStoryPoints +
                 ", komplexitaet=" + komplexitaet +
                 ", planningUnitName='" + planningUnitName + '\'' +
@@ -237,7 +233,6 @@ public class PlanningUnit {
                 ", responsiblePerson=" + responsiblePerson +
                 ", planningStatus=" + planningStatus +
                 ", plannedTravelList=" + plannedTravelList +
-                ", testcases=" + testcases +
                 '}';
     }
 }

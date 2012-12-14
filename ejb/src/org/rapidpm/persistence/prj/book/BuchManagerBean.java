@@ -58,7 +58,7 @@
 //        return daoFactoryBean.getBuchDAO();
 //    }
 //
-//    private BuchKapitelDAO getBuchKapitelDAO() {
+//    private TextElementDAO getBuchKapitelDAO() {
 //        return daoFactoryBean.getBuchKapitelDAO();
 //    }
 //

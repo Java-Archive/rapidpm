@@ -11,12 +11,17 @@ import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.textelement.TextElement;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.descriptionandtestcases.DescriptionEditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsEditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.information.PlanningInformationEditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitsTree;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.ressources.PlanningRessourcesEditableLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -52,6 +57,7 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                 final RapidPanel detailPanel = screen.getDetailsPanel();
                 final RapidPanel mainPanel = screen.getMainPanel();
                 final RapidPanel ressourcesPanel = screen.getRessourcesPanel();
+                final RapidPanel descriptionsPanel = screen.getRightColumn();
 
                 detailPanel.removeAllComponents();
                 mainPanel.removeAllComponents();
@@ -68,6 +74,15 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                     final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesEditableLayout(selectedPlanningUnit,
                             screen, ressourcesPanel, hasChildren);
                     ressourcesPanel.addComponent(ressourcesPanelLayout);
+                    final List<DescriptionEditableLayout> descriptionEditableLayoutList = new ArrayList<>();
+                    for(final TextElement description : selectedPlanningUnit.getDescriptions()){
+                         final DescriptionEditableLayout descriptionEditableLayout = new DescriptionEditableLayout
+                                 (screen, descriptionsPanel, screen.getMessagesBundle(), description);
+                        descriptionEditableLayoutList.add(descriptionEditableLayout);
+                    }
+                    for (final DescriptionEditableLayout descriptionEditableLayout : descriptionEditableLayoutList) {
+                         descriptionsPanel.addComponent(descriptionEditableLayout);
+                    }
                 }
                 detailPanel.removeAllComponents();
                 detailPanel.addComponent(detailsPanelComponentsLayout);
