@@ -104,8 +104,6 @@ public class IssueBase implements PersistInGraph {
 
     @LazyGraphPersist
     private Map<Method, List<Object[]>> graphMap;
-    private BaseControllingunit totalSubIssuesBaseControllingUnit;
-    private BaseControllingunit totalOwnCotntrollingUnit;
 
 
     public IssueBase(final Long projectid) {
@@ -212,7 +210,6 @@ public class IssueBase implements PersistInGraph {
 
         return comments.remove(comment);
     }
-
 
 
     public boolean addOrChangeTestCase(final IssueTestCase testcase) {
@@ -502,5 +499,29 @@ public class IssueBase implements PersistInGraph {
     @Override
     public String name() {
         return getText() + " - " + getSummary();
+    }
+
+    public void setDueDate_planned(Date dueDate_planned) {
+        this.dueDate_planned = dueDate_planned;
+    }
+
+    public void setDueDate_resolved(Date dueDate_resolved) {
+        this.dueDate_resolved = dueDate_resolved;
+    }
+
+    public void setDueDate_closed(Date dueDate_closed) {
+        this.dueDate_closed = dueDate_closed;
+    }
+
+    public Date getDueDate_planned() {
+        return dueDate_planned;
+    }
+
+    public Date getDueDate_resolved() {
+        return dueDate_resolved;
+    }
+
+    public Date getDueDate_closed() {
+        return dueDate_closed;
     }
 }

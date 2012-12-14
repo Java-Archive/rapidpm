@@ -61,17 +61,6 @@ public class PlanningUnitBuilder {
     }
 
     public PlanningUnit getPlanningUnit(){
-        if(description.isEmpty()
-                || estimatedStorypoints <= 0
-                || kindPlanningUnitList == null
-                || parendPlanningUnit == null
-                || responsiblePerson == null
-                || testCaseList == null
-                || planingStatus == null
-                )
-            throw new IllegalStateException("PlanningUnitBuilder: Nicht alle benötigten Daten angegeben.");
-
-
         final PlanningUnit planningUnit = new PlanningUnit();
         planningUnit.setDescription(description);
         planningUnit.setEstimatedStoryPoints(estimatedStorypoints);

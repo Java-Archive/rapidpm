@@ -6,6 +6,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 import org.rapidpm.persistence.system.security.Benutzer;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,7 +27,7 @@ public class IssueBaseBuilder {
     private long projectId;
 
     private IssueTimeUnit timeUnitEstimated;
-    private List<IssueTimeUnit> timeUnitsUsed;
+    private List<IssueTimeUnit> timeUnitsUsed = new ArrayList<>();
 
 
     public IssueBaseBuilder setProjectId(long projectId) {
@@ -81,12 +82,6 @@ public class IssueBaseBuilder {
     }
 
     public IssueBase getIssueBase(){
-        if(assignee == null
-                || reporter == null
-                || status == null)
-
-            throw new  IllegalStateException("IssueBaseBuilder: Nicht alle Daten angegegen.");
-
         final IssueBase issueBase = new IssueBase(projectId);
         issueBase.setAssignee(assignee);
 //        issueBase.setD(dueDateClosed);
@@ -95,8 +90,10 @@ public class IssueBaseBuilder {
         issueBase.setReporter(reporter);
         issueBase.setStatus(status);
         issueBase.setTimeUnitEstimated(timeUnitEstimated);
-        for(IssueTimeUnit issueTimeUnit : timeUnitsUsed)
+        for(IssueTimeUnit issueTimeUnit : timeUnitsUsed){
+            issueBase.setTimeUnitsUsed(new ArrayList<IssueTimeUnit>());
             issueBase.addTimeUnitUsed(issueTimeUnit);
+        }
         return issueBase;
     }
 }

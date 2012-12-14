@@ -23,10 +23,10 @@ public class PlannedProjectControllingDataCalculator {
             for(final PlanningUnit subPlanningUnit : plannedProject.getPlanningUnits())
                 new PlanningUnitControllingDataCalculator(subPlanningUnit);
 
-        PlannedProjectDurationCalculator durationCalculator
+        final PlannedProjectDurationCalculator durationCalculator
                 = new PlannedProjectDurationCalculator(plannedProject);
 
-        ControllingUnitContainer<Integer> totalDuration
+        final ControllingUnitContainer<Integer> totalDuration
                 = durationCalculator.getTotalControllingUnitContainer();
         plannedProject.getTotalProjectControllingunit().setDuration(totalDuration);
     }

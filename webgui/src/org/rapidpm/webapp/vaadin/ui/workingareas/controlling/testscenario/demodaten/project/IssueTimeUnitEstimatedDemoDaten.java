@@ -28,43 +28,43 @@ public class IssueTimeUnitEstimatedDemoDaten {
 
     public IssueTimeUnitEstimatedDemoDaten(){
         rpm1_timeUnitEstimated = new IssueTimeUnitBuilder()
-                .setDatum(Date.valueOf("02.10.2012"))
+                .setDatum(Date.valueOf("2012-10-2"))
                 .setMinutes(120)
                 .setWorker(benutzerDemoDaten.getDanielMacDonaldBenutzer())
                 .getIssueTimeUnit();
 
         rpm2_timeUnitEstimated = new IssueTimeUnitBuilder()
-                .setDatum(Date.valueOf("05.10.2012"))
+                .setDatum(Date.valueOf("2012-10-5"))
                 .setMinutes(1080)
                 .setWorker(benutzerDemoDaten.getDanielMacDonaldBenutzer())
                 .getIssueTimeUnit();
 
         rpm3_timeUnitEstimated= new IssueTimeUnitBuilder()
-                .setDatum(Date.valueOf("06.10.2012"))
+                .setDatum(Date.valueOf("2012-10-6"))
                 .setMinutes(360)
                 .setWorker(benutzerDemoDaten.getPeterMuellerBenutzer())
                 .getIssueTimeUnit();
 
         rpm4_timeUnitEstimated= new IssueTimeUnitBuilder()
-                .setDatum(Date.valueOf("06.10.2012"))
+                .setDatum(Date.valueOf("2012-10-6"))
                 .setMinutes(360)
                 .setWorker(benutzerDemoDaten.getKarlSchmidtBenutzer())
                 .getIssueTimeUnit();
 
         rpm5_timeUnitEstimated= new IssueTimeUnitBuilder()
-                .setDatum(Date.valueOf("06.10.2012"))
+                .setDatum(Date.valueOf("2012-10-6"))
                 .setMinutes(360)
                 .setWorker(benutzerDemoDaten.getUrsulaBeckerBenutzer())
                 .getIssueTimeUnit();
 
         rpm6_timeUnitEstimated= new IssueTimeUnitBuilder()
-                .setDatum(Date.valueOf("07.10.2012"))
+                .setDatum(Date.valueOf("2012-10-7"))
                 .setMinutes(360)
                 .setWorker(benutzerDemoDaten.getDanielMacDonaldBenutzer())
                 .getIssueTimeUnit();
 
         rpm7_timeUnitEstimated= new IssueTimeUnitBuilder()
-                .setDatum(Date.valueOf("07.10.2012"))
+                .setDatum(Date.valueOf("2012-10-7"))
                 .setMinutes(360)
                 .setWorker(benutzerDemoDaten.getPeterMuellerBenutzer())
                 .getIssueTimeUnit();

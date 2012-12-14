@@ -102,6 +102,7 @@ public class PlanningUnitDemoDaten {
                 .setIssueBaseList(issueBaseDemoDaten.getPlanningUnit2_issueBaseList())
                 .getPlanningUnit();
 
+        topLevelPlanningUnits = new HashSet<>();
         topLevelPlanningUnits.add(planningUnit_1);
         topLevelPlanningUnits.add(planningUnit_2);
     }

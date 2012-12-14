@@ -34,13 +34,6 @@ public class IssueTimeUnitBuilder {
     }
 
     public IssueTimeUnit getIssueTimeUnit(){
-
-        if(datum == null
-                || minutes <= 0
-                || worker == null)
-            throw new IllegalStateException("IssueTimeUnitBuilder: Nicht alle Daten angegeben.");
-        
-            
         final IssueTimeUnit issueTimeUnit = new IssueTimeUnit();
         issueTimeUnit.setDate(datum);
         issueTimeUnit.setMinutes(minutes);

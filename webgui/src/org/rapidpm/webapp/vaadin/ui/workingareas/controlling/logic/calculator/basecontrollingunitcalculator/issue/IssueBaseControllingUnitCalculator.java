@@ -15,6 +15,10 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.logic.calculator.co
 public class IssueBaseControllingUnitCalculator {
 
     public IssueBaseControllingUnitCalculator(IssueBase issueBase){
+        if(issueBase == null)
+            throw new IllegalArgumentException("IssueBaseControllingUnitCalculator: Parameter issueBase can not be " +
+                    "null.");
+
         issueBase.setTotalControllingUnit(new BaseControllingunit());
         issueBase.setTotalSubIssuesBaseControllingUnit(new BaseControllingunit());
         issueBase.setTotalControllingUnit(new BaseControllingunit());
@@ -23,18 +27,18 @@ public class IssueBaseControllingUnitCalculator {
             for(final IssueBase subIssue : issueBase.getSubIssues())
                 new IssueBaseControllingUnitCalculator(subIssue);
 
-        IssueDurationCalulator issueDurationCalulator
+        final IssueDurationCalulator issueDurationCalulator
                 = new IssueDurationCalulator(issueBase);
 
-        ControllingUnitContainer<Integer> ownDuration = issueDurationCalulator
+        final ControllingUnitContainer<Integer> ownDuration = issueDurationCalulator
                 .getOwnControllingUnitContainer();
         issueBase.getTotalOwnCotntrollingUnit().setDuration(ownDuration);
 
-        ControllingUnitContainer<Integer> subIssueDuration = issueDurationCalulator
+        final ControllingUnitContainer<Integer> subIssueDuration = issueDurationCalulator
                 .getTotalSubIssueControllingContainer();
         issueBase.getTotalSubIssuesBaseControllingUnit().setDuration(subIssueDuration);
 
-        ControllingUnitContainer<Integer> totalDuration = issueDurationCalulator
+        final ControllingUnitContainer<Integer> totalDuration = issueDurationCalulator
                 .getTotalControllingUnitContainer();
         issueBase.getTotalControllingUnit().setDuration(totalDuration);
     }

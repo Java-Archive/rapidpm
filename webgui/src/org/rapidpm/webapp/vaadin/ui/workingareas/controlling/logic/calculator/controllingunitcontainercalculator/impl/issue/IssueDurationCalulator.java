@@ -26,8 +26,8 @@ public class IssueDurationCalulator extends AbstractIssueBaseControllingUnitCont
 
         int actualTotalDuration  = ownControllingUnitContainer.getActualAbsolute();
         actualTotalDuration += totalSubIssueControllingContainer.getActualAbsolute();
-
-        setControllingUnitContainer(totalControllingUnitContainer, plannedTotalDuration, actualTotalDuration);
+        baseEntitiy.getTotalControllingUnit().getDuration().setPlannedAbsolutte(plannedTotalDuration);
+        baseEntitiy.getTotalControllingUnit().getDuration().setPlannedAbsolutte(actualTotalDuration);
     }
 
     @Override
@@ -59,13 +59,16 @@ public class IssueDurationCalulator extends AbstractIssueBaseControllingUnitCont
 
     @Override
     protected void setControllingUnitContainer(ControllingUnitContainer container, Integer actual, Integer planned) {
-        totalControllingUnitContainer.setPlannedAbsolutte(planned);
-        totalControllingUnitContainer.setActualAbsolute(actual);
-        totalControllingUnitContainer.setRemainingAbsolute(planned - actual);
-        final double usedRelative = (double) planned / (double) actual;
+        container.setPlannedAbsolutte(planned);
+        container.setActualAbsolute(actual);
+        container.setRemainingAbsolute(planned - actual);
+        double usedRelative = 100;
+        if(actual > 0)
+            usedRelative = (double) planned / (double) actual;
+
         final double remainingRelative = 1 - usedRelative;
-        totalControllingUnitContainer.setUsedRelative((usedRelative));
-        totalControllingUnitContainer.setRemainingRelative(remainingRelative);
+        container.setUsedRelative((usedRelative));
+        container.setRemainingRelative(remainingRelative);
     }
 
 }

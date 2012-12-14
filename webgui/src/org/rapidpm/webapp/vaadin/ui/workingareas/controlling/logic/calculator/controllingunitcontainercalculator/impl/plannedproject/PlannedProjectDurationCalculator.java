@@ -39,12 +39,15 @@ public class PlannedProjectDurationCalculator extends
 
     @Override
     protected void setControllingUnitContainer(ControllingUnitContainer container, Integer actual, Integer planned) {
-        totalControllingUnitContainer.setPlannedAbsolutte(planned);
-        totalControllingUnitContainer.setActualAbsolute(actual);
-        totalControllingUnitContainer.setRemainingAbsolute(planned - actual);
-        final double usedRelative = (double) planned / (double) actual;
+        container.setPlannedAbsolutte(planned);
+        container.setActualAbsolute(actual);
+        container.setRemainingAbsolute(planned - actual);
+        double usedRelative = 100;
+        if(actual > 0)
+            usedRelative = (double) planned / (double) actual;
+
         final double remainingRelative = 1 - usedRelative;
-        totalControllingUnitContainer.setUsedRelative((usedRelative));
-        totalControllingUnitContainer.setRemainingRelative(remainingRelative);
+        container.setUsedRelative((usedRelative));
+        container.setRemainingRelative(remainingRelative);
     }
 }

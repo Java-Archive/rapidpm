@@ -4,8 +4,8 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.Iss
 import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.builder.project.IssueTimeUnitBuilder;
 import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.demodaten.stab.BenutzerDemoDaten;
 
-import java.sql.Date;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -29,35 +29,35 @@ public class IssueTimeUnitsUsedDemoDaten {
 
     public IssueTimeUnitsUsedDemoDaten(){
         final IssueTimeUnit rpm1_1_TimeUnit = new IssueTimeUnitBuilder()
-                .setDatum(Date.valueOf("02.10.2012"))
+                .setDatum(Date.valueOf("2012-10-2"))
                 .setMinutes(120)
                 .setWorker(benutzerDemoDaten.getDanielMacDonaldBenutzer())
                 .getIssueTimeUnit();
         rpm1_timeUnitsUsedList.add(rpm1_1_TimeUnit);
 
         final IssueTimeUnit rpm2_1_TimeUnit = new IssueTimeUnitBuilder()
-                .setDatum(Date.valueOf("03.10.2012"))
+                .setDatum(Date.valueOf("2012-10-3"))
                 .setMinutes(360)
                 .setWorker(benutzerDemoDaten.getDanielMacDonaldBenutzer())
                 .getIssueTimeUnit();
         rpm2_timeUnitsUsedList.add(rpm2_1_TimeUnit);
 
         final IssueTimeUnit rpm2_2_TimeUnit = new IssueTimeUnitBuilder()
-                .setDatum(Date.valueOf("04.10.2012"))
+                .setDatum(Date.valueOf("2012-10-4"))
                 .setMinutes(180)
                 .setWorker(benutzerDemoDaten.getDanielMacDonaldBenutzer())
                 .getIssueTimeUnit();
         rpm2_timeUnitsUsedList.add(rpm2_2_TimeUnit);
 
         final IssueTimeUnit rpm2_3_TimeUnit = new IssueTimeUnitBuilder()
-                .setDatum(Date.valueOf("05.10.2012"))
+                .setDatum(Date.valueOf("2012-10-5"))
                 .setMinutes(180)
                 .setWorker(benutzerDemoDaten.getDanielMacDonaldBenutzer())
                 .getIssueTimeUnit();
         rpm2_timeUnitsUsedList.add(rpm2_3_TimeUnit);
 
         final IssueTimeUnit rpm2_4_TimeUnit = new IssueTimeUnitBuilder()
-                .setDatum(Date.valueOf("06.10.2012"))
+                .setDatum(Date.valueOf("2012-10-6"))
                 .setMinutes(240)
                 .setWorker(benutzerDemoDaten.getPeterMuellerBenutzer())
                 .getIssueTimeUnit();
@@ -65,42 +65,42 @@ public class IssueTimeUnitsUsedDemoDaten {
 
 
         final IssueTimeUnit rpm3_1_TimeUnit = new IssueTimeUnitBuilder()
-                .setDatum(Date.valueOf("06.10.2012"))
+                .setDatum(Date.valueOf("2012-10-6"))
                 .setMinutes(300)
                 .setWorker(benutzerDemoDaten.getPeterMuellerBenutzer())
                 .getIssueTimeUnit();
         rpm2_timeUnitsUsedList.add(rpm3_1_TimeUnit);
 
         final IssueTimeUnit rpm4_1_TimeUnit = new IssueTimeUnitBuilder()
-                .setDatum(Date.valueOf("06.10.2012"))
+                .setDatum(Date.valueOf("2012-10-6"))
                 .setMinutes(540)
                 .setWorker(benutzerDemoDaten.getDanielMacDonaldBenutzer())
                 .getIssueTimeUnit();
         rpm2_timeUnitsUsedList.add(rpm4_1_TimeUnit);
 
         final IssueTimeUnit rpm5_1_TimeUnit = new IssueTimeUnitBuilder()
-                .setDatum(Date.valueOf("07.10.2012"))
+                .setDatum(Date.valueOf("2012-10-7"))
                 .setMinutes(180)
                 .setWorker(benutzerDemoDaten.getUrsulaBeckerBenutzer())
                 .getIssueTimeUnit();
         rpm2_timeUnitsUsedList.add(rpm5_1_TimeUnit);
 
         final IssueTimeUnit rpm5_2_TimeUnit = new IssueTimeUnitBuilder()
-                .setDatum(Date.valueOf("07.10.2012"))
+                .setDatum(Date.valueOf("2012-10-7"))
                 .setMinutes(180)
                 .setWorker(benutzerDemoDaten.getPeterMuellerBenutzer())
                 .getIssueTimeUnit();
         rpm2_timeUnitsUsedList.add(rpm5_2_TimeUnit);
 
         final IssueTimeUnit rpm6_1_TimeUnit = new IssueTimeUnitBuilder()
-                .setDatum(Date.valueOf("07.10.2012"))
+                .setDatum(Date.valueOf("2012-10-7"))
                 .setMinutes(120)
                 .setWorker(benutzerDemoDaten.getKarlSchmidtBenutzer())
                 .getIssueTimeUnit();
         rpm2_timeUnitsUsedList.add(rpm6_1_TimeUnit);
 
         final IssueTimeUnit rpm7_1_TimeUnit = new IssueTimeUnitBuilder()
-                .setDatum(Date.valueOf("08.10.2012"))
+                .setDatum(Date.valueOf("2012-10-8"))
                 .setMinutes(330)
                 .setWorker(benutzerDemoDaten.getPeterMuellerBenutzer())
                 .getIssueTimeUnit();

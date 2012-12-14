@@ -29,18 +29,18 @@ public class PlanningUnitControllingDataCalculator {
             for(final PlanningUnit subPlanningUnit : planningUnit.getKindPlanningUnits())
                 new PlanningUnitControllingDataCalculator(subPlanningUnit);
 
-        PlanningUnitDurationCalculator durationCalculator
+        final PlanningUnitDurationCalculator durationCalculator
                 = new PlanningUnitDurationCalculator(planningUnit);
 
-        ControllingUnitContainer<Integer> subPlanningUnitDuration
+        final ControllingUnitContainer<Integer> subPlanningUnitDuration
                 = durationCalculator.getOwnControllingUnitContainer();
         planningUnit.getTotalSubPlaningUnitsControllingUnit().setDuration(subPlanningUnitDuration);
 
-        ControllingUnitContainer<Integer> subIssueDuration
+        final ControllingUnitContainer<Integer> subIssueDuration
                 = durationCalculator.getTotalSubIssueControllingContainer();
         planningUnit.getTotalOwnIssuesCotntrollingUnit().setDuration(subIssueDuration);
 
-        ControllingUnitContainer<Integer> totalDuration
+        final ControllingUnitContainer<Integer> totalDuration
                 = durationCalculator.getTotalControllingUnitContainer();
         planningUnit.getTotalControllingUnit().setDuration(totalDuration);
     }
