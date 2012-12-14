@@ -7,9 +7,7 @@ import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
 
 import java.io.File;
