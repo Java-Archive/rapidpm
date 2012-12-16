@@ -27,12 +27,11 @@ public class DescriptionEditableLayout extends EditableLayout {
         super(screen, descriptionsPanel);
         setCaption(description.getBezeichnung());
         descriptionTextArea = new RichTextArea(description.getBezeichnung(), description.getText());
-        addComponent(deleteButton);
     }
 
 
     @Override
     protected void buildForm() {
-       componentsLayout.addComponent(descriptionTextArea);
+        componentsLayout.addComponent(descriptionTextArea);
     }
 }

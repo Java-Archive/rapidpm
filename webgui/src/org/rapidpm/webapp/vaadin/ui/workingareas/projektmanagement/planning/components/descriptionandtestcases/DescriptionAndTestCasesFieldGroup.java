@@ -8,18 +8,23 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.textelement.TextElement;
 import org.rapidpm.persistence.system.security.Benutzer;
+import org.rapidpm.webapp.vaadin.ui.RapidPanel;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class DescriptionAndTestCasesFieldGroup extends FieldGroup {
-    private final List<DescriptionEditableLayout> descriptionEditableRapidPanels = new ArrayList<>();
+    private final List<RapidPanel> descriptionEditableRapidPanels = new ArrayList<>();
     private final List<RichTextArea> testcaseTextAreas = new ArrayList<>();
     private BeanItem<PlanningUnit> beanItemPlanningUnit;
+    private ProjektplanungScreen screen;
     private ResourceBundle messages;
 
-    public DescriptionAndTestCasesFieldGroup(final ResourceBundle messages, final PlanningUnit unmanagedPlanningUnit) {
+    public DescriptionAndTestCasesFieldGroup(final ProjektplanungScreen screen, final ResourceBundle messages,
+                                             final PlanningUnit unmanagedPlanningUnit) {
+        this.screen = screen;
         this.messages = messages;
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().findByID(unmanagedPlanningUnit.getId());
@@ -42,9 +47,11 @@ public class DescriptionAndTestCasesFieldGroup extends FieldGroup {
                 case(PlanningUnit.DESCRIPTIONS):
                     final PlanningUnit dataSource = beanItemPlanningUnit.getBean();
                     for(final TextElement description : dataSource.getDescriptions()){
-                        final DescriptionEditableLayout panel = new DescriptionEditableLayout(screen, descriptionsPanel, messages,
-                                description);
-                        descriptionEditableRapidPanels.add(panel);
+                        final RapidPanel framePanel = new RapidPanel();
+                        final DescriptionEditableLayout panel = new DescriptionEditableLayout(screen, framePanel,
+                                messages, description);
+                        framePanel.addComponent(panel);
+                        descriptionEditableRapidPanels.add(framePanel);
                     }
                     break;
                 case(PlanningUnit.TESTCASES):
@@ -62,7 +69,7 @@ public class DescriptionAndTestCasesFieldGroup extends FieldGroup {
         return testcaseTextAreas;
     }
 
-    public List<DescriptionEditableLayout> getDescriptionEditableRapidPanels() {
+    public List<RapidPanel> getDescriptionEditableRapidPanels() {
         return descriptionEditableRapidPanels;
     }
 }

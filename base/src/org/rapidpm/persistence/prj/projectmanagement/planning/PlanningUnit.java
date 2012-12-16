@@ -74,9 +74,11 @@ public class PlanningUnit {
     private int estimatedStoryPoints;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinTable(name="planningunit_testcase")
     private List<TextElement> testcases;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinTable(name="planningunit_description")
     private List<TextElement> descriptions;
 
 

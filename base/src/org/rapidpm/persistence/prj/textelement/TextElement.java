@@ -21,6 +21,7 @@ public class TextElement {
     public static final String NUMMER = "textElementNummer";
     public static final String BEZEICHNUNG = "bezeichnung";
     public static final String KOMMENTARE = "kommentarliste";
+    public static final String TEXT = "text";
 
     private static final Logger logger = Logger.getLogger(TextElement.class);
 

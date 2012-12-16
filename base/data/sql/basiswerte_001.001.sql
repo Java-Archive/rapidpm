@@ -207,6 +207,19 @@ VALUES (14,14,'Beendigung',14,1,null,1,1);
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_id', 15);
 
+INSERT INTO textelement(id, bezeichnung, text) VALUES (1,'erste beschreibung',
+                                                       'Dies hier stellt die erste beschreibung dar.');
+
+INSERT INTO textelement(id, bezeichnung, text) VALUES (2,'die zweite beschreibung',
+                                                       'Dies hier stellt die zweite tolle beschreibung dar.');
+
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('TextElement_id', 3);
+
+INSERT INTO planningunit_description (planningunit_id, descriptions_id) VALUES (1,1);
+
+INSERT INTO planningunit_description (planningunit_id, descriptions_id) VALUES (1,2);
+
+INSERT INTO pk_gen (gen_key, gen_value) VALUES ('PlanningUnit_Description_id',3);
 
 INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
 VALUES (1, 1);
