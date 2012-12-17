@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -19,7 +20,10 @@ public class PlannedProjectDAO extends DAO<Long, PlannedProject> {
         super(entityManager, PlannedProject.class);
     }
 
-
-
-
+    public PlannedProject loadFirstProject() {
+        final TypedQuery<PlannedProject> typedQuery = entityManager.createQuery(
+                "select p from PlannedProject p", PlannedProject.class)
+                .setMaxResults(1);
+        return getSingleResultOrNull(typedQuery);
+    }
 }

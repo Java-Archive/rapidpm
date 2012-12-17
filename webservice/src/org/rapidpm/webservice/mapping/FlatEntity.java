@@ -36,7 +36,14 @@ public abstract class FlatEntity<T> {
      */
     public abstract void toEntity(T entity, DaoFactory daoFactory);
 
-    protected Set<Long> entitiesToIds(final Iterable<?> entities) {
+    protected static Long getId(final Object entity) {
+        if (entity != null) {
+            return entityUtils.getOIDFromEntity(entity);
+        }
+        return null;
+    }
+
+    protected static Set<Long> entitiesToIds(final Iterable<?> entities) {
         final Set<Long> idSet = new HashSet<>();
         for (final Object entity : entities) {
             if (entity != null) {
@@ -44,10 +51,10 @@ public abstract class FlatEntity<T> {
                 if (id != null && id > 0L) {
                     idSet.add(id);
                 } else {
-                    logger.error("Entity has no valid ID: " + entity);
+                    logger.warn("Entity has no valid ID: " + entity);
                 }
             } else {
-                logger.error("Entity is null.");
+                logger.warn("Entity is null.");
             }
         }
         return idSet;

@@ -3,10 +3,10 @@ package org.rapidpm.webservice.persistence.prj.projectmanagement.execution.issue
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.webservice.mapping.EntityMapper;
-import org.rapidpm.webservice.persistence.prj.projectmanagement.execution.issuetracking.type.FlatIssueBase;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -32,6 +32,34 @@ public class IssueTrackingWS {
             return issueBaseDAO.findByID(id);
         }
     };
+
+    @WebMethod
+    public List<IssuePriority> getAllIssuePriorities() {
+        // TODO check permission
+        final IssuePriorityDAO issuePriorityDAO = daoFactory.getIssuePriorityDAO();
+        return issuePriorityDAO.loadAllEntities();
+    }
+
+    @WebMethod
+    public List<IssueStatus> getAllIssueStatuses() {
+        // TODO check permission
+        final IssueStatusDAO issueStatusDAO = daoFactory.getIssueStatusDAO();
+        return issueStatusDAO.loadAllEntities();
+    }
+
+    @WebMethod
+    public List<IssueType> getAllIssueTypes() {
+        // TODO check permission
+        final IssueTypeDAO issueTypeDAO = daoFactory.getIssueTypeDAO();
+        return issueTypeDAO.loadAllEntities();
+    }
+
+    @WebMethod
+    public List<IssueVersion> getAllIssueVersions() {
+        // TODO check permission
+        final IssueVersionDAO issueVersionDAO = daoFactory.getIssueVersionDAO();
+        return issueVersionDAO.loadAllEntities();
+    }
 
     @WebMethod
     public FlatIssueBase findIssueById(@WebParam(name = "projectId") final Long projectId,

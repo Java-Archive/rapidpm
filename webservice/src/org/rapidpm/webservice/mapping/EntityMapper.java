@@ -75,9 +75,23 @@ public abstract class EntityMapper<T, FT extends FlatEntity> {
     public List<FT> toFlatEntityList(final Iterable<? extends T> entities) {
         final List<FT> flatEntityList = new ArrayList<>();
         for (final T entity : entities) {
-            flatEntityList.add(toFlatEntity(entity));
+            final FT flatEntity = toFlatEntity(entity);
+            if (flatEntity != null) {
+                flatEntityList.add(flatEntity);
+            }
         }
         return flatEntityList;
+    }
+
+    public List<T> toEntityList(final Iterable<? extends FT> flatEntities) {
+        final List<T> entityList = new ArrayList<>();
+        for (final FT flatEntity : flatEntities) {
+            final T entity = toEntity(flatEntity);
+            if (entity != null) {
+                entityList.add(entity);
+            }
+        }
+        return entityList;
     }
 
     public void checkPermission(final String permission) throws AuthorizationException {
