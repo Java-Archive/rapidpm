@@ -56,7 +56,7 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
                             }
                         }
                     }
-                    final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
+                    final Iterator<Component> componentIterator = componentsLayout.iterator();
                     while (componentIterator.hasNext()) {
                         final Component component = componentIterator.next();
                         if (component instanceof Field) {
@@ -114,5 +114,10 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
         for (final TextField field : ressourceGroupFields) {
             componentsLayout.addComponent(field);
         }
+    }
+
+    @Override
+    protected void setLayout() {
+        componentsLayout = new FormLayout();
     }
 }

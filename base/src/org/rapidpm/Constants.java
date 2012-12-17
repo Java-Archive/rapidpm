@@ -123,4 +123,6 @@ public class Constants {
     public static final int FIELDLENGTH_LONG_NAME = 50;
     public static final int FIELDLENGTH_SMALL_NUMBER = 5;
     public static final String EMPTY_OR_SPACES_ONLY_PATTERN = "^\\s*$";
+
+    public static final String TEXTAREA_WRITABLE_HEIGHT = "500px";
 }

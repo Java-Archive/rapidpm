@@ -14,7 +14,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-public class TextElement {
+public class TextElement implements Comparable<TextElement> {
 
     public static final String ID = "id";
     public static final String UNLOCKED = "freigeschaltet";
@@ -91,5 +91,13 @@ public class TextElement {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    @Override
+    public int compareTo(TextElement o) {
+        if(this.getId() > o.getId()){
+            return 1;
+        }
+        return -1;
     }
 }

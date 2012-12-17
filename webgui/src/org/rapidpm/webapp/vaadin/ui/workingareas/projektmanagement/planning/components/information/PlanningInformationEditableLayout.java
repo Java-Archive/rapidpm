@@ -88,4 +88,9 @@ public class PlanningInformationEditableLayout extends EditableLayout {
         }
         componentsLayout.addComponent(fieldGroup.getDescriptionArea());
     }
+
+    @Override
+    protected void setLayout() {
+        componentsLayout = new FormLayout();
+    }
 }

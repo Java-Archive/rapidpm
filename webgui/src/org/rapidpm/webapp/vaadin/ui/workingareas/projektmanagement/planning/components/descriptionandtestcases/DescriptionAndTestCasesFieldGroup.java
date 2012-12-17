@@ -11,12 +11,10 @@ import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class DescriptionAndTestCasesFieldGroup extends FieldGroup {
-    private final List<RapidPanel> descriptionEditableRapidPanels = new ArrayList<>();
+    private final List<RapidPanel> descriptionEditableRapidPanels = new LinkedList<>();
     private final List<RichTextArea> testcaseTextAreas = new ArrayList<>();
     private BeanItem<PlanningUnit> beanItemPlanningUnit;
     private ProjektplanungScreen screen;
@@ -46,7 +44,12 @@ public class DescriptionAndTestCasesFieldGroup extends FieldGroup {
             switch(spaltenName){
                 case(PlanningUnit.DESCRIPTIONS):
                     final PlanningUnit dataSource = beanItemPlanningUnit.getBean();
+                    final LinkedList<TextElement> textElements = new LinkedList<>();
                     for(final TextElement description : dataSource.getDescriptions()){
+                        textElements.add(description);
+                    }
+                    Collections.sort(textElements);
+                    for (TextElement description : textElements) {
                         final RapidPanel framePanel = new RapidPanel();
                         final DescriptionEditableLayout panel = new DescriptionEditableLayout(screen, framePanel,
                                 messages, description);

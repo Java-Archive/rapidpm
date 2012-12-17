@@ -1,14 +1,15 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.descriptionandtestcases;
 
-import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.RichTextArea;
+import com.vaadin.data.Property;
+import com.vaadin.ui.*;
+import org.rapidpm.Constants;
 import org.rapidpm.persistence.prj.textelement.TextElement;
 import org.rapidpm.webapp.vaadin.ui.EditableLayout;
 import org.rapidpm.webapp.vaadin.ui.EditableRapidPanel;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
+import java.util.Iterator;
 import java.util.ResourceBundle;
 
 /**
@@ -26,12 +27,49 @@ public class DescriptionEditableLayout extends EditableLayout {
     public DescriptionEditableLayout(ProjektplanungScreen screen, RapidPanel descriptionsPanel, final ResourceBundle messages, final TextElement description){
         super(screen, descriptionsPanel);
         setCaption(description.getBezeichnung());
-        descriptionTextArea = new RichTextArea(description.getBezeichnung(), description.getText());
+        descriptionTextArea = new RichTextArea("", description.getText());
+        descriptionTextArea.setSizeUndefined();
+        descriptionTextArea.setWidth("100%");
+        buildForm();
+        descriptionTextArea.addReadOnlyStatusChangeListener(new Property.ReadOnlyStatusChangeListener() {
+            @Override
+            public void readOnlyStatusChange(Property.ReadOnlyStatusChangeEvent event) {
+                final RichTextArea textArea = (RichTextArea)event.getProperty();
+                if(textArea.isReadOnly()){
+                    textArea.setSizeUndefined();
+                    textArea.setWidth("100%");
+                } else {
+                    textArea.setHeight(Constants.TEXTAREA_WRITABLE_HEIGHT);
+                }
+            }
+        });
+        cancelButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                        final Iterator<Component> componentIterator = componentsLayout.iterator();
+                        while (componentIterator.hasNext()) {
+                            final Component component = componentIterator.next();
+                            if (component instanceof AbstractField) {
+                                component.setReadOnly(true);
+                            }
+                        }
+                        buttonLayout.setVisible(false);
+            }
+        });
+
     }
 
 
     @Override
     protected void buildForm() {
+        componentsLayout.setSizeFull();
         componentsLayout.addComponent(descriptionTextArea);
+        ((VerticalLayout)componentsLayout).setComponentAlignment(descriptionTextArea, Alignment.TOP_CENTER);
+        descriptionTextArea.setReadOnly(true);
+    }
+
+    @Override
+    protected void setLayout() {
+        componentsLayout = new VerticalLayout();
     }
 }
