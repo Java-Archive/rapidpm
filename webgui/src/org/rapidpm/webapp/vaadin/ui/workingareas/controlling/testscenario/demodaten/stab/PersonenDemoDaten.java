@@ -29,7 +29,7 @@ public class PersonenDemoDaten {
 
         peterMueller = new PersonBuilder()
                 .setMaennlich()
-                .setName("Peter", "Müller")
+                .setName("Peter", "Mueller")
                 .getPerson();
 
         danielMacDonald = new PersonBuilder()

@@ -1,6 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.demodaten.project;
 
 import org.apache.catalina.deploy.Test;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningStatus;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.builder.project.PlanningUnitBuilder;
@@ -52,8 +53,8 @@ public class PlanningUnitDemoDaten {
         return topLevelPlanningUnits;
     }
 
-    public PlanningUnitDemoDaten(long projectId){
-        issueBaseDemoDaten = new IssueBaseDemoDaten(projectId);
+    public PlanningUnitDemoDaten(PlannedProject plannedProject){
+        issueBaseDemoDaten = new IssueBaseDemoDaten(plannedProject.getId());
 
         planningUnit_1 = new PlanningUnitBuilder()
                 .setDescription("Planeinheit 1")

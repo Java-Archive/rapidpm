@@ -1,10 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.controlling.logic.calculator.controllingunitcontainercalculator.impl.issue;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.demodaten.project.IssueBaseDemoDaten;
-import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.demodaten.project.PlannedProjectDemoDaten;
 
 import static junit.framework.Assert.assertEquals;
 
@@ -15,27 +11,19 @@ import static junit.framework.Assert.assertEquals;
  * Time: 15:57
  * To change this template use File | Settings | File Templates.
  */
-public class IssueDurationCalulatorTest  {
+public class IssueDurationCalulatorTest extends BaseIssueCalculatorTest {
 
-    private static IssueBaseDemoDaten issueBaseDemoDaten;
-
-    @Before
-    public void bevoreClass(){
-        PlannedProjectDemoDaten plannedProjectDemoDaten = new PlannedProjectDemoDaten();
-        long projectId = plannedProjectDemoDaten.getPlannedProject().getId();
-        issueBaseDemoDaten = new IssueBaseDemoDaten(projectId);
-    }
 
     @Test
     public void testCalculationWithoutSubIssues(){
-        IssueBase testIssue =  issueBaseDemoDaten.getIssueWithSubIssues();
-        IssueDurationCalulator durationCalulator = new IssueDurationCalulator(testIssue);
+        IssueDurationCalulator durationCalulator = new IssueDurationCalulator(issueWithoutSubissues);
         durationCalulator.calculate();
 
         int ownPlannedDuration =  durationCalulator.getOwnControllingUnitContainer().getPlannedAbsolutte();
         int ownActualDuration = durationCalulator.getOwnControllingUnitContainer().getActualAbsolute();
         assertEquals(ownPlannedDuration, 120);
         assertEquals(ownActualDuration, 120);
+        System.out.println(ownPlannedDuration + " | " + ownActualDuration);
 
         int subIssuesPlannedDuration = durationCalulator.getTotalSubIssueControllingContainer().getPlannedAbsolutte();
         int subIssuesActualDuration = durationCalulator.getTotalSubIssueControllingContainer().getActualAbsolute();
@@ -48,11 +36,9 @@ public class IssueDurationCalulatorTest  {
         assertEquals(totalActualDuration, 120);
     }
 
-
     @Test
     public void testCalculationWithSubIssues(){
-        IssueBase testIssue =  issueBaseDemoDaten.getIssueWithSubIssues();
-        IssueDurationCalulator durationCalulator = new IssueDurationCalulator(testIssue);
+        IssueDurationCalulator durationCalulator = new IssueDurationCalulator(issueWithSubIssues);
         durationCalulator.calculate();
 
         int ownPlannedDuration =  durationCalulator.getOwnControllingUnitContainer().getPlannedAbsolutte();
@@ -72,28 +58,39 @@ public class IssueDurationCalulatorTest  {
     }
 
 //    @Test
-//    public void testCalculationWithNullIssue(){
-//
-//    }
-//
-//    @Test
 //    public void testCalculationWithNullEsistamtedIssueTImeUnit(){
-//
+//        IssueBase issueWithNullEstimatesTimeUnit = issueBaseDemoDaten.getIssueWithTimeUnitsEstimatedNull();
+//        IssueDurationCalulator durationCalulator = new IssueDurationCalulator(issueWithNullEstimatesTimeUnit);
+//        durationCalulator.calculate();
+//        assertNotNull(issueWithNullEstimatesTimeUnit.getTotalControllingUnit().getDuration());
+//        assertNotNull(issueWithNullEstimatesTimeUnit.getTotalSubIssuesBaseControllingUnit().getDuration());
 //    }
 //
 //    @Test
 //    public void testCalculationWithNullIssueTimeUnitsUsedList(){
-//
+//        IssueBase issueWithNullEstimatesTimeUnit = issueBaseDemoDaten.getIssueWithTimeUnitsUnisUsedNull();
+//        IssueDurationCalulator durationCalulator = new IssueDurationCalulator(issueWithNullEstimatesTimeUnit);
+//        durationCalulator.calculate();
+//        assertNotNull(issueWithNullEstimatesTimeUnit.getTotalControllingUnit().getDuration());
+//        assertNotNull(issueWithNullEstimatesTimeUnit.getTotalSubIssuesBaseControllingUnit().getDuration());
 //    }
 //
 //    @Test
 //    public void testCalculationWitEmptyEstimatedIssueTimeUnit(){
-//
+//        IssueBase issueWithNullEstimatesTimeUnit = issueBaseDemoDaten.getIssueWithEmptyTimeUnitEstimated();
+//        IssueDurationCalulator durationCalulator = new IssueDurationCalulator(issueWithNullEstimatesTimeUnit);
+//        durationCalulator.calculate();
+//        assertNotNull(issueWithNullEstimatesTimeUnit.getTotalControllingUnit().getDuration());
+//        assertNotNull(issueWithNullEstimatesTimeUnit.getTotalSubIssuesBaseControllingUnit().getDuration());
 //    }
 //
 //    @Test
 //    public void testCalculationWithEmptyTimeUnitsUsedList(){
-//
+//        IssueBase issueWithNullEstimatesTimeUnit = issueBaseDemoDaten.getIssueWithEmptyTimeUnitsUsed();
+//        IssueDurationCalulator durationCalulator = new IssueDurationCalulator(issueWithNullEstimatesTimeUnit);
+//        durationCalulator.calculate();
+//        assertNotNull(issueWithNullEstimatesTimeUnit.getTotalControllingUnit().getDuration());
+//        assertNotNull(issueWithNullEstimatesTimeUnit.getTotalSubIssuesBaseControllingUnit().getDuration());
 //    }
 
 }

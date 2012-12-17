@@ -1,5 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.builder.project;
 
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.system.security.Benutzer;
@@ -47,9 +49,6 @@ public class PlannedProjectBuilder {
     }
 
     public PlannedProject getPlannedProject(){
-        if(creator == null || responsiblePerson == null || planningUnitList == null || projectName.isEmpty())
-            throw new IllegalStateException("PlannedProjectBuilder: Es wurden nicht alle notwendigen Daten angegeben.");
-
         final PlannedProject plannedProject = new PlannedProject();
         plannedProject.setId(id);
         plannedProject.setCreator(creator);

@@ -84,9 +84,11 @@ public class IssueBase implements PersistInGraph {
     private Date dueDate_closed;
 
     //@Relational
+    @Transient
     private IssueTimeUnit timeUnitEstimated;
 
     //@Relational
+    @Transient
     private List<IssueTimeUnit> timeUnitsUsed = new ArrayList<>();
 
     @Relational(clazz = IssueComment.class, onDeleteCascade = true)
