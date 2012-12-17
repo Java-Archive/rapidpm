@@ -43,6 +43,15 @@
     <orderEntry type="library" exported="" name="lib-vaadin" level="project" />
     <orderEntry type="library" name="lib-tablemodell" level="project" />
     <orderEntry type="library" name="lib-vaadin-compile" level="project" />
+    <orderEntry type="module-library" scope="TEST">
+      <library>
+        <CLASSES>
+          <root url="jar://$APPLICATION_HOME_DIR$/lib/junit-4.10.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 
