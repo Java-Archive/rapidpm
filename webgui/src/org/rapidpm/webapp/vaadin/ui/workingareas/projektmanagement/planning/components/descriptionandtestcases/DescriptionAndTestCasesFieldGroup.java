@@ -2,7 +2,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.*;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
@@ -14,8 +13,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.Proj
 import java.util.*;
 
 public class DescriptionAndTestCasesFieldGroup extends FieldGroup {
-    private final List<RapidPanel> descriptionEditableRapidPanels = new LinkedList<>();
-    private final List<RichTextArea> testcaseTextAreas = new ArrayList<>();
+    private final List<RapidPanel> descriptionRapidPanels = new LinkedList<>();
+    private final List<RapidPanel> testcaseRapidPanels = new LinkedList<>();
     private BeanItem<PlanningUnit> beanItemPlanningUnit;
     private ProjektplanungScreen screen;
     private ResourceBundle messages;
@@ -41,26 +40,14 @@ public class DescriptionAndTestCasesFieldGroup extends FieldGroup {
         final List<Benutzer> users = daoFactory.getBenutzerDAO().loadAllEntities();
         for (final Object propertyId : getUnboundPropertyIds()) {
             final String spaltenName = propertyId.toString();
+            final PlanningUnit dataSource = beanItemPlanningUnit.getBean();
+            final LinkedList<TextElement> textElements = new LinkedList<>();
             switch(spaltenName){
                 case(PlanningUnit.DESCRIPTIONS):
-                    final PlanningUnit dataSource = beanItemPlanningUnit.getBean();
-                    final LinkedList<TextElement> textElements = new LinkedList<>();
-                    for(final TextElement description : dataSource.getDescriptions()){
-                        textElements.add(description);
-                    }
-                    Collections.sort(textElements);
-                    for (TextElement description : textElements) {
-                        final RapidPanel framePanel = new RapidPanel();
-                        final DescriptionEditableLayout panel = new DescriptionEditableLayout(screen, framePanel,
-                                messages, description);
-                        framePanel.addComponent(panel);
-                        descriptionEditableRapidPanels.add(framePanel);
-                    }
+                    fillList(dataSource.getDescriptions(), textElements, descriptionRapidPanels);
                     break;
                 case(PlanningUnit.TESTCASES):
-//                    final TextField orderNumberField = new TextField(messages.getString("planning_ordernumber"));
-//                    bind(orderNumberField, propertyId);
-//                    fieldList.add(orderNumberField);
+                    fillList(dataSource.getTestcases(), textElements, testcaseRapidPanels);
                     break;
                 default:
                     break;
@@ -68,11 +55,26 @@ public class DescriptionAndTestCasesFieldGroup extends FieldGroup {
         }
     }
 
-    public List<RichTextArea> getTestcaseTextAreas() {
-        return testcaseTextAreas;
+    private void fillList(final List<TextElement> textElementList, final LinkedList<TextElement>
+                          sortedTextElementList, final List<RapidPanel> fieldGroupList) {
+        for(final TextElement textElement : textElementList){
+            sortedTextElementList.add(textElement);
+        }
+        Collections.sort(sortedTextElementList);
+        for (final TextElement textElement : sortedTextElementList) {
+            final RapidPanel framePanel = new RapidPanel();
+            final TextElementEditableLayout panel = new TextElementEditableLayout(screen, framePanel,
+                    messages, textElement);
+            framePanel.addComponent(panel);
+            fieldGroupList.add(framePanel);
+        }
     }
 
-    public List<RapidPanel> getDescriptionEditableRapidPanels() {
-        return descriptionEditableRapidPanels;
+    public List<RapidPanel> getTestcaseRapidPanels() {
+        return testcaseRapidPanels;
+    }
+
+    public List<RapidPanel> getDescriptionRapidPanels() {
+        return descriptionRapidPanels;
     }
 }

@@ -19,12 +19,12 @@ import java.util.ResourceBundle;
  * Time: 11:57
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class DescriptionEditableLayout extends EditableLayout {
+public class TextElementEditableLayout extends EditableLayout {
 
     private Button deleteButton = new Button("-");
     private RichTextArea descriptionTextArea;
 
-    public DescriptionEditableLayout(ProjektplanungScreen screen, RapidPanel descriptionsPanel, final ResourceBundle messages, final TextElement description){
+    public TextElementEditableLayout(ProjektplanungScreen screen, RapidPanel descriptionsPanel, final ResourceBundle messages, final TextElement description){
         super(screen, descriptionsPanel);
         setCaption(description.getBezeichnung());
         descriptionTextArea = new RichTextArea("", description.getText());

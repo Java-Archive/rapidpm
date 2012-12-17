@@ -219,6 +219,12 @@ INSERT INTO textelement(id, bezeichnung, text) VALUES (3,'dritte beschreibung',
 INSERT INTO textelement(id, bezeichnung, text) VALUES (4,'die vierte beschreibung',
                                                        'Dies hier stellt die zweite tolle beschreibung dar.');
 
+INSERT INTO textelement(id, bezeichnung, text) VALUES (5,'der 1. testcase',
+                                                       'Dies hier stellt den zweiten tollen Testcase dar.');
+
+INSERT INTO textelement(id, bezeichnung, text) VALUES (6,'der 2. tolle testcase',
+                                                       'Dies hier stellt den zweiten tollen Testcase dar.');
+
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('TextElement_id', 5);
 
 INSERT INTO planningunit_description (planningunit_id, descriptions_id) VALUES (1,1);
@@ -230,6 +236,12 @@ INSERT INTO planningunit_description (planningunit_id, descriptions_id) VALUES (
 INSERT INTO planningunit_description (planningunit_id, descriptions_id) VALUES (1,4);
 
 INSERT INTO pk_gen (gen_key, gen_value) VALUES ('PlanningUnit_Description_id',5);
+
+INSERT INTO planningunit_testcase (planningunit_id, testcases_id) VALUES (1,5);
+
+INSERT INTO planningunit_testcase (planningunit_id, testcases_id) VALUES (1,6);
+
+INSERT INTO pk_gen (gen_key, gen_value) VALUES ('PlanningUnit_TestCase_id',3);
 
 INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
 VALUES (1, 1);

@@ -72,8 +72,12 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                     final DescriptionAndTestCasesFieldGroup descriptionAndTestCasesFieldGroup = new
                             DescriptionAndTestCasesFieldGroup(screen, screen.getMessagesBundle(), selectedPlanningUnit);
                     for (final RapidPanel descriptionEditableLayout : descriptionAndTestCasesFieldGroup
-                            .getDescriptionEditableRapidPanels()) {
+                            .getDescriptionRapidPanels()) {
                         descriptionsPanel.addComponent(descriptionEditableLayout);
+                    }
+                    for (final RapidPanel testCaseEditableLayout : descriptionAndTestCasesFieldGroup
+                            .getTestcaseRapidPanels()) {
+                        descriptionsPanel.addComponent(testCaseEditableLayout);
                     }
                 }
                 detailPanel.removeAllComponents();
