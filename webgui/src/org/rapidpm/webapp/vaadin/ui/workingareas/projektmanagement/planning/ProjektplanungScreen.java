@@ -278,9 +278,9 @@ public class ProjektplanungScreen extends Screen {
         borderLayout.addComponent(leftColumn);
         borderLayout.addComponent(centerColumn);
         borderLayout.addComponent(rightColumn);
-        borderLayout.setExpandRatio(leftColumn, 1);
-        borderLayout.setExpandRatio(centerColumn, 1);
-        borderLayout.setExpandRatio(rightColumn, 1);
+        borderLayout.setExpandRatio(leftColumn, 20);
+        borderLayout.setExpandRatio(centerColumn, 40);
+        borderLayout.setExpandRatio(rightColumn, 40);
         addComponent(borderLayout);
     }
 

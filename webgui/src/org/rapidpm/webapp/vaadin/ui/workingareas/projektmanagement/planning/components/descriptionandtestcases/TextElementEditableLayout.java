@@ -3,12 +3,17 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 import com.vaadin.data.Property;
 import com.vaadin.ui.*;
 import org.rapidpm.Constants;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.textelement.TextElement;
 import org.rapidpm.webapp.vaadin.ui.EditableLayout;
 import org.rapidpm.webapp.vaadin.ui.EditableRapidPanel;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
+import org.vaadin.dialogs.ConfirmDialog;
 
+import javax.persistence.EntityManager;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 
@@ -22,16 +27,22 @@ import java.util.ResourceBundle;
 public class TextElementEditableLayout extends EditableLayout {
 
     private Button deleteButton = new Button("-");
-    private RichTextArea descriptionTextArea;
+    private RichTextArea textElementTextArea;
+    private final PlanningUnit selectedPlanningUnit;
+    private ProjektplanungScreen screen;
 
-    public TextElementEditableLayout(ProjektplanungScreen screen, RapidPanel descriptionsPanel, final ResourceBundle messages, final TextElement description){
-        super(screen, descriptionsPanel);
-        setCaption(description.getBezeichnung());
-        descriptionTextArea = new RichTextArea("", description.getText());
-        descriptionTextArea.setSizeUndefined();
-        descriptionTextArea.setWidth("100%");
+    public TextElementEditableLayout(final PlanningUnit selectedPlanningUnit, final ProjektplanungScreen screen, 
+                                     final RapidPanel textElementsPanel,
+                                     final ResourceBundle messages, final TextElement textElement){
+        super(screen, textElementsPanel);
+        this.selectedPlanningUnit = selectedPlanningUnit;
+        this.screen = screen;
+        setCaption(textElement.getBezeichnung());
+        textElementTextArea = new RichTextArea("", textElement.getText());
+        textElementTextArea.setSizeUndefined();
+        textElementTextArea.setWidth("100%");
         buildForm();
-        descriptionTextArea.addReadOnlyStatusChangeListener(new Property.ReadOnlyStatusChangeListener() {
+        textElementTextArea.addReadOnlyStatusChangeListener(new Property.ReadOnlyStatusChangeListener() {
             @Override
             public void readOnlyStatusChange(Property.ReadOnlyStatusChangeEvent event) {
                 final RichTextArea textArea = (RichTextArea)event.getProperty();
@@ -56,16 +67,54 @@ public class TextElementEditableLayout extends EditableLayout {
                         buttonLayout.setVisible(false);
             }
         });
+        deleteButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                final ResourceBundle messagesBundle = screen.getMessagesBundle();
+//                ConfirmDialog.show(screen.getUi(), messagesBundle.getString("confirm"),
+//                        messagesBundle.getString("project_confirmdelete"), messagesBundle.getString("ok"),
+//                        messagesBundle.getString("cancel"),
+//                        new ConfirmDialog.Listener() {
+//                            @Override
+//                            public void onClose(ConfirmDialog dialog) {
+//                                if (dialog.isConfirmed()) {
+                                    deleteTextElement(textElement);
+//                                }
+//                            }
+//                        });
+            }
+        });
 
+    }
+
+    private void deleteTextElement(final TextElement textElement) {
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        if(selectedPlanningUnit.getDescriptions().contains(textElement)){
+            selectedPlanningUnit.getDescriptions().remove(textElement);
+        } else if(selectedPlanningUnit.getTestcases().contains(textElement)) {
+            selectedPlanningUnit.getTestcases().remove(textElement);
+        }
+        daoFactory.new Transaction() {
+            @Override
+            public void doTask() {
+                final EntityManager entityManager = daoFactory.getEntityManager();
+                entityManager.merge(selectedPlanningUnit);
+                entityManager.remove(textElement);
+                entityManager.flush();
+                entityManager.refresh(selectedPlanningUnit);
+            }
+        }.execute();
+        screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
     }
 
 
     @Override
     protected void buildForm() {
         componentsLayout.setSizeFull();
-        componentsLayout.addComponent(descriptionTextArea);
-        ((VerticalLayout)componentsLayout).setComponentAlignment(descriptionTextArea, Alignment.TOP_CENTER);
-        descriptionTextArea.setReadOnly(true);
+        componentsLayout.addComponent(deleteButton);
+        componentsLayout.addComponent(textElementTextArea);
+        ((VerticalLayout)componentsLayout).setComponentAlignment(textElementTextArea, Alignment.TOP_CENTER);
+        textElementTextArea.setReadOnly(true);
     }
 
     @Override

@@ -39,6 +39,7 @@ import org.rapidpm.persistence.prj.stammdaten.person.*;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomainDAO;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomainKlassifizierungDAO;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomainMetaDataDAO;
+import org.rapidpm.persistence.prj.textelement.TextElementDAO;
 import org.rapidpm.persistence.rohdaten.OntologieConnectionDAO;
 import org.rapidpm.persistence.rohdaten.OntologieDAO;
 import org.rapidpm.persistence.rohdaten.OntologieEntryDAO;
@@ -612,6 +613,9 @@ public class DaoFactory {
         return new ProjektanfrageDAO(getEntityManager());
     }
 
+    public TextElementDAO getTextElementDAO() {
+        return new TextElementDAO((getEntityManager()));
+    }
 
     public DAO.EntityUtils getEntityUtils() {
         return entityUtils;

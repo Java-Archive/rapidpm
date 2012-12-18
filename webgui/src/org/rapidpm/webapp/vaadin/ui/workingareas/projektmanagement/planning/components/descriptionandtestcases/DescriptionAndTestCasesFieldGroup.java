@@ -18,15 +18,17 @@ public class DescriptionAndTestCasesFieldGroup extends FieldGroup {
     private BeanItem<PlanningUnit> beanItemPlanningUnit;
     private ProjektplanungScreen screen;
     private ResourceBundle messages;
+    private final PlanningUnit selectedPlanningUnit;
 
     public DescriptionAndTestCasesFieldGroup(final ProjektplanungScreen screen, final ResourceBundle messages,
-                                             final PlanningUnit unmanagedPlanningUnit) {
+                                             final PlanningUnit selectedPlanningUnit) {
         this.screen = screen;
         this.messages = messages;
+        this.selectedPlanningUnit = selectedPlanningUnit;
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().findByID(unmanagedPlanningUnit.getId());
+        final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().findByID(selectedPlanningUnit.getId());
         if(planningUnit == null){
-            beanItemPlanningUnit = new BeanItem<>(unmanagedPlanningUnit);
+            beanItemPlanningUnit = new BeanItem<>(selectedPlanningUnit);
         } else {
             beanItemPlanningUnit = new BeanItem<>(planningUnit);
         }
@@ -63,8 +65,8 @@ public class DescriptionAndTestCasesFieldGroup extends FieldGroup {
         Collections.sort(sortedTextElementList);
         for (final TextElement textElement : sortedTextElementList) {
             final RapidPanel framePanel = new RapidPanel();
-            final TextElementEditableLayout panel = new TextElementEditableLayout(screen, framePanel,
-                    messages, textElement);
+            final TextElementEditableLayout panel = new TextElementEditableLayout(selectedPlanningUnit,
+                    screen, framePanel, messages, textElement);
             framePanel.addComponent(panel);
             fieldGroupList.add(framePanel);
         }
