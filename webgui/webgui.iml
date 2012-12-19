@@ -12,6 +12,10 @@
         <webroots>
           <root url="file://$MODULE_DIR$/web" relative="/" />
         </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/src" />
+          <root url="file://$MODULE_DIR$/conf" />
+        </sourceRoots>
       </configuration>
       <facet type="Vaadin" name="Vaadin Application">
         <configuration vaadinUsedWebRootPathUrl="file://$MODULE_DIR$/web" vaadinGWTLocationPath="/prog/gwt-2.5.0.rc1" vaadinVMOptions="-Xss8M -Xmx512M -XX:MaxPermSize=512M" vaadinJavaScriptStyle="Pretty" vaadinCompilerThreads="4" />
