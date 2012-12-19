@@ -15,7 +15,6 @@
         <sourceRoots>
           <root url="file://$MODULE_DIR$/src" />
           <root url="file://$MODULE_DIR$/conf" />
-          <root url="file://$MODULE_DIR$/src-wsdl" />
         </sourceRoots>
       </configuration>
       <facet type="Vaadin" name="Vaadin Application">
@@ -35,7 +34,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/conf" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src-wsdl" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src-test" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -43,15 +41,6 @@
     <orderEntry type="library" exported="" name="lib-vaadin" level="project" />
     <orderEntry type="library" name="lib-tablemodell" level="project" />
     <orderEntry type="library" name="lib-vaadin-compile" level="project" />
-    <orderEntry type="module-library" scope="TEST">
-      <library>
-        <CLASSES>
-          <root url="jar://$APPLICATION_HOME_DIR$/lib/junit-4.10.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
   </component>
 </module>
 
