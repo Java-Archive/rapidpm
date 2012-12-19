@@ -24,75 +24,29 @@ import static junit.framework.Assert.assertNotNull;
  */
 public class PlannedProjectDurationCalculatorTest  extends BasePlannedProjectCalculatorTest {
 
-    private final PlannedProjectDemoDaten plannedProjectDemoDaten = new PlannedProjectDemoDaten();
 
     @Test
     public void testCalculationWithSubPlanningUnits(){
-        PlannedProject plannedProject = plannedProjectDemoDaten.getPlannedProject();
         PlannedProjectDurationCalculator durationCalculator = new PlannedProjectDurationCalculator
-                (plannedProject);
-
-        int plannedProjectDuration = plannedProject.getTotalProjectControllingunit().getDuration()
-                .getPlannedAbsolutte();
-        int actualProjectDuration = plannedProject.getTotalProjectControllingunit().getDuration()
-                .getActualAbsolute();
-        int remainingProjectDuration = plannedProject.getTotalProjectControllingunit().getDuration()
-                .getRemainingAbsolute();
-        double usedRelative = plannedProject.getTotalProjectControllingunit().getDuration().getUsedRelative();
-        double remainingRelative = plannedProject.getTotalProjectControllingunit().getDuration().getRemainingRelative
-                ();
-
-        assertEquals(plannedProjectDuration, 3000);
-        assertEquals(actualProjectDuration, 2730);
-        assertEquals(remainingProjectDuration,270);
-        assertEquals(usedRelative, 91.0);
-        assertEquals(remainingRelative, 9.0);
+                (plannedProjectWithSubPlanningUnitsAndSubIssues);
+        assertEquals(plannedProjectWithSubPlanningUnitsAndSubIssues.getTotalProjectControllingunit(),
+                plannedProjectWithBothChildreanTotalDuration);
     }
 
     @Test
     public void testCalculationWithEmptySubPlanningUnitList(){
-        PlannedProject plannedProject = plannedProjectDemoDaten.getPlannedPorjectWithoutSubPlanningUnits();
         PlannedProjectDurationCalculator durationCalculator = new PlannedProjectDurationCalculator
-                (plannedProject);
+                (plannedProjectWithEmptySubPlanningUnitList);
 
-        int plannedProjectDuration = plannedProject.getTotalProjectControllingunit().getDuration()
-                .getPlannedAbsolutte();
-        int actualProjectDuration = plannedProject.getTotalProjectControllingunit().getDuration()
-                .getActualAbsolute();
-        int remainingProjectDuration = plannedProject.getTotalProjectControllingunit().getDuration()
-                .getRemainingAbsolute();
-        double usedRelative = plannedProject.getTotalProjectControllingunit().getDuration().getUsedRelative();
-        double remainingRelative = plannedProject.getTotalProjectControllingunit().getDuration().getRemainingRelative
-                ();
-
-        assertEquals(plannedProjectDuration, 0);
-        assertEquals(actualProjectDuration, 0);
-        assertEquals(remainingProjectDuration,0);
-        assertEquals(usedRelative, 0.0);
-        assertEquals(remainingRelative, 0.0);
+        assertEquals(plannedProjectWithEmptySubPlanningUnitList.getTotalProjectControllingunit(),
+                plannedProjectWithEmptySubPlanningUnitListDuration);
     }
 
-    @Test
-    public void testCalculationWithSubPlanningUnitsListIsNull(){
-        PlannedProject plannedProject = plannedProjectDemoDaten.getPlannedProjectWithSubPlanningUnitsNull();
-        PlannedProjectDurationCalculator durationCalculator = new PlannedProjectDurationCalculator
-                (plannedProject);
+    @Test(expected = NullPointerException.class)
+    public void testNullParameter(){
+        PlannedProjectDurationCalculator durationCalculator = new PlannedProjectDurationCalculator(null);
+        durationCalculator.calculate();
 
-        int plannedProjectDuration = plannedProject.getTotalProjectControllingunit().getDuration()
-                .getPlannedAbsolutte();
-        int actualProjectDuration = plannedProject.getTotalProjectControllingunit().getDuration()
-                .getActualAbsolute();
-        int remainingProjectDuration = plannedProject.getTotalProjectControllingunit().getDuration()
-                .getRemainingAbsolute();
-        double usedRelative = plannedProject.getTotalProjectControllingunit().getDuration().getUsedRelative();
-        double remainingRelative = plannedProject.getTotalProjectControllingunit().getDuration().getRemainingRelative
-                ();
-
-        assertEquals(plannedProjectDuration, 0);
-        assertEquals(actualProjectDuration, 0);
-        assertEquals(remainingProjectDuration,0);
-        assertEquals(usedRelative, 0.0);
-        assertEquals(remainingRelative, 0.0);
     }
 
 

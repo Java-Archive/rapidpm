@@ -5,11 +5,15 @@ import org.junit.BeforeClass;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.controlling.BaseControllingunit;
+import org.rapidpm.persistence.prj.projectmanagement.controlling.ControllingUnitContainer;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.builder.project.IntegerControllingUnitContainerBuilder;
 import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.demodaten.project.IssueBaseDemoDaten;
 import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.demodaten.project.PlannedProjectDemoDaten;
 import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.demodaten.project.PlanningUnitDemoDaten;
+
+import static junit.framework.Assert.assertEquals;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,31 +26,29 @@ public class BaseIssueCalculatorTest {
     protected static long projectId;
     protected static PlannedProject plannedProject;
     protected static IssueBase issueWithSubIssues;
-    protected static BaseControllingunit issueWithSubIssuesOwnBaeControllingUnit;
-    protected static BaseControllingunit issueWithSubIssueSubIssuesBaeControllingUnit;
-    protected static BaseControllingunit issueWithSubIssuesTotalBaeControllingUnit;
+    protected static BaseControllingunit issueWithSubIssuesOwnBaeControllingUnit = new BaseControllingunit();
+    protected static BaseControllingunit issueWithSubIssueSubIssuesBaeControllingUnit = new BaseControllingunit();
+    protected static BaseControllingunit issueWithSubIssuesTotalBaeControllingUnit = new BaseControllingunit();
 
     protected static IssueBase issueWithoutSubissues;
-    protected static BaseControllingunit issueWithoutSubIssuesOwnBaeControllingUnit;
-    protected static BaseControllingunit issueWithoutSubIssueSubIssuesBaeControllingUnit;
-    protected static BaseControllingunit issueWithoutSubIssuesTotalBaeControllingUnit;
+    protected static BaseControllingunit issueWithoutSubIssuesOwnBaeControllingUnit = new BaseControllingunit();
+    protected static BaseControllingunit issueWithoutSubIssueSubIssuesBaeControllingUnit = new BaseControllingunit();
+    protected static BaseControllingunit issueWithoutSubIssuesTotalBaeControllingUnit = new BaseControllingunit();
 
     protected static IssueBase issueWithEmptyTimeUnitEstimated;
     protected static IssueBase issueWithEmptyTimeUnitsUsed;
     protected static IssueBase issueWithTimeUnitsEstimatedNull;
     protected static IssueBase issueWithTimeUnitsUnisUsedNull;
-    protected static BaseControllingunit issueWithTimeUnitEstimatedNullOrEmptyOwnBaseControllingUnit;
-    protected static BaseControllingunit issueWithTimeUnitsUsedNullOrEmptyOwnBaseControllingUnit;
+    protected static BaseControllingunit issueWithTimeUnitEstimatedNullOrEmptyOwnBaseControllingUnit = new BaseControllingunit();
+    protected static BaseControllingunit issueWithTimeUnitsUsedNullOrEmptyOwnBaseControllingUnit = new BaseControllingunit();
 
     @BeforeClass
     public static void persistDemoTestScenario(){
         DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         PlannedProjectDemoDaten plannedProjectDemoDaten = new PlannedProjectDemoDaten();
+        plannedProject = plannedProjectDemoDaten.getPlannedProject();
         daoFactory.saveOrUpdate(plannedProject);
         daoFactory.getPlannedProjectDAO().refresh(plannedProject);
-        PlanningUnitDemoDaten planningUnitDemoDaten = new PlanningUnitDemoDaten(plannedProject);
-
-
 
         IssueBaseDemoDaten issueBaseDemoDaten = new IssueBaseDemoDaten(plannedProject.getId());
 
@@ -68,7 +70,22 @@ public class BaseIssueCalculatorTest {
         issueWithTimeUnitsUnisUsedNull = issueBaseDemoDaten.getIssueWithTimeUnitsUnisUsedNull();
         issueWithTimeUnitsUnisUsedNull = daoFactory.getIssueBaseDAO(projectId).persist(issueWithTimeUnitsUnisUsedNull);
 
-        System.out.println("ProjectID = " + plannedProject.getId());
+        issueWithSubIssuesOwnBaeControllingUnit.setDuration(new IntegerControllingUnitContainerBuilder()
+                .getControllingUnitContainer(1080, 960));
+        issueWithSubIssueSubIssuesBaeControllingUnit.setDuration(new IntegerControllingUnitContainerBuilder()
+                .getControllingUnitContainer(1080, 960));
+        issueWithSubIssuesTotalBaeControllingUnit.setDuration(new IntegerControllingUnitContainerBuilder()
+                .getControllingUnitContainer(2160, 2160));
+        issueWithoutSubIssuesOwnBaeControllingUnit.setDuration(new IntegerControllingUnitContainerBuilder()
+                .getControllingUnitContainer(120, 120));
+        issueWithoutSubIssueSubIssuesBaeControllingUnit.setDuration(new IntegerControllingUnitContainerBuilder()
+                .getControllingUnitContainer(0, 0));
+        issueWithoutSubIssuesTotalBaeControllingUnit.setDuration(new IntegerControllingUnitContainerBuilder()
+                .getControllingUnitContainer(120, 120));
+        issueWithTimeUnitEstimatedNullOrEmptyOwnBaseControllingUnit.setDuration(new IntegerControllingUnitContainerBuilder()
+                .getControllingUnitContainer(120, 120));
+        issueWithTimeUnitsUsedNullOrEmptyOwnBaseControllingUnit.setDuration(new IntegerControllingUnitContainerBuilder()
+                .getControllingUnitContainer(120, 120));
     }
 
     @AfterClass
@@ -81,7 +98,6 @@ public class BaseIssueCalculatorTest {
         daoFactory.getIssueBaseDAO(projectId).delete(issueWithEmptyTimeUnitsUsed);
         daoFactory.getIssueBaseDAO(projectId).delete(issueWithTimeUnitsEstimatedNull);
         daoFactory.getIssueBaseDAO(projectId).delete(issueWithTimeUnitsUnisUsedNull);
-
         daoFactory.remove(plannedProject);
 
     }

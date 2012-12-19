@@ -12,6 +12,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.demoda
 import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.demodaten.project.PlannedProjectDemoDaten;
 import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.demodaten.project.PlanningUnitDemoDaten;
 
+import static junit.framework.Assert.assertEquals;
+
 /**
  * Created with IntelliJ IDEA.
  * User: donnie
@@ -21,21 +23,53 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.controlling.testscenario.demoda
  */
 public class PlanningUnitDurationCalculatorTest  extends BasePlanningUnitCalculatorTest {
 
-    @Test
+    @Test(expected = NullPointerException.class)
     public void testNullParameter(){
+        PlanningUnitDurationCalculator durationCalculator = new PlanningUnitDurationCalculator(null);
+        durationCalculator.calculate();
     }
 
     @Test
-    public void testCalculationWithNoSubPlanningUnits(){}
+    public void testCalculationWithBothSubTypes(){
+        PlanningUnitDurationCalculator durationCalculator = new PlanningUnitDurationCalculator(planningUnitWithSubPlanningUnitsAndSubIssues);
+        durationCalculator.calculate();
+        assertEquals(planningUnitWithSubPlanningUnitsAndSubIssues.getTotalOwnIssuesCotntrollingUnit(),
+                plannedProjectWithBothChildreanOwnDuration);
+        assertEquals(planningUnitWithSubPlanningUnitsAndSubIssues.getTotalSubPlaningUnitsControllingUnit(),
+                plannedProjectWithBothChildreanSubPlanningUnitsDuration);
+        assertEquals(planningUnitWithSubPlanningUnitsAndSubIssues.getTotalControllingUnit(),
+                plannedProjectWithBothChildreanTotalDuration);
+    }
 
     @Test
-    public void testCalculationWithNoSubIssues(){}
+    public void testCalculationWithoutAnyChildrean(){
+        PlanningUnitDurationCalculator durationCalculator = new PlanningUnitDurationCalculator(planningUnitWithoutSubPlanningUnitsAndoutSubIssues);
+        durationCalculator.calculate();
+        assertEquals(planningUnitWithoutSubPlanningUnitsAndoutSubIssues.getTotalOwnIssuesCotntrollingUnit(),
+                plannedProjectWithoutBothChildreanOwnDuration);
+        assertEquals(planningUnitWithoutSubPlanningUnitsAndoutSubIssues.getTotalSubPlaningUnitsControllingUnit(),
+                plannedProjectWithoutBothChildreanSubPlanningUnitsDuration);
+        assertEquals(planningUnitWithoutSubPlanningUnitsAndoutSubIssues.getTotalControllingUnit(),
+                plannedProjectWithoutBothChildreanTotalDuration);
+    }
 
     @Test
-    public void testCalculationWithSubPlanningUnitListNull(){}
+    public void testCalculationWithNoSubPlanningUnitsWithSubIssues(){
+        PlanningUnitDurationCalculator durationCalculator = new PlanningUnitDurationCalculator(planningUnitWithoutSubPlanningUnitWithSubIssues);
+        durationCalculator.calculate();
+        assertEquals(planningUnitWithoutSubPlanningUnitWithSubIssues, planningUnitWithoutSubPlanningUnitWithSubIssuesTotalDuration);
+    }
 
     @Test
-    public void testCalculationWithSubIssueListNull(){}
+    public void testCalculationWithoutSubIssuesWithSubPlanningUnits(){
+        PlanningUnitDurationCalculator durationCalculator = new PlanningUnitDurationCalculator
+                (planningUnitWithSubPlanningUnitsWithoztSubIssues);
+        durationCalculator.calculate();
+        assertEquals(planningUnitWithSubPlanningUnitsWithoztSubIssues.getTotalSubPlaningUnitsControllingUnit(),
+                planningUnitWithSubPlanningUnitsWithoztSubIssuesSubPlanningUnitsDuration);
+    }
+
+
 
 
 }

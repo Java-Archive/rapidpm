@@ -42,6 +42,8 @@ public class PlanningUnitDemoDaten {
     private PlanningUnit planningUnit_1_1;
     private PlanningUnit planningUnit_1_2;
     private PlanningUnit planningUnit_2;
+    private PlanningUnit planningUnitWithSubPlanningUnitWithoutSubIssues;
+    private PlanningUnit planningUnitWithoutSubPlanningUnitsWithoutSubIssues;
 
     private Set<PlanningUnit> topLevelPlanningUnits;
 
@@ -51,6 +53,30 @@ public class PlanningUnitDemoDaten {
 
     public Set<PlanningUnit> getTopLevelPlanningUnits() {
         return topLevelPlanningUnits;
+    }
+
+    public PlanningUnit getPlanningUnit_1() {
+        return planningUnit_1;
+    }
+
+    public PlanningUnit getPlanningUnit_1_1() {
+        return planningUnit_1_1;
+    }
+
+    public PlanningUnit getPlanningUnit_1_2() {
+        return planningUnit_1_2;
+    }
+
+    public PlanningUnit getPlanningUnit_2() {
+        return planningUnit_2;
+    }
+
+    public PlanningUnit getPlanningUnitWithSubPlanningUnitWithoutSubIssues() {
+        return planningUnitWithSubPlanningUnitWithoutSubIssues;
+    }
+
+    public PlanningUnit getPlanningUnitWithoutSubPlanningUnitsWithoutSubIssues() {
+        return planningUnitWithoutSubPlanningUnitsWithoutSubIssues;
     }
 
     public PlanningUnitDemoDaten(PlannedProject plannedProject){
@@ -101,6 +127,47 @@ public class PlanningUnitDemoDaten {
                 .setResponsiblePerson(benutzerDemoDaten.getUrsulaBeckerBenutzer())
                 .setTestCaseList(testCaseDemoDaten.getTestCaseList_PlanningUnit2())
                 .setIssueBaseList(issueBaseDemoDaten.getPlanningUnit2_issueBaseList())
+                .getPlanningUnit();
+
+        PlanningUnit subPlanningUnit1 = new PlanningUnitBuilder()
+                .setDescription("UnterPlaneinheit")
+                .setEstimatedStorypoints(8)
+                .setKindPlanningUnitList(null)
+                .setPlaningStatus(inprogressPlanningStatus)
+                .setResponsiblePerson(benutzerDemoDaten.getUrsulaBeckerBenutzer())
+                .setTestCaseList(testCaseDemoDaten.getTestCaseList_PlanningUnit2())
+                .getPlanningUnit();
+
+        PlanningUnit subPlanningUnit2 = new PlanningUnitBuilder()
+                .setDescription("UnterPlaneinheit")
+                .setEstimatedStorypoints(8)
+                .setKindPlanningUnitList(null)
+                .setPlaningStatus(inprogressPlanningStatus)
+                .setResponsiblePerson(benutzerDemoDaten.getUrsulaBeckerBenutzer())
+                .setTestCaseList(testCaseDemoDaten.getTestCaseList_PlanningUnit2())
+                .getPlanningUnit();
+
+        planningUnitWithSubPlanningUnitWithoutSubIssues = new PlanningUnitBuilder()
+                .setDescription("UeberPlaneinheit")
+                .setEstimatedStorypoints(8)
+                .setKindPlanningUnitList(null)
+                .setPlaningStatus(inprogressPlanningStatus)
+                .setResponsiblePerson(benutzerDemoDaten.getUrsulaBeckerBenutzer())
+                .setTestCaseList(testCaseDemoDaten.getTestCaseList_PlanningUnit2())
+                .getPlanningUnit();
+
+        Set<PlanningUnit> subPlanningUNitList = new HashSet<>();
+        subPlanningUNitList.add(subPlanningUnit1);
+        subPlanningUNitList.add(subPlanningUnit2);
+        planningUnitWithSubPlanningUnitWithoutSubIssues.setKindPlanningUnits(subPlanningUNitList);
+
+        planningUnitWithoutSubPlanningUnitsWithoutSubIssues = new PlanningUnitBuilder()
+                .setDescription("Alleinstehende Planeinheit")
+                .setEstimatedStorypoints(8)
+                .setKindPlanningUnitList(null)
+                .setPlaningStatus(inprogressPlanningStatus)
+                .setResponsiblePerson(benutzerDemoDaten.getUrsulaBeckerBenutzer())
+                .setTestCaseList(testCaseDemoDaten.getTestCaseList_PlanningUnit2())
                 .getPlanningUnit();
 
         topLevelPlanningUnits = new HashSet<>();
