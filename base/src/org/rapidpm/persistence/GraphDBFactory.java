@@ -12,6 +12,8 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 import java.util.ArrayList;
 import java.util.List;
 
+import java.io.File;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Alvin
@@ -22,7 +24,7 @@ import java.util.List;
 public class GraphDBFactory {
     private static final Logger logger = Logger.getLogger(GraphDBFactory.class);
 
-    public static final String DB_PATH = "C:/out/graphDB";
+    public static final String DB_PATH = "./data/graphDB/";
     private final GraphDatabaseService graphDb;
     private static GraphDBFactory instance;
 

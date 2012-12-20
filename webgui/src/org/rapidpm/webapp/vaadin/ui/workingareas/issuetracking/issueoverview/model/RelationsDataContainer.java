@@ -49,6 +49,7 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
 
     @Override
     public void fillContainer(final IssueBase issue) {
+        setCurrentIssue(issue);
         resetTransactions();
         this.removeAllItems();
         Object itemId;

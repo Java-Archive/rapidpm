@@ -9,6 +9,7 @@
         <entry key="Hibernate Validator" value="true" />
         <entry key="JPA Validator" value="true" />
         <entry key="Jasper Validator" value="false" />
+        <entry key="Spring Model Validator" value="false" />
         <entry key="Web Xml Validator" value="true" />
       </map>
     </option>

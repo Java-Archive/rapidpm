@@ -5,6 +5,7 @@
 
 package org.rapidpm.persistence;
 
+import com.google.common.base.Joiner;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.query.AuditEntity;
@@ -12,8 +13,6 @@ import org.hibernate.envers.query.AuditQuery;
 import org.hibernate.envers.query.AuditQueryCreator;
 import org.jboss.logging.Logger;
 
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -21,10 +20,7 @@ import javax.persistence.TypedQuery;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -38,7 +34,6 @@ import java.util.Set;
  *        Time: 22:27:47
  */
 
-@SuppressWarnings("EjbInterceptorInspection")
 public class DAO<K extends Number, E> implements Serializable {
     private static final Logger logger = Logger.getLogger(DAO.class);
 
@@ -252,10 +247,26 @@ public class DAO<K extends Number, E> implements Serializable {
         return entityliste;
     }
 
+    @Deprecated
     public List<E> loadWithOIDList(final Set<Long> oids) {
         final List<Long> oidlist = new ArrayList<>();
         oidlist.addAll(oids);
         return loadWithOIDList(oidlist);
+    }
+
+    public Set<E> loadWithOIDSet(final Set<Long> oids) {
+        final Set<E> entitySet = new HashSet<>();
+        if (oids == null || oids.isEmpty()) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("OID-Set war leer bzw. null..");
+            }
+        } else {
+            final String oidtxt = Joiner.on(',').skipNulls().join(oids);
+            final TypedQuery<E> query = entityManager.createQuery("from " + entityClass.getName() + " e where e.id in (" + oidtxt + ")", entityClass);
+            final List<E> resultList = query.getResultList();
+            entitySet.addAll(resultList);
+        }
+        return entitySet;
     }
 
 
