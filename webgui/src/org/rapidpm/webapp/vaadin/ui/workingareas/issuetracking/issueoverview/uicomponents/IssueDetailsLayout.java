@@ -16,6 +16,8 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.FormattedDateStringToDateConverter;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NameAlreadyInUseException;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NoNameException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.InitializeEmptyDatatypes;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabAddButtonClickListener;
@@ -419,7 +421,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         setLayoutReadOnly(true);
     }
 
-    public IssueBase setIssueProperties(boolean newIssue) {
+    public IssueBase setIssueProperties(boolean newIssue) throws NoNameException, NameAlreadyInUseException {
         if (newIssue) {
             issue = new IssueBase(screen.getUi().getCurrentProject().getId());
             issue.setReporter(screen.getUi().getCurrentUser());
@@ -431,8 +433,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
         if (issue == null) {
             logger.error("Issue to save was null");
-            //throw new NullPointerException("Issue to save was null");
-            return null;
+            throw new NullPointerException("Issue to save was null");
         }
 
 
@@ -440,9 +441,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             headerSummaryField.setRequired(true);
             headerSummaryField.setRequiredError("Issue must have a name!");
             logger.warn("Issue must have a name!");
-            //throw new
-            Notification.show("Issue must have a name", Notification.Type.WARNING_MESSAGE);
-            return null;
+            throw new NoNameException();
         }
 
 
@@ -487,9 +486,12 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         }
 
         relContainer.resetTransactions();
-        //try {
-            issue = DaoFactorySingelton.getInstance().getIssueBaseDAO(screen.getUi().getCurrentProject().getId()).persist
-                (issue);
+        try {
+            issue = DaoFactorySingelton.getInstance().getIssueBaseDAO(screen.getUi().getCurrentProject().getId())
+                    .persist(issue);
+        } catch (IllegalArgumentException e) {
+            throw new NameAlreadyInUseException();
+        }
         return issue;
     }
 
