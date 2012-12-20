@@ -23,7 +23,6 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.log
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabAddButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabDeleteButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.*;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.IssueSettingsScreen;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -80,12 +79,12 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         final InitializeEmptyDatatypes initEntityLists = new InitializeEmptyDatatypes();
         converter = new FormattedDateStringToDateConverter(new SimpleDateFormat("dd.MM.yy"));
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final List<IssueType> typeList = initEntityLists.initDatatypes(IssueType.class, daoFactory.getIssueTypeDAO());
-        final List<IssueStatus> statusList = initEntityLists.initDatatypes(IssueStatus.class, daoFactory.getIssueStatusDAO());
-        final List<IssuePriority> priorityList = initEntityLists.initDatatypes(IssuePriority.class, daoFactory.getIssuePriorityDAO());
-        final List<IssueVersion> versionList = initEntityLists.initDatatypes(IssueVersion.class, daoFactory.getIssueVersionDAO());
-        final List<IssueStoryPoint> storyPointList = initEntityLists.initDatatypes(IssueStoryPoint.class, daoFactory.getIssueStoryPointDAO());
-        final List<IssueComponent> componentsList = initEntityLists.initDatatypes(IssueComponent.class, daoFactory.getIssueComponentDAO());
+        final List<IssueType> typeList = initEntityLists.initDatatype(IssueType.class, daoFactory.getIssueTypeDAO());
+        final List<IssueStatus> statusList = initEntityLists.initDatatype(IssueStatus.class, daoFactory.getIssueStatusDAO());
+        final List<IssuePriority> priorityList = initEntityLists.initDatatype(IssuePriority.class, daoFactory.getIssuePriorityDAO());
+        final List<IssueVersion> versionList = initEntityLists.initDatatype(IssueVersion.class, daoFactory.getIssueVersionDAO());
+        final List<IssueStoryPoint> storyPointList = initEntityLists.initDatatype(IssueStoryPoint.class, daoFactory.getIssueStoryPointDAO());
+        final List<IssueComponent> componentsList = initEntityLists.initDatatype(IssueComponent.class, daoFactory.getIssueComponentDAO());
         final List<Benutzer> userList =  daoFactory.getBenutzerDAO().loadAllEntities();
 
 
