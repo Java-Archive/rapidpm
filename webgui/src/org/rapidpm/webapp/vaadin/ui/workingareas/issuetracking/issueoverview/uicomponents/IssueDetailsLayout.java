@@ -17,9 +17,11 @@ import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.FormattedDateStringToDateConverter;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.InitializeEmptyDatatypes;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabAddButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabDeleteButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.*;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.IssueSettingsScreen;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -73,15 +75,19 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
     @Override
     protected AbstractOrderedLayout buildSaveableForm() {
+        final InitializeEmptyDatatypes initEntityLists = new InitializeEmptyDatatypes();
         converter = new FormattedDateStringToDateConverter(new SimpleDateFormat("dd.MM.yy"));
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final List<IssueType> typeList = daoFactory.getIssueTypeDAO().loadAllEntities();
-        final List<IssueStatus> statusList = daoFactory.getIssueStatusDAO().loadAllEntities();
-        final List<IssuePriority> priorityList =  daoFactory.getIssuePriorityDAO().loadAllEntities();
-        final List<IssueVersion> versionList =  daoFactory.getIssueVersionDAO().loadAllEntities();
-        final List<IssueStoryPoint> storyPointList =  daoFactory.getIssueStoryPointDAO().loadAllEntities();
-        final List<IssueComponent> componentsList = daoFactory.getIssueComponentDAO().loadAllEntities();
+        final List<IssueType> typeList = initEntityLists.initDatatypes(IssueType.class, daoFactory.getIssueTypeDAO());
+        final List<IssueStatus> statusList = initEntityLists.initDatatypes(IssueStatus.class, daoFactory.getIssueStatusDAO());
+        final List<IssuePriority> priorityList = initEntityLists.initDatatypes(IssuePriority.class, daoFactory.getIssuePriorityDAO());
+        final List<IssueVersion> versionList = initEntityLists.initDatatypes(IssueVersion.class, daoFactory.getIssueVersionDAO());
+        final List<IssueStoryPoint> storyPointList = initEntityLists.initDatatypes(IssueStoryPoint.class, daoFactory.getIssueStoryPointDAO());
+        final List<IssueComponent> componentsList = initEntityLists.initDatatypes(IssueComponent.class, daoFactory.getIssueComponentDAO());
         final List<Benutzer> userList =  daoFactory.getBenutzerDAO().loadAllEntities();
+
+
+
 
         VerticalLayout formLayout = new VerticalLayout();
         formLayout.setSpacing(true);
@@ -415,7 +421,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
     public IssueBase setIssueProperties(boolean newIssue) {
         if (newIssue) {
-            issue = new IssueBase(screen.getCurrentProject().getId());
+            issue = new IssueBase(screen.getUi().getCurrentProject().getId());
             issue.setReporter(screen.getUi().getCurrentUser());
             if (logger.isInfoEnabled())
                     logger.info("Adding new issue");
@@ -425,6 +431,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
         if (issue == null) {
             logger.error("Issue to save was null");
+            //throw new NullPointerException("Issue to save was null");
             return null;
         }
 
@@ -432,7 +439,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         if (headerSummaryField.getValue().equals("")) {
             headerSummaryField.setRequired(true);
             headerSummaryField.setRequiredError("Issue must have a name!");
-            logger.warn("");
+            logger.warn("Issue must have a name!");
+            //throw new
             Notification.show("Issue must have a name", Notification.Type.WARNING_MESSAGE);
             return null;
         }
@@ -479,8 +487,9 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         }
 
         relContainer.resetTransactions();
-
-        issue = DaoFactorySingelton.getInstance().getIssueBaseDAO(screen.getCurrentProject().getId()).persist(issue);
+        //try {
+            issue = DaoFactorySingelton.getInstance().getIssueBaseDAO(screen.getUi().getCurrentProject().getId()).persist
+                (issue);
         return issue;
     }
 

@@ -71,7 +71,7 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
         relationsSelect.setFilteringMode(FilteringMode.CONTAINS);
         baseLayout.addComponent(relationsSelect);
 
-        final List<IssueBase> issueList = daoFactory.getIssueBaseDAO(screen.getCurrentProject().getId())
+        final List<IssueBase> issueList = daoFactory.getIssueBaseDAO(screen.getUi().getCurrentProject().getId())
         .loadAllEntities();
         issueSelect = new ComboBox();
         issueSelect.setWidth("100%");

@@ -11,7 +11,7 @@ import java.util.HashMap;
  * Time: 14:54
  * To change this template use File | Settings | File Templates.
  */
-public class ModelSingleton {
+public class TreeIssueBaseContainerSingleton {
 
     private static final HashMap<PlannedProject, TreeIssueBaseContainer> instanceMap = new HashMap<>();
 
