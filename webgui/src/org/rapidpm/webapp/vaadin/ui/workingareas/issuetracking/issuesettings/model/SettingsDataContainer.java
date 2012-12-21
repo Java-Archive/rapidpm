@@ -29,7 +29,9 @@ public class SettingsDataContainer<T> extends IndexedContainer {
     private List<Object> visibleColumns;
 
     public SettingsDataContainer(Class aClass) {
-        super();
+        if (aClass == null)
+            throw new NullPointerException("Class must not be null");
+
         clazz = aClass;
         dao = getDAOInstance();
         visibleColumns = new ArrayList<>();

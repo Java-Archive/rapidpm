@@ -30,7 +30,11 @@ public class DeleteTestcaseWindow extends RapidWindow implements Internationaliz
 
 
     public DeleteTestcaseWindow(final IssueOverviewScreen screen, final Table testcaseTable) {
-        super();
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+        if (testcaseTable == null)
+            throw new NullPointerException("Table must not be null");
+
         self = this;
         this.screen = screen;
         this.testcaseTable = testcaseTable;

@@ -29,7 +29,11 @@ public class AddIssueWindow extends RapidWindow {
     private IssueDetailsLayout addDetailsLayout;
 
     public AddIssueWindow(final IssueOverviewScreen screen, final Tree issueTree) {
-        super();
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+        if (issueTree == null)
+            throw new NullPointerException("Tree must not be null");
+
         self = this;
         this.screen = screen;
         this.issueTree = issueTree;

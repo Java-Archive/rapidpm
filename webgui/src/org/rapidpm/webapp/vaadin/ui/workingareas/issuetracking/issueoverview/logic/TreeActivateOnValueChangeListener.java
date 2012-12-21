@@ -21,16 +21,34 @@ public class TreeActivateOnValueChangeListener implements Tree.ValueChangeListen
     private final Button[] buttonList;
 
     public TreeActivateOnValueChangeListener(final Button[] buttonList) {
+        if (buttonList == null)
+            throw new NullPointerException("DetailsLayout must bot be null");
+        for (Button button : buttonList) {
+            if (button == null)
+                throw new NullPointerException("A button in the array was null");
+        }
+
         this.buttonList = buttonList;
     }
 
     @Override
     public void valueChange(Property.ValueChangeEvent event) {
+        if (logger.isDebugEnabled()) {
+            logger.debug("Activate Buttons");
+        }
         if (event.getProperty() != null && event.getProperty().getValue() != null)
             for (Button button : buttonList)
-                button.setEnabled(true);
+                if (button != null) {
+                    button.setEnabled(true);
+                } else {
+                    logger.error("The Button to activate was null.");
+                }
         else
             for (Button button : buttonList)
-                button.setEnabled(false);
+                if (button != null) {
+                    button.setEnabled(false);
+                } else {
+                    logger.error("The Button to activate was null.");
+                }
     }
 }

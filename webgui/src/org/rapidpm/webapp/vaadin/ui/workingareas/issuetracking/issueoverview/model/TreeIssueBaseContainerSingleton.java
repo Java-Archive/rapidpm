@@ -16,6 +16,9 @@ public class TreeIssueBaseContainerSingleton {
     private static final HashMap<PlannedProject, TreeIssueBaseContainer> instanceMap = new HashMap<>();
 
     public static TreeIssueBaseContainer getInstance(PlannedProject project) {
+        if (project == null)
+            throw new NullPointerException("Project must not be null");
+
         if (!instanceMap.containsKey(project)) {
             instanceMap.put(project, new TreeIssueBaseContainer(project));
         }

@@ -34,9 +34,12 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
     private HorizontalLayout buttonLayout;
 
     public IssueTreeLayout(final IssueOverviewScreen screen, final IssueTabSheet issueTabSheet) {
-        super();
-        this.screen = screen;
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+        if (issueTabSheet == null)
+            throw new NullPointerException("TabSheet must not be null");
 
+        this.screen = screen;
         setComponents(issueTabSheet);
         doInternationalization();
     }

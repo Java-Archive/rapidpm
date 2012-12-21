@@ -29,7 +29,9 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
     protected final IssueOverviewScreen screen;
 
     public ComponentEditableVLayout(final IssueOverviewScreen screen, final boolean readOnlyInit){
-        super();
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+
         this.screen = screen;
         messages = screen.getMessagesBundle();
         setMargin(true);

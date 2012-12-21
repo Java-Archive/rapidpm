@@ -21,7 +21,9 @@ public class IssueTabSheet extends TabSheet implements Internationalizationable{
     private Tab tableTab;
 
     public IssueTabSheet(final IssueOverviewScreen screen) {
-        super();
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+
         this.screen = screen;
         this.setHeight("100%");
         setComponents();

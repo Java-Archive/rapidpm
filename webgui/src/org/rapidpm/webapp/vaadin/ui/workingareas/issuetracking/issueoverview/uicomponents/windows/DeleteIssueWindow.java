@@ -28,11 +28,11 @@ public class DeleteIssueWindow extends RapidWindow implements Internationalizati
     private final Tree issueTree;
 
     public DeleteIssueWindow(final IssueOverviewScreen screen, final Tree issueTree) {
-        super();
         if (screen == null)
             throw new NullPointerException("Screen must not be NULL!");
         if (issueTree == null)
             throw new NullPointerException("IssueTree must not be NULL!");
+
         this.screen = screen;
         this.issueTree = issueTree;
         this.setModal(true);

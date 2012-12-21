@@ -28,7 +28,9 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
     private DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
     public TreeIssueBaseContainer(final PlannedProject currentProject) {
-        super();
+        if (currentProject == null)
+            throw new NullPointerException("Project must not be null");
+
         this.currentProject = currentProject;
         this.addContainerProperty(PROPERTY_CAPTION, String.class, null);
         this.addContainerProperty(PROPERTY_ISSUEBASE, IssueBase.class, null);
@@ -73,6 +75,9 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
 
     @Override
     public boolean removeItem(Object itemId) {
+        if (itemId == null)
+            throw new NullPointerException("ItemId must not be null");
+
         boolean success = false;
         Object parentItem = this.getParent(itemId);
         IssueBase issue = (IssueBase)this.getContainerProperty(itemId, PROPERTY_ISSUEBASE)
@@ -107,6 +112,9 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
 
 
     private boolean removeRecusively(Object itemId) {
+        if (itemId == null)
+            throw new NullPointerException("ItemId must not be null");
+
         if (this.hasChildren(itemId)) {
             Object[] children = this.getChildren(itemId).toArray();
             for (Object child : children) {

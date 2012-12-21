@@ -26,6 +26,11 @@ public class DetailsSaveButtonClickListener implements Button.ClickListener {
     private final Screen screen;
 
     public DetailsSaveButtonClickListener(final Screen screen, final IssueDetailsLayout detailsLayout) {
+        if (screen == null)
+            throw new NullPointerException("Screen must bot be null");
+        if (detailsLayout == null)
+            throw new NullPointerException("DetailsLayout must bot be null");
+
         this.screen = screen;
         this.detailsLayout = detailsLayout;
     }
@@ -34,10 +39,10 @@ public class DetailsSaveButtonClickListener implements Button.ClickListener {
     public void buttonClick(Button.ClickEvent event) {
         final IssueBase issueBase = detailsLayout.getCurrentIssue();
         final IssueBaseDAO dao = DaoFactorySingelton.getInstance().getIssueBaseDAO(issueBase.getProjectid());
-        if (!dao.existInDatabase(issueBase.getId()))
+        if (!dao.existInDatabase(issueBase.getId())) {
             Notification.show(screen.getMessagesBundle().getString("issuetracking_exception_issuedeleted"),
                     Notification.Type.WARNING_MESSAGE);
-        else {
+        } else {
             try {
                 final IssueBase issue = detailsLayout.setIssueProperties(false);
                 if (issue != null) {

@@ -33,9 +33,11 @@ public class InitializeEmptyDatatypes {
     public InitializeEmptyDatatypes() {
     }
 
-    public <T> List<T> initDatatypes(final Class typeClass, final GraphBaseDAO<T> dao){
+    public <T> List<T> initDatatype(final Class typeClass, final GraphBaseDAO<T> dao){
         final List<T> list = dao.loadAllEntities();
         if (list.isEmpty()) {
+            if (logger.isDebugEnabled())
+                logger.debug("Create entity for: "+ typeClass.getSimpleName());
             try {
                 final File defaultSettings = new File("C:\\rapidPmDefaultSettings.xml");
                 final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -43,7 +45,6 @@ public class InitializeEmptyDatatypes {
                 final Document doc = dBuilder.parse(defaultSettings);
                 doc.getDocumentElement().normalize();
 
-                System.out.println("typeClassName: " + typeClass.getSimpleName());
                 final NodeList nodes = doc.getElementsByTagName(typeClass.getSimpleName());
 
                 for (int i = 0; i < nodes.getLength(); i++) {
@@ -81,6 +82,9 @@ public class InitializeEmptyDatatypes {
             } catch (NoSuchFieldException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
+        }  else {
+            if (logger.isDebugEnabled())
+                logger.debug(typeClass.getSimpleName() + " has at least one entry");
         }
         return list;
     }
@@ -94,7 +98,7 @@ public class InitializeEmptyDatatypes {
 //    public static void main(String[] args) {
 //        IssuePriorityDAO dao = DaoFactorySingelton.getInstance().getIssuePriorityDAO();
 //        InitializeEmptyDatatypes init = new InitializeEmptyDatatypes();
-//        init.initDatatypes(IssuePriority.class, dao.loadAllEntities(), dao);
+//        init.initDatatype(IssuePriority.class, dao.loadAllEntities(), dao);
 //    }
 
 }
