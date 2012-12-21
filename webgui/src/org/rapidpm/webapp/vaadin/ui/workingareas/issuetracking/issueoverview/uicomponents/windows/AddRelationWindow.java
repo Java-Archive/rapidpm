@@ -42,7 +42,11 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
 
 
     public AddRelationWindow(final IssueOverviewScreen screen, final AbstractIssueDataContainer relationContainer){
-        super();
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+        if (relationContainer == null)
+            throw new NullPointerException("Container must not be null");
+
         self = this;
         this.screen = screen;
         this.relationContainer = (RelationsDataContainer)relationContainer;
@@ -126,9 +130,7 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
 
             if (relation != null && relation != "") {
                 if (connIssue != null && connIssue != "")  {
-                    if (!relationContainer.addRelation((IssueBase) connIssue, (IssueRelation)relation))
-                        //TODO Show Errormessage to User
-                        logger.error("Connecting issues failed");
+                    relationContainer.addRelation((IssueBase) connIssue, (IssueRelation)relation);
                     self.close();
                 } else {
                     if (logger.isDebugEnabled())

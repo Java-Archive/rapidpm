@@ -41,13 +41,10 @@ public class TestCasesDataContainer extends AbstractIssueDataContainer {
         }
     }
 
-    public boolean addTestcase(IssueTestCase testCase) {
-        boolean success = false;
-        if (testCase != null) {
-            Item itemId = this.addItem(testCase);
-            itemId.getItemProperty(TEXT).setValue(testCase.getText());
-            success = true;
-        }
-        return success;
+    public void addTestcase(IssueTestCase testCase) {
+        if (testCase == null)
+            throw new NullPointerException("testCase to add must not be null");
+        Item itemId = this.addItem(testCase);
+        itemId.getItemProperty(TEXT).setValue(testCase.getText());
     }
 }

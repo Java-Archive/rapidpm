@@ -22,7 +22,9 @@ public abstract class AbstractIssueDataContainer extends IndexedContainer {
     private IssueBase currentIssue;
 
     public AbstractIssueDataContainer(final IssueOverviewScreen screen) {
-        super();
+        if (screen == null)
+            throw new NullPointerException("Screen must not nbe null");
+
         this.screen = screen;
         visibleColumns = setVisibleColumns();
     }
@@ -35,6 +37,8 @@ public abstract class AbstractIssueDataContainer extends IndexedContainer {
     }
 
     protected void setCurrentIssue(IssueBase issue) {
+        if (issue == null)
+            throw new NullPointerException("Issue to set must not be null");
         currentIssue = issue;
     }
 

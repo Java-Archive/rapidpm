@@ -74,51 +74,47 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
         }
     }
 
-    public boolean addRelation(final IssueBase connIssue, final IssueRelation relation){
-        boolean success = false;
-        if (connIssue != null && relation != null) {
-            // (getCurrentIssue().connectToIssueAs(connIssue, relation)) {
-            final Object itemId = this.addItem();
-            this.getContainerProperty(itemId, DIRECTION).setValue(Direction.OUTGOING);
-            this.getContainerProperty(itemId, NAME).setValue(relation.getOutgoingName());
-            this.getContainerProperty(itemId, ISSUEID).setValue(connIssue.getText());
-            this.getContainerProperty(itemId, ISSUE).setValue(connIssue);
-            this.getContainerProperty(itemId, RELATION).setValue(relation);
+    public void addRelation(final IssueBase connIssue, final IssueRelation relation){
+        if (connIssue == null)
+            throw new NullPointerException("Issue to connect to is null");
+        if (relation == null)
+            throw new NullPointerException("Relation to connect ist null");
 
-            final RelationItem item = new RelationItem();
-            item.setConnIssue(connIssue);
-            item.setRelation(relation);
-            item.setDirection(Direction.OUTGOING);
-            createList.add(item);
+        final Object itemId = this.addItem();
+        this.getContainerProperty(itemId, DIRECTION).setValue(Direction.OUTGOING);
+        this.getContainerProperty(itemId, NAME).setValue(relation.getOutgoingName());
+        this.getContainerProperty(itemId, ISSUEID).setValue(connIssue.getText());
+        this.getContainerProperty(itemId, ISSUE).setValue(connIssue);
+        this.getContainerProperty(itemId, RELATION).setValue(relation);
 
-            success = true;
-            //}
-        } else {
-            logger.error("Issue to connect to or relation is null");
-        }
-        return success;
+        final RelationItem item = new RelationItem();
+        item.setConnIssue(connIssue);
+        item.setRelation(relation);
+        item.setDirection(Direction.OUTGOING);
+        createList.add(item);
     }
 
     public IssueBase getConnIssueFromItemId(final Object itemId) {
+        if (itemId == null)
+            throw new NullPointerException("ItemId must not be null");
         return (IssueBase)this.getContainerProperty(itemId, ISSUE).getValue();
     }
 
     @Override
     public boolean removeItem(final Object itemId) {
+        if (itemId == null)
+            throw new NullPointerException("ItemId to remove is null. Cant delete item.");
+
         boolean success = false;
-        if (itemId != null) {
-            final RelationItem item = new RelationItem();
-            item.setConnIssue(getConnIssueFromItemId(itemId));
-            item.setRelation((IssueRelation) this.getContainerProperty(itemId, RELATION).getValue());
-            item.setDirection((Direction) this.getContainerProperty(itemId, DIRECTION).getValue());
-            //if (getCurrentIssue().removeConnectionToIssue(connIssue, relation, direction))
-                if (super.removeItem(itemId)) {
-                    deleteList.add(item);
-                    success = true;
-                }
-        } else {
-            logger.error("ItemId to remove is null. Cant delete item.");
-        }
+        final RelationItem item = new RelationItem();
+        item.setConnIssue(getConnIssueFromItemId(itemId));
+        item.setRelation((IssueRelation) this.getContainerProperty(itemId, RELATION).getValue());
+        item.setDirection((Direction) this.getContainerProperty(itemId, DIRECTION).getValue());
+        //if (getCurrentIssue().removeConnectionToIssue(connIssue, relation, direction))
+            if (super.removeItem(itemId)) {
+                deleteList.add(item);
+                success = true;
+            }
 
         return success;
     }

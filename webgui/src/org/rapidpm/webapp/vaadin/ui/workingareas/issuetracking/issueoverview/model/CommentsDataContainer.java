@@ -50,15 +50,13 @@ public class CommentsDataContainer extends AbstractIssueDataContainer {
         }
     }
 
-    public boolean addComment(IssueComment comment) {
-        boolean success = false;
-        if (comment != null) {
-            Item itemId = this.addItem(comment);
-            itemId.getItemProperty(TEXT).setValue(comment.getText());
-            itemId.getItemProperty(CREATOR).setValue(comment.getCreator().getLogin());
-            itemId.getItemProperty(CREATED).setValue(dateFormat.format(comment.getCreated()));
-            success = true;
-        }
-        return success;
+    public void addComment(IssueComment comment) {
+        if (comment == null)
+            throw new NullPointerException("Comment to add must not be null");
+
+        Item itemId = this.addItem(comment);
+        itemId.getItemProperty(TEXT).setValue(comment.getText());
+        itemId.getItemProperty(CREATOR).setValue(comment.getCreator().getLogin());
+        itemId.getItemProperty(CREATED).setValue(dateFormat.format(comment.getCreated()));
     }
 }
