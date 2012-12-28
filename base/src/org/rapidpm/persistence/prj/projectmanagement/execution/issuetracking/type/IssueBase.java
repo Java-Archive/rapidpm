@@ -171,7 +171,9 @@ public class IssueBase implements PersistInGraph {
 //        return addToMap("deleteSubIssueRelationTx", new Object[]{this, subIssue});
     }
 
-
+    public boolean setAsRootIssue() {
+        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).setAsRootIssueTx(this);
+    }
 
     public boolean addComponent(final IssueComponent component) {
 //        return DaoFactorySingelton.getIssueBaseDAO(projectid).addComponentToTx(this, component);

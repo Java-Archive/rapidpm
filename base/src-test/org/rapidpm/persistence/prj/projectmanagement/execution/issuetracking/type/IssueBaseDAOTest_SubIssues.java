@@ -26,17 +26,15 @@ public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
 
     @Test
     public void addSubIssue() {
-        IssueBase issue = dao.loadAllEntities().get(0);
+        final IssueBase issue = dao.loadAllEntities().get(0);
         final IssueBase sub = dao.loadAllEntities().get(1);
 
-        boolean success = issue.addSubIssue(sub);
-        assertTrue(success);
+        assertTrue(issue.addSubIssue(sub));
         //issue = dao.persist(issue);
         assertTrue(issue.getSubIssues().contains(sub));
 
         //try to add subissue again
-        success = issue.addSubIssue(sub);
-        assertTrue(success);
+        assertTrue(issue.addSubIssue(sub));
         //issue = dao.persist(issue);
         assertTrue(issue.getSubIssues().contains(sub));
         List<IssueBase> connected = issue.getSubIssues();
@@ -47,14 +45,12 @@ public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
         }
         assertTrue(i == 1);
 
-        success = issue.removeSubIssue(sub);
-        assertTrue(success);
+        assertTrue(issue.removeSubIssue(sub));
         //issue = dao.persist(issue);
         assertFalse(issue.getSubIssues().contains(sub));
 
         //try to delete non existing subissue
-        success = issue.removeSubIssue(sub);
-        assertTrue(success);
+        assertFalse(issue.removeSubIssue(sub));
         //issue = dao.persist(issue);
         assertFalse(issue.getSubIssues().contains(sub));
 
@@ -116,10 +112,44 @@ public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
         assertFalse(dao.loadAllEntities().contains(issueBase2));
     }
 
+    @Test
+    public void setAsRootIssue() {
+        List<IssueBase> list = dao.loadTopLevelEntities();
+        final IssueBase issue = list.get(0);
+        final IssueBase sub = list.get(1);
+
+        assertTrue(issue.addSubIssue(sub));
+        assertTrue(issue.getSubIssues().contains(sub));
+
+        assertTrue(sub.setAsRootIssue());
+        assertTrue(dao.loadTopLevelEntities().contains(sub));
+        assertFalse(issue.getSubIssues().contains(sub));
+
+        assertTrue(sub.setAsRootIssue());
+    }
 
     @Test
-    public void addSubIssueTx_Fail() {
-        dao.addSubIssueTx(null, null);
+    public void deleteSubIssueWithWrongParent() {
+        List<IssueBase> list = dao.loadTopLevelEntities();
+        final IssueBase issue1 = list.get(0);
+        final IssueBase issue2 = list.get(1);
+        final IssueBase issue3 = list.get(2);
+
+        assertTrue(issue1.addSubIssue(issue2));
+        assertFalse(issue3.removeSubIssue(issue2));
+
+        issue2.setAsRootIssue();
+    }
+
+
+    @Test
+    public void addSubIssueTx_Null() {
+        assertFalse(dao.addSubIssueTx(null, null));
+    }
+
+    @Test
+    public void addSubIssueTx_IdNull() {
+        assertFalse(dao.addSubIssueTx(new IssueBase(3L), new IssueBase(3L)));
     }
 
     @Test(expected = NullPointerException.class)
@@ -149,8 +179,14 @@ public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
 
 
     @Test
-    public void deleteSubIssueRelationTx_Fail() {
-        dao.deleteSubIssueRelationTx(null, null);
+    public void deleteSubIssueRelationTx_Null() {
+        assertFalse(dao.deleteSubIssueRelationTx(null, null));
+
+    }
+
+    @Test
+    public void deleteSubIssueRelationTx_IdNull() {
+        assertFalse(dao.deleteSubIssueRelationTx(new IssueBase(3L), new IssueBase(3L)));
     }
 
     @Test(expected = NullPointerException.class)
@@ -176,6 +212,27 @@ public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
     @Test(expected = IllegalArgumentException.class)
     public void deleteSubIssueRelation_FirstEqualsSecond() {
         dao.deleteSubIssueRelation(dao.loadAllEntities().get(0), dao.loadAllEntities().get(0));
+    }
+
+
+    @Test
+    public void setAsRootIssueTx_Null() {
+        assertFalse(dao.setAsRootIssueTx(null));
+    }
+
+    @Test
+    public void setAsRootIssueTx_IdNull() {
+        assertFalse(dao.setAsRootIssueTx(new IssueBase(3L)));
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void setAsRootIssue_FirstParameterNull() {
+        dao.setAsRootIssue(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void setAsRootIssue_FirstParameterId() {
+        dao.setAsRootIssue(new IssueBase(3L));
     }
 
 

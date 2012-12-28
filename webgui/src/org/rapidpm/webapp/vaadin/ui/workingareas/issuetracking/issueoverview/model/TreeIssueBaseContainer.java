@@ -42,7 +42,9 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
             itemId = addItem();
             this.getContainerProperty(itemId, PROPERTY_CAPTION).setValue(issue.name());
             this.getContainerProperty(itemId, PROPERTY_ISSUEBASE).setValue(issue);
+            this.setParent(itemId, null);
             subIssueList = issue.getSubIssues();
+
             if (subIssueList == null || subIssueList.isEmpty()) {
                 this.setChildrenAllowed(itemId, false);
             } else {
