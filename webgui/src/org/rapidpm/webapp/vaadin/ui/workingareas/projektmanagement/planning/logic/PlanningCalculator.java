@@ -32,9 +32,10 @@ public class PlanningCalculator {
     private PlannedProject projekt;
     private ResourceBundle messages;
     private DaoFactory daoFactory;
+    private Integer counter = 0;
 
-    private List<PlanningUnitElement> planningUnitElements2 = new ArrayList<>();
-    private List<PlanningUnitElement> planningUnitElements1 = new ArrayList<>();
+    private Map<PlanningUnitElement, Integer> planningUnitElements2 = new HashMap<>();
+    private Map<PlanningUnitElement, Integer> planningUnitElements1 = new HashMap<>();
 //    private PlanningCalculatorBean planningCalculatorBean;
 
 
@@ -58,9 +59,10 @@ public class PlanningCalculator {
                 @Override
                 public void doTask() {
                     final EntityManager entityManager = daoFactory.getEntityManager();
-                    for(final PlanningUnitElement planningUnitElement : planningUnitElements2){
-                        entityManager.merge(planningUnitElement);
+                    for(final PlanningUnitElement planningUnitElement : planningUnitElements2.keySet()){
+                        entityManager.persist(planningUnitElement);
                     }
+                    entityManager.flush();
                     entityManager.refresh(projekt);
                 }
             }.execute();
@@ -75,7 +77,7 @@ public class PlanningCalculator {
                 planningUnitElement.setPlannedDays(0);
                 planningUnitElement.setPlannedHours(0);
                 planningUnitElement.setPlannedMinutes(0);
-                planningUnitElements1.add(planningUnitElement);
+                planningUnitElements1.put(planningUnitElement,counter++);
             }
             for(final PlanningUnit kindPlanningUnit : planningUnit.getKindPlanningUnits()){
                 resetParents(kindPlanningUnit);
@@ -84,9 +86,10 @@ public class PlanningCalculator {
                 @Override
                 public void doTask() {
                     final EntityManager entityManager = daoFactory.getEntityManager();
-                    for(final PlanningUnitElement planningUnitElement : planningUnitElements1){
-                        entityManager.merge(planningUnitElement);
+                    for(final PlanningUnitElement planningUnitElement : planningUnitElements1.keySet()){
+                        entityManager.persist(planningUnitElement);
                     }
+                    entityManager.flush();
                 }
             }.execute();
         } else {
@@ -128,8 +131,9 @@ public class PlanningCalculator {
                     planningUnitElement.setPlannedDays(planningUnitElementItem.getDays());
                     planningUnitElement.setPlannedHours(planningUnitElementItem.getHours());
                     planningUnitElement.setPlannedMinutes(planningUnitElementItem.getMinutes());
+                    planningUnitElements2.put(planningUnitElement,counter++);
                 }
-                planningUnitElements2.add(planningUnitElement);
+
                 //
             }
         }
