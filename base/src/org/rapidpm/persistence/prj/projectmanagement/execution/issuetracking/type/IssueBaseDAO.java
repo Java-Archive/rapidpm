@@ -241,7 +241,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
 
         Node childNode = graphDb.getNodeById(childId);
         final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
-        deleteSubIssueRelation(parent, child);
+        setAsRootIssue(child);
 
         graphDb.getNodeById(parentId).createRelationshipTo(childNode, relType);
         if (childNode.hasRelationship(GraphRelationRegistry.getClassRootToChildRelType(), Direction.INCOMING)) {
