@@ -1,12 +1,14 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.descriptionandtestcases;
 
 import com.vaadin.data.Property;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.textelement.TextElement;
+import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.EditableLayout;
 import org.rapidpm.webapp.vaadin.ui.EditableRapidPanel;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
@@ -27,6 +29,7 @@ import java.util.ResourceBundle;
 public class TextElementEditableLayout extends EditableLayout {
 
     private Button deleteButton = new Button("-");
+    private TextField bezeichnungField;
     private RichTextArea textElementTextArea;
     private final PlanningUnit selectedPlanningUnit;
     private ProjektplanungScreen screen;
@@ -37,7 +40,9 @@ public class TextElementEditableLayout extends EditableLayout {
         super(screen, textElementsPanel);
         this.selectedPlanningUnit = selectedPlanningUnit;
         this.screen = screen;
-        setCaption(textElement.getBezeichnung());
+        bezeichnungField = new TextField();
+        bezeichnungField.setValue(textElement.getBezeichnung());
+        bezeichnungField.setReadOnly(true);
         textElementTextArea = new RichTextArea("", textElement.getText());
         textElementTextArea.setSizeUndefined();
         textElementTextArea.setWidth("100%");
@@ -45,8 +50,8 @@ public class TextElementEditableLayout extends EditableLayout {
         textElementTextArea.addReadOnlyStatusChangeListener(new Property.ReadOnlyStatusChangeListener() {
             @Override
             public void readOnlyStatusChange(Property.ReadOnlyStatusChangeEvent event) {
-                final RichTextArea textArea = (RichTextArea)event.getProperty();
-                if(textArea.isReadOnly()){
+                final RichTextArea textArea = (RichTextArea) event.getProperty();
+                if (textArea.isReadOnly()) {
                     textArea.setSizeUndefined();
                     textArea.setWidth("100%");
                 } else {
@@ -54,10 +59,18 @@ public class TextElementEditableLayout extends EditableLayout {
                 }
             }
         });
+        saveButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                updateTextElement(textElement);
+            }
+        });
         cancelButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                         final Iterator<Component> componentIterator = componentsLayout.iterator();
+                        textElementTextArea.setValue(textElement.getText());
+                        bezeichnungField.setValue(textElement.getBezeichnung());
                         while (componentIterator.hasNext()) {
                             final Component component = componentIterator.next();
                             if (component instanceof AbstractField) {
@@ -87,6 +100,49 @@ public class TextElementEditableLayout extends EditableLayout {
 
     }
 
+    private void updateTextElement(final TextElement textElement) {
+        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        if(selectedPlanningUnit.getDescriptions().contains(textElement)){
+            for (final TextElement description : selectedPlanningUnit.getDescriptions()) {
+                if(description.equals(textElement)){
+                    description.setBezeichnung(bezeichnungField.getValue());
+                    description.setText(textElementTextArea.getValue());
+                    daoFactory.new Transaction() {
+                        @Override
+                        public void doTask() {
+                            final EntityManager entityManager = daoFactory.getEntityManager();
+                            entityManager.merge(textElement);
+                        }
+                    }.execute();
+                }
+            }
+        } else if(selectedPlanningUnit.getTestcases().contains(textElement)) {
+            for (final TextElement testcase : selectedPlanningUnit.getTestcases()) {
+                if(testcase.equals(textElement)){
+                    testcase.setBezeichnung(bezeichnungField.getValue());
+                    testcase.setText(textElementTextArea.getValue());
+                    daoFactory.new Transaction() {
+                        @Override
+                        public void doTask() {
+                            final EntityManager entityManager = daoFactory.getEntityManager();
+                            entityManager.merge(textElement);
+                        }
+                    }.execute();
+                }
+            }
+        }
+        daoFactory.new Transaction() {
+            @Override
+            public void doTask() {
+                final EntityManager entityManager = daoFactory.getEntityManager();
+                entityManager.persist(selectedPlanningUnit);
+                entityManager.flush();
+                entityManager.refresh(selectedPlanningUnit);
+            }
+        }.execute();
+        screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
+    }
+
     private void deleteTextElement(final TextElement textElement) {
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         if(selectedPlanningUnit.getDescriptions().contains(textElement)){
@@ -111,6 +167,7 @@ public class TextElementEditableLayout extends EditableLayout {
     @Override
     protected void buildForm() {
         componentsLayout.setSizeFull();
+        componentsLayout.addComponent(bezeichnungField);
         componentsLayout.addComponent(deleteButton);
         componentsLayout.addComponent(textElementTextArea);
         ((VerticalLayout)componentsLayout).setComponentAlignment(textElementTextArea, Alignment.TOP_CENTER);

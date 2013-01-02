@@ -1,14 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning;
 
 import com.vaadin.data.Property;
-//import com.vaadin.server.ThemeResource;
-import com.vaadin.event.FieldEvents;
 import com.vaadin.ui.*;
-//import org.rapidpm.Constants;
-//import org.rapidpm.ejb3.EJBFactory;
-//import org.rapidpm.persistence.DaoFactoryBean;
-//import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
-//import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.apache.log4j.Logger;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
@@ -23,20 +16,26 @@ import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsEditableLayout;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.descriptionandtestcases.AddDescriptionsOrTestCasesWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitsTree;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitsTreePanelLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.exceptions.SameNameException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.parents.AddRootPlanningUnitsWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.parents.PlanningUnitSelect;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.PlanningUnitBeanItemContainer;
 
 import javax.naming.InvalidNameException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+//import com.vaadin.server.ThemeResource;
+//import org.rapidpm.Constants;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
+//import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
+//import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
 /**
  * Created by IntelliJ IDEA.
@@ -66,9 +65,10 @@ public class ProjektplanungScreen extends Screen {
     private DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
     private Button addParentsButton = new Button();
+    private Button addDescriptionOrTestCaseButton = new Button();
 
 
-    public ProjektplanungScreen(MainUI ui) {
+    public ProjektplanungScreen(final MainUI ui) {
         super(ui);
         addParentPlanningUnitField.focus();
 
@@ -80,17 +80,19 @@ public class ProjektplanungScreen extends Screen {
 
             final PlanningCalculator calculator = new PlanningCalculator(messagesBundle, ui);
             calculator.calculate();
-//        daoFactory.new Transaction() {
-//            @Override
-//            public void doTask() {
-//                daoFactory.getEntityManager().refresh(projectFromDB);
-//            }
-//        }.execute();
-            //daoFactory.getEntityManager().refresh(projectFromDB);
+
+            addDescriptionOrTestCaseButton.addClickListener(new Button.ClickListener() {
+                @Override
+                public void buttonClick(Button.ClickEvent event) {
+                    ui.addWindow(new AddDescriptionsOrTestCasesWindow(messagesBundle));
+                }
+            });
 
             leftColumn.setSizeFull();
             centerColumn.setSizeFull();
             rightColumn.setSizeFull();
+
+            rightColumn.addComponent(addDescriptionOrTestCaseButton);
 
             planningUnitPanel = new RapidPanel();
             treePanel = new RapidPanel();
@@ -262,6 +264,7 @@ public class ProjektplanungScreen extends Screen {
         leftColumn.setCaption(messagesBundle.getString("planning_planningunits"));
         centerColumn.setCaption(messagesBundle.getString("planning_detailsandressources"));
         rightColumn.setCaption(messagesBundle.getString("planning_descriptionandtestcases"));
+        addDescriptionOrTestCaseButton.setCaption("+");
     }
 
     public void fillTreePanel(final PlanningUnit selectedPlanningUnit, final PlannedProject projekt) {
