@@ -7,6 +7,7 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.MissingAttributeException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NameAlreadyInUseException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NoNameException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
@@ -52,6 +53,8 @@ public class DetailsSaveButtonClickListener implements Button.ClickListener {
                     if (logger.isDebugEnabled())
                         logger.debug("Couldn't save Issue");
                 }
+            } catch (MissingAttributeException e) {
+                Notification.show(e.getLocalizedMessage(), Notification.Type.WARNING_MESSAGE);
             } catch (NoNameException e) {
                 Notification.show(screen.getMessagesBundle().getString("issuetracking_exception_noname"),
                         Notification.Type.WARNING_MESSAGE);

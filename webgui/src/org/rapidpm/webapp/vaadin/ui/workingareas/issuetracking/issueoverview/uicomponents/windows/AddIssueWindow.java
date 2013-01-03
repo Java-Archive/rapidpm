@@ -6,6 +6,7 @@ import com.vaadin.ui.Tree;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.RapidWindow;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.MissingAttributeException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NameAlreadyInUseException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NoNameException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
@@ -79,6 +80,8 @@ public class AddIssueWindow extends RapidWindow {
                     if (logger.isDebugEnabled())
                         logger.debug("childIssue is null");
 
+            } catch (MissingAttributeException e) {
+                Notification.show(e.getLocalizedMessage(), Notification.Type.WARNING_MESSAGE);
             } catch (NoNameException e) {
                 Notification.show(screen.getMessagesBundle().getString("issuetracking_exception_noname"),
                         Notification.Type.WARNING_MESSAGE);

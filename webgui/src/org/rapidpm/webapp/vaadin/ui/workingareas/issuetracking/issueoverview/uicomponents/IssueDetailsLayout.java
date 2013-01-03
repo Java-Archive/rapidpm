@@ -16,10 +16,11 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.FormattedDateStringToDateConverter;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.MissingAttributeException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NameAlreadyInUseException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NoNameException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.InitializeEmptyDatatypes;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DatabaseInitXMLLoader;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabAddButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabDeleteButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.*;
@@ -76,9 +77,10 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
     @Override
     protected AbstractOrderedLayout buildSaveableForm() {
-        final InitializeEmptyDatatypes initEntityLists = new InitializeEmptyDatatypes();
+        final DatabaseInitXMLLoader initEntityLists = new DatabaseInitXMLLoader();
         converter = new FormattedDateStringToDateConverter(new SimpleDateFormat("dd.MM.yy"));
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+
         final List<IssueType> typeList = initEntityLists.initDatatype(IssueType.class, daoFactory.getIssueTypeDAO());
         final List<IssueStatus> statusList = initEntityLists.initDatatype(IssueStatus.class, daoFactory.getIssueStatusDAO());
         final List<IssuePriority> priorityList = initEntityLists.initDatatype(IssuePriority.class, daoFactory.getIssuePriorityDAO());
@@ -86,8 +88,6 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         final List<IssueStoryPoint> storyPointList = initEntityLists.initDatatype(IssueStoryPoint.class, daoFactory.getIssueStoryPointDAO());
         final List<IssueComponent> componentsList = initEntityLists.initDatatype(IssueComponent.class, daoFactory.getIssueComponentDAO());
         final List<Benutzer> userList =  daoFactory.getBenutzerDAO().loadAllEntities();
-
-
 
 
         VerticalLayout formLayout = new VerticalLayout();
@@ -420,7 +420,9 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         setLayoutReadOnly(true);
     }
 
-    public IssueBase setIssueProperties(boolean newIssue) throws NoNameException, NameAlreadyInUseException {
+    public IssueBase setIssueProperties(boolean newIssue)
+            throws NoNameException, NameAlreadyInUseException, MissingAttributeException {
+
         if (newIssue) {
             issue = new IssueBase(screen.getUi().getCurrentProject().getId());
             issue.setReporter(screen.getUi().getCurrentUser());
@@ -445,15 +447,34 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
 
         issue.setSummary(headerSummaryField.getValue());
+        if (statusSelect.getValue() == null)
+            throw new MissingAttributeException("No Status selected");
         issue.setStatus((IssueStatus) statusSelect.getValue());
+
+        if (prioritySelect.getValue() == null)
+            throw new MissingAttributeException("No Priority selected");
         issue.setPriority((IssuePriority) prioritySelect.getValue());
+
+        if (typeSelect.getValue() == null)
+            throw new MissingAttributeException("No type selected");
         issue.setType((IssueType) typeSelect.getValue());
+
+        if (assigneeSelect.getValue() == null)
+            throw new MissingAttributeException("No Assignee selected");
         issue.setAssignee((Benutzer) assigneeSelect.getValue());
         issue.setDueDate_planned(converter.convertToModel(plannedDateLabel.getValue(), Locale.getDefault()));
         issue.setDueDate_resolved(resolvedDateField.getValue() == null ? new Date(0) : resolvedDateField.getValue());
         issue.setDueDate_closed(closedDateField.getValue() == null ? new Date(0) : closedDateField.getValue());
+
+        if (storyPointSelect.getValue() == null)
+            throw new MissingAttributeException("No StoryPoints selected");
         issue.setStoryPoints((IssueStoryPoint) storyPointSelect.getValue());
+
+        if (versionSelect.getValue() == null)
+            throw new MissingAttributeException("No Version selected");
         issue.setVersion((IssueVersion) versionSelect.getValue());
+
+
         issue.setRisk((Integer) riskSelect.getValue());
         issue.setStory(descriptionTextArea.getValue());
 

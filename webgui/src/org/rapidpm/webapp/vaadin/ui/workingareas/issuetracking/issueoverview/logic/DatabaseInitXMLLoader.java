@@ -1,10 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic;
 
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.GraphBaseDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -17,7 +14,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -27,13 +23,13 @@ import java.util.List;
  * Time: 11:17
  * To change this template use File | Settings | File Templates.
  */
-public class InitializeEmptyDatatypes {
-    private static final Logger logger = Logger.getLogger(InitializeEmptyDatatypes.class);
+public class DatabaseInitXMLLoader {
+    private static final Logger logger = Logger.getLogger(DatabaseInitXMLLoader.class);
 
-    public InitializeEmptyDatatypes() {
+    public DatabaseInitXMLLoader() {
     }
 
-    public <T> List<T> initDatatype(final Class typeClass, final GraphBaseDAO<T> dao){
+    public <T> List<T> initDatatype(final Class typeClass, final GraphBaseDAO<T> dao) {
         final List<T> list = dao.loadAllEntities();
         if (list.isEmpty()) {
             if (logger.isDebugEnabled())
@@ -69,7 +65,7 @@ public class InitializeEmptyDatatypes {
                     }
                     list.add(dao.persist(instance));
                 }
-        } catch (InstantiationException e) {
+            } catch (InstantiationException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             } catch (IllegalAccessException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -86,6 +82,7 @@ public class InitializeEmptyDatatypes {
             if (logger.isDebugEnabled())
                 logger.debug(typeClass.getSimpleName() + " has at least one entry");
         }
+
         return list;
     }
 
@@ -97,7 +94,7 @@ public class InitializeEmptyDatatypes {
 
 //    public static void main(String[] args) {
 //        IssuePriorityDAO dao = DaoFactorySingelton.getInstance().getIssuePriorityDAO();
-//        InitializeEmptyDatatypes init = new InitializeEmptyDatatypes();
+//        DatabaseInitXMLLoader init = new DatabaseInitXMLLoader();
 //        init.initDatatype(IssuePriority.class, dao.loadAllEntities(), dao);
 //    }
 
