@@ -6,6 +6,7 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
+import org.rapidpm.Constants;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
@@ -24,7 +25,7 @@ import java.io.File;
 public class GraphDBFactory {
     private static final Logger logger = Logger.getLogger(GraphDBFactory.class);
 
-    public static final String DB_PATH = "./data/graphDB/";
+    public static final String DB_PATH = Constants.DB_PATH;
     private final GraphDatabaseService graphDb;
     private static GraphDBFactory instance;
 

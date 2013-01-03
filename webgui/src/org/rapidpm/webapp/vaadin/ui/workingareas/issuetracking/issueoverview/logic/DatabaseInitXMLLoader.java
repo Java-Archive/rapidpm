@@ -1,6 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic;
 
 import org.apache.log4j.Logger;
+import org.rapidpm.Constants;
 import org.rapidpm.persistence.GraphBaseDAO;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -12,7 +13,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -35,10 +38,14 @@ public class DatabaseInitXMLLoader {
             if (logger.isDebugEnabled())
                 logger.debug("Create entity for: "+ typeClass.getSimpleName());
             try {
-                final File defaultSettings = new File("C:\\rapidPmDefaultSettings.xml");
+                final InputStream inputStream;
+                inputStream = this.getClass().getClassLoader().getResourceAsStream(Constants.ISSUE_SETTINGS_XML_PATH);
+                if (inputStream == null) {
+                    throw new FileNotFoundException(Constants.ISSUE_SETTINGS_XML_PATH);
+                }
                 final DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
                 final DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-                final Document doc = dBuilder.parse(defaultSettings);
+                final Document doc = dBuilder.parse(inputStream);
                 doc.getDocumentElement().normalize();
 
                 final NodeList nodes = doc.getElementsByTagName(typeClass.getSimpleName());
