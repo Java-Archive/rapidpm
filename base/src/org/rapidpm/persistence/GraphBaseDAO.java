@@ -96,7 +96,6 @@ public class GraphBaseDAO<T> {
         try {
             DAO projectDao = getDaoInstance(PlannedProject.class);
             PlannedProject project = (PlannedProject) projectDao.findByID(projectId);
-            System.out.println("Project" + project.toString());
             newProjectNode = graphDb.createNode();
             newProjectNode.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), projectId);
             newProjectNode.setProperty(GraphRelationRegistry.getRelationAttributeProjectToken(), project.getProjektToken());

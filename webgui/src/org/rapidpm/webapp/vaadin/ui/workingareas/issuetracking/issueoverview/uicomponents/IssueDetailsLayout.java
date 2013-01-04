@@ -16,7 +16,11 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.FormattedDateStringToDateConverter;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.MissingAttributeException;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NameAlreadyInUseException;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NoNameException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DatabaseInitXMLLoader;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabAddButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabDeleteButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.*;
@@ -73,15 +77,18 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
     @Override
     protected AbstractOrderedLayout buildSaveableForm() {
+        final DatabaseInitXMLLoader initEntityLists = new DatabaseInitXMLLoader();
         converter = new FormattedDateStringToDateConverter(new SimpleDateFormat("dd.MM.yy"));
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final List<IssueType> typeList = daoFactory.getIssueTypeDAO().loadAllEntities();
-        final List<IssueStatus> statusList = daoFactory.getIssueStatusDAO().loadAllEntities();
-        final List<IssuePriority> priorityList =  daoFactory.getIssuePriorityDAO().loadAllEntities();
-        final List<IssueVersion> versionList =  daoFactory.getIssueVersionDAO().loadAllEntities();
-        final List<IssueStoryPoint> storyPointList =  daoFactory.getIssueStoryPointDAO().loadAllEntities();
-        final List<IssueComponent> componentsList = daoFactory.getIssueComponentDAO().loadAllEntities();
+
+        final List<IssueType> typeList = initEntityLists.initDatatype(IssueType.class, daoFactory.getIssueTypeDAO());
+        final List<IssueStatus> statusList = initEntityLists.initDatatype(IssueStatus.class, daoFactory.getIssueStatusDAO());
+        final List<IssuePriority> priorityList = initEntityLists.initDatatype(IssuePriority.class, daoFactory.getIssuePriorityDAO());
+        final List<IssueVersion> versionList = initEntityLists.initDatatype(IssueVersion.class, daoFactory.getIssueVersionDAO());
+        final List<IssueStoryPoint> storyPointList = initEntityLists.initDatatype(IssueStoryPoint.class, daoFactory.getIssueStoryPointDAO());
+        final List<IssueComponent> componentsList = initEntityLists.initDatatype(IssueComponent.class, daoFactory.getIssueComponentDAO());
         final List<Benutzer> userList =  daoFactory.getBenutzerDAO().loadAllEntities();
+
 
         VerticalLayout formLayout = new VerticalLayout();
         formLayout.setSpacing(true);
@@ -119,8 +126,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             item = typeSelect.addItem(type);
             item.getItemProperty(PROPERTY_CAPTION).setValue(type.getTypeName());
             typeSelect.setItemIcon(type, new ThemeResource("images/" + type.getTypeFileName()));
+            typeSelect.select(typeList.get(0));
         }
-        typeSelect.select(typeList.get(0));
         typeSelect.setTextInputAllowed(false);
         typeSelect.setNullSelectionAllowed(false);
         typeSelect.setReadOnly(true);
@@ -134,8 +141,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             item = statusSelect.addItem(status);
             item.getItemProperty(PROPERTY_CAPTION).setValue(status.getStatusName());
             statusSelect.setItemIcon(status, new ThemeResource("images/" + status.getStatusFileName()));
+            statusSelect.select(statusList.get(0));
         }
-        statusSelect.select(statusList.get(0));
         statusSelect.setTextInputAllowed(false);
         statusSelect.setNullSelectionAllowed(false);
         statusSelect.setReadOnly(true);
@@ -149,8 +156,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             item = prioritySelect.addItem(priority);
             item.getItemProperty(PROPERTY_CAPTION).setValue(priority.getPriorityName());
             prioritySelect.setItemIcon(priority, new ThemeResource("images/" + priority.getPriorityFileName()));
+            prioritySelect.select(priorityList.get(0));
         }
-        prioritySelect.select(priorityList.get(0));
         prioritySelect.setTextInputAllowed(false);
         prioritySelect.setNullSelectionAllowed(false);
         prioritySelect.setReadOnly(true);
@@ -173,8 +180,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             }
             item = assigneeSelect.addItem(user);
             item.getItemProperty(PROPERTY_CAPTION).setValue(user.getLogin());
+            assigneeSelect.select(assigneeSelect.getItemIds().toArray()[0]);
         }
-        assigneeSelect.select(assigneeSelect.getItemIds().toArray()[0]);
         assigneeSelect.setTextInputAllowed(false);
         assigneeSelect.setNullSelectionAllowed(false);
         assigneeSelect.setReadOnly(true);
@@ -204,8 +211,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         for (IssueStoryPoint storypoint : storyPointList) {
             item = storyPointSelect.addItem(storypoint);
             item.getItemProperty(PROPERTY_CAPTION).setValue(storypoint.getStorypoint());
+            storyPointSelect.select(storyPointList.get(0));
         }
-        storyPointSelect.select(storyPointList.get(0));
         storyPointSelect.setTextInputAllowed(false);
         storyPointSelect.setNullSelectionAllowed(false);
         storyPointSelect.setReadOnly(true);
@@ -219,8 +226,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         for (IssueVersion version : versionList) {
             item = versionSelect.addItem(version);
             item.getItemProperty(PROPERTY_CAPTION).setValue(version.getVersionName());
+            versionSelect.select(versionList.get(0));
         }
-        versionSelect.select(versionList.get(0));
         versionSelect.setTextInputAllowed(false);
         versionSelect.setNullSelectionAllowed(false);
         versionSelect.setReadOnly(true);
@@ -233,8 +240,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         List<Integer> riskarray = new ArrayList<>(Arrays.asList(0, 25, 50, 75, 100));
         for (Integer version : riskarray) {
             riskSelect.addItem(version);
+            riskSelect.select(riskarray.get(0));
         }
-        riskSelect.select(riskarray.get(0));
         riskSelect.setTextInputAllowed(false);
         riskSelect.setNullSelectionAllowed(true);
         riskSelect.setReadOnly(true);
@@ -413,9 +420,11 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         setLayoutReadOnly(true);
     }
 
-    public IssueBase setIssueProperties(boolean newIssue) {
+    public IssueBase setIssueProperties(boolean newIssue)
+            throws NoNameException, NameAlreadyInUseException, MissingAttributeException {
+
         if (newIssue) {
-            issue = new IssueBase(screen.getCurrentProject().getId());
+            issue = new IssueBase(screen.getUi().getCurrentProject().getId());
             issue.setReporter(screen.getUi().getCurrentUser());
             if (logger.isInfoEnabled())
                     logger.info("Adding new issue");
@@ -425,29 +434,47 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
         if (issue == null) {
             logger.error("Issue to save was null");
-            return null;
+            throw new NullPointerException("Issue to save was null");
         }
 
 
         if (headerSummaryField.getValue().equals("")) {
             headerSummaryField.setRequired(true);
             headerSummaryField.setRequiredError("Issue must have a name!");
-            logger.warn("");
-            Notification.show("Issue must have a name", Notification.Type.WARNING_MESSAGE);
-            return null;
+            logger.warn("Issue must have a name!");
+            throw new NoNameException();
         }
 
 
         issue.setSummary(headerSummaryField.getValue());
+        if (statusSelect.getValue() == null)
+            throw new MissingAttributeException("No Status selected");
         issue.setStatus((IssueStatus) statusSelect.getValue());
+
+        if (prioritySelect.getValue() == null)
+            throw new MissingAttributeException("No Priority selected");
         issue.setPriority((IssuePriority) prioritySelect.getValue());
+
+        if (typeSelect.getValue() == null)
+            throw new MissingAttributeException("No type selected");
         issue.setType((IssueType) typeSelect.getValue());
+
+        if (assigneeSelect.getValue() == null)
+            throw new MissingAttributeException("No Assignee selected");
         issue.setAssignee((Benutzer) assigneeSelect.getValue());
         issue.setDueDate_planned(converter.convertToModel(plannedDateLabel.getValue(), Locale.getDefault()));
         issue.setDueDate_resolved(resolvedDateField.getValue() == null ? new Date(0) : resolvedDateField.getValue());
         issue.setDueDate_closed(closedDateField.getValue() == null ? new Date(0) : closedDateField.getValue());
+
+        if (storyPointSelect.getValue() == null)
+            throw new MissingAttributeException("No StoryPoints selected");
         issue.setStoryPoints((IssueStoryPoint) storyPointSelect.getValue());
+
+        if (versionSelect.getValue() == null)
+            throw new MissingAttributeException("No Version selected");
         issue.setVersion((IssueVersion) versionSelect.getValue());
+
+
         issue.setRisk((Integer) riskSelect.getValue());
         issue.setStory(descriptionTextArea.getValue());
 
@@ -479,8 +506,12 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         }
 
         relContainer.resetTransactions();
-
-        issue = DaoFactorySingelton.getInstance().getIssueBaseDAO(screen.getCurrentProject().getId()).persist(issue);
+        try {
+            issue = DaoFactorySingelton.getInstance().getIssueBaseDAO(screen.getUi().getCurrentProject().getId())
+                    .persist(issue);
+        } catch (IllegalArgumentException e) {
+            throw new NameAlreadyInUseException();
+        }
         return issue;
     }
 

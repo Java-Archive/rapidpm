@@ -30,7 +30,11 @@ public class DeleteCommentWindow extends RapidWindow implements Internationaliza
 
 
     public DeleteCommentWindow(final IssueOverviewScreen screen, final Table commentTable) {
-        super();
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+        if (commentTable == null)
+            throw new NullPointerException("Table must not be null");
+
         self = this;
         this.screen = screen;
         this.commentTable = commentTable;

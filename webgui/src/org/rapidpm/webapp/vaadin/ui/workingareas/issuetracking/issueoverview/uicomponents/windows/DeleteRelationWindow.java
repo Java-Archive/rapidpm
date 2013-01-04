@@ -30,7 +30,11 @@ public class DeleteRelationWindow extends RapidWindow implements Internationaliz
 
 
     public DeleteRelationWindow(final IssueOverviewScreen screen, final Table relationTable) {
-        super();
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+        if (relationTable == null)
+            throw new NullPointerException("Table must not be null");
+
         self = this;
         this.screen = screen;
         this.relationTable = relationTable;

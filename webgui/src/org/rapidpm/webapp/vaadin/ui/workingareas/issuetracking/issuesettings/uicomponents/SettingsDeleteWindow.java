@@ -4,6 +4,7 @@ import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainerSingleton;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.IssueSettingsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.model.SettingsDataContainer;
 
@@ -132,6 +133,8 @@ public class SettingsDeleteWindow<T> extends RapidWindow implements Internationa
                         assignToItemId);
             } else
                 ((SettingsDataContainer<T>)contentTable.getContainerDataSource()).removeSimpleItem(removeItemId);
+
+            TreeIssueBaseContainerSingleton.getInstance(screen.getUi().getCurrentProject()).refresh();
             self.close();
         }
     }

@@ -9,7 +9,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.log
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DeleteButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeActivateOnValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeValueChangeListener;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.ModelSingleton;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainerSingleton;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainer;
 
 
@@ -34,9 +34,12 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
     private HorizontalLayout buttonLayout;
 
     public IssueTreeLayout(final IssueOverviewScreen screen, final IssueTabSheet issueTabSheet) {
-        super();
-        this.screen = screen;
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+        if (issueTabSheet == null)
+            throw new NullPointerException("TabSheet must not be null");
 
+        this.screen = screen;
         setComponents(issueTabSheet);
         doInternationalization();
     }
@@ -61,7 +64,8 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 
         issueTree = new Tree("IssueTree");
         issueTree.setNullSelectionAllowed(false);
-        issueTree.setContainerDataSource(ModelSingleton.getInstance(screen.getCurrentProject()));
+        issueTree.setContainerDataSource(TreeIssueBaseContainerSingleton.getInstance(screen.getUi().getCurrentProject()
+        ));
         issueTree.setImmediate(true);
         if (issueTabSheet != null) {
             issueTree.addValueChangeListener(new TreeValueChangeListener(issueTabSheet, issueTree));
