@@ -199,7 +199,7 @@ public class FlatIssueBase extends FlatEntity<IssueBase> {
     @Override
     public void toEntity(final IssueBase issueBase, final DaoFactory daoFactory) {
 //        issueBase.setText(text);
-//        issueBase.setProjectid(projectId);
+        issueBase.setProjectid(projectId);
         issueBase.setSummary(summary);
         issueBase.setStory(story);
         final IssuePriorityDAO issuePriorityDAO = daoFactory.getIssuePriorityDAO();

@@ -84,7 +84,7 @@ public class IssueTrackingWS {
     }
 
     @WebMethod
-    public void saveIssue(@WebParam(name = "entity") final FlatIssueBase flatIssueBase) {
+    public void saveIssue(@WebParam(name = "issueBase") final FlatIssueBase flatIssueBase) {
         issueBaseMapper.checkPermission(EntityMapper.PERMISSION_UPDATE);
         final Long projectId = flatIssueBase.getProjectId();
         issueBaseDAO = daoFactory.getIssueBaseDAO(projectId);
