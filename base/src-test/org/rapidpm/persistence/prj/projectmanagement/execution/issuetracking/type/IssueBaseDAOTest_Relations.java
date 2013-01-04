@@ -13,10 +13,12 @@ import org.neo4j.graphdb.Direction;
 //import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelationDAO;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 public class IssueBaseDAOTest_Relations implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssueBaseDAOTest_Relations.class);
@@ -31,17 +33,14 @@ public class IssueBaseDAOTest_Relations implements BaseDAOTest {
         IssueBase issue2 = list.get(2);
         final IssueRelation rel = daoFactory.getIssueRelationDAO().loadAllEntities().get(1);
 
-        boolean success = issue1.connectToIssueAs(issue2, rel);
-        assertTrue(success);
+        assertTrue(issue1.connectToIssueAs(issue2, rel));
         issue1 = dao.persist(issue1);
-        List<IssueBase> connected = issue1.getConnectedIssues(rel, Direction.OUTGOING);
-        assertTrue(connected.contains(issue2));
+        assertTrue(issue1.getConnectedIssues(rel, Direction.OUTGOING).contains(issue2));
 
         //try to add the same relation again
-        success = issue1.connectToIssueAs(issue2, rel);
-        assertTrue(success);
+        assertTrue(issue1.connectToIssueAs(issue2, rel));
         issue1 = dao.persist(issue1);
-        connected = issue1.getConnectedIssues(rel, Direction.OUTGOING);
+        List<IssueBase> connected = issue1.getConnectedIssues(rel, Direction.OUTGOING);
         int i = 0;
         for (final IssueBase issueCon : connected) {
             if (issueCon.equals(issue2))
@@ -51,20 +50,52 @@ public class IssueBaseDAOTest_Relations implements BaseDAOTest {
 
 
         //delete non existing relation
-        connected = issue1.getConnectedIssues(rel);
-        success = issue1.removeConnectionToIssue(list.get(list.size() - 1), rel);
-        assertTrue(success);
+        List<IssueBase> connected1 = issue1.getConnectedIssues(rel);
+        assertTrue(issue1.removeConnectionToIssue(list.get(list.size() - 1), rel));
         issue1 = dao.persist(issue1);
-        assertEquals(connected.size(), issue1.getConnectedIssues(rel).size());
+        assertEquals(connected1.size(), issue1.getConnectedIssues(rel).size());
 
 
         //delete relation
-        success = issue1.removeConnectionToIssue(issue2, rel);
-        assertTrue(success);
+        assertTrue(issue1.removeConnectionToIssue(issue2, rel));
         issue1 = dao.persist(issue1);
-        connected = issue1.getConnectedIssues(rel);
-        assertFalse(connected.contains(issue2));
+        assertFalse(issue1.getConnectedIssues(rel).contains(issue2));
     }
+
+    @Test
+    public void removeRelations() {
+        final List<IssueBase> list = dao.loadAllEntities();
+        IssueBase issue1 = list.get(1);
+        IssueBase issue2 = list.get(2);
+        IssueBase issue3 = list.get(3);
+        final IssueRelationDAO relationDAO = daoFactory.getIssueRelationDAO();
+        final IssueRelation relation = relationDAO.loadAllEntities().get(1);
+
+        assertTrue(issue1.connectToIssueAs(issue2, relation));
+        issue1 = dao.persist(issue1);
+        assertTrue(issue1.getConnectedIssues(relation, Direction.OUTGOING).contains(issue2));
+
+        assertTrue(issue1.connectToIssueAs(issue3, relation));
+        issue1 = dao.persist(issue1);
+        assertTrue(issue1.getConnectedIssues(relation, Direction.OUTGOING).contains(issue3));
+
+        assertTrue(relationDAO.getConnectedIssuesFromProject(relation, issue1.getProjectid()).contains(issue1));
+
+        issue2.removeConnectionToIssue(issue1, relation);
+        issue2 = dao.persist(issue2);
+        assertFalse(issue1.getConnectedIssues(relation).contains(issue2));
+        assertTrue(issue1.getConnectedIssues(relation).contains(issue3));
+
+        assertTrue(relationDAO.getConnectedIssuesFromProject(relation, issue1.getProjectid()).contains(issue1));
+
+        issue1.removeConnectionToIssue(issue3, relation);
+        issue1 = dao.persist(issue1);
+        assertFalse(issue1.getConnectedIssues(relation).contains(issue3));
+        assertFalse(relationDAO.getConnectedIssuesFromProject(relation, issue1.getProjectid()).contains(issue1));
+
+
+    }
+
 
     @Test
     public void connectEntitiesWithRelationTx_Fail() {

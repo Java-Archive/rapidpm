@@ -7,6 +7,7 @@ import org.neo4j.graphdb.traversal.Evaluators;
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.graphdb.traversal.Traverser;
 import org.neo4j.kernel.Traversal;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -583,42 +584,6 @@ public class GraphBaseDAO<T> {
         }
     }
 
-    protected boolean deleteRelation(final T entity) {
-        if (entity == null)
-            throw new NullPointerException("Object to delete can't be null.");
-
-        if (logger.isDebugEnabled())
-            logger.debug("delete: " + entity);
-
-        boolean success = false;
-        final Long id = getIdFromEntity(entity);
-        final Transaction tx = graphDb.beginTx();
-        try{
-            final TraversalDescription td = Traversal.description()
-                    .depthFirst()
-                    .relationships((RelationshipType) entity)
-                    .evaluator(Evaluators.excludeStartPosition());
-            final Traverser trav = td.traverse( root_node );
-            for (final Path path : trav) {
-                System.out.println(path);
-            }
-
-            Node relNode;
-            if (id != null && id != 0) {
-
-                relNode = graphDb.getNodeById(id);
-                for (Relationship rel : relNode.getRelationships()) {
-                    rel.delete();
-                }
-                relNode.delete();
-            }
-            tx.success();
-            success = true;
-        } finally {
-            tx.finish();
-            return success;
-        }
-    }
 
     protected boolean deleteIssue(final T entity) {
         if (entity == null)
@@ -676,13 +641,13 @@ public class GraphBaseDAO<T> {
 
     protected List<IssueBase> getConnectedIssuesFromProject(final T entity, final Long projectId) {
         if (entity == null)
-            throw new NullPointerException("StoryPoint is null");
+            throw new NullPointerException("Entity is null");
         if (projectId < 0)
             throw new IllegalArgumentException("ProjectId must be positiv");
 
         Long id = getIdFromEntity(entity);
         if (id == null)
-            throw new IllegalArgumentException("StoryPoint Id cant be null. Persist first.");
+            throw new IllegalArgumentException("Entity Id cant be null. Persist first.");
 
         if (logger.isDebugEnabled())
             logger.debug(this.getClass().getSimpleName() + ".getConnectedIssuesFromProject: " + projectId);

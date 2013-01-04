@@ -3,6 +3,8 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 
 import java.util.List;
 
@@ -45,8 +47,16 @@ public class IssueRelationDAOTest implements BaseDAOTest {
         relation = dao.persist(relation);
         assertEquals(relation, dao.findByID(relation.getId()));
 
+        IssueBaseDAO issueDAO = daoFactory.getIssueBaseDAO(1L);
+        List<IssueBase> issueList = issueDAO.loadAllEntities();
+        IssueBase issue1 = issueList.get(0);
+        issue1.connectToIssueAs(issueList.get(1), relation);
+        issue1.connectToIssueAs(issueList.get(2), relation);
+        issue1 = issueDAO.persist(issue1);
+
         dao.delete(relation);
         assertFalse(dao.loadAllEntities().contains(relation));
+        assertTrue(issue1.getConnectedIssues(relation).isEmpty());
     }
 
     @Test(expected = IllegalArgumentException.class)
