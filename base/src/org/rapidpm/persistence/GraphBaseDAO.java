@@ -521,7 +521,7 @@ public class GraphBaseDAO<T> {
     }
 
 
-    public boolean deleteSimpleAttribute(final T entity) {
+    protected boolean deleteSimpleAttribute(final T entity) {
         if (entity == null)
             throw new NullPointerException("Object to delete can't be null.");
 
@@ -548,7 +548,7 @@ public class GraphBaseDAO<T> {
         }
     }
 
-    public boolean deleteAttribute(final T entity, final T assignTo) {
+    protected boolean deleteAttribute(final T entity, final T assignTo) {
         if (entity == null)
             throw new NullPointerException("Object to delete can't be null.");
         if (assignTo == null)

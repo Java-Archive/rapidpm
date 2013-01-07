@@ -93,7 +93,16 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         if (!alreadyExist) {
             startNode.createRelationshipTo(endNode, relation);
             final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueRelation.class);
-            if (!startNode.hasRelationship(relType, Direction.OUTGOING)) {
+
+            boolean relExist = false;
+            for (Relationship rel : startNode.getRelationships(relType, Direction.OUTGOING)) {
+                if (rel.getEndNode().equals(relationNode)) {
+                    relExist = true;
+                    break;
+                }
+            }
+
+            if (!relExist) {
                 startNode.createRelationshipTo(relationNode, relType);
             } else {
                 if (logger.isDebugEnabled())
@@ -199,15 +208,21 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
                 rel.delete();
 
                 if (!referenceNode.hasRelationship(relation, Direction.OUTGOING)) {
+
+                    final Node relationNode = graphDb.getNodeById(relation.getId());
                     final RelationshipType relType;
                     relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueRelation.class);
-                    final Relationship relToRelNode = referenceNode.getSingleRelationship(relType, Direction.OUTGOING);
-                    if (relToRelNode != null) {
-                        relToRelNode.delete();
+
+                    for (Relationship relToRelNode : referenceNode.getRelationships(relType, Direction.OUTGOING)) {
+                        if (relToRelNode.getEndNode().equals(relationNode)) {
+                            relToRelNode.delete();
+                            if (logger.isDebugEnabled())
+                                logger.debug("No more relations of type: " + relation + " present. Delete relation to " +
+                                        "RelationNode");
+                            break;
+                        }
                     }
-                    if (logger.isDebugEnabled())
-                        logger.debug("No more relations of type: " + relation + " present. Delete relation to " +
-                                "RelationNode");
+
                 } else {
                     if (logger.isDebugEnabled())
                         logger.debug("Issue has more relations of type: " + relation);
