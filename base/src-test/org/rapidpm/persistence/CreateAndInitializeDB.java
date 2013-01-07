@@ -64,7 +64,7 @@ public class CreateAndInitializeDB {
 //    }
 
     private void deleteFileOrDirectory( final boolean start, final File file ) {
-        if (start) System.out.println("Removing old db");
+        if (start) System.out.println("Removing old DB");
         if ( file.exists() ) {
             if ( file.isDirectory() ) {
                 for ( File child : file.listFiles() ) {
@@ -77,9 +77,7 @@ public class CreateAndInitializeDB {
 
 
     public void CreateAndInitialize(){
-        System.out.println("Start creating");
-        createDB();
-        System.out.println("Finished creating");
+        System.out.println("Created DB");
         System.out.println("Start initializing");
         initializeAttributes();
         initializeProject1();
@@ -88,67 +86,67 @@ public class CreateAndInitializeDB {
         graphDb.shutdown();
     }
 
-    public void createDB() {
-        final Transaction tx = graphDb.beginTx();
-        try{
-            final RelationshipType relProject = GraphRelationRegistry.getRootToClassRootRelType(IssueBase.class);
-            Node project_root = graphDb.createNode();
-            project_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relProject.name());
-            root.createRelationshipTo(project_root, relProject);
 
-            Node project1 = graphDb.createNode();
-            project1.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), 1L);
-            project1.setProperty(GraphRelationRegistry.getRelationAttributeProjectToken(), "PRO1");
-            project1.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), 1);
-            project_root.createRelationshipTo(project1, relProject);
-
-            Node project2 = graphDb.createNode();
-            project2.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), 2L);
-            project2.setProperty(GraphRelationRegistry.getRelationAttributeProjectToken(), "PRO2");
-            project2.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), 1);
-            project_root.createRelationshipTo(project2, relProject);
-
-            final RelationshipType relStatus = GraphRelationRegistry.getRootToClassRootRelType(IssueStatus.class);
-            Node status_root = graphDb.createNode();
-            status_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relStatus.name());
-            root.createRelationshipTo(status_root, relStatus);
-
-            final RelationshipType relPriority = GraphRelationRegistry.getRootToClassRootRelType(IssuePriority.class);
-            Node priority_root = graphDb.createNode();
-            priority_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relPriority.name());
-            root.createRelationshipTo(priority_root, relPriority);
-
-            final RelationshipType relType = GraphRelationRegistry.getRootToClassRootRelType(IssueType.class);
-            Node type_root = graphDb.createNode();
-            type_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relType.name());
-            root.createRelationshipTo(type_root, relType);
-
-            final RelationshipType relComponent = GraphRelationRegistry.getRootToClassRootRelType(IssueComponent.class);
-            Node component_root = graphDb.createNode();
-            component_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relComponent.name());
-            root.createRelationshipTo(component_root, relComponent);
-
-            final RelationshipType relRelation = GraphRelationRegistry.getRootToClassRootRelType(IssueRelation.class);
-            Node issueRelation_root = graphDb.createNode();
-            issueRelation_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relRelation.name());
-            root.createRelationshipTo(issueRelation_root, relRelation);
-
-            final RelationshipType relVersion = GraphRelationRegistry.getRootToClassRootRelType(IssueVersion.class);
-            Node issueversion_root = graphDb.createNode();
-            issueversion_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relVersion.name());
-            root.createRelationshipTo(issueversion_root, relVersion);
-
-            final RelationshipType relStoryPoint = GraphRelationRegistry.getRootToClassRootRelType(IssueStoryPoint.class);
-            Node issuestorypoint_root = graphDb.createNode();
-            issuestorypoint_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relStoryPoint.name());
-            root.createRelationshipTo(issuestorypoint_root, relStoryPoint);
-
-            tx.success();
-        } finally {
-            tx.finish();
-        }
-    }
-
+//    public void createDB() {
+//        final Transaction tx = graphDb.beginTx();
+//        try{
+//            final RelationshipType relProject = GraphRelationRegistry.getRootToClassRootRelType(IssueBase.class);
+//            Node project_root = graphDb.createNode();
+//            project_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relProject.name());
+//            root.createRelationshipTo(project_root, relProject);
+//
+//            Node project1 = graphDb.createNode();
+//            project1.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), 1L);
+//            project1.setProperty(GraphRelationRegistry.getRelationAttributeProjectToken(), "PRO1");
+//            project1.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), 1);
+//            project_root.createRelationshipTo(project1, relProject);
+//
+//            Node project2 = graphDb.createNode();
+//            project2.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), 2L);
+//            project2.setProperty(GraphRelationRegistry.getRelationAttributeProjectToken(), "PRO2");
+//            project2.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), 1);
+//            project_root.createRelationshipTo(project2, relProject);
+//
+//            final RelationshipType relStatus = GraphRelationRegistry.getRootToClassRootRelType(IssueStatus.class);
+//            Node status_root = graphDb.createNode();
+//            status_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relStatus.name());
+//            root.createRelationshipTo(status_root, relStatus);
+//
+//            final RelationshipType relPriority = GraphRelationRegistry.getRootToClassRootRelType(IssuePriority.class);
+//            Node priority_root = graphDb.createNode();
+//            priority_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relPriority.name());
+//            root.createRelationshipTo(priority_root, relPriority);
+//
+//            final RelationshipType relType = GraphRelationRegistry.getRootToClassRootRelType(IssueType.class);
+//            Node type_root = graphDb.createNode();
+//            type_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relType.name());
+//            root.createRelationshipTo(type_root, relType);
+//
+//            final RelationshipType relComponent = GraphRelationRegistry.getRootToClassRootRelType(IssueComponent.class);
+//            Node component_root = graphDb.createNode();
+//            component_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relComponent.name());
+//            root.createRelationshipTo(component_root, relComponent);
+//
+//            final RelationshipType relRelation = GraphRelationRegistry.getRootToClassRootRelType(IssueRelation.class);
+//            Node issueRelation_root = graphDb.createNode();
+//            issueRelation_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relRelation.name());
+//            root.createRelationshipTo(issueRelation_root, relRelation);
+//
+//            final RelationshipType relVersion = GraphRelationRegistry.getRootToClassRootRelType(IssueVersion.class);
+//            Node issueversion_root = graphDb.createNode();
+//            issueversion_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relVersion.name());
+//            root.createRelationshipTo(issueversion_root, relVersion);
+//
+//            final RelationshipType relStoryPoint = GraphRelationRegistry.getRootToClassRootRelType(IssueStoryPoint.class);
+//            Node issuestorypoint_root = graphDb.createNode();
+//            issuestorypoint_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), relStoryPoint.name());
+//            root.createRelationshipTo(issuestorypoint_root, relStoryPoint);
+//
+//            tx.success();
+//        } finally {
+//            tx.finish();
+//        }
+//    }
 
     private void initializeAttributes(){
 

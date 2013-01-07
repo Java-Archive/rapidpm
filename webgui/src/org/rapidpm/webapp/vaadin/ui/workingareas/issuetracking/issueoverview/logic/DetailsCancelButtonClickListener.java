@@ -21,6 +21,9 @@ public class DetailsCancelButtonClickListener implements Button.ClickListener {
     private final IssueDetailsLayout detailsLayout;
 
     public DetailsCancelButtonClickListener(final IssueDetailsLayout detailsLayout) {
+        if (detailsLayout == null)
+            throw new NullPointerException("DetailsLayout must bot be null");
+
         this.detailsLayout = detailsLayout;
     }
 
@@ -28,15 +31,16 @@ public class DetailsCancelButtonClickListener implements Button.ClickListener {
     public void buttonClick(Button.ClickEvent event) {
         final IssueBase issueBase = detailsLayout.getCurrentIssue();
         final IssueBaseDAO dao = DaoFactorySingelton.getInstance().getIssueBaseDAO(issueBase.getProjectid());
-        if (!dao.existInDatabase(issueBase.getId()))
+        if (!dao.existInDatabase(issueBase.getId())) {
             Notification.show("Issue has been deleted", Notification.Type.WARNING_MESSAGE);
-        else {
+        } else {
             detailsLayout.setLayoutReadOnly(true);
-            if (detailsLayout.getCurrentIssue() != null)
+            if (detailsLayout.getCurrentIssue() != null) {
                 detailsLayout.setDetailsFromIssue(detailsLayout.getCurrentIssue());
-            else
+            } else {
                 if (logger.isDebugEnabled())
                     logger.debug("No issue selected to show");
+            }
         }
     }
 }

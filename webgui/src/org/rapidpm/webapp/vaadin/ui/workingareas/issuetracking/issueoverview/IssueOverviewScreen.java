@@ -32,8 +32,6 @@ public class IssueOverviewScreen extends Screen{
 
     public IssueOverviewScreen(MainUI ui) {
         super(ui);
-//        baseDaoFactoryBean = EJBFactory.getEjbInstance(IssueOverviewScreenBean.class).getDaoFactoryBean();
-//        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         this.setSizeFull();
         //this.setMargin(true);
         hSplitPanel = new HorizontalSplitPanel();
@@ -44,15 +42,12 @@ public class IssueOverviewScreen extends Screen{
         setComponents();
     }
 
-//    public DaoFactoryBean getBaseDaoFactoryBean() {
-//        return baseDaoFactoryBean;
-//    }
 
-    public PlannedProject getCurrentProject() {
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
-        return plannedProjectDAO.findByID(ui.getCurrentProject().getId());
-    }
+//    public PlannedProject getCurrentProject() {
+//        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+//        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
+//        return plannedProjectDAO.findByID(ui.getCurrentProject().getId());
+//    }
 
     public IssueTabSheet getIssueTabSheet() {
         return issueTabSheet;

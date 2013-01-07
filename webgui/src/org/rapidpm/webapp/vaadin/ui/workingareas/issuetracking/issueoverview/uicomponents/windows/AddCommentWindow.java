@@ -33,7 +33,11 @@ public class AddCommentWindow extends RapidWindow implements Internationalizatio
 
 
     public AddCommentWindow(final IssueOverviewScreen screen, final AbstractIssueDataContainer commentContainer){
-        super();
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+        if (commentContainer == null)
+            throw new NullPointerException("Container must not be null");
+
         self = this;
         this.screen = screen;
         this.commentContainer = (CommentsDataContainer) commentContainer;
@@ -89,10 +93,7 @@ public class AddCommentWindow extends RapidWindow implements Internationalizatio
                 newComment.setText(commentTextValue);
                 newComment.setCreator(screen.getUi().getCurrentUser());
                 newComment.setCreated(new Date());
-                if (!commentContainer.addComment(newComment)) {
-                    //TODO Show Errormessage to User
-                    logger.error("Adding comment failed");
-                }
+                commentContainer.addComment(newComment);
                 self.close();
             } else {
                 if (logger.isDebugEnabled())

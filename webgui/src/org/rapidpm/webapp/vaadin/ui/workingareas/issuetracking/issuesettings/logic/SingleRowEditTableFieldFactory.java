@@ -20,6 +20,9 @@ public class SingleRowEditTableFieldFactory implements TableFieldFactory {
     private Object entity;
 
     public SingleRowEditTableFieldFactory(Object entity) {
+        if (entity == null)
+            throw new NullPointerException("Entity must not be null");
+
         this.entity = entity;
     }
 

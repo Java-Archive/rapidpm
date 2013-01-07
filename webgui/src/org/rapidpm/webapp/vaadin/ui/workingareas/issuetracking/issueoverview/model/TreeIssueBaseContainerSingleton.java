@@ -11,11 +11,14 @@ import java.util.HashMap;
  * Time: 14:54
  * To change this template use File | Settings | File Templates.
  */
-public class ModelSingleton {
+public class TreeIssueBaseContainerSingleton {
 
     private static final HashMap<PlannedProject, TreeIssueBaseContainer> instanceMap = new HashMap<>();
 
     public static TreeIssueBaseContainer getInstance(PlannedProject project) {
+        if (project == null)
+            throw new NullPointerException("Project must not be null");
+
         if (!instanceMap.containsKey(project)) {
             instanceMap.put(project, new TreeIssueBaseContainer(project));
         }

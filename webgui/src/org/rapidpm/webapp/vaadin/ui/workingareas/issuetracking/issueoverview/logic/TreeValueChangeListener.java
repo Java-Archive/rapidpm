@@ -4,6 +4,7 @@ import com.vaadin.data.Property;
 import com.vaadin.ui.Tree;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.AbstractIssueDataContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTabSheet;
 
@@ -24,6 +25,11 @@ public class TreeValueChangeListener implements Tree.ValueChangeListener {
     private final Tree issueTree;
 
     public TreeValueChangeListener(final IssueTabSheet issueTabSheet, final Tree issueTree) {
+        if (issueTabSheet == null)
+            throw new NullPointerException("TabSheet is null.");
+        if (issueTree == null)
+            throw new NullPointerException("Tree is null.");
+
         this.issueTabSheet = issueTabSheet;
         this.issueTree = issueTree;
     }
@@ -34,12 +40,15 @@ public class TreeValueChangeListener implements Tree.ValueChangeListener {
             changeDetails(event.getProperty().getValue());
         else {
             if (logger.isDebugEnabled())
-                logger.debug("Property of values was null");
+                logger.debug("Value to change was null");
             issueTabSheet.setAllTabsEnabled(false);
         }
     }
 
     private void changeDetails(Object itemId) {
+        if (itemId == null)
+            throw new NullPointerException("ItemId must not be null");
+
         IssueBase issueBase = (IssueBase)issueTree.getContainerDataSource().getContainerProperty(itemId,
                 TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
         if (issueBase != null) {

@@ -1,9 +1,13 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
 import org.neo4j.graphdb.RelationshipType;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.PersistInGraph;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,6 +32,10 @@ public class IssueRelation implements RelationshipType, PersistInGraph {
 
     public IssueRelation() {
         //empty on purpose
+    }
+
+    public List<IssueBase> getConnectedIssuesFromProject(final Long projectId) {
+        return DaoFactorySingelton.getInstance().getIssueRelationDAO().getConnectedIssuesFromProject(this, projectId);
     }
 
     public Long getId() {
