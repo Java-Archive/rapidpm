@@ -48,7 +48,7 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
             if (selectedId != null) {
                 final PlanningUnitsTree tree = screen.getPlanningUnitsTree();
                 final BeanItem<PlanningUnit> selectedPlanningUnitBeanItem = (BeanItem) tree.getItem(selectedId);
-                final PlanningUnit selectedPlanningUnit = selectedPlanningUnitBeanItem.getBean();
+                final PlanningUnit selectedParentPlanningUnit = selectedPlanningUnitBeanItem.getBean();
                 final RapidPanel detailPanel = screen.getDetailsPanel();
                 final RapidPanel mainPanel = screen.getMainPanel();
                 final RapidPanel ressourcesPanel = screen.getRessourcesPanel();
@@ -57,20 +57,23 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                 detailPanel.removeAllComponents();
                 mainPanel.removeAllComponents();
                 ressourcesPanel.removeAllComponents();
+                descriptionsPanel.removeAllComponents();
+                descriptionsPanel.addComponent(screen.getAddDescriptionOrTestCaseButton());
 
-                detailPanel.addComponent(new Label(selectedPlanningUnit.getPlanningUnitName()));
-                mainPanel.setCaption(selectedPlanningUnit.getPlanningUnitName());
+                detailPanel.addComponent(new Label(selectedParentPlanningUnit.getPlanningUnitName()));
+                mainPanel.setCaption(selectedParentPlanningUnit.getPlanningUnitName());
                 ressourcesPanel.setCaption(RESSOURCE_GROUPS);
                 final VerticalLayout detailsPanelComponentsLayout = new PlanningDetailsEditableLayout
-                        (selectedPlanningUnit, screen, detailPanel);
-                final VerticalLayout mainPanelLayout = new PlanningInformationEditableLayout(selectedPlanningUnit,
+                        (selectedParentPlanningUnit, screen, detailPanel);
+                final VerticalLayout mainPanelLayout = new PlanningInformationEditableLayout(selectedParentPlanningUnit,
                         screen, mainPanel);
-                if(daoFactory.getPlanningUnitDAO().findByID(selectedPlanningUnit.getId()) != null){
-                    final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesEditableLayout(selectedPlanningUnit,
+                if(daoFactory.getPlanningUnitDAO().findByID(selectedParentPlanningUnit.getId()) != null){
+                    final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesEditableLayout(selectedParentPlanningUnit,
                             screen, ressourcesPanel, hasChildren);
                     ressourcesPanel.addComponent(ressourcesPanelLayout);
                     final DescriptionAndTestCasesFieldGroup descriptionAndTestCasesFieldGroup = new
-                            DescriptionAndTestCasesFieldGroup(screen, screen.getMessagesBundle(), selectedPlanningUnit);
+                            DescriptionAndTestCasesFieldGroup(screen, screen.getMessagesBundle(),
+                            (PlanningUnit)screen.getPlanningUnitsTree().getValue());
                     for (final RapidPanel descriptionEditableLayout : descriptionAndTestCasesFieldGroup
                             .getDescriptionRapidPanels()) {
                         descriptionsPanel.addComponent(descriptionEditableLayout);
