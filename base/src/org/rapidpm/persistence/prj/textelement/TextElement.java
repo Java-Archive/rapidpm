@@ -100,4 +100,21 @@ public class TextElement implements Comparable<TextElement> {
         }
         return -1;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TextElement)) return false;
+
+        TextElement that = (TextElement) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

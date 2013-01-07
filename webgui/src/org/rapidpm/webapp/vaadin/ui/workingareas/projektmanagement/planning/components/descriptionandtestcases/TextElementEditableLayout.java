@@ -43,6 +43,7 @@ public class TextElementEditableLayout extends EditableLayout {
         bezeichnungField = new TextField();
         bezeichnungField.setValue(textElement.getBezeichnung());
         bezeichnungField.setReadOnly(true);
+        bezeichnungField.setWidth("200px");
         textElementTextArea = new RichTextArea("", textElement.getText());
         textElementTextArea.setSizeUndefined();
         textElementTextArea.setWidth("100%");

@@ -18,6 +18,10 @@
         <url>file://$PROJECT_DIR$/data/derby/db-derby-10.9.1.0-bin/lib/derbyclient.jar</url>
       </library>
     </libraries>
+    <schema name="SQLJ" catalog="" />
+    <schema name="SYS" catalog="" />
+    <schema name="SYSCS_UTIL" catalog="" />
+    <schema name="SYSIBM" catalog="" />
     <table name="SYSALIASES" schema="SYS" catalog="" type="SYSTEM TABLE">
       <column name="ALIASID" sqlType="CHAR" length="36" precision="0" nullable="false" jdbcType="1" />
       <column name="ALIAS" sqlType="VARCHAR" length="128" precision="0" nullable="false" jdbcType="12" />
@@ -677,13 +681,16 @@
     <identifier-quote-string>"</identifier-quote-string>
     <jdbc-driver>org.postgresql.Driver</jdbc-driver>
     <jdbc-url>jdbc:postgresql://localhost:5432/rapidpm</jdbc-url>
-    <user-name>rapidpm</user-name>
-    <user-password>dfd8dfcbdfdadfc3dfcedfdadfc7</user-password>
+    <user-name>postgres</user-name>
+    <user-password>dfc2dfcbdfc6dfc6dfc5</user-password>
     <libraries>
       <library>
-        <url>jar:///prog/PostgreSQL/pgJDBC/postgresql-9.1-901.jdbc4.jar!/</url>
+        <url>file://$PROJECT_DIR$/lib/postgresql-9.1-901.jdbc4.jar</url>
       </library>
     </libraries>
+    <schema name="information_schema" catalog="" />
+    <schema name="pg_catalog" catalog="" />
+    <schema name="public" catalog="" />
     <table name="_pg_foreign_data_wrappers" schema="information_schema" catalog="" type="SYSTEM VIEW">
       <column name="oid" sqlType="oid" length="10" precision="0" nullable="true" jdbcType="-5" />
       <column name="fdwowner" sqlType="oid" length="10" precision="0" nullable="true" jdbcType="-5" />

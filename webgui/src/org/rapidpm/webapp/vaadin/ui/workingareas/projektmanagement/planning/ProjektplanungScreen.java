@@ -84,7 +84,8 @@ public class ProjektplanungScreen extends Screen {
             addDescriptionOrTestCaseButton.addClickListener(new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
-                    ui.addWindow(new AddDescriptionsOrTestCasesWindow(messagesBundle));
+                    ui.addWindow(new AddDescriptionsOrTestCasesWindow((PlanningUnit)planningUnitsTree.getValue(), ui,
+                            messagesBundle));
                 }
             });
 
@@ -332,5 +333,9 @@ public class ProjektplanungScreen extends Screen {
 
     public RapidPanel getRightColumn() {
         return rightColumn;
+    }
+
+    public Button getAddDescriptionOrTestCaseButton() {
+        return addDescriptionOrTestCaseButton;
     }
 }

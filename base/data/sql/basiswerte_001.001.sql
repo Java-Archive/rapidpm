@@ -225,7 +225,7 @@ INSERT INTO textelement(id, bezeichnung, text) VALUES (5,'der 1. testcase',
 INSERT INTO textelement(id, bezeichnung, text) VALUES (6,'der 2. tolle testcase',
                                                        'Dies hier stellt den zweiten tollen Testcase dar.');
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('TextElement_id', 5);
+INSERT INTO pk_gen(gen_key, gen_value) VALUES ('TextElement_id', 7);
 
 INSERT INTO planningunit_description (planningunit_id, descriptions_id) VALUES (1,1);
 
