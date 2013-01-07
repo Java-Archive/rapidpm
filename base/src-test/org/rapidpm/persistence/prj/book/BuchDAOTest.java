@@ -66,55 +66,55 @@ public class BuchDAOTest extends BaseDAOTest {
             final List<BuchKapitelKommentar> buchKapitelKommentarList = new ArrayList<BuchKapitelKommentar>();
             buchKapitelKommentarList.add(buchKapitelKommentar);
             buchKapitel.setKapitelkommentarliste(buchKapitelKommentarList);
-
-            final List<BuchSeite> buchSeiteList = new ArrayList<BuchSeite>();
-
-            final BuchSeite buchSeite = new BuchSeite();
-
-            final List<BuchAbsatz> buchAbsatzList = new ArrayList<BuchAbsatz>();
-            final BuchAbsatz buchAbsatz = new BuchAbsatz();
-            buchAbsatz.setAbsatznummer(1);
-            buchAbsatz.setFreigeschaltet(true);
-
-            final BuchAbsatzKommentar buchAbsatzKommentar = new BuchAbsatzKommentar();
-            buchAbsatzKommentar.setDatum(new Date());
-            buchAbsatzKommentar.setKommentar("blabla");
-//            buchAbsatzKommentar.setKommentator(benutzer);
-            final List<BuchAbsatzKommentar> buchAbsatzKommentarList = new ArrayList<BuchAbsatzKommentar>();
-            buchAbsatzKommentarList.add(buchAbsatzKommentar);
-
-            buchAbsatz.setKommentarliste(buchAbsatzKommentarList);
-
-            buchAbsatz.setText("Das ist der AbsatzText...");
-            buchAbsatzList.add(buchAbsatz);
-            buchSeite.setAbsatzliste(buchAbsatzList);
-
-            buchSeite.setFreigeschaltet(true);
-            final List<BuchSeitenFussnote> buchSeitenFussnoteListe = new ArrayList<BuchSeitenFussnote>();
-
-            final BuchSeitenFussnote buchSeitenFussnote = new BuchSeitenFussnote();
-            buchSeitenFussnote.setFussnotentext("Fussnotentext");
-            buchSeitenFussnote.setFussnotenzeichen("HJHJ");
-            buchSeitenFussnoteListe.add(buchSeitenFussnote);
-            buchSeite.setFusnotenliste(buchSeitenFussnoteListe);
-
-
-            final List<BuchSeitenKommentar> buchSeitenKommentarListe = new ArrayList<BuchSeitenKommentar>();
-            final BuchSeitenKommentar buchSeitenKommentar = new BuchSeitenKommentar();
-            buchSeitenKommentar.setDatum(new Date());
-            buchSeitenKommentar.setKommentar("Das ist der Kommentar");
-//            buchSeitenKommentar.setKommentator(benutzer);
-            buchSeitenKommentarListe.add(buchSeitenKommentar);
-
-            buchSeite.setKommentarliste(buchSeitenKommentarListe);
-            buchSeite.setSeitennummer(1);
-            buchSeiteList.add(buchSeite);
-
-
-            buchKapitel.setSeitenliste(buchSeiteList);
-            buchKapitel.setUeberschrift("KapitelÜberschrift");
-            buchKapitel.setKapitelnummer(1);
-            buchKapitel.setUntertitel("Kapiteluntertitel..");
+//
+//            final List<BuchSeite> buchSeiteList = new ArrayList<BuchSeite>();
+//
+//            final BuchSeite buchSeite = new BuchSeite();
+//
+//            final List<BuchAbsatz> buchAbsatzList = new ArrayList<BuchAbsatz>();
+//            final BuchAbsatz buchAbsatz = new BuchAbsatz();
+//            buchAbsatz.setAbsatznummer(1);
+//            buchAbsatz.setFreigeschaltet(true);
+//
+//            final BuchAbsatzKommentar buchAbsatzKommentar = new BuchAbsatzKommentar();
+//            buchAbsatzKommentar.setDatum(new Date());
+//            buchAbsatzKommentar.setKommentar("blabla");
+////            buchAbsatzKommentar.setKommentator(benutzer);
+//            final List<BuchAbsatzKommentar> buchAbsatzKommentarList = new ArrayList<BuchAbsatzKommentar>();
+//            buchAbsatzKommentarList.add(buchAbsatzKommentar);
+//
+//            buchAbsatz.setKommentarliste(buchAbsatzKommentarList);
+//
+//            buchAbsatz.setText("Das ist der AbsatzText...");
+//            buchAbsatzList.add(buchAbsatz);
+//            buchSeite.setAbsatzliste(buchAbsatzList);
+//
+//            buchSeite.setFreigeschaltet(true);
+//            final List<BuchSeitenFussnote> buchSeitenFussnoteListe = new ArrayList<BuchSeitenFussnote>();
+//
+//            final BuchSeitenFussnote buchSeitenFussnote = new BuchSeitenFussnote();
+//            buchSeitenFussnote.setFussnotentext("Fussnotentext");
+//            buchSeitenFussnote.setFussnotenzeichen("HJHJ");
+//            buchSeitenFussnoteListe.add(buchSeitenFussnote);
+//            buchSeite.setFusnotenliste(buchSeitenFussnoteListe);
+//
+//
+//            final List<BuchSeitenKommentar> buchSeitenKommentarListe = new ArrayList<BuchSeitenKommentar>();
+//            final BuchSeitenKommentar buchSeitenKommentar = new BuchSeitenKommentar();
+//            buchSeitenKommentar.setDatum(new Date());
+//            buchSeitenKommentar.setKommentar("Das ist der Kommentar");
+////            buchSeitenKommentar.setKommentator(benutzer);
+//            buchSeitenKommentarListe.add(buchSeitenKommentar);
+//
+//            buchSeite.setKommentarliste(buchSeitenKommentarListe);
+//            buchSeite.setSeitennummer(1);
+//            buchSeiteList.add(buchSeite);
+//
+//
+//            buchKapitel.setSeitenliste(buchSeiteList);
+//            buchKapitel.setUeberschrift("KapitelÜberschrift");
+//            buchKapitel.setKapitelnummer(1);
+//            buchKapitel.setUntertitel("Kapiteluntertitel..");
 
             buch.getBuchKapitelListe().add(buchKapitel);
 

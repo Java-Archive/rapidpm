@@ -126,4 +126,5 @@ public class Constants {
 
     public static final String DB_PATH = "." + PATH_SEP + "data" + PATH_SEP + "graphDB" + PATH_SEP;
     public static final String ISSUE_SETTINGS_XML_PATH = "rapidPmDefaultSettings.xml";
+    public static final String TEXTAREA_WRITABLE_HEIGHT = "500px";
 }

@@ -3,7 +3,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.log
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
 import org.apache.log4j.Logger;
@@ -13,6 +12,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.descriptionandtestcases.DescriptionAndTestCasesFieldGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsEditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.information.PlanningInformationEditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitsTree;
@@ -48,26 +48,40 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
             if (selectedId != null) {
                 final PlanningUnitsTree tree = screen.getPlanningUnitsTree();
                 final BeanItem<PlanningUnit> selectedPlanningUnitBeanItem = (BeanItem) tree.getItem(selectedId);
-                final PlanningUnit selectedPlanningUnit = selectedPlanningUnitBeanItem.getBean();
+                final PlanningUnit selectedParentPlanningUnit = selectedPlanningUnitBeanItem.getBean();
                 final RapidPanel detailPanel = screen.getDetailsPanel();
                 final RapidPanel mainPanel = screen.getMainPanel();
                 final RapidPanel ressourcesPanel = screen.getRessourcesPanel();
+                final RapidPanel descriptionsPanel = screen.getRightColumn();
 
                 detailPanel.removeAllComponents();
                 mainPanel.removeAllComponents();
                 ressourcesPanel.removeAllComponents();
+                descriptionsPanel.removeAllComponents();
+                descriptionsPanel.addComponent(screen.getAddDescriptionOrTestCaseButton());
 
-                detailPanel.addComponent(new Label(selectedPlanningUnit.getPlanningUnitName()));
-                mainPanel.setCaption(selectedPlanningUnit.getPlanningUnitName());
+                detailPanel.addComponent(new Label(selectedParentPlanningUnit.getPlanningUnitName()));
+                mainPanel.setCaption(selectedParentPlanningUnit.getPlanningUnitName());
                 ressourcesPanel.setCaption(RESSOURCE_GROUPS);
                 final VerticalLayout detailsPanelComponentsLayout = new PlanningDetailsEditableLayout
-                        (selectedPlanningUnit, screen, detailPanel);
-                final VerticalLayout mainPanelLayout = new PlanningInformationEditableLayout(selectedPlanningUnit,
+                        (selectedParentPlanningUnit, screen, detailPanel);
+                final VerticalLayout mainPanelLayout = new PlanningInformationEditableLayout(selectedParentPlanningUnit,
                         screen, mainPanel);
-                if(daoFactory.getPlanningUnitDAO().findByID(selectedPlanningUnit.getId()) != null){
-                    final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesEditableLayout(selectedPlanningUnit,
+                if(daoFactory.getPlanningUnitDAO().findByID(selectedParentPlanningUnit.getId()) != null){
+                    final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesEditableLayout(selectedParentPlanningUnit,
                             screen, ressourcesPanel, hasChildren);
                     ressourcesPanel.addComponent(ressourcesPanelLayout);
+                    final DescriptionAndTestCasesFieldGroup descriptionAndTestCasesFieldGroup = new
+                            DescriptionAndTestCasesFieldGroup(screen, screen.getMessagesBundle(),
+                            (PlanningUnit)screen.getPlanningUnitsTree().getValue());
+                    for (final RapidPanel descriptionEditableLayout : descriptionAndTestCasesFieldGroup
+                            .getDescriptionRapidPanels()) {
+                        descriptionsPanel.addComponent(descriptionEditableLayout);
+                    }
+                    for (final RapidPanel testCaseEditableLayout : descriptionAndTestCasesFieldGroup
+                            .getTestcaseRapidPanels()) {
+                        descriptionsPanel.addComponent(testCaseEditableLayout);
+                    }
                 }
                 detailPanel.removeAllComponents();
                 detailPanel.addComponent(detailsPanelComponentsLayout);
