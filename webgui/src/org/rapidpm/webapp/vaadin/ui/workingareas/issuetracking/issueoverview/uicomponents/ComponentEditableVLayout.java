@@ -34,6 +34,7 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
 
         this.screen = screen;
         messages = screen.getMessagesBundle();
+        setSizeFull();
         setMargin(true);
         setSpacing(true);
         saveableLayout = buildSaveableForm();

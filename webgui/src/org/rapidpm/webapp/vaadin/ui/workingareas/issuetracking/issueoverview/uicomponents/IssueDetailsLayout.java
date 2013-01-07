@@ -305,7 +305,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabComments.setNullSelectionAllowed(false);
         tabComments.setSelectable(true);
         tabComments.setEditable(false);
-        tabComments.setPageLength(10);
+        tabComments.setPageLength(6);
         tabComments.addValueChangeListener(tabValueListener);
         tabSheet.addTab(tabComments);
 
@@ -319,7 +319,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabTestcases.setNullSelectionAllowed(false);
         tabTestcases.setSelectable(true);
         tabTestcases.setEditable(false);
-        tabTestcases.setPageLength(10);
+        tabTestcases.setPageLength(6);
         tabTestcases.addValueChangeListener(tabValueListener);
         tabSheet.addTab(tabTestcases);
 
@@ -333,7 +333,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabRelations.setNullSelectionAllowed(false);
         tabRelations.setSelectable(true);
         tabRelations.setEditable(false);
-        tabRelations.setPageLength(10);
+        tabRelations.setPageLength(6);
         tabRelations.addItemClickListener(new RelationTableItemClickListener());
         tabRelations.addValueChangeListener(tabValueListener);
         tabSheet.addTab(tabRelations);

@@ -10,8 +10,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.log
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DeleteButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeActivateOnValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeValueChangeListener;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.ModelSingleton;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainerSingleton;
 
 
 /**
@@ -48,6 +48,7 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 
     private void setComponents(final IssueTabSheet issueTabSheet) {
         buttonLayout = new HorizontalLayout();
+        buttonLayout.setSizeFull();
         buttonLayout.setSpacing(true);
 
         addButton = new Button();
@@ -66,10 +67,10 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 
         final RapidPanel treePanel = new RapidPanel();
         //TODO Fixe größe sollte vermieden werden
-        treePanel.setHeight("700px");
+        //treePanel.setHeight(issueTabSheet.getHeight(), issueTabSheet.getHeightUnits());
         treePanel.setWidth("100%");
 
-        issueTree = new Tree("IssueTree");
+        issueTree = new Tree(screen.getUi().getCurrentProject().getProjektName());
         issueTree.setNullSelectionAllowed(false);
         issueTree.setContainerDataSource(TreeIssueBaseContainerSingleton.getInstance(screen.getUi().getCurrentProject()
         ));
@@ -88,6 +89,7 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 //        issueTree.setDragMode(Tree.TreeDragMode.NODE);
 //        issueTree.setDropHandler(new TreeSortDropHandler(issueTree));
         treePanel.addComponent(issueTree);
+        treePanel.setSizeFull();
         addComponent(treePanel);
 
         addButton.addClickListener(new AddButtonClickListener(screen, issueTree));
