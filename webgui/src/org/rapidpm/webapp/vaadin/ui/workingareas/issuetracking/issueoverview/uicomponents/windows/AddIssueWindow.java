@@ -1,10 +1,14 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows;
 
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Tree;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.RapidWindow;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.MissingAttributeException;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NameAlreadyInUseException;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NoNameException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsLayout;
@@ -26,7 +30,11 @@ public class AddIssueWindow extends RapidWindow {
     private IssueDetailsLayout addDetailsLayout;
 
     public AddIssueWindow(final IssueOverviewScreen screen, final Tree issueTree) {
-        super();
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+        if (issueTree == null)
+            throw new NullPointerException("Tree must not be null");
+
         self = this;
         this.screen = screen;
         this.issueTree = issueTree;
@@ -44,33 +52,43 @@ public class AddIssueWindow extends RapidWindow {
 
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            final IssueBase childIssue = addDetailsLayout.setIssueProperties(true);
-            if (childIssue != null) {
-                final Object itemId = issueTree.addItem();
-                final Object parentItemId = issueTree.getValue();
+            try {
+                final IssueBase childIssue = addDetailsLayout.setIssueProperties(true);
+                if (childIssue != null) {
+                    final Object itemId = issueTree.addItem();
+                    final Object parentItemId = issueTree.getValue();
 
-                issueTree.getContainerDataSource().getContainerProperty(itemId,
-                        TreeIssueBaseContainer.PROPERTY_CAPTION).setValue(childIssue.name());
-                issueTree.getContainerDataSource().getContainerProperty(itemId,
-                        TreeIssueBaseContainer.PROPERTY_ISSUEBASE).setValue(childIssue);
+                    issueTree.getContainerDataSource().getContainerProperty(itemId,
+                            TreeIssueBaseContainer.PROPERTY_CAPTION).setValue(childIssue.name());
+                    issueTree.getContainerDataSource().getContainerProperty(itemId,
+                            TreeIssueBaseContainer.PROPERTY_ISSUEBASE).setValue(childIssue);
 
-                if (parentItemId != null)  {
-                    final IssueBase parentIssue = (IssueBase)issueTree.getContainerDataSource().getContainerProperty
-                            (parentItemId, TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
-                    parentIssue.addSubIssue(childIssue);
+                    if (parentItemId != null)  {
+                        final IssueBase parentIssue = (IssueBase)issueTree.getContainerDataSource().getContainerProperty
+                                (parentItemId, TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
+                        parentIssue.addSubIssue(childIssue);
 
-                }
+                    }
 
-                issueTree.setChildrenAllowed(parentItemId, true);
-                issueTree.setParent(itemId, parentItemId);
-                issueTree.setChildrenAllowed(itemId, false);
-                issueTree.expandItem(parentItemId);
-                issueTree.select(itemId);
-                self.close();
-            } else
-                if (logger.isDebugEnabled())
-                    logger.debug("childIssue is null");
+                    issueTree.setChildrenAllowed(parentItemId, true);
+                    issueTree.setParent(itemId, parentItemId);
+                    issueTree.setChildrenAllowed(itemId, false);
+                    issueTree.expandItem(parentItemId);
+                    issueTree.select(itemId);
+                    self.close();
+                } else
+                    if (logger.isDebugEnabled())
+                        logger.debug("childIssue is null");
 
+            } catch (MissingAttributeException e) {
+                Notification.show(e.getLocalizedMessage(), Notification.Type.WARNING_MESSAGE);
+            } catch (NoNameException e) {
+                Notification.show(screen.getMessagesBundle().getString("issuetracking_exception_noname"),
+                        Notification.Type.WARNING_MESSAGE);
+            } catch (NameAlreadyInUseException e) {
+                Notification.show(screen.getMessagesBundle().getString("issuetracking_exception_nameinuse"),
+                        Notification.Type.WARNING_MESSAGE);
+            }
         }
     }
 

@@ -41,8 +41,8 @@ public abstract class JiraRequestExecutor<T> {
             final boolean logout = binding.logout(secureToken);
             return t;
         } catch (java.rmi.RemoteException e) {
-            System.out.println("e = " + e);
-            //logger.error(e);
+//            System.out.println("e = " + e);
+            //TODO logger.error(e);
         } finally {
             //do
         }

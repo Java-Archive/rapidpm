@@ -29,7 +29,9 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
     protected final IssueOverviewScreen screen;
 
     public ComponentEditableVLayout(final IssueOverviewScreen screen, final boolean readOnlyInit){
-        super();
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+
         this.screen = screen;
         messages = screen.getMessagesBundle();
         setMargin(true);
@@ -39,6 +41,9 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
             saveableLayout.setSizeFull();
             addComponent(saveableLayout);
             saveableLayout.addLayoutClickListener(new LayoutMouseClickListener());
+        } else {
+            if (logger.isDebugEnabled())
+                logger.debug("Savable layout has no components");
         }
         buttonLayout = new HorizontalLayout();
         saveButton = new Button();
@@ -62,6 +67,9 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
             unSaveableLayout.setSizeFull();
             unSaveableLayout.setSpacing(true);
             addComponent(unSaveableLayout);
+        } else {
+            if (logger.isDebugEnabled())
+                logger.debug("Unsavable layout has no components");
         }
     }
 
@@ -83,7 +91,7 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
             iterateLayoutReadOnly(readOnly, saveableLayout);
         else
             if (logger.isDebugEnabled())
-                logger.debug("No Components present in UnsabeableLayout");
+                logger.debug("No Components present in UnsaveableLayout");
     }
 
     private void iterateLayoutReadOnly(boolean readOnly, AbstractOrderedLayout layout) {

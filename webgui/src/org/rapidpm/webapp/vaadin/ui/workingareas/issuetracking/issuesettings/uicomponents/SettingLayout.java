@@ -245,6 +245,10 @@ public class SettingLayout<T> extends VerticalLayout {
                 editButton.setEnabled(false);
                 deleteButton.setEnabled(false);
             }
+
+            if (contentTable.size() < 2) {
+                deleteButton.setEnabled(false);
+            }
         }
     }
 

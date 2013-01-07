@@ -29,7 +29,9 @@ public class SettingsDataContainer<T> extends IndexedContainer {
     private List<Object> visibleColumns;
 
     public SettingsDataContainer(Class aClass) {
-        super();
+        if (aClass == null)
+            throw new NullPointerException("Class must not be null");
+
         clazz = aClass;
         dao = getDAOInstance();
         visibleColumns = new ArrayList<>();
@@ -148,10 +150,19 @@ public class SettingsDataContainer<T> extends IndexedContainer {
     }
 
     public boolean removeConnectedItem(Object entity, Object assignTo){
+        if (entity == null)
+            throw new NullPointerException("Entity to remove is null!");
+        if (assignTo == null)
+            throw new NullPointerException("Entity to assign to is null!");
+        if (entity.getClass() != clazz)
+            throw new IllegalArgumentException("Entity class is not " + clazz.getSimpleName());
+        if (assignTo.getClass() != clazz)
+            throw new IllegalArgumentException("'assignTo' entity class is not " + clazz.getSimpleName());
+
         boolean success = false;
         logger.info("delete item: " + entity + " and assign to" + assignTo);
 
-        if (dao.deleteAttribute((T) entity,(T) assignTo))
+        if (daoDeleteMethod(new Object[]{entity, (T) assignTo}))
             if (this.removeItem(entity))
                 success = true;
         fillTableWithDaoEntities();
@@ -159,14 +170,41 @@ public class SettingsDataContainer<T> extends IndexedContainer {
     }
 
     public boolean removeSimpleItem(Object entity) {
+        if (entity == null)
+            throw new NullPointerException("Entity to remove is null!");
+        if (entity.getClass() != clazz)
+            throw new IllegalArgumentException("Entity class is not " + clazz.getSimpleName());
+
         boolean success = false;
         logger.info("delete item: " + entity);
 
-        if (dao.deleteSimpleAttribute((T) entity))
+        //TODO auf konkrete DAO umbauen
+        if (daoDeleteMethod(new Object[]{entity}))
             if (this.removeItem(entity))
                 success = true;
         fillTableWithDaoEntities();
         return success;
+    }
+
+    private boolean daoDeleteMethod(Object[] args) {
+        final Method method;
+        boolean retVal = false;
+        try {
+            Class[] methodClassParams = new Class[args.length];
+            int i = 0;
+            for (Object obj : args) {
+                methodClassParams[i++] = obj.getClass();
+            }
+            method = dao.getClass().getDeclaredMethod("delete", methodClassParams);
+            retVal = (Boolean) method.invoke(dao, args);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return retVal;
     }
 
     public boolean cancelAddingEditing(Object entity) {

@@ -123,4 +123,7 @@ public class Constants {
     public static final int FIELDLENGTH_LONG_NAME = 50;
     public static final int FIELDLENGTH_SMALL_NUMBER = 5;
     public static final String EMPTY_OR_SPACES_ONLY_PATTERN = "^\\s*$";
+
+    public static final String DB_PATH = "." + PATH_SEP + "data" + PATH_SEP + "graphDB" + PATH_SEP;
+    public static final String ISSUE_SETTINGS_XML_PATH = "rapidPmDefaultSettings.xml";
 }

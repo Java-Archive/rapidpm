@@ -31,7 +31,11 @@ public class AddTestcaseWindow extends RapidWindow implements Internationalizati
 
 
     public AddTestcaseWindow(final IssueOverviewScreen screen, final AbstractIssueDataContainer testcaseContainer){
-        super();
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+        if (testcaseContainer == null)
+            throw new NullPointerException("Container must not be null");
+
         self = this;
         this.screen = screen;
         this.testcaseContainer = (TestCasesDataContainer) testcaseContainer;
@@ -85,10 +89,7 @@ public class AddTestcaseWindow extends RapidWindow implements Internationalizati
             if (testcaseTextValue != null && testcaseTextValue != "") {
                 final IssueTestCase newTestcase = new IssueTestCase();
                 newTestcase.setText(testcaseTextValue);
-                if (!testcaseContainer.addTestcase(newTestcase)) {
-                    //TODO Show Errormessage to User
-                    logger.error("Adding testcase failed");
-                }
+                testcaseContainer.addTestcase(newTestcase);
                 self.close();
             } else {
                 if (logger.isDebugEnabled())

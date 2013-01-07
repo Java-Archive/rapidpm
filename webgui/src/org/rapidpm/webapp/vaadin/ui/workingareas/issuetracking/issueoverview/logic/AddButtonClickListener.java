@@ -21,6 +21,11 @@ public class AddButtonClickListener implements Button.ClickListener {
     private final IssueOverviewScreen screen;
 
     public AddButtonClickListener(final IssueOverviewScreen screen, final Tree issueTree) {
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+        if (issueTree == null)
+            throw new NullPointerException("Tree must not be null");
+
         this.screen = screen;
         this.issueTree = issueTree;
     }

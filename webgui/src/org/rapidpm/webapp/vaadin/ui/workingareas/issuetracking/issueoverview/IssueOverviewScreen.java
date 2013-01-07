@@ -41,11 +41,12 @@ public class IssueOverviewScreen extends Screen{
         setComponents();
     }
 
-    public PlannedProject getCurrentProject() {
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
-        return plannedProjectDAO.findByID(ui.getCurrentProject().getId());
-    }
+
+//    public PlannedProject getCurrentProject() {
+//        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+//        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
+//        return plannedProjectDAO.findByID(ui.getCurrentProject().getId());
+//    }
 
     public IssueTabSheet getIssueTabSheet() {
         return issueTabSheet;
@@ -59,6 +60,7 @@ public class IssueOverviewScreen extends Screen{
     public void setComponents() {
         hSplitPanel.setFirstComponent(treeLayout);
         hSplitPanel.setSecondComponent(issueTabSheet);
+        //hSplitPanel.setHeight("775px");
         addComponent(hSplitPanel);
     }
 

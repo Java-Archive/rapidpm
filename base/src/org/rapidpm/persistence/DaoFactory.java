@@ -57,7 +57,7 @@ import java.util.InputMismatchException;
 public class DaoFactory {
     private static final Logger logger = Logger.getLogger(DaoFactory.class);
     private DAO.EntityUtils entityUtils = new DAO.EntityUtils();
-    private static final GraphDatabaseService graphDb = GraphDBFactory.getInstance().getGraphDBService();
+    private final GraphDatabaseService graphDb = GraphDBFactory.getInstance().getGraphDBService();
 
     public DaoFactory(final String persistenceUnitName) {
         final EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
