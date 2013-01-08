@@ -11,6 +11,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.Iss
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainerSingleton;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.AddIssueWindow;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.EditSubissuesWindow;
 
 
 /**
@@ -96,8 +98,8 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 
         final TreeSubissueSortDropHandler dropHandler = new TreeSubissueSortDropHandler(issueTree);
 
-        issueTree.setDragMode(Tree.TreeDragMode.NODE);
-        issueTree.setDropHandler(dropHandler);
+//        issueTree.setDragMode(Tree.TreeDragMode.NODE);
+//        issueTree.setDropHandler(dropHandler);
         treePanel.addComponent(issueTree);
         treePanel.setSizeFull();
 
@@ -125,18 +127,19 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         });
 
         subissueButton.addClickListener(new Button.ClickListener() {
-            private boolean enabled = false;
+//            private boolean enabled = false;
 
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                if (enabled) {
-                    subissueButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_dragdrop_edit"));
-                    dropHandler.setActivated(false);
-                } else {
-                    subissueButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_dragdrop_lock"));
-                    dropHandler.setActivated(true);
-                }
-                enabled = !enabled;
+                UI.getCurrent().addWindow(new EditSubissuesWindow(screen));
+//                if (enabled) {
+//                    subissueButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_dragdrop_edit"));
+//                    dropHandler.setActivated(false);
+//                } else {
+//                    subissueButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_dragdrop_lock"));
+//                    dropHandler.setActivated(true);
+//                }
+//                enabled = !enabled;
             }
         });
     }
