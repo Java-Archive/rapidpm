@@ -47,7 +47,7 @@ public class PlanningDetailsEditableLayout extends EditableLayout {
         cancelButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
+                final Iterator<Component> componentIterator = componentsLayout.iterator();
                 fieldGroup.discard();
                 while (componentIterator.hasNext()) {
                     final Component component = componentIterator.next();
@@ -93,6 +93,11 @@ public class PlanningDetailsEditableLayout extends EditableLayout {
         componentsLayout.addComponent(fieldGroup.getField(PlanningUnit.COMPLEXITY));
         componentsLayout.addComponent(fieldGroup.getField(PlanningUnit.ORDERNUMBER));
         componentsLayout.addComponent(fieldGroup.getField(PlanningUnit.STORYPTS));
+    }
+
+    @Override
+    protected void setLayout() {
+        componentsLayout = new FormLayout();
     }
 
 

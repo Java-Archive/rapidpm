@@ -21,10 +21,11 @@ public abstract class EditableLayout extends VerticalLayout {
     protected Button cancelButton = new Button();
     protected ResourceBundle messages;
 
-    protected FormLayout componentsLayout = new FormLayout();
+    protected Layout componentsLayout;
     protected HorizontalLayout buttonLayout = new HorizontalLayout();
 
     public EditableLayout(final ProjektplanungScreen screen, final Panel screenPanel){
+        setLayout();
         this.setStyleName("abc");
         this.setMargin(false);
         messages = screen.getMessagesBundle();
@@ -33,7 +34,7 @@ public abstract class EditableLayout extends VerticalLayout {
         screenPanel.addClickListener(new MouseEvents.ClickListener() {
             @Override
             public void click(MouseEvents.ClickEvent event) {
-                final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
+                final Iterator<Component> componentIterator = componentsLayout.iterator();
                 while(componentIterator.hasNext()){
                     final Component component = componentIterator.next();
 
@@ -41,7 +42,7 @@ public abstract class EditableLayout extends VerticalLayout {
                         if(!((Table) component).isEditable()){
                             ((Table) component).setEditable(true);
                         }
-                    } else if( component instanceof Field){
+                    } else if( component instanceof AbstractField){
                         component.setReadOnly(false);
                     }
                 }
@@ -59,12 +60,14 @@ public abstract class EditableLayout extends VerticalLayout {
 
     protected abstract void buildForm();
 
+    protected abstract void setLayout();
 
-    public FormLayout getComponentsLayout() {
+
+    public Layout getComponentsLayout() {
         return componentsLayout;
     }
 
-    public void setComponentsLayout(FormLayout componentsLayout) {
+    public void setComponentsLayout(Layout componentsLayout) {
         this.componentsLayout = componentsLayout;
     }
 
