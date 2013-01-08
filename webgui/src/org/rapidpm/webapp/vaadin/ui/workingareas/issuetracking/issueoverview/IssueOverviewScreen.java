@@ -33,21 +33,13 @@ public class IssueOverviewScreen extends Screen{
         super(ui);
         this.setSizeFull();
         this.activeVerticalFullScreenSize(true);
-        //this.setMargin(true);
         hSplitPanel = new HorizontalSplitPanel();
-        hSplitPanel.setSplitPosition(30, Unit.PERCENTAGE);
+        hSplitPanel.setSplitPosition(25, Unit.PERCENTAGE);
         issueTabSheet = new IssueTabSheet(this);
         treeLayout = new IssueTreeLayout(this, issueTabSheet);
         doInternationalization();
         setComponents();
     }
-
-
-//    public PlannedProject getCurrentProject() {
-//        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-//        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
-//        return plannedProjectDAO.findByID(ui.getCurrentProject().getId());
-//    }
 
     public IssueTabSheet getIssueTabSheet() {
         return issueTabSheet;
@@ -61,7 +53,6 @@ public class IssueOverviewScreen extends Screen{
     public void setComponents() {
         hSplitPanel.setFirstComponent(treeLayout);
         hSplitPanel.setSecondComponent(issueTabSheet);
-        //hSplitPanel.setHeight("775px");
         addComponent(hSplitPanel);
     }
 

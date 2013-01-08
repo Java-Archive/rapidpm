@@ -41,14 +41,14 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
             throw new NullPointerException("TabSheet must not be null");
 
         this.screen = screen;
-        this.setSizeFull();
         setComponents(issueTabSheet);
         doInternationalization();
     }
 
     private void setComponents(final IssueTabSheet issueTabSheet) {
+
+
         buttonLayout = new HorizontalLayout();
-        buttonLayout.setSizeFull();
         buttonLayout.setSpacing(true);
 
         addButton = new Button();
@@ -65,10 +65,9 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         addComponent(buttonLayout);
         addComponent(expandButton);
 
-        //final RapidPanel treePanel = new RapidPanel();
+        final RapidPanel treePanel = new RapidPanel();
         //TODO Fixe größe sollte vermieden werden
-        //treePanel.setHeight(issueTabSheet.getHeight(), issueTabSheet.getHeightUnits());
-        //treePanel.setWidth("100%");
+        treePanel.setWidth("100%");
 
         issueTree = new Tree(screen.getUi().getCurrentProject().getProjektName());
         issueTree.setNullSelectionAllowed(false);
@@ -88,9 +87,9 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 
 //        issueTree.setDragMode(Tree.TreeDragMode.NODE);
 //        issueTree.setDropHandler(new TreeSortDropHandler(issueTree));
-        //treePanel.addComponent(issueTree);
-        //treePanel.setSizeFull();
-        addComponent(issueTree);
+        treePanel.addComponent(issueTree);
+        treePanel.setSizeFull();
+        addComponent(treePanel);
 
         addButton.addClickListener(new AddButtonClickListener(screen, issueTree));
         deleteButton.addClickListener(new DeleteButtonClickListener(screen, issueTree));
