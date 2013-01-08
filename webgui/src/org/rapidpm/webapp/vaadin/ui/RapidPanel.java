@@ -40,4 +40,7 @@ public class RapidPanel extends Panel {
         contentLayout.removeAllComponents();
     }
 
+    public VerticalLayout getContentLayout() {
+        return contentLayout;
+    }
 }

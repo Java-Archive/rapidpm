@@ -86,6 +86,10 @@ public class PlanningInformationEditableLayout extends EditableLayout {
                 ((ComboBox)field).setTextInputAllowed(false);
             }
         }
-        componentsLayout.addComponent(fieldGroup.getDescriptionArea());
+    }
+
+    @Override
+    protected void setLayout() {
+        componentsLayout = new FormLayout();
     }
 }

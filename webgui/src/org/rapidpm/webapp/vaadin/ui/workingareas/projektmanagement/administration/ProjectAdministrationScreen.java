@@ -52,15 +52,17 @@ public class ProjectAdministrationScreen extends Screen {
     }
 
     private void buildScreen() {
-        projectsPanelLayout.setSizeFull();
+        currentProjectEditablePanel.setWidth("100%");
+        projectsPanelLayout.setWidth("100%");
         projectsPanelLayout.addComponent(projectsPanel);
         projectsPanelLayout.addComponent(chosenProjectEditablePanel);
-        projectsPanelLayout.setExpandRatio(projectsPanel,1);
-        projectsPanelLayout.setExpandRatio(chosenProjectEditablePanel,1);
+        //projectsPanelLayout.setExpandRatio(projectsPanel,1);
+        //projectsPanelLayout.setExpandRatio(chosenProjectEditablePanel,1);
     }
 
     @Override
     public void setComponents() {
+        activeVerticalFullScreenSize(false);
         addComponent(currentProjectEditablePanel);
         addComponent(projectsPanelLayout);
     }
