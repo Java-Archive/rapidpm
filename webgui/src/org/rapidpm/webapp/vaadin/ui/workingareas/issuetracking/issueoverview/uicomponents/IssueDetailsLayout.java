@@ -39,6 +39,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     private static Logger logger = Logger.getLogger(IssueDetailsLayout.class);
 
     public final static String PROPERTY_CAPTION = "caption";
+    private final static int TABLE_ROW_COUNT = 7;
 
     private TextField headerSummaryField;
     private Label headerTextField;
@@ -305,7 +306,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabComments.setNullSelectionAllowed(false);
         tabComments.setSelectable(true);
         tabComments.setEditable(false);
-        tabComments.setPageLength(6);
+        tabComments.setPageLength(TABLE_ROW_COUNT);
         tabComments.addValueChangeListener(tabValueListener);
         tabSheet.addTab(tabComments);
 
@@ -319,7 +320,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabTestcases.setNullSelectionAllowed(false);
         tabTestcases.setSelectable(true);
         tabTestcases.setEditable(false);
-        tabTestcases.setPageLength(6);
+        tabTestcases.setPageLength(TABLE_ROW_COUNT);
         tabTestcases.addValueChangeListener(tabValueListener);
         tabSheet.addTab(tabTestcases);
 
@@ -333,7 +334,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabRelations.setNullSelectionAllowed(false);
         tabRelations.setSelectable(true);
         tabRelations.setEditable(false);
-        tabRelations.setPageLength(6);
+        tabRelations.setPageLength(TABLE_ROW_COUNT);
         tabRelations.addItemClickListener(new RelationTableItemClickListener());
         tabRelations.addValueChangeListener(tabValueListener);
         tabSheet.addTab(tabRelations);

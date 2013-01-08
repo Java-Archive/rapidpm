@@ -1,6 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents;
 
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.Reindeer;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
@@ -32,8 +33,6 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 
     private Tree issueTree;
 
-    private HorizontalLayout buttonLayout;
-
     public IssueTreeLayout(final IssueOverviewScreen screen, final IssueTabSheet issueTabSheet) {
         if (screen == null)
             throw new NullPointerException("Screen must not be null");
@@ -41,33 +40,34 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
             throw new NullPointerException("TabSheet must not be null");
 
         this.screen = screen;
+        this.setSizeFull();
         setComponents(issueTabSheet);
         doInternationalization();
     }
 
     private void setComponents(final IssueTabSheet issueTabSheet) {
-
-
-        buttonLayout = new HorizontalLayout();
+        final GridLayout buttonLayout;
+        buttonLayout = new GridLayout(3, 2);
+        buttonLayout.setSizeUndefined();
         buttonLayout.setSpacing(true);
+        //buttonLayout.setMargin(true);
 
         addButton = new Button();
         addButton.setEnabled(true);
-        buttonLayout.addComponent(addButton);
+        buttonLayout.addComponent(addButton, 0, 0);
 
         deleteButton = new Button();
         deleteButton.setEnabled(false);
-        buttonLayout.addComponent(deleteButton);
+        buttonLayout.addComponent(deleteButton, 1, 0);
 
         expandButton = new Button();
         expandButton.setEnabled(true);
+        buttonLayout.addComponent(expandButton, 0, 1, 2, 1);
 
         addComponent(buttonLayout);
-        addComponent(expandButton);
 
         final RapidPanel treePanel = new RapidPanel();
-        //TODO Fixe größe sollte vermieden werden
-        treePanel.setWidth("100%");
+        treePanel.setStyleName(Reindeer.PANEL_LIGHT);
 
         issueTree = new Tree(screen.getUi().getCurrentProject().getProjektName());
         issueTree.setNullSelectionAllowed(false);
@@ -90,6 +90,9 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         treePanel.addComponent(issueTree);
         treePanel.setSizeFull();
         addComponent(treePanel);
+
+        //this.setExpandRatio(buttonLayout, 0F);
+        this.setExpandRatio(treePanel, 1F);
 
         addButton.addClickListener(new AddButtonClickListener(screen, issueTree));
         deleteButton.addClickListener(new DeleteButtonClickListener(screen, issueTree));
