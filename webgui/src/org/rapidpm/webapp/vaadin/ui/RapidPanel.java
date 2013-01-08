@@ -17,8 +17,7 @@ public class RapidPanel extends Panel {
     private final VerticalLayout contentLayout = new VerticalLayout();
 
     public RapidPanel(){
-        contentLayout.setSizeFull();
-        //contentLayout.setSpacing(true);
+        contentLayout.setSpacing(true);
         contentLayout.setMargin(true);
         setContent(contentLayout);
         contentLayout.removeAllComponents();

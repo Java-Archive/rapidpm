@@ -32,6 +32,7 @@ public class IssueOverviewScreen extends Screen{
     public IssueOverviewScreen(MainUI ui) {
         super(ui);
         this.setSizeFull();
+        this.activeVerticalFullScreenSize(true);
         //this.setMargin(true);
         hSplitPanel = new HorizontalSplitPanel();
         hSplitPanel.setSplitPosition(30, Unit.PERCENTAGE);
