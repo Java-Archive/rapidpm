@@ -29,7 +29,7 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 
     private Tree issueTree;
 
-    private HorizontalLayout buttonLayout;
+    private GridLayout buttonLayout;
 
     public IssueTreeLayout(final IssueOverviewScreen screen, final IssueTabSheet issueTabSheet) {
         if (screen == null)
@@ -43,25 +43,31 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
     }
 
     private void setComponents(final IssueTabSheet issueTabSheet) {
-        buttonLayout = new HorizontalLayout();
+        buttonLayout = new GridLayout(3, 3);
+        buttonLayout.setSizeFull();
         buttonLayout.setSpacing(true);
+        buttonLayout.setMargin(true);
 
         addButton = new Button();
         addButton.setEnabled(true);
-        buttonLayout.addComponent(addButton);
+        addButton.setSizeFull();
+        buttonLayout.addComponent(addButton, 0, 0);
 
         deleteButton = new Button();
         deleteButton.setEnabled(false);
-        buttonLayout.addComponent(deleteButton);
+        deleteButton.setSizeFull();
+        buttonLayout.addComponent(deleteButton, 1, 0);
 
         subissueButton = new Button();
-        buttonLayout.addComponent(subissueButton);
+        subissueButton.setSizeFull();
+        buttonLayout.addComponent(subissueButton, 2, 0);
 
         expandButton = new Button();
+        expandButton.setSizeFull();
         expandButton.setEnabled(true);
+        buttonLayout.addComponent(expandButton, 0, 1, 2, 1);
 
         addComponent(buttonLayout);
-        addComponent(expandButton);
 
         issueTree = new Tree("IssueTree");
         issueTree.setNullSelectionAllowed(false);
