@@ -32,8 +32,6 @@ public class BuchKapitel {
     @Basic
     private String untertitel;
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    private List<BuchSeite> seitenliste;
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<BuchKapitelKommentar> kommentarliste;
 
     public Long getId() {
@@ -69,16 +67,6 @@ public class BuchKapitel {
     public void setUntertitel(final String untertitel) {
         this.untertitel = untertitel;
     }
-
-
-    public List<BuchSeite> getSeitenliste() {
-        return seitenliste;
-    }
-
-    public void setSeitenliste(final List<BuchSeite> seitenliste) {
-        this.seitenliste = seitenliste;
-    }
-
 
     public Boolean getFreigeschaltet() {
         return freigeschaltet;

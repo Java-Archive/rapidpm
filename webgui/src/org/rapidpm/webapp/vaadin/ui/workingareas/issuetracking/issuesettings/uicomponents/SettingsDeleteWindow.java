@@ -23,7 +23,6 @@ public class SettingsDeleteWindow<T> extends RapidWindow implements Internationa
     private final IssueSettingsScreen screen;
     private final Class aClass;
     private final boolean simpleErasing;
-    private SettingsDataContainer<T> container;
     private Label deleteLabel;
     private Button yesButton;
     private Button noButton;
@@ -61,7 +60,7 @@ public class SettingsDeleteWindow<T> extends RapidWindow implements Internationa
         topLayout.addComponent(deleteLabel);
 
         if (!simpleErasing) {
-            container = new SettingsDataContainer(aClass);
+            SettingsDataContainer<T> container = new SettingsDataContainer(aClass);
             table = new Table();
             table.setContainerDataSource(container);
             table.setVisibleColumns(container.getVisibleColumns().toArray());
@@ -126,13 +125,20 @@ public class SettingsDeleteWindow<T> extends RapidWindow implements Internationa
 
         @Override
         public void buttonClick(Button.ClickEvent event) {
+            final boolean success;
+            SettingsDataContainer<T> container = (SettingsDataContainer<T>)contentTable.getContainerDataSource();
             if (!simpleErasing) {
                 final Object assignToItemId = table.getValue();
                 logger.info("AssignItemId" + assignToItemId);
-                ((SettingsDataContainer<T>)contentTable.getContainerDataSource()).removeConnectedItem(removeItemId,
-                        assignToItemId);
-            } else
-                ((SettingsDataContainer<T>)contentTable.getContainerDataSource()).removeSimpleItem(removeItemId);
+                success = container.removeConnectedItem(removeItemId, assignToItemId);
+            } else {
+                success = container.removeSimpleItem(removeItemId);
+            }
+
+            if (!success) {
+                Notification.show(screen.getMessagesBundle().getString("issuetracking_unsuccessfull_delete"),
+                        Notification.Type.ERROR_MESSAGE);
+            }
 
             TreeIssueBaseContainerSingleton.getInstance(screen.getUi().getCurrentProject()).refresh();
             self.close();

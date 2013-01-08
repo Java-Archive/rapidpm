@@ -18,8 +18,6 @@ import org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.MessageDAO;
 import org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.msg.PersonalMessageDAO;
 import org.rapidpm.persistence.prj.book.BuchDAO;
 import org.rapidpm.persistence.prj.book.BuchKapitelDAO;
-import org.rapidpm.persistence.prj.book.BuchSeiteDAO;
-import org.rapidpm.persistence.prj.book.BuchSeitenFussnoteDAO;
 import org.rapidpm.persistence.prj.book.kommentar.BuchKapitelKommentarDAO;
 import org.rapidpm.persistence.prj.book.kommentar.BuchKommentarDAO;
 import org.rapidpm.persistence.prj.book.kommentar.BuchSeitenKommentarDAO;
@@ -41,6 +39,7 @@ import org.rapidpm.persistence.prj.stammdaten.person.*;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomainDAO;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomainKlassifizierungDAO;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomainMetaDataDAO;
+import org.rapidpm.persistence.prj.textelement.TextElementDAO;
 import org.rapidpm.persistence.rohdaten.OntologieConnectionDAO;
 import org.rapidpm.persistence.rohdaten.OntologieDAO;
 import org.rapidpm.persistence.rohdaten.OntologieEntryDAO;
@@ -64,7 +63,7 @@ public class DaoFactory {
         this.entityManager = emf.createEntityManager();
     }
 
-    private EntityManager entityManager;
+    protected EntityManager entityManager;
 
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -400,14 +399,6 @@ public class DaoFactory {
         return new BuchKapitelDAO(getEntityManager());
     }
 
-    public BuchSeiteDAO getBuchSeiteDAO() {
-        return new BuchSeiteDAO(getEntityManager());
-    }
-
-    public BuchSeitenFussnoteDAO getBuchSeitenFussnoteDAO() {
-        return new BuchSeitenFussnoteDAO(getEntityManager());
-    }
-
     public BuchKommentarDAO getBuchKommentarDAO() {
         return new BuchKommentarDAO(getEntityManager());
     }
@@ -627,6 +618,9 @@ public class DaoFactory {
         return new ProjektanfrageDAO(getEntityManager());
     }
 
+    public TextElementDAO getTextElementDAO() {
+        return new TextElementDAO((getEntityManager()));
+    }
 
     public DAO.EntityUtils getEntityUtils() {
         return entityUtils;

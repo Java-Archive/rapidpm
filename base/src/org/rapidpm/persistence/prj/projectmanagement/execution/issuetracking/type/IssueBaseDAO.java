@@ -85,14 +85,32 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         boolean alreadyExist = false;
         final Node startNode = graphDb.getNodeById(startId);
         final Node endNode = graphDb.getNodeById(endId);
+        final Node relationNode = graphDb.getNodeById(relationId);
         for (final Relationship rel : startNode.getRelationships(relation, Direction.BOTH)) {
             if (rel.getOtherNode(startNode).equals(endNode))
                 alreadyExist = true;
         }
-        if (!alreadyExist)
+        if (!alreadyExist) {
             startNode.createRelationshipTo(endNode, relation);
-        else
+            final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueRelation.class);
+
+            boolean relExist = false;
+            for (Relationship rel : startNode.getRelationships(relType, Direction.OUTGOING)) {
+                if (rel.getEndNode().equals(relationNode)) {
+                    relExist = true;
+                    break;
+                }
+            }
+
+            if (!relExist) {
+                startNode.createRelationshipTo(relationNode, relType);
+            } else {
+                if (logger.isDebugEnabled())
+                    logger.debug("Relation to RelationNode already exists. continue...");
+            }
+        } else {
             logger.warn("Relation aleady exists: start: " + start + ", end: " + end + ", relation: " + relation);
+        }
     }
 
 
@@ -180,11 +198,35 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             logger.debug("deleteRelationOfEntities");
 
         final Node startNode = graphDb.getNodeById(start.getId());
+        final Node endNode = graphDb.getNodeById(end.getId());
         for (final Relationship rel : startNode.getRelationships(relation, direction)) {
-            if (rel.getOtherNode(startNode).equals(graphDb.getNodeById(end.getId()))) {
+            if (rel.getOtherNode(startNode).equals(endNode)) {
                 if (logger.isDebugEnabled())
                     logger.debug("delete relation between" + start + ", " + end);
+
+                final Node referenceNode = rel.getStartNode();
                 rel.delete();
+
+                if (!referenceNode.hasRelationship(relation, Direction.OUTGOING)) {
+
+                    final Node relationNode = graphDb.getNodeById(relation.getId());
+                    final RelationshipType relType;
+                    relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueRelation.class);
+
+                    for (Relationship relToRelNode : referenceNode.getRelationships(relType, Direction.OUTGOING)) {
+                        if (relToRelNode.getEndNode().equals(relationNode)) {
+                            relToRelNode.delete();
+                            if (logger.isDebugEnabled())
+                                logger.debug("No more relations of type: " + relation + " present. Delete relation to " +
+                                        "RelationNode");
+                            break;
+                        }
+                    }
+
+                } else {
+                    if (logger.isDebugEnabled())
+                        logger.debug("Issue has more relations of type: " + relation);
+                }
             }
             else
                 if (logger.isDebugEnabled())

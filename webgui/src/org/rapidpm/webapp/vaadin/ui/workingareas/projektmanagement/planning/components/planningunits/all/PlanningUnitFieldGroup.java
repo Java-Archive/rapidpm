@@ -10,6 +10,7 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
+import org.rapidpm.persistence.prj.textelement.TextElement;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
@@ -26,30 +27,26 @@ public class PlanningUnitFieldGroup extends FieldGroup {
 
     private List<AbstractField> fieldList = new ArrayList<>();
     private TextField nameField;
-    private RichTextArea descriptionArea;
     private TextField storyPointsField;
     private TextField complexityField;
     private TextField orderNumberField;
     private ComboBox parentBox;
     private ComboBox responsibleBox;
-    private List<RichTextArea> testcaseAreas;
 
     private PlanningUnit selectedPlanningUnit;
 
     private ProjektplanungScreen screen;
     private ResourceBundle messages;
     private DaoFactory daoFactory;
-    private boolean isnew = true;
 
     public PlanningUnitFieldGroup(final ProjektplanungScreen screen){
         this.screen = screen;
         this.messages = screen.getMessagesBundle();
         daoFactory = DaoFactorySingelton.getInstance();
         final PlanningUnit planningUnit = new PlanningUnit();
-        planningUnit.setTestcases(new ArrayList<String>());
+        planningUnit.setTestcases(new ArrayList<TextElement>());
         planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
         setItemDataSource(new BeanItem<>(planningUnit));
-        isnew = true;
         selectedPlanningUnit = (PlanningUnit) screen.getPlanningUnitSelect().getValue();
         buildForm();
     }
@@ -87,12 +84,6 @@ public class PlanningUnitFieldGroup extends FieldGroup {
                     bind(nameField, propertyId);
                     nameField.setNullRepresentation("");
                     fieldList.add(nameField);
-                    break;
-                case (PlanningUnit.DESCPRIPTION):
-                    descriptionArea = new RichTextArea(messages.getString("planning_description"));
-                    descriptionArea.setNullRepresentation(messages.getString("planning_nodescription"));
-                    bind(descriptionArea, propertyId);
-                    fieldList.add(descriptionArea);
                     break;
                 case (PlanningUnit.STORYPTS):
                     storyPointsField = new TextField(messages.getString("planning_storypoints"));
@@ -139,20 +130,6 @@ public class PlanningUnitFieldGroup extends FieldGroup {
                     bind(responsibleBox, propertyId);
                     fieldList.add(responsibleBox);
                     break;
-                case (PlanningUnit.TESTCASES):
-                    testcaseAreas = new ArrayList<>();
-                    Integer i = 1;
-                    for(final String testcase : selectedPlanningUnit.getTestcases()){
-                        final RichTextArea testcaseArea = new RichTextArea(messages.getString("planning_testcase")+
-                                i++);
-                        testcaseArea.setValue(testcase);
-                        testcaseAreas.add(testcaseArea);
-
-                    }
-                    for(RichTextArea textArea : testcaseAreas){
-                        fieldList.add(textArea);
-                    }
-                    break;
                 default:
                     break;
             }
@@ -188,10 +165,6 @@ public class PlanningUnitFieldGroup extends FieldGroup {
         return nameField;
     }
 
-    public RichTextArea getDescriptionArea() {
-        return descriptionArea;
-    }
-
     public TextField getStoryPointsField() {
         return storyPointsField;
     }
@@ -210,9 +183,5 @@ public class PlanningUnitFieldGroup extends FieldGroup {
 
     public ComboBox getResponsibleBox() {
         return responsibleBox;
-    }
-
-    public List<RichTextArea> getTestcaseAreas() {
-        return testcaseAreas;
     }
 }
