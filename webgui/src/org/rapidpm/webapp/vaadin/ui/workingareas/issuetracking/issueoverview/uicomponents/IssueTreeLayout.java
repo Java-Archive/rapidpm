@@ -1,8 +1,11 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents;
 
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.Reindeer;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.*;
@@ -29,8 +32,6 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 
     private Tree issueTree;
 
-    private GridLayout buttonLayout;
-
     public IssueTreeLayout(final IssueOverviewScreen screen, final IssueTabSheet issueTabSheet) {
         if (screen == null)
             throw new NullPointerException("Screen must not be null");
@@ -38,38 +39,46 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
             throw new NullPointerException("TabSheet must not be null");
 
         this.screen = screen;
+        this.setSizeFull();
         setComponents(issueTabSheet);
         doInternationalization();
     }
 
     private void setComponents(final IssueTabSheet issueTabSheet) {
-        buttonLayout = new GridLayout(3, 3);
-        buttonLayout.setSizeFull();
+        final VerticalLayout buttonLayout = new VerticalLayout();
         buttonLayout.setSpacing(true);
-        buttonLayout.setMargin(true);
+        buttonLayout.setMargin(new MarginInfo(false, true, false, true));
+
+        final HorizontalLayout horLayout = new HorizontalLayout();
+        horLayout.setSizeFull();
+        horLayout.setSpacing(true);
 
         addButton = new Button();
         addButton.setEnabled(true);
         addButton.setSizeFull();
-        buttonLayout.addComponent(addButton, 0, 0);
+        horLayout.addComponent(addButton);
 
         deleteButton = new Button();
         deleteButton.setEnabled(false);
         deleteButton.setSizeFull();
-        buttonLayout.addComponent(deleteButton, 1, 0);
+        horLayout.addComponent(deleteButton);
+        buttonLayout.addComponent(horLayout);
 
         subissueButton = new Button();
         subissueButton.setSizeFull();
-        buttonLayout.addComponent(subissueButton, 2, 0);
+        buttonLayout.addComponent(subissueButton);
 
         expandButton = new Button();
-        expandButton.setSizeFull();
         expandButton.setEnabled(true);
-        buttonLayout.addComponent(expandButton, 0, 1, 2, 1);
+        expandButton.setSizeFull();
+        buttonLayout.addComponent(expandButton);
 
         addComponent(buttonLayout);
 
-        issueTree = new Tree("IssueTree");
+        final RapidPanel treePanel = new RapidPanel();
+        treePanel.setStyleName(Reindeer.PANEL_LIGHT);
+
+        issueTree = new Tree(screen.getUi().getCurrentProject().getProjektName());
         issueTree.setNullSelectionAllowed(false);
         issueTree.setContainerDataSource(TreeIssueBaseContainerSingleton.getInstance(screen.getUi().getCurrentProject()
         ));
@@ -78,8 +87,6 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
             issueTree.addValueChangeListener(new TreeValueChangeListener(issueTabSheet, issueTree));
         }
         issueTree.addValueChangeListener(new TreeActivateOnValueChangeListener(new Button[]{deleteButton}));
-
-
 
         issueTree.setItemCaptionPropertyId(TreeIssueBaseContainer.PROPERTY_CAPTION);
         for (Object id : issueTree.rootItemIds())
@@ -91,7 +98,11 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 
         issueTree.setDragMode(Tree.TreeDragMode.NODE);
         issueTree.setDropHandler(dropHandler);
-        addComponent(issueTree);
+        treePanel.addComponent(issueTree);
+        treePanel.setSizeFull();
+
+        addComponent(treePanel);
+        this.setExpandRatio(treePanel, 1F);
 
         addButton.addClickListener(new AddButtonClickListener(screen, issueTree));
         deleteButton.addClickListener(new DeleteButtonClickListener(screen, issueTree));
