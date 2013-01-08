@@ -139,7 +139,7 @@ public class IssueBase implements PersistInGraph {
     }
 
     public List<IssueBase> getConnectedIssues(final IssueRelation relation) {
-        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).getConnectedIssuesWithRelation(this, relation, Direction.BOTH);
+        return getConnectedIssues(relation, Direction.BOTH);
     }
 
     public List<IssueBase> getConnectedIssues(final IssueRelation relation, final Direction direction) {
@@ -158,8 +158,8 @@ public class IssueBase implements PersistInGraph {
 
 
     public boolean addSubIssue(final IssueBase subIssue) {
-        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).addSubIssueTx(this, subIssue);
-//        return addToMap("addSubIssueTx", new Object[]{this, subIssue});
+//        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).addSubIssueTx(this, subIssue);
+        return addToMap("addSubIssueTx", new Object[]{this, subIssue});
     }
 
     public List<IssueBase> getSubIssues() {
@@ -167,13 +167,15 @@ public class IssueBase implements PersistInGraph {
     }
 
     public boolean removeSubIssue(final IssueBase subIssue) {
-        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).deleteSubIssueRelationTx(this, subIssue);
-//        return addToMap("deleteSubIssueRelationTx", new Object[]{this, subIssue});
+//        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).deleteSubIssueRelationTx(this, subIssue);
+        return addToMap("deleteSubIssueRelationTx", new Object[]{this, subIssue});
     }
 
     public boolean setAsRootIssue() {
-        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).setAsRootIssueTx(this);
+//        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).setAsRootIssueTx(this);
+        return addToMap("setAsRootIssueTx", new Object[]{this});
     }
+
 
     public boolean addComponent(final IssueComponent component) {
 //        return DaoFactorySingelton.getIssueBaseDAO(projectid).addComponentToTx(this, component);

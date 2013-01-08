@@ -4,6 +4,10 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
@@ -13,6 +17,11 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.log
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainerSingleton;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsLayout;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.ProjectAdministrationScreen;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -57,10 +66,12 @@ public class EditSubissuesWindow extends Window implements Internationalizationa
 
         saveButton = new Button();
         saveButton.setSizeFull();
+
         horLayout.addComponent(saveButton);
 
         cancelButton = new Button();
         cancelButton.setSizeFull();
+        cancelButton.addClickListener(new CancelButtonClickListener());
         horLayout.addComponent(cancelButton);
 
         contentLayout.addComponent(horLayout);
@@ -113,6 +124,8 @@ public class EditSubissuesWindow extends Window implements Internationalizationa
             }
         });
 
+        saveButton.addClickListener(new SaveButtonClickListener(dropHandler));
+
         this.setContent(contentLayout);
     }
 
@@ -123,5 +136,47 @@ public class EditSubissuesWindow extends Window implements Internationalizationa
         cancelButton.setCaption(screen.getMessagesBundle().getString("cancel"));
         expandButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_collapse"));
     }
+
+    private class SaveButtonClickListener implements Button.ClickListener {
+        private final TreeSubissueSortDropHandler dropHandler;
+
+        public SaveButtonClickListener(TreeSubissueSortDropHandler dropHandler) {
+            if (dropHandler == null)
+                throw new NullPointerException("DropHandler is null");
+
+            this.dropHandler = dropHandler;
+        }
+
+        @Override
+        public void buttonClick(Button.ClickEvent event) {
+            Long projectId = screen.getUi().getCurrentProject().getId();
+            IssueBaseDAO dao = DaoFactorySingelton.getInstance().getIssueBaseDAO(projectId);
+            HashMap<IssueBase, List<IssueBase>> map = dropHandler.getChangedIssues();
+            if (!map.isEmpty()) {
+                for (IssueBase key : map.keySet()) {
+                    for (IssueBase value : map.get(key)) {
+                        if (value != null) {
+                            key.addSubIssue(value);
+                        } else {
+                            key.setAsRootIssue();
+                        }
+                    }
+                    dao.persist(key);
+                }
+            }
+
+            TreeIssueBaseContainerSingleton.getInstance(screen.getUi().getCurrentProject()).refresh();
+            self.close();
+        }
+    }
+
+    private class CancelButtonClickListener implements Button.ClickListener {
+
+        @Override
+        public void buttonClick(Button.ClickEvent event) {
+            self.close();
+        }
+    }
+
 
 }

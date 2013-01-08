@@ -12,6 +12,8 @@ import com.vaadin.ui.Tree;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainer;
 
+import java.util.*;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Alvin
@@ -22,6 +24,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.mod
 public class TreeSubissueSortDropHandler implements DropHandler {
     private final Tree tree;
     private boolean activated = false;
+
+    private HashMap<IssueBase, List<IssueBase>> changedIssues;
 
     private final AcceptCriterion declineAll = new ServerSideCriterion() {
         @Override
@@ -44,8 +48,32 @@ public class TreeSubissueSortDropHandler implements DropHandler {
      */
 
     public TreeSubissueSortDropHandler(final Tree tree) {
+        if (tree == null)
+            throw new NullPointerException("Tree is null");
+
         this.tree = tree;
+        changedIssues = new HashMap<>();
     }
+
+
+    private void addIssueToMap(IssueBase key, IssueBase value) {
+        if (key == null)
+            throw new NullPointerException("Key to add cant be NULL");
+
+        if (changedIssues.containsKey(key)) {
+            changedIssues.get(key).add(value);
+        } else {
+            List<IssueBase> valueList = new ArrayList<>();
+            valueList.add(value);
+            changedIssues.put(key, valueList);
+        }
+    }
+
+    public HashMap<IssueBase, List<IssueBase>> getChangedIssues() {
+        return changedIssues;
+    }
+
+
 
     public void setActivated(final boolean value) {
         activated = value;
@@ -146,19 +174,30 @@ public class TreeSubissueSortDropHandler implements DropHandler {
         if (location == VerticalDropLocation.MIDDLE) {
             IssueBase issueMiddle = (IssueBase)container.getContainerProperty(targetItemId,
                     TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
-            issueMiddle.addSubIssue((IssueBase) container.getContainerProperty(sourceItemId,
-                    TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue());
+            IssueBase subIssue = (IssueBase) container.getContainerProperty(sourceItemId,
+                    TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
+//            issueMiddle.addSubIssue((IssueBase) container.getContainerProperty(sourceItemId,
+//                    TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue());
+
+            addIssueToMap(issueMiddle, subIssue);
+
         } else {
             Object parentIdTarget = container.getParent(targetItemId);
             if (parentIdTarget != null) {
                 IssueBase issueChild = (IssueBase)container.getContainerProperty(parentIdTarget,
                         TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
-                issueChild.addSubIssue((IssueBase) container.getContainerProperty(sourceItemId,
-                        TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue());
+                IssueBase subIssue = (IssueBase) container.getContainerProperty(sourceItemId,
+                        TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
+//                issueChild.addSubIssue((IssueBase) container.getContainerProperty(sourceItemId,
+//                        TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue());
+                addIssueToMap(issueChild, subIssue);
+
             } else {
                 IssueBase issueRoot = (IssueBase)container.getContainerProperty(sourceItemId,
                         TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
                 issueRoot.setAsRootIssue();
+
+                addIssueToMap(issueRoot, null);
             }
         }
     }
