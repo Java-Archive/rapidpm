@@ -11,7 +11,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.mod
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 09.11.12
  * Time: 08:14
  * To change this template use File | Settings | File Templates.

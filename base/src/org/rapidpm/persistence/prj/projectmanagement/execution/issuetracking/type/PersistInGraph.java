@@ -2,7 +2,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ty
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 25.10.12
  * Time: 18:16
  * To change this template use File | Settings | File Templates.

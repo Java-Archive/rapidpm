@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 02.11.12
  * Time: 12:49
  * To change this template use File | Settings | File Templates.

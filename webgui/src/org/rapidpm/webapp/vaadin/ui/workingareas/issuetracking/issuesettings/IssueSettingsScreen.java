@@ -9,7 +9,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.uic
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 02.11.12
  * Time: 10:16
  * To change this template use File | Settings | File Templates.

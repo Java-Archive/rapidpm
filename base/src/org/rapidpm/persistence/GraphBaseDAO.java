@@ -19,7 +19,7 @@ import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 16.10.12
  * Time: 18:44
  * To change this template use File | Settings | File Templates.
@@ -72,7 +72,8 @@ public class GraphBaseDAO<T> {
             td.evaluator(Evaluators.atDepth(1));
         }
         final Traverser trav = td.traverse( root_node );
-        Node node = null, project_root = null;
+        Node node = null;
+        Node project_root = null;
         for (final Path path : trav) {
             if (isProject) {
                 if (project_root == null) project_root = path.endNode();
@@ -95,7 +96,7 @@ public class GraphBaseDAO<T> {
         final Transaction tx = graphDb.beginTx();
         Node newProjectNode = null;
         try {
-            DAO projectDao = getDaoInstance(PlannedProject.class);
+            final DAO projectDao = getDaoInstance(PlannedProject.class);
             PlannedProject project = (PlannedProject) projectDao.findByID(projectId);
             newProjectNode = graphDb.createNode();
             newProjectNode.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), projectId);
@@ -165,13 +166,13 @@ public class GraphBaseDAO<T> {
             tx.success();
         } catch (NoSuchMethodException e) {
             logger.fatal("NoSuchMethodException: " + e.getMessage());
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
         } catch (IllegalAccessException e) {
             logger.fatal("IllegalAccessException: " + e.getMessage());
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
         } catch (InvocationTargetException e) {
             logger.fatal("InvocationTargetException: " + e.getMessage());
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
         } finally {
             tx.finish();
         }
@@ -272,9 +273,9 @@ public class GraphBaseDAO<T> {
             }
         } catch (IllegalAccessException e) {
             logger.fatal("IllegalAccessException: " + e.getMessage());
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (InvocationTargetException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
         }
     }
 
@@ -400,14 +401,12 @@ public class GraphBaseDAO<T> {
                     entity = (E) clazz.getConstructor(Long.class).newInstance(-1L);
                 } catch (NoSuchMethodException e1) {
                     logger.fatal("NoSuchMethodException" + e.getMessage());
-                    e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 } catch (InvocationTargetException e1) {
                     logger.fatal("InvocationTargetException" + e.getMessage());
-                    e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 }
             } catch (InvocationTargetException e) {
                 logger.fatal("InvocationTargetException" + e.getMessage());
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
             }
 
             final Field[] fieldNames = entity.getClass().getDeclaredFields();
@@ -461,10 +460,8 @@ public class GraphBaseDAO<T> {
                 }
                 field.setAccessible(isAccessible);
             }
-        } catch (InstantiationException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (InstantiationException | IllegalAccessException e) {
+            logger.error(e);
         }
         return entity;
     }
@@ -489,12 +486,8 @@ public class GraphBaseDAO<T> {
             if (method == null)
                 throw new NullPointerException("No method 'getId' in Class" + aClass.getSimpleName() + "found.");
             id = (Long) method.invoke(entity);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            logger.error(e);
         }
         return id;
     }
@@ -509,12 +502,8 @@ public class GraphBaseDAO<T> {
             try {
                 method = daoFactory.getClass().getDeclaredMethod("get" + aClass.getSimpleName() + "DAO");
                 relDao = (DAO)method.invoke(daoFactory);
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+                logger.error(e);
             }
         }
         return relDao;
@@ -603,7 +592,7 @@ public class GraphBaseDAO<T> {
                     try {
                         field.set(entity, new ArrayList<>());
                     } catch (IllegalAccessException e) {
-                        e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
                     }
                     field.setAccessible(isAccessible);
                 }

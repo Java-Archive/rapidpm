@@ -25,7 +25,7 @@ import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 08.01.13
  * Time: 12:34
  * To change this template use File | Settings | File Templates.

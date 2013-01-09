@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 13.11.12
  * Time: 14:51
  * To change this template use File | Settings | File Templates.

@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 05.11.12
  * Time: 14:26
  * To change this template use File | Settings | File Templates.
@@ -74,7 +74,7 @@ public class SettingsDataContainer<T> extends IndexedContainer {
                     Object val = field.get(entity);
                     itemId.getItemProperty(field.getName()).setValue(field.getType().cast(val));
                 } catch (IllegalAccessException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
                 }
                 field.setAccessible(isAccessible);
             }
@@ -87,12 +87,8 @@ public class SettingsDataContainer<T> extends IndexedContainer {
         try {
             method = DaoFactory.class.getDeclaredMethod("get" + clazz.getSimpleName() + "DAO");
             dao = (GraphBaseDAO<T>)method.invoke(DaoFactorySingelton.getInstance());
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+         logger.error(e);
         }
         return dao;
     }
@@ -135,7 +131,7 @@ public class SettingsDataContainer<T> extends IndexedContainer {
                     }
                     i++;
                 } catch (IllegalAccessException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    logger.error(e);
                 }
                 field.setAccessible(isAccessible);
             }
@@ -197,12 +193,8 @@ public class SettingsDataContainer<T> extends IndexedContainer {
             }
             method = dao.getClass().getDeclaredMethod("delete", methodClassParams);
             retVal = (Boolean) method.invoke(dao, args);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            logger.error(e);
         }
         return retVal;
     }

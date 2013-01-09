@@ -16,7 +16,7 @@ import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 02.01.13
  * Time: 14:44
  * To change this template use File | Settings | File Templates.

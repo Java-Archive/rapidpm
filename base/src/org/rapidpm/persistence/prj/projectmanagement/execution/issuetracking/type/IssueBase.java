@@ -127,7 +127,7 @@ public class IssueBase implements PersistInGraph {
                 success = true;
             }
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
         }
         return success;
     }

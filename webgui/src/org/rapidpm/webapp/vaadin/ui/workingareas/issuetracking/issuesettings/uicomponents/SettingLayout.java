@@ -11,7 +11,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.mod
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 02.11.12
  * Time: 10:33
  * To change this template use File | Settings | File Templates.
@@ -159,9 +159,9 @@ public class SettingLayout<T> extends VerticalLayout {
                 contentTable.setEditable(true);
                 buttonHorLayout.replaceComponent(addButtonLayout, saveButtonLayout);
             } catch (InstantiationException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
             } catch (IllegalAccessException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
             }
         }
     }

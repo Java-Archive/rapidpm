@@ -2,7 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 03.01.13
  * Time: 11:58
  * To change this template use File | Settings | File Templates.

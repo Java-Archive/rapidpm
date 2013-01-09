@@ -19,7 +19,7 @@ import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 07.11.12
  * Time: 12:19
  * To change this template use File | Settings | File Templates.

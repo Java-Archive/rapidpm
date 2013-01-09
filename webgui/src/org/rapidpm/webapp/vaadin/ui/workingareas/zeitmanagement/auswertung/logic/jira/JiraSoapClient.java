@@ -94,7 +94,7 @@ public class JiraSoapClient {
         try {
             userWorkLogs = executor.execute();
         } catch (ServiceException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
         }
         //final TimeSheetReport timeSheetReport = new TimeSheetReport();
 

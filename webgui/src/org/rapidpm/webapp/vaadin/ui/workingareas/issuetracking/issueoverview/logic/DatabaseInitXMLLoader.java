@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 20.12.12
  * Time: 11:17
  * To change this template use File | Settings | File Templates.
@@ -72,18 +72,8 @@ public class DatabaseInitXMLLoader {
                     }
                     list.add(dao.persist(instance));
                 }
-            } catch (InstantiationException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (ParserConfigurationException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (SAXException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (InstantiationException | IllegalAccessException | NoSuchFieldException | IOException | SAXException | ParserConfigurationException e) {
+             logger.error(e);
             }
         }  else {
             if (logger.isDebugEnabled())

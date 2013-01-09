@@ -13,7 +13,7 @@ import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 08.11.12
  * Time: 15:56
  * To change this template use File | Settings | File Templates.
