@@ -7,7 +7,7 @@
     <user-password>dfd8dfcbdfdadfc3dfcedfdadfc7</user-password>
     <libraries>
       <library>
-        <url>jar:///prog/PostgreSQL/pgJDBC/postgresql-9.1-901.jdbc4.jar!/</url>
+        <url>jar://$PROJECT_DIR$/lib/postgresql-9.1-901.jdbc4.jar!/</url>
       </library>
     </libraries>
     <schema name="information_schema" catalog="rapidpm" />
