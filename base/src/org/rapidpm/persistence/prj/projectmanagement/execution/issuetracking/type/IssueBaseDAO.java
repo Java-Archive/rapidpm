@@ -321,8 +321,14 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         try {
             if (logger.isDebugEnabled())
                 logger.debug("deleteSubIssueRelationTx");
-            success = deleteSubIssueRelation(parent, child);
+            boolean ret = deleteSubIssueRelation(parent, child);
             tx.success();
+            if (ret) {
+                success = true;
+            } else {
+                if (logger.isDebugEnabled())
+                    logger.debug("Method 'deleteSubIssueRelation' unsuccessfull");
+            }
         } catch (NullPointerException | IllegalArgumentException e) {
             logger.error(e.getClass().getSimpleName() + e.getMessage());
         } finally {
@@ -353,8 +359,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             throw new IllegalArgumentException("Id of child issue cant be null. Persist first.");
 
         if (parent.equals(child))
-            throw new IllegalArgumentException("Parent and Child issue are the same. Can't create relation to itself" +
-                    ".");
+            throw new IllegalArgumentException("Parent and Child issue are the same.");
 
         if (logger.isDebugEnabled())
             logger.debug("deleteSubIssueRelation");
@@ -370,13 +375,11 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
                     success = true;
                 } else {
                     if (logger.isDebugEnabled())
-                        logger.debug("Parent Issue doesn't match. continue...");
+                        logger.debug("Parent Issue doesn't match to child. continue...");
                 }
             }
-
         } else {
-            if (logger.isDebugEnabled())
-                logger.debug("Is already a rootissue");
+            logger.error("Childissue has no parent!");
         }
         return success;
     }
@@ -521,9 +524,14 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         try {
             if (logger.isDebugEnabled())
                 logger.debug("deleteComponentRelationTx");
-            deleteComponentRelation(issue, component);
+            boolean ret = deleteComponentRelation(issue, component);
             tx.success();
-            success = true;
+            if (ret) {
+                success = true;
+            } else {
+                if (logger.isDebugEnabled())
+                    logger.debug("Method 'deleteSubIssueRelation' unsuccessfull");
+            }
         } catch (NullPointerException | IllegalArgumentException e) {
             logger.error(e.getClass().getSimpleName() + e.getMessage());
         } finally {
@@ -538,7 +546,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         }
     }
 
-    public void deleteComponentRelation(final IssueBase issue, final IssueComponent component) {
+    public boolean deleteComponentRelation(final IssueBase issue, final IssueComponent component) {
         if (issue == null)
             throw new NullPointerException("Issue is null.");
         Long issueId = issue.getId();
@@ -551,7 +559,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         if (componentId == null)
             throw new IllegalArgumentException("Id of Component cant be null. Persist first.");
 
-
+        boolean success = false;
         if (logger.isDebugEnabled())
             logger.debug("deleteComponentRelation");
 
@@ -562,10 +570,13 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
                 if (logger.isDebugEnabled())
                     logger.debug("Delete Relation to Component: " + issue + ", " + component);
                 rel.delete();
-            } else
+                success = true;
+            } else {
                 if (logger.isDebugEnabled())
                     logger.debug("Has no relation to Component: " + issue + ", " + component);
+            }
 
+        return success;
     }
 
     public boolean delete(final IssueBase issue) {
