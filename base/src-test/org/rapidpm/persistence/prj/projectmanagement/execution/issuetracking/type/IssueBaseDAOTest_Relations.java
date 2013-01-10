@@ -118,7 +118,7 @@ public class IssueBaseDAOTest_Relations implements BaseDAOTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void connectEntitiesWithRelation_FirstParameterId() {
+    public void connectEntitiesWithRelation_FirstParameterNoId() {
         dao.connectEntitiesWithRelation(new IssueBase(3L), null, null);
     }
 
@@ -128,7 +128,7 @@ public class IssueBaseDAOTest_Relations implements BaseDAOTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void connectEntitiesWithRelation_SecondParameterId() {
+    public void connectEntitiesWithRelation_SecondParameterNoId() {
         dao.connectEntitiesWithRelation(dao.loadAllEntities().get(0), new IssueBase(3L), null);
     }
 
@@ -138,7 +138,7 @@ public class IssueBaseDAOTest_Relations implements BaseDAOTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void connectEntitiesWithRelation_ThirdParameterId() {
+    public void connectEntitiesWithRelation_ThirdParameterNoId() {
         dao.connectEntitiesWithRelation(dao.loadAllEntities().get(0), dao.loadAllEntities().get(1), new IssueRelation());
     }
 
@@ -160,7 +160,7 @@ public class IssueBaseDAOTest_Relations implements BaseDAOTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void deleteRelationOfEntities_FirstParameterId() {
+    public void deleteRelationOfEntities_FirstParameterNoId() {
         dao.deleteRelationOfEntities(new IssueBase(3L), null, null, null);
     }
 
@@ -170,7 +170,7 @@ public class IssueBaseDAOTest_Relations implements BaseDAOTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void deleteRelationOfEntities_SecondParameterId() {
+    public void deleteRelationOfEntities_SecondParameterNoId() {
         dao.deleteRelationOfEntities(dao.loadAllEntities().get(0), new IssueBase(3L), null, null);
     }
 
@@ -180,7 +180,7 @@ public class IssueBaseDAOTest_Relations implements BaseDAOTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void deleteRelationOfEntities_ThirdParameterId() {
+    public void deleteRelationOfEntities_ThirdParameterNoId() {
         dao.deleteRelationOfEntities(dao.loadAllEntities().get(0), dao.loadAllEntities().get(1), new IssueRelation(), null);
     }
 
@@ -203,7 +203,7 @@ public class IssueBaseDAOTest_Relations implements BaseDAOTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void getConnectedIssuesWithRelation_FirstParameterId() {
+    public void getConnectedIssuesWithRelation_FirstParameterNoId() {
         dao.getConnectedIssuesWithRelation(new IssueBase(3L), null, null);
     }
 
@@ -213,7 +213,7 @@ public class IssueBaseDAOTest_Relations implements BaseDAOTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void getConnectedIssuesWithRelation_SecondParameterId() {
+    public void getConnectedIssuesWithRelation_SecondParameterNoId() {
         dao.getConnectedIssuesWithRelation(dao.loadAllEntities().get(0), new IssueRelation(), null);
     }
 

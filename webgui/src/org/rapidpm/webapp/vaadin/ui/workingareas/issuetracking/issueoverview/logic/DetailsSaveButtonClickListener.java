@@ -45,8 +45,13 @@ public class DetailsSaveButtonClickListener implements Button.ClickListener {
                     Notification.Type.WARNING_MESSAGE);
         } else {
             try {
-                final IssueBase issue = detailsLayout.setIssueProperties(false);
+                IssueBase issue = detailsLayout.setIssueProperties(false);
                 if (issue != null) {
+                    try {
+                        issue = DaoFactorySingelton.getInstance().getIssueBaseDAO(issue.getProjectid()).persist(issue);
+                    } catch (IllegalArgumentException e) {
+                        throw new NameAlreadyInUseException();
+                    }
                     detailsLayout.setDetailsFromIssue(issue);
                     detailsLayout.setLayoutReadOnly(true);
                 } else {

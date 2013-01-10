@@ -162,7 +162,12 @@ public class IssueBaseDAOTest implements BaseDAOTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void deleteException() {
+    public void delete_FirstParameterNull() {
         dao.delete(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void delete_FirstParameterNoId() {
+        dao.delete(new IssueBase(1L));
     }
 }

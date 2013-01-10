@@ -4,7 +4,9 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Tree;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.MissingAttributeException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NameAlreadyInUseException;
@@ -53,8 +55,16 @@ public class AddIssueWindow extends RapidWindow {
         @Override
         public void buttonClick(Button.ClickEvent event) {
             try {
-                final IssueBase childIssue = addDetailsLayout.setIssueProperties(true);
+                IssueBaseDAO issueDao;
+                issueDao = DaoFactorySingelton.getInstance().getIssueBaseDAO(screen.getUi().getCurrentProject().getId());
+
+                IssueBase childIssue = addDetailsLayout.setIssueProperties(true);
                 if (childIssue != null) {
+                    try {
+                        childIssue = issueDao.persist(childIssue);
+                    } catch (IllegalArgumentException e) {
+                        throw new NameAlreadyInUseException();
+                    }
                     final Object itemId = issueTree.addItem();
                     final Object parentItemId = issueTree.getValue();
 
@@ -67,8 +77,10 @@ public class AddIssueWindow extends RapidWindow {
                         final IssueBase parentIssue = (IssueBase)issueTree.getContainerDataSource().getContainerProperty
                                 (parentItemId, TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
                         parentIssue.addSubIssue(childIssue);
-
+                        issueDao.persist(parentIssue);
                     }
+
+
 
                     issueTree.setChildrenAllowed(parentItemId, true);
                     issueTree.setParent(itemId, parentItemId);

@@ -35,7 +35,7 @@
       <sourceFolder url="file://$MODULE_DIR$/conf" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src-wsdl" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="1.7 64bit" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="base" exported="" />
     <orderEntry type="library" exported="" name="lib-vaadin" level="project" />

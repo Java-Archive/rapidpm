@@ -2,10 +2,12 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.neo4j.graphdb.Direction;
 import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -67,5 +69,49 @@ public class IssueRelationDAOTest implements BaseDAOTest {
         relTest.setOutgoingName(relation.getOutgoingName());
         relTest.setIncomingName(relation.getIncomingName());
         dao.persist(relTest);
+    }
+
+    @Test
+    public void getConnectedIssus() {
+        for (final IssueRelation relation : dao.loadAllEntities()) {
+            final List<IssueBase> relConnIssueList = relation.getConnectedIssuesFromProject(1L);
+            final List<IssueBase> issueList = new ArrayList<>();
+            for (final IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+                if (!issue.getConnectedIssues(relation, Direction.OUTGOING).isEmpty()) {
+                    issueList.add(issue);
+                }
+            }
+
+            assertEquals(relConnIssueList.size(), issueList.size());
+            for (final IssueBase match : relConnIssueList) {
+                assertTrue(issueList.contains(match));
+            }
+        }
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void delete_FirstParameterNull() {
+        dao.delete(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void delete_FirstParameterNoId() {
+        dao.delete(new IssueRelation());
+    }
+
+
+    @Test(expected = NullPointerException.class)
+    public void getConnectedIssues_FirstParameterNull() {
+        dao.getConnectedIssuesFromProject(null, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getConnectedIssues_firstParameterNoId() {
+        dao.getConnectedIssuesFromProject(new IssueRelation(), 1L);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getConnectedIssues_SecondParameterNull() {
+        dao.getConnectedIssuesFromProject(dao.loadAllEntities().get(0), -1L);
     }
 }

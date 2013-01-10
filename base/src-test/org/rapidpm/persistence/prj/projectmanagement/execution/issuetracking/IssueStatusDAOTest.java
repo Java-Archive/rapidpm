@@ -12,9 +12,11 @@ import org.junit.Test;
 import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class IssueStatusDAOTest implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssueStatusDAOTest.class);
@@ -62,11 +64,54 @@ public class IssueStatusDAOTest implements BaseDAOTest {
     @Test
     public void getConnectedIssus() {
         for (final IssueStatus status : dao.loadAllEntities()) {
-            final List<IssueBase> issueList = status.getConnectedIssuesFromProject(1L);
+            final List<IssueBase> statConnIssueList = status.getConnectedIssuesFromProject(1L);
+            final List<IssueBase> issueList = new ArrayList<>();
+
             for (final IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
                 if (issue.getStatus().equals(status))
-                    assertTrue(issueList.contains(issue));
+                    issueList.add(issue);
+            }
+
+            assertEquals(statConnIssueList.size(), issueList.size());
+            for (final IssueBase match : statConnIssueList) {
+                assertTrue(issueList.contains(match));
             }
         }
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void delete_FirstParameterNull() {
+        dao.delete(null, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void delete_FirstParameterNoId() {
+        dao.delete(new IssueStatus(), null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void delete_SecondParameterNull() {
+        dao.delete(dao.loadAllEntities().get(0), null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void delete_SecondParameterNoId() {
+        dao.delete(dao.loadAllEntities().get(0), new IssueStatus());
+    }
+
+
+    @Test(expected = NullPointerException.class)
+    public void getConnectedIssues_FirstParameterNull() {
+        dao.getConnectedIssuesFromProject(null, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getConnectedIssues_firstParameterNoId() {
+        dao.getConnectedIssuesFromProject(new IssueStatus(), 1L);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getConnectedIssues_SecondParameterNull() {
+        dao.getConnectedIssuesFromProject(dao.loadAllEntities().get(0), -1L);
     }
 }

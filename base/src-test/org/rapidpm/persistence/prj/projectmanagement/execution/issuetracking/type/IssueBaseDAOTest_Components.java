@@ -29,30 +29,23 @@ public class IssueBaseDAOTest_Components implements BaseDAOTest {
         IssueBase issue = dao.loadAllEntities().get(0);
         final List<IssueComponent> componentList = daoFactory.getIssueComponentDAO().loadAllEntities();
 
-        boolean success = issue.addComponent(componentList.get(0));
-        assertTrue(success);
+        assertTrue(issue.addComponent(componentList.get(0)));
         issue = dao.persist(issue);
-        List<IssueComponent> connected= issue.getComponents();
-        assertTrue(connected.contains(componentList.get(0)));
+        assertTrue(issue.getComponents().contains(componentList.get(0)));
 
-        success = issue.addComponent(componentList.get(1));
-        assertTrue(success);
+        assertTrue(issue.addComponent(componentList.get(1)));
         issue = dao.persist(issue);
-        connected = issue.getComponents();
+        List<IssueComponent> connected = issue.getComponents();
         assertTrue(connected.contains(componentList.get(0)) && connected.contains(componentList.get(1)));
 
 
-        success = issue.removeComponent(componentList.get(0));
-        assertTrue(success);
+        assertTrue(issue.removeComponent(componentList.get(0)));
         issue = dao.persist(issue);
-        connected= issue.getComponents();
-        assertFalse(connected.contains(componentList.get(0)));
+        assertFalse(issue.getComponents().contains(componentList.get(0)));
 
-        success = issue.removeComponent(componentList.get(1));
-        assertTrue(success);
+        assertTrue(issue.removeComponent(componentList.get(1)));
         issue = dao.persist(issue);
-        connected= issue.getComponents();
-        assertFalse(connected.contains(componentList.get(1)));
+        assertFalse(issue.getComponents().contains(componentList.get(1)));
     }
 
 
@@ -103,7 +96,7 @@ public class IssueBaseDAOTest_Components implements BaseDAOTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void addComponentTo_FirstParameterId() {
+    public void addComponentTo_FirstParameterNoId() {
         dao.addComponentTo(new IssueBase(3L), null);
     }
 
@@ -113,7 +106,7 @@ public class IssueBaseDAOTest_Components implements BaseDAOTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void addComponentTo_SecondParameterId() {
+    public void addComponentTo_SecondParameterNoId() {
         dao.addComponentTo(dao.loadAllEntities().get(0), new IssueComponent());
     }
 
@@ -128,7 +121,7 @@ public class IssueBaseDAOTest_Components implements BaseDAOTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void deleteComponentRelation_FirstParameterId() {
+    public void deleteComponentRelation_FirstParameterNoId() {
         dao.deleteComponentRelation(new IssueBase(3L), null);
     }
 
@@ -138,7 +131,7 @@ public class IssueBaseDAOTest_Components implements BaseDAOTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void deleteComponentRelation_SecondParameterId() {
+    public void deleteComponentRelation_SecondParameterNoId() {
         dao.deleteComponentRelation(dao.loadAllEntities().get(0), new IssueComponent());
     }
 
@@ -149,7 +142,7 @@ public class IssueBaseDAOTest_Components implements BaseDAOTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void getComponentsOf_FirstParameterId() {
+    public void getComponentsOf_FirstParameterNoId() {
         dao.getComponentsOf(new IssueBase(3L));
     }
 }

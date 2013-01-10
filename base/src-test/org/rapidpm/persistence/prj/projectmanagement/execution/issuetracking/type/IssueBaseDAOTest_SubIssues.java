@@ -26,16 +26,16 @@ public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
 
     @Test
     public void addSubIssue() {
-        final IssueBase issue = dao.loadAllEntities().get(0);
-        final IssueBase sub = dao.loadAllEntities().get(1);
+        IssueBase issue = dao.loadAllEntities().get(0);
+        IssueBase sub = dao.loadAllEntities().get(1);
 
         assertTrue(issue.addSubIssue(sub));
-        //issue = dao.persist(issue);
+        issue = dao.persist(issue);
         assertTrue(issue.getSubIssues().contains(sub));
 
         //try to add subissue again
         assertTrue(issue.addSubIssue(sub));
-        //issue = dao.persist(issue);
+        issue = dao.persist(issue);
         assertTrue(issue.getSubIssues().contains(sub));
         List<IssueBase> connected = issue.getSubIssues();
         int i = 0;
@@ -46,12 +46,12 @@ public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
         assertTrue(i == 1);
 
         assertTrue(issue.removeSubIssue(sub));
-        //issue = dao.persist(issue);
+        issue = dao.persist(issue);
         assertFalse(issue.getSubIssues().contains(sub));
 
         //try to delete non existing subissue
-        assertFalse(issue.removeSubIssue(sub));
-        //issue = dao.persist(issue);
+        assertTrue(issue.removeSubIssue(sub));
+        issue = dao.persist(issue);
         assertFalse(issue.getSubIssues().contains(sub));
 
         assertTrue(dao.loadAllEntities().contains(sub));
@@ -98,7 +98,9 @@ public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
         assertTrue(issueBase2.equals(dao.findByID(issueBase2.getId())));
         IssueBase toplevelIssue = dao.loadTopLevelEntities().get(0);
         toplevelIssue.addSubIssue(issueBase1);
+        toplevelIssue = dao.persist(toplevelIssue);
         issueBase1.addSubIssue(issueBase2);
+        issueBase1 = dao.persist(issueBase1);
 
         assertTrue(toplevelIssue.getSubIssues().contains(issueBase1));
         assertTrue(issueBase1.getSubIssues().contains(issueBase2));
@@ -114,31 +116,38 @@ public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
 
     @Test
     public void setAsRootIssue() {
-        List<IssueBase> list = dao.loadTopLevelEntities();
-        final IssueBase issue = list.get(0);
-        final IssueBase sub = list.get(1);
+        final List<IssueBase> list = dao.loadTopLevelEntities();
+        IssueBase issue = list.get(0);
+        IssueBase sub = list.get(1);
 
         assertTrue(issue.addSubIssue(sub));
+        issue = dao.persist(issue);
         assertTrue(issue.getSubIssues().contains(sub));
 
         assertTrue(sub.setAsRootIssue());
+        sub = dao.persist(sub);
         assertTrue(dao.loadTopLevelEntities().contains(sub));
         assertFalse(issue.getSubIssues().contains(sub));
-
-        assertTrue(sub.setAsRootIssue());
     }
 
     @Test
     public void deleteSubIssueWithWrongParent() {
-        List<IssueBase> list = dao.loadTopLevelEntities();
-        final IssueBase issue1 = list.get(0);
-        final IssueBase issue2 = list.get(1);
-        final IssueBase issue3 = list.get(2);
+        final List<IssueBase> list = dao.loadTopLevelEntities();
+        IssueBase issue1 = list.get(0);
+        IssueBase issue2 = list.get(1);
+        IssueBase issue3 = list.get(2);
 
         assertTrue(issue1.addSubIssue(issue2));
-        assertFalse(issue3.removeSubIssue(issue2));
+        issue1 = dao.persist(issue1);
+        assertTrue(issue1.getSubIssues().contains(issue2));
 
-        issue2.setAsRootIssue();
+        assertTrue(issue3.removeSubIssue(issue2));
+        issue3 = dao.persist(issue3);
+        assertFalse(issue3.getSubIssues().contains(issue2));
+
+        assertTrue(issue2.setAsRootIssue());
+        issue2 = dao.persist(issue2);
+        assertTrue(dao.loadTopLevelEntities().contains(issue2));
     }
 
 
@@ -158,7 +167,7 @@ public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void addSubIssue_FirstParameterId() {
+    public void addSubIssue_FirstParameterNoId() {
         dao.addSubIssue(new IssueBase(3L), null);
     }
 
@@ -168,7 +177,7 @@ public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void addSubIssue_SecondParameterId() {
+    public void addSubIssue_SecondParameterNoId() {
         dao.addSubIssue(dao.loadAllEntities().get(0), new IssueBase(3L));
     }
 
@@ -195,7 +204,7 @@ public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void deleteSubIssueRelation_FirstParameterId() {
+    public void deleteSubIssueRelation_FirstParameterNoId() {
         dao.deleteSubIssueRelation(new IssueBase(3L), null);
     }
 
@@ -205,7 +214,7 @@ public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void deleteSubIssueRelation_SecondParameterId() {
+    public void deleteSubIssueRelation_SecondParameterNoId() {
         dao.deleteSubIssueRelation(dao.loadAllEntities().get(0), new IssueBase(3L));
     }
 
@@ -231,7 +240,7 @@ public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void setAsRootIssue_FirstParameterId() {
+    public void setAsRootIssue_FirstParameterNoId() {
         dao.setAsRootIssue(new IssueBase(3L));
     }
 
@@ -243,7 +252,7 @@ public class IssueBaseDAOTest_SubIssues implements BaseDAOTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void getSubIssuesOf_FirstParameterId() {
+    public void getSubIssuesOf_FirstParameterNoId() {
         dao.getSubIssuesOf(new IssueBase(3L));
     }
 }

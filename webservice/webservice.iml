@@ -24,7 +24,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src-test-generated" isTestSource="true" />
     </content>
-    <orderEntry type="jdk" jdkName="1.7 64bit" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="module" module-name="base" />
     <orderEntry type="library" name="lib-jaxws" level="project" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -280,15 +280,15 @@ public class GraphBaseDAO<T> {
     }
 
     private void connectSingleAttribute(Node startNode, Node endNode, Class aClass) {
+        if (logger.isDebugEnabled())
+            logger.debug("connectSingleAttribute");
+
         if (startNode == null)
             throw new NullPointerException("Startnode is null.");
         if (endNode == null)
             throw new NullPointerException("Endnode is null.");
         if (aClass == null)
             throw new NullPointerException("Class is null.");
-
-        if (logger.isDebugEnabled())
-            logger.debug("connectSingleAttribute");
 
         final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(aClass);
         if (startNode.hasRelationship(relType, Direction.OUTGOING)) {
@@ -299,15 +299,15 @@ public class GraphBaseDAO<T> {
     }
 
     private void connectAttribute(final Node startNode, final Node endNode, final Class aClass) {
+        if (logger.isDebugEnabled())
+            logger.debug("connectAttribute");
+
         if (startNode == null)
             throw new NullPointerException("Startnode is null.");
         if (endNode == null)
             throw new NullPointerException("Endnode is null.");
         if (aClass == null)
             throw new NullPointerException("Class is null.");
-
-        if (logger.isDebugEnabled())
-            logger.debug("connectAttribute");
 
         startNode.createRelationshipTo(endNode, GraphRelationRegistry.getRelationshipTypeForClass(aClass));
     }
@@ -382,13 +382,13 @@ public class GraphBaseDAO<T> {
     }
 
     protected <E> E getObjectFromNode(final Node node, final Class clazz) {
+        if (logger.isDebugEnabled())
+            logger.debug("getObjectFromNode: " + clazz.getSimpleName());
+
         if (node == null)
             throw new NullPointerException("Node is null.");
         if (clazz == null)
             throw new NullPointerException("Class is null.");
-
-        if (logger.isDebugEnabled())
-            logger.debug("getObjectFromNode: " + clazz.getSimpleName());
 
         E entity = null;
         try {
@@ -472,13 +472,13 @@ public class GraphBaseDAO<T> {
 
 
     protected Long getIdFromEntity(final Object entity, final Class aClass) {
+        if (logger.isDebugEnabled())
+            logger.debug("getIdFromEntity");
+
         if (entity == null)
             throw new NullPointerException("Can't get Id from null.");
         if (aClass == null)
             throw new NullPointerException("Class to get Id from can't be null.");
-
-        if (logger.isDebugEnabled())
-            logger.debug("getIdFromEntity");
 
         Long id = null;
         try {
@@ -495,6 +495,9 @@ public class GraphBaseDAO<T> {
     private DAO getDaoInstance(final Class aClass) {
         if (logger.isDebugEnabled())
             logger.debug("getDaoInstance");
+
+        if (aClass == null)
+            throw new NullPointerException("Class is null");
 
         DAO relDao = null;
         if (daoFactory != null) {
@@ -514,21 +517,21 @@ public class GraphBaseDAO<T> {
         if (entity == null)
             throw new NullPointerException("Object to delete can't be null.");
 
+        final Long entityId = getIdFromEntity(entity);
+        if (entityId == null)
+            throw new IllegalArgumentException("Entity Id can't be null. Persist first.");
+
         if (logger.isDebugEnabled())
             logger.debug("delete: " + entity);
 
         boolean success = false;
-        final Long id = getIdFromEntity(entity);
         final Transaction tx = graphDb.beginTx();
         try{
-            Node node;
-            if (id != null && id != 0) {
-                node = graphDb.getNodeById(id);
-                for (Relationship rel : node.getRelationships()) {
-                    rel.delete();
-                }
-                node.delete();
+            final Node node = graphDb.getNodeById(entityId);
+            for (Relationship rel : node.getRelationships()) {
+                rel.delete();
             }
+            node.delete();
             tx.success();
             success = true;
         } finally {
@@ -540,31 +543,37 @@ public class GraphBaseDAO<T> {
     protected boolean deleteAttribute(final T entity, final T assignTo) {
         if (entity == null)
             throw new NullPointerException("Object to delete can't be null.");
+
+        final Long entityId = getIdFromEntity(entity);
+        if (entityId == null)
+            throw new IllegalArgumentException("Entity Id can't be null. Persist first.");
+
         if (assignTo == null)
             throw new NullPointerException("Object deleted objects get assigned to can't be null.");
+
+        final Long assignToId = getIdFromEntity(assignTo);
+        if (assignToId == null)
+            throw new IllegalArgumentException("Entity Id to assign to can't be null. Persist first.");
 
         if (logger.isDebugEnabled())
             logger.debug("delete: " + entity);
 
+
         boolean success = false;
-        final Long id = getIdFromEntity(entity);
-        Long assignToId = getIdFromEntity(assignTo);
         final Transaction tx = graphDb.beginTx();
         try{
-            Node node, assignToNode;
-            if (id != null && id != 0 && assignToId != null && assignToId != 0) {
-                node = graphDb.getNodeById(id);
-                assignToNode = graphDb.getNodeById(assignToId);
-                //rearrange Issues
-                final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(clazz);
-                for (Relationship rel : node.getRelationships()) {
-                    if (rel.isType(relType) && rel.getEndNode().equals(node)) {
-                           rel.getStartNode().createRelationshipTo(assignToNode, relType);
-                    }
-                    rel.delete();
+            final Node entityNode = graphDb.getNodeById(entityId);
+            final Node assignToNode = graphDb.getNodeById(assignToId);
+            //rearrange Issues
+            final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(clazz);
+            for (Relationship rel : entityNode.getRelationships()) {
+                if (rel.isType(relType) && rel.getEndNode().equals(entityNode)) {
+                       rel.getStartNode().createRelationshipTo(assignToNode, relType);
                 }
-                node.delete();
+                rel.delete();
             }
+            entityNode.delete();
+
             tx.success();
             success = true;
         } finally {
@@ -577,6 +586,10 @@ public class GraphBaseDAO<T> {
     protected boolean deleteIssue(final T entity) {
         if (entity == null)
             throw new NullPointerException("Object to delete can't be null.");
+
+        final Long id = getIdFromEntity(entity);
+        if (id == null)
+            throw new IllegalArgumentException("Issue Id cant be null. Persist first.");
 
         if (logger.isDebugEnabled())
             logger.debug("delete: " + entity);
@@ -601,24 +614,57 @@ public class GraphBaseDAO<T> {
         }
         this.persist(entity);
 
-        final Long id = getIdFromEntity(entity);
         final Transaction tx = graphDb.beginTx();
         try{
-            Node node;
-            if (id != null && id != 0) {
-                node = graphDb.getNodeById(id);
-                //rearrange Subissues
-                final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
-                for (Relationship rel : node.getRelationships()) {
-                    if (rel.isType(relType) && rel.getStartNode().equals(node)) {
-                        for (Relationship parent : node.getRelationships(relType, Direction.INCOMING)) {
-                            parent.getStartNode().createRelationshipTo(rel.getEndNode(),relType);
-                        }
+            final Node node = graphDb.getNodeById(id);
+            //rearrange Subissues
+            final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
+            for (Relationship rel : node.getRelationships()) {
+                if (rel.isType(relType) && rel.getStartNode().equals(node)) {
+                    for (Relationship parent : node.getRelationships(relType, Direction.INCOMING)) {
+                        parent.getStartNode().createRelationshipTo(rel.getEndNode(),relType);
                     }
-                    rel.delete();
                 }
-                node.delete();
+                rel.delete();
             }
+            node.delete();
+            tx.success();
+            success = true;
+        } finally {
+            tx.finish();
+            return success;
+        }
+    }
+
+
+    protected boolean deleteRelation(final T entity) {
+        if (entity == null)
+            throw new NullPointerException("Object to delete can't be null.");
+
+        final Long id = getIdFromEntity(entity);
+        if (id == null)
+            throw new IllegalArgumentException("Relation Id cant be null. Persist first.");
+
+        if (logger.isDebugEnabled())
+            logger.debug("delete: " + entity);
+
+        boolean success = false;
+        final Transaction tx = graphDb.beginTx();
+        try{
+            final Node relNode = graphDb.getNodeById(id);
+            final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueRelation.class);
+            for (Relationship rel : relNode.getRelationships(relType, Direction.INCOMING)) {
+                final Node issueNode = rel.getOtherNode(relNode);
+                for (Relationship relIssue : issueNode.getRelationships((RelationshipType)entity, Direction.OUTGOING)) {
+                    relIssue.delete();
+                }
+                rel.delete();
+            }
+
+            relNode.getSingleRelationship(GraphRelationRegistry.getClassRootToChildRelType(),
+                    Direction.INCOMING).delete();
+
+            relNode.delete();
             tx.success();
             success = true;
         } finally {
@@ -631,12 +677,13 @@ public class GraphBaseDAO<T> {
     protected List<IssueBase> getConnectedIssuesFromProject(final T entity, final Long projectId) {
         if (entity == null)
             throw new NullPointerException("Entity is null");
-        if (projectId < 0)
-            throw new IllegalArgumentException("ProjectId must be positiv");
 
-        Long id = getIdFromEntity(entity);
+        final Long id = getIdFromEntity(entity);
         if (id == null)
             throw new IllegalArgumentException("Entity Id cant be null. Persist first.");
+
+        if (projectId < 0)
+            throw new IllegalArgumentException("ProjectId must be positiv");
 
         if (logger.isDebugEnabled())
             logger.debug(this.getClass().getSimpleName() + ".getConnectedIssuesFromProject: " + projectId);

@@ -422,7 +422,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     }
 
     public IssueBase setIssueProperties(boolean newIssue)
-            throws NoNameException, NameAlreadyInUseException, MissingAttributeException {
+            throws NoNameException, MissingAttributeException {
 
         if (newIssue) {
             issue = new IssueBase(screen.getUi().getCurrentProject().getId());
@@ -507,12 +507,6 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         }
 
         relContainer.resetTransactions();
-        try {
-            issue = DaoFactorySingelton.getInstance().getIssueBaseDAO(screen.getUi().getCurrentProject().getId())
-                    .persist(issue);
-        } catch (IllegalArgumentException e) {
-            throw new NameAlreadyInUseException();
-        }
         return issue;
     }
 
