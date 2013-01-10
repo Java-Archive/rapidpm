@@ -18,6 +18,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.MissingAttributeException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NoNameException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.MappingPlanningUnitToIssueBase;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabAddButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabDeleteButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.*;
@@ -86,6 +87,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         final List<IssueComponent> componentsList = daoFactory.getIssueComponentDAO().loadAllEntities();
         final List<Benutzer> userList =  daoFactory.getBenutzerDAO().loadAllEntities();
 
+
+        new MappingPlanningUnitToIssueBase(screen.getUi().getCurrentProject()).startMapping();
 
         VerticalLayout formLayout = new VerticalLayout();
         formLayout.setSpacing(true);
