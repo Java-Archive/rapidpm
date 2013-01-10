@@ -10,17 +10,14 @@ import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
-//import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.FormattedDateStringToDateConverter;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.MissingAttributeException;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NameAlreadyInUseException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NoNameException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DatabaseInitXMLLoader;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabAddButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabDeleteButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.*;
@@ -78,16 +75,15 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
     @Override
     protected AbstractOrderedLayout buildSaveableForm() {
-        final DatabaseInitXMLLoader initEntityLists = new DatabaseInitXMLLoader();
         converter = new FormattedDateStringToDateConverter(new SimpleDateFormat("dd.MM.yy"));
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
-        final List<IssueType> typeList = initEntityLists.initDatatype(IssueType.class, daoFactory.getIssueTypeDAO());
-        final List<IssueStatus> statusList = initEntityLists.initDatatype(IssueStatus.class, daoFactory.getIssueStatusDAO());
-        final List<IssuePriority> priorityList = initEntityLists.initDatatype(IssuePriority.class, daoFactory.getIssuePriorityDAO());
-        final List<IssueVersion> versionList = initEntityLists.initDatatype(IssueVersion.class, daoFactory.getIssueVersionDAO());
-        final List<IssueStoryPoint> storyPointList = initEntityLists.initDatatype(IssueStoryPoint.class, daoFactory.getIssueStoryPointDAO());
-        final List<IssueComponent> componentsList = initEntityLists.initDatatype(IssueComponent.class, daoFactory.getIssueComponentDAO());
+        final List<IssueType> typeList = daoFactory.getIssueTypeDAO().loadAllEntities();
+        final List<IssueStatus> statusList = daoFactory.getIssueStatusDAO().loadAllEntities();
+        final List<IssuePriority> priorityList = daoFactory.getIssuePriorityDAO().loadAllEntities();
+        final List<IssueVersion> versionList = daoFactory.getIssueVersionDAO().loadAllEntities();
+        final List<IssueStoryPoint> storyPointList = daoFactory.getIssueStoryPointDAO().loadAllEntities();
+        final List<IssueComponent> componentsList = daoFactory.getIssueComponentDAO().loadAllEntities();
         final List<Benutzer> userList =  daoFactory.getBenutzerDAO().loadAllEntities();
 
 

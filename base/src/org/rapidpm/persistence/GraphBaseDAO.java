@@ -53,6 +53,8 @@ public class GraphBaseDAO<T> {
         index_name = graphDb.index().forNodes(clazz.getSimpleName());
         this.root_node = graphDb.getNodeById(0);
         this.class_root_node = getClassRootNode(projectId);
+
+        new DatabaseInitXMLLoader().initDatatype(clazz, this);
     }
 
     public GraphBaseDAO(final GraphDatabaseService graphDb, final Class clazz, final DaoFactory daoFactory) {
