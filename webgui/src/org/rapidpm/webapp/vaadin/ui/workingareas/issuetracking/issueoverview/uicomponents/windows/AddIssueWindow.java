@@ -1,5 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows;
 
+import com.vaadin.data.Property;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Tree;
@@ -74,10 +75,13 @@ public class AddIssueWindow extends RapidWindow {
                             TreeIssueBaseContainer.PROPERTY_ISSUEBASE).setValue(childIssue);
 
                     if (parentItemId != null)  {
-                        final IssueBase parentIssue = (IssueBase)issueTree.getContainerDataSource().getContainerProperty
-                                (parentItemId, TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
-                        parentIssue.addSubIssue(childIssue);
-                        issueDao.persist(parentIssue);
+                        final Property parentProp = issueTree.getContainerDataSource().getContainerProperty
+                                (parentItemId, TreeIssueBaseContainer.PROPERTY_ISSUEBASE);
+                        if (parentProp != null) {
+                            final IssueBase parentIssue = (IssueBase)parentProp.getValue();
+                            parentIssue.addSubIssue(childIssue);
+                            issueDao.persist(parentIssue);
+                        }
                     }
 
 

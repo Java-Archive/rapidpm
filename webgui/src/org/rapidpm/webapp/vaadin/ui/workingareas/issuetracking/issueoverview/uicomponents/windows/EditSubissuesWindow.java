@@ -1,25 +1,18 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows;
 
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeActivateOnValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeSubissueSortDropHandler;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainerSingleton;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsLayout;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.ProjectAdministrationScreen;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,7 +29,7 @@ public class EditSubissuesWindow extends Window implements Internationalizationa
     private final IssueOverviewScreen screen;
     private EditSubissuesWindow self;
 
-    private Tree issueTree;
+    private Tree subIssueTree;
     private Button saveButton;
     private Button cancelButton;
     private Button expandButton;
@@ -83,24 +76,24 @@ public class EditSubissuesWindow extends Window implements Internationalizationa
         final RapidPanel treePanel = new RapidPanel();
         treePanel.setStyleName(Reindeer.PANEL_LIGHT);
 
-        issueTree = new Tree(screen.getUi().getCurrentProject().getProjektName());
-        issueTree.setNullSelectionAllowed(false);
-        issueTree.setContainerDataSource(new TreeIssueBaseContainer(screen.getUi().getCurrentProject()));
-        issueTree.setImmediate(true);
+        subIssueTree = new Tree(screen.getUi().getCurrentProject().getProjektName());
+        subIssueTree.setNullSelectionAllowed(false);
+        subIssueTree.setContainerDataSource(new TreeIssueBaseContainer(screen.getUi().getCurrentProject()));
+        subIssueTree.setImmediate(true);
 
-        issueTree.setItemCaptionPropertyId(TreeIssueBaseContainer.PROPERTY_CAPTION);
-        for (Object id : issueTree.rootItemIds())
-            issueTree.expandItemsRecursively(id);
-        if (issueTree.getItemIds().toArray().length > 0)
-            issueTree.select(issueTree.getItemIds().toArray()[0]);
+        subIssueTree.setItemCaptionPropertyId(TreeIssueBaseContainer.PROPERTY_CAPTION);
+        for (Object id : subIssueTree.rootItemIds())
+            subIssueTree.expandItemsRecursively(id);
+        if (subIssueTree.getItemIds().toArray().length > 0)
+            subIssueTree.select(subIssueTree.getItemIds().toArray()[0]);
 
-        final TreeSubissueSortDropHandler dropHandler = new TreeSubissueSortDropHandler(issueTree);
+        final TreeSubissueSortDropHandler dropHandler = new TreeSubissueSortDropHandler(subIssueTree);
 
-        issueTree.setDragMode(Tree.TreeDragMode.NODE);
-        issueTree.setDropHandler(dropHandler);
+        subIssueTree.setDragMode(Tree.TreeDragMode.NODE);
+        subIssueTree.setDropHandler(dropHandler);
         dropHandler.setActivated(true);
 
-        treePanel.addComponent(issueTree);
+        treePanel.addComponent(subIssueTree);
         treePanel.setSizeFull();
 
         contentLayout.addComponent(treePanel);
@@ -112,12 +105,12 @@ public class EditSubissuesWindow extends Window implements Internationalizationa
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 if (expanded) {
-                    for (Object id : issueTree.rootItemIds())
-                        issueTree.collapseItemsRecursively(id);
+                    for (Object id : subIssueTree.rootItemIds())
+                        subIssueTree.collapseItemsRecursively(id);
                     expandButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_expand"));
                 } else {
-                    for (Object id : issueTree.rootItemIds())
-                        issueTree.expandItemsRecursively(id);
+                    for (Object id : subIssueTree.rootItemIds())
+                        subIssueTree.expandItemsRecursively(id);
                     expandButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_collapse"));
                 }
                 expanded = !expanded;

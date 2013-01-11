@@ -96,10 +96,6 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         if (issueTree.getItemIds().toArray().length > 0)
             issueTree.select(issueTree.getItemIds().toArray()[0]);
 
-        final TreeSubissueSortDropHandler dropHandler = new TreeSubissueSortDropHandler(issueTree);
-
-//        issueTree.setDragMode(Tree.TreeDragMode.NODE);
-//        issueTree.setDropHandler(dropHandler);
         treePanel.addComponent(issueTree);
         treePanel.setSizeFull();
 
@@ -132,14 +128,6 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 UI.getCurrent().addWindow(new EditSubissuesWindow(screen));
-//                if (enabled) {
-//                    subissueButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_dragdrop_edit"));
-//                    dropHandler.setActivated(false);
-//                } else {
-//                    subissueButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_dragdrop_lock"));
-//                    dropHandler.setActivated(true);
-//                }
-//                enabled = !enabled;
             }
         });
     }
