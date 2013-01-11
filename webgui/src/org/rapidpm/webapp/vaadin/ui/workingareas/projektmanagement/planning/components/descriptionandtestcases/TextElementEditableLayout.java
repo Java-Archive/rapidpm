@@ -35,15 +35,14 @@ public class TextElementEditableLayout extends EditableLayout {
     private ProjektplanungScreen screen;
 
     public TextElementEditableLayout(final PlanningUnit selectedPlanningUnit, final ProjektplanungScreen screen, 
-                                     final RapidPanel textElementsPanel,
-                                     final ResourceBundle messages, final TextElement textElement){
+                                     final RapidPanel textElementsPanel, final TextElement textElement){
         super(screen, textElementsPanel);
         this.selectedPlanningUnit = selectedPlanningUnit;
         this.screen = screen;
         bezeichnungField = new TextField();
         bezeichnungField.setValue(textElement.getBezeichnung());
         bezeichnungField.setReadOnly(true);
-        bezeichnungField.setWidth("200px");
+        bezeichnungField.setWidth("100%");
         textElementTextArea = new RichTextArea("", textElement.getText());
         textElementTextArea.setSizeUndefined();
         textElementTextArea.setWidth("100%");
