@@ -19,6 +19,7 @@ public class PlannedProject {
     public static final String ID = "id";
     public static final String NAME = "projektName";
     public static final String TOKEN = "projektToken";
+    public static final String EXTERNALDAILYRATE = "externalDailyRate";
 
     @Id
     @TableGenerator(name = "PKGenPlannedProject", table = "pk_gen", pkColumnName = "gen_key",
@@ -49,6 +50,9 @@ public class PlannedProject {
     @Basic
     @Column(columnDefinition = "TEXT")
     private String info;
+
+    @Basic
+    private Double externalDailyRate;
 
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
@@ -224,5 +228,13 @@ public class PlannedProject {
 
     public void setProjektToken(String projektToken) {
         this.projektToken = projektToken;
+    }
+
+    public Double getExternalDailyRate() {
+        return externalDailyRate;
+    }
+
+    public void setExternalDailyRate(Double externalDailyRate) {
+        this.externalDailyRate = externalDailyRate;
     }
 }

@@ -2,13 +2,18 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze;
 
 import com.vaadin.ui.*;
 //import org.rapidpm.ejb3.EJBFactory;
+import com.vaadin.ui.themes.Reindeer;
 import org.rapidpm.persistence.DaoFactory;
 //import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsException;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeTableCreator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit.EditGroupValueChangeListener;
@@ -17,6 +22,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tasks.DelRowClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.ButtonComponent;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.EditOptionButtonGroup;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.ExternalDailyRateEditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.ItemClickDependentComponent;
 
 import java.text.DecimalFormat;
@@ -29,8 +35,10 @@ import static org.rapidpm.Constants.EUR;
 public class StundensaetzeScreen extends Screen {
 
     private FormLayout betriebsFieldsLayout = new FormLayout();
-    private TextField betriebsWertField;
-    private TextField betriebsstdField;
+    private ExternalDailyRateEditableLayout externerTagessatzLayout;
+    private Panel externerTagessatzPanel = new Panel();
+    private TextField mindestManntageField;
+    private TextField betriebsStundeField;
     private Button addRowButton = new Button("+");
     private ButtonComponent delRowButton = new ButtonComponent("-");
     private GridLayout tabellenTasksLayout = new GridLayout(2, 2);
@@ -48,51 +56,64 @@ public class StundensaetzeScreen extends Screen {
 
     public StundensaetzeScreen(final MainUI ui) {
         super(ui);
-        betriebsstdField = new TextField();
-        betriebsWertField = new TextField();
+        try{
+           final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+            final List<PlannedProject> plannedProjects = daoFactory.getPlannedProjectDAO().loadAllEntities();
+            if(plannedProjects == null || plannedProjects.isEmpty()){
+                throw new NoProjectsException();
+            }
+            betriebsStundeField = new TextField();
+            mindestManntageField = new TextField();
+
+            betriebsFieldsLayout.addComponent(betriebsStundeField);
+            betriebsFieldsLayout.addComponent(mindestManntageField);
+
+            externerTagessatzLayout = new ExternalDailyRateEditableLayout(this, externerTagessatzPanel);
+            externerTagessatzPanel.setContent(externerTagessatzLayout);
+            externerTagessatzPanel.setSizeUndefined();
+            externerTagessatzPanel.setStyleName(Reindeer.PANEL_LIGHT);
+            dependentComponents.add(delRowButton);
+
+            // formlayout wird bis zum itemclicklistener durchgereicht, savelayout
+            // ebenfalls
+            tabelle = new Table();
+            tabelle.setImmediate(true);
+            tabellenLayout.setSizeFull();
+            tabellenLayout.addComponent(tabelle);
+            tabellenLayout.setSpacing(true);
+
+            optionGroup = new EditOptionButtonGroup(messagesBundle);
+            saveButtonLayout.setSpacing(true);
+            saveButtonLayout.addComponent(saveButton);
+            optionGroup.addValueChangeListener(new EditGroupValueChangeListener(this, dependentComponents, delRowButton,
+                    messagesBundle, saveButtonLayout, optionGroup, saveButton, tabelle));
+            optionGroup.setImmediate(true);
+
+            delRowButton.setEnabled(false);
+            delRowButton.addClickListener(new DelRowClickListener(this, delRowButton, messagesBundle));
+            tabellenTasksLayout.setWidth("500px");
+            tabellenTasksLayout.addComponent(addDeleteRessourceLabel);
+            tabellenTasksLayout.addComponent(editModeLabel);
+            final HorizontalLayout addDeleteLayout = new HorizontalLayout();
+
+            addDeleteLayout.addComponent(addRowButton);
+            addDeleteLayout.addComponent(delRowButton);
+            tabellenTasksLayout.addComponent(addDeleteLayout);
+            tabellenTasksLayout.addComponent(optionGroup);
+            addRowButton.addClickListener(new AddRowClickListener(ui, this));
 
 
-        betriebsFieldsLayout.addComponent(betriebsstdField);
-        betriebsFieldsLayout.addComponent(betriebsWertField);
 
+            //updatet die Table
+            generateTableAndCalculate();
 
-        dependentComponents.add(delRowButton);
-
-        // formlayout wird bis zum itemclicklistener durchgereicht, savelayout
-        // ebenfalls
-        tabelle = new Table();
-        tabelle.setImmediate(true);
-        tabellenLayout.setSizeFull();
-        tabellenLayout.addComponent(tabelle);
-        tabellenLayout.setSpacing(true);
-
-        optionGroup = new EditOptionButtonGroup(messagesBundle);
-        saveButtonLayout.setSpacing(true);
-        saveButtonLayout.addComponent(saveButton);
-        optionGroup.addValueChangeListener(new EditGroupValueChangeListener(this, dependentComponents, delRowButton,
-                messagesBundle, saveButtonLayout, optionGroup, saveButton, tabelle));
-        optionGroup.setImmediate(true);
-
-        delRowButton.setEnabled(false);
-        delRowButton.addClickListener(new DelRowClickListener(this, delRowButton, messagesBundle));
-        tabellenTasksLayout.setWidth("500px");
-        tabellenTasksLayout.addComponent(addDeleteRessourceLabel);
-        tabellenTasksLayout.addComponent(editModeLabel);
-        final HorizontalLayout addDeleteLayout = new HorizontalLayout();
-
-        addDeleteLayout.addComponent(addRowButton);
-        addDeleteLayout.addComponent(delRowButton);
-        tabellenTasksLayout.addComponent(addDeleteLayout);
-        tabellenTasksLayout.addComponent(optionGroup);
-        addRowButton.addClickListener(new AddRowClickListener(ui, this));
-
-
-
-        //updatet die Table
-        generateTableAndCalculate();
-
-        doInternationalization();
-        setComponents();
+            doInternationalization();
+            setComponents();
+        } catch (final NoProjectsException e){
+            removeAllComponents();
+            final NoProjectsScreen noProjectsScreen = new NoProjectsScreen(ui);
+            addComponent(noProjectsScreen);
+        }
     }
 
     public void generateTableAndCalculate() {
@@ -110,7 +131,7 @@ public class StundensaetzeScreen extends Screen {
 
         tabelle.setTableFieldFactory(new TableEditFieldFactory());
 
-        final StundensaetzeCalculator calculator = new StundensaetzeCalculator(tabelle);
+        final StundensaetzeCalculator calculator = new StundensaetzeCalculator(this, tabelle);
         calculator.calculate();
 
         final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
@@ -118,14 +139,14 @@ public class StundensaetzeScreen extends Screen {
         tabelle.setColumnFooter(RessourceGroup.SUM_PER_DAY, format.format(calculator.getSummeProTag()) + EUR);
         tabelle.setColumnFooter(RessourceGroup.NAME, StundensaetzeCalculator.GESAMTSUMMEN);
 
-        betriebsWertField.setReadOnly(false);
-        betriebsstdField.setReadOnly(false);
+        mindestManntageField.setReadOnly(false);
+        betriebsStundeField.setReadOnly(false);
 
-        betriebsstdField.setValue(format.format(calculator.getBetriebsStunde()) + EUR);
-        betriebsWertField.setValue(format.format(calculator.getBetriebsWert()) + EUR);
+        betriebsStundeField.setValue(format.format(calculator.getBetriebsStunde()) + EUR);
+        mindestManntageField.setValue(format.format(calculator.getMindestManntage()));
 
-        betriebsWertField.setReadOnly(true);
-        betriebsstdField.setReadOnly(true);
+        mindestManntageField.setReadOnly(true);
+        betriebsStundeField.setReadOnly(true);
 
         tabelle.setEditable(false);
         tabelle.setSelectable(true);
@@ -133,8 +154,8 @@ public class StundensaetzeScreen extends Screen {
 
     @Override
     public void doInternationalization() {
-        betriebsstdField.setCaption(messagesBundle.getString("stdsatz_businesshour"));
-        betriebsWertField.setCaption(messagesBundle.getString("stdsatz_businessvalue"));
+        betriebsStundeField.setCaption(messagesBundle.getString("stdsatz_businesshour"));
+        mindestManntageField.setCaption(messagesBundle.getString("stdsatz_businessMinManDays"));
         saveButton.setCaption(messagesBundle.getString("save"));
         editModeLabel.setValue(messagesBundle.getString("stdsatz_editMode"));
         addDeleteRessourceLabel.setValue(messagesBundle.getString("stdsatz_addDelete"));
@@ -145,6 +166,7 @@ public class StundensaetzeScreen extends Screen {
     @Override
     public void setComponents() {
         addComponent(betriebsFieldsLayout);
+        addComponent(externerTagessatzPanel);
         addComponent(tabellenTasksLayout);
         addComponent(saveButtonLayout);
         addComponent(tabellenLayout);
