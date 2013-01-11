@@ -55,8 +55,6 @@ public class DeleteIssueWindow extends RapidWindow implements Internationalizati
         contentLayout.addComponent(deleteRecursive);
 
         buttonLayout = new HorizontalLayout();
-
-        //buttonLayout.setMargin(true);
         buttonLayout.setSpacing(true);
 
         yesButton = new Button();
@@ -97,7 +95,13 @@ public class DeleteIssueWindow extends RapidWindow implements Internationalizati
             boolean success = false;
             final Object item = issueTree.getValue();
             final TreeIssueBaseContainer container = ((TreeIssueBaseContainer)issueTree.getContainerDataSource());
-            issueTree.setValue(issueTree.getParent(item));
+            Object parent = issueTree.getParent(item);
+            if (parent == null && !issueTree.getItemIds().isEmpty()) {
+                issueTree.setValue(issueTree.getItemIds().toArray()[0]);
+            } else {
+                issueTree.setValue(parent);
+            }
+
 
             if (container.containsId(item)) {
                 if (deleteRecursive.getValue()) {

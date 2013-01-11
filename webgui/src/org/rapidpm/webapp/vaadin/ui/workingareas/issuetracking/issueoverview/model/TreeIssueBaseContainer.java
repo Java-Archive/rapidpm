@@ -8,8 +8,8 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.Collator;
+import java.util.*;
 
 
 /**
@@ -26,6 +26,7 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
     public final static String PROPERTY_ISSUEBASE = "issueBase";
     private final PlannedProject currentProject;
     private DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+    private ComparatorIssues comparator;
 
     public TreeIssueBaseContainer(final PlannedProject currentProject) {
         if (currentProject == null)
@@ -34,19 +35,22 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
         this.currentProject = currentProject;
         this.addContainerProperty(PROPERTY_CAPTION, String.class, null);
         this.addContainerProperty(PROPERTY_ISSUEBASE, IssueBase.class, null);
+        comparator = new ComparatorIssues();
         filltree();
     }
 
     private void filltree() {
         Object itemId;
         List<IssueBase> subIssueList;
-        for (IssueBase issue : daoFactory.getIssueBaseDAO(currentProject.getId()).loadTopLevelEntities()) {
+        List<IssueBase> topLevelIssues = daoFactory.getIssueBaseDAO(currentProject.getId()).loadTopLevelEntities();
+        Collections.sort(topLevelIssues, comparator);
+        for (IssueBase issue : topLevelIssues) {
             itemId = addItem();
             this.getContainerProperty(itemId, PROPERTY_CAPTION).setValue(issue.name());
             this.getContainerProperty(itemId, PROPERTY_ISSUEBASE).setValue(issue);
             this.setParent(itemId, null);
             subIssueList = issue.getSubIssues();
-
+            Collections.sort(subIssueList, comparator);
             if (subIssueList == null || subIssueList.isEmpty()) {
                 this.setChildrenAllowed(itemId, false);
             } else {
@@ -65,6 +69,7 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
             this.getContainerProperty(itemId, PROPERTY_ISSUEBASE).setValue(subIssue);
             this.setParent(itemId, parentItemId);
             subIssueList = subIssue.getSubIssues();
+            Collections.sort(subIssueList, comparator);
             if (subIssueList == null || subIssueList.isEmpty()) {
                 this.setChildrenAllowed(itemId, false);
             } else {
@@ -140,4 +145,13 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
 //        }
 //        return false;
 //     }
+
+    private class ComparatorIssues implements Comparator<IssueBase> {
+
+        @Override
+        public int compare(IssueBase o1, IssueBase o2) {
+            return Long.compare(o1.getId(), o2.getId());
+        }
+    }
+
 }

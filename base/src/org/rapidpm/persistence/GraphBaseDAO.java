@@ -343,6 +343,7 @@ public class GraphBaseDAO<T> {
                 .breadthFirst()
                 .relationships(GraphRelationRegistry.getClassRootToChildRelType(), Direction.OUTGOING )
                 .evaluator(Evaluators.excludeStartPosition());
+
         final Traverser trav = td.traverse(class_root_node);
         final List<T> entityList = new ArrayList<T>();
         for (final Node travNode : trav.nodes()) {
