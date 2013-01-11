@@ -56,6 +56,7 @@ public class MappingPlanningUnitToIssueBase {
         }
         issue.setStory(story);
 
+
         IssueStoryPointDAO storyPointDAO = DaoFactorySingelton.getInstance().getIssueStoryPointDAO();
         IssueStoryPoint stp = new IssueStoryPoint(pu.getEstimatedStoryPoints());
         IssueStoryPoint exist = storyPointDAO.findByName(stp.name());
