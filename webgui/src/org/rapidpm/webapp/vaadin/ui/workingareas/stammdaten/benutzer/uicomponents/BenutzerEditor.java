@@ -183,7 +183,7 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
                         if (userNames.contains(enteredLoginName)) {
                             throw new UsernameAlreadyExistsException();
                         }
-                        if (userEmails.contains(emailTextField.getValue().toString())) {
+                        if (userEmails.contains(emailTextField.getValue().toString()) && idTextField.getValue().isEmpty()) {
                             throw new EmailAlreadyExistsException();
                         }
                         if (enteredLoginName.matches(Constants.EMPTY_OR_SPACES_ONLY_PATTERN) || enteredLoginName
