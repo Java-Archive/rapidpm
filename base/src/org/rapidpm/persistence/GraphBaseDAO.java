@@ -54,7 +54,9 @@ public class GraphBaseDAO<T> {
         this.root_node = graphDb.getNodeById(0);
         this.class_root_node = getClassRootNode(projectId);
 
-        new DatabaseInitXMLLoader().initDatatype(clazz, this);
+        if (!class_root_node.hasRelationship(GraphRelationRegistry.getClassRootToChildRelType(), Direction.OUTGOING)) {
+            new DatabaseInitXMLLoader().initDatatype(clazz, this);
+        }
     }
 
     public GraphBaseDAO(final GraphDatabaseService graphDb, final Class clazz, final DaoFactory daoFactory) {
