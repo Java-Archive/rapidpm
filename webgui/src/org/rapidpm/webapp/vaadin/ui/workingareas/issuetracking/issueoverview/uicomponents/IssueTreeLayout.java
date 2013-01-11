@@ -5,6 +5,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
@@ -140,11 +141,20 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         map.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                TreeIssueBaseContainer container;
-                container = TreeIssueBaseContainerSingleton.getInstance(screen.getUi().getCurrentProject());
+                final PlannedProject project = screen.getUi().getCurrentProject();
+                final TreeIssueBaseContainer container;
+                container = TreeIssueBaseContainerSingleton.getInstance(project);
                 if (container.getItemIds().isEmpty()) {
-                    new MappingPlanningUnitToIssueBase(screen.getUi().getCurrentProject()).startMapping();
-                    container.refresh();
+                    boolean mapped = new MappingPlanningUnitToIssueBase(project).startMapping();
+                    if (mapped) {
+                        container.refresh();
+                    } else {
+                        if (logger.isDebugEnabled())
+                            logger.debug("No PlanningUnits present to map");
+
+                        Notification.show("No PlanningUnits present.", Notification.Type.HUMANIZED_MESSAGE);
+                    }
+
                 } else {
                     logger.error("Tree has already elements");
                     Notification.show("Tree has already elements", Notification.Type.ERROR_MESSAGE);

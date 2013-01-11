@@ -36,12 +36,15 @@ public class MappingPlanningUnitToIssueBase {
         dao = DaoFactorySingelton.getInstance().getIssueBaseDAO(project.getId());
     }
 
-    public void startMapping() {
+    public boolean startMapping() {
+        boolean puToMap = false;
         for (final PlanningUnit pu : project.getPlanningUnits()) {
+            puToMap = true;
             if (pu.getParent() == null) {
                 mapPlanningUnitToIssue(pu);
             }
         }
+        return puToMap;
     }
 
     private IssueBase mapPlanningUnitToIssue(final PlanningUnit pu) {
