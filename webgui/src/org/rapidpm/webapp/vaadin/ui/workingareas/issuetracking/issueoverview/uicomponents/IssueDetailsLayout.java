@@ -61,6 +61,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     private Table tabTestcases;
     private Table tabRelations;
 
+    private List<AbstractField> compList;
+
     private Button tabAddButton;
     private Button tabDeleteButton;
 
@@ -71,6 +73,9 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     public IssueDetailsLayout(final IssueOverviewScreen screen, final boolean componentsReadOnlyInit) {
         super(screen, componentsReadOnlyInit);
         doInternationalization();
+        compList = new ArrayList<>();
+        compList.addAll(Arrays.asList(headerSummaryField, typeSelect, statusSelect, prioritySelect, assigneeSelect,
+                                        versionSelect, storyPointSelect));
     }
 
 
@@ -381,11 +386,13 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
             throw new NullPointerException("Details can't be set from null.");
         this.issue = issue;
         setLayoutReadOnly(false);
-        headerSummaryField.setRequired(false);
+        for (AbstractField comp : compList) {
+            comp.setRequired(false);
+        }
 
         headerTextField.setValue(issue.getText());
         headerSummaryField.setValue(issue.getSummary());
-        typeSelect.select(issue.getType());// != null ? issue.getType() : typeSelect.getNullSelectionItemId());
+        typeSelect.select(issue.getType());
         statusSelect.select(issue.getStatus());
         prioritySelect.select(issue.getPriority());
         assigneeSelect.setValue(issue.getAssignee());
@@ -420,6 +427,10 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     public IssueBase setIssueProperties(boolean newIssue)
             throws NoNameException, MissingAttributeException {
 
+        for (AbstractField comp : compList) {
+            comp.setRequired(false);
+        }
+
         if (newIssue) {
             issue = new IssueBase(screen.getUi().getCurrentProject().getId());
             issue.setReporter(screen.getUi().getCurrentUser());
@@ -436,42 +447,51 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
 
         if (headerSummaryField.getValue().equals("")) {
-            headerSummaryField.setRequired(true);
-            headerSummaryField.setRequiredError("Issue must have a name!");
-            logger.warn("Issue must have a name!");
+            setComponentRequired(headerSummaryField);
             throw new NoNameException();
+        }
+
+        if (typeSelect.getValue() == null) {
+            setComponentRequired(typeSelect);
+            throw new MissingAttributeException("No type selected");
+        }
+
+        if (statusSelect.getValue() == null) {
+            setComponentRequired(statusSelect);
+            throw new MissingAttributeException("No Status selected");
+        }
+
+        if (prioritySelect.getValue() == null) {
+            setComponentRequired(prioritySelect);
+            throw new MissingAttributeException("No Priority selected");
+        }
+
+        if (assigneeSelect.getValue() == null) {
+            setComponentRequired(assigneeSelect);
+            throw new MissingAttributeException("No Assignee selected");
+        }
+
+        if (storyPointSelect.getValue() == null) {
+            setComponentRequired(storyPointSelect);
+            throw new MissingAttributeException("No StoryPoints selected");
+        }
+
+        if (versionSelect.getValue() == null) {
+            setComponentRequired(versionSelect);
+            throw new MissingAttributeException("No Version selected");
         }
 
 
         issue.setSummary(headerSummaryField.getValue());
-        if (statusSelect.getValue() == null)
-            throw new MissingAttributeException("No Status selected");
-        issue.setStatus((IssueStatus) statusSelect.getValue());
-
-        if (prioritySelect.getValue() == null)
-            throw new MissingAttributeException("No Priority selected");
-        issue.setPriority((IssuePriority) prioritySelect.getValue());
-
-        if (typeSelect.getValue() == null)
-            throw new MissingAttributeException("No type selected");
         issue.setType((IssueType) typeSelect.getValue());
-
-        if (assigneeSelect.getValue() == null)
-            throw new MissingAttributeException("No Assignee selected");
+        issue.setStatus((IssueStatus) statusSelect.getValue());
+        issue.setPriority((IssuePriority) prioritySelect.getValue());
         issue.setAssignee((Benutzer) assigneeSelect.getValue());
         issue.setDueDate_planned(converter.convertToModel(plannedDateLabel.getValue(), Locale.getDefault()));
         issue.setDueDate_resolved(resolvedDateField.getValue() == null ? new Date(0) : resolvedDateField.getValue());
         issue.setDueDate_closed(closedDateField.getValue() == null ? new Date(0) : closedDateField.getValue());
-
-        if (storyPointSelect.getValue() == null)
-            throw new MissingAttributeException("No StoryPoints selected");
         issue.setStoryPoints((IssueStoryPoint) storyPointSelect.getValue());
-
-        if (versionSelect.getValue() == null)
-            throw new MissingAttributeException("No Version selected");
         issue.setVersion((IssueVersion) versionSelect.getValue());
-
-
         issue.setRisk((Integer) riskSelect.getValue());
         issue.setStory(descriptionTextArea.getValue());
 
@@ -504,6 +524,12 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
         relContainer.resetTransactions();
         return issue;
+    }
+
+    private void setComponentRequired(AbstractField comp) {
+        comp.setRequired(true);
+        comp.setRequiredError("Missing entry!");
+        logger.warn(comp.getRequiredError() + " : " + comp.getCaption());
     }
 
 
