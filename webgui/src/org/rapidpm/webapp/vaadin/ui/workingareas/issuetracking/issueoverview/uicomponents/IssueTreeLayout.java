@@ -55,6 +55,11 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         horLayout.setSizeFull();
         horLayout.setSpacing(true);
 
+        //TODO nur Testweise
+        Button map = new Button("Map PU to IB");
+        map.setSizeFull();
+        buttonLayout.addComponent(map);
+
         addButton = new Button();
         addButton.setEnabled(true);
         addButton.setSizeFull();
@@ -96,10 +101,6 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         if (issueTree.getItemIds().toArray().length > 0)
             issueTree.select(issueTree.getItemIds().toArray()[0]);
 
-        final TreeSubissueSortDropHandler dropHandler = new TreeSubissueSortDropHandler(issueTree);
-
-//        issueTree.setDragMode(Tree.TreeDragMode.NODE);
-//        issueTree.setDropHandler(dropHandler);
         treePanel.addComponent(issueTree);
         treePanel.setSizeFull();
 
@@ -132,14 +133,23 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 UI.getCurrent().addWindow(new EditSubissuesWindow(screen));
-//                if (enabled) {
-//                    subissueButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_dragdrop_edit"));
-//                    dropHandler.setActivated(false);
-//                } else {
-//                    subissueButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_dragdrop_lock"));
-//                    dropHandler.setActivated(true);
-//                }
-//                enabled = !enabled;
+            }
+        });
+
+        //TODO nur Testweise
+        map.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                TreeIssueBaseContainer container;
+                container = TreeIssueBaseContainerSingleton.getInstance(screen.getUi().getCurrentProject());
+                if (container.getItemIds().isEmpty()) {
+                    new MappingPlanningUnitToIssueBase(screen.getUi().getCurrentProject()).startMapping();
+                    container.refresh();
+                } else {
+                    logger.error("Tree has already elements");
+                    Notification.show("Tree has already elements", Notification.Type.ERROR_MESSAGE);
+                }
+
             }
         });
     }

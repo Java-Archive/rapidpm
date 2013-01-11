@@ -360,6 +360,22 @@ public class GraphBaseDAO<T> {
         return getObjectFromNode(graphDb.getNodeById(id));
     }
 
+    public T findByName(final String name) {
+        if (logger.isDebugEnabled())
+            logger.debug("findByID");
+
+        if (name == null)
+            throw new NullPointerException("Name is null.");
+        if (name == "")
+            throw new IllegalArgumentException("Name is an empty string");
+
+        final Node indexNode = index_name.get("name", name.toLowerCase()).getSingle();
+        if (indexNode != null)
+            return getObjectFromNode(indexNode);
+        else
+            return null;
+    }
+
     public boolean existInDatabase(final Long id) {
         if (logger.isDebugEnabled())
             logger.debug("existInDatabase");

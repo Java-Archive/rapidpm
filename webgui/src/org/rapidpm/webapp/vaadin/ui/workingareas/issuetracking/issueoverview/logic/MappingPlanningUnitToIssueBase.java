@@ -3,12 +3,17 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.lo
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.ProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStoryPoint;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStoryPointDAO;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCase;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCaseDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.textelement.TextElement;
 
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -28,34 +33,57 @@ public class MappingPlanningUnitToIssueBase {
             throw new NullPointerException("Project is null");
 
         this.project = project;
-        dao = DaoFactorySingelton.getInstance().getIssueBaseDAO(2L);
+        dao = DaoFactorySingelton.getInstance().getIssueBaseDAO(project.getId());
     }
 
     public void startMapping() {
-        PlannedProject pro = DaoFactorySingelton.getInstance().getPlannedProjectDAO().findByID(2L);
-
-        for (final PlanningUnit pu : pro.getPlanningUnits()) {
+        for (final PlanningUnit pu : project.getPlanningUnits()) {
             if (pu.getParent() == null) {
-                mapPlanningUnitToIssue(pu, pro.getId());
+                mapPlanningUnitToIssue(pu);
             }
-            System.out.println(pu);
         }
     }
 
-    private IssueBase mapPlanningUnitToIssue(final PlanningUnit pu, final Long projectid) {
-        IssueBase issue = new IssueBase(projectid);
+    private IssueBase mapPlanningUnitToIssue(final PlanningUnit pu) {
+        IssueBase issue = new IssueBase(project.getId());
+        issue.setPlanningUnit(pu);
         issue.setSummary(pu.getPlanningUnitName());
+        issue.setReporter(project.getResponsiblePerson());
         issue.setAssignee(pu.getResponsiblePerson());
-        issue.setStory(pu.getDescriptions().toString());
-        issue.setStoryPoints(new IssueStoryPoint(pu.getEstimatedStoryPoints()));
+        String story = new String();
+        for (final TextElement txtelement : pu.getDescriptions()) {
+            story += txtelement.getText() + "\n";
+        }
+        issue.setStory(story);
+
+        IssueStoryPointDAO storyPointDAO = DaoFactorySingelton.getInstance().getIssueStoryPointDAO();
+        IssueStoryPoint stp = new IssueStoryPoint(pu.getEstimatedStoryPoints());
+        IssueStoryPoint exist = storyPointDAO.findByName(stp.name());
+        if (exist != null) {
+            issue.setStoryPoints(exist);
+        } else {
+            issue.setStoryPoints(storyPointDAO.persist(stp));
+        }
+
+        for (final TextElement txtelement : pu.getTestcases()) {
+            IssueTestCase testcase = new IssueTestCase(txtelement.getText());
+            issue.addOrChangeTestCase(DaoFactorySingelton.getInstance().saveOrUpdateTX(testcase));
+        }
+
         Set<PlanningUnit> children = pu.getKindPlanningUnits();
         if (!children.isEmpty()) {
             for (final PlanningUnit childPu : children) {
-                issue.addSubIssue(mapPlanningUnitToIssue(childPu, projectid));
+                issue.addSubIssue(mapPlanningUnitToIssue(childPu));
             }
         }
+
+        issue.setPriority(DaoFactorySingelton.getInstance().getIssuePriorityDAO().loadAllEntities().get(0));
+        issue.setStatus(DaoFactorySingelton.getInstance().getIssueStatusDAO().loadAllEntities().get(0));
+        issue.setType(DaoFactorySingelton.getInstance().getIssueTypeDAO().loadAllEntities().get(0));
+        issue.setVersion(DaoFactorySingelton.getInstance().getIssueVersionDAO().loadAllEntities().get(0));
+        issue.setDueDate_planned(new Date());
+
         issue = dao.persist(issue);
-        System.out.println(issue);
         return issue;
     }
 

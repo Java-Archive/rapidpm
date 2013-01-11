@@ -87,9 +87,6 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         final List<IssueComponent> componentsList = daoFactory.getIssueComponentDAO().loadAllEntities();
         final List<Benutzer> userList =  daoFactory.getBenutzerDAO().loadAllEntities();
 
-
-        new MappingPlanningUnitToIssueBase(screen.getUi().getCurrentProject()).startMapping();
-
         VerticalLayout formLayout = new VerticalLayout();
         formLayout.setSpacing(true);
 
@@ -388,7 +385,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
         headerTextField.setValue(issue.getText());
         headerSummaryField.setValue(issue.getSummary());
-        typeSelect.select(issue.getType());
+        typeSelect.select(issue.getType());// != null ? issue.getType() : typeSelect.getNullSelectionItemId());
         statusSelect.select(issue.getStatus());
         prioritySelect.select(issue.getPriority());
         assigneeSelect.setValue(issue.getAssignee());
