@@ -1,5 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic;
 
+import com.vaadin.ui.UI;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.ProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStoryPoint;
@@ -12,6 +13,8 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.textelement.TextElement;
+import org.rapidpm.webapp.vaadin.BaseUI;
+import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 
 import java.util.Date;
 import java.util.Set;
@@ -51,9 +54,11 @@ public class MappingPlanningUnitToIssueBase {
         IssueBase issue = new IssueBase(project.getId());
         issue.setPlanningUnit(pu);
         issue.setSummary(pu.getPlanningUnitName());
-        issue.setReporter(project.getResponsiblePerson());
+//        issue.setReporter(project.getResponsiblePerson());
+        final BaseUI current = (BaseUI) UI.getCurrent();
+        issue.setReporter(current.getCurrentUser());
         issue.setAssignee(pu.getResponsiblePerson());
-        String story = new String();
+        String story = "";
         for (final TextElement txtelement : pu.getDescriptions()) {
             story += txtelement.getText() + "\n";
         }
