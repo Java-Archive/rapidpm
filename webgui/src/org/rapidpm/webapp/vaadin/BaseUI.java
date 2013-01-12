@@ -34,6 +34,8 @@ public abstract class BaseUI extends UI {
     private static final Logger logger = Logger.getLogger(BaseUI.class);
 
     private static final boolean DEBUG_MODE = false;
+    private static final String VERSION = "alpha - build 20130112 - bf57b264fc2f9f0b14fd8bb967bd84b1fa50bbdd";
+
     private final HorizontalLayout linkLeistenLayout = new HorizontalLayout(); //obere buttonLeiste
     private final HorizontalLayout iconsLayout = new HorizontalLayout();
     private final MenuBar menubar = new MenuBar();
@@ -172,7 +174,7 @@ public abstract class BaseUI extends UI {
         iconsLayout.addComponent(iconLeft);
         iconsLayout.setComponentAlignment(iconLeft, Alignment.TOP_LEFT);
 
-        final Label versionLabel = new Label("alpha - build 20130110 - cd3185f963a605b5024f8ba05377850e96e6b443");
+        final Label versionLabel = new Label(VERSION);
         iconsLayout.addComponent(versionLabel);
         iconsLayout.setComponentAlignment(versionLabel, Alignment.TOP_CENTER);
 
