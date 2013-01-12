@@ -3,12 +3,13 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.log
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.Reindeer;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
@@ -31,12 +32,10 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
     private static final Logger logger = Logger.getLogger(TreeValueChangeListener.class);
 
     private ProjektplanungScreen screen;
-    private PlannedProject projekt;
     private DaoFactory daoFactory;
 
-    public TreeValueChangeListener(final ProjektplanungScreen screen, final PlannedProject projekt) {
+    public TreeValueChangeListener(final ProjektplanungScreen screen) {
         this.screen = screen;
-        this.projekt = projekt;
         this.daoFactory = DaoFactorySingelton.getInstance();
     }
 
@@ -52,13 +51,14 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                 final RapidPanel detailPanel = screen.getDetailsPanel();
                 final RapidPanel mainPanel = screen.getMainPanel();
                 final RapidPanel ressourcesPanel = screen.getRessourcesPanel();
-                final RapidPanel descriptionsPanel = screen.getRightColumn();
+                final RapidPanel descriptionsAndTestCasesPanel = screen.getRightColumn();
 
                 detailPanel.removeAllComponents();
                 mainPanel.removeAllComponents();
                 ressourcesPanel.removeAllComponents();
-                descriptionsPanel.removeAllComponents();
-                descriptionsPanel.addComponent(screen.getAddDescriptionOrTestCaseButton());
+                descriptionsAndTestCasesPanel.removeAllComponents();
+                descriptionsAndTestCasesPanel.addComponent(screen.getAddDescriptionOrTestCaseButton());
+
 
                 detailPanel.addComponent(new Label(selectedParentPlanningUnit.getPlanningUnitName()));
                 mainPanel.setCaption(selectedParentPlanningUnit.getPlanningUnitName());
@@ -74,14 +74,25 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                     final DescriptionAndTestCasesFieldGroup descriptionAndTestCasesFieldGroup = new
                             DescriptionAndTestCasesFieldGroup(screen, screen.getMessagesBundle(),
                             (PlanningUnit)screen.getPlanningUnitsTree().getValue());
+                    final RapidPanel descriptionTabFramePanel = new RapidPanel();
+                    final RapidPanel testCaseTabFramePanel = new RapidPanel();
+                    descriptionTabFramePanel.setStyleName(Reindeer.PANEL_LIGHT);
+                    descriptionTabFramePanel.getContentLayout().setMargin(false);
+                    testCaseTabFramePanel.setStyleName(Reindeer.PANEL_LIGHT);
+                    testCaseTabFramePanel.getContentLayout().setMargin(false);
                     for (final RapidPanel descriptionEditableLayout : descriptionAndTestCasesFieldGroup
                             .getDescriptionRapidPanels()) {
-                        descriptionsPanel.addComponent(descriptionEditableLayout);
+                        descriptionTabFramePanel.addComponent(descriptionEditableLayout);
                     }
                     for (final RapidPanel testCaseEditableLayout : descriptionAndTestCasesFieldGroup
                             .getTestcaseRapidPanels()) {
-                        descriptionsPanel.addComponent(testCaseEditableLayout);
+                        testCaseTabFramePanel.addComponent(testCaseEditableLayout);
                     }
+                    final TabSheet tabSheet = new TabSheet();
+                    tabSheet.addTab(descriptionTabFramePanel, screen.getMessagesBundle().getString("planning_descriptions"));
+                    tabSheet.addTab(testCaseTabFramePanel, screen.getMessagesBundle().getString("planning_testcases"));
+                    screen.setTabSheet(tabSheet);
+                    descriptionsAndTestCasesPanel.addComponent(screen.getTabSheet());
                 }
                 detailPanel.removeAllComponents();
                 detailPanel.addComponent(detailsPanelComponentsLayout);
