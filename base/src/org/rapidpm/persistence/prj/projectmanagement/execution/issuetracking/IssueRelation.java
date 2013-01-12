@@ -45,7 +45,7 @@ public class IssueRelation implements RelationshipType, PersistInGraph {
         return id;
     }
 
-    public void setId(final Long id) {
+    private void setId(final Long id) {
         this.id = id;
     }
 

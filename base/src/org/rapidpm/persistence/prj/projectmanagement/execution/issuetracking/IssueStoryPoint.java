@@ -44,7 +44,7 @@ public class IssueStoryPoint implements PersistInGraph {
         return id;
     }
 
-    public void setId(final Long id) {
+    private void setId(final Long id) {
         this.id = id;
     }
 
