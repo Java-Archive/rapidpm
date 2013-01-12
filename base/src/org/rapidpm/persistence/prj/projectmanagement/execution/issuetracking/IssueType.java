@@ -24,6 +24,9 @@ public class IssueType  implements PersistInGraph {
     private Long id;
 
     @Simple
+    private Long projectid;
+
+    @Simple
     private String typeName;
 
     @Simple
@@ -51,6 +54,14 @@ public class IssueType  implements PersistInGraph {
 
     public void setId(final Long id) {
         this.id = id;
+    }
+
+    public Long getProjectId() {
+        return projectid;
+    }
+
+    public void setProjectId(final Long projectid) {
+        this.projectid = projectid;
     }
 
     public String getTypeName() {

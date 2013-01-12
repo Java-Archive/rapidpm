@@ -42,7 +42,7 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
     private void filltree() {
         Object itemId;
         List<IssueBase> subIssueList;
-        List<IssueBase> topLevelIssues = daoFactory.getIssueBaseDAO(currentProject.getId()).loadTopLevelEntities();
+        List<IssueBase> topLevelIssues = daoFactory.getIssueBaseDAO().loadTopLevelEntities(currentProject.getId());
         Collections.sort(topLevelIssues, comparator);
         for (IssueBase issue : topLevelIssues) {
             itemId = addItem();
@@ -97,7 +97,7 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
             }
         }
 
-        if (daoFactory.getIssueBaseDAO(currentProject.getId()).delete(issue))
+        if (daoFactory.getIssueBaseDAO().delete(issue))
             if (super.removeItem(itemId)) {
                 success = true;
                 if (!this.hasChildren(parentItem))

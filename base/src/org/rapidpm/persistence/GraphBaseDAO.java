@@ -29,67 +29,79 @@ public class GraphBaseDAO<T> {
 
     protected final GraphDatabaseService graphDb;
     private final DaoFactory daoFactory;
-    private final Index<Node> index_name;
-    private final Node root_node;
-    protected final Node class_root_node;
+    private final Node class_root_node;
 
     private final Class clazz;
 
-    public GraphBaseDAO(final GraphDatabaseService graphDb, final Class clazz, final DaoFactory daoFactory,
-                        final Long projectId) {
+    public GraphBaseDAO(final GraphDatabaseService graphDb, final Class clazz, final DaoFactory daoFactory) {
         if (graphDb == null)
             throw new NullPointerException("GraphDb is null.");
         if (clazz == null)
             throw new NullPointerException("Class is null.");
-        if (projectId == null)
-            throw new NullPointerException("ProjectId is null.");
-        if (projectId < 0)
-            throw new IllegalArgumentException("ProjectId must be positiv");
         if (daoFactory == null)
             throw new NullPointerException("Rel. DaoFactory is null.");
         this.graphDb = graphDb;
         this.daoFactory = daoFactory;
         this.clazz = clazz;
-        index_name = graphDb.index().forNodes(clazz.getSimpleName());
-        this.root_node = graphDb.getNodeById(0);
-        this.class_root_node = getClassRootNode(projectId);
+        this.class_root_node = getClassRootNode();
     }
 
-    public GraphBaseDAO(final GraphDatabaseService graphDb, final Class clazz, final DaoFactory daoFactory) {
-        this(graphDb, clazz, daoFactory, 0L);
-    }
-
-    private Node getClassRootNode(final Long projectId) {
-        boolean isProject = (projectId != 0) ;
+    private Node getClassRootNode() {
+//        boolean isProject = (projectId != 0) ;
         final TraversalDescription td = Traversal.description()
                 .breadthFirst()
                 .relationships(GraphRelationRegistry.getRootToClassRootRelType(clazz), Direction.OUTGOING)
-                .evaluator(Evaluators.excludeStartPosition());
-
-        if (isProject)  {
-            td.evaluator(Evaluators.atDepth(2));
-        } else {
-            td.evaluator(Evaluators.atDepth(1));
-        }
-        final Traverser trav = td.traverse( root_node );
+                .evaluator(Evaluators.excludeStartPosition())
+                .evaluator(Evaluators.atDepth(1));
+//        if (isProject)  {
+//            td.evaluator(Evaluators.atDepth(2));
+//        } else {
+//            td.evaluator(Evaluators.atDepth(1));
+//        }
+        final Traverser trav = td.traverse(graphDb.getNodeById(0));
         Node node = null;
         Node project_root = null;
         for (final Path path : trav) {
-            if (isProject) {
-                if (project_root == null) project_root = path.endNode();
-                if (projectId.equals(path.endNode().getProperty(GraphRelationRegistry.getRelationAttributeProjectId(), null)))
-                    node = path.endNode();
-            }
-            else
+//            if (isProject) {
+//                if (project_root == null) project_root = path.endNode();
+//                if (projectId.equals(path.endNode().getProperty(GraphRelationRegistry.getRelationAttributeProjectId(), null)))
+//                    node = path.endNode();
+//            }
+//            else
                 node = path.endNode();
         }
         if (node == null)
-            if (isProject && project_root != null) {
-                node = createNewProjectRootNode(project_root, projectId);
-            } else
-                throw new NullPointerException("No class_root_node found. Please initialize graph database");
+//            if (isProject && project_root != null) {
+//                node = createNewProjectRootNode(project_root, projectId);
+//            } else
+                throw new NullPointerException("No project_root_node found. Please initialize graph database");
 
         return node;
+    }
+
+    protected Node getProjectRootNode(final Long projectId) {
+        if (projectId == null)
+            throw new NullPointerException("ProjectId is null.");
+        if (projectId < 0)
+            throw new IllegalArgumentException("ProjectId must be positiv");
+
+        final TraversalDescription td = Traversal.description()
+                .breadthFirst()
+                .relationships(GraphRelationRegistry.getRootToClassRootRelType(clazz), Direction.OUTGOING)
+                .evaluator(Evaluators.excludeStartPosition())
+                .evaluator(Evaluators.atDepth(1));
+
+        final Traverser trav = td.traverse(class_root_node);
+        Node project_root_node = null;
+        for (final Path path : trav) {
+                if (projectId.equals(path.endNode().getProperty(GraphRelationRegistry.getRelationAttributeProjectId(), null)))
+                    project_root_node = path.endNode();
+        }
+
+        if (project_root_node == null) {
+            project_root_node = createNewProjectRootNode(class_root_node, projectId);
+        }
+        return project_root_node;
     }
 
     private Node createNewProjectRootNode(final Node project_root, final Long projectId) {
@@ -98,11 +110,18 @@ public class GraphBaseDAO<T> {
         try {
             final DAO projectDao = getDaoInstance(PlannedProject.class);
             PlannedProject project = (PlannedProject) projectDao.findByID(projectId);
+            if (project == null) {
+                if (logger.isDebugEnabled())
+                    logger.debug("No Project with id " + projectId + " found!");
+                throw new NullPointerException("No Project with id " + projectId + " found!");
+            }
             newProjectNode = graphDb.createNode();
             newProjectNode.setProperty(GraphRelationRegistry.getRelationAttributeProjectId(), projectId);
-            newProjectNode.setProperty(GraphRelationRegistry.getRelationAttributeProjectToken(), project.getProjektToken());
-            newProjectNode.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), 1);
-            project_root.createRelationshipTo(newProjectNode, GraphRelationRegistry.getRootToClassRootRelType(IssueBase.class));
+            if (clazz.equals(IssueBase.class)) {
+                newProjectNode.setProperty(GraphRelationRegistry.getRelationAttributeProjectToken(), project.getProjektToken());
+                newProjectNode.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), 1);
+            }
+            project_root.createRelationshipTo(newProjectNode, GraphRelationRegistry.getRootToClassRootRelType(clazz));
             tx.success();
         } finally {
             tx.finish();
@@ -120,8 +139,11 @@ public class GraphBaseDAO<T> {
         if (logger.isDebugEnabled())
             logger.debug("persist: " + entity);
 
+
         final Transaction tx = graphDb.beginTx();
         try{
+            final Long projectId = getProjectIdFromEntity(entity);
+            Index<Node> index_name = graphDb.index().forNodes(projectId.toString() + "_" + clazz.getSimpleName());
             final Node node;
             final Method method = clazz.getDeclaredMethod("name");
             final String nameAtt = ((String) method.invoke(entity)).toLowerCase();
@@ -132,8 +154,9 @@ public class GraphBaseDAO<T> {
                     throw new IllegalArgumentException(clazz.getSimpleName() + ": Name already in use");
             }
             if (id == null || id == 0) {
+                final Node project_root_node = getProjectRootNode(projectId);
                 node = graphDb.createNode();
-                class_root_node.createRelationshipTo(node, GraphRelationRegistry.getClassRootToChildRelType());
+                project_root_node.createRelationshipTo(node, GraphRelationRegistry.getClassRootToChildRelType());
                 final Method setIdMethod = clazz.getDeclaredMethod("setId", Long.class);
                 boolean isAccessible = setIdMethod.isAccessible();
                 setIdMethod.setAccessible(true);
@@ -144,13 +167,13 @@ public class GraphBaseDAO<T> {
                     final Method setTextMethod = clazz.getDeclaredMethod("setText", String.class);
                     isAccessible = setTextMethod.isAccessible();
                     final String text;
-                    text = class_root_node.getProperty(GraphRelationRegistry.getRelationAttributeProjectToken()).toString();
+                    text = project_root_node.getProperty(GraphRelationRegistry.getRelationAttributeProjectToken()).toString();
                     final Integer textId;
-                    textId= (Integer) class_root_node.getProperty(GraphRelationRegistry.getRelationAttributeTokenId());
+                    textId= (Integer) project_root_node.getProperty(GraphRelationRegistry.getRelationAttributeTokenId());
                     setTextMethod.setAccessible(true);
                     setTextMethod.invoke(entity, text + "-" + textId);
                     setTextMethod.setAccessible(isAccessible);
-                    class_root_node.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), (textId + 1));
+                    project_root_node.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), (textId + 1));
                 } catch (NoSuchMethodException e) {
                     if (logger.isDebugEnabled())
                         logger.debug("no instance of issuebase. Continue");
@@ -313,16 +336,39 @@ public class GraphBaseDAO<T> {
     }
 
 
-    public List<T> loadAllEntities() {
+//    public List<T> loadAllEntities() {
+//        if (logger.isDebugEnabled())
+//            logger.debug("loadAllEntities");
+//
+//        final TraversalDescription td = Traversal.description()
+//                .depthFirst()
+//                .relationships(GraphRelationRegistry.getRootToClassRootRelType(clazz), Direction.OUTGOING)
+//                .relationships(GraphRelationRegistry.getClassRootToChildRelType(), Direction.OUTGOING)
+//                .relationships(GraphRelationRegistry.getRelationshipTypeForClass(clazz), Direction.OUTGOING )
+//                .evaluator(Evaluators.excludeStartPosition());
+//        final Traverser trav = td.traverse(class_root_node);
+//        final List<T> entityList = new ArrayList<T>();
+//        for (final Node travNode : trav.nodes()) {
+//            entityList.add(getObjectFromNode(travNode));
+//        }
+//
+//        return entityList;
+//    }
+
+    public List<T> loadAllEntities(final Long projectId) {
         if (logger.isDebugEnabled())
             logger.debug("loadAllEntities");
+        if (projectId == null)
+            throw new NullPointerException("ProjectId is null.");
+        if (projectId < 0)
+            throw new IllegalArgumentException("ProjectId must be positiv");
 
         final TraversalDescription td = Traversal.description()
                 .depthFirst()
-                .relationships(GraphRelationRegistry.getClassRootToChildRelType(), Direction.OUTGOING )
+                .relationships(GraphRelationRegistry.getClassRootToChildRelType(), Direction.OUTGOING)
                 .relationships(GraphRelationRegistry.getRelationshipTypeForClass(clazz), Direction.OUTGOING )
                 .evaluator(Evaluators.excludeStartPosition());
-        final Traverser trav = td.traverse(class_root_node);
+        final Traverser trav = td.traverse( getProjectRootNode(projectId) );
         final List<T> entityList = new ArrayList<T>();
         for (final Node travNode : trav.nodes()) {
             entityList.add(getObjectFromNode(travNode));
@@ -331,16 +377,40 @@ public class GraphBaseDAO<T> {
         return entityList;
     }
 
-    public List<T> loadTopLevelEntities() {
+//    public List<T> loadTopLevelEntities() {
+//        if (logger.isDebugEnabled())
+//            logger.debug("loadTopLevelEntities");
+//
+//        final TraversalDescription td = Traversal.description()
+//                .breadthFirst()
+//                .relationships(GraphRelationRegistry.getRootToClassRootRelType(clazz), Direction.OUTGOING)
+//                .relationships(GraphRelationRegistry.getClassRootToChildRelType(), Direction.OUTGOING )
+//                .evaluator(Evaluators.excludeStartPosition());
+//
+//        final Traverser trav = td.traverse(class_root_node);
+//        final List<T> entityList = new ArrayList<T>();
+//        for (final Node travNode : trav.nodes()) {
+//            entityList.add(getObjectFromNode(travNode));
+//        }
+//
+//        return entityList;
+//    }
+
+    public List<T> loadTopLevelEntities(final Long projectId) {
         if (logger.isDebugEnabled())
             logger.debug("loadTopLevelEntities");
+        if (projectId == null)
+            throw new NullPointerException("ProjectId is null.");
+        if (projectId < 0)
+            throw new IllegalArgumentException("ProjectId must be positiv");
 
         final TraversalDescription td = Traversal.description()
                 .breadthFirst()
+                .relationships(GraphRelationRegistry.getRootToClassRootRelType(clazz), Direction.OUTGOING)
                 .relationships(GraphRelationRegistry.getClassRootToChildRelType(), Direction.OUTGOING )
                 .evaluator(Evaluators.excludeStartPosition());
 
-        final Traverser trav = td.traverse(class_root_node);
+        final Traverser trav = td.traverse( getProjectRootNode(projectId) );
         final List<T> entityList = new ArrayList<T>();
         for (final Node travNode : trav.nodes()) {
             entityList.add(getObjectFromNode(travNode));
@@ -467,6 +537,30 @@ public class GraphBaseDAO<T> {
         return entity;
     }
 
+    protected Long getProjectIdFromEntity(final Object entity) {
+        if (logger.isDebugEnabled())
+            logger.debug("getProjectIdFromEntity");
+
+        if (entity == null) {
+            logger.error("Can't get ProjectId from null.");
+            throw new NullPointerException("Can't get ProjectId from null.");
+        }
+
+        Long projectid = null;
+        try {
+            final Method method = entity.getClass().getDeclaredMethod("getProjectId");
+            if (method == null)
+                throw new NullPointerException("No method 'getProjectId' found.");
+            projectid = (Long) method.invoke(entity);
+            if (projectid == null )
+                throw new NullPointerException("ProjectId was null");
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            logger.error(e);
+        }
+
+        return projectid;
+    }
+
     protected Long getIdFromEntity(final Object entity) {
         return getIdFromEntity(entity, clazz);
     }
@@ -492,6 +586,7 @@ public class GraphBaseDAO<T> {
         }
         return id;
     }
+
 
     private DAO getDaoInstance(final Class aClass) {
         if (logger.isDebugEnabled())
@@ -697,7 +792,7 @@ public class GraphBaseDAO<T> {
         final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(clazz);
         for (Relationship rel : statusNode.getRelationships(relType, Direction.INCOMING)) {
             issue = getObjectFromNode(rel.getOtherNode(statusNode), IssueBase.class);
-            if (issue != null && (projectId == 0 || issue.getProjectid().equals(projectId))) {
+            if (issue != null && (projectId == 0 || issue.getProjectId().equals(projectId))) {
                 issueList.add(issue);
                 if (logger.isDebugEnabled())
                     logger.debug("Is connected Issues: " + issue);

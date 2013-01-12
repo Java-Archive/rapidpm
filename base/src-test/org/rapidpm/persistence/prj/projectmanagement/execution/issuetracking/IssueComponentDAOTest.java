@@ -25,7 +25,7 @@ public class IssueComponentDAOTest implements BaseDAOTest {
 
     @Test
     public void equalsAndHashCodeTest() {
-        List<IssueComponent> componentList = dao.loadAllEntities();
+        List<IssueComponent> componentList = dao.loadAllEntities(1L);
         assertTrue(componentList.get(0).equals(componentList.get(0)));
         assertEquals(componentList.get(0).hashCode(), componentList.get(0).hashCode());
 
@@ -45,13 +45,13 @@ public class IssueComponentDAOTest implements BaseDAOTest {
         assertEquals(component, dao.findByID(component.getId()));
 
         dao.delete(component);
-        assertFalse(dao.loadAllEntities().contains(component));
+        assertFalse(dao.loadAllEntities(1L).contains(component));
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        final IssueComponent component = dao.loadAllEntities().get(0);
+        final IssueComponent component = dao.loadAllEntities(1L).get(0);
         final IssueComponent compTest = new IssueComponent();
         compTest.setComponentName(component.getComponentName());
         dao.persist(compTest);
@@ -59,11 +59,11 @@ public class IssueComponentDAOTest implements BaseDAOTest {
 
     @Test
     public void getConnectedIssus() {
-        for (final IssueComponent component : dao.loadAllEntities()) {
+        for (final IssueComponent component : dao.loadAllEntities(1L)) {
             final List<IssueBase> compConnIssueList = component.getConnectedIssuesFromProject(1L);
             final List<IssueBase> issueList = new ArrayList<>();
 
-            for (final IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+            for (final IssueBase issue : daoFactory.getIssueBaseDAO().loadAllEntities(1L)) {
                 for (final IssueComponent comp : issue.getComponents())
                     if (comp.equals(component))
                         issueList.add(issue);
@@ -99,6 +99,6 @@ public class IssueComponentDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void getConnectedIssues_SecondParameterNull() {
-        dao.getConnectedIssuesFromProject(dao.loadAllEntities().get(0), -1L);
+        dao.getConnectedIssuesFromProject(dao.loadAllEntities(1L).get(0), -1L);
     }
 }

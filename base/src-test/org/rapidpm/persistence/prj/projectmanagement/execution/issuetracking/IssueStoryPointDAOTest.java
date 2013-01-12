@@ -22,11 +22,11 @@ public class IssueStoryPointDAOTest implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssueStoryPointDAOTest.class);
 
     private final IssueStoryPointDAO dao = daoFactory.getIssueStoryPointDAO();
-    private final IssueStoryPoint assignTo = dao.loadAllEntities().get(0);
+    private final IssueStoryPoint assignTo = dao.loadAllEntities(1L).get(0);
 
     @Test
     public void equalsAndHashCodeTest() {
-        List<IssueStoryPoint> storyPointList = dao.loadAllEntities();
+        List<IssueStoryPoint> storyPointList = dao.loadAllEntities(1L);
         assertTrue(storyPointList.get(0).equals(storyPointList.get(0)));
         assertEquals(storyPointList.get(0).hashCode(), storyPointList.get(0).hashCode());
 
@@ -45,12 +45,12 @@ public class IssueStoryPointDAOTest implements BaseDAOTest {
         assertEquals(storyPoint, dao.findByID(storyPoint.getId()));
 
         dao.delete(storyPoint, assignTo);
-        assertFalse(dao.loadAllEntities().contains(storyPoint));
+        assertFalse(dao.loadAllEntities(1L).contains(storyPoint));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        final IssueStoryPoint storyPoint = dao.loadAllEntities().get(0);
+        final IssueStoryPoint storyPoint = dao.loadAllEntities(1L).get(0);
         final IssueStoryPoint stpTest = new IssueStoryPoint();
         stpTest.setStorypoint(storyPoint.getStorypoint());
         dao.persist(stpTest);
@@ -58,11 +58,11 @@ public class IssueStoryPointDAOTest implements BaseDAOTest {
 
     @Test
     public void getConnectedIssus() {
-        for (final IssueStoryPoint storyPoint : dao.loadAllEntities()) {
+        for (final IssueStoryPoint storyPoint : dao.loadAllEntities(1L)) {
             final List<IssueBase> stpConnIssueList = storyPoint.getConnectedIssuesFromProject(1L);
             final List<IssueBase> issueList = new ArrayList<>();
 
-            for (final IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+            for (final IssueBase issue : daoFactory.getIssueBaseDAO().loadAllEntities(1L)) {
                 if (issue.getStoryPoints().equals(storyPoint))
                     issueList.add(issue);
             }
@@ -86,12 +86,12 @@ public class IssueStoryPointDAOTest implements BaseDAOTest {
 
     @Test(expected = NullPointerException.class)
     public void delete_SecondParameterNull() {
-        dao.delete(dao.loadAllEntities().get(0), null);
+        dao.delete(dao.loadAllEntities(1L).get(0), null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void delete_SecondParameterNoId() {
-        dao.delete(dao.loadAllEntities().get(0), new IssueStoryPoint());
+        dao.delete(dao.loadAllEntities(1L).get(0), new IssueStoryPoint());
     }
 
 
@@ -107,6 +107,6 @@ public class IssueStoryPointDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void getConnectedIssues_SecondParameterNull() {
-        dao.getConnectedIssuesFromProject(dao.loadAllEntities().get(0), -1L);
+        dao.getConnectedIssuesFromProject(dao.loadAllEntities(1L).get(0), -1L);
     }
 }

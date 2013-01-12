@@ -2,11 +2,13 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.mo
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
+import com.vaadin.ui.UI;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.GraphBaseDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
+import org.rapidpm.webapp.vaadin.BaseUI;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -28,7 +30,7 @@ public class SettingsDataContainer<T> extends IndexedContainer {
     private final Class clazz;
     private List<Object> visibleColumns;
 
-    public SettingsDataContainer(Class aClass) {
+    public SettingsDataContainer(final Class aClass) {
         if (aClass == null)
             throw new NullPointerException("Class must not be null");
 
@@ -54,7 +56,8 @@ public class SettingsDataContainer<T> extends IndexedContainer {
         if (logger.isDebugEnabled())
             logger.debug("Fill table with DAO entities");
         this.removeAllItems();
-        for (T entity : dao.loadAllEntities()) {
+        //TODO
+        for (T entity : dao.loadAllEntities(((BaseUI)UI.getCurrent()).getCurrentProject().getId())) {
             addEntityToTable(entity);
         }
     }

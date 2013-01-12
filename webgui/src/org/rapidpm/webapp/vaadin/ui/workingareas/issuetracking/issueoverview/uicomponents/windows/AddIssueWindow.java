@@ -57,7 +57,7 @@ public class AddIssueWindow extends RapidWindow {
         public void buttonClick(Button.ClickEvent event) {
             try {
                 IssueBaseDAO issueDao;
-                issueDao = DaoFactorySingelton.getInstance().getIssueBaseDAO(screen.getUi().getCurrentProject().getId());
+                issueDao = DaoFactorySingelton.getInstance().getIssueBaseDAO();
 
                 IssueBase childIssue = addDetailsLayout.setIssueProperties(true);
                 if (childIssue != null) {

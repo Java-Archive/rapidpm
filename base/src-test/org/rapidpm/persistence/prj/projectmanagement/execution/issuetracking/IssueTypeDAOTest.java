@@ -22,11 +22,11 @@ public class IssueTypeDAOTest implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssueTypeDAOTest.class);
 
     private final IssueTypeDAO dao = daoFactory.getIssueTypeDAO();
-    private final IssueType assignTo = dao.loadAllEntities().get(0);
+    private final IssueType assignTo = dao.loadAllEntities(1L).get(0);
 
     @Test
     public void equalsAndHashCodeTest() {
-        List<IssueType> typeList = dao.loadAllEntities();
+        List<IssueType> typeList = dao.loadAllEntities(1L);
         assertTrue(typeList.get(0).equals(typeList.get(0)));
         assertEquals(typeList.get(0).hashCode(), typeList.get(0).hashCode());
 
@@ -47,13 +47,13 @@ public class IssueTypeDAOTest implements BaseDAOTest {
         assertEquals(type, dao.findByID(type.getId()));
 
         dao.delete(type, assignTo);
-        assertFalse(dao.loadAllEntities().contains(type));
+        assertFalse(dao.loadAllEntities(PROJECTID).contains(type));
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        final IssueType priority = dao.loadAllEntities().get(0);
+        final IssueType priority = dao.loadAllEntities(1L).get(0);
         final IssueType prioTest = new IssueType();
         prioTest.setTypeName(priority.getTypeName());
         prioTest.setTypeFileName(priority.getTypeFileName());
@@ -62,11 +62,11 @@ public class IssueTypeDAOTest implements BaseDAOTest {
 
     @Test
     public void getConnectedIssus() {
-        for (final IssueType type : dao.loadAllEntities()) {
+        for (final IssueType type : dao.loadAllEntities(1L)) {
             final List<IssueBase> typeConnIssueList = type.getConnectedIssuesFromProject(1L);
             final List<IssueBase> issueList = new ArrayList<>();
 
-            for (final IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+            for (final IssueBase issue : daoFactory.getIssueBaseDAO().loadAllEntities(1L)) {
                 if (issue.getType().equals(type))
                     issueList.add(issue);
             }
@@ -90,12 +90,12 @@ public class IssueTypeDAOTest implements BaseDAOTest {
 
     @Test(expected = NullPointerException.class)
     public void delete_SecondParameterNull() {
-        dao.delete(dao.loadAllEntities().get(0), null);
+        dao.delete(dao.loadAllEntities(1L).get(0), null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void delete_SecondParameterNoId() {
-        dao.delete(dao.loadAllEntities().get(0), new IssueType());
+        dao.delete(dao.loadAllEntities(1L).get(0), new IssueType());
     }
 
 
@@ -111,6 +111,6 @@ public class IssueTypeDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void getConnectedIssues_SecondParameterNull() {
-        dao.getConnectedIssuesFromProject(dao.loadAllEntities().get(0), -1L);
+        dao.getConnectedIssuesFromProject(dao.loadAllEntities(1L).get(0), -1L);
     }
 }

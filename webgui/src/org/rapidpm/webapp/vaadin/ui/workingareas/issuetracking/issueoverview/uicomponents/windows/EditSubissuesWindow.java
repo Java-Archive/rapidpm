@@ -142,8 +142,7 @@ public class EditSubissuesWindow extends Window implements Internationalizationa
 
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            Long projectId = screen.getUi().getCurrentProject().getId();
-            IssueBaseDAO dao = DaoFactorySingelton.getInstance().getIssueBaseDAO(projectId);
+            IssueBaseDAO dao = DaoFactorySingelton.getInstance().getIssueBaseDAO();
             HashMap<IssueBase, List<IssueBase>> map = dropHandler.getChangedIssues();
             if (!map.isEmpty()) {
                 for (IssueBase key : map.keySet()) {

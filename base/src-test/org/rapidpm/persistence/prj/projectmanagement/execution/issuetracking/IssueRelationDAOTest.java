@@ -26,7 +26,7 @@ public class IssueRelationDAOTest implements BaseDAOTest {
 
     @Test
     public void equalsAndHashCodeTest() {
-        List<IssueRelation> relationList = dao.loadAllEntities();
+        List<IssueRelation> relationList = dao.loadAllEntities(1L);
         assertTrue(relationList.get(0).equals(relationList.get(0)));
         assertEquals(relationList.get(0).hashCode(), relationList.get(0).hashCode());
 
@@ -49,21 +49,21 @@ public class IssueRelationDAOTest implements BaseDAOTest {
         relation = dao.persist(relation);
         assertEquals(relation, dao.findByID(relation.getId()));
 
-        IssueBaseDAO issueDAO = daoFactory.getIssueBaseDAO(1L);
-        List<IssueBase> issueList = issueDAO.loadAllEntities();
+        IssueBaseDAO issueDAO = daoFactory.getIssueBaseDAO();
+        List<IssueBase> issueList = issueDAO.loadAllEntities(1L);
         IssueBase issue1 = issueList.get(0);
         issue1.connectToIssueAs(issueList.get(1), relation);
         issue1.connectToIssueAs(issueList.get(2), relation);
         issue1 = issueDAO.persist(issue1);
 
         dao.delete(relation);
-        assertFalse(dao.loadAllEntities().contains(relation));
+        assertFalse(dao.loadAllEntities(1L).contains(relation));
         assertTrue(issue1.getConnectedIssues(relation).isEmpty());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        final IssueRelation relation = dao.loadAllEntities().get(0);
+        final IssueRelation relation = dao.loadAllEntities(1L).get(0);
         final IssueRelation relTest = new IssueRelation();
         relTest.setRelationName(relation.getRelationName());
         relTest.setOutgoingName(relation.getOutgoingName());
@@ -73,10 +73,10 @@ public class IssueRelationDAOTest implements BaseDAOTest {
 
     @Test
     public void getConnectedIssus() {
-        for (final IssueRelation relation : dao.loadAllEntities()) {
+        for (final IssueRelation relation : dao.loadAllEntities(1L)) {
             final List<IssueBase> relConnIssueList = relation.getConnectedIssuesFromProject(1L);
             final List<IssueBase> issueList = new ArrayList<>();
-            for (final IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+            for (final IssueBase issue : daoFactory.getIssueBaseDAO().loadAllEntities(1L)) {
                 if (!issue.getConnectedIssues(relation, Direction.OUTGOING).isEmpty()) {
                     issueList.add(issue);
                 }
@@ -112,6 +112,6 @@ public class IssueRelationDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void getConnectedIssues_SecondParameterNull() {
-        dao.getConnectedIssuesFromProject(dao.loadAllEntities().get(0), -1L);
+        dao.getConnectedIssuesFromProject(dao.loadAllEntities(1L).get(0), -1L);
     }
 }

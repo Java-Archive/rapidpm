@@ -1,5 +1,7 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type;
 
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Alvin Schiller

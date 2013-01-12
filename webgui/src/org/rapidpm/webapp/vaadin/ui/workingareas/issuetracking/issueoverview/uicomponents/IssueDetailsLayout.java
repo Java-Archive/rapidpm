@@ -81,14 +81,23 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         final DatabaseInitXMLLoader initEntityLists = new DatabaseInitXMLLoader();
         converter = new FormattedDateStringToDateConverter(new SimpleDateFormat("dd.MM.yy"));
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final Long projectId = screen.getUi().getCurrentProject().getId();
 
-        final List<IssueType> typeList = initEntityLists.initDatatype(IssueType.class, daoFactory.getIssueTypeDAO());
-        final List<IssueStatus> statusList = initEntityLists.initDatatype(IssueStatus.class, daoFactory.getIssueStatusDAO());
-        final List<IssuePriority> priorityList = initEntityLists.initDatatype(IssuePriority.class, daoFactory.getIssuePriorityDAO());
-        final List<IssueVersion> versionList = initEntityLists.initDatatype(IssueVersion.class, daoFactory.getIssueVersionDAO());
-        final List<IssueStoryPoint> storyPointList = initEntityLists.initDatatype(IssueStoryPoint.class, daoFactory.getIssueStoryPointDAO());
-        final List<IssueComponent> componentsList = initEntityLists.initDatatype(IssueComponent.class, daoFactory.getIssueComponentDAO());
-        final List<Benutzer> userList =  daoFactory.getBenutzerDAO().loadAllEntities();
+        final List<IssueType> typeList;
+        final List<IssueStatus> statusList;
+        final List<IssuePriority> priorityList;
+        final List<IssueVersion> versionList;
+        final List<IssueStoryPoint> storyPointList;
+        final List<IssueComponent> componentsList;
+        final List<Benutzer> userList;
+
+        typeList = initEntityLists.initDatatype(IssueType.class, daoFactory.getIssueTypeDAO(), projectId);
+        statusList = initEntityLists.initDatatype(IssueStatus.class, daoFactory.getIssueStatusDAO(), projectId);
+        priorityList = initEntityLists.initDatatype(IssuePriority.class, daoFactory.getIssuePriorityDAO(), projectId);
+        versionList = initEntityLists.initDatatype(IssueVersion.class, daoFactory.getIssueVersionDAO(), projectId);
+        storyPointList = initEntityLists.initDatatype(IssueStoryPoint.class, daoFactory.getIssueStoryPointDAO(), projectId);
+        componentsList = initEntityLists.initDatatype(IssueComponent.class, daoFactory.getIssueComponentDAO(), projectId);
+        userList = daoFactory.getBenutzerDAO().loadAllEntities();
 
 
         VerticalLayout formLayout = new VerticalLayout();

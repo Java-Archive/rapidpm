@@ -22,6 +22,9 @@ public class IssueRelation implements RelationshipType, PersistInGraph {
     private Long id;
 
     @Simple
+    private Long projectid;
+
+    @Simple
     private String relationName;
 
     @Simple
@@ -44,6 +47,14 @@ public class IssueRelation implements RelationshipType, PersistInGraph {
 
     public void setId(final Long id) {
         this.id = id;
+    }
+
+    public Long getProjectId() {
+        return projectid;
+    }
+
+    public void setProjectId(final Long projectid) {
+        this.projectid = projectid;
     }
 
     public String getRelationName() {

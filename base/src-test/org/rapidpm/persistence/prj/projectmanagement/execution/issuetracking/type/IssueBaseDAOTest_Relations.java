@@ -23,15 +23,14 @@ import static org.junit.Assert.assertTrue;
 public class IssueBaseDAOTest_Relations implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssueBaseDAOTest_Relations.class);
 
-    private final Long projectId = 1L;
-    private final IssueBaseDAO dao = daoFactory.getIssueBaseDAO(projectId);
+    private final IssueBaseDAO dao = daoFactory.getIssueBaseDAO();
 
     @Test
     public void connectWithDeleteRelation() {
-        final List<IssueBase> list = dao.loadAllEntities();
+        final List<IssueBase> list = dao.loadAllEntities(PROJECTID);
         IssueBase issue1 = list.get(1);
         IssueBase issue2 = list.get(2);
-        final IssueRelation rel = daoFactory.getIssueRelationDAO().loadAllEntities().get(1);
+        final IssueRelation rel = daoFactory.getIssueRelationDAO().loadAllEntities(PROJECTID).get(1);
 
         assertTrue(issue1.connectToIssueAs(issue2, rel));
         issue1 = dao.persist(issue1);
@@ -64,13 +63,13 @@ public class IssueBaseDAOTest_Relations implements BaseDAOTest {
 
     @Test
     public void removeRelations() {
-        final List<IssueBase> list = dao.loadAllEntities();
+        final List<IssueBase> list = dao.loadAllEntities(PROJECTID);
         IssueBase issue1 = list.get(1);
         IssueBase issue2 = list.get(2);
         IssueBase issue3 = list.get(3);
         final IssueRelationDAO relationDAO = daoFactory.getIssueRelationDAO();
-        final IssueRelation relation1 = relationDAO.loadAllEntities().get(1);
-        final IssueRelation relation2 = relationDAO.loadAllEntities().get(1);
+        final IssueRelation relation1 = relationDAO.loadAllEntities(PROJECTID).get(1);
+        final IssueRelation relation2 = relationDAO.loadAllEntities(PROJECTID).get(1);
 
         assertTrue(issue1.connectToIssueAs(issue2, relation1));
         issue1 = dao.persist(issue1);
@@ -84,26 +83,26 @@ public class IssueBaseDAOTest_Relations implements BaseDAOTest {
         issue1 = dao.persist(issue1);
         assertTrue(issue1.getConnectedIssues(relation2, Direction.OUTGOING).contains(issue3));
 
-        assertTrue(relationDAO.getConnectedIssuesFromProject(relation1, issue1.getProjectid()).contains(issue1));
-        assertTrue(relationDAO.getConnectedIssuesFromProject(relation2, issue1.getProjectid()).contains(issue1));
+        assertTrue(relationDAO.getConnectedIssuesFromProject(relation1, issue1.getProjectId()).contains(issue1));
+        assertTrue(relationDAO.getConnectedIssuesFromProject(relation2, issue1.getProjectId()).contains(issue1));
 
         issue2.removeConnectionToIssue(issue1, relation1);
         issue2 = dao.persist(issue2);
         assertFalse(issue1.getConnectedIssues(relation1).contains(issue2));
         assertTrue(issue1.getConnectedIssues(relation1).contains(issue3));
 
-        assertTrue(relationDAO.getConnectedIssuesFromProject(relation1, issue1.getProjectid()).contains(issue1));
-        assertTrue(relationDAO.getConnectedIssuesFromProject(relation2, issue1.getProjectid()).contains(issue1));
+        assertTrue(relationDAO.getConnectedIssuesFromProject(relation1, issue1.getProjectId()).contains(issue1));
+        assertTrue(relationDAO.getConnectedIssuesFromProject(relation2, issue1.getProjectId()).contains(issue1));
 
         issue1.removeConnectionToIssue(issue3, relation1);
         issue1 = dao.persist(issue1);
         assertFalse(issue1.getConnectedIssues(relation1).contains(issue3));
-        assertFalse(relationDAO.getConnectedIssuesFromProject(relation1, issue1.getProjectid()).contains(issue1));
+        assertFalse(relationDAO.getConnectedIssuesFromProject(relation1, issue1.getProjectId()).contains(issue1));
 
         issue1.removeConnectionToIssue(issue3, relation2);
         issue1 = dao.persist(issue1);
         assertFalse(issue1.getConnectedIssues(relation2).contains(issue3));
-        assertFalse(relationDAO.getConnectedIssuesFromProject(relation2, issue1.getProjectid()).contains(issue1));
+        assertFalse(relationDAO.getConnectedIssuesFromProject(relation2, issue1.getProjectId()).contains(issue1));
     }
 
 
@@ -124,27 +123,27 @@ public class IssueBaseDAOTest_Relations implements BaseDAOTest {
 
     @Test(expected = NullPointerException.class)
     public void connectEntitiesWithRelation_SecondParameterNull() {
-        dao.connectEntitiesWithRelation(dao.loadAllEntities().get(0), null, null);
+        dao.connectEntitiesWithRelation(dao.loadAllEntities(PROJECTID).get(0), null, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void connectEntitiesWithRelation_SecondParameterNoId() {
-        dao.connectEntitiesWithRelation(dao.loadAllEntities().get(0), new IssueBase(3L), null);
+        dao.connectEntitiesWithRelation(dao.loadAllEntities(PROJECTID).get(0), new IssueBase(3L), null);
     }
 
     @Test(expected = NullPointerException.class)
     public void connectEntitiesWithRelation_ThirdParameterNull() {
-        dao.connectEntitiesWithRelation(dao.loadAllEntities().get(0), dao.loadAllEntities().get(1), null);
+        dao.connectEntitiesWithRelation(dao.loadAllEntities(PROJECTID).get(0), dao.loadAllEntities(PROJECTID).get(1), null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void connectEntitiesWithRelation_ThirdParameterNoId() {
-        dao.connectEntitiesWithRelation(dao.loadAllEntities().get(0), dao.loadAllEntities().get(1), new IssueRelation());
+        dao.connectEntitiesWithRelation(dao.loadAllEntities(PROJECTID).get(0), dao.loadAllEntities(PROJECTID).get(1), new IssueRelation());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void connectEntitiesWithRelation_FirstEqualsSecond() {
-        dao.connectEntitiesWithRelation(dao.loadAllEntities().get(0), dao.loadAllEntities().get(0),
+        dao.connectEntitiesWithRelation(dao.loadAllEntities(PROJECTID).get(0), dao.loadAllEntities(PROJECTID).get(0),
                 new IssueRelation());
     }
 
@@ -166,33 +165,33 @@ public class IssueBaseDAOTest_Relations implements BaseDAOTest {
 
     @Test(expected = NullPointerException.class)
     public void deleteRelationOfEntities_SecondParameterNull() {
-        dao.deleteRelationOfEntities(dao.loadAllEntities().get(0), null, null, null);
+        dao.deleteRelationOfEntities(dao.loadAllEntities(PROJECTID).get(0), null, null, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void deleteRelationOfEntities_SecondParameterNoId() {
-        dao.deleteRelationOfEntities(dao.loadAllEntities().get(0), new IssueBase(3L), null, null);
+        dao.deleteRelationOfEntities(dao.loadAllEntities(PROJECTID).get(0), new IssueBase(3L), null, null);
     }
 
     @Test(expected = NullPointerException.class)
     public void deleteRelationOfEntities_ThirdParameterNull() {
-        dao.deleteRelationOfEntities(dao.loadAllEntities().get(0), dao.loadAllEntities().get(1), null, null);
+        dao.deleteRelationOfEntities(dao.loadAllEntities(PROJECTID).get(0), dao.loadAllEntities(PROJECTID).get(1), null, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void deleteRelationOfEntities_ThirdParameterNoId() {
-        dao.deleteRelationOfEntities(dao.loadAllEntities().get(0), dao.loadAllEntities().get(1), new IssueRelation(), null);
+        dao.deleteRelationOfEntities(dao.loadAllEntities(PROJECTID).get(0), dao.loadAllEntities(PROJECTID).get(1), new IssueRelation(), null);
     }
 
     @Test(expected = NullPointerException.class)
     public void deleteRelationOfEntities_ForthParameterNull() {
-        dao.deleteRelationOfEntities(dao.loadAllEntities().get(0), dao.loadAllEntities().get(1),
-                daoFactory.getIssueRelationDAO().loadAllEntities().get(0), null);
+        dao.deleteRelationOfEntities(dao.loadAllEntities(PROJECTID).get(0), dao.loadAllEntities(PROJECTID).get(1),
+                daoFactory.getIssueRelationDAO().loadAllEntities(PROJECTID).get(0), null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void deleteRelationOfEntities_FirstEqualsSecond() {
-        dao.deleteRelationOfEntities(dao.loadAllEntities().get(0), dao.loadAllEntities().get(0),
+        dao.deleteRelationOfEntities(dao.loadAllEntities(PROJECTID).get(0), dao.loadAllEntities(PROJECTID).get(0),
                 new IssueRelation(), null);
     }
 
@@ -209,17 +208,17 @@ public class IssueBaseDAOTest_Relations implements BaseDAOTest {
 
     @Test(expected = NullPointerException.class)
     public void getConnectedIssuesWithRelation_SecondParameterNull() {
-        dao.getConnectedIssuesWithRelation(dao.loadAllEntities().get(0), null, null);
+        dao.getConnectedIssuesWithRelation(dao.loadAllEntities(PROJECTID).get(0), null, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void getConnectedIssuesWithRelation_SecondParameterNoId() {
-        dao.getConnectedIssuesWithRelation(dao.loadAllEntities().get(0), new IssueRelation(), null);
+        dao.getConnectedIssuesWithRelation(dao.loadAllEntities(PROJECTID).get(0), new IssueRelation(), null);
     }
 
     @Test(expected = NullPointerException.class)
     public void getConnectedIssuesWithRelation_ThirdParameterNull() {
-        dao.getConnectedIssuesWithRelation(dao.loadAllEntities().get(0), daoFactory.getIssueRelationDAO().loadAllEntities().get
+        dao.getConnectedIssuesWithRelation(dao.loadAllEntities(PROJECTID).get(0), daoFactory.getIssueRelationDAO().loadAllEntities(PROJECTID).get
                 (0), null);
     }
 }

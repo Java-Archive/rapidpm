@@ -22,11 +22,11 @@ public class IssueVersionDAOTest implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssueVersionDAOTest.class);
 
     private final IssueVersionDAO dao = daoFactory.getIssueVersionDAO();
-    private final IssueVersion assignTo = dao.loadAllEntities().get(0);
+    private final IssueVersion assignTo = dao.loadAllEntities(PROJECTID).get(0);
 
     @Test
     public void equalsAndHashCodeTest() {
-        List<IssueVersion> versionList = dao.loadAllEntities();
+        List<IssueVersion> versionList = dao.loadAllEntities(PROJECTID);
         assertTrue(versionList.get(0).equals(versionList.get(0)));
         assertEquals(versionList.get(0).hashCode(), versionList.get(0).hashCode());
 
@@ -45,12 +45,12 @@ public class IssueVersionDAOTest implements BaseDAOTest {
         assertEquals(version, dao.findByID(version.getId()));
 
         dao.delete(version, assignTo);
-        assertFalse(dao.loadAllEntities().contains(version));
+        assertFalse(dao.loadAllEntities(PROJECTID).contains(version));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        final IssueVersion version = dao.loadAllEntities().get(0);
+        final IssueVersion version = dao.loadAllEntities(PROJECTID).get(0);
         final IssueVersion verTest = new IssueVersion();
         verTest.setVersionName(version.getVersionName());
         dao.persist(verTest);
@@ -58,11 +58,11 @@ public class IssueVersionDAOTest implements BaseDAOTest {
 
     @Test
     public void getConnectedIssus() {
-        for (final IssueVersion version : dao.loadAllEntities()) {
-            final List<IssueBase> verConnIssueList = version.getConnectedIssuesFromProject(1L);
+        for (final IssueVersion version : dao.loadAllEntities(PROJECTID)) {
+            final List<IssueBase> verConnIssueList = version.getConnectedIssuesFromProject(PROJECTID);
             final List<IssueBase> issueList = new ArrayList<>();
 
-            for (final IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+            for (final IssueBase issue : daoFactory.getIssueBaseDAO().loadAllEntities(PROJECTID)) {
                 if (issue.getVersion().equals(version))
                     issueList.add(issue);
             }
@@ -86,12 +86,12 @@ public class IssueVersionDAOTest implements BaseDAOTest {
 
     @Test(expected = NullPointerException.class)
     public void delete_SecondParameterNull() {
-        dao.delete(dao.loadAllEntities().get(0), null);
+        dao.delete(dao.loadAllEntities(PROJECTID).get(0), null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void delete_SecondParameterNoId() {
-        dao.delete(dao.loadAllEntities().get(0), new IssueVersion());
+        dao.delete(dao.loadAllEntities(PROJECTID).get(0), new IssueVersion());
     }
 
 
@@ -107,6 +107,6 @@ public class IssueVersionDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void getConnectedIssues_SecondParameterNull() {
-        dao.getConnectedIssuesFromProject(dao.loadAllEntities().get(0), -1L);
+        dao.getConnectedIssuesFromProject(dao.loadAllEntities(PROJECTID).get(0), -1L);
     }
 }

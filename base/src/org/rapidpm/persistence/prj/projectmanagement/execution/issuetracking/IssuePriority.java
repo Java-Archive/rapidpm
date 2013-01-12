@@ -29,6 +29,9 @@ public class IssuePriority  implements PersistInGraph {
     private Long id;
 
     @Simple
+    private Long projectid;
+
+    @Simple
     private Integer prio;
 
     @Simple
@@ -62,6 +65,14 @@ public class IssuePriority  implements PersistInGraph {
 
     public void setId(final Long id) {
         this.id = id;
+    }
+
+    public Long getProjectId() {
+        return projectid;
+    }
+
+    public void setProjectId(final Long projectid) {
+        this.projectid = projectid;
     }
 
     public int getPrio() {

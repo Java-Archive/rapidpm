@@ -424,7 +424,7 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
                 pu.setId(new Long(attributes.get(i)));
                 issue.setPlanningUnit(pu);
             }
-            issues.add(daoFactory.getIssueBaseDAO(projectId).persist(issue));
+            issues.add(daoFactory.getIssueBaseDAO().persist(issue));
             x++;
         }
 
@@ -459,7 +459,7 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
         issues.get(1).connectToIssueAs(issues.get(2), relationList.get(0));
 
         for (final IssueBase issue : issues) {
-            daoFactory.getIssueBaseDAO(projectId).persist(issue);
+            daoFactory.getIssueBaseDAO().persist(issue);
         }
 
         if (debug)
@@ -492,7 +492,7 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
             issueBase.setPriority(priorityList.get(i));
             issueBase.addComponent(componentList.get(i));
 
-            issueBase = daoFactory.getIssueBaseDAO(projectId).persist(issueBase);
+            issueBase = daoFactory.getIssueBaseDAO().persist(issueBase);
             if (debug)
                 System.out.println(issueBase.toString());
         }
