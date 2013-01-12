@@ -180,10 +180,10 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
                             userEmails.add(user.getEmail());
                         }
                         final String enteredLoginName = loginTextField.getValue().toString();
-                        if (userNames.contains(enteredLoginName)) {
+                        if (userNames.contains(enteredLoginName) && idTextField.getValue().isEmpty()) {
                             throw new UsernameAlreadyExistsException();
                         }
-                        if (userEmails.contains(emailTextField.getValue().toString())) {
+                        if (userEmails.contains(emailTextField.getValue().toString()) && idTextField.getValue().isEmpty()) {
                             throw new EmailAlreadyExistsException();
                         }
                         if (enteredLoginName.matches(Constants.EMPTY_OR_SPACES_ONLY_PATTERN) || enteredLoginName

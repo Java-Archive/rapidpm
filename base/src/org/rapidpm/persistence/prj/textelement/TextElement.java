@@ -38,6 +38,7 @@ public class TextElement implements Comparable<TextElement> {
     @Basic
     private String bezeichnung;
     @Basic
+    @Column(length = 20000)
     private String text;
 
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)

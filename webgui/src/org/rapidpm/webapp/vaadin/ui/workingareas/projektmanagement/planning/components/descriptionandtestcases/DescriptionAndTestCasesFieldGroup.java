@@ -66,7 +66,7 @@ public class DescriptionAndTestCasesFieldGroup extends FieldGroup {
         for (final TextElement textElement : sortedTextElementList) {
             final RapidPanel framePanel = new RapidPanel();
             final TextElementEditableLayout panel = new TextElementEditableLayout(selectedPlanningUnit,
-                    screen, framePanel, messages, textElement);
+                    screen, framePanel, textElement);
             framePanel.addComponent(panel);
             fieldGroupList.add(framePanel);
         }
