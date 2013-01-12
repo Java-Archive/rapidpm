@@ -53,9 +53,7 @@ public class DatabaseInitXMLLoader {
                 final NodeList nodes = doc.getElementsByTagName(typeClass.getSimpleName());
 
                 for (int i = 0; i < nodes.getLength(); i++) {
-                    final T instance = (T) typeClass.newInstance();
-                    final Method method = typeClass.getDeclaredMethod("setProjectId", Long.class);
-                    method.invoke(instance, projectId);
+                    final T instance = (T) typeClass.getConstructor(Long.class).newInstance(projectId);
 
                     final NodeList childNodes = nodes.item(i).getChildNodes();
                     for (int j = 0; j < childNodes.getLength(); j++) {

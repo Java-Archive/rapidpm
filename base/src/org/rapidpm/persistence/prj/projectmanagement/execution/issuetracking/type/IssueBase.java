@@ -36,6 +36,7 @@ public class IssueBase implements PersistInGraph {
     private String text;
 
     @Simple
+    @NonVisible
     private Long projectid;
 
     @Simple
@@ -94,6 +95,7 @@ public class IssueBase implements PersistInGraph {
     private PlanningUnit planningUnit;
 
     @LazyGraphPersist
+    @NonVisible
     private Map<Method, List<Object[]>> graphMap;
 
     public IssueBase() {

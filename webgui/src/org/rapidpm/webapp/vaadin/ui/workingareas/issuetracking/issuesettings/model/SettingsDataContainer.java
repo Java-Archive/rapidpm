@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.GraphBaseDAO;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.NonVisible;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
 import org.rapidpm.webapp.vaadin.BaseUI;
 
@@ -40,7 +41,7 @@ public class SettingsDataContainer<T> extends IndexedContainer {
 
 
         for (Field field : clazz.getDeclaredFields()) {
-            if (field.isAnnotationPresent(Simple.class)) {
+            if (field.isAnnotationPresent(Simple.class) && !field.isAnnotationPresent(NonVisible.class)) {
                 this.addContainerProperty(field.getName(), field.getType(), null);
                 visibleColumns.add(field.getName());
             }
@@ -70,7 +71,7 @@ public class SettingsDataContainer<T> extends IndexedContainer {
 
         Item itemId = this.addItem(entity);
         for (Field field : fieldnames) {
-            if (field.isAnnotationPresent(Simple.class)){
+            if (field.isAnnotationPresent(Simple.class) && !field.isAnnotationPresent(NonVisible.class)){
                 boolean isAccessible = field.isAccessible();
                 field.setAccessible(true);
                 try {
@@ -109,7 +110,7 @@ public class SettingsDataContainer<T> extends IndexedContainer {
             logger.debug("fillObjectFromItem: " + entity);
 
         for (Field field : fieldnames) {
-            if (field.isAnnotationPresent(Simple.class)){
+            if (field.isAnnotationPresent(Simple.class) && !field.isAnnotationPresent(NonVisible.class)){
                 boolean isAccessible = field.isAccessible();
                 field.setAccessible(true);
                 try {

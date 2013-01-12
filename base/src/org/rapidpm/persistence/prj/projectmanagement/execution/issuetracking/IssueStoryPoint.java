@@ -3,6 +3,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 //import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.NonVisible;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.PersistInGraph;
@@ -22,6 +23,7 @@ public class IssueStoryPoint implements PersistInGraph {
     private Long id;
 
     @Simple
+    @NonVisible
     private Long projectid;
 
     @Simple
@@ -33,6 +35,10 @@ public class IssueStoryPoint implements PersistInGraph {
 
     public IssueStoryPoint(Integer storypoint) {
         setStorypoint(storypoint);
+    }
+
+    public IssueStoryPoint(final Long projectid) {
+        setProjectId(projectid);
     }
 
 
@@ -72,6 +78,7 @@ public class IssueStoryPoint implements PersistInGraph {
         IssueStoryPoint that = (IssueStoryPoint) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (projectid != null ? !projectid.equals(that.projectid) : that.projectid != null) return false;
         if (storypoint != null ? !storypoint.equals(that.storypoint) : that.storypoint != null) return false;
 
         return true;
@@ -80,6 +87,7 @@ public class IssueStoryPoint implements PersistInGraph {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (projectid != null ? projectid.hashCode() : 0);
         result = 31 * result + (storypoint != null ? storypoint.hashCode() : 0);
         return result;
     }
@@ -88,6 +96,7 @@ public class IssueStoryPoint implements PersistInGraph {
     public String toString() {
         return "IssueStoryPoint{" +
                 "id=" + id +
+                ", projectid=" + projectid +
                 ", storypoint=" + storypoint +
                 '}';
     }

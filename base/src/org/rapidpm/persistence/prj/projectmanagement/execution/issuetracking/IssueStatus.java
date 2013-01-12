@@ -3,6 +3,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 //import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.NonVisible;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.PersistInGraph;
@@ -28,6 +29,7 @@ public class IssueStatus  implements PersistInGraph {
     private Long id;
 
     @Simple
+    @NonVisible
     private Long projectid;
 
     @Simple
@@ -42,6 +44,10 @@ public class IssueStatus  implements PersistInGraph {
 
     public IssueStatus(final String statusName) {
         this.statusName = statusName;
+    }
+
+    public IssueStatus(final Long projectid) {
+        setProjectId(projectid);
     }
 
 //    public List<IssueBase> getConnectedIssues() {
@@ -85,24 +91,17 @@ public class IssueStatus  implements PersistInGraph {
     }
 
     @Override
-    public String toString() {
-        return "IssueStatus{" +
-                "id=" + id +
-                ", statusName='" + statusName + '\'' +
-                ", statusFileName='" + statusFileName + '\'' +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        IssueStatus status = (IssueStatus) o;
+        IssueStatus that = (IssueStatus) o;
 
-        if (id != null ? !id.equals(status.id) : status.id != null) return false;
-        if (statusFileName != null ? !statusFileName.equals(status.statusFileName) : status.statusFileName != null) return false;
-        if (statusName != null ? !statusName.equals(status.statusName) : status.statusName != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (projectid != null ? !projectid.equals(that.projectid) : that.projectid != null) return false;
+        if (statusFileName != null ? !statusFileName.equals(that.statusFileName) : that.statusFileName != null)
+            return false;
+        if (statusName != null ? !statusName.equals(that.statusName) : that.statusName != null) return false;
 
         return true;
     }
@@ -110,9 +109,20 @@ public class IssueStatus  implements PersistInGraph {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (projectid != null ? projectid.hashCode() : 0);
         result = 31 * result + (statusName != null ? statusName.hashCode() : 0);
         result = 31 * result + (statusFileName != null ? statusFileName.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IssueStatus{" +
+                "id=" + id +
+                ", projectid=" + projectid +
+                ", statusName='" + statusName + '\'' +
+                ", statusFileName='" + statusFileName + '\'' +
+                '}';
     }
 
     @Override
