@@ -9,7 +9,6 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logi
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.PlanningUnitBeanItemContainer;
 
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -35,7 +34,7 @@ public class PlanningUnitsTree extends Tree{
             container.addBean(selectedPlanningUnit);
             buildTree(selectedPlanningUnit.getKindPlanningUnits(), selectedPlanningUnit);
             expandItemsRecursively(selectedPlanningUnit);
-            addValueChangeListener(new TreeValueChangeListener(screen, projekt));
+            addValueChangeListener(new TreeValueChangeListener(screen));
             setContainerDataSource(container);
             final Iterator iterator = rootItemIds().iterator();
             while (iterator.hasNext()){
