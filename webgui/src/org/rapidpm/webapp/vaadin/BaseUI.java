@@ -67,7 +67,6 @@ public abstract class BaseUI extends UI {
     }
 
     private void loadFirstProject() {
-//        final LoginBean bean = EJBFactory.getEjbInstance(LoginBean.class);
         final VaadinSession session = this.getSession();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final List<PlannedProject> projects = daoFactory.getPlannedProjectDAO().loadAllEntities();
@@ -172,6 +171,11 @@ public abstract class BaseUI extends UI {
         iconsLayout.setWidth("100%");
         iconsLayout.addComponent(iconLeft);
         iconsLayout.setComponentAlignment(iconLeft, Alignment.TOP_LEFT);
+
+        final Label versionLabel = new Label("alpha - build 20130110 - cd3185f963a605b5024f8ba05377850e96e6b443");
+        iconsLayout.addComponent(versionLabel);
+        iconsLayout.setComponentAlignment(versionLabel, Alignment.TOP_CENTER);
+
         iconsLayout.addComponent(iconRight);
         iconsLayout.setComponentAlignment(iconRight, Alignment.TOP_RIGHT);
     }

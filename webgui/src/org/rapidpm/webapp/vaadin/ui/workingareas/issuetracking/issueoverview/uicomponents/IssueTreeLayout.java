@@ -57,7 +57,7 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         horLayout.setSpacing(true);
 
         //TODO nur Testweise
-        Button map = new Button("Map PU to IB");
+        Button map = new Button("Map Planning to Issues");
         map.setSizeFull();
         buttonLayout.addComponent(map);
 
