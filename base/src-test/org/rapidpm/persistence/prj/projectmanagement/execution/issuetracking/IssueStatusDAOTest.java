@@ -38,6 +38,7 @@ public class IssueStatusDAOTest implements BaseDAOTest {
     @Test
     public void addChangeDelete() {
         IssueStatus status = new IssueStatus("test");
+        status.setProjectId(PROJECTID);
         status.setStatusFileName("test_filename");
         status = dao.persist(status);
         assertEquals(status, dao.findByID(status.getId()));
@@ -54,11 +55,12 @@ public class IssueStatusDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        final IssueStatus priority = dao.loadAllEntities(PROJECTID).get(0);
-        final IssueStatus prioTest = new IssueStatus();
-        prioTest.setStatusName(priority.getStatusName());
-        prioTest.setStatusFileName(priority.getStatusFileName());
-        dao.persist(prioTest);
+        final IssueStatus status = dao.loadAllEntities(PROJECTID).get(0);
+        final IssueStatus statTest = new IssueStatus();
+        statTest.setProjectId(PROJECTID);
+        statTest.setStatusName(status.getStatusName());
+        statTest.setStatusFileName(status.getStatusFileName());
+        dao.persist(statTest);
     }
 
     @Test

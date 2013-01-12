@@ -37,6 +37,7 @@ public class IssueComponentDAOTest implements BaseDAOTest {
     @Test
     public void addChangeDelete() {
         IssueComponent component = new IssueComponent("test");
+        component.setProjectId(PROJECTID);
         component = dao.persist(component);
         assertEquals(component, dao.findByID(component.getId()));
 
@@ -45,7 +46,7 @@ public class IssueComponentDAOTest implements BaseDAOTest {
         assertEquals(component, dao.findByID(component.getId()));
 
         dao.delete(component);
-        assertFalse(dao.loadAllEntities(1L).contains(component));
+        assertFalse(dao.loadAllEntities(PROJECTID).contains(component));
     }
 
 
@@ -53,6 +54,7 @@ public class IssueComponentDAOTest implements BaseDAOTest {
     public void persistExistingName() {
         final IssueComponent component = dao.loadAllEntities(PROJECTID).get(0);
         final IssueComponent compTest = new IssueComponent();
+        compTest.setProjectId(PROJECTID);
         compTest.setComponentName(component.getComponentName());
         dao.persist(compTest);
     }

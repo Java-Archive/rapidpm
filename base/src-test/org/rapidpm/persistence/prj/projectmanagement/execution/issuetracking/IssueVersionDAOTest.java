@@ -37,6 +37,7 @@ public class IssueVersionDAOTest implements BaseDAOTest {
     @Test
     public void addChangeDelete() {
         IssueVersion version = new IssueVersion("test");
+        version.setProjectId(PROJECTID);
         version = dao.persist(version);
         assertEquals(version, dao.findByID(version.getId()));
 
@@ -52,6 +53,7 @@ public class IssueVersionDAOTest implements BaseDAOTest {
     public void persistExistingName() {
         final IssueVersion version = dao.loadAllEntities(PROJECTID).get(0);
         final IssueVersion verTest = new IssueVersion();
+        verTest.setProjectId(PROJECTID);
         verTest.setVersionName(version.getVersionName());
         dao.persist(verTest);
     }

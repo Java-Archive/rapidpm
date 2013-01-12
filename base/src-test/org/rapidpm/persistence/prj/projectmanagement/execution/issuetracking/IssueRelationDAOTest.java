@@ -37,6 +37,7 @@ public class IssueRelationDAOTest implements BaseDAOTest {
     @Test
     public void addChangeDelete() {
         IssueRelation relation = new IssueRelation();
+        relation.setProjectId(PROJECTID);
         relation.setRelationName("test");
         relation.setOutgoingName("outgoing_Test");
         relation.setIncomingName("incoming_Test");
@@ -65,6 +66,7 @@ public class IssueRelationDAOTest implements BaseDAOTest {
     public void persistExistingName() {
         final IssueRelation relation = dao.loadAllEntities(PROJECTID).get(0);
         final IssueRelation relTest = new IssueRelation();
+        relTest.setProjectId(PROJECTID);
         relTest.setRelationName(relation.getRelationName());
         relTest.setOutgoingName(relation.getOutgoingName());
         relTest.setIncomingName(relation.getIncomingName());

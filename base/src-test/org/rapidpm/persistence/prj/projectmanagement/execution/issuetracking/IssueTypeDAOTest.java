@@ -37,6 +37,7 @@ public class IssueTypeDAOTest implements BaseDAOTest {
     @Test
     public void addChangeDelete() {
         IssueType type = new IssueType("test");
+        type.setProjectId(PROJECTID);
         type.setTypeFileName("test_filename");
         type = dao.persist(type);
         assertEquals(type, dao.findByID(type.getId()));
@@ -55,6 +56,7 @@ public class IssueTypeDAOTest implements BaseDAOTest {
     public void persistExistingName() {
         final IssueType priority = dao.loadAllEntities(PROJECTID).get(0);
         final IssueType prioTest = new IssueType();
+        prioTest.setProjectId(PROJECTID);
         prioTest.setTypeName(priority.getTypeName());
         prioTest.setTypeFileName(priority.getTypeFileName());
         dao.persist(prioTest);

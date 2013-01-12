@@ -38,6 +38,7 @@ public class IssuePriorityDAOTest implements BaseDAOTest {
     @Test
     public void addChangeDelete() {
         IssuePriority priority = new IssuePriority(1, "test");
+        priority.setProjectId(PROJECTID);
         priority.setPriorityFileName("test_filename");
         priority = dao.persist(priority);
         assertEquals(priority, dao.findByID(priority.getId()));
@@ -56,6 +57,7 @@ public class IssuePriorityDAOTest implements BaseDAOTest {
     public void persistExistingName() {
         final IssuePriority priority = dao.loadAllEntities(PROJECTID).get(0);
         final IssuePriority prioTest = new IssuePriority();
+        prioTest.setProjectId(PROJECTID);
         prioTest.setPriorityName(priority.getPriorityName());
         prioTest.setPriorityFileName(priority.getPriorityFileName());
         prioTest.setPrio(priority.getPrio());

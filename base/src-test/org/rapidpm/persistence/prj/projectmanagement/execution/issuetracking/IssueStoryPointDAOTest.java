@@ -37,6 +37,7 @@ public class IssueStoryPointDAOTest implements BaseDAOTest {
     @Test
     public void addChangeDelete() {
         IssueStoryPoint storyPoint = new IssueStoryPoint(1000);
+        storyPoint.setProjectId(PROJECTID);
         storyPoint = dao.persist(storyPoint);
         assertEquals(storyPoint, dao.findByID(storyPoint.getId()));
 
@@ -52,6 +53,7 @@ public class IssueStoryPointDAOTest implements BaseDAOTest {
     public void persistExistingName() {
         final IssueStoryPoint storyPoint = dao.loadAllEntities(PROJECTID).get(0);
         final IssueStoryPoint stpTest = new IssueStoryPoint();
+        stpTest.setProjectId(PROJECTID);
         stpTest.setStorypoint(storyPoint.getStorypoint());
         dao.persist(stpTest);
     }
