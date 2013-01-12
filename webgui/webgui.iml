@@ -24,7 +24,7 @@
     <facet type="JRebel" name="JRebel">
       <configuration>
         <option name="allPaths" value="true" />
-        <option name="generateRebel" value="false" />
+        <option name="generateRebel" value="true" />
       </configuration>
     </facet>
   </component>
