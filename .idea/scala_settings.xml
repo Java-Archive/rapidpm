@@ -48,6 +48,7 @@
         <option value="scala.collection.mutable._" />
       </array>
     </option>
+    <option name="shift" value="200" />
   </component>
 </project>
 
