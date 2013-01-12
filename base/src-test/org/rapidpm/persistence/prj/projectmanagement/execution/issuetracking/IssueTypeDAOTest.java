@@ -53,7 +53,7 @@ public class IssueTypeDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        final IssueType priority = dao.loadAllEntities(1L).get(0);
+        final IssueType priority = dao.loadAllEntities(PROJECTID).get(0);
         final IssueType prioTest = new IssueType();
         prioTest.setTypeName(priority.getTypeName());
         prioTest.setTypeFileName(priority.getTypeFileName());
@@ -62,11 +62,11 @@ public class IssueTypeDAOTest implements BaseDAOTest {
 
     @Test
     public void getConnectedIssus() {
-        for (final IssueType type : dao.loadAllEntities(1L)) {
-            final List<IssueBase> typeConnIssueList = type.getConnectedIssuesFromProject(1L);
+        for (final IssueType type : dao.loadAllEntities(PROJECTID)) {
+            final List<IssueBase> typeConnIssueList = type.getConnectedIssuesFromProject(PROJECTID);
             final List<IssueBase> issueList = new ArrayList<>();
 
-            for (final IssueBase issue : daoFactory.getIssueBaseDAO().loadAllEntities(1L)) {
+            for (final IssueBase issue : daoFactory.getIssueBaseDAO().loadAllEntities(PROJECTID)) {
                 if (issue.getType().equals(type))
                     issueList.add(issue);
             }
@@ -90,12 +90,12 @@ public class IssueTypeDAOTest implements BaseDAOTest {
 
     @Test(expected = NullPointerException.class)
     public void delete_SecondParameterNull() {
-        dao.delete(dao.loadAllEntities(1L).get(0), null);
+        dao.delete(dao.loadAllEntities(PROJECTID).get(0), null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void delete_SecondParameterNoId() {
-        dao.delete(dao.loadAllEntities(1L).get(0), new IssueType());
+        dao.delete(dao.loadAllEntities(PROJECTID).get(0), new IssueType());
     }
 
 
@@ -106,11 +106,11 @@ public class IssueTypeDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void getConnectedIssues_firstParameterNoId() {
-        dao.getConnectedIssuesFromProject(new IssueType(), 1L);
+        dao.getConnectedIssuesFromProject(new IssueType(), -1L);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void getConnectedIssues_SecondParameterNull() {
-        dao.getConnectedIssuesFromProject(dao.loadAllEntities(1L).get(0), -1L);
+        dao.getConnectedIssuesFromProject(dao.loadAllEntities(PROJECTID).get(0), -1L);
     }
 }

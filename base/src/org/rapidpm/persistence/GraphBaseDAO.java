@@ -30,6 +30,7 @@ public class GraphBaseDAO<T> {
     protected final GraphDatabaseService graphDb;
     private final DaoFactory daoFactory;
     private final Node class_root_node;
+    private Map<Long, Node> projectNodes;
 
     private final Class clazz;
 
@@ -44,6 +45,7 @@ public class GraphBaseDAO<T> {
         this.daoFactory = daoFactory;
         this.clazz = clazz;
         this.class_root_node = getClassRootNode();
+        projectNodes = new HashMap<>();
     }
 
     private Node getClassRootNode() {
@@ -85,26 +87,32 @@ public class GraphBaseDAO<T> {
         if (projectId < 0)
             throw new IllegalArgumentException("ProjectId must be positiv");
 
-        final TraversalDescription td = Traversal.description()
-                .breadthFirst()
-                .relationships(GraphRelationRegistry.getRootToClassRootRelType(clazz), Direction.OUTGOING)
-                .evaluator(Evaluators.excludeStartPosition())
-                .evaluator(Evaluators.atDepth(1));
-
-        final Traverser trav = td.traverse(class_root_node);
         Node project_root_node = null;
-        for (final Path path : trav) {
-                if (projectId.equals(path.endNode().getProperty(GraphRelationRegistry.getRelationAttributeProjectId(), null)))
-                    project_root_node = path.endNode();
-        }
+        if (!projectNodes.containsKey(projectId)) {
+            final TraversalDescription td = Traversal.description()
+                    .breadthFirst()
+                    .relationships(GraphRelationRegistry.getRootToClassRootRelType(clazz), Direction.OUTGOING)
+                    .evaluator(Evaluators.excludeStartPosition())
+                    .evaluator(Evaluators.atDepth(1));
 
-        if (project_root_node == null) {
-            project_root_node = createNewProjectRootNode(class_root_node, projectId);
+            final Traverser trav = td.traverse(class_root_node);
+
+            for (final Path path : trav) {
+                    if (projectId.equals(path.endNode().getProperty(GraphRelationRegistry.getRelationAttributeProjectId(), null)))
+                        project_root_node = path.endNode();
+            }
+
+            if (project_root_node == null) {
+                project_root_node = createNewProjectRootNode(projectId);
+            }
+            projectNodes.put(projectId, project_root_node);
+        } else {
+            project_root_node = projectNodes.get(projectId);
         }
         return project_root_node;
     }
 
-    private Node createNewProjectRootNode(final Node project_root, final Long projectId) {
+    private Node createNewProjectRootNode(final Long projectId) {
         final Transaction tx = graphDb.beginTx();
         Node newProjectNode = null;
         try {
@@ -121,7 +129,7 @@ public class GraphBaseDAO<T> {
                 newProjectNode.setProperty(GraphRelationRegistry.getRelationAttributeProjectToken(), project.getProjektToken());
                 newProjectNode.setProperty(GraphRelationRegistry.getRelationAttributeTokenId(), 1);
             }
-            project_root.createRelationshipTo(newProjectNode, GraphRelationRegistry.getRootToClassRootRelType(clazz));
+            class_root_node.createRelationshipTo(newProjectNode, GraphRelationRegistry.getRootToClassRootRelType(clazz));
             tx.success();
         } finally {
             tx.finish();

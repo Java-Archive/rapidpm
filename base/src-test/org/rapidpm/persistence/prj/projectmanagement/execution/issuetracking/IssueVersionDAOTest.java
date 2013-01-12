@@ -102,7 +102,7 @@ public class IssueVersionDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void getConnectedIssues_firstParameterNoId() {
-        dao.getConnectedIssuesFromProject(new IssueVersion(), 1L);
+        dao.getConnectedIssuesFromProject(new IssueVersion(), -1L);
     }
 
     @Test(expected = IllegalArgumentException.class)

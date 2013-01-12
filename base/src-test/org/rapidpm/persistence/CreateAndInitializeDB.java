@@ -79,7 +79,6 @@ public class CreateAndInitializeDB {
     public void CreateAndInitialize(){
         System.out.println("Created DB");
         System.out.println("Start initializing");
-        initializeAttributes();
         initializeProject1();
         initializeProject2();
         System.out.println("Finished initializing");
@@ -148,29 +147,44 @@ public class CreateAndInitializeDB {
 //        }
 //    }
 
-    private void initializeAttributes(){
+    private void initializeAttributes(final Long projectId){
+        statusList.clear();
+        priorityList.clear();
+        typeList.clear();
+        componentList.clear();
+        relationList.clear();
+        versionList.clear();
+        storypointList.clear();
+        commentList.clear();
+        testCaseList.clear();
+
 
         final IssueStatus status1 = new IssueStatus();
+        status1.setProjectId(projectId);
         status1.setStatusName("Open");
         status1.setStatusFileName("status_open.gif");
         statusList.add(daoFactory.getIssueStatusDAO().persist(status1));
 
         final IssueStatus status2 = new IssueStatus();
+        status2.setProjectId(projectId);
         status2.setStatusName("In Progress");
         status2.setStatusFileName("status_inprogress.gif");
         statusList.add(daoFactory.getIssueStatusDAO().persist(status2));
 
         final IssueStatus status3 = new IssueStatus();
+        status3.setProjectId(projectId);
         status3.setStatusName("Resolved");
         status3.setStatusFileName("status_resolved.gif");
         statusList.add(daoFactory.getIssueStatusDAO().persist(status3));
 
         final IssueStatus status4 = new IssueStatus();
+        status4.setProjectId(projectId);
         status4.setStatusName("Closed");
         status4.setStatusFileName("status_closed.gif");
         statusList.add(daoFactory.getIssueStatusDAO().persist(status4));
 
         final IssueStatus status5 = new IssueStatus();
+        status5.setProjectId(projectId);
         status5.setStatusName("On Hold");
         status5.setStatusFileName("status_onhold.gif");
         statusList.add(daoFactory.getIssueStatusDAO().persist(status5));
@@ -178,30 +192,35 @@ public class CreateAndInitializeDB {
 
 
         final IssuePriority priority1 = new IssuePriority();
+        priority1.setProjectId(projectId);
         priority1.setPriorityName("Trivial");
         priority1.setPriorityFileName("priority_trivial.gif");
         priority1.setPrio(0);
         priorityList.add(daoFactory.getIssuePriorityDAO().persist(priority1));
 
         final IssuePriority priority2 = new IssuePriority();
+        priority2.setProjectId(projectId);
         priority2.setPriorityName("Minor");
         priority2.setPriorityFileName("priority_minor.gif");
         priority2.setPrio(1);
         priorityList.add(daoFactory.getIssuePriorityDAO().persist(priority2));
 
         final IssuePriority priority3 = new IssuePriority();
+        priority3.setProjectId(projectId);
         priority3.setPriorityName("Major");
         priority3.setPriorityFileName("priority_major.gif");
         priority3.setPrio(2);
         priorityList.add(daoFactory.getIssuePriorityDAO().persist(priority3));
 
         final IssuePriority priority4 = new IssuePriority();
+        priority4.setProjectId(projectId);
         priority4.setPriorityName("Critical");
         priority4.setPriorityFileName("priority_critical.gif");
         priority4.setPrio(3);
         priorityList.add(daoFactory.getIssuePriorityDAO().persist(priority4));
 
         final IssuePriority priority5 = new IssuePriority();
+        priority5.setProjectId(projectId);
         priority5.setPriorityName("Blocker");
         priority5.setPriorityFileName("priority_blocker.gif");
         priority5.setPrio(4);
@@ -210,56 +229,69 @@ public class CreateAndInitializeDB {
 
 
         final IssueType type1 = new IssueType("Bug");
+        type1.setProjectId(projectId);
         typeList.add(daoFactory.getIssueTypeDAO().persist(type1));
 
         final IssueType type2 = new IssueType("Task");
+        type2.setProjectId(projectId);
         typeList.add(daoFactory.getIssueTypeDAO().persist(type2));
 
         final IssueType type3 = new IssueType("Improvement");
+        type3.setProjectId(projectId);
         typeList.add(daoFactory.getIssueTypeDAO().persist(type3));
 
         final IssueType type4 = new IssueType("New Function");
+        type4.setProjectId(projectId);
         typeList.add(daoFactory.getIssueTypeDAO().persist(type4));
 
         final IssueType type5 = new IssueType("Epic");
+        type5.setProjectId(projectId);
         typeList.add(daoFactory.getIssueTypeDAO().persist(type5));
 
 
 
         final IssueVersion version1 = new IssueVersion(" - ");
+        version1.setProjectId(projectId);
         versionList.add(daoFactory.getIssueVersionDAO().persist(version1));
 
         final IssueVersion version2 = new IssueVersion("Alpha");
+        version2.setProjectId(projectId);
         versionList.add(daoFactory.getIssueVersionDAO().persist(version2));
 
         final IssueVersion version3 = new IssueVersion("1.0");
+        version3.setProjectId(projectId);
         versionList.add(daoFactory.getIssueVersionDAO().persist(version3));
 
         final IssueVersion version4 = new IssueVersion("2.0");
+        version4.setProjectId(projectId);
         versionList.add(daoFactory.getIssueVersionDAO().persist(version4));
 
 
 
         for(int i = 1; i < 11; i++) {
             final IssueStoryPoint storypoint = new IssueStoryPoint(i);
+            storypoint.setProjectId(projectId);
             storypointList.add(daoFactory.getIssueStoryPointDAO().persist(storypoint));
         }
 
 
 
         final IssueRelation relation1 = new IssueRelation();
+        relation1.setProjectId(projectId);
         relation1.setRelationName("Duplicate");
         relation1.setOutgoingName("duplicates");
         relation1.setIncomingName("is duplicated by");
         relationList.add(daoFactory.getIssueRelationDAO().persist(relation1));
 
         final IssueRelation relation2 = new IssueRelation();
+        relation2.setProjectId(projectId);
         relation2.setRelationName("Block");
         relation2.setOutgoingName("blocks");
         relation2.setIncomingName("is blocked by");
         relationList.add(daoFactory.getIssueRelationDAO().persist(relation2));
 
         final IssueRelation relation3 = new IssueRelation();
+        relation3.setProjectId(projectId);
         relation3.setRelationName("Dependence");
         relation3.setOutgoingName("relates");
         relation3.setIncomingName("depends on");
@@ -267,18 +299,23 @@ public class CreateAndInitializeDB {
 
 
         final IssueComponent component1 = new IssueComponent("GUI");
+        component1.setProjectId(projectId);
         componentList.add(daoFactory.getIssueComponentDAO().persist(component1));
 
         final IssueComponent component2 = new IssueComponent("IssueTracking");
+        component2.setProjectId(projectId);
         componentList.add(daoFactory.getIssueComponentDAO().persist(component2));
 
         final IssueComponent component3 = new IssueComponent("Planning");
+        component3.setProjectId(projectId);
         componentList.add(daoFactory.getIssueComponentDAO().persist(component3));
 
         final IssueComponent component4 = new IssueComponent("Controlling");
+        component4.setProjectId(projectId);
         componentList.add(daoFactory.getIssueComponentDAO().persist(component4));
 
         final IssueComponent component5 = new IssueComponent("Documentation");
+        component5.setProjectId(projectId);
         componentList.add(daoFactory.getIssueComponentDAO().persist(component5));
 
 
@@ -333,9 +370,10 @@ public class CreateAndInitializeDB {
     }
 
     private void initializeProject1() {
+        final Long projectId = 1L;
+        initializeAttributes(projectId);
         final List<IssueBase> issues = new ArrayList<>();
         final List<List<Integer>> issueAttr = new ArrayList<>();
-        final Long projectId = 1L;
 
         //status,priority,type,  reporter,assignee,  dueDate_planned(3),_resolved(3),_closed(3),   version,
         // storypoints,  components(2),
@@ -472,6 +510,7 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
 
     private void initializeProject2() {
         final Long projectId = 2L;
+        initializeAttributes(projectId);
         final BenutzerDAO benutzerDao = daoFactory.getBenutzerDAO();
 
         for (int i = 0; i<3 ;i++) {
