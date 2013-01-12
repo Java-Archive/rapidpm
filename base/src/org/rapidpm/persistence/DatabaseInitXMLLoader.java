@@ -1,8 +1,7 @@
-package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic;
+package org.rapidpm.persistence;
 
 import org.apache.log4j.Logger;
 import org.rapidpm.Constants;
-import org.rapidpm.persistence.GraphBaseDAO;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -12,13 +11,11 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -34,7 +31,7 @@ public class DatabaseInitXMLLoader {
     public DatabaseInitXMLLoader() {
     }
 
-    public <T> List<T> initDatatype(final Class typeClass, final GraphBaseDAO<T> dao, final Long projectId) {
+    public <T> void initDatatype(final Class typeClass, final GraphBaseDAO<T> dao, final Long projectId) {
         final List<T> list = dao.loadAllEntities(projectId);
         if (list.isEmpty()) {
             if (logger.isDebugEnabled())
@@ -73,7 +70,7 @@ public class DatabaseInitXMLLoader {
                             field.setAccessible(isAccessible);
                         }
                     }
-                    list.add(dao.persist(instance));
+                    dao.persist(instance);
                 }
             } catch (InstantiationException | IllegalAccessException | NoSuchFieldException | IOException
                     | SAXException | ParserConfigurationException | NoSuchMethodException | InvocationTargetException e) {
@@ -83,8 +80,6 @@ public class DatabaseInitXMLLoader {
             if (logger.isDebugEnabled())
                 logger.debug(typeClass.getSimpleName() + " has at least one entry");
         }
-
-        return list;
     }
 
     private static String getValue(String tag, Element element) {

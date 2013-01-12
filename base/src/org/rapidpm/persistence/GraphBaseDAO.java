@@ -133,8 +133,12 @@ public class GraphBaseDAO<T> {
             tx.success();
         } finally {
             tx.finish();
-            if (newProjectNode == null)
+            if (newProjectNode == null) {
                 throw new NullPointerException("Couldn't create new project root node");
+            }
+
+            new DatabaseInitXMLLoader().initDatatype(clazz, this, projectId);
+
             return newProjectNode;
         }
 
@@ -146,7 +150,6 @@ public class GraphBaseDAO<T> {
 
         if (logger.isDebugEnabled())
             logger.debug("persist: " + entity);
-
 
         final Transaction tx = graphDb.beginTx();
         try{
@@ -435,6 +438,22 @@ public class GraphBaseDAO<T> {
             throw new NullPointerException("Id object is null.");
 
         return getObjectFromNode(graphDb.getNodeById(id));
+    }
+
+    public T findByName(final String name, final Long projectId) {
+        if (logger.isDebugEnabled())
+            logger.debug("findByID");
+
+        if (name == null)
+            throw new NullPointerException("Name is null.");
+        if (name == "")
+            throw new IllegalArgumentException("Name is an empty string");
+        Index<Node> index_name = graphDb.index().forNodes(projectId.toString() + "_" + clazz.getSimpleName());
+        final Node indexNode = index_name.get("name", name.toLowerCase()).getSingle();
+        if (indexNode != null)
+            return getObjectFromNode(indexNode);
+        else
+            return null;
     }
 
     public boolean existInDatabase(final Long id) {

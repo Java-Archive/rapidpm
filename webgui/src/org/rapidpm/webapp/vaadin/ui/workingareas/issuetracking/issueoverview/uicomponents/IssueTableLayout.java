@@ -81,17 +81,17 @@ public class IssueTableLayout extends ComponentEditableVLayout {
         issueTable.removeAllItems();
         for (IssueBase issue : issues) {
             issueTable.addItem(new Object[] {issue.getText(),
-                    issue.getStatus().getStatusName(),
-                    issue.getPriority().getPriorityName(),
-                    issue.getType().getTypeName(),
-                    issue.getReporter().getLogin(),
-                    issue.getAssignee().getLogin(),
-                    issue.getDueDate_planned().toString(),
-                    issue.getDueDate_resolved().toString(),
-                    issue.getDueDate_closed().toString(),
-                    issue.getVersion().getVersionName(),
-                    issue.getStoryPoints().getStorypoint().toString(),
-                    issue.getSummary()},
+                    issue.getStatus() == null ? "" : issue.getStatus().getStatusName(),
+                    issue.getPriority() == null ? "" : issue.getPriority().getPriorityName(),
+                    issue.getType() == null ? "" : issue.getType().getTypeName(),
+                    issue.getReporter() == null ? "" : issue.getReporter().getLogin(),
+                    issue.getAssignee() == null ? "" : issue.getAssignee().getLogin(),
+                    issue.getDueDate_planned() == null ? "" : issue.getDueDate_planned().toString(),
+                    issue.getDueDate_resolved() == null ? "" : issue.getDueDate_resolved().toString(),
+                    issue.getDueDate_closed() == null ? "" : issue.getDueDate_closed().toString(),
+                    issue.getVersion() == null ? "" : issue.getVersion().getVersionName(),
+                    issue.getStoryPoints() == null ? "" : issue.getStoryPoints().getStorypoint().toString(),
+                    issue.getSummary() == null ? "" : issue.getSummary()},
                     issue);
         }
     }
