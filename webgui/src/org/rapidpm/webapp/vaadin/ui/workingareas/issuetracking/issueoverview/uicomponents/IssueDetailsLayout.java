@@ -13,6 +13,7 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.system.security.Benutzer;
+import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.FormattedDateStringToDateConverter;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.MissingAttributeException;
@@ -396,6 +397,10 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         statusSelect.select(issue.getStatus());
         prioritySelect.select(issue.getPriority());
         assigneeSelect.setValue(issue.getAssignee());
+        if (issue.getReporter() == null) {
+            final BenutzerDAO userDao = DaoFactorySingelton.getInstance().getBenutzerDAO();
+            issue.setReporter(userDao.loadBenutzerByEmail("nobody@rapidpm.org"));
+        }
         reporterLabel.setValue(issue.getReporter().getLogin());
         plannedDateLabel.setValue(converter.convertToPresentation(issue.getDueDate_planned(), Locale.getDefault()));
         resolvedDateField.setValue(issue.getDueDate_resolved().getTime() == 0L ? null : issue.getDueDate_resolved());
