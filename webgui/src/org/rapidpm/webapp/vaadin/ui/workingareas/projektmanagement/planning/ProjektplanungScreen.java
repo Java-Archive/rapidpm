@@ -63,6 +63,7 @@ public class ProjektplanungScreen extends Screen {
     private Button addParentButton = new Button();
     private PlanningUnit tempPlanningUnit = new PlanningUnit();
     private DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+    private TabSheet tabSheet = new TabSheet();
 
     private Button addParentsButton = new Button();
     private Button addDescriptionOrTestCaseButton = new Button();
@@ -94,6 +95,7 @@ public class ProjektplanungScreen extends Screen {
             rightColumn.setSizeFull();
 
             rightColumn.addComponent(addDescriptionOrTestCaseButton);
+            rightColumn.addComponent(tabSheet);
 
             planningUnitPanel = new RapidPanel();
             treePanel = new RapidPanel();
@@ -337,5 +339,13 @@ public class ProjektplanungScreen extends Screen {
 
     public Button getAddDescriptionOrTestCaseButton() {
         return addDescriptionOrTestCaseButton;
+    }
+
+    public TabSheet getTabSheet() {
+        return tabSheet;
+    }
+
+    public void setTabSheet(TabSheet tabSheet) {
+        this.tabSheet = tabSheet;
     }
 }
