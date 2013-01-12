@@ -177,10 +177,10 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         int i= 0;
         for (final Benutzer user : userList) {
             //TODO entfernen sobald bug behoben
-//            if (i == 0) {
-//                i++;
-//                continue;
-//            }
+            if (i == 0) {
+                i++;
+                continue;
+            }
             final Item item = assigneeSelect.addItem(user);
             item.getItemProperty(PROPERTY_CAPTION).setValue(user.getLogin());
             assigneeSelect.select(assigneeSelect.getItemIds().toArray()[0]);
