@@ -35,6 +35,7 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class IssueDetailsLayout extends ComponentEditableVLayout implements Internationalizationable{
+    private static final String WIDTH_100perc = "100%";
     private static Logger logger = Logger.getLogger(IssueDetailsLayout.class);
 
     public final static String PROPERTY_CAPTION = "caption";
@@ -101,17 +102,17 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         FormLayout componentLayout = new FormLayout();
         HorizontalLayout horLayout = new HorizontalLayout();
 
-        dateLayout.setWidth("100%");
-        detailLayout.setWidth("100%");
-        componentLayout.setWidth("100%");
-        horLayout.setWidth("100%");
+        dateLayout.setWidth(WIDTH_100perc);
+        detailLayout.setWidth(WIDTH_100perc);
+        componentLayout.setWidth(WIDTH_100perc);
+        horLayout.setWidth(WIDTH_100perc);
 
         headerTextField = new Label();
-        headerTextField.setWidth("100%");
+        headerTextField.setWidth(WIDTH_100perc);
 
         headerSummaryField = new TextField();
         headerSummaryField.setInputPrompt("Enter name");
-        headerSummaryField.setWidth("100%");
+        headerSummaryField.setWidth(WIDTH_100perc);
         headerSummaryField.setReadOnly(true);
 
         VerticalLayout headerLayout = new VerticalLayout();
@@ -177,10 +178,10 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         int i= 0;
         for (Benutzer user : userList) {
             //TODO entfernen sobald bug behoben
-            if (i == 0) {
-                i++;
-                continue;
-            }
+//            if (i == 0) {
+//                i++;
+//                continue;
+//            }
             item = assigneeSelect.addItem(user);
             item.getItemProperty(PROPERTY_CAPTION).setValue(user.getLogin());
             assigneeSelect.select(assigneeSelect.getItemIds().toArray()[0]);
@@ -240,7 +241,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
         riskSelect = new ComboBox();
         //TODO Persistente Daten verwenden
-        List<Integer> riskarray = new ArrayList<>(Arrays.asList(0, 25, 50, 75, 100));
+        final List<Integer> riskarray = new ArrayList<>(Arrays.asList(0, 25, 50, 75));
         for (Integer version : riskarray) {
             riskSelect.addItem(version);
             riskSelect.select(riskarray.get(0));
