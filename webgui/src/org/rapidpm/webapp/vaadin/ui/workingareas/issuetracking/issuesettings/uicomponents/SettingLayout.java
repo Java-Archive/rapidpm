@@ -163,10 +163,8 @@ public class SettingLayout<T> extends VerticalLayout {
                 contentTable.setTableFieldFactory(new SingleRowEditTableFieldFactory(entity));
                 contentTable.setEditable(true);
                 buttonHorLayout.replaceComponent(addButtonLayout, saveButtonLayout);
-            } catch (InstantiationException e) {
-
-            } catch (IllegalAccessException e) {
-
+            } catch (IllegalAccessException | InstantiationException e) {
+                logger.error(e);
             }
         }
     }
@@ -197,41 +195,41 @@ public class SettingLayout<T> extends VerticalLayout {
         public void buttonClick(Button.ClickEvent event) {
             Object entity = contentTable.getValue();
             logger.info("selected: " + entity);
-                if (isSaveButton) {
-                   if (logger.isDebugEnabled()) {
-                        logger.debug("SaveItem");
-                        logger.debug("selected entity: " + entity);
-                    }
-                    entity = container.fillObjectFromItem(entity);
-                    if (entity != null) {
-                        contentTable.setComponentError(null);
-                        errorLabel.setValue("");
+            if (isSaveButton) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("SaveItem");
+                    logger.debug("selected entity: " + entity);
+                }
+                entity = container.fillObjectFromItem(entity);
+                if (entity != null) {
+                    contentTable.setComponentError(null);
+                    errorLabel.setValue("");
+                    if (logger.isInfoEnabled())
+                        logger.info("filled entity: " + entity);
+                    try {
+                        container.persistItem(entity);
+                    } catch (IllegalArgumentException e) {
                         if (logger.isInfoEnabled())
-                            logger.info("filled entity: " + entity);
-                        try {
-                            container.persistItem(entity);
-                        } catch (IllegalArgumentException e) {
-                            if (logger.isInfoEnabled())
-                                logger.info("Name is already in use");
-                            errorLabel.setValue("<b><font color=\"red\">" +
-                                    messageBundle.getString("issuetracking_settings_error_name") +
-                                    "</font></b>");
-                        }
-                    } else {
-                        if (logger.isInfoEnabled())
-                            logger.info("No null values allowed in Item.");
+                            logger.info("Name is already in use");
                         errorLabel.setValue("<b><font color=\"red\">" +
-                                messageBundle.getString("issuetracking_settings_error_null") +
+                                messageBundle.getString("issuetracking_settings_error_name") +
                                 "</font></b>");
                     }
-                    container.fillTableWithDaoEntities();
                 } else {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("CancelEditing");
-                    }
-
-                    container.cancelAddingEditing(entity);
+                    if (logger.isInfoEnabled())
+                        logger.info("No null values allowed in Item.");
+                    errorLabel.setValue("<b><font color=\"red\">" +
+                            messageBundle.getString("issuetracking_settings_error_null") +
+                            "</font></b>");
                 }
+                container.fillTableWithDaoEntities();
+            } else {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("CancelEditing");
+                }
+
+                container.cancelAddingEditing(entity);
+            }
             contentTable.setEditable(false);
             contentTable.setSelectable(true);
             contentTable.select(contentTable.getNullSelectionItemId());
