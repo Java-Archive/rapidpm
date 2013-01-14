@@ -30,7 +30,7 @@ public class GraphBaseDAO<T> {
     protected final GraphDatabaseService graphDb;
     private final DaoFactory daoFactory;
     private final Node class_root_node;
-    private Map<Long, Node> projectNodes;
+    private final Map<Long, Node> projectNodes;
 
     private final Class clazz;
 
@@ -154,7 +154,8 @@ public class GraphBaseDAO<T> {
         final Transaction tx = graphDb.beginTx();
         try{
             final Long projectId = getProjectIdFromEntity(entity);
-            Index<Node> index_name = graphDb.index().forNodes(projectId.toString() + "_" + clazz.getSimpleName());
+            final Node project_root_node = getProjectRootNode(projectId);
+            final Index<Node> index_name = graphDb.index().forNodes(projectId.toString() + "_" + clazz.getSimpleName());
             final Node node;
             final Method method = clazz.getDeclaredMethod("name");
             final String nameAtt = ((String) method.invoke(entity)).toLowerCase();
@@ -165,7 +166,6 @@ public class GraphBaseDAO<T> {
                     throw new IllegalArgumentException(clazz.getSimpleName() + ": Name already in use");
             }
             if (id == null || id == 0) {
-                final Node project_root_node = getProjectRootNode(projectId);
                 node = graphDb.createNode();
                 project_root_node.createRelationshipTo(node, GraphRelationRegistry.getClassRootToChildRelType());
                 final Method setIdMethod = clazz.getDeclaredMethod("setId", Long.class);
@@ -448,7 +448,9 @@ public class GraphBaseDAO<T> {
             throw new NullPointerException("Name is null.");
         if (name == "")
             throw new IllegalArgumentException("Name is an empty string");
-        Index<Node> index_name = graphDb.index().forNodes(projectId.toString() + "_" + clazz.getSimpleName());
+
+        getProjectRootNode(projectId);
+        final Index<Node> index_name = graphDb.index().forNodes(projectId.toString() + "_" + clazz.getSimpleName());
         final Node indexNode = index_name.get("name", name.toLowerCase()).getSingle();
         if (indexNode != null)
             return getObjectFromNode(indexNode);

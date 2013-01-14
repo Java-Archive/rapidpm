@@ -328,7 +328,7 @@ issueAttr.add(Arrays.asList(3,2,4,  5,4,  2012, 7,12, 2012, 2,19, 2012, 2,19,  2
 issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2, 3,  4,-1,  -1,-1,  25,-1,  -1,  -1));
 
         final BenutzerDAO benutzerDao = daoFactory.getBenutzerDAO();
-        final IssueBaseDAO issueDao = daoFactory.getIssueBaseDAO(projectId);
+        final IssueBaseDAO issueDao = daoFactory.getIssueBaseDAO();
         //fill Issues with Attributes
         int i, x = 0;
         for (final List<Integer> attributes : issueAttr) {
