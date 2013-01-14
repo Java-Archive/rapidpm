@@ -2,17 +2,10 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview;
 
 
 import com.vaadin.ui.*;
-//import org.rapidpm.ejb3.EJBFactory;
-//import org.rapidpm.persistence.DaoFactoryBean;
-import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTabSheet;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTreeLayout;
-//import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsFieldGroupBean;
 
 
 /**
@@ -24,12 +17,12 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uic
  */
 public class IssueOverviewScreen extends Screen{
 
-    private HorizontalSplitPanel hSplitPanel;
-    private IssueTreeLayout treeLayout;
-    private IssueTabSheet issueTabSheet;
+    private final HorizontalSplitPanel hSplitPanel;
+    private final IssueTreeLayout treeLayout;
+    private final IssueTabSheet issueTabSheet;
 
 
-    public IssueOverviewScreen(MainUI ui) {
+    public IssueOverviewScreen(final MainUI ui) {
         super(ui);
         this.setSizeFull();
         this.activeVerticalFullScreenSize(true);

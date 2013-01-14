@@ -8,6 +8,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.Iss
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.logic.SingleRowEditTableFieldFactory;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.model.SettingsDataContainer;
 
+import java.util.ResourceBundle;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,14 +36,17 @@ public class SettingLayout<T> extends VerticalLayout {
     private final Button saveButton;
     private final Button cancelButton;
 
-    HorizontalLayout buttonHorLayout;
-    VerticalLayout addButtonLayout;
-    VerticalLayout saveButtonLayout;
+    private final HorizontalLayout buttonHorLayout;
+    private final VerticalLayout addButtonLayout;
+    private final VerticalLayout saveButtonLayout;
+
+    private final ResourceBundle messageBundle;
 
 
     public SettingLayout(final IssueSettingsScreen screen, final String headerName, final Class aClass,
                          final boolean simpleErasing) {
         this.screen = screen;
+        this.messageBundle = screen.getMessagesBundle();
         this.aClass = aClass;
         this.simpleErasing = simpleErasing;
         this.setSpacing(true);
@@ -82,19 +87,19 @@ public class SettingLayout<T> extends VerticalLayout {
         contentTable.setPageLength(10);
         contentTable.addValueChangeListener(new ContentTableValueChangeListener());
 
-        addButton = new Button(screen.getMessagesBundle().getString("add"));
+        addButton = new Button(messageBundle.getString("add"));
         addButton.addClickListener(new AddEditButtonClickListener(true, aClass));
         addButton.setWidth("100%");
         addButton.setImmediate(true);
         addButton.setEnabled(true);
 
-        editButton = new Button(screen.getMessagesBundle().getString("edit"));
+        editButton = new Button(messageBundle.getString("edit"));
         editButton.addClickListener(new AddEditButtonClickListener(false, aClass));
         editButton.setWidth("100%");
         editButton.setImmediate(true);
         editButton.setEnabled(false);
 
-        deleteButton = new Button(screen.getMessagesBundle().getString("delete"));
+        deleteButton = new Button(messageBundle.getString("delete"));
         deleteButton.addClickListener(new DeleteButtonClickListener());
         deleteButton.setWidth("100%");
         deleteButton.setImmediate(true);
@@ -105,12 +110,12 @@ public class SettingLayout<T> extends VerticalLayout {
         addButtonLayout.addComponent(deleteButton);
 
 
-        saveButton = new Button(screen.getMessagesBundle().getString("save"));
+        saveButton = new Button(messageBundle.getString("save"));
         saveButton.addClickListener(new SaveCancelButtonClickListener(true));
         saveButton.setWidth("100%");
         saveButton.setImmediate(true);
 
-        cancelButton = new Button(screen.getMessagesBundle().getString("cancel"));
+        cancelButton = new Button(messageBundle.getString("cancel"));
         cancelButton.addClickListener(new SaveCancelButtonClickListener(false));
         cancelButton.setWidth("100%");
         cancelButton.setImmediate(true);
@@ -171,6 +176,7 @@ public class SettingLayout<T> extends VerticalLayout {
 
         public DeleteButtonClickListener() {
         }
+
         @Override
         public void buttonClick(Button.ClickEvent event) {
             errorLabel.setValue("");
@@ -208,14 +214,14 @@ public class SettingLayout<T> extends VerticalLayout {
                             if (logger.isInfoEnabled())
                                 logger.info("Name is already in use");
                             errorLabel.setValue("<b><font color=\"red\">" +
-                                    screen.getMessagesBundle().getString("issuetracking_settings_error_name") +
+                                    messageBundle.getString("issuetracking_settings_error_name") +
                                     "</font></b>");
                         }
                     } else {
                         if (logger.isInfoEnabled())
                             logger.info("No null values allowed in Item.");
                         errorLabel.setValue("<b><font color=\"red\">" +
-                                screen.getMessagesBundle().getString("issuetracking_settings_error_null") +
+                                messageBundle.getString("issuetracking_settings_error_null") +
                                 "</font></b>");
                     }
                     container.fillTableWithDaoEntities();
