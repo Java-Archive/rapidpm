@@ -42,8 +42,8 @@ public class IssueStoryPoint implements PersistInGraph {
     }
 
 
-    public List<IssueBase> getConnectedIssuesFromProject(final Long projectId) {
-        return DaoFactorySingelton.getInstance().getIssueStoryPointDAO().getConnectedIssuesFromProject(this, projectId);
+    public List<IssueBase> getConnectedIssues() {
+        return DaoFactorySingelton.getInstance().getIssueStoryPointDAO().getConnectedIssuesFromProject(this, projectid);
     }
 
     public Long getId() {

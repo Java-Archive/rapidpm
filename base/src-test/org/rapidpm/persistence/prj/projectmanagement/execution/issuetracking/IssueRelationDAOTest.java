@@ -30,8 +30,8 @@ public class IssueRelationDAOTest implements BaseDAOTest {
         assertTrue(relationList.get(0).equals(relationList.get(0)));
         assertEquals(relationList.get(0).hashCode(), relationList.get(0).hashCode());
 
-        assertFalse(relationList.get(0).equals(new IssueComment()));
-        assertNotSame(new IssueComment().hashCode(), relationList.get(0).hashCode());
+        assertFalse(relationList.get(0).equals(new IssueRelation()));
+        assertNotSame(new IssueRelation(PROJECTID).hashCode(), relationList.get(0).hashCode());
     }
 
     @Test
@@ -76,7 +76,7 @@ public class IssueRelationDAOTest implements BaseDAOTest {
     @Test
     public void getConnectedIssus() {
         for (final IssueRelation relation : dao.loadAllEntities(PROJECTID)) {
-            final List<IssueBase> relConnIssueList = relation.getConnectedIssuesFromProject(PROJECTID);
+            final List<IssueBase> relConnIssueList = relation.getConnectedIssues();
             final List<IssueBase> issueList = new ArrayList<>();
             for (final IssueBase issue : daoFactory.getIssueBaseDAO().loadAllEntities(PROJECTID)) {
                 if (!issue.getConnectedIssues(relation, Direction.OUTGOING).isEmpty()) {

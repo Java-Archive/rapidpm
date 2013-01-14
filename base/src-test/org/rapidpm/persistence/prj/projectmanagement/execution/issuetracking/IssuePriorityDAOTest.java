@@ -31,8 +31,8 @@ public class IssuePriorityDAOTest implements BaseDAOTest {
         assertTrue(priorityList.get(0).equals(priorityList.get(0)));
         assertEquals(priorityList.get(0).hashCode(), priorityList.get(0).hashCode());
 
-        assertFalse(priorityList.get(0).equals(new IssueComment()));
-        assertNotSame(new IssueComment().hashCode(), priorityList.get(0).hashCode());
+        assertFalse(priorityList.get(0).equals(new IssuePriority()));
+        assertNotSame(new IssuePriority(PROJECTID).hashCode(), priorityList.get(0).hashCode());
     }
 
     @Test
@@ -67,7 +67,7 @@ public class IssuePriorityDAOTest implements BaseDAOTest {
     @Test
     public void getConnectedIssus() {
         for (final IssuePriority priority : dao.loadAllEntities(PROJECTID)) {
-            final List<IssueBase> prioConnIssueList = priority.getConnectedIssuesFromProject(PROJECTID);
+            final List<IssueBase> prioConnIssueList = priority.getConnectedIssues();
             final List<IssueBase> issueList = new ArrayList<>();
 
             for (final IssueBase issue : daoFactory.getIssueBaseDAO().loadAllEntities(PROJECTID)) {

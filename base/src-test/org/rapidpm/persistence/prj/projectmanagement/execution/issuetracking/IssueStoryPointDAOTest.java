@@ -30,8 +30,8 @@ public class IssueStoryPointDAOTest implements BaseDAOTest {
         assertTrue(storyPointList.get(0).equals(storyPointList.get(0)));
         assertEquals(storyPointList.get(0).hashCode(), storyPointList.get(0).hashCode());
 
-        assertFalse(storyPointList.get(0).equals(new IssueComment()));
-        assertNotSame(new IssueComment().hashCode(), storyPointList.get(0).hashCode());
+        assertFalse(storyPointList.get(0).equals(new IssueStoryPoint()));
+        assertNotSame(new IssueStoryPoint(PROJECTID).hashCode(), storyPointList.get(0).hashCode());
     }
 
     @Test
@@ -61,7 +61,7 @@ public class IssueStoryPointDAOTest implements BaseDAOTest {
     @Test
     public void getConnectedIssus() {
         for (final IssueStoryPoint storyPoint : dao.loadAllEntities(PROJECTID)) {
-            final List<IssueBase> stpConnIssueList = storyPoint.getConnectedIssuesFromProject(PROJECTID);
+            final List<IssueBase> stpConnIssueList = storyPoint.getConnectedIssues();
             final List<IssueBase> issueList = new ArrayList<>();
 
             for (final IssueBase issue : daoFactory.getIssueBaseDAO().loadAllEntities(PROJECTID)) {

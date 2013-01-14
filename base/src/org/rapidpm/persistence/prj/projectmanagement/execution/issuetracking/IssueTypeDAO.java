@@ -24,10 +24,6 @@ public class IssueTypeDAO extends GraphBaseDAO<IssueType> {
         super(graphDb, IssueType.class, relDaoFactory);
     }
 
-//    public List<IssueBase> getConnectedIssues(final IssueType type) {
-//        return getConnectedIssuesFromProject(type, 0L);
-//    }
-
     public List<IssueBase> getConnectedIssuesFromProject(final IssueType type, final Long projectId) {
         return super.getConnectedIssuesFromProject(type, projectId);
     }

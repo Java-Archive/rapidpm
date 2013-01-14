@@ -30,8 +30,8 @@ public class IssueTypeDAOTest implements BaseDAOTest {
         assertTrue(typeList.get(0).equals(typeList.get(0)));
         assertEquals(typeList.get(0).hashCode(), typeList.get(0).hashCode());
 
-        assertFalse(typeList.get(0).equals(new IssueComment()));
-        assertNotSame(new IssueComment().hashCode(), typeList.get(0).hashCode());
+        assertFalse(typeList.get(0).equals(new IssueType()));
+        assertNotSame(new IssueType(PROJECTID).hashCode(), typeList.get(0).hashCode());
     }
 
     @Test
@@ -65,7 +65,7 @@ public class IssueTypeDAOTest implements BaseDAOTest {
     @Test
     public void getConnectedIssus() {
         for (final IssueType type : dao.loadAllEntities(PROJECTID)) {
-            final List<IssueBase> typeConnIssueList = type.getConnectedIssuesFromProject(PROJECTID);
+            final List<IssueBase> typeConnIssueList = type.getConnectedIssues();
             final List<IssueBase> issueList = new ArrayList<>();
 
             for (final IssueBase issue : daoFactory.getIssueBaseDAO().loadAllEntities(PROJECTID)) {

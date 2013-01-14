@@ -50,12 +50,9 @@ public class IssueStatus  implements PersistInGraph {
         setProjectId(projectid);
     }
 
-//    public List<IssueBase> getConnectedIssues() {
-//        return GraphDaoFactory.getIssueStatusDAO().getConnectedIssues(this);
-//    }
 
-    public List<IssueBase> getConnectedIssuesFromProject(final Long projectId) {
-        return DaoFactorySingelton.getInstance().getIssueStatusDAO().getConnectedIssuesFromProject(this, projectId);
+    public List<IssueBase> getConnectedIssues() {
+        return DaoFactorySingelton.getInstance().getIssueStatusDAO().getConnectedIssuesFromProject(this, projectid);
     }
 
     public Long getId() {
@@ -99,8 +96,7 @@ public class IssueStatus  implements PersistInGraph {
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (projectid != null ? !projectid.equals(that.projectid) : that.projectid != null) return false;
-        if (statusFileName != null ? !statusFileName.equals(that.statusFileName) : that.statusFileName != null)
-            return false;
+        if (statusFileName != null ? !statusFileName.equals(that.statusFileName) : that.statusFileName != null) return false;
         if (statusName != null ? !statusName.equals(that.statusName) : that.statusName != null) return false;
 
         return true;

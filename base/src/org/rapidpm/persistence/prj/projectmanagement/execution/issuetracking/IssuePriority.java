@@ -55,14 +55,9 @@ public class IssuePriority  implements PersistInGraph {
         setProjectId(projectid);
     }
 
-//    public List<IssueBase> getConnectedIssues() {
-//        return GraphDaoFactory.getIssuePriorityDAO().getConnectedIssues(this);
-//    }    public List<IssueBase> getConnectedIssues() {
-//        return GraphDaoFactory.getIssuePriorityDAO().getConnectedIssues(this);
-//    }
 
-    public List<IssueBase> getConnectedIssuesFromProject(final Long projectId) {
-        return DaoFactorySingelton.getInstance().getIssuePriorityDAO().getConnectedIssuesFromProject(this, projectId);
+    public List<IssueBase> getConnectedIssues() {
+        return DaoFactorySingelton.getInstance().getIssuePriorityDAO().getConnectedIssuesFromProject(this, projectid);
     }
 
     public Long getId() {
@@ -114,8 +109,7 @@ public class IssuePriority  implements PersistInGraph {
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (prio != null ? !prio.equals(that.prio) : that.prio != null) return false;
-        if (priorityFileName != null ? !priorityFileName.equals(that.priorityFileName) : that.priorityFileName != null)
-            return false;
+        if (priorityFileName != null ? !priorityFileName.equals(that.priorityFileName) : that.priorityFileName != null) return false;
         if (priorityName != null ? !priorityName.equals(that.priorityName) : that.priorityName != null) return false;
         if (projectid != null ? !projectid.equals(that.projectid) : that.projectid != null) return false;
 

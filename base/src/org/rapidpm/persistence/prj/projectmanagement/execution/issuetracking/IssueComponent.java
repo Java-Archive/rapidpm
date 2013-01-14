@@ -41,12 +41,9 @@ public class IssueComponent implements PersistInGraph {
         this.componentName = componentName;
     }
 
-//    public List<IssueBase> getConnectedIssues() {
-//        return GraphDaoFactory.getIssueComponentDAO().getConnectedIssues(this);
-//    }
 
-    public List<IssueBase> getConnectedIssuesFromProject(final Long projectId) {
-        return DaoFactorySingelton.getInstance().getIssueComponentDAO().getConnectedIssuesFromProject(this, projectId);
+    public List<IssueBase> getConnectedIssues() {
+        return DaoFactorySingelton.getInstance().getIssueComponentDAO().getConnectedIssuesFromProject(this, projectid);
     }
 
     public Long getId() {

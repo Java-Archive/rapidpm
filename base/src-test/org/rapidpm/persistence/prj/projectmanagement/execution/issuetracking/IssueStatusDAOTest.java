@@ -30,8 +30,8 @@ public class IssueStatusDAOTest implements BaseDAOTest {
         assertTrue(statusList.get(0).equals(statusList.get(0)));
         assertEquals(statusList.get(0).hashCode(), statusList.get(0).hashCode());
 
-        assertFalse(statusList.get(0).equals(new IssueComment()));
-        assertNotSame(new IssueComment().hashCode(), statusList.get(0).hashCode());
+        assertFalse(statusList.get(0).equals(new IssueStatus()));
+        assertNotSame(new IssueStatus(PROJECTID).hashCode(), statusList.get(0).hashCode());
     }
 
 
@@ -66,7 +66,7 @@ public class IssueStatusDAOTest implements BaseDAOTest {
     @Test
     public void getConnectedIssus() {
         for (final IssueStatus status : dao.loadAllEntities(PROJECTID)) {
-            final List<IssueBase> statConnIssueList = status.getConnectedIssuesFromProject(PROJECTID);
+            final List<IssueBase> statConnIssueList = status.getConnectedIssues();
             final List<IssueBase> issueList = new ArrayList<>();
 
             for (final IssueBase issue : daoFactory.getIssueBaseDAO().loadAllEntities(PROJECTID)) {

@@ -30,8 +30,8 @@ public class IssueVersionDAOTest implements BaseDAOTest {
         assertTrue(versionList.get(0).equals(versionList.get(0)));
         assertEquals(versionList.get(0).hashCode(), versionList.get(0).hashCode());
 
-        assertFalse(versionList.get(0).equals(new IssueComment()));
-        assertNotSame(new IssueComment().hashCode(), versionList.get(0).hashCode());
+        assertFalse(versionList.get(0).equals(new IssueVersion()));
+        assertNotSame(new IssueVersion(PROJECTID).hashCode(), versionList.get(0).hashCode());
     }
 
     @Test
@@ -61,7 +61,7 @@ public class IssueVersionDAOTest implements BaseDAOTest {
     @Test
     public void getConnectedIssus() {
         for (final IssueVersion version : dao.loadAllEntities(PROJECTID)) {
-            final List<IssueBase> verConnIssueList = version.getConnectedIssuesFromProject(PROJECTID);
+            final List<IssueBase> verConnIssueList = version.getConnectedIssues();
             final List<IssueBase> issueList = new ArrayList<>();
 
             for (final IssueBase issue : daoFactory.getIssueBaseDAO().loadAllEntities(PROJECTID)) {

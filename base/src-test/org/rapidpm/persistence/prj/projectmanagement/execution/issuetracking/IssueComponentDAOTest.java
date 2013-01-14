@@ -29,8 +29,8 @@ public class IssueComponentDAOTest implements BaseDAOTest {
         assertTrue(componentList.get(0).equals(componentList.get(0)));
         assertEquals(componentList.get(0).hashCode(), componentList.get(0).hashCode());
 
-        assertFalse(componentList.get(0).equals(new IssueComment()));
-        assertNotSame(new IssueComment().hashCode(), componentList.get(0).hashCode());
+        assertFalse(componentList.get(0).equals(new IssueComponent()));
+        assertNotSame(new IssueComponent(PROJECTID).hashCode(), componentList.get(0).hashCode());
     }
 
 
@@ -62,7 +62,7 @@ public class IssueComponentDAOTest implements BaseDAOTest {
     @Test
     public void getConnectedIssus() {
         for (final IssueComponent component : dao.loadAllEntities(PROJECTID)) {
-            final List<IssueBase> compConnIssueList = component.getConnectedIssuesFromProject(PROJECTID);
+            final List<IssueBase> compConnIssueList = component.getConnectedIssues();
             final List<IssueBase> issueList = new ArrayList<>();
 
             for (final IssueBase issue : daoFactory.getIssueBaseDAO().loadAllEntities(PROJECTID)) {
