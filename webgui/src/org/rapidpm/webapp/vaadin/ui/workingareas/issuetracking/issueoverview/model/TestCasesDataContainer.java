@@ -27,24 +27,25 @@ public class TestCasesDataContainer extends AbstractIssueDataContainer {
 
     @Override
     protected List<Object> setVisibleColumns() {
-        List<Object> visibleColumns = new ArrayList<>();
+        final List<Object> visibleColumns = new ArrayList<>();
         visibleColumns.add(TEXT);
         return visibleColumns;
     }
 
     @Override
-    public void fillContainer(IssueBase issue) {
+    public void fillContainer(final IssueBase issue) {
         setCurrentIssue(issue);
         this.removeAllItems();
-        for (IssueTestCase testCase : issue.getTestcases()) {
+        for (final IssueTestCase testCase : issue.getTestcases()) {
             addTestcase(testCase);
         }
     }
 
-    public void addTestcase(IssueTestCase testCase) {
+    public void addTestcase(final IssueTestCase testCase) {
         if (testCase == null)
             throw new NullPointerException("testCase to add must not be null");
-        Item itemId = this.addItem(testCase);
+
+        final Item itemId = this.addItem(testCase);
         itemId.getItemProperty(TEXT).setValue(testCase.getText());
     }
 }

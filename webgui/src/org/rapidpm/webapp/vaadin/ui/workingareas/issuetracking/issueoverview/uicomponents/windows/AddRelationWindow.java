@@ -16,6 +16,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.mod
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.RelationsDataContainer;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,6 +33,7 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
     private final IssueOverviewScreen screen;
     private final RelationsDataContainer relationContainer;
     private final AddRelationWindow self;
+    private final ResourceBundle messageBundle;
 
     private ComboBox relationsSelect;
     private ComboBox issueSelect;
@@ -49,6 +51,7 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
 
         self = this;
         this.screen = screen;
+        this.messageBundle = screen.getMessagesBundle();
         this.relationContainer = (RelationsDataContainer)relationContainer;
         this.setModal(true);
         this.setResizable(false);
@@ -67,7 +70,7 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
         relationsSelect.addContainerProperty(PROPERTY_NAME, String.class, null);
         relationsSelect.setItemCaptionPropertyId(PROPERTY_NAME);
         for (final IssueRelation relation : relationList) {
-            Item item = relationsSelect.addItem(relation);
+            final Item item = relationsSelect.addItem(relation);
             item.getItemProperty(PROPERTY_NAME).setValue(relation.getRelationName());
         }
         relationsSelect.setNullSelectionAllowed(false);
@@ -84,7 +87,7 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
         final IssueBase selectedIssue = relationContainer.getCurrentIssue();
         for (final IssueBase connIssue : issueList) {
             if (selectedIssue != null && !connIssue.equals(selectedIssue)) {
-                Item item = issueSelect.addItem(connIssue);
+                final Item item = issueSelect.addItem(connIssue);
                 item.getItemProperty(PROPERTY_NAME).setValue(connIssue.name());
             }
         }
@@ -110,11 +113,11 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
 
     @Override
     public void doInternationalization() {
-        this.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_addrelationswindow"));
-        relationsSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_relations"));
-        issueSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_table"));
-        saveButton.setCaption(screen.getMessagesBundle().getString("add"));
-        cancelButton.setCaption(screen.getMessagesBundle().getString("cancel"));
+        this.setCaption(messageBundle.getString("issuetracking_issue_addrelationswindow"));
+        relationsSelect.setCaption(messageBundle.getString("issuetracking_issue_relations"));
+        issueSelect.setCaption(messageBundle.getString("issuetracking_issue_table"));
+        saveButton.setCaption(messageBundle.getString("add"));
+        cancelButton.setCaption(messageBundle.getString("cancel"));
     }
 
 
@@ -136,13 +139,13 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
                     if (logger.isDebugEnabled())
                         logger.debug("Issue to connect to is needed");
                     issueSelect.setRequired(true);
-                    issueSelect.setRequiredError("Issue to connect to is needed");
+                    issueSelect.setRequiredError(messageBundle.getString("issuetracking_issue_details_relationissue"));
                 }
             } else {
                 if (logger.isDebugEnabled())
                     logger.debug("Relations to connect issues is needed");
                 relationsSelect.setRequired(true);
-                relationsSelect.setRequiredError("Relations to connect issues is needed");
+                relationsSelect.setRequiredError(messageBundle.getString("issuetracking_issue_details_relation"));
             }
 
         }

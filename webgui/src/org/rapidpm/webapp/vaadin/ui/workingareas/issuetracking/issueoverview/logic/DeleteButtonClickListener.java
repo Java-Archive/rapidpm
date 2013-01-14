@@ -25,6 +25,7 @@ public class DeleteButtonClickListener implements Button.ClickListener {
             throw new NullPointerException("Screen must not be null");
         if (issueTree == null)
             throw new NullPointerException("Tree must not be null");
+
         this.screen = screen;
         this.issueTree = issueTree;
     }

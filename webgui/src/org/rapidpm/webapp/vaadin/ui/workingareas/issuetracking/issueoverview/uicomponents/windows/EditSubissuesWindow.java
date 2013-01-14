@@ -13,8 +13,9 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.log
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainerSingleton;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,7 +28,8 @@ public class EditSubissuesWindow extends Window implements Internationalizationa
     private static Logger logger = Logger.getLogger(EditSubissuesWindow.class);
 
     private final IssueOverviewScreen screen;
-    private EditSubissuesWindow self;
+    private final EditSubissuesWindow self;
+    private final ResourceBundle messageBundle;
 
     private Tree subIssueTree;
     private Button saveButton;
@@ -40,6 +42,7 @@ public class EditSubissuesWindow extends Window implements Internationalizationa
 
         self = this;
         this.screen = screen;
+        this.messageBundle = screen.getMessagesBundle();
         this.setModal(true);
         this.setResizable(false);
         this.setHeight("100%");
@@ -82,10 +85,14 @@ public class EditSubissuesWindow extends Window implements Internationalizationa
         subIssueTree.setImmediate(true);
 
         subIssueTree.setItemCaptionPropertyId(TreeIssueBaseContainer.PROPERTY_CAPTION);
-        for (Object id : subIssueTree.rootItemIds())
+        for (final Object id : subIssueTree.rootItemIds())
             subIssueTree.expandItemsRecursively(id);
-        if (subIssueTree.getItemIds().toArray().length > 0)
+        if (subIssueTree.getItemIds().toArray().length > 0) {
             subIssueTree.select(subIssueTree.getItemIds().toArray()[0]);
+        } else {
+            if (logger.isDebugEnabled())
+                logger.debug("No items to show");
+        }
 
         final TreeSubissueSortDropHandler dropHandler = new TreeSubissueSortDropHandler(subIssueTree);
 
@@ -105,13 +112,13 @@ public class EditSubissuesWindow extends Window implements Internationalizationa
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 if (expanded) {
-                    for (Object id : subIssueTree.rootItemIds())
+                    for (final Object id : subIssueTree.rootItemIds())
                         subIssueTree.collapseItemsRecursively(id);
-                    expandButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_expand"));
+                    expandButton.setCaption(messageBundle.getString("issuetracking_issue_expand"));
                 } else {
-                    for (Object id : subIssueTree.rootItemIds())
+                    for (final Object id : subIssueTree.rootItemIds())
                         subIssueTree.expandItemsRecursively(id);
-                    expandButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_collapse"));
+                    expandButton.setCaption(messageBundle.getString("issuetracking_issue_collapse"));
                 }
                 expanded = !expanded;
             }
@@ -124,16 +131,16 @@ public class EditSubissuesWindow extends Window implements Internationalizationa
 
     @Override
     public void doInternationalization() {
-        this.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_dragdrop_edit"));
-        saveButton.setCaption(screen.getMessagesBundle().getString("save"));
-        cancelButton.setCaption(screen.getMessagesBundle().getString("cancel"));
-        expandButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_collapse"));
+        this.setCaption(messageBundle.getString("issuetracking_issue_dragdrop_edit"));
+        saveButton.setCaption(messageBundle.getString("save"));
+        cancelButton.setCaption(messageBundle.getString("cancel"));
+        expandButton.setCaption(messageBundle.getString("issuetracking_issue_collapse"));
     }
 
     private class SaveButtonClickListener implements Button.ClickListener {
         private final TreeSubissueSortDropHandler dropHandler;
 
-        public SaveButtonClickListener(TreeSubissueSortDropHandler dropHandler) {
+        public SaveButtonClickListener(final TreeSubissueSortDropHandler dropHandler) {
             if (dropHandler == null)
                 throw new NullPointerException("DropHandler is null");
 
@@ -142,12 +149,12 @@ public class EditSubissuesWindow extends Window implements Internationalizationa
 
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            Long projectId = screen.getUi().getCurrentProject().getId();
-            IssueBaseDAO dao = DaoFactorySingelton.getInstance().getIssueBaseDAO(projectId);
-            HashMap<IssueBase, List<IssueBase>> map = dropHandler.getChangedIssues();
+            final Long projectId = screen.getUi().getCurrentProject().getId();
+            final IssueBaseDAO dao = DaoFactorySingelton.getInstance().getIssueBaseDAO(projectId);
+            final Map<IssueBase, List<IssueBase>> map = dropHandler.getChangedIssues();
             if (!map.isEmpty()) {
-                for (IssueBase key : map.keySet()) {
-                    for (IssueBase value : map.get(key)) {
+                for (final IssueBase key : map.keySet()) {
+                    for (final IssueBase value : map.get(key)) {
                         if (value != null) {
                             key.addSubIssue(value);
                         } else {

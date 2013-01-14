@@ -10,6 +10,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.mod
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.CommentsDataContainer;
 
 import java.util.Date;
+import java.util.ResourceBundle;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,6 +25,7 @@ public class AddCommentWindow extends RapidWindow implements Internationalizatio
     private final IssueOverviewScreen screen;
     private final CommentsDataContainer commentContainer;
     private final AddCommentWindow self;
+    private final ResourceBundle messageBundle;
 
     private TextArea commentText;
     private Button saveButton;
@@ -40,6 +42,7 @@ public class AddCommentWindow extends RapidWindow implements Internationalizatio
 
         self = this;
         this.screen = screen;
+        this.messageBundle = screen.getMessagesBundle();
         this.commentContainer = (CommentsDataContainer) commentContainer;
         this.setModal(true);
         this.setResizable(false);
@@ -73,10 +76,10 @@ public class AddCommentWindow extends RapidWindow implements Internationalizatio
 
     @Override
     public void doInternationalization() {
-        this.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_addcommentwindow"));
-        commentText.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_comments"));
-        saveButton.setCaption(screen.getMessagesBundle().getString("add"));
-        cancelButton.setCaption(screen.getMessagesBundle().getString("cancel"));
+        this.setCaption(messageBundle.getString("issuetracking_issue_addcommentwindow"));
+        commentText.setCaption(messageBundle.getString("issuetracking_issue_comments"));
+        saveButton.setCaption(messageBundle.getString("add"));
+        cancelButton.setCaption(messageBundle.getString("cancel"));
     }
 
 
@@ -99,7 +102,7 @@ public class AddCommentWindow extends RapidWindow implements Internationalizatio
                 if (logger.isDebugEnabled())
                     logger.debug("Text for comment is needed");
                 commentText.setRequired(true);
-                commentText.setRequiredError("Text for comment is needed");
+                commentText.setRequiredError(messageBundle.getString("issuetracking_issue_details_commenttext"));
             }
         }
     }

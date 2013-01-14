@@ -1,12 +1,9 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic;
 
 import com.vaadin.data.Property;
-import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Tree;
 import org.apache.log4j.Logger;
-
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,7 +20,8 @@ public class TreeActivateOnValueChangeListener implements Tree.ValueChangeListen
     public TreeActivateOnValueChangeListener(final Button[] buttonList) {
         if (buttonList == null)
             throw new NullPointerException("DetailsLayout must bot be null");
-        for (Button button : buttonList) {
+
+        for (final Button button : buttonList) {
             if (button == null)
                 throw new NullPointerException("A button in the array was null");
         }
@@ -37,14 +35,14 @@ public class TreeActivateOnValueChangeListener implements Tree.ValueChangeListen
             logger.debug("Activate Buttons");
         }
         if (event.getProperty() != null && event.getProperty().getValue() != null)
-            for (Button button : buttonList)
+            for (final Button button : buttonList)
                 if (button != null) {
                     button.setEnabled(true);
                 } else {
                     logger.error("The Button to activate was null.");
                 }
         else
-            for (Button button : buttonList)
+            for (final Button button : buttonList)
                 if (button != null) {
                     button.setEnabled(false);
                 } else {
