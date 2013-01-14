@@ -271,7 +271,7 @@ public class ProjektplanungScreen extends Screen {
     }
 
     public void fillTreePanel(final PlanningUnit selectedPlanningUnit, final PlannedProject projekt) {
-        planningUnitsTree = new PlanningUnitsTree(this, selectedPlanningUnit, projekt);
+        planningUnitsTree = new PlanningUnitsTree(this, selectedPlanningUnit);
         planningUnitsTree.select(selectedPlanningUnit);
         planningUnitsTreePanelLayout = new PlanningUnitsTreePanelLayout(projekt, ProjektplanungScreen.this);
         treePanel.removeAllComponents();

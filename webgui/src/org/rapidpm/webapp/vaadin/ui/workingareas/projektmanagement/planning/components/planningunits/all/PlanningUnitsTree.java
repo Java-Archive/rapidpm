@@ -2,9 +2,9 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Tree;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeSortDropHandler;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeValueChangeListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.PlanningUnitBeanItemContainer;
 
@@ -24,8 +24,7 @@ public class PlanningUnitsTree extends Tree{
 
 
 
-    public PlanningUnitsTree(final ProjektplanungScreen screen, final PlanningUnit selectedPlanningUnit,
-                             final PlannedProject projekt){
+    public PlanningUnitsTree(final ProjektplanungScreen screen, final PlanningUnit selectedPlanningUnit){
         container = new PlanningUnitBeanItemContainer();
         if (selectedPlanningUnit != null) {
             setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
@@ -40,6 +39,8 @@ public class PlanningUnitsTree extends Tree{
             while (iterator.hasNext()){
                 expandItemsRecursively(iterator.next());
             }
+            setDragMode(TreeDragMode.NODE);
+            setDropHandler(new TreeSortDropHandler(this, container));
         }
     }
 
