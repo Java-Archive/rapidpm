@@ -456,32 +456,32 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
         if (typeSelect.getValue() == null) {
             setComponentRequired(typeSelect);
-            throw new MissingAttributeException("No type selected");
+            throw new MissingAttributeException(typeSelect.getCaption());
         }
 
         if (statusSelect.getValue() == null) {
             setComponentRequired(statusSelect);
-            throw new MissingAttributeException("No Status selected");
+            throw new MissingAttributeException(statusSelect.getCaption());
         }
 
         if (prioritySelect.getValue() == null) {
             setComponentRequired(prioritySelect);
-            throw new MissingAttributeException("No Priority selected");
+            throw new MissingAttributeException(prioritySelect.getCaption());
         }
 
         if (assigneeSelect.getValue() == null) {
             setComponentRequired(assigneeSelect);
-            throw new MissingAttributeException("No Assignee selected");
+            throw new MissingAttributeException(assigneeSelect.getCaption());
         }
 
         if (storyPointSelect.getValue() == null) {
             setComponentRequired(storyPointSelect);
-            throw new MissingAttributeException("No StoryPoints selected");
+            throw new MissingAttributeException(storyPointSelect.getCaption());
         }
 
         if (versionSelect.getValue() == null) {
             setComponentRequired(versionSelect);
-            throw new MissingAttributeException("No Version selected");
+            throw new MissingAttributeException(versionSelect.getCaption());
         }
 
 
@@ -532,7 +532,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     private void setComponentRequired(final AbstractField comp) {
         comp.setRequired(true);
         comp.setRequiredError(messageBundle.getString("issuetracking_issue_details_missingentry"));
-        logger.warn(comp.getRequiredError() + " : " + comp.getCaption());
+        logger.warn(comp.getRequiredError() + ": " + comp.getCaption());
     }
 
 

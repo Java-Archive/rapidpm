@@ -64,7 +64,8 @@ public class DetailsSaveButtonClickListener implements Button.ClickListener {
                         logger.debug("Couldn't save Issue");
                 }
             } catch (MissingAttributeException e) {
-                Notification.show(e.getLocalizedMessage(), Notification.Type.WARNING_MESSAGE);
+                Notification.show(messageBundle.getString("issuetracking_issue_details_missingentry")+": "+e.getMessage(),
+                        Notification.Type.WARNING_MESSAGE);
             } catch (NoNameException e) {
                 Notification.show(messageBundle.getString("issuetracking_exception_noname"),
                         Notification.Type.WARNING_MESSAGE);
