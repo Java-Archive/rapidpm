@@ -12,8 +12,9 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.Iss
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainerSingleton;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainer;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.AddIssueWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.EditSubissuesWindow;
+
+import java.util.ResourceBundle;
 
 
 /**
@@ -27,6 +28,7 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
     private static Logger logger = Logger.getLogger(IssueTreeLayout.class);
 
     private final IssueOverviewScreen screen;
+    private final ResourceBundle messageBundle;
 
     private Button addButton;
     private Button deleteButton;
@@ -42,6 +44,7 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
             throw new NullPointerException("TabSheet must not be null");
 
         this.screen = screen;
+        this.messageBundle = screen.getMessagesBundle();
         this.setSizeFull();
         setComponents(issueTabSheet);
         doInternationalization();
@@ -88,8 +91,7 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 
         issueTree = new Tree(screen.getUi().getCurrentProject().getProjektName());
         issueTree.setNullSelectionAllowed(false);
-        issueTree.setContainerDataSource(TreeIssueBaseContainerSingleton.getInstance(screen.getUi().getCurrentProject()
-        ));
+        issueTree.setContainerDataSource(TreeIssueBaseContainerSingleton.getInstance(screen.getUi().getCurrentProject()));
         issueTree.setImmediate(true);
         if (issueTabSheet != null) {
             issueTree.addValueChangeListener(new TreeValueChangeListener(issueTabSheet, issueTree));
@@ -97,10 +99,14 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         issueTree.addValueChangeListener(new TreeActivateOnValueChangeListener(new Button[]{deleteButton}));
 
         issueTree.setItemCaptionPropertyId(TreeIssueBaseContainer.PROPERTY_CAPTION);
-        for (Object id : issueTree.rootItemIds())
+        for (final Object id : issueTree.rootItemIds())
             issueTree.expandItemsRecursively(id);
-        if (issueTree.getItemIds().toArray().length > 0)
+        if (issueTree.getItemIds().toArray().length > 0) {
             issueTree.select(issueTree.getItemIds().toArray()[0]);
+        } else {
+            if (logger.isDebugEnabled())
+                logger.debug("No items to show");
+        }
 
         treePanel.addComponent(issueTree);
         treePanel.setSizeFull();
@@ -116,13 +122,13 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 if (expanded) {
-                    for (Object id : issueTree.rootItemIds())
+                    for (final Object id : issueTree.rootItemIds())
                         issueTree.collapseItemsRecursively(id);
-                    expandButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_expand"));
+                    expandButton.setCaption(messageBundle.getString("issuetracking_issue_expand"));
                 } else {
-                    for (Object id : issueTree.rootItemIds())
+                    for (final Object id : issueTree.rootItemIds())
                         issueTree.expandItemsRecursively(id);
-                    expandButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_collapse"));
+                    expandButton.setCaption(messageBundle.getString("issuetracking_issue_collapse"));
                 }
                 expanded = !expanded;
             }
@@ -145,19 +151,21 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
                 final TreeIssueBaseContainer container;
                 container = TreeIssueBaseContainerSingleton.getInstance(project);
                 if (container.getItemIds().isEmpty()) {
-                    boolean mapped = new MappingPlanningUnitToIssueBase(project).startMapping();
+                    final boolean mapped = new MappingPlanningUnitToIssueBase(project).startMapping();
                     if (mapped) {
                         container.refresh();
                     } else {
                         if (logger.isDebugEnabled())
-                            logger.debug("No PlanningUnits present to map");
+                            logger.debug("No PlanningUnits present fpr mapping");
 
-                        Notification.show("No PlanningUnits present.", Notification.Type.HUMANIZED_MESSAGE);
+                        Notification.show(messageBundle.getString("issuetracking_error_noplanningunits"),
+                                Notification.Type.HUMANIZED_MESSAGE);
                     }
 
                 } else {
                     logger.error("Tree has already elements");
-                    Notification.show("Tree has already elements", Notification.Type.ERROR_MESSAGE);
+                    Notification.show(messageBundle.getString("issuetracking_error_treehaselements"),
+                            Notification.Type.ERROR_MESSAGE);
                 }
 
             }
@@ -166,15 +174,15 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
 
     @Override
     public void doInternationalization() {
-        addButton.setCaption(screen.getMessagesBundle().getString("add"));
-        deleteButton.setCaption(screen.getMessagesBundle().getString("delete"));
-        expandButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_collapse"));
-        subissueButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_dragdrop_edit"));
+        addButton.setCaption(messageBundle.getString("add"));
+        deleteButton.setCaption(messageBundle.getString("delete"));
+        expandButton.setCaption(messageBundle.getString("issuetracking_issue_collapse"));
+        subissueButton.setCaption(messageBundle.getString("issuetracking_issue_dragdrop_edit"));
     }
 
     public void setSelectedItemByIssue(IssueBase issue) {
-        for (Object itemId : issueTree.getItemIds()) {
-            IssueBase treeIssue = (IssueBase)issueTree.getContainerDataSource().getContainerProperty(itemId,
+        for (final Object itemId : issueTree.getItemIds()) {
+            final IssueBase treeIssue = (IssueBase)issueTree.getContainerDataSource().getContainerProperty(itemId,
                     TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
             if (treeIssue.equals(issue)){
                 issueTree.select(itemId);

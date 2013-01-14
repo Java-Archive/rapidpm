@@ -19,7 +19,7 @@ public class SingleRowEditTableFieldFactory implements TableFieldFactory {
 
     private Object entity;
 
-    public SingleRowEditTableFieldFactory(Object entity) {
+    public SingleRowEditTableFieldFactory(final Object entity) {
         if (entity == null)
             throw new NullPointerException("Entity must not be null");
 
@@ -27,7 +27,8 @@ public class SingleRowEditTableFieldFactory implements TableFieldFactory {
     }
 
     @Override
-    public Field<?> createField(Container container, Object itemId, Object propertyId, Component uiContext) {
+    public Field<?> createField(final Container container, final Object itemId, final Object propertyId,
+                                final Component uiContext) {
         if (logger.isDebugEnabled()) {
             logger.debug("CreateField given itemId   : " + this.entity);
             logger.debug("CreateField function itemId: " + itemId);

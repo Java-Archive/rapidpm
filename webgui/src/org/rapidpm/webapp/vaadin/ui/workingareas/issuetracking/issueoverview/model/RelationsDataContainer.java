@@ -1,7 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model;
 
 import org.neo4j.graphdb.Direction;
-//import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelationDAO;
@@ -41,7 +40,7 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
 
     @Override
     protected List<Object> setVisibleColumns() {
-        List<Object> visibleColumns = new ArrayList<>();
+        final List<Object> visibleColumns = new ArrayList<>();
         visibleColumns.add(DIRECTION);
         visibleColumns.add(NAME);
         visibleColumns.add(ISSUEID);
@@ -54,11 +53,10 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
         resetTransactions();
         this.removeAllItems();
         final IssueRelationDAO relationDAO = DaoFactorySingelton.getInstance().getIssueRelationDAO();
-        Object itemId;
         for (IssueRelation relation : relationDAO.loadAllEntities(issue.getProjectId())) {
 
             for (IssueBase connIssue : issue.getConnectedIssues(relation, Direction.OUTGOING)) {
-                itemId = this.addItem();
+                final Object itemId = this.addItem();
                 this.getContainerProperty(itemId,DIRECTION).setValue(Direction.OUTGOING);
                 this.getContainerProperty(itemId, NAME).setValue(relation.getOutgoingName());
                 this.getContainerProperty(itemId, ISSUEID).setValue(connIssue.getText());
@@ -66,8 +64,8 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
                 this.getContainerProperty(itemId,RELATION).setValue(relation);
             }
 
-            for (IssueBase connIssue : issue.getConnectedIssues(relation, Direction.INCOMING)) {
-                itemId = this.addItem();
+            for (final IssueBase connIssue : issue.getConnectedIssues(relation, Direction.INCOMING)) {
+                final Object itemId = this.addItem();
                 this.getContainerProperty(itemId,DIRECTION).setValue(Direction.INCOMING);
                 this.getContainerProperty(itemId, NAME).setValue(relation.getIncomingName());
                 this.getContainerProperty(itemId, ISSUEID).setValue(connIssue.getText());

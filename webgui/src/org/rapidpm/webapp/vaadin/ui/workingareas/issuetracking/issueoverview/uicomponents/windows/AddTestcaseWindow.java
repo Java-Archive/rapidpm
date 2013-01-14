@@ -9,6 +9,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.Iss
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.AbstractIssueDataContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TestCasesDataContainer;
 
+import java.util.ResourceBundle;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Alvin Schiller
@@ -22,6 +24,7 @@ public class AddTestcaseWindow extends RapidWindow implements Internationalizati
     private final IssueOverviewScreen screen;
     private final TestCasesDataContainer testcaseContainer;
     private final AddTestcaseWindow self;
+    private final ResourceBundle messageBundle;
 
     private TextArea testcaseText;
     private Button saveButton;
@@ -38,6 +41,7 @@ public class AddTestcaseWindow extends RapidWindow implements Internationalizati
 
         self = this;
         this.screen = screen;
+        this.messageBundle = screen.getMessagesBundle();
         this.testcaseContainer = (TestCasesDataContainer) testcaseContainer;
         this.setModal(true);
         this.setResizable(false);
@@ -71,10 +75,10 @@ public class AddTestcaseWindow extends RapidWindow implements Internationalizati
 
     @Override
     public void doInternationalization() {
-        this.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_addtestcasewindow"));
-        testcaseText.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_testcases"));
-        saveButton.setCaption(screen.getMessagesBundle().getString("add"));
-        cancelButton.setCaption(screen.getMessagesBundle().getString("cancel"));
+        this.setCaption(messageBundle.getString("issuetracking_issue_addtestcasewindow"));
+        testcaseText.setCaption(messageBundle.getString("issuetracking_issue_testcases"));
+        saveButton.setCaption(messageBundle.getString("add"));
+        cancelButton.setCaption(messageBundle.getString("cancel"));
     }
 
 
@@ -95,7 +99,7 @@ public class AddTestcaseWindow extends RapidWindow implements Internationalizati
                 if (logger.isDebugEnabled())
                     logger.debug("Text for testcase is needed");
                 testcaseText.setRequired(true);
-                testcaseText.setRequiredError("Text for testcase is needed");
+                testcaseText.setRequiredError(messageBundle.getString("issuetracking_issue_details_testcasetext"));
             }
         }
     }

@@ -3,6 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.mo
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,9 +14,9 @@ import java.util.HashMap;
  */
 public class TreeIssueBaseContainerSingleton {
 
-    private static final HashMap<PlannedProject, TreeIssueBaseContainer> instanceMap = new HashMap<>();
+    private static final Map<PlannedProject, TreeIssueBaseContainer> instanceMap = new HashMap<>();
 
-    public static TreeIssueBaseContainer getInstance(PlannedProject project) {
+    public static TreeIssueBaseContainer getInstance(final PlannedProject project) {
         if (project == null)
             throw new NullPointerException("Project must not be null");
 

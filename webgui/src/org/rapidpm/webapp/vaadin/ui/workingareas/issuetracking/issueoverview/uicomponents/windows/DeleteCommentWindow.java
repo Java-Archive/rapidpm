@@ -7,6 +7,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 
 import java.util.Collection;
+import java.util.ResourceBundle;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,6 +22,7 @@ public class DeleteCommentWindow extends RapidWindow implements Internationaliza
     private final IssueOverviewScreen screen;
     private final Table commentTable;
     private final DeleteCommentWindow self;
+    private final ResourceBundle messageBundle;
 
     private Label questionLabel;
     private Button yesButton;
@@ -37,6 +39,7 @@ public class DeleteCommentWindow extends RapidWindow implements Internationaliza
 
         self = this;
         this.screen = screen;
+        this.messageBundle = screen.getMessagesBundle();
         this.commentTable = commentTable;
         removeItemId = commentTable.getValue();
         this.setModal(true);
@@ -46,13 +49,13 @@ public class DeleteCommentWindow extends RapidWindow implements Internationaliza
     }
 
     private void setComponents() {
-        VerticalLayout contentLayout = new VerticalLayout();
+        final VerticalLayout contentLayout = new VerticalLayout();
         contentLayout.setSpacing(true);
 
         questionLabel = new Label();
         contentLayout.addComponent(questionLabel);
 
-        HorizontalLayout buttonLayout = new HorizontalLayout();
+        final HorizontalLayout buttonLayout = new HorizontalLayout();
         yesButton = new Button();
         yesButton.addClickListener(new YesButtonClickListener());
         noButton = new Button();
@@ -67,21 +70,21 @@ public class DeleteCommentWindow extends RapidWindow implements Internationaliza
 
     @Override
     public void doInternationalization() {
-        setCaption(screen.getMessagesBundle().getString("issuetracking_issue_deletecommentwindow"));
+        setCaption(messageBundle.getString("issuetracking_issue_deletecommentwindow"));
 
-        questionLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_deletequestion"));
+        questionLabel.setCaption(messageBundle.getString("issuetracking_issue_deletequestion"));
         final Collection<?> ids = commentTable.getItem(removeItemId).getItemPropertyIds();
         String labelValue = "-      ";
         Object value;
-        for (Object propId : ids) {
+        for (final Object propId : ids) {
                 value = commentTable.getItem(removeItemId).getItemProperty(propId).getValue();
                 if (value != null)
                     labelValue += value.toString() + "   -   ";
         }
         questionLabel.setValue(labelValue);
 
-        yesButton.setCaption(screen.getMessagesBundle().getString("yes"));
-        noButton.setCaption(screen.getMessagesBundle().getString("no"));
+        yesButton.setCaption(messageBundle.getString("yes"));
+        noButton.setCaption(messageBundle.getString("no"));
     }
 
     private class YesButtonClickListener implements Button.ClickListener {

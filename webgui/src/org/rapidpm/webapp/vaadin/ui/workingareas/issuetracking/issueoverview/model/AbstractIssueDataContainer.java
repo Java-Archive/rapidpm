@@ -18,7 +18,7 @@ public abstract class AbstractIssueDataContainer extends IndexedContainer {
     protected static Logger logger = Logger.getLogger(AbstractIssueDataContainer.class);
 
     private final IssueOverviewScreen screen;
-    private List<Object> visibleColumns;
+    private final List<Object> visibleColumns;
     private IssueBase currentIssue;
 
     public AbstractIssueDataContainer(final IssueOverviewScreen screen) {
@@ -36,9 +36,10 @@ public abstract class AbstractIssueDataContainer extends IndexedContainer {
         return currentIssue;
     }
 
-    protected void setCurrentIssue(IssueBase issue) {
+    protected void setCurrentIssue(final IssueBase issue) {
         if (issue == null)
             throw new NullPointerException("Issue to set must not be null");
+
         currentIssue = issue;
     }
 

@@ -48,7 +48,7 @@ public class IssueTableLayout extends ComponentEditableVLayout {
 
     @Override
     protected AbstractOrderedLayout buildUnsaveableForm() {
-        VerticalLayout componentsLayout = new VerticalLayout();
+        final VerticalLayout componentsLayout = new VerticalLayout();
 
         issueTable = new Table();
         issueTable.setColumnCollapsingAllowed(true);
@@ -63,7 +63,7 @@ public class IssueTableLayout extends ComponentEditableVLayout {
                 DUE_DATE_PLANNED, DUE_DATE_RESOLVED, DUE_DATE_CLOSED, VERSION,STORYPOINTS, SUMMARY};
 
         int i = 0;
-        for (String name : headerNames) {
+        for (final String name : headerNames) {
             issueTable.addContainerProperty(name, String.class, "");
             if (i < 4)
                 issueTable.setColumnCollapsed(name, false);
@@ -77,9 +77,9 @@ public class IssueTableLayout extends ComponentEditableVLayout {
         return componentsLayout;
     }
 
-    public void setPropertiesFromIssueList(List<IssueBase> issues) {
+    public void setPropertiesFromIssueList(final List<IssueBase> issues) {
         issueTable.removeAllItems();
-        for (IssueBase issue : issues) {
+        for (final IssueBase issue : issues) {
             issueTable.addItem(new Object[] {issue.getText(),
                     issue.getStatus() == null ? "" : issue.getStatus().getStatusName(),
                     issue.getPriority() == null ? "" : issue.getPriority().getPriorityName(),

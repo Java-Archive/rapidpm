@@ -12,6 +12,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NameAl
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NoNameException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsLayout;
 
+import java.util.ResourceBundle;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Alvin Schiller
@@ -24,6 +26,7 @@ public class DetailsSaveButtonClickListener implements Button.ClickListener {
 
     private final IssueDetailsLayout detailsLayout;
     private final Screen screen;
+    private final ResourceBundle messageBundle;
 
     public DetailsSaveButtonClickListener(final Screen screen, final IssueDetailsLayout detailsLayout) {
         if (screen == null)
@@ -32,6 +35,7 @@ public class DetailsSaveButtonClickListener implements Button.ClickListener {
             throw new NullPointerException("DetailsLayout must bot be null");
 
         this.screen = screen;
+        this.messageBundle = screen.getMessagesBundle();
         this.detailsLayout = detailsLayout;
     }
 
@@ -40,14 +44,14 @@ public class DetailsSaveButtonClickListener implements Button.ClickListener {
         final IssueBase issueBase = detailsLayout.getCurrentIssue();
         final IssueBaseDAO dao = DaoFactorySingelton.getInstance().getIssueBaseDAO();
         if (!dao.existInDatabase(issueBase.getId())) {
-            Notification.show(screen.getMessagesBundle().getString("issuetracking_exception_issuedeleted"),
+            Notification.show(messageBundle.getString("issuetracking_exception_issuedeleted"),
                     Notification.Type.WARNING_MESSAGE);
         } else {
             try {
                 IssueBase issue = detailsLayout.setIssueProperties(false);
                 if (issue != null) {
                     try {
-                        issue = DaoFactorySingelton.getInstance().getIssueBaseDAO().persist(issue);
+                        issue = dao.persist(issue);
                     } catch (IllegalArgumentException e) {
                         throw new NameAlreadyInUseException();
                     }
@@ -58,12 +62,13 @@ public class DetailsSaveButtonClickListener implements Button.ClickListener {
                         logger.debug("Couldn't save Issue");
                 }
             } catch (MissingAttributeException e) {
-                Notification.show(e.getLocalizedMessage(), Notification.Type.WARNING_MESSAGE);
+                Notification.show(messageBundle.getString("issuetracking_issue_details_missingentry")+": "+e.getMessage(),
+                        Notification.Type.WARNING_MESSAGE);
             } catch (NoNameException e) {
-                Notification.show(screen.getMessagesBundle().getString("issuetracking_exception_noname"),
+                Notification.show(messageBundle.getString("issuetracking_exception_noname"),
                         Notification.Type.WARNING_MESSAGE);
             } catch (NameAlreadyInUseException e) {
-                Notification.show(screen.getMessagesBundle().getString("issuetracking_exception_nameinuse"),
+                Notification.show(messageBundle.getString("issuetracking_exception_nameinuse"),
                         Notification.Type.WARNING_MESSAGE);
             }
         }

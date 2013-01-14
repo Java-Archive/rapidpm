@@ -4,7 +4,6 @@ import com.vaadin.data.Property;
 import com.vaadin.ui.Tree;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.AbstractIssueDataContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainer;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTabSheet;
 
@@ -45,11 +44,11 @@ public class TreeValueChangeListener implements Tree.ValueChangeListener {
         }
     }
 
-    private void changeDetails(Object itemId) {
+    private void changeDetails(final Object itemId) {
         if (itemId == null)
             throw new NullPointerException("ItemId must not be null");
 
-        IssueBase issueBase = (IssueBase)issueTree.getContainerDataSource().getContainerProperty(itemId,
+        final IssueBase issueBase = (IssueBase)issueTree.getContainerDataSource().getContainerProperty(itemId,
                 TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
         if (issueBase != null) {
             issueTabSheet.getDetailsLayout().setDetailsFromIssue(issueBase);
@@ -57,9 +56,9 @@ public class TreeValueChangeListener implements Tree.ValueChangeListener {
             if (!issueTree.hasChildren(itemId)) {
                 issueTabSheet.setTableTabOnlyEnabled(false);
             } else {
-                List<IssueBase> issues = new ArrayList<>();
+                final List<IssueBase> issues = new ArrayList<>();
                 issueTabSheet.setTableTabOnlyEnabled(true);
-                for (IssueBase childissue : issueBase.getSubIssues()) {
+                for (final IssueBase childissue : issueBase.getSubIssues()) {
                     issues.add(childissue);
                 }
                 issueTabSheet.getTableLayout().setPropertiesFromIssueList(issues);

@@ -7,6 +7,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainer;
 
+import java.util.ResourceBundle;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Alvin Schiller
@@ -18,6 +20,7 @@ public class DeleteIssueWindow extends RapidWindow implements Internationalizati
     private static Logger logger = Logger.getLogger(DeleteIssueWindow.class);
 
     private final IssueOverviewScreen screen;
+    private final ResourceBundle messageBundle;
     private Label deleteLabel;
     private Button yesButton;
     private Button noButton;
@@ -34,6 +37,7 @@ public class DeleteIssueWindow extends RapidWindow implements Internationalizati
             throw new NullPointerException("IssueTree must not be NULL!");
 
         this.screen = screen;
+        this.messageBundle = screen.getMessagesBundle();
         this.issueTree = issueTree;
         this.setModal(true);
         this.setResizable(false);
@@ -42,7 +46,7 @@ public class DeleteIssueWindow extends RapidWindow implements Internationalizati
     }
 
     private void setComponentens() {
-        VerticalLayout contentLayout = new VerticalLayout();
+        final VerticalLayout contentLayout = new VerticalLayout();
         contentLayout.setSpacing(true);
         contentLayout.setSizeFull();
 
@@ -76,14 +80,14 @@ public class DeleteIssueWindow extends RapidWindow implements Internationalizati
 
     @Override
     public void doInternationalization() {
-        setCaption(screen.getMessagesBundle().getString("issuetracking_issue_deletewindow"));
+        setCaption(messageBundle.getString("issuetracking_issue_deletewindow"));
 
-        deleteLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_deletequestion"));
+        deleteLabel.setCaption(messageBundle.getString("issuetracking_issue_deletequestion"));
         deleteLabel.setValue(issueTree.getItemCaption(issueTree.getValue()));
 
-        deleteRecursive.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_deleterecursive"));
-        yesButton.setCaption(screen.getMessagesBundle().getString("yes"));
-        noButton.setCaption(screen.getMessagesBundle().getString("no"));
+        deleteRecursive.setCaption(messageBundle.getString("issuetracking_issue_deleterecursive"));
+        yesButton.setCaption(messageBundle.getString("yes"));
+        noButton.setCaption(messageBundle.getString("no"));
     }
 
 
@@ -95,7 +99,7 @@ public class DeleteIssueWindow extends RapidWindow implements Internationalizati
             boolean success = false;
             final Object item = issueTree.getValue();
             final TreeIssueBaseContainer container = ((TreeIssueBaseContainer)issueTree.getContainerDataSource());
-            Object parent = issueTree.getParent(item);
+            final Object parent = issueTree.getParent(item);
             if (parent == null && !issueTree.getItemIds().isEmpty()) {
                 issueTree.setValue(issueTree.getItemIds().toArray()[0]);
             } else {
@@ -111,7 +115,7 @@ public class DeleteIssueWindow extends RapidWindow implements Internationalizati
                 }
             }
             if (!success)
-                Notification.show(screen.getMessagesBundle().getString("issuetracking_issue_deleteerror"));
+                Notification.show(messageBundle.getString("issuetracking_issue_deleteerror"));
             self.close();
         }
     }
