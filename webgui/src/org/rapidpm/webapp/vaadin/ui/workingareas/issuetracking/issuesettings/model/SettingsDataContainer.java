@@ -64,19 +64,34 @@ public class SettingsDataContainer<T> extends IndexedContainer {
     }
 
     public void addEntityToTable(final T entity) {
-        final Field[] fieldnames = clazz.getDeclaredFields();
+        if (entity == null)
+            throw new NullPointerException("Entity is null");
+
+        final Item item = this.addItem(entity);
+        if (item != null) {
+            setItemFromObject(item, entity);
+        } else {
+            if (logger.isDebugEnabled())
+                logger.debug("No Item added");
+        }
+    }
+
+    private void setItemFromObject(final Item item, final Object entity) {
+        if (item == null)
+            throw new NullPointerException("Item is null");
+        if (entity == null)
+            throw new NullPointerException("Entity is null");
 
         if (logger.isDebugEnabled())
-            logger.debug("entity: " + entity);
+            logger.debug("set item from entity: " + entity);
 
-        final Item itemId = this.addItem(entity);
-        for (final Field field : fieldnames) {
+        for (final Field field : clazz.getDeclaredFields()) {
             if (field.isAnnotationPresent(Simple.class) && !field.isAnnotationPresent(NonVisible.class)){
                 final boolean isAccessible = field.isAccessible();
                 field.setAccessible(true);
                 try {
                     final Object val = field.get(entity);
-                    itemId.getItemProperty(field.getName()).setValue(field.getType().cast(val));
+                    item.getItemProperty(field.getName()).setValue(field.getType().cast(val));
                 } catch (IllegalAccessException e) {
 
                 }
@@ -206,6 +221,7 @@ public class SettingsDataContainer<T> extends IndexedContainer {
     public boolean cancelAddingEditing(final Object entity) {
         boolean success = true;
         logger.info("cancelAddingEditing: entity " + entity);
+        setItemFromObject(this.getItem(entity), entity);
         final Object prop = this.getContainerProperty(entity, this.getContainerPropertyIds().iterator().next()).getValue();
         if (prop == null || prop.equals("") || prop.equals("null"))
             success = this.removeItem(entity);

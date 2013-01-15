@@ -26,7 +26,7 @@ public class SettingLayout<T> extends VerticalLayout {
 
     private final Label headerLabel;
     private final Table contentTable;
-    private final Label errorLabel;
+    private final String headerString;
     private final Class aClass;
     private final SettingsDataContainer<T> container;
 
@@ -65,17 +65,18 @@ public class SettingLayout<T> extends VerticalLayout {
         saveButtonLayout.setSpacing(true);
         saveButtonLayout.setMargin(true);
 
+        headerString = "<b>" + headerName + "</b>";
 
         headerLabel = new Label();
         headerLabel.setContentMode(ContentMode.HTML);
-        headerLabel.setValue("<b>" + headerName + "</b>");
+        headerLabel.setValue(headerString);
         headerLabel.setWidth("100%");
         addComponent(headerLabel);
 
-        errorLabel = new Label();
-        errorLabel.setWidth("100%");
-        errorLabel.setContentMode(ContentMode.HTML);
-        addComponent(errorLabel);
+//        errorLabel = new Label();
+//        errorLabel.setWidth("100%");
+//        errorLabel.setContentMode(ContentMode.HTML);
+//        addComponent(errorLabel);
 
         contentTable = new Table();
         contentTable.setContainerDataSource(container);
@@ -144,7 +145,7 @@ public class SettingLayout<T> extends VerticalLayout {
         @Override
         public void buttonClick(Button.ClickEvent event) {
             try {
-                errorLabel.setValue("");
+                headerLabel.setValue(headerString);
 
                 final T entity;
                 if (isAddButton) {
@@ -179,7 +180,7 @@ public class SettingLayout<T> extends VerticalLayout {
 
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            errorLabel.setValue("");
+            headerLabel.setValue(headerString);
             UI.getCurrent().addWindow(new SettingsDeleteWindow<T>(screen, aClass, contentTable, simpleErasing));
             contentTable.select(contentTable.getNullSelectionItemId());
         }
@@ -197,41 +198,41 @@ public class SettingLayout<T> extends VerticalLayout {
         public void buttonClick(Button.ClickEvent event) {
             Object entity = contentTable.getValue();
             logger.info("selected: " + entity);
-                if (isSaveButton) {
-                   if (logger.isDebugEnabled()) {
-                        logger.debug("SaveItem");
-                        logger.debug("selected entity: " + entity);
-                    }
-                    entity = container.fillObjectFromItem(entity);
-                    if (entity != null) {
-                        contentTable.setComponentError(null);
-                        errorLabel.setValue("");
+            if (isSaveButton) {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("SaveItem");
+                    logger.debug("selected entity: " + entity);
+                }
+                entity = container.fillObjectFromItem(entity);
+                if (entity != null) {
+                    contentTable.setComponentError(null);
+                    headerLabel.setValue(headerString);
+                    if (logger.isInfoEnabled())
+                        logger.info("filled entity: " + entity);
+                    try {
+                        container.persistItem(entity);
+                    } catch (IllegalArgumentException e) {
                         if (logger.isInfoEnabled())
-                            logger.info("filled entity: " + entity);
-                        try {
-                            container.persistItem(entity);
-                        } catch (IllegalArgumentException e) {
-                            if (logger.isInfoEnabled())
-                                logger.info("Name is already in use");
-                            errorLabel.setValue("<b><font color=\"red\">" +
-                                    messageBundle.getString("issuetracking_settings_error_name") +
-                                    "</font></b>");
-                        }
-                    } else {
-                        if (logger.isInfoEnabled())
-                            logger.info("No null values allowed in Item.");
-                        errorLabel.setValue("<b><font color=\"red\">" +
-                                messageBundle.getString("issuetracking_settings_error_null") +
+                            logger.info("Name is already in use");
+                        headerLabel.setValue(headerString + " - <b><font color=\"red\">" +
+                                messageBundle.getString("issuetracking_settings_error_name") +
                                 "</font></b>");
                     }
-                    container.fillTableWithDaoEntities();
                 } else {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("CancelEditing");
-                    }
-
-                    container.cancelAddingEditing(entity);
+                    if (logger.isInfoEnabled())
+                        logger.info("No null values allowed in Item.");
+                    headerLabel.setValue(headerString + " - <b><font color=\"red\">" +
+                            messageBundle.getString("issuetracking_settings_error_null") +
+                            "</font></b>");
                 }
+                container.fillTableWithDaoEntities();
+            } else {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("CancelEditing");
+                }
+
+                container.cancelAddingEditing(entity);
+            }
             contentTable.setEditable(false);
             contentTable.setSelectable(true);
             contentTable.select(contentTable.getNullSelectionItemId());

@@ -305,11 +305,9 @@ public class GraphBaseDAO<T> {
                 }
                 field.setAccessible(isAccessible);
             }
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             logger.fatal("IllegalAccessException: " + e.getMessage());
             //e.printStackTrace();
-        } catch (InvocationTargetException e) {
-
         }
     }
 
