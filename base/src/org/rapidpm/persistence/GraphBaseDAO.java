@@ -49,34 +49,18 @@ public class GraphBaseDAO<T> {
     }
 
     private Node getClassRootNode() {
-//        boolean isProject = (projectId != 0) ;
         final TraversalDescription td = Traversal.description()
                 .breadthFirst()
                 .relationships(GraphRelationRegistry.getRootToClassRootRelType(clazz), Direction.OUTGOING)
                 .evaluator(Evaluators.excludeStartPosition())
                 .evaluator(Evaluators.atDepth(1));
-//        if (isProject)  {
-//            td.evaluator(Evaluators.atDepth(2));
-//        } else {
-//            td.evaluator(Evaluators.atDepth(1));
-//        }
         final Traverser trav = td.traverse(graphDb.getNodeById(0));
         Node node = null;
-        Node project_root = null;
         for (final Path path : trav) {
-//            if (isProject) {
-//                if (project_root == null) project_root = path.endNode();
-//                if (projectId.equals(path.endNode().getProperty(GraphRelationRegistry.getRelationAttributeProjectId(), null)))
-//                    node = path.endNode();
-//            }
-//            else
-                node = path.endNode();
+            node = path.endNode();
         }
         if (node == null)
-//            if (isProject && project_root != null) {
-//                node = createNewProjectRootNode(project_root, projectId);
-//            } else
-                throw new NullPointerException("No project_root_node found. Please initialize graph database");
+            throw new NullPointerException("No project_root_node found. Please initialize graph database");
 
         return node;
     }
@@ -307,7 +291,6 @@ public class GraphBaseDAO<T> {
             }
         } catch (IllegalAccessException | InvocationTargetException e) {
             logger.fatal("IllegalAccessException: " + e.getMessage());
-            //e.printStackTrace();
         }
     }
 
