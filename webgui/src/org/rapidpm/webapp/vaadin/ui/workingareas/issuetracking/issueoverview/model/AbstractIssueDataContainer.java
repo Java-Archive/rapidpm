@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 07.11.12
  * Time: 09:03
  * To change this template use File | Settings | File Templates.
@@ -18,11 +18,13 @@ public abstract class AbstractIssueDataContainer extends IndexedContainer {
     protected static Logger logger = Logger.getLogger(AbstractIssueDataContainer.class);
 
     private final IssueOverviewScreen screen;
-    private List<Object> visibleColumns;
+    private final List<Object> visibleColumns;
     private IssueBase currentIssue;
 
     public AbstractIssueDataContainer(final IssueOverviewScreen screen) {
-        super();
+        if (screen == null)
+            throw new NullPointerException("Screen must not nbe null");
+
         this.screen = screen;
         visibleColumns = setVisibleColumns();
     }
@@ -34,7 +36,10 @@ public abstract class AbstractIssueDataContainer extends IndexedContainer {
         return currentIssue;
     }
 
-    protected void setCurrentIssue(IssueBase issue) {
+    protected void setCurrentIssue(final IssueBase issue) {
+        if (issue == null)
+            throw new NullPointerException("Issue to set must not be null");
+
         currentIssue = issue;
     }
 

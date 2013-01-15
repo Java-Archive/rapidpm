@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 08.11.12
  * Time: 16:21
  * To change this template use File | Settings | File Templates.
@@ -27,27 +27,25 @@ public class TestCasesDataContainer extends AbstractIssueDataContainer {
 
     @Override
     protected List<Object> setVisibleColumns() {
-        List<Object> visibleColumns = new ArrayList<>();
+        final List<Object> visibleColumns = new ArrayList<>();
         visibleColumns.add(TEXT);
         return visibleColumns;
     }
 
     @Override
-    public void fillContainer(IssueBase issue) {
+    public void fillContainer(final IssueBase issue) {
         setCurrentIssue(issue);
         this.removeAllItems();
-        for (IssueTestCase testCase : issue.getTestcases()) {
+        for (final IssueTestCase testCase : issue.getTestcases()) {
             addTestcase(testCase);
         }
     }
 
-    public boolean addTestcase(IssueTestCase testCase) {
-        boolean success = false;
-        if (testCase != null) {
-            Item itemId = this.addItem(testCase);
-            itemId.getItemProperty(TEXT).setValue(testCase.getText());
-            success = true;
-        }
-        return success;
+    public void addTestcase(final IssueTestCase testCase) {
+        if (testCase == null)
+            throw new NullPointerException("testCase to add must not be null");
+
+        final Item itemId = this.addItem(testCase);
+        itemId.getItemProperty(TEXT).setValue(testCase.getText());
     }
 }

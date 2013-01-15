@@ -17,17 +17,32 @@
         </sourceRoots>
       </configuration>
     </facet>
+    <facet type="JRebel" name="JRebel">
+      <configuration>
+        <option name="allPaths" value="true" />
+        <option name="generateRebel" value="true" />
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src-test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src-test-generated" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="module" module-name="base" />
     <orderEntry type="library" name="lib-jaxws" level="project" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library" scope="TEST">
+      <library>
+        <CLASSES>
+          <root url="jar://$APPLICATION_HOME_DIR$/lib/junit-4.10.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 

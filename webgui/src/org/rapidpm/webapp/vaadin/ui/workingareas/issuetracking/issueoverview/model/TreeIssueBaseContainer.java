@@ -8,8 +8,8 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.Collator;
+import java.util.*;
 
 
 /**
@@ -25,24 +25,31 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
     public final static String PROPERTY_CAPTION = "caption";
     public final static String PROPERTY_ISSUEBASE = "issueBase";
     private final PlannedProject currentProject;
-    private DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+    private final DaoFactory daoFactory;
+    private final ComparatorIssues comparator;
 
     public TreeIssueBaseContainer(final PlannedProject currentProject) {
-        super();
+        if (currentProject == null)
+            throw new NullPointerException("Project must not be null");
+
+        this.daoFactory = DaoFactorySingelton.getInstance();
         this.currentProject = currentProject;
+        this.comparator = new ComparatorIssues();
         this.addContainerProperty(PROPERTY_CAPTION, String.class, null);
         this.addContainerProperty(PROPERTY_ISSUEBASE, IssueBase.class, null);
         filltree();
     }
 
     private void filltree() {
-        Object itemId;
-        List<IssueBase> subIssueList;
-        for (IssueBase issue : daoFactory.getIssueBaseDAO(currentProject.getId()).loadTopLevelEntities()) {
-            itemId = addItem();
+        final List<IssueBase> topLevelIssues = daoFactory.getIssueBaseDAO().loadTopLevelEntities(currentProject.getId());
+        Collections.sort(topLevelIssues, comparator);
+        for (final IssueBase issue : topLevelIssues) {
+            final Object itemId = addItem();
             this.getContainerProperty(itemId, PROPERTY_CAPTION).setValue(issue.name());
             this.getContainerProperty(itemId, PROPERTY_ISSUEBASE).setValue(issue);
-            subIssueList = issue.getSubIssues();
+            this.setParent(itemId, null);
+            final List<IssueBase> subIssueList = issue.getSubIssues();
+            Collections.sort(subIssueList, comparator);
             if (subIssueList == null || subIssueList.isEmpty()) {
                 this.setChildrenAllowed(itemId, false);
             } else {
@@ -52,15 +59,14 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
         }
     }
 
-    private void iterateSubIssues(List<IssueBase> parentSubIssueList, Object parentItemId) {
-        Object itemId;
-        List<IssueBase> subIssueList;
-        for (IssueBase subIssue : parentSubIssueList) {
-            itemId = addItem();
+    private void iterateSubIssues(final List<IssueBase> parentSubIssueList, final Object parentItemId) {
+        for (final IssueBase subIssue : parentSubIssueList) {
+            final Object itemId = addItem();
             this.getContainerProperty(itemId, PROPERTY_CAPTION).setValue(subIssue.name());
             this.getContainerProperty(itemId, PROPERTY_ISSUEBASE).setValue(subIssue);
             this.setParent(itemId, parentItemId);
-            subIssueList = subIssue.getSubIssues();
+            final List<IssueBase> subIssueList = subIssue.getSubIssues();
+            Collections.sort(subIssueList, comparator);
             if (subIssueList == null || subIssueList.isEmpty()) {
                 this.setChildrenAllowed(itemId, false);
             } else {
@@ -72,20 +78,23 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
 
 
     @Override
-    public boolean removeItem(Object itemId) {
+    public boolean removeItem(final Object itemId) {
+        if (itemId == null)
+            throw new NullPointerException("ItemId must not be null");
+
         boolean success = false;
-        Object parentItem = this.getParent(itemId);
-        IssueBase issue = (IssueBase)this.getContainerProperty(itemId, PROPERTY_ISSUEBASE)
+        final Object parentItem = this.getParent(itemId);
+        final IssueBase issue = (IssueBase)this.getContainerProperty(itemId, PROPERTY_ISSUEBASE)
                 .getValue();
 
         if (this.hasChildren(itemId)) {
-            List<Object> children = new ArrayList<>(this.getChildren(itemId));
-            for (Object childItem : children) {
+            final List<Object> children = new ArrayList<>(this.getChildren(itemId));
+            for (final Object childItem : children) {
                 setParent(childItem, parentItem);
             }
         }
 
-        if (daoFactory.getIssueBaseDAO(currentProject.getId()).delete(issue))
+        if (daoFactory.getIssueBaseDAO().delete(issue))
             if (super.removeItem(itemId)) {
                 success = true;
                 if (!this.hasChildren(parentItem))
@@ -98,7 +107,7 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
 
 
     @Override
-    public boolean removeItemRecursively(Object itemId) {
+    public boolean removeItemRecursively(final Object itemId) {
         boolean success;
         //TODO Bei Fehler ausgangszustand wiederherstellen.
         success = removeRecusively(itemId);
@@ -106,16 +115,24 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
     }
 
 
-    private boolean removeRecusively(Object itemId) {
+    private boolean removeRecusively(final Object itemId) {
+        if (itemId == null)
+            throw new NullPointerException("ItemId must not be null");
+
         if (this.hasChildren(itemId)) {
-            Object[] children = this.getChildren(itemId).toArray();
-            for (Object child : children) {
+            final Object[] children = this.getChildren(itemId).toArray();
+            for (final Object child : children) {
                 boolean success = removeRecusively(child);
                 if (!success)
                     return false;
             }
         }
         return removeItem(itemId);
+    }
+
+    public void refresh() {
+        removeAllItems();
+        filltree();
     }
 
 //     public boolean containsIssue(IssueBase issue) {
@@ -125,4 +142,13 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
 //        }
 //        return false;
 //     }
+
+    private class ComparatorIssues implements Comparator<IssueBase> {
+
+        @Override
+        public int compare(final IssueBase o1, final IssueBase o2) {
+            return Long.compare(o1.getId(), o2.getId());
+        }
+    }
+
 }

@@ -24,6 +24,11 @@ public class TreeValueChangeListener implements Tree.ValueChangeListener {
     private final Tree issueTree;
 
     public TreeValueChangeListener(final IssueTabSheet issueTabSheet, final Tree issueTree) {
+        if (issueTabSheet == null)
+            throw new NullPointerException("TabSheet is null.");
+        if (issueTree == null)
+            throw new NullPointerException("Tree is null.");
+
         this.issueTabSheet = issueTabSheet;
         this.issueTree = issueTree;
     }
@@ -34,13 +39,16 @@ public class TreeValueChangeListener implements Tree.ValueChangeListener {
             changeDetails(event.getProperty().getValue());
         else {
             if (logger.isDebugEnabled())
-                logger.debug("Property of values was null");
+                logger.debug("Value to change was null");
             issueTabSheet.setAllTabsEnabled(false);
         }
     }
 
-    private void changeDetails(Object itemId) {
-        IssueBase issueBase = (IssueBase)issueTree.getContainerDataSource().getContainerProperty(itemId,
+    private void changeDetails(final Object itemId) {
+        if (itemId == null)
+            throw new NullPointerException("ItemId must not be null");
+
+        final IssueBase issueBase = (IssueBase)issueTree.getContainerDataSource().getContainerProperty(itemId,
                 TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
         if (issueBase != null) {
             issueTabSheet.getDetailsLayout().setDetailsFromIssue(issueBase);
@@ -48,9 +56,9 @@ public class TreeValueChangeListener implements Tree.ValueChangeListener {
             if (!issueTree.hasChildren(itemId)) {
                 issueTabSheet.setTableTabOnlyEnabled(false);
             } else {
-                List<IssueBase> issues = new ArrayList<>();
+                final List<IssueBase> issues = new ArrayList<>();
                 issueTabSheet.setTableTabOnlyEnabled(true);
-                for (IssueBase childissue : issueBase.getSubIssues()) {
+                for (final IssueBase childissue : issueBase.getSubIssues()) {
                     issues.add(childissue);
                 }
                 issueTabSheet.getTableLayout().setPropertiesFromIssueList(issues);

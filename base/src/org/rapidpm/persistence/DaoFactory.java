@@ -18,8 +18,6 @@ import org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.MessageDAO;
 import org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.msg.PersonalMessageDAO;
 import org.rapidpm.persistence.prj.book.BuchDAO;
 import org.rapidpm.persistence.prj.book.BuchKapitelDAO;
-import org.rapidpm.persistence.prj.book.BuchSeiteDAO;
-import org.rapidpm.persistence.prj.book.BuchSeitenFussnoteDAO;
 import org.rapidpm.persistence.prj.book.kommentar.BuchKapitelKommentarDAO;
 import org.rapidpm.persistence.prj.book.kommentar.BuchKommentarDAO;
 import org.rapidpm.persistence.prj.book.kommentar.BuchSeitenKommentarDAO;
@@ -41,6 +39,7 @@ import org.rapidpm.persistence.prj.stammdaten.person.*;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomainDAO;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomainKlassifizierungDAO;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomainMetaDataDAO;
+import org.rapidpm.persistence.prj.textelement.TextElementDAO;
 import org.rapidpm.persistence.rohdaten.OntologieConnectionDAO;
 import org.rapidpm.persistence.rohdaten.OntologieDAO;
 import org.rapidpm.persistence.rohdaten.OntologieEntryDAO;
@@ -57,14 +56,14 @@ import java.util.InputMismatchException;
 public class DaoFactory {
     private static final Logger logger = Logger.getLogger(DaoFactory.class);
     private DAO.EntityUtils entityUtils = new DAO.EntityUtils();
-    private static final GraphDatabaseService graphDb = GraphDBFactory.getInstance().getGraphDBService();
+    private final GraphDatabaseService graphDb = GraphDBFactory.getInstance().getGraphDBService();
 
     public DaoFactory(final String persistenceUnitName) {
         final EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
         this.entityManager = emf.createEntityManager();
     }
 
-    private EntityManager entityManager;
+    protected EntityManager entityManager;
 
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
@@ -400,14 +399,6 @@ public class DaoFactory {
         return new BuchKapitelDAO(getEntityManager());
     }
 
-    public BuchSeiteDAO getBuchSeiteDAO() {
-        return new BuchSeiteDAO(getEntityManager());
-    }
-
-    public BuchSeitenFussnoteDAO getBuchSeitenFussnoteDAO() {
-        return new BuchSeitenFussnoteDAO(getEntityManager());
-    }
-
     public BuchKommentarDAO getBuchKommentarDAO() {
         return new BuchKommentarDAO(getEntityManager());
     }
@@ -421,7 +412,7 @@ public class DaoFactory {
     }
 
 
-    //IssueTracking
+
     public ProjectDAO getProjectDAO() {
         return new ProjectDAO(getEntityManager());
     }
@@ -430,6 +421,7 @@ public class DaoFactory {
         return new ProjectNameDAO(getEntityManager());
     }
 
+    //IssueTracking - Relational
     public IssueTimeUnitDAO getIssueTimeUnitDAO() {
         return new IssueTimeUnitDAO(getEntityManager());
     }
@@ -444,9 +436,9 @@ public class DaoFactory {
 
 
 
-    //GraphDAOs
-    public IssueBaseDAO getIssueBaseDAO(final Long projectId) {
-        return new IssueBaseDAO(graphDb, this, projectId);
+    //IssueTracking - Graph
+    public IssueBaseDAO getIssueBaseDAO() {
+        return new IssueBaseDAO(graphDb, this);
     }
 
     public IssueStatusDAO getIssueStatusDAO() {
@@ -626,6 +618,9 @@ public class DaoFactory {
         return new ProjektanfrageDAO(getEntityManager());
     }
 
+    public TextElementDAO getTextElementDAO() {
+        return new TextElementDAO((getEntityManager()));
+    }
 
     public DAO.EntityUtils getEntityUtils() {
         return entityUtils;

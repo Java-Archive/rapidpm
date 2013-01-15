@@ -72,7 +72,6 @@ public class AddWindow extends Window {
 
     private void fillFormLayout() {
         formLayout.addComponent(fieldGroup.getNameField());
-        formLayout.addComponent(fieldGroup.getDescriptionArea());
         formLayout.addComponent(fieldGroup.getParentBox());
         formLayout.addComponent(fieldGroup.getResponsibleBox());
         formLayout.addComponent(fieldGroup.getStoryPointsField());
@@ -88,7 +87,7 @@ public class AddWindow extends Window {
     }
 
     private void doInternationalization() {
-        this.setCaption(messages.getString("stdsatz_addRessource"));
+        this.setCaption(messages.getString("planning_addPlanningUnit"));
         saveButton.setCaption(messages.getString("save"));
         cancelButton.setCaption(messages.getString("cancel"));
     }
@@ -181,7 +180,9 @@ public class AddWindow extends Window {
     }
 
     //Erzeugt neue 00:00:00-PlanningUnitElements für die neue PlanningUnit und weist diese der PlanningUnit zu.
-    private void createNewPlanningUnitElements(PlanningUnit planningUnit, List<RessourceGroup> ressourceGroups, DaoFactory daoFactory) {
+    private void createNewPlanningUnitElements(final PlanningUnit planningUnit,
+                                               final List<RessourceGroup> ressourceGroups,
+                                               final DaoFactory daoFactory) {
         planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
         for(final RessourceGroup ressourceGroup : ressourceGroups){
             final PlanningUnitElement planningUnitElement = new PlanningUnitElement();

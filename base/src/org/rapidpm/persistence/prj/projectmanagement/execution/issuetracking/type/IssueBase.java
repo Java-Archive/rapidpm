@@ -36,6 +36,7 @@ public class IssueBase implements PersistInGraph {
     private String text;
 
     @Simple
+    @NonVisible
     private Long projectid;
 
     @Simple
@@ -80,25 +81,29 @@ public class IssueBase implements PersistInGraph {
     //@Relational
     private List<IssueTimeUnit> timeUnitsUsed = new ArrayList<>();
 
-    @Relational(clazz = IssueComment.class)
+    @Relational(clazz = IssueComment.class, onDeleteCascade = true)
     private List<IssueComment> comments = new ArrayList<>();
 
-    @Relational(clazz = IssueTestCase.class)
+    @Relational(clazz = IssueTestCase.class, onDeleteCascade = true)
     private List<IssueTestCase> testcases = new ArrayList<>();
 
-    //private Risk risk;
     @Simple
+    //private Risk risk;
     private Integer risk;
 
     @Relational(clazz = PlanningUnit.class)
     private PlanningUnit planningUnit;
 
     @LazyGraphPersist
+    @NonVisible
     private Map<Method, List<Object[]>> graphMap;
 
+    public IssueBase() {
+        //empty on purpose
+    }
 
     public IssueBase(final Long projectid) {
-        setProjectid(projectid);
+        setProjectId(projectid);
     }
 
 
@@ -115,7 +120,7 @@ public class IssueBase implements PersistInGraph {
         }
 
         try {
-            Method method = DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).getClass().getMethod(methodName,
+            Method method = IssueBaseDAO.class.getMethod(methodName,
                     methodParams);
             if (method != null) {
                 List<Object[]> list = graphMap.get(method);
@@ -127,7 +132,7 @@ public class IssueBase implements PersistInGraph {
                 success = true;
             }
         } catch (NoSuchMethodException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
         }
         return success;
     }
@@ -139,11 +144,11 @@ public class IssueBase implements PersistInGraph {
     }
 
     public List<IssueBase> getConnectedIssues(final IssueRelation relation) {
-        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).getConnectedIssuesWithRelation(this, relation, Direction.BOTH);
+        return getConnectedIssues(relation, Direction.BOTH);
     }
 
     public List<IssueBase> getConnectedIssues(final IssueRelation relation, final Direction direction) {
-        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).getConnectedIssuesWithRelation(this, relation, direction);
+        return DaoFactorySingelton.getInstance().getIssueBaseDAO().getConnectedIssuesWithRelation(this, relation, direction);
     }
 
     public boolean removeConnectionToIssue(final IssueBase issue, final IssueRelation relation) {
@@ -158,19 +163,23 @@ public class IssueBase implements PersistInGraph {
 
 
     public boolean addSubIssue(final IssueBase subIssue) {
-        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).addSubIssueTx(this, subIssue);
-//        return addToMap("addSubIssueTx", new Object[]{this, subIssue});
+//        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).addSubIssueTx(this, subIssue);
+        return addToMap("addSubIssueTx", new Object[]{this, subIssue});
     }
 
     public List<IssueBase> getSubIssues() {
-        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).getSubIssuesOf(this);
+        return DaoFactorySingelton.getInstance().getIssueBaseDAO().getSubIssuesOf(this);
     }
 
     public boolean removeSubIssue(final IssueBase subIssue) {
-        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).deleteSubIssueRelationTx(this, subIssue);
-//        return addToMap("deleteSubIssueRelationTx", new Object[]{this, subIssue});
+//        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).deleteSubIssueRelationTx(this, subIssue);
+        return addToMap("deleteSubIssueRelationTx", new Object[]{this, subIssue});
     }
 
+    public boolean setAsRootIssue() {
+//        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).setAsRootIssueTx(this);
+        return addToMap("setAsRootIssueTx", new Object[]{this});
+    }
 
 
     public boolean addComponent(final IssueComponent component) {
@@ -179,7 +188,7 @@ public class IssueBase implements PersistInGraph {
     }
 
     public List<IssueComponent> getComponents() {
-        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).getComponentsOf(this);
+        return DaoFactorySingelton.getInstance().getIssueBaseDAO().getComponentsOf(this);
     }
 
     public boolean removeComponent(final IssueComponent component) {
@@ -236,11 +245,11 @@ public class IssueBase implements PersistInGraph {
         this.id = id;
     }
 
-    public Long getProjectid() {
+    public Long getProjectId() {
         return projectid;
     }
 
-    private void setProjectid(final Long projectid) {
+    public void setProjectId(final Long projectid) {
         this.projectid = projectid;
     }
 

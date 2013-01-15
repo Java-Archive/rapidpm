@@ -2,8 +2,11 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ty
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueCommentDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCase;
 import org.rapidpm.persistence.system.security.Benutzer;
 
@@ -14,7 +17,7 @@ import static org.junit.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 13.11.12
  * Time: 14:48
  * To change this template use File | Settings | File Templates.
@@ -22,12 +25,11 @@ import static org.junit.Assert.*;
 public class IssueBaseDAOTest implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssueBaseDAOTest.class);
 
-    private final Long projectId = 1L;
-    private final IssueBaseDAO dao = daoFactory.getIssueBaseDAO(projectId);
+    private final IssueBaseDAO dao = daoFactory.getIssueBaseDAO();
 
     @Test
     public void equalsAndHashCodeTest() {
-        List<IssueBase> issueBaseList = dao.loadAllEntities();
+        List<IssueBase> issueBaseList = dao.loadAllEntities(PROJECTID);
         assertTrue(issueBaseList.get(0).equals(issueBaseList.get(0)));
         assertEquals(issueBaseList.get(0).hashCode(), issueBaseList.get(0).hashCode());
 
@@ -37,7 +39,7 @@ public class IssueBaseDAOTest implements BaseDAOTest {
 
     @Test
     public void addIssue() {
-        IssueBase issueBase = new IssueBase(projectId);
+        IssueBase issueBase = new IssueBase(PROJECTID);
 
         issueBase.setSummary("Issue x");
         issueBase.setStory("Story x");
@@ -48,11 +50,11 @@ public class IssueBaseDAOTest implements BaseDAOTest {
         issueBase.setAssignee(daoFactory.getBenutzerDAO().loadAllEntities().get(0));
         issueBase.setReporter(daoFactory.getBenutzerDAO().loadAllEntities().get(0));
 
-        issueBase.setStatus(daoFactory.getIssueStatusDAO().loadAllEntities().get(0));
-        issueBase.setType(daoFactory.getIssueTypeDAO().loadAllEntities().get(0));
-        issueBase.setPriority(daoFactory.getIssuePriorityDAO().loadAllEntities().get(0));
-        issueBase.setVersion(daoFactory.getIssueVersionDAO().loadAllEntities().get(0));
-        issueBase.setStoryPoints(daoFactory.getIssueStoryPointDAO().loadAllEntities().get(0));
+        issueBase.setStatus(daoFactory.getIssueStatusDAO().loadAllEntities(PROJECTID).get(0));
+        issueBase.setType(daoFactory.getIssueTypeDAO().loadAllEntities(PROJECTID).get(0));
+        issueBase.setPriority(daoFactory.getIssuePriorityDAO().loadAllEntities(PROJECTID).get(0));
+        issueBase.setVersion(daoFactory.getIssueVersionDAO().loadAllEntities(PROJECTID).get(0));
+        issueBase.setStoryPoints(daoFactory.getIssueStoryPointDAO().loadAllEntities(PROJECTID).get(0));
 
         issueBase = dao.persist(issueBase);
         if (logger.isDebugEnabled())
@@ -60,25 +62,25 @@ public class IssueBaseDAOTest implements BaseDAOTest {
         //assertTrue(issueBase.equals(dao.findByID(issueBase.getId()).hashCode()));
 
         dao.delete(issueBase);
-        assertFalse(dao.loadAllEntities().contains(issueBase));
+        assertFalse(dao.loadAllEntities(PROJECTID).contains(issueBase));
     }
 
 
     @Test
     public void loadAll() {
-        final List<IssueBase> list = dao.loadAllEntities();
+        final List<IssueBase> list = dao.loadAllEntities(PROJECTID);
         if (logger.isDebugEnabled())
             for (final IssueBase issue : list)
                 logger.debug(issue.toString());
-        assertEquals(list, dao.loadAllEntities());
+        assertEquals(list, dao.loadAllEntities(PROJECTID));
     }
 
     @Test
     public void ChangeGraphAttributes() {
-        IssueBase issue = dao.loadAllEntities().get(1);
-        issue.setStatus(daoFactory.getIssueStatusDAO().loadAllEntities().get(1));
-        issue.setType(daoFactory.getIssueTypeDAO().loadAllEntities().get(1));
-        issue.setPriority(daoFactory.getIssuePriorityDAO().loadAllEntities().get(1));
+        IssueBase issue = dao.loadAllEntities(PROJECTID).get(1);
+        issue.setStatus(daoFactory.getIssueStatusDAO().loadAllEntities(PROJECTID).get(1));
+        issue.setType(daoFactory.getIssueTypeDAO().loadAllEntities(PROJECTID).get(1));
+        issue.setPriority(daoFactory.getIssuePriorityDAO().loadAllEntities(PROJECTID).get(1));
 
         issue = dao.persist(issue);
         final IssueBase proof = dao.findByID(issue.getId());
@@ -89,15 +91,13 @@ public class IssueBaseDAOTest implements BaseDAOTest {
 
     @Test
     public void addComments() {
-        IssueBase issue = dao.loadAllEntities().get(0);
-        IssueComment comment1 = new IssueComment();
-        comment1.setId(1000L);
+        IssueBase issue = dao.loadAllEntities(PROJECTID).get(0);
+        final IssueComment comment1 = new IssueComment();
         comment1.setText("comment1");
         comment1.setCreated(new Date());
         comment1.setCreator(issue.getAssignee());
 
         final IssueComment comment2 = new IssueComment();
-        comment2.setId(1001L);
         comment2.setText("comment2");
         comment2.setCreated(new Date());
         comment2.setCreator(issue.getAssignee());
@@ -121,20 +121,22 @@ public class IssueBaseDAOTest implements BaseDAOTest {
 
         issue.removeComment(comment1);
         issue.removeComment(comment2);
+        issue = dao.persist(issue);
 
         assertFalse(issue.getComments().contains(comment1));
         assertFalse(issue.getComments().contains(comment2));
+
+        assertTrue(daoFactory.getIssueCommentDAO().findByID(comment1.getId()) == null);
+        assertTrue(daoFactory.getIssueCommentDAO().findByID(comment2.getId()) == null);
     }
 
     @Test
     public void addTestCases() {
-        IssueBase issue = dao.loadAllEntities().get(0);
+        IssueBase issue = dao.loadAllEntities(PROJECTID).get(0);
         final IssueTestCase testCase1 = new IssueTestCase();
-        testCase1.setId(1000L);
         testCase1.setText("testcase1");
 
         final IssueTestCase testCase2 = new IssueTestCase();
-        testCase2.setId(1001L);
         testCase2.setText("testcase2");
 
         issue.addOrChangeTestCase(testCase1);
@@ -147,7 +149,7 @@ public class IssueBaseDAOTest implements BaseDAOTest {
         assertTrue(issue.getTestcases().contains(testCase1));
         assertTrue(issue.getTestcases().contains(testCase2));
 
-        testCase2.setText("CommentB");
+        testCase2.setText("testcaseB");
         issue.addOrChangeTestCase(testCase2);
 
         issue = dao.persist(issue);
@@ -156,13 +158,22 @@ public class IssueBaseDAOTest implements BaseDAOTest {
 
         issue.removeTestCase(testCase1);
         issue.removeTestCase(testCase2);
+        issue = dao.persist(issue);
 
         assertFalse(issue.getTestcases().contains(testCase1));
         assertFalse(issue.getTestcases().contains(testCase2));
+
+        assertTrue(daoFactory.getIssueTestCaseDAO().findByID(testCase1.getId()) == null);
+        assertTrue(daoFactory.getIssueTestCaseDAO().findByID(testCase2.getId()) == null);
     }
 
     @Test(expected = NullPointerException.class)
-    public void deleteException() {
+    public void delete_FirstParameterNull() {
         dao.delete(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void delete_FirstParameterNoId() {
+        dao.delete(new IssueBase(1L));
     }
 }

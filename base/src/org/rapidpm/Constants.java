@@ -75,12 +75,14 @@ public class Constants {
     public static final String GESCHLECHT_M = "männlich";
     public static final String GESCHLECHT_W = "weiblich";
 
+    public static final String DD_MM_YYYY = "dd.MM.YYYY";
     public static final String YYYY_MM_DD = "yyyy-MM-dd";
     public static final String YYYY_MM_DD_HH = "yyyy-MM-dd-HH";
     public static final String YYYY_MM_DD_HH_MM = "yyyy-MM-dd-HH-mm";
     public static final String YYYY_MM_DD_HH_MM_SS = "yyyy-MM-dd-HH-mm-ss";
     public static final DecimalFormat DECIMALFORMAT_6_STELLEN = new DecimalFormat("######");
     public static final DecimalFormat FLOATFORMAT_3_NACHKOMMA_STELLEN = new DecimalFormat(",###");
+
 
 
     public static final int MAX_RESULT_DOCUMENTS = 100;
@@ -123,4 +125,8 @@ public class Constants {
     public static final int FIELDLENGTH_LONG_NAME = 50;
     public static final int FIELDLENGTH_SMALL_NUMBER = 5;
     public static final String EMPTY_OR_SPACES_ONLY_PATTERN = "^\\s*$";
+
+    public static final String DB_PATH = "." + PATH_SEP + "data" + PATH_SEP + "graphDB" + PATH_SEP;
+    public static final String ISSUE_SETTINGS_XML_PATH = "rapidPmDefaultSettings.xml";
+    public static final String TEXTAREA_WRITABLE_HEIGHT = "500px";
 }

@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 16.10.12
  * Time: 18:47
  * To change this template use File | Settings | File Templates.
@@ -23,10 +23,6 @@ public class IssueStatusDAO extends GraphBaseDAO<IssueStatus> {
     public IssueStatusDAO(GraphDatabaseService graphDb, DaoFactory relDaoFactory) {
         super(graphDb, IssueStatus.class, relDaoFactory);
     }
-
-//    public List<IssueBase> getConnectedIssues(final IssueStatus status) {
-//        return getConnectedIssuesFromProject(status, 0L);
-//    }
 
     public List<IssueBase> getConnectedIssuesFromProject(final IssueStatus status, final Long projectId) {
         return super.getConnectedIssuesFromProject(status, projectId);

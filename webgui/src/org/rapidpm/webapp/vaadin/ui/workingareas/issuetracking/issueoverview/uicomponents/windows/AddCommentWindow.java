@@ -10,10 +10,11 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.mod
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.CommentsDataContainer;
 
 import java.util.Date;
+import java.util.ResourceBundle;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 08.11.12
  * Time: 15:56
  * To change this template use File | Settings | File Templates.
@@ -24,6 +25,7 @@ public class AddCommentWindow extends RapidWindow implements Internationalizatio
     private final IssueOverviewScreen screen;
     private final CommentsDataContainer commentContainer;
     private final AddCommentWindow self;
+    private final ResourceBundle messageBundle;
 
     private TextArea commentText;
     private Button saveButton;
@@ -33,9 +35,14 @@ public class AddCommentWindow extends RapidWindow implements Internationalizatio
 
 
     public AddCommentWindow(final IssueOverviewScreen screen, final AbstractIssueDataContainer commentContainer){
-        super();
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+        if (commentContainer == null)
+            throw new NullPointerException("Container must not be null");
+
         self = this;
         this.screen = screen;
+        this.messageBundle = screen.getMessagesBundle();
         this.commentContainer = (CommentsDataContainer) commentContainer;
         this.setModal(true);
         this.setResizable(false);
@@ -69,10 +76,10 @@ public class AddCommentWindow extends RapidWindow implements Internationalizatio
 
     @Override
     public void doInternationalization() {
-        this.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_addcommentwindow"));
-        commentText.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_comments"));
-        saveButton.setCaption(screen.getMessagesBundle().getString("add"));
-        cancelButton.setCaption(screen.getMessagesBundle().getString("cancel"));
+        this.setCaption(messageBundle.getString("issuetracking_issue_addcommentwindow"));
+        commentText.setCaption(messageBundle.getString("issuetracking_issue_comments"));
+        saveButton.setCaption(messageBundle.getString("add"));
+        cancelButton.setCaption(messageBundle.getString("cancel"));
     }
 
 
@@ -89,16 +96,13 @@ public class AddCommentWindow extends RapidWindow implements Internationalizatio
                 newComment.setText(commentTextValue);
                 newComment.setCreator(screen.getUi().getCurrentUser());
                 newComment.setCreated(new Date());
-                if (!commentContainer.addComment(newComment)) {
-                    //TODO Show Errormessage to User
-                    logger.error("Adding comment failed");
-                }
+                commentContainer.addComment(newComment);
                 self.close();
             } else {
                 if (logger.isDebugEnabled())
                     logger.debug("Text for comment is needed");
                 commentText.setRequired(true);
-                commentText.setRequiredError("Text for comment is needed");
+                commentText.setRequiredError(messageBundle.getString("issuetracking_issue_details_commenttext"));
             }
         }
     }

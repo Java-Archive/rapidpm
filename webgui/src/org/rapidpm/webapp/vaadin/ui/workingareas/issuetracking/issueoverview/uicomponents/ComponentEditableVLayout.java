@@ -19,19 +19,21 @@ import java.util.ResourceBundle;
 public abstract class ComponentEditableVLayout extends VerticalLayout{
     private static Logger logger = Logger.getLogger(ComponentEditableVLayout.class);
 
-    protected Button saveButton;
-    protected Button cancelButton;
-    protected ResourceBundle messages;
+    protected final Button saveButton;
+    protected final Button cancelButton;
+    protected final ResourceBundle messageBundle;
 
-    protected AbstractOrderedLayout saveableLayout;
-    protected AbstractOrderedLayout unSaveableLayout;
-    protected HorizontalLayout buttonLayout;
+    protected final AbstractOrderedLayout saveableLayout;
+    protected final AbstractOrderedLayout unSaveableLayout;
+    protected final HorizontalLayout buttonLayout;
     protected final IssueOverviewScreen screen;
 
     public ComponentEditableVLayout(final IssueOverviewScreen screen, final boolean readOnlyInit){
-        super();
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+
         this.screen = screen;
-        messages = screen.getMessagesBundle();
+        this.messageBundle = screen.getMessagesBundle();
         setMargin(true);
         setSpacing(true);
         saveableLayout = buildSaveableForm();
@@ -39,19 +41,21 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
             saveableLayout.setSizeFull();
             addComponent(saveableLayout);
             saveableLayout.addLayoutClickListener(new LayoutMouseClickListener());
+        } else {
+            if (logger.isDebugEnabled())
+                logger.debug("Savable layout has no components");
         }
         buttonLayout = new HorizontalLayout();
         saveButton = new Button();
-        saveButton.setCaption(messages.getString("save"));
+        saveButton.setCaption(messageBundle.getString("save"));
 
 
         cancelButton = new Button();
-        cancelButton.setCaption(messages.getString("cancel"));
+        cancelButton.setCaption(messageBundle.getString("cancel"));
 
         buttonLayout.addComponent(saveButton);
         buttonLayout.addComponent(cancelButton);
         buttonLayout.setSpacing(true);
-        //buttonLayout.setMargin(true);
         buttonLayout.setVisible(false);
 
         addComponent(buttonLayout);
@@ -62,6 +66,9 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
             unSaveableLayout.setSizeFull();
             unSaveableLayout.setSpacing(true);
             addComponent(unSaveableLayout);
+        } else {
+            if (logger.isDebugEnabled())
+                logger.debug("Unsavable layout has no components");
         }
     }
 
@@ -69,11 +76,11 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
     protected abstract AbstractOrderedLayout buildSaveableForm();
     protected abstract AbstractOrderedLayout buildUnsaveableForm();
 
-    public void addSaveButtonClickListener(Button.ClickListener listener) {
+    public void addSaveButtonClickListener(final Button.ClickListener listener) {
         saveButton.addClickListener(listener);
     }
 
-    public void addCancelButtonClickListener(Button.ClickListener listener) {
+    public void addCancelButtonClickListener(final Button.ClickListener listener) {
         cancelButton.addClickListener(listener);
     }
 
@@ -83,7 +90,7 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
             iterateLayoutReadOnly(readOnly, saveableLayout);
         else
             if (logger.isDebugEnabled())
-                logger.debug("No Components present in UnsabeableLayout");
+                logger.debug("No Components present in UnsaveableLayout");
     }
 
     private void iterateLayoutReadOnly(boolean readOnly, AbstractOrderedLayout layout) {

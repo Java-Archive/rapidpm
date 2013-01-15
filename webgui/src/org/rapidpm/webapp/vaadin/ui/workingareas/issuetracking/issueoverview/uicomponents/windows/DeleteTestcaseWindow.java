@@ -7,10 +7,11 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 
 import java.util.Collection;
+import java.util.ResourceBundle;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 09.11.12
  * Time: 08:22
  * To change this template use File | Settings | File Templates.
@@ -21,6 +22,7 @@ public class DeleteTestcaseWindow extends RapidWindow implements Internationaliz
     private final IssueOverviewScreen screen;
     private final Table testcaseTable;
     private final DeleteTestcaseWindow self;
+    private final ResourceBundle messageBundle;
 
     private Label questionLabel;
     private Button yesButton;
@@ -30,9 +32,14 @@ public class DeleteTestcaseWindow extends RapidWindow implements Internationaliz
 
 
     public DeleteTestcaseWindow(final IssueOverviewScreen screen, final Table testcaseTable) {
-        super();
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+        if (testcaseTable == null)
+            throw new NullPointerException("Table must not be null");
+
         self = this;
         this.screen = screen;
+        this.messageBundle = screen.getMessagesBundle();
         this.testcaseTable = testcaseTable;
         removeItemId = testcaseTable.getValue();
         this.setModal(true);
@@ -63,9 +70,9 @@ public class DeleteTestcaseWindow extends RapidWindow implements Internationaliz
 
     @Override
     public void doInternationalization() {
-        setCaption(screen.getMessagesBundle().getString("issuetracking_issue_deletetestcasewindow"));
+        setCaption(messageBundle.getString("issuetracking_issue_deletetestcasewindow"));
 
-        questionLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_deletequestion"));
+        questionLabel.setCaption(messageBundle.getString("issuetracking_issue_deletequestion"));
         final Collection<?> ids = testcaseTable.getItem(removeItemId).getItemPropertyIds();
         String labelValue = "-      ";
         Object value;
@@ -76,8 +83,8 @@ public class DeleteTestcaseWindow extends RapidWindow implements Internationaliz
         }
         questionLabel.setValue(labelValue);
 
-        yesButton.setCaption(screen.getMessagesBundle().getString("yes"));
-        noButton.setCaption(screen.getMessagesBundle().getString("no"));
+        yesButton.setCaption(messageBundle.getString("yes"));
+        noButton.setCaption(messageBundle.getString("no"));
     }
 
     private class YesButtonClickListener implements Button.ClickListener {

@@ -1,16 +1,20 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents;
 
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
+import com.vaadin.ui.themes.Reindeer;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.AddButtonClickListener;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.DeleteButtonClickListener;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeActivateOnValueChangeListener;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TreeValueChangeListener;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.ModelSingleton;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.*;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainerSingleton;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.TreeIssueBaseContainer;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.windows.EditSubissuesWindow;
+
+import java.util.ResourceBundle;
 
 
 /**
@@ -24,61 +28,91 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
     private static Logger logger = Logger.getLogger(IssueTreeLayout.class);
 
     private final IssueOverviewScreen screen;
+    private final ResourceBundle messageBundle;
 
     private Button addButton;
     private Button deleteButton;
+    private Button subissueButton;
     private Button expandButton;
 
     private Tree issueTree;
 
-    private HorizontalLayout buttonLayout;
-
     public IssueTreeLayout(final IssueOverviewScreen screen, final IssueTabSheet issueTabSheet) {
-        super();
-        this.screen = screen;
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+        if (issueTabSheet == null)
+            throw new NullPointerException("TabSheet must not be null");
 
+        this.screen = screen;
+        this.messageBundle = screen.getMessagesBundle();
+        this.setSizeFull();
         setComponents(issueTabSheet);
         doInternationalization();
     }
 
     private void setComponents(final IssueTabSheet issueTabSheet) {
-        buttonLayout = new HorizontalLayout();
+        final VerticalLayout buttonLayout = new VerticalLayout();
         buttonLayout.setSpacing(true);
+        buttonLayout.setMargin(new MarginInfo(false, true, false, true));
+
+        final HorizontalLayout horLayout = new HorizontalLayout();
+        horLayout.setSizeFull();
+        horLayout.setSpacing(true);
+
+        //TODO nur Testweise
+        final Button map = new Button("Map Planning to Issues");
+        map.setSizeFull();
+        buttonLayout.addComponent(map);
 
         addButton = new Button();
         addButton.setEnabled(true);
-        buttonLayout.addComponent(addButton);
+        addButton.setSizeFull();
+        horLayout.addComponent(addButton);
 
         deleteButton = new Button();
         deleteButton.setEnabled(false);
-        buttonLayout.addComponent(deleteButton);
+        deleteButton.setSizeFull();
+        horLayout.addComponent(deleteButton);
+        buttonLayout.addComponent(horLayout);
+
+        subissueButton = new Button();
+        subissueButton.setSizeFull();
+        buttonLayout.addComponent(subissueButton);
 
         expandButton = new Button();
         expandButton.setEnabled(true);
+        expandButton.setSizeFull();
+        buttonLayout.addComponent(expandButton);
 
         addComponent(buttonLayout);
-        addComponent(expandButton);
 
-        issueTree = new Tree("IssueTree");
+        final RapidPanel treePanel = new RapidPanel();
+        treePanel.setStyleName(Reindeer.PANEL_LIGHT);
+
+        issueTree = new Tree(screen.getUi().getCurrentProject().getProjektName());
         issueTree.setNullSelectionAllowed(false);
-        issueTree.setContainerDataSource(ModelSingleton.getInstance(screen.getCurrentProject()));
+        issueTree.setContainerDataSource(TreeIssueBaseContainerSingleton.getInstance(screen.getUi().getCurrentProject()));
         issueTree.setImmediate(true);
         if (issueTabSheet != null) {
             issueTree.addValueChangeListener(new TreeValueChangeListener(issueTabSheet, issueTree));
         }
         issueTree.addValueChangeListener(new TreeActivateOnValueChangeListener(new Button[]{deleteButton}));
 
-
-
         issueTree.setItemCaptionPropertyId(TreeIssueBaseContainer.PROPERTY_CAPTION);
-        for (Object id : issueTree.rootItemIds())
+        for (final Object id : issueTree.rootItemIds())
             issueTree.expandItemsRecursively(id);
-        if (issueTree.getItemIds().toArray().length > 0)
+        if (issueTree.getItemIds().toArray().length > 0) {
             issueTree.select(issueTree.getItemIds().toArray()[0]);
+        } else {
+            if (logger.isDebugEnabled())
+                logger.debug("No items to show");
+        }
 
-//        issueTree.setDragMode(Tree.TreeDragMode.NODE);
-//        issueTree.setDropHandler(new TreeSortDropHandler(issueTree));
-        addComponent(issueTree);
+        treePanel.addComponent(issueTree);
+        treePanel.setSizeFull();
+
+        addComponent(treePanel);
+        this.setExpandRatio(treePanel, 1F);
 
         addButton.addClickListener(new AddButtonClickListener(screen, issueTree));
         deleteButton.addClickListener(new DeleteButtonClickListener(screen, issueTree));
@@ -88,30 +122,67 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 if (expanded) {
-                    for (Object id : issueTree.rootItemIds())
+                    for (final Object id : issueTree.rootItemIds())
                         issueTree.collapseItemsRecursively(id);
-                    expandButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_expand"));
-                }
-                else {
-                    for (Object id : issueTree.rootItemIds())
+                    expandButton.setCaption(messageBundle.getString("issuetracking_issue_expand"));
+                } else {
+                    for (final Object id : issueTree.rootItemIds())
                         issueTree.expandItemsRecursively(id);
-                    expandButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_collapse"));
+                    expandButton.setCaption(messageBundle.getString("issuetracking_issue_collapse"));
                 }
                 expanded = !expanded;
+            }
+        });
+
+        subissueButton.addClickListener(new Button.ClickListener() {
+//            private boolean enabled = false;
+
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                UI.getCurrent().addWindow(new EditSubissuesWindow(screen));
+            }
+        });
+
+        //TODO nur Testweise
+        map.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                final PlannedProject project = screen.getUi().getCurrentProject();
+                final TreeIssueBaseContainer container;
+                container = TreeIssueBaseContainerSingleton.getInstance(project);
+                if (container.getItemIds().isEmpty()) {
+                    final boolean mapped = new MappingPlanningUnitToIssueBase(project).startMapping();
+                    if (mapped) {
+                        container.refresh();
+                    } else {
+                        if (logger.isDebugEnabled())
+                            logger.debug("No PlanningUnits present fpr mapping");
+
+                        Notification.show(messageBundle.getString("issuetracking_error_noplanningunits"),
+                                Notification.Type.HUMANIZED_MESSAGE);
+                    }
+
+                } else {
+                    logger.error("Tree has already elements");
+                    Notification.show(messageBundle.getString("issuetracking_error_treehaselements"),
+                            Notification.Type.ERROR_MESSAGE);
+                }
+
             }
         });
     }
 
     @Override
     public void doInternationalization() {
-        addButton.setCaption(screen.getMessagesBundle().getString("add"));
-        deleteButton.setCaption(screen.getMessagesBundle().getString("delete"));
-        expandButton.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_collapse"));
+        addButton.setCaption(messageBundle.getString("add"));
+        deleteButton.setCaption(messageBundle.getString("delete"));
+        expandButton.setCaption(messageBundle.getString("issuetracking_issue_collapse"));
+        subissueButton.setCaption(messageBundle.getString("issuetracking_issue_dragdrop_edit"));
     }
 
     public void setSelectedItemByIssue(IssueBase issue) {
-        for (Object itemId : issueTree.getItemIds()) {
-            IssueBase treeIssue = (IssueBase)issueTree.getContainerDataSource().getContainerProperty(itemId,
+        for (final Object itemId : issueTree.getItemIds()) {
+            final IssueBase treeIssue = (IssueBase)issueTree.getContainerDataSource().getContainerProperty(itemId,
                     TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
             if (treeIssue.equals(issue)){
                 issueTree.select(itemId);
@@ -120,163 +191,4 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         }
     }
 
-
-
-//    private static class TreeSortDropHandler implements DropHandler {
-//        private final Tree tree;
-//
-//        /**
-//         * Tree must use {@link com.vaadin.data.util.HierarchicalContainer}.
-//         *
-//         * @param tree
-//         */
-//
-//        public TreeSortDropHandler(final Tree tree) {
-//            this.tree = tree;
-//        }
-//
-//        public AcceptCriterion getAcceptCriterion() {
-//            return AcceptAll.get();
-//        }
-//
-//        public void drop(DragAndDropEvent event) {
-//            // Wrapper for the object that is dragged
-//            Transferable t = event.getTransferable();
-//
-//            // Make sure the drag source is the same tree
-//            if (t.getSourceComponent() != tree)
-//                return;
-//
-//            Tree.TreeTargetDetails target = (Tree.TreeTargetDetails)
-//                    event.getTargetDetails();
-//
-//            // Get ids of the dragged item and the target item
-//            Object sourceItemId = t.getData("itemId");
-//            Object targetItemId = target.getItemIdInto();
-//
-//            // On which side of the target the item was dropped
-//            VerticalDropLocation location = target.getDropLocation();
-//
-//            HierarchicalContainer container = (HierarchicalContainer)
-//                    tree.getContainerDataSource();
-//
-//            // Drop right on an item -> make it a child
-//            if (location == VerticalDropLocation.MIDDLE) {
-//                container.setChildrenAllowed(targetItemId, true);
-//                tree.setParent(sourceItemId, targetItemId);
-//            }
-//
-//                // Drop at the top of a subtree -> make it previous
-//            else if (location == VerticalDropLocation.TOP) {
-//                Object parentId = container.getParent(targetItemId);
-//                container.setParent(sourceItemId, parentId);
-//                container.moveAfterSibling(sourceItemId, targetItemId);
-//                container.moveAfterSibling(targetItemId, sourceItemId);
-//            }
-//
-//            // Drop below another item -> make it next
-//            else if (location == VerticalDropLocation.BOTTOM) {
-//                Object parentId = container.getParent(targetItemId);
-//                container.setParent(sourceItemId, parentId);
-//                container.moveAfterSibling(sourceItemId, targetItemId);
-//            }
-//
-////            Object parentId = container.getParent(targetItemId);
-////            IssueBase issue = (IssueBase)container.getContainerProperty(parentId,
-////                    TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
-////            issue.addSubIssue((IssueBase)container.getContainerProperty(targetItemId,
-////                    TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue());
-//        }
-//
-//
-//
-////        public AcceptCriterion getAcceptCriterion() {
-////            // Alternatively, could use the following criteria to eliminate some
-////            // checks in drop():
-////            // new And(IsDataBound.get(), new DragSourceIs(tree));
-////            return AcceptAll.get();
-////        }
-////
-////        public void drop(DragAndDropEvent dropEvent) {
-////            // Called whenever a drop occurs on the component
-////
-////            // Make sure the drag source is the same tree
-////            Transferable t = dropEvent.getTransferable();
-////
-////            // see the comment in getAcceptCriterion()
-////            if (t.getSourceComponent() != tree
-////                    || !(t instanceof DataBoundTransferable)) {
-////                return;
-////            }
-////
-////            Tree.TreeTargetDetails dropData = ((Tree.TreeTargetDetails) dropEvent
-////                    .getTargetDetails());
-////
-////            Object sourceItemId = ((DataBoundTransferable) t).getItemId();
-////            // FIXME: Why "over", should be "targetItemId" or just
-////            // "getItemId"
-////            Object targetItemId = dropData.getItemIdOver();
-////
-////            // Location describes on which part of the node the drop took
-////            // place
-////            VerticalDropLocation location = dropData.getDropLocation();
-////
-////            moveNode(sourceItemId, targetItemId, location);
-////
-////        }
-////
-////        /**
-////         * Move a node within a tree onto, above or below another node depending
-////         * on the drop location.
-////         *
-////         * @param sourceItemId
-////         *            id of the item to move
-////         * @param targetItemId
-////         *            id of the item onto which the source node should be moved
-////         * @param location
-////         *            VerticalDropLocation indicating where the source node was
-////         *            dropped relative to the target node
-////         */
-////        private void moveNode(Object sourceItemId, Object targetItemId,
-////                              VerticalDropLocation location) {
-////            HierarchicalContainer container = (HierarchicalContainer) tree
-////                    .getContainerDataSource();
-////
-////            // Sorting goes as
-////            // - If dropped ON a node, we append it as a child
-////            // - If dropped on the TOP part of a node, we move/add it before
-////            // the node
-////            // - If dropped on the BOTTOM part of a node, we move/add it
-////            // after the node
-////
-////            if (location == VerticalDropLocation.MIDDLE) {
-////                container.setChildrenAllowed(targetItemId, true);
-////                if (container.setParent(sourceItemId, targetItemId)
-////                        && container.hasChildren(targetItemId)) {
-////                    // move first in the container
-////                    container.moveAfterSibling(sourceItemId, null);
-////                }
-////            } else if (location == VerticalDropLocation.TOP) {
-////                Object parentId = container.getParent(targetItemId);
-////                if (container.setParent(sourceItemId, parentId)) {
-////                    // reorder only the two items, moving source above target
-////                    container.moveAfterSibling(sourceItemId, targetItemId);
-////                    container.moveAfterSibling(targetItemId, sourceItemId);
-////                }
-////            } else if (location == VerticalDropLocation.BOTTOM) {
-////                Object parentId = container.getParent(targetItemId);
-////                if (container.setParent(sourceItemId, parentId)) {
-////                    container.moveAfterSibling(sourceItemId, targetItemId);
-////                }
-////            }
-////
-////            Object parentId = container.getParent(targetItemId);
-////            IssueBase issue = (IssueBase)container.getContainerProperty(parentId,
-////                    TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
-////            issue.addSubIssue((IssueBase)container.getContainerProperty(targetItemId,
-////                    TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue());
-////
-////        }
-//
-//   }
 }

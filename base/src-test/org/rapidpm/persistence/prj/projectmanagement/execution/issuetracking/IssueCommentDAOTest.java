@@ -13,7 +13,7 @@ import static org.junit.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 15.11.12
  * Time: 10:37
  * To change this template use File | Settings | File Templates.
@@ -52,5 +52,15 @@ public class IssueCommentDAOTest implements BaseDAOTest {
 
         daoFactory.removeTX(comment);
         assertFalse(dao.loadAllEntities().contains(comment));
+    }
+
+    @Test//(expected = IllegalArgumentException.class)
+    public void persistExistingName() {
+        final IssueComment comment = dao.loadAllEntities().get(0);
+        final IssueComment comTest = new IssueComment();
+        comTest.setCreated(comment.getCreated());
+        comTest.setCreator(comment.getCreator());
+        comTest.setText(comment.getText());
+        daoFactory.saveOrUpdateTX(comTest);
     }
 }

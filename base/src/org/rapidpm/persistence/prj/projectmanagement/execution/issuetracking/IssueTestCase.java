@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 16.10.12
  * Time: 16:45
  * To change this template use File | Settings | File Templates.
@@ -36,7 +36,7 @@ public class IssueTestCase {
         return id;
     }
 
-    public void setId(final Long id) {
+    private void setId(final Long id) {
         this.id = id;
     }
 

@@ -2,17 +2,10 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview;
 
 
 import com.vaadin.ui.*;
-//import org.rapidpm.ejb3.EJBFactory;
-//import org.rapidpm.persistence.DaoFactoryBean;
-import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTabSheet;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueTreeLayout;
-//import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsFieldGroupBean;
 
 
 /**
@@ -24,34 +17,21 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uic
  */
 public class IssueOverviewScreen extends Screen{
 
-    private HorizontalSplitPanel hSplitPanel;
-    private IssueTreeLayout treeLayout;
-    private IssueTabSheet issueTabSheet;
+    private final HorizontalSplitPanel hSplitPanel;
+    private final IssueTreeLayout treeLayout;
+    private final IssueTabSheet issueTabSheet;
 
-//    private DaoFactoryBean baseDaoFactoryBean;
 
-    public IssueOverviewScreen(MainUI ui) {
+    public IssueOverviewScreen(final MainUI ui) {
         super(ui);
-//        baseDaoFactoryBean = EJBFactory.getEjbInstance(IssueOverviewScreenBean.class).getDaoFactoryBean();
-//        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         this.setSizeFull();
-        //this.setMargin(true);
+        this.activeVerticalFullScreenSize(true);
         hSplitPanel = new HorizontalSplitPanel();
-        hSplitPanel.setSplitPosition(30, Unit.PERCENTAGE);
+        hSplitPanel.setSplitPosition(25, Unit.PERCENTAGE);
         issueTabSheet = new IssueTabSheet(this);
         treeLayout = new IssueTreeLayout(this, issueTabSheet);
         doInternationalization();
         setComponents();
-    }
-
-//    public DaoFactoryBean getBaseDaoFactoryBean() {
-//        return baseDaoFactoryBean;
-//    }
-
-    public PlannedProject getCurrentProject() {
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
-        return plannedProjectDAO.findByID(ui.getCurrentProject().getId());
     }
 
     public IssueTabSheet getIssueTabSheet() {
@@ -66,7 +46,6 @@ public class IssueOverviewScreen extends Screen{
     public void setComponents() {
         hSplitPanel.setFirstComponent(treeLayout);
         hSplitPanel.setSecondComponent(issueTabSheet);
-        hSplitPanel.setHeight("775px");
         addComponent(hSplitPanel);
     }
 

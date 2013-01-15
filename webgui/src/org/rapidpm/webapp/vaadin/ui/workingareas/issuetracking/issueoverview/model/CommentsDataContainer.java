@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 07.11.12
  * Time: 09:44
  * To change this template use File | Settings | File Templates.
@@ -34,7 +34,7 @@ public class CommentsDataContainer extends AbstractIssueDataContainer {
 
     @Override
     protected List<Object> setVisibleColumns() {
-        List<Object> visibleColumns = new ArrayList<>();
+        final List<Object> visibleColumns = new ArrayList<>();
         visibleColumns.add(TEXT);
         visibleColumns.add(CREATOR);
         visibleColumns.add(CREATED);
@@ -42,23 +42,21 @@ public class CommentsDataContainer extends AbstractIssueDataContainer {
     }
 
     @Override
-    public void fillContainer(IssueBase issue) {
+    public void fillContainer(final IssueBase issue) {
         setCurrentIssue(issue);
         this.removeAllItems();
-        for (IssueComment comment : issue.getComments()) {
+        for (final IssueComment comment : issue.getComments()) {
             addComment(comment);
         }
     }
 
-    public boolean addComment(IssueComment comment) {
-        boolean success = false;
-        if (comment != null) {
-            Item itemId = this.addItem(comment);
-            itemId.getItemProperty(TEXT).setValue(comment.getText());
-            itemId.getItemProperty(CREATOR).setValue(comment.getCreator().getLogin());
-            itemId.getItemProperty(CREATED).setValue(dateFormat.format(comment.getCreated()));
-            success = true;
-        }
-        return success;
+    public void addComment(final IssueComment comment) {
+        if (comment == null)
+            throw new NullPointerException("Comment to add must not be null");
+
+        final Item itemId = this.addItem(comment);
+        itemId.getItemProperty(TEXT).setValue(comment.getText());
+        itemId.getItemProperty(CREATOR).setValue(comment.getCreator().getLogin());
+        itemId.getItemProperty(CREATED).setValue(dateFormat.format(comment.getCreated()));
     }
 }

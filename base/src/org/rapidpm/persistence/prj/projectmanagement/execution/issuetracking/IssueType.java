@@ -3,6 +3,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 //import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.NonVisible;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.PersistInGraph;
@@ -12,7 +13,7 @@ import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 12.10.12
  * Time: 08:22
  * To change this template use File | Settings | File Templates.
@@ -22,6 +23,10 @@ public class IssueType  implements PersistInGraph {
 
     @Identifier
     private Long id;
+
+    @Simple
+    @NonVisible
+    private Long projectid;
 
     @Simple
     private String typeName;
@@ -37,20 +42,29 @@ public class IssueType  implements PersistInGraph {
         this.typeName = typeName;
     }
 
-//    public List<IssueBase> getConnectedIssues() {
-//        return GraphDaoFactory.getIssueTypeDAO().getConnectedIssues(this);
-//    }
+    public IssueType(final Long projectid) {
+        setProjectId(projectid);
+    }
 
-    public List<IssueBase> getConnectedIssuesFromProject(final Long projectId) {
-        return DaoFactorySingelton.getInstance().getIssueTypeDAO().getConnectedIssuesFromProject(this, projectId);
+
+    public List<IssueBase> getConnectedIssues() {
+        return DaoFactorySingelton.getInstance().getIssueTypeDAO().getConnectedIssuesFromProject(this, projectid);
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(final Long id) {
+    private void setId(final Long id) {
         this.id = id;
+    }
+
+    public Long getProjectId() {
+        return projectid;
+    }
+
+    public void setProjectId(final Long projectid) {
+        this.projectid = projectid;
     }
 
     public String getTypeName() {
@@ -77,6 +91,7 @@ public class IssueType  implements PersistInGraph {
         IssueType issueType = (IssueType) o;
 
         if (id != null ? !id.equals(issueType.id) : issueType.id != null) return false;
+        if (projectid != null ? !projectid.equals(issueType.projectid) : issueType.projectid != null) return false;
         if (typeFileName != null ? !typeFileName.equals(issueType.typeFileName) : issueType.typeFileName != null) return false;
         if (typeName != null ? !typeName.equals(issueType.typeName) : issueType.typeName != null) return false;
 
@@ -86,6 +101,7 @@ public class IssueType  implements PersistInGraph {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (projectid != null ? projectid.hashCode() : 0);
         result = 31 * result + (typeName != null ? typeName.hashCode() : 0);
         result = 31 * result + (typeFileName != null ? typeFileName.hashCode() : 0);
         return result;
@@ -95,6 +111,7 @@ public class IssueType  implements PersistInGraph {
     public String toString() {
         return "IssueType{" +
                 "id=" + id +
+                ", projectid=" + projectid +
                 ", typeName='" + typeName + '\'' +
                 ", typeFileName='" + typeFileName + '\'' +
                 '}';

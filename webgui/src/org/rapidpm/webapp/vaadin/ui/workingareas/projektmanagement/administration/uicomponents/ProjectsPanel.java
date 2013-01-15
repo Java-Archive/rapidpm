@@ -73,17 +73,18 @@ public class ProjectsPanel extends RapidPanel implements Internationalizationabl
                     }
                     final Set<PlanningUnit> parentPlanningUnits = projektAusDB.getPlanningUnits();
                     if(parentPlanningUnits != null && !parentPlanningUnits.isEmpty()){
-                        ConfirmDialog.show(ui, messagesBundle.getString("confirm"),
-                                messagesBundle.getString("project_confirmdelete"), messagesBundle.getString("ok"),
-                                messagesBundle.getString("cancel"),
-                                new ConfirmDialog.Listener() {
-                            @Override
-                            public void onClose(ConfirmDialog dialog) {
-                                if(dialog.isConfirmed()){
+                        //TODO ConfirmDialog updaten oder selber schreiben
+                        //ConfirmDialog.show(ui, messagesBundle.getString("confirm"),
+                        //        messagesBundle.getString("project_confirmdelete"), messagesBundle.getString("ok"),
+                        //        messagesBundle.getString("cancel"),
+                        //        new ConfirmDialog.Listener() {
+                        //    @Override
+                        //    public void onClose(ConfirmDialog dialog) {
+                        //        if(dialog.isConfirmed()){
                                     tryToDeleteProject(parentPlanningUnits, daoFactory, projektAusDB);
-                                }
-                            }
-                        });
+                        //        }
+                        //    }
+                        //});
                     }  else {
                         tryToDeleteProject(parentPlanningUnits, daoFactory, projektAusDB);
                     }

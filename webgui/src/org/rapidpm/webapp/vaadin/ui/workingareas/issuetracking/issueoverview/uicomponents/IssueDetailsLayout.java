@@ -8,14 +8,17 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
+import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
-//import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.system.security.Benutzer;
+import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.FormattedDateStringToDateConverter;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.MissingAttributeException;
+import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NoNameException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabAddButtonClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic.TabDeleteButtonClickListener;
@@ -32,9 +35,11 @@ import java.util.*;
  * To change this template use File | Settings | File Templates.
  */
 public class IssueDetailsLayout extends ComponentEditableVLayout implements Internationalizationable{
+    private static final String WIDTH_100perc = "100%";
     private static Logger logger = Logger.getLogger(IssueDetailsLayout.class);
 
-    public final static String PROPERTY_CAPTION = "caption";
+    private final static String PROPERTY_CAPTION = "caption";
+    private final static int TABLE_ROW_COUNT = 7;
 
     private TextField headerSummaryField;
     private Label headerTextField;
@@ -58,6 +63,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     private Table tabTestcases;
     private Table tabRelations;
 
+    private final List<AbstractField> compList;
+
     private Button tabAddButton;
     private Button tabDeleteButton;
 
@@ -68,43 +75,48 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     public IssueDetailsLayout(final IssueOverviewScreen screen, final boolean componentsReadOnlyInit) {
         super(screen, componentsReadOnlyInit);
         doInternationalization();
+        compList = new ArrayList<>();
+        compList.addAll(Arrays.asList(headerSummaryField, typeSelect, statusSelect, prioritySelect, assigneeSelect,
+                                        versionSelect, storyPointSelect));
     }
 
 
     @Override
     protected AbstractOrderedLayout buildSaveableForm() {
-        converter = new FormattedDateStringToDateConverter(new SimpleDateFormat("dd.MM.yy"));
+        converter = new FormattedDateStringToDateConverter(new SimpleDateFormat(Constants.DD_MM_YYYY));
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final List<IssueType> typeList = daoFactory.getIssueTypeDAO().loadAllEntities();
-        final List<IssueStatus> statusList = daoFactory.getIssueStatusDAO().loadAllEntities();
-        final List<IssuePriority> priorityList =  daoFactory.getIssuePriorityDAO().loadAllEntities();
-        final List<IssueVersion> versionList =  daoFactory.getIssueVersionDAO().loadAllEntities();
-        final List<IssueStoryPoint> storyPointList =  daoFactory.getIssueStoryPointDAO().loadAllEntities();
-        final List<IssueComponent> componentsList = daoFactory.getIssueComponentDAO().loadAllEntities();
+        final Long projectId = screen.getUi().getCurrentProject().getId();
+
+        final List<IssueType> typeList = daoFactory.getIssueTypeDAO().loadAllEntities(projectId);
+        final List<IssueStatus> statusList = daoFactory.getIssueStatusDAO().loadAllEntities(projectId);
+        final List<IssuePriority> priorityList = daoFactory.getIssuePriorityDAO().loadAllEntities(projectId);
+        final List<IssueVersion> versionList = daoFactory.getIssueVersionDAO().loadAllEntities(projectId);
+        final List<IssueStoryPoint> storyPointList = daoFactory.getIssueStoryPointDAO().loadAllEntities(projectId);
+        final List<IssueComponent> componentsList = daoFactory.getIssueComponentDAO().loadAllEntities(projectId);
         final List<Benutzer> userList =  daoFactory.getBenutzerDAO().loadAllEntities();
 
-        VerticalLayout formLayout = new VerticalLayout();
+        final VerticalLayout formLayout = new VerticalLayout();
         formLayout.setSpacing(true);
 
-        FormLayout dateLayout = new FormLayout();
-        FormLayout detailLayout = new FormLayout();
-        FormLayout componentLayout = new FormLayout();
-        HorizontalLayout horLayout = new HorizontalLayout();
+        final FormLayout dateLayout = new FormLayout();
+        final FormLayout detailLayout = new FormLayout();
+        final FormLayout componentLayout = new FormLayout();
+        final HorizontalLayout horLayout = new HorizontalLayout();
 
-        dateLayout.setWidth("100%");
-        detailLayout.setWidth("100%");
-        componentLayout.setWidth("100%");
-        horLayout.setWidth("100%");
+        dateLayout.setWidth(WIDTH_100perc);
+        detailLayout.setWidth(WIDTH_100perc);
+        componentLayout.setWidth(WIDTH_100perc);
+        horLayout.setWidth(WIDTH_100perc);
 
         headerTextField = new Label();
-        headerTextField.setWidth("100%");
+        headerTextField.setWidth(WIDTH_100perc);
 
         headerSummaryField = new TextField();
-        headerSummaryField.setInputPrompt("Enter name");
-        headerSummaryField.setWidth("100%");
+        headerSummaryField.setInputPrompt(messageBundle.getString("issuetracking_issue_details_nameprompt"));
+        headerSummaryField.setWidth(WIDTH_100perc);
         headerSummaryField.setReadOnly(true);
 
-        VerticalLayout headerLayout = new VerticalLayout();
+        final VerticalLayout headerLayout = new VerticalLayout();
         headerLayout.addComponent(headerTextField);
         headerLayout.addComponent(headerSummaryField);
         headerLayout.setExpandRatio(headerSummaryField, 1.0F);
@@ -114,13 +126,12 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         typeSelect = new ComboBox();
         typeSelect.addContainerProperty(PROPERTY_CAPTION, String.class, null);
         typeSelect.setItemCaptionPropertyId(PROPERTY_CAPTION);
-        Item item;
-        for (IssueType type : typeList) {
-            item = typeSelect.addItem(type);
+        for (final IssueType type : typeList) {
+            final Item item = typeSelect.addItem(type);
             item.getItemProperty(PROPERTY_CAPTION).setValue(type.getTypeName());
             typeSelect.setItemIcon(type, new ThemeResource("images/" + type.getTypeFileName()));
+            typeSelect.select(typeList.get(0));
         }
-        typeSelect.select(typeList.get(0));
         typeSelect.setTextInputAllowed(false);
         typeSelect.setNullSelectionAllowed(false);
         typeSelect.setReadOnly(true);
@@ -130,12 +141,12 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         statusSelect = new ComboBox();
         statusSelect.addContainerProperty(PROPERTY_CAPTION, String.class, null);
         statusSelect.setItemCaptionPropertyId(PROPERTY_CAPTION);
-        for (IssueStatus status : statusList) {
-            item = statusSelect.addItem(status);
+        for (final IssueStatus status : statusList) {
+            final Item item = statusSelect.addItem(status);
             item.getItemProperty(PROPERTY_CAPTION).setValue(status.getStatusName());
             statusSelect.setItemIcon(status, new ThemeResource("images/" + status.getStatusFileName()));
+            statusSelect.select(statusList.get(0));
         }
-        statusSelect.select(statusList.get(0));
         statusSelect.setTextInputAllowed(false);
         statusSelect.setNullSelectionAllowed(false);
         statusSelect.setReadOnly(true);
@@ -145,12 +156,12 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         prioritySelect = new ComboBox();
         prioritySelect.addContainerProperty(PROPERTY_CAPTION, String.class, null);
         prioritySelect.setItemCaptionPropertyId(PROPERTY_CAPTION);
-        for (IssuePriority priority : priorityList) {
-            item = prioritySelect.addItem(priority);
+        for (final IssuePriority priority : priorityList) {
+            final Item item = prioritySelect.addItem(priority);
             item.getItemProperty(PROPERTY_CAPTION).setValue(priority.getPriorityName());
             prioritySelect.setItemIcon(priority, new ThemeResource("images/" + priority.getPriorityFileName()));
+            prioritySelect.select(priorityList.get(0));
         }
-        prioritySelect.select(priorityList.get(0));
         prioritySelect.setTextInputAllowed(false);
         prioritySelect.setNullSelectionAllowed(false);
         prioritySelect.setReadOnly(true);
@@ -165,16 +176,16 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         assigneeSelect.addContainerProperty(PROPERTY_CAPTION, String.class, null);
         assigneeSelect.setItemCaptionPropertyId(PROPERTY_CAPTION);
         int i= 0;
-        for (Benutzer user : userList) {
+        for (final Benutzer user : userList) {
             //TODO entfernen sobald bug behoben
             if (i == 0) {
                 i++;
                 continue;
             }
-            item = assigneeSelect.addItem(user);
+            final Item item = assigneeSelect.addItem(user);
             item.getItemProperty(PROPERTY_CAPTION).setValue(user.getLogin());
+            assigneeSelect.select(assigneeSelect.getItemIds().toArray()[0]);
         }
-        assigneeSelect.select(assigneeSelect.getItemIds().toArray()[0]);
         assigneeSelect.setTextInputAllowed(false);
         assigneeSelect.setNullSelectionAllowed(false);
         assigneeSelect.setReadOnly(true);
@@ -184,7 +195,6 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
         plannedDateLabel = new Label();
         plannedDateLabel.setValue(converter.convertToPresentation(new Date(), Locale.getDefault()));
-//        plannedDateLabel.setReadOnly(true);
         dateLayout.addComponent(plannedDateLabel);
 
         resolvedDateField = new DateField();
@@ -201,11 +211,11 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         storyPointSelect = new ComboBox();
         storyPointSelect.addContainerProperty(PROPERTY_CAPTION, Integer.class, null);
         storyPointSelect.setItemCaptionPropertyId(PROPERTY_CAPTION);
-        for (IssueStoryPoint storypoint : storyPointList) {
-            item = storyPointSelect.addItem(storypoint);
+        for (final IssueStoryPoint storypoint : storyPointList) {
+            final Item item = storyPointSelect.addItem(storypoint);
             item.getItemProperty(PROPERTY_CAPTION).setValue(storypoint.getStorypoint());
+            storyPointSelect.select(storyPointList.get(0));
         }
-        storyPointSelect.select(storyPointList.get(0));
         storyPointSelect.setTextInputAllowed(false);
         storyPointSelect.setNullSelectionAllowed(false);
         storyPointSelect.setReadOnly(true);
@@ -216,11 +226,11 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         versionSelect = new ComboBox();
         versionSelect.addContainerProperty(PROPERTY_CAPTION, String.class, null);
         versionSelect.setItemCaptionPropertyId(PROPERTY_CAPTION);
-        for (IssueVersion version : versionList) {
-            item = versionSelect.addItem(version);
+        for (final IssueVersion version : versionList) {
+            final Item item = versionSelect.addItem(version);
             item.getItemProperty(PROPERTY_CAPTION).setValue(version.getVersionName());
+            versionSelect.select(versionList.get(0));
         }
-        versionSelect.select(versionList.get(0));
         versionSelect.setTextInputAllowed(false);
         versionSelect.setNullSelectionAllowed(false);
         versionSelect.setReadOnly(true);
@@ -230,11 +240,11 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
         riskSelect = new ComboBox();
         //TODO Persistente Daten verwenden
-        List<Integer> riskarray = new ArrayList<>(Arrays.asList(0, 25, 50, 75, 100));
-        for (Integer version : riskarray) {
+        final List<Integer> riskarray = new ArrayList<>(Arrays.asList(0, 25, 50, 75));
+        for (final Integer version : riskarray) {
             riskSelect.addItem(version);
+            riskSelect.select(riskarray.get(0));
         }
-        riskSelect.select(riskarray.get(0));
         riskSelect.setTextInputAllowed(false);
         riskSelect.setNullSelectionAllowed(true);
         riskSelect.setReadOnly(true);
@@ -245,8 +255,8 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         componentListSelect = new ListSelect();
         componentListSelect.addContainerProperty(PROPERTY_CAPTION, String.class, null);
         componentListSelect.setItemCaptionPropertyId(PROPERTY_CAPTION);
-        for (IssueComponent component : componentsList) {
-            item = componentListSelect.addItem(component);
+        for (final IssueComponent component : componentsList) {
+            final Item item = componentListSelect.addItem(component);
             item.getItemProperty(PROPERTY_CAPTION).setValue(component.getComponentName());
         }
         componentListSelect.setNullSelectionAllowed(true);
@@ -266,7 +276,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         descriptionTextArea.setReadOnly(true);
         formLayout.addComponent(descriptionTextArea);
 
-        VerticalLayout bottomLayout = new VerticalLayout();
+        final VerticalLayout bottomLayout = new VerticalLayout();
         bottomLayout.setSpacing(true);
         bottomLayout.setWidth("100%");
 
@@ -277,7 +287,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabDeleteButton.setImmediate(true);
         tabDeleteButton.setEnabled(false);
 
-        HorizontalLayout tabButtonLayout = new HorizontalLayout();
+        final HorizontalLayout tabButtonLayout = new HorizontalLayout();
         tabButtonLayout.setSpacing(true);
         tabButtonLayout.addComponent(tabAddButton);
         tabButtonLayout.addComponent(tabDeleteButton);
@@ -287,9 +297,9 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabSheet.setSizeFull();
         tabSheet.setImmediate(true);
 
-        TableValueChangeListener tabValueListener = new TableValueChangeListener();
+        final TableValueChangeListener tabValueListener = new TableValueChangeListener();
 
-        CommentsDataContainer comContainer = new CommentsDataContainer(screen);
+        final CommentsDataContainer comContainer = new CommentsDataContainer(screen);
         tabComments = new Table();
         tabComments.setWidth("100%");
         tabComments.setImmediate(true);
@@ -298,12 +308,12 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabComments.setNullSelectionAllowed(false);
         tabComments.setSelectable(true);
         tabComments.setEditable(false);
-        tabComments.setPageLength(10);
+        tabComments.setPageLength(TABLE_ROW_COUNT);
         tabComments.addValueChangeListener(tabValueListener);
         tabSheet.addTab(tabComments);
 
 
-        TestCasesDataContainer tesContainer = new TestCasesDataContainer(screen);
+        final TestCasesDataContainer tesContainer = new TestCasesDataContainer(screen);
         tabTestcases = new Table();
         tabTestcases.setWidth("100%");
         tabTestcases.setImmediate(true);
@@ -312,12 +322,12 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabTestcases.setNullSelectionAllowed(false);
         tabTestcases.setSelectable(true);
         tabTestcases.setEditable(false);
-        tabTestcases.setPageLength(10);
+        tabTestcases.setPageLength(TABLE_ROW_COUNT);
         tabTestcases.addValueChangeListener(tabValueListener);
         tabSheet.addTab(tabTestcases);
 
 
-        RelationsDataContainer relContainer = new RelationsDataContainer(screen);
+        final RelationsDataContainer relContainer = new RelationsDataContainer(screen);
         tabRelations = new Table();
         tabRelations.setWidth("100%");
         tabRelations.setImmediate(true);
@@ -326,7 +336,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         tabRelations.setNullSelectionAllowed(false);
         tabRelations.setSelectable(true);
         tabRelations.setEditable(false);
-        tabRelations.setPageLength(10);
+        tabRelations.setPageLength(TABLE_ROW_COUNT);
         tabRelations.addItemClickListener(new RelationTableItemClickListener());
         tabRelations.addValueChangeListener(tabValueListener);
         tabSheet.addTab(tabRelations);
@@ -350,34 +360,35 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
     @Override
     public void doInternationalization() {
-        typeSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_type"));
-        statusSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_status"));
-        prioritySelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_priority"));
-        assigneeSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_assignee"));
-        reporterLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_reporter"));
-        componentListSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_components"));
-        plannedDateLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_planned"));
-        resolvedDateField.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_resolved"));
-        closedDateField.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_closed"));
-        storyPointSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_storypoints"));
-        versionSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_version"));
-        riskSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_risk"));
-        descriptionTextArea.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_description"));
-        tabAddButton.setCaption(screen.getMessagesBundle().getString("add"));
-        tabDeleteButton.setCaption(screen.getMessagesBundle().getString("delete"));
-        tabSheet.getTab(tabComments).setCaption(screen.getMessagesBundle().getString("issuetracking_issue_comments"));
-        tabSheet.getTab(tabTestcases).setCaption(screen.getMessagesBundle().getString("issuetracking_issue_testcases"));
-        tabSheet.getTab(tabRelations).setCaption(screen.getMessagesBundle().getString
-                ("issuetracking_issue_relations"));
+        typeSelect.setCaption(messageBundle.getString("issuetracking_issue_type"));
+        statusSelect.setCaption(messageBundle.getString("issuetracking_issue_status"));
+        prioritySelect.setCaption(messageBundle.getString("issuetracking_issue_priority"));
+        assigneeSelect.setCaption(messageBundle.getString("issuetracking_issue_assignee"));
+        reporterLabel.setCaption(messageBundle.getString("issuetracking_issue_reporter"));
+        componentListSelect.setCaption(messageBundle.getString("issuetracking_issue_components"));
+        plannedDateLabel.setCaption(messageBundle.getString("issuetracking_issue_planned"));
+        resolvedDateField.setCaption(messageBundle.getString("issuetracking_issue_resolved"));
+        closedDateField.setCaption(messageBundle.getString("issuetracking_issue_closed"));
+        storyPointSelect.setCaption(messageBundle.getString("issuetracking_issue_storypoints"));
+        versionSelect.setCaption(messageBundle.getString("issuetracking_issue_version"));
+        riskSelect.setCaption(messageBundle.getString("issuetracking_issue_risk"));
+        descriptionTextArea.setCaption(messageBundle.getString("issuetracking_issue_description"));
+        tabAddButton.setCaption(messageBundle.getString("add"));
+        tabDeleteButton.setCaption(messageBundle.getString("delete"));
+        tabSheet.getTab(tabComments).setCaption(messageBundle.getString("issuetracking_issue_comments"));
+        tabSheet.getTab(tabTestcases).setCaption(messageBundle.getString("issuetracking_issue_testcases"));
+        tabSheet.getTab(tabRelations).setCaption(messageBundle.getString("issuetracking_issue_relations"));
 
     }
 
-    public void setDetailsFromIssue(IssueBase issue) {
+    public void setDetailsFromIssue(final IssueBase issue) {
         if (issue == null)
             throw new NullPointerException("Details can't be set from null.");
         this.issue = issue;
         setLayoutReadOnly(false);
-        headerSummaryField.setRequired(false);
+        for (final AbstractField comp : compList) {
+            comp.setRequired(false);
+        }
 
         headerTextField.setValue(issue.getText());
         headerSummaryField.setValue(issue.getSummary());
@@ -385,6 +396,10 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         statusSelect.select(issue.getStatus());
         prioritySelect.select(issue.getPriority());
         assigneeSelect.setValue(issue.getAssignee());
+//        if (issue.getReporter() == null) {
+//            final BenutzerDAO userDao = DaoFactorySingelton.getInstance().getBenutzerDAO();
+//            issue.setReporter(userDao.loadBenutzerByEmail("nobody@rapidpm.org"));
+//        }
         reporterLabel.setValue(issue.getReporter().getLogin());
         plannedDateLabel.setValue(converter.convertToPresentation(issue.getDueDate_planned(), Locale.getDefault()));
         resolvedDateField.setValue(issue.getDueDate_resolved().getTime() == 0L ? null : issue.getDueDate_resolved());
@@ -394,10 +409,10 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         riskSelect.select(issue.getRisk());
         descriptionTextArea.setValue(issue.getStory());
 
-        for (Object item : componentListSelect.getItemIds())
+        for (final Object item : componentListSelect.getItemIds())
             componentListSelect.unselect(item);
 
-        for (IssueComponent component : issue.getComponents()) {
+        for (final IssueComponent component : issue.getComponents()) {
             componentListSelect.select(component);
         }
 
@@ -413,9 +428,15 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         setLayoutReadOnly(true);
     }
 
-    public IssueBase setIssueProperties(boolean newIssue) {
+    public IssueBase setIssueProperties(final boolean newIssue)
+            throws NoNameException, MissingAttributeException {
+
+        for (final AbstractField comp : compList) {
+            comp.setRequired(false);
+        }
+
         if (newIssue) {
-            issue = new IssueBase(screen.getCurrentProject().getId());
+            issue = new IssueBase(screen.getUi().getCurrentProject().getId());
             issue.setReporter(screen.getUi().getCurrentUser());
             if (logger.isInfoEnabled())
                     logger.info("Adding new issue");
@@ -425,23 +446,50 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
         if (issue == null) {
             logger.error("Issue to save was null");
-            return null;
+            throw new NullPointerException("Issue to save was null");
         }
 
 
         if (headerSummaryField.getValue().equals("")) {
-            headerSummaryField.setRequired(true);
-            headerSummaryField.setRequiredError("Issue must have a name!");
-            logger.warn("");
-            Notification.show("Issue must have a name", Notification.Type.WARNING_MESSAGE);
-            return null;
+            setComponentRequired(headerSummaryField);
+            throw new NoNameException();
+        }
+
+        if (typeSelect.getValue() == null) {
+            setComponentRequired(typeSelect);
+            throw new MissingAttributeException(typeSelect.getCaption());
+        }
+
+        if (statusSelect.getValue() == null) {
+            setComponentRequired(statusSelect);
+            throw new MissingAttributeException(statusSelect.getCaption());
+        }
+
+        if (prioritySelect.getValue() == null) {
+            setComponentRequired(prioritySelect);
+            throw new MissingAttributeException(prioritySelect.getCaption());
+        }
+
+        if (assigneeSelect.getValue() == null) {
+            setComponentRequired(assigneeSelect);
+            throw new MissingAttributeException(assigneeSelect.getCaption());
+        }
+
+        if (storyPointSelect.getValue() == null) {
+            setComponentRequired(storyPointSelect);
+            throw new MissingAttributeException(storyPointSelect.getCaption());
+        }
+
+        if (versionSelect.getValue() == null) {
+            setComponentRequired(versionSelect);
+            throw new MissingAttributeException(versionSelect.getCaption());
         }
 
 
         issue.setSummary(headerSummaryField.getValue());
+        issue.setType((IssueType) typeSelect.getValue());
         issue.setStatus((IssueStatus) statusSelect.getValue());
         issue.setPriority((IssuePriority) prioritySelect.getValue());
-        issue.setType((IssueType) typeSelect.getValue());
         issue.setAssignee((Benutzer) assigneeSelect.getValue());
         issue.setDueDate_planned(converter.convertToModel(plannedDateLabel.getValue(), Locale.getDefault()));
         issue.setDueDate_resolved(resolvedDateField.getValue() == null ? new Date(0) : resolvedDateField.getValue());
@@ -451,7 +499,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         issue.setRisk((Integer) riskSelect.getValue());
         issue.setStory(descriptionTextArea.getValue());
 
-        Set<IssueComponent> comps = (Set<IssueComponent>) componentListSelect.getValue();
+        final Set<IssueComponent> comps = (Set<IssueComponent>) componentListSelect.getValue();
         if (!newIssue) {
             for (final IssueComponent issueComponent : issue.getComponents()) {
                 if (!comps.contains(issueComponent)) {
@@ -470,20 +518,23 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         issue.setTestcases(testCases);
 
         final RelationsDataContainer relContainer = (RelationsDataContainer)tabRelations.getContainerDataSource();
-        for (RelationItem delItem : relContainer.getDeleteList()) {
+        for (final RelationItem delItem : relContainer.getDeleteList()) {
             issue.removeConnectionToIssue(delItem.getConnIssue(), delItem.getRelation(), delItem.getDirection());
         }
 
-        for (RelationItem addItem : relContainer.getCreateList()) {
+        for (final RelationItem addItem : relContainer.getCreateList()) {
             issue.connectToIssueAs(addItem.getConnIssue(), addItem.getRelation());
         }
 
         relContainer.resetTransactions();
-
-        issue = DaoFactorySingelton.getInstance().getIssueBaseDAO(screen.getCurrentProject().getId()).persist(issue);
         return issue;
     }
 
+    private void setComponentRequired(final AbstractField comp) {
+        comp.setRequired(true);
+        comp.setRequiredError(messageBundle.getString("issuetracking_issue_details_missingentry"));
+        logger.warn(comp.getRequiredError() + ": " + comp.getCaption());
+    }
 
     public IssueBase getCurrentIssue() {
         return issue;
@@ -537,10 +588,10 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
         @Override
         public void itemClick(ItemClickEvent event) {
-            Container container = ((Table)event.getComponent()).getContainerDataSource();
+            final Container container = ((Table)event.getComponent()).getContainerDataSource();
             if (container instanceof AbstractIssueDataContainer)
                 if (event.isDoubleClick()) {
-                    IssueBase issue = ((RelationsDataContainer)container).getConnIssueFromItemId(event.getItemId());
+                    final IssueBase issue = ((RelationsDataContainer)container).getConnIssueFromItemId(event.getItemId());
                     screen.getIssueTreeLayout().setSelectedItemByIssue(issue);
                 }
         }

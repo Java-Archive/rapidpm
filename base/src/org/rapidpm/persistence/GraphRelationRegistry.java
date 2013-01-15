@@ -8,7 +8,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 18.10.12
  * Time: 12:58
  * To change this template use File | Settings | File Templates.

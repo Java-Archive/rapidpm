@@ -2,11 +2,14 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.mo
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
+import com.vaadin.ui.UI;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.GraphBaseDAO;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.NonVisible;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
+import org.rapidpm.webapp.vaadin.BaseUI;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -16,7 +19,7 @@ import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 05.11.12
  * Time: 14:26
  * To change this template use File | Settings | File Templates.
@@ -26,17 +29,19 @@ public class SettingsDataContainer<T> extends IndexedContainer {
 
     private final GraphBaseDAO<T> dao;
     private final Class clazz;
-    private List<Object> visibleColumns;
+    private final List<Object> visibleColumns;
 
-    public SettingsDataContainer(Class aClass) {
-        super();
+    public SettingsDataContainer(final Class aClass) {
+        if (aClass == null)
+            throw new NullPointerException("Class must not be null");
+
         clazz = aClass;
         dao = getDAOInstance();
         visibleColumns = new ArrayList<>();
 
 
-        for (Field field : clazz.getDeclaredFields()) {
-            if (field.isAnnotationPresent(Simple.class)) {
+        for (final Field field : clazz.getDeclaredFields()) {
+            if (field.isAnnotationPresent(Simple.class) && !field.isAnnotationPresent(NonVisible.class)) {
                 this.addContainerProperty(field.getName(), field.getType(), null);
                 visibleColumns.add(field.getName());
             }
@@ -52,27 +57,43 @@ public class SettingsDataContainer<T> extends IndexedContainer {
         if (logger.isDebugEnabled())
             logger.debug("Fill table with DAO entities");
         this.removeAllItems();
-        for (T entity : dao.loadAllEntities()) {
+        //TODO
+        for (final T entity : dao.loadAllEntities(((BaseUI)UI.getCurrent()).getCurrentProject().getId())) {
             addEntityToTable(entity);
         }
     }
 
     public void addEntityToTable(final T entity) {
-        final Field[] fieldnames = clazz.getDeclaredFields();
+        if (entity == null)
+            throw new NullPointerException("Entity is null");
+
+        final Item item = this.addItem(entity);
+        if (item != null) {
+            setItemFromObject(item, entity);
+        } else {
+            if (logger.isDebugEnabled())
+                logger.debug("No Item added");
+        }
+    }
+
+    private void setItemFromObject(final Item item, final Object entity) {
+        if (item == null)
+            throw new NullPointerException("Item is null");
+        if (entity == null)
+            throw new NullPointerException("Entity is null");
 
         if (logger.isDebugEnabled())
-            logger.debug("entity: " + entity);
+            logger.debug("set item from entity: " + entity);
 
-        Item itemId = this.addItem(entity);
-        for (Field field : fieldnames) {
-            if (field.isAnnotationPresent(Simple.class)){
-                boolean isAccessible = field.isAccessible();
+        for (final Field field : clazz.getDeclaredFields()) {
+            if (field.isAnnotationPresent(Simple.class) && !field.isAnnotationPresent(NonVisible.class)){
+                final boolean isAccessible = field.isAccessible();
                 field.setAccessible(true);
                 try {
-                    Object val = field.get(entity);
-                    itemId.getItemProperty(field.getName()).setValue(field.getType().cast(val));
+                    final Object val = field.get(entity);
+                    item.getItemProperty(field.getName()).setValue(field.getType().cast(val));
                 } catch (IllegalAccessException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
                 }
                 field.setAccessible(isAccessible);
             }
@@ -85,41 +106,40 @@ public class SettingsDataContainer<T> extends IndexedContainer {
         try {
             method = DaoFactory.class.getDeclaredMethod("get" + clazz.getSimpleName() + "DAO");
             dao = (GraphBaseDAO<T>)method.invoke(DaoFactorySingelton.getInstance());
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            logger.error(e);
         }
         return dao;
     }
 
-    public Object fillObjectFromItem(Object entity) {
+    public Object fillObjectFromItem(final Object entity) {
         final Field[] fieldnames = clazz.getDeclaredFields();
-        List<Object> itemProps = new ArrayList<>();
-        Object prop;
-        logger.info("PropIds: " + this.getContainerPropertyIds());
-        for (Object propId : this.getContainerPropertyIds())
+        final List<Object> itemProps = new ArrayList<>();
+
+        if (logger.isDebugEnabled())
+            logger.debug("PropIds: " + this.getContainerPropertyIds());
+
+        for (final Object propId : this.getContainerPropertyIds())
             itemProps.add(this.getContainerProperty(entity, propId).getValue());
 
         int i= 0;
         if (logger.isDebugEnabled())
             logger.debug("fillObjectFromItem: " + entity);
 
-        for (Field field : fieldnames) {
-            if (field.isAnnotationPresent(Simple.class)){
-                boolean isAccessible = field.isAccessible();
+        for (final Field field : fieldnames) {
+            if (field.isAnnotationPresent(Simple.class) && !field.isAnnotationPresent(NonVisible.class)){
+                final boolean isAccessible = field.isAccessible();
                 field.setAccessible(true);
                 try {
                     if (i < itemProps.size()) {
                         if (logger.isDebugEnabled())
                             logger.debug("Property Value: " + itemProps.get(i) + " in " + field.getName());
-                        prop = itemProps.get(i);
+                        Object prop = itemProps.get(i);
 
                         if (!field.getName().contains("FileName")) {
-                            if (prop == null || prop.equals("null") || prop.equals("")
-                                    || prop.toString().trim().equals("")) {
+                            if (prop == null || prop.equals("null") || prop.equals("") || prop.toString().trim()
+                                    .equals("")) {
+
                                 if (logger.isDebugEnabled())
                                     logger.debug("null value found: " + field.getName());
                                 return null;
@@ -128,12 +148,10 @@ public class SettingsDataContainer<T> extends IndexedContainer {
                             if (prop == "") prop = null;
 
                         field.set(entity, field.getType().cast(prop));
-
-
                     }
                     i++;
                 } catch (IllegalAccessException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    logger.error(e);
                 }
                 field.setAccessible(isAccessible);
             }
@@ -147,32 +165,64 @@ public class SettingsDataContainer<T> extends IndexedContainer {
         return entity;
     }
 
-    public boolean removeConnectedItem(Object entity, Object assignTo){
+    public boolean removeConnectedItem(final Object entity, final Object assignTo){
+        if (entity == null)
+            throw new NullPointerException("Entity to remove is null!");
+        if (assignTo == null)
+            throw new NullPointerException("Entity to assign to is null!");
+        if (entity.getClass() != clazz)
+            throw new IllegalArgumentException("Entity class is not " + clazz.getSimpleName());
+        if (assignTo.getClass() != clazz)
+            throw new IllegalArgumentException("'assignTo' entity class is not " + clazz.getSimpleName());
+
         boolean success = false;
         logger.info("delete item: " + entity + " and assign to" + assignTo);
 
-        if (dao.deleteAttribute((T) entity,(T) assignTo))
+        if (daoDeleteMethod(new Object[]{entity, (T) assignTo}))
             if (this.removeItem(entity))
                 success = true;
         fillTableWithDaoEntities();
         return success;
     }
 
-    public boolean removeSimpleItem(Object entity) {
+    public boolean removeSimpleItem(final Object entity) {
+        if (entity == null)
+            throw new NullPointerException("Entity to remove is null!");
+        if (entity.getClass() != clazz)
+            throw new IllegalArgumentException("Entity class is not " + clazz.getSimpleName());
+
         boolean success = false;
         logger.info("delete item: " + entity);
 
-        if (dao.deleteSimpleAttribute((T) entity))
+        if (daoDeleteMethod(new Object[]{entity}))
             if (this.removeItem(entity))
                 success = true;
         fillTableWithDaoEntities();
         return success;
     }
 
-    public boolean cancelAddingEditing(Object entity) {
+    private boolean daoDeleteMethod(final Object[] args) {
+        final Method method;
+        boolean retVal = false;
+        try {
+            final Class[] methodClassParams = new Class[args.length];
+            int i = 0;
+            for (final Object obj : args) {
+                methodClassParams[i++] = obj.getClass();
+            }
+            method = dao.getClass().getDeclaredMethod("delete", methodClassParams);
+            retVal = (Boolean) method.invoke(dao, args);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            logger.error(e);
+        }
+        return retVal;
+    }
+
+    public boolean cancelAddingEditing(final Object entity) {
         boolean success = true;
         logger.info("cancelAddingEditing: entity " + entity);
-        Object prop = this.getContainerProperty(entity, this.getContainerPropertyIds().iterator().next()).getValue();
+        setItemFromObject(this.getItem(entity), entity);
+        final Object prop = this.getContainerProperty(entity, this.getContainerPropertyIds().iterator().next()).getValue();
         if (prop == null || prop.equals("") || prop.equals("null"))
             success = this.removeItem(entity);
         return success;

@@ -16,10 +16,11 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.mod
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model.RelationsDataContainer;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 07.11.12
  * Time: 12:19
  * To change this template use File | Settings | File Templates.
@@ -32,6 +33,7 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
     private final IssueOverviewScreen screen;
     private final RelationsDataContainer relationContainer;
     private final AddRelationWindow self;
+    private final ResourceBundle messageBundle;
 
     private ComboBox relationsSelect;
     private ComboBox issueSelect;
@@ -42,9 +44,14 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
 
 
     public AddRelationWindow(final IssueOverviewScreen screen, final AbstractIssueDataContainer relationContainer){
-        super();
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+        if (relationContainer == null)
+            throw new NullPointerException("Container must not be null");
+
         self = this;
         this.screen = screen;
+        this.messageBundle = screen.getMessagesBundle();
         this.relationContainer = (RelationsDataContainer)relationContainer;
         this.setModal(true);
         this.setResizable(false);
@@ -57,33 +64,36 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
         baseLayout.setSizeFull();
         baseLayout.setSpacing(true);
 
-        final List<IssueRelation> relationList = daoFactory.getIssueRelationDAO().loadAllEntities();
+        final Long projectId = screen.getUi().getCurrentProject().getId();
+        final List<IssueRelation> relationList = daoFactory.getIssueRelationDAO().loadAllEntities(projectId);
         relationsSelect = new ComboBox();
         relationsSelect.setWidth("100%");
         relationsSelect.addContainerProperty(PROPERTY_NAME, String.class, null);
         relationsSelect.setItemCaptionPropertyId(PROPERTY_NAME);
         for (final IssueRelation relation : relationList) {
-            Item item = relationsSelect.addItem(relation);
+            final Item item = relationsSelect.addItem(relation);
             item.getItemProperty(PROPERTY_NAME).setValue(relation.getRelationName());
         }
         relationsSelect.setNullSelectionAllowed(false);
         relationsSelect.setScrollToSelectedItem(true);
-        relationsSelect.setFilteringMode(FilteringMode.STARTSWITH);
+        relationsSelect.setFilteringMode(FilteringMode.CONTAINS);
         baseLayout.addComponent(relationsSelect);
 
-        final List<IssueBase> issueList = daoFactory.getIssueBaseDAO(screen.getCurrentProject().getId())
-        .loadAllEntities();
+        final List<IssueBase> issueList = daoFactory.getIssueBaseDAO().loadAllEntities(projectId);
         issueSelect = new ComboBox();
         issueSelect.setWidth("100%");
         issueSelect.addContainerProperty(PROPERTY_NAME, String.class, null);
         issueSelect.setItemCaptionPropertyId(PROPERTY_NAME);
+        final IssueBase selectedIssue = relationContainer.getCurrentIssue();
         for (final IssueBase connIssue : issueList) {
-            Item item = issueSelect.addItem(connIssue);
-            item.getItemProperty(PROPERTY_NAME).setValue(connIssue.name());
+            if (selectedIssue != null && !connIssue.equals(selectedIssue)) {
+                final Item item = issueSelect.addItem(connIssue);
+                item.getItemProperty(PROPERTY_NAME).setValue(connIssue.name());
+            }
         }
         issueSelect.setNullSelectionAllowed(false);
         issueSelect.setScrollToSelectedItem(true);
-        issueSelect.setFilteringMode(FilteringMode.STARTSWITH);
+        issueSelect.setFilteringMode(FilteringMode.CONTAINS);
         baseLayout.addComponent(issueSelect);
 
         final HorizontalLayout buttonLayout = new HorizontalLayout();
@@ -103,11 +113,11 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
 
     @Override
     public void doInternationalization() {
-        this.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_addrelationswindow"));
-        relationsSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_relations"));
-        issueSelect.setCaption(screen.getMessagesBundle().getString("issuetracking_issue_table"));
-        saveButton.setCaption(screen.getMessagesBundle().getString("add"));
-        cancelButton.setCaption(screen.getMessagesBundle().getString("cancel"));
+        this.setCaption(messageBundle.getString("issuetracking_issue_addrelationswindow"));
+        relationsSelect.setCaption(messageBundle.getString("issuetracking_issue_relations"));
+        issueSelect.setCaption(messageBundle.getString("issuetracking_issue_table"));
+        saveButton.setCaption(messageBundle.getString("add"));
+        cancelButton.setCaption(messageBundle.getString("cancel"));
     }
 
 
@@ -123,21 +133,19 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
 
             if (relation != null && relation != "") {
                 if (connIssue != null && connIssue != "")  {
-                    if (!relationContainer.addRelation((IssueBase) connIssue, (IssueRelation)relation))
-                        //TODO Show Errormessage to User
-                        logger.error("Connecting issues failed");
+                    relationContainer.addRelation((IssueBase) connIssue, (IssueRelation)relation);
                     self.close();
                 } else {
                     if (logger.isDebugEnabled())
                         logger.debug("Issue to connect to is needed");
                     issueSelect.setRequired(true);
-                    issueSelect.setRequiredError("Issue to connect to is needed");
+                    issueSelect.setRequiredError(messageBundle.getString("issuetracking_issue_details_relationissue"));
                 }
             } else {
                 if (logger.isDebugEnabled())
                     logger.debug("Relations to connect issues is needed");
                 relationsSelect.setRequired(true);
-                relationsSelect.setRequiredError("Relations to connect issues is needed");
+                relationsSelect.setRequiredError(messageBundle.getString("issuetracking_issue_details_relation"));
             }
 
         }

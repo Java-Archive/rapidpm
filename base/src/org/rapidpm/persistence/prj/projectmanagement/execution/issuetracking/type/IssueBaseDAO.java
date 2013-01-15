@@ -8,17 +8,15 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.GraphBaseDAO;
 //import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.GraphRelationRegistry;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponent;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCase;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 18.10.12
  * Time: 09:54
  * To change this template use File | Settings | File Templates.
@@ -27,9 +25,8 @@ import java.util.List;
 public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     private static final Logger logger = Logger.getLogger(IssueBaseDAO.class);
 
-    public IssueBaseDAO(final GraphDatabaseService graphDb, final DaoFactory relDaoFactory,
-                        final Long projectId) {
-        super(graphDb, IssueBase.class, relDaoFactory, projectId);
+    public IssueBaseDAO(final GraphDatabaseService graphDb, final DaoFactory relDaoFactory) {
+        super(graphDb, IssueBase.class, relDaoFactory);
     }
 
 
@@ -85,14 +82,32 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         boolean alreadyExist = false;
         final Node startNode = graphDb.getNodeById(startId);
         final Node endNode = graphDb.getNodeById(endId);
+        final Node relationNode = graphDb.getNodeById(relationId);
         for (final Relationship rel : startNode.getRelationships(relation, Direction.BOTH)) {
             if (rel.getOtherNode(startNode).equals(endNode))
                 alreadyExist = true;
         }
-        if (!alreadyExist)
+        if (!alreadyExist) {
             startNode.createRelationshipTo(endNode, relation);
-        else
+            final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueRelation.class);
+
+            boolean relExist = false;
+            for (Relationship rel : startNode.getRelationships(relType, Direction.OUTGOING)) {
+                if (rel.getEndNode().equals(relationNode)) {
+                    relExist = true;
+                    break;
+                }
+            }
+
+            if (!relExist) {
+                startNode.createRelationshipTo(relationNode, relType);
+            } else {
+                if (logger.isDebugEnabled())
+                    logger.debug("Relation to RelationNode already exists. continue...");
+            }
+        } else {
             logger.warn("Relation aleady exists: start: " + start + ", end: " + end + ", relation: " + relation);
+        }
     }
 
 
@@ -180,11 +195,35 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             logger.debug("deleteRelationOfEntities");
 
         final Node startNode = graphDb.getNodeById(start.getId());
+        final Node endNode = graphDb.getNodeById(end.getId());
         for (final Relationship rel : startNode.getRelationships(relation, direction)) {
-            if (rel.getOtherNode(startNode).equals(graphDb.getNodeById(end.getId()))) {
+            if (rel.getOtherNode(startNode).equals(endNode)) {
                 if (logger.isDebugEnabled())
                     logger.debug("delete relation between" + start + ", " + end);
+
+                final Node referenceNode = rel.getStartNode();
                 rel.delete();
+
+                if (!referenceNode.hasRelationship(relation, Direction.OUTGOING)) {
+
+                    final Node relationNode = graphDb.getNodeById(relation.getId());
+                    final RelationshipType relType;
+                    relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueRelation.class);
+
+                    for (Relationship relToRelNode : referenceNode.getRelationships(relType, Direction.OUTGOING)) {
+                        if (relToRelNode.getEndNode().equals(relationNode)) {
+                            relToRelNode.delete();
+                            if (logger.isDebugEnabled())
+                                logger.debug("No more relations of type: " + relation + " present. Delete relation to " +
+                                        "RelationNode");
+                            break;
+                        }
+                    }
+
+                } else {
+                    if (logger.isDebugEnabled())
+                        logger.debug("Issue has more relations of type: " + relation);
+                }
             }
             else
                 if (logger.isDebugEnabled())
@@ -241,15 +280,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
 
         Node childNode = graphDb.getNodeById(childId);
         final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
-        if (childNode.hasRelationship(relType, Direction.INCOMING)) {
-            if (logger.isDebugEnabled())
-                logger.debug("Childissue gets a new parent: " + child);
-            Relationship rel = childNode.getSingleRelationship(relType, Direction.INCOMING);
-            deleteSubIssueRelation(rel.getStartNode(), childNode);
-        } else
-            if (logger.isDebugEnabled())
-                logger.debug("Childissue has no Parent: " + child);
-
+        setAsRootIssue(child);
 
         graphDb.getNodeById(parentId).createRelationshipTo(childNode, relType);
         if (childNode.hasRelationship(GraphRelationRegistry.getClassRootToChildRelType(), Direction.INCOMING)) {
@@ -287,7 +318,77 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         try {
             if (logger.isDebugEnabled())
                 logger.debug("deleteSubIssueRelationTx");
-            deleteSubIssueRelation(parent, child);
+            boolean ret = deleteSubIssueRelation(parent, child);
+            tx.success();
+            if (ret) {
+                success = true;
+            } else {
+                if (logger.isDebugEnabled())
+                    logger.debug("Method 'deleteSubIssueRelation' unsuccessfull");
+            }
+        } catch (NullPointerException | IllegalArgumentException e) {
+            logger.error(e.getClass().getSimpleName() + e.getMessage());
+        } finally {
+            tx.finish();
+            if (logger.isDebugEnabled()) {
+                if (success)
+                    logger.debug("Successfull");
+                else
+                    logger.debug("Unsuccessfull");
+            }
+            return success;
+        }
+    }
+
+
+    public boolean deleteSubIssueRelation(final IssueBase parent, final IssueBase child) {
+        boolean success = false;
+        if (parent == null)
+            throw new NullPointerException("Parentissue is null.");
+        Long parentId = parent.getId();
+        if (parentId == null)
+            throw new IllegalArgumentException("Id of parent issue cant be null. Persist first.");
+
+        if (child == null)
+            throw new NullPointerException("Childissue is null.");
+        Long childId = child.getId();
+        if (childId == null)
+            throw new IllegalArgumentException("Id of child issue cant be null. Persist first.");
+
+        if (parent.equals(child))
+            throw new IllegalArgumentException("Parent and Child issue are the same.");
+
+        if (logger.isDebugEnabled())
+            logger.debug("deleteSubIssueRelation");
+
+        Node childNode = graphDb.getNodeById(childId);
+        Node parentNode = graphDb.getNodeById(parentId);
+
+        final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
+        if (childNode.hasRelationship(relType, Direction.INCOMING)) {
+            for (Relationship rel : childNode.getRelationships(relType, Direction.INCOMING)) {
+                if (rel.getOtherNode(childNode).equals(parentNode)) {
+                    setAsRootIssue(child);
+                    success = true;
+                } else {
+                    if (logger.isDebugEnabled())
+                        logger.debug("Parent Issue doesn't match to child. continue...");
+                }
+            }
+        } else {
+            logger.error("Childissue has no parent!");
+        }
+        return success;
+    }
+
+
+    public boolean setAsRootIssueTx(final IssueBase issue) {
+        boolean success = false;
+        Transaction tx = graphDb.beginTx();
+        try {
+            if (logger.isDebugEnabled())
+                logger.debug("setAsRootIssueTx");
+            setAsRootIssue(issue);
             tx.success();
             success = true;
         } catch (NullPointerException | IllegalArgumentException e) {
@@ -304,47 +405,31 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         }
     }
 
-
-    public void deleteSubIssueRelation(final IssueBase parent, final IssueBase child) {
-        if (parent == null)
-            throw new NullPointerException("Parentissue is null.");
-        Long parentId = parent.getId();
-        if (parentId == null)
-            throw new IllegalArgumentException("Id of parent issue cant be null. Persist first.");
-
-        if (child == null)
-            throw new NullPointerException("Childissue is null.");
-        Long childId = child.getId();
-        if (childId == null)
-            throw new IllegalArgumentException("Id of child issue cant be null. Persist first.");
-
-        if (parent.equals(child))
-            throw new IllegalArgumentException("Parent and Child issue are the same. Can't create relation to itself" +
-                    ".");
-
-        deleteSubIssueRelation(graphDb.getNodeById(parentId), graphDb.getNodeById(childId));
-    }
-
-
-    private void deleteSubIssueRelation(final Node parentNode, final Node childNode) {
-        if (parentNode == null)
-            throw new NullPointerException("Parentissue is null.");
-        if (childNode == null)
-            throw new NullPointerException("Childissue is null.");
+    public void setAsRootIssue(final IssueBase issue) {
+        if (issue == null)
+            throw new NullPointerException("Issue is null.");
+        Long issueId = issue.getId();
+        if (issueId == null)
+            throw new IllegalArgumentException("Id of issue cant be null. Persist first.");
 
         if (logger.isDebugEnabled())
-            logger.debug("deleteSubIssueRelation");
+            logger.debug("setAsRootIssue");
+
+        Node node = graphDb.getNodeById(issueId);
 
         final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
-        for (final Relationship rel : parentNode.getRelationships(relType, Direction.OUTGOING)) {
-            if (rel.getOtherNode(parentNode).equals(childNode)) {
-                if (logger.isDebugEnabled())
-                    logger.debug("Delete Subissue");
+        if (node.hasRelationship(relType, Direction.INCOMING)) {
+            if (logger.isDebugEnabled())
+                logger.debug("Delete all subissue relations. Set as rootissue");
+            for (Relationship rel : node.getRelationships(relType, Direction.INCOMING)) {
                 rel.delete();
-                class_root_node.createRelationshipTo(childNode, GraphRelationRegistry.getClassRootToChildRelType());
-            } else
-                if (logger.isDebugEnabled())
-                    logger.debug("Is no Subissue");
+            }
+
+            getProjectRootNode(issue.getProjectId()).createRelationshipTo(node,
+                    GraphRelationRegistry.getClassRootToChildRelType());
+        } else {
+            if (logger.isDebugEnabled())
+                logger.debug("Is already a rootissue");
         }
     }
 
@@ -437,9 +522,14 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         try {
             if (logger.isDebugEnabled())
                 logger.debug("deleteComponentRelationTx");
-            deleteComponentRelation(issue, component);
+            boolean ret = deleteComponentRelation(issue, component);
             tx.success();
-            success = true;
+            if (ret) {
+                success = true;
+            } else {
+                if (logger.isDebugEnabled())
+                    logger.debug("Method 'deleteSubIssueRelation' unsuccessfull");
+            }
         } catch (NullPointerException | IllegalArgumentException e) {
             logger.error(e.getClass().getSimpleName() + e.getMessage());
         } finally {
@@ -454,7 +544,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         }
     }
 
-    public void deleteComponentRelation(final IssueBase issue, final IssueComponent component) {
+    public boolean deleteComponentRelation(final IssueBase issue, final IssueComponent component) {
         if (issue == null)
             throw new NullPointerException("Issue is null.");
         Long issueId = issue.getId();
@@ -467,7 +557,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         if (componentId == null)
             throw new IllegalArgumentException("Id of Component cant be null. Persist first.");
 
-
+        boolean success = false;
         if (logger.isDebugEnabled())
             logger.debug("deleteComponentRelation");
 
@@ -478,48 +568,16 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
                 if (logger.isDebugEnabled())
                     logger.debug("Delete Relation to Component: " + issue + ", " + component);
                 rel.delete();
-            } else
+                success = true;
+            } else {
                 if (logger.isDebugEnabled())
                     logger.debug("Has no relation to Component: " + issue + ", " + component);
+            }
 
+        return success;
     }
 
     public boolean delete(final IssueBase issue) {
-        if (issue == null)
-            throw new NullPointerException("Object to delete can't be null.");
-
-        if (logger.isDebugEnabled())
-            logger.debug("delete: " + issue);
-
-        boolean success = false;
-
-        issue.setComments(new ArrayList<IssueComment>());
-        issue.setTestcases(new ArrayList<IssueTestCase>());
-        this.persist(issue);
-
-        final Long id = issue.getId();
-        final Transaction tx = graphDb.beginTx();
-        try{
-            Node node;
-            if (id != null && id != 0) {
-                node = graphDb.getNodeById(id);
-                //rearrange Subissues
-                final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
-                for (Relationship rel : node.getRelationships()) {
-                    if (rel.isType(relType) && rel.getStartNode().equals(node)) {
-                        for (Relationship parent : node.getRelationships(relType, Direction.INCOMING)) {
-                            parent.getStartNode().createRelationshipTo(rel.getEndNode(),relType);
-                        }
-                    }
-                    rel.delete();
-                }
-                node.delete();
-            }
-            tx.success();
-            success = true;
-        } finally {
-            tx.finish();
-            return success;
-        }
+        return super.deleteIssue(issue);
     }
 }

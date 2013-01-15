@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 17.10.12
  * Time: 13:28
  * To change this template use File | Settings | File Templates.
@@ -16,4 +16,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Relational {
     Class clazz();
+    boolean onDeleteCascade() default false;
 }

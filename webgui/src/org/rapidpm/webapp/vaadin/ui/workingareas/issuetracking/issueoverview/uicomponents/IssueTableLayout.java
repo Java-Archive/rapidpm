@@ -36,6 +36,7 @@ public class IssueTableLayout extends ComponentEditableVLayout {
 
     public IssueTableLayout(final IssueOverviewScreen screen, final boolean componentsReadOnlyInit) {
         super(screen, componentsReadOnlyInit);
+        setSizeFull();
         addSaveButtonClickListener(new StandardClickListener());
         addCancelButtonClickListener(new StandardClickListener());
     }
@@ -47,7 +48,7 @@ public class IssueTableLayout extends ComponentEditableVLayout {
 
     @Override
     protected AbstractOrderedLayout buildUnsaveableForm() {
-        VerticalLayout componentsLayout = new VerticalLayout();
+        final VerticalLayout componentsLayout = new VerticalLayout();
 
         issueTable = new Table();
         issueTable.setColumnCollapsingAllowed(true);
@@ -62,7 +63,7 @@ public class IssueTableLayout extends ComponentEditableVLayout {
                 DUE_DATE_PLANNED, DUE_DATE_RESOLVED, DUE_DATE_CLOSED, VERSION,STORYPOINTS, SUMMARY};
 
         int i = 0;
-        for (String name : headerNames) {
+        for (final String name : headerNames) {
             issueTable.addContainerProperty(name, String.class, "");
             if (i < 4)
                 issueTable.setColumnCollapsed(name, false);
@@ -76,21 +77,21 @@ public class IssueTableLayout extends ComponentEditableVLayout {
         return componentsLayout;
     }
 
-    public void setPropertiesFromIssueList(List<IssueBase> issues) {
+    public void setPropertiesFromIssueList(final List<IssueBase> issues) {
         issueTable.removeAllItems();
-        for (IssueBase issue : issues) {
+        for (final IssueBase issue : issues) {
             issueTable.addItem(new Object[] {issue.getText(),
-                    issue.getStatus().getStatusName(),
-                    issue.getPriority().getPriorityName(),
-                    issue.getType().getTypeName(),
-                    issue.getReporter().getLogin(),
-                    issue.getAssignee().getLogin(),
-                    issue.getDueDate_planned().toString(),
-                    issue.getDueDate_resolved().toString(),
-                    issue.getDueDate_closed().toString(),
-                    issue.getVersion().getVersionName(),
-                    issue.getStoryPoints().getStorypoint().toString(),
-                    issue.getSummary()},
+                    issue.getStatus() == null ? "" : issue.getStatus().getStatusName(),
+                    issue.getPriority() == null ? "" : issue.getPriority().getPriorityName(),
+                    issue.getType() == null ? "" : issue.getType().getTypeName(),
+                    issue.getReporter() == null ? "" : issue.getReporter().getLogin(),
+                    issue.getAssignee() == null ? "" : issue.getAssignee().getLogin(),
+                    issue.getDueDate_planned() == null ? "" : issue.getDueDate_planned().toString(),
+                    issue.getDueDate_resolved() == null ? "" : issue.getDueDate_resolved().toString(),
+                    issue.getDueDate_closed() == null ? "" : issue.getDueDate_closed().toString(),
+                    issue.getVersion() == null ? "" : issue.getVersion().getVersionName(),
+                    issue.getStoryPoints() == null ? "" : issue.getStoryPoints().getStorypoint().toString(),
+                    issue.getSummary() == null ? "" : issue.getSummary()},
                     issue);
         }
     }

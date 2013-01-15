@@ -22,7 +22,7 @@ public class BuchKapitelEntityFactory extends EntityFactory<BuchKapitel> {
         kapitel.setKapitelnummer(RND.nextInt(1, 10));
         kapitel.setUeberschrift(RND.nextSentence(1, 4, 5, 15));
         kapitel.setUntertitel(RND.nextSentence(0, 6, 2, 12));
-        kapitel.setSeitenliste(new BuchSeiteEntityFactory().createRandomEntityList(10, 100));
+        //kapitel.setSeitenliste(new BuchSeiteEntityFactory().createRandomEntityList(10, 100));
         kapitel.setKapitelkommentarliste(new BuchKapitelKommentarEntityFactory().createRandomEntityList(0, 5));
         return kapitel;
     }

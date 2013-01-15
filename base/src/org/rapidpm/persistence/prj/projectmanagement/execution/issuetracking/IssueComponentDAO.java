@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 18.10.12
  * Time: 12:53
  * To change this template use File | Settings | File Templates.
@@ -27,10 +27,6 @@ public class IssueComponentDAO extends GraphBaseDAO<IssueComponent> {
     public IssueComponentDAO(GraphDatabaseService graphDb, DaoFactory relDaoFactory) {
         super(graphDb, IssueComponent.class, relDaoFactory);
     }
-
-//    public List<IssueBase> getConnectedIssues(final IssueComponent component) {
-//        return getConnectedIssuesFromProject(component, 0L);
-//    }
 
     public List<IssueBase> getConnectedIssuesFromProject(final IssueComponent component, final Long projectId) {
         return super.getConnectedIssuesFromProject(component, projectId);

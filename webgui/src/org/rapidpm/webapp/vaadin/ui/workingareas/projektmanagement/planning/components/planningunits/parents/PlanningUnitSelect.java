@@ -35,7 +35,6 @@ public class PlanningUnitSelect extends ListSelect {
         final Set<PlanningUnit> allPlanningUnitsOfProject = projectFromDB.getPlanningUnits();
         final Set<PlanningUnit> planningUnitsWithoutParent = new HashSet<>();
         for (final PlanningUnit planningUnit : allPlanningUnitsOfProject) {
-            baseDaoFactoryBean.getEntityManager().refresh(planningUnit);
             if(planningUnit.getParent() == null){
                 planningUnitsWithoutParent.add(planningUnit);
             }

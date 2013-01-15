@@ -6,7 +6,7 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.Iss
 
 /**
  * Created with IntelliJ IDEA.
- * User: Alvin
+ * User: Alvin Schiller
  * Date: 12.10.12
  * Time: 08:54
  * To change this template use File | Settings | File Templates.

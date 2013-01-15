@@ -14,14 +14,17 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.log
  * To change this template use File | Settings | File Templates.
  */
 public class IssueTabSheet extends TabSheet implements Internationalizationable{
-    final private IssueOverviewScreen screen;
+
+    private final IssueOverviewScreen screen;
     private IssueDetailsLayout detailsLayout;
     private IssueTableLayout tableLayout;
     private Tab detailsTab;
     private Tab tableTab;
 
     public IssueTabSheet(final IssueOverviewScreen screen) {
-        super();
+        if (screen == null)
+            throw new NullPointerException("Screen must not be null");
+
         this.screen = screen;
         this.setHeight("100%");
         setComponents();
@@ -31,22 +34,22 @@ public class IssueTabSheet extends TabSheet implements Internationalizationable{
     private void setComponents() {
         tableLayout = new IssueTableLayout(screen, true);
         detailsLayout = new IssueDetailsLayout(screen, true);
-        detailsLayout.addSaveButtonClickListener(new DetailsSaveButtonClickListener(detailsLayout));
-        detailsLayout.addCancelButtonClickListener(new DetailsCancelButtonClickListener(detailsLayout));
+        detailsLayout.addSaveButtonClickListener(new DetailsSaveButtonClickListener(screen, detailsLayout));
+        detailsLayout.addCancelButtonClickListener(new DetailsCancelButtonClickListener(screen, detailsLayout));
         tableTab = this.addTab(tableLayout);
         tableTab.setEnabled(false);
         detailsTab = this.addTab(detailsLayout);
         detailsTab.setEnabled(false);
     }
 
-    public void setTableTabOnlyEnabled(boolean value) {
+    public void setTableTabOnlyEnabled(final boolean value) {
         tableTab.setEnabled(value);
         detailsTab.setEnabled(true);
         if (value) this.setSelectedTab(detailsTab);
         else  this.setSelectedTab(tableTab);
     }
 
-    public void setAllTabsEnabled(boolean value) {
+    public void setAllTabsEnabled(final boolean value) {
         tableTab.setEnabled(value);
         detailsTab.setEnabled(value);
         this.setSelectedTab(tableTab);
