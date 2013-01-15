@@ -30,4 +30,7 @@ public class RapidWindow extends Window {
         setContent(null);
     }
 
+    public VerticalLayout getContentLayout() {
+        return contentLayout;
+    }
 }

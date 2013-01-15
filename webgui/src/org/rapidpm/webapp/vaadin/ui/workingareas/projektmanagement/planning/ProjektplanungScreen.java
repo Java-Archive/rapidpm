@@ -23,6 +23,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.comp
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.parents.AddRootPlanningUnitsWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.parents.PlanningUnitSelect;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.PlanningCalculator;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeValueChangeListener;
 
 import javax.naming.InvalidNameException;
 import java.util.ArrayList;
@@ -271,11 +272,16 @@ public class ProjektplanungScreen extends Screen {
     }
 
     public void fillTreePanel(final PlanningUnit selectedPlanningUnit, final PlannedProject projekt) {
-        planningUnitsTree = new PlanningUnitsTree(this, selectedPlanningUnit, projekt);
+        planningUnitsTree = new PlanningUnitsTree(this, selectedPlanningUnit);
         planningUnitsTree.select(selectedPlanningUnit);
         planningUnitsTreePanelLayout = new PlanningUnitsTreePanelLayout(projekt, ProjektplanungScreen.this);
         treePanel.removeAllComponents();
         treePanel.addComponent(planningUnitsTreePanelLayout);
+        final TreeValueChangeListener listener = planningUnitsTree.getListener();
+        final Button deleteButton = planningUnitsTreePanelLayout.getDeleteButton();
+        final Button renameButton = planningUnitsTreePanelLayout.getRenameButton();
+        listener.setDeleteButton(deleteButton);
+        listener.setRenameButton(renameButton);
     }
 
     @Override
@@ -284,8 +290,8 @@ public class ProjektplanungScreen extends Screen {
         borderLayout.addComponent(leftColumn);
         borderLayout.addComponent(centerColumn);
         borderLayout.addComponent(rightColumn);
-        borderLayout.setExpandRatio(leftColumn, 20);
-        borderLayout.setExpandRatio(centerColumn, 40);
+        borderLayout.setExpandRatio(leftColumn, 30);
+        borderLayout.setExpandRatio(centerColumn, 30);
         borderLayout.setExpandRatio(rightColumn, 40);
         addComponent(borderLayout);
     }
