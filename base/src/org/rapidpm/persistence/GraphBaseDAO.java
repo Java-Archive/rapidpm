@@ -492,24 +492,22 @@ public class GraphBaseDAO<T> {
         try {
             try {
                 entity = (E) clazz.getConstructor().newInstance();
-            } catch (NoSuchMethodException e) {
-                try {
-                    if (logger.isDebugEnabled())
-                        logger.debug("Get constructor with parameter: " + clazz.getSimpleName());
-                    entity = (E) clazz.getConstructor(Long.class).newInstance(-1L);
-                } catch (NoSuchMethodException e1) {
-                    logger.fatal("NoSuchMethodException" + e.getMessage());
-                } catch (InvocationTargetException e1) {
-                    logger.fatal("InvocationTargetException" + e.getMessage());
-                }
-            } catch (InvocationTargetException e) {
-                logger.fatal("InvocationTargetException" + e.getMessage());
-
+            } catch (NoSuchMethodException | InvocationTargetException e) {
+                logger.error("InvocationTargetException" + e.getMessage());
             }
+//                try {
+//                    if (logger.isDebugEnabled())
+//                        logger.debug("Get constructor with parameter: " + clazz.getSimpleName());
+//                    entity = (E) clazz.getConstructor(Long.class).newInstance(-1L);
+//                } catch (NoSuchMethodException e1) {
+//                    logger.fatal("NoSuchMethodException" + e.getMessage());
+//                } catch (InvocationTargetException e1) {
+//                    logger.fatal("InvocationTargetException" + e.getMessage());
+//                }
 
             final Field[] fieldNames = entity.getClass().getDeclaredFields();
             for (final Field field : fieldNames) {
-                boolean isAccessible = field.isAccessible();
+                final boolean isAccessible = field.isAccessible();
                 field.setAccessible(true);
                 if (field.isAnnotationPresent(Identifier.class)) {
                     field.set(entity, field.getType().cast(node.getId()));
@@ -530,9 +528,8 @@ public class GraphBaseDAO<T> {
                         if (field.getType().equals(List.class)) {
                             final long[] entityList = (long[])node.getProperty(field.getName(), new long[]{});
                             final List<Object> ids = new ArrayList<>();
-                            Object obj = null;
-                            for (Object single : entityList) {
-                                obj = relDao.findByID((Long)single);
+                            for (final Object single : entityList) {
+                                final Object obj = relDao.findByID((Long)single);
                                 if (obj != null)
                                     ids.add(obj);
                                 else logger.error("Requested object not in rel databse: " + field.getAnnotation
@@ -548,10 +545,11 @@ public class GraphBaseDAO<T> {
                 else if (field.isAnnotationPresent(Graph.class)) {
                     final Class aClass = field.getAnnotation(Graph.class).clazz();
 
-                    Relationship rel = node.getSingleRelationship(GraphRelationRegistry.getRelationshipTypeForClass(aClass),
+                    final Relationship rel = node.getSingleRelationship(GraphRelationRegistry
+                            .getRelationshipTypeForClass(aClass),
                             Direction.OUTGOING);
                     if (rel != null) {
-                        Node otherNode = rel.getOtherNode(node);
+                        final Node otherNode = rel.getOtherNode(node);
                         if (otherNode != null)
                             field.set(entity, getObjectFromNode(otherNode, aClass));
                     }
