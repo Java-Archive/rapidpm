@@ -8,10 +8,8 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.GraphBaseDAO;
 //import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.GraphRelationRegistry;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponent;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +25,8 @@ import java.util.List;
 public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     private static final Logger logger = Logger.getLogger(IssueBaseDAO.class);
 
-    public IssueBaseDAO(final GraphDatabaseService graphDb, final DaoFactory relDaoFactory,
-                        final Long projectId) {
-        super(graphDb, IssueBase.class, relDaoFactory, projectId);
+    public IssueBaseDAO(final GraphDatabaseService graphDb, final DaoFactory relDaoFactory) {
+        super(graphDb, IssueBase.class, relDaoFactory);
     }
 
 
@@ -428,7 +425,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
                 rel.delete();
             }
 
-            class_root_node.createRelationshipTo(node, GraphRelationRegistry.getClassRootToChildRelType());
+            getProjectRootNode(issue.getProjectId()).createRelationshipTo(node,
+                    GraphRelationRegistry.getClassRootToChildRelType());
         } else {
             if (logger.isDebugEnabled())
                 logger.debug("Is already a rootissue");

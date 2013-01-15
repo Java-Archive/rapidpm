@@ -22,22 +22,23 @@ public class IssueStatusDAOTest implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssueStatusDAOTest.class);
 
     private final IssueStatusDAO dao = daoFactory.getIssueStatusDAO();
-    private final IssueStatus assignTo = dao.loadAllEntities().get(0);
+    private final IssueStatus assignTo = dao.loadAllEntities(PROJECTID).get(0);
 
     @Test
     public void equalsAndHashCodeTest() {
-        List<IssueStatus> statusList = dao.loadAllEntities();
+        List<IssueStatus> statusList = dao.loadAllEntities(PROJECTID);
         assertTrue(statusList.get(0).equals(statusList.get(0)));
         assertEquals(statusList.get(0).hashCode(), statusList.get(0).hashCode());
 
-        assertFalse(statusList.get(0).equals(new IssueComment()));
-        assertNotSame(new IssueComment().hashCode(), statusList.get(0).hashCode());
+        assertFalse(statusList.get(0).equals(new IssueStatus()));
+        assertNotSame(new IssueStatus(PROJECTID).hashCode(), statusList.get(0).hashCode());
     }
 
 
     @Test
     public void addChangeDelete() {
         IssueStatus status = new IssueStatus("test");
+        status.setProjectId(PROJECTID);
         status.setStatusFileName("test_filename");
         status = dao.persist(status);
         assertEquals(status, dao.findByID(status.getId()));
@@ -48,26 +49,27 @@ public class IssueStatusDAOTest implements BaseDAOTest {
         assertEquals(status, dao.findByID(status.getId()));
 
         dao.delete(status, assignTo);
-        assertFalse(dao.loadAllEntities().contains(status));
+        assertFalse(dao.loadAllEntities(PROJECTID).contains(status));
     }
 
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        final IssueStatus priority = dao.loadAllEntities().get(0);
-        final IssueStatus prioTest = new IssueStatus();
-        prioTest.setStatusName(priority.getStatusName());
-        prioTest.setStatusFileName(priority.getStatusFileName());
-        dao.persist(prioTest);
+        final IssueStatus status = dao.loadAllEntities(PROJECTID).get(0);
+        final IssueStatus statTest = new IssueStatus();
+        statTest.setProjectId(PROJECTID);
+        statTest.setStatusName(status.getStatusName());
+        statTest.setStatusFileName(status.getStatusFileName());
+        dao.persist(statTest);
     }
 
     @Test
     public void getConnectedIssus() {
-        for (final IssueStatus status : dao.loadAllEntities()) {
-            final List<IssueBase> statConnIssueList = status.getConnectedIssuesFromProject(1L);
+        for (final IssueStatus status : dao.loadAllEntities(PROJECTID)) {
+            final List<IssueBase> statConnIssueList = status.getConnectedIssues();
             final List<IssueBase> issueList = new ArrayList<>();
 
-            for (final IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+            for (final IssueBase issue : daoFactory.getIssueBaseDAO().loadAllEntities(PROJECTID)) {
                 if (issue.getStatus().equals(status))
                     issueList.add(issue);
             }
@@ -91,12 +93,12 @@ public class IssueStatusDAOTest implements BaseDAOTest {
 
     @Test(expected = NullPointerException.class)
     public void delete_SecondParameterNull() {
-        dao.delete(dao.loadAllEntities().get(0), null);
+        dao.delete(dao.loadAllEntities(PROJECTID).get(0), null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void delete_SecondParameterNoId() {
-        dao.delete(dao.loadAllEntities().get(0), new IssueStatus());
+        dao.delete(dao.loadAllEntities(PROJECTID).get(0), new IssueStatus());
     }
 
 
@@ -107,11 +109,11 @@ public class IssueStatusDAOTest implements BaseDAOTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void getConnectedIssues_firstParameterNoId() {
-        dao.getConnectedIssuesFromProject(new IssueStatus(), 1L);
+        dao.getConnectedIssuesFromProject(new IssueStatus(), -1L);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void getConnectedIssues_SecondParameterNull() {
-        dao.getConnectedIssuesFromProject(dao.loadAllEntities().get(0), -1L);
+        dao.getConnectedIssuesFromProject(dao.loadAllEntities(PROJECTID).get(0), -1L);
     }
 }

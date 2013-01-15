@@ -2,11 +2,14 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.mo
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
+import com.vaadin.ui.UI;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.GraphBaseDAO;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.NonVisible;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
+import org.rapidpm.webapp.vaadin.BaseUI;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -38,7 +41,7 @@ public class SettingsDataContainer<T> extends IndexedContainer {
 
 
         for (final Field field : clazz.getDeclaredFields()) {
-            if (field.isAnnotationPresent(Simple.class)) {
+            if (field.isAnnotationPresent(Simple.class) && !field.isAnnotationPresent(NonVisible.class)) {
                 this.addContainerProperty(field.getName(), field.getType(), null);
                 visibleColumns.add(field.getName());
             }
@@ -54,7 +57,8 @@ public class SettingsDataContainer<T> extends IndexedContainer {
         if (logger.isDebugEnabled())
             logger.debug("Fill table with DAO entities");
         this.removeAllItems();
-        for (final T entity : dao.loadAllEntities()) {
+        //TODO
+        for (final T entity : dao.loadAllEntities(((BaseUI)UI.getCurrent()).getCurrentProject().getId())) {
             addEntityToTable(entity);
         }
     }
@@ -82,7 +86,7 @@ public class SettingsDataContainer<T> extends IndexedContainer {
             logger.debug("set item from entity: " + entity);
 
         for (final Field field : clazz.getDeclaredFields()) {
-            if (field.isAnnotationPresent(Simple.class)){
+            if (field.isAnnotationPresent(Simple.class) && !field.isAnnotationPresent(NonVisible.class)){
                 final boolean isAccessible = field.isAccessible();
                 field.setAccessible(true);
                 try {
@@ -112,7 +116,6 @@ public class SettingsDataContainer<T> extends IndexedContainer {
         final Field[] fieldnames = clazz.getDeclaredFields();
         final List<Object> itemProps = new ArrayList<>();
 
-
         if (logger.isDebugEnabled())
             logger.debug("PropIds: " + this.getContainerPropertyIds());
 
@@ -124,7 +127,7 @@ public class SettingsDataContainer<T> extends IndexedContainer {
             logger.debug("fillObjectFromItem: " + entity);
 
         for (final Field field : fieldnames) {
-            if (field.isAnnotationPresent(Simple.class)){
+            if (field.isAnnotationPresent(Simple.class) && !field.isAnnotationPresent(NonVisible.class)){
                 final boolean isAccessible = field.isAccessible();
                 field.setAccessible(true);
                 try {

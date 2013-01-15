@@ -64,7 +64,8 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
         baseLayout.setSizeFull();
         baseLayout.setSpacing(true);
 
-        final List<IssueRelation> relationList = daoFactory.getIssueRelationDAO().loadAllEntities();
+        final Long projectId = screen.getUi().getCurrentProject().getId();
+        final List<IssueRelation> relationList = daoFactory.getIssueRelationDAO().loadAllEntities(projectId);
         relationsSelect = new ComboBox();
         relationsSelect.setWidth("100%");
         relationsSelect.addContainerProperty(PROPERTY_NAME, String.class, null);
@@ -78,8 +79,7 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
         relationsSelect.setFilteringMode(FilteringMode.CONTAINS);
         baseLayout.addComponent(relationsSelect);
 
-        final List<IssueBase> issueList = daoFactory.getIssueBaseDAO(screen.getUi().getCurrentProject().getId())
-        .loadAllEntities();
+        final List<IssueBase> issueList = daoFactory.getIssueBaseDAO().loadAllEntities(projectId);
         issueSelect = new ComboBox();
         issueSelect.setWidth("100%");
         issueSelect.addContainerProperty(PROPERTY_NAME, String.class, null);

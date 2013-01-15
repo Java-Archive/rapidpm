@@ -28,10 +28,6 @@ public class IssueComponentDAO extends GraphBaseDAO<IssueComponent> {
         super(graphDb, IssueComponent.class, relDaoFactory);
     }
 
-//    public List<IssueBase> getConnectedIssues(final IssueComponent component) {
-//        return getConnectedIssuesFromProject(component, 0L);
-//    }
-
     public List<IssueBase> getConnectedIssuesFromProject(final IssueComponent component, final Long projectId) {
         return super.getConnectedIssuesFromProject(component, projectId);
     }

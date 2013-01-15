@@ -24,10 +24,6 @@ public class IssueVersionDAO extends GraphBaseDAO<IssueVersion> {
         super(graphDb, IssueVersion.class, relDaoFactory);
     }
 
-//    public List<IssueBase> getConnectedIssues(final IssueVersion status) {
-//        return getConnectedIssuesFromProject(status, 0L);
-//    }
-
     public List<IssueBase> getConnectedIssuesFromProject(final IssueVersion version, final Long projectId) {
         return super.getConnectedIssuesFromProject(version, projectId);
     }

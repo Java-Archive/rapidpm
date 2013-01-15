@@ -3,19 +3,15 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.lo
 import com.vaadin.ui.UI;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
-import org.rapidpm.persistence.prj.projectmanagement.ProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStoryPoint;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStoryPointDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCase;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCaseDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.textelement.TextElement;
 import org.rapidpm.webapp.vaadin.BaseUI;
-import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 
 import java.util.Date;
 import java.util.Set;
@@ -39,7 +35,7 @@ public class MappingPlanningUnitToIssueBase {
 
         this.project = project;
         this.daoFactory = DaoFactorySingelton.getInstance();
-        this.dao = daoFactory.getIssueBaseDAO(project.getId());
+        this.dao = daoFactory.getIssueBaseDAO();
     }
 
     public boolean startMapping() {
@@ -69,11 +65,12 @@ public class MappingPlanningUnitToIssueBase {
 
 
         final IssueStoryPointDAO storyPointDAO = daoFactory.getIssueStoryPointDAO();
-        final IssueStoryPoint exist = storyPointDAO.findByName(String.valueOf(pu.getEstimatedStoryPoints()));
+        final IssueStoryPoint exist = storyPointDAO.findByName(String.valueOf(pu.getEstimatedStoryPoints()), project.getId());
         if (exist != null) {
             issue.setStoryPoints(exist);
         } else {
             IssueStoryPoint stp = new IssueStoryPoint(pu.getEstimatedStoryPoints());
+            stp.setProjectId(project.getId());
             issue.setStoryPoints(storyPointDAO.persist(stp));
         }
 
@@ -89,10 +86,10 @@ public class MappingPlanningUnitToIssueBase {
             }
         }
 
-        issue.setPriority(daoFactory.getIssuePriorityDAO().loadAllEntities().get(0));
-        issue.setStatus(daoFactory.getIssueStatusDAO().loadAllEntities().get(0));
-        issue.setType(daoFactory.getIssueTypeDAO().loadAllEntities().get(0));
-        issue.setVersion(daoFactory.getIssueVersionDAO().loadAllEntities().get(0));
+        issue.setPriority(daoFactory.getIssuePriorityDAO().loadAllEntities(project.getId()).get(0));
+        issue.setStatus(daoFactory.getIssueStatusDAO().loadAllEntities(project.getId()).get(0));
+        issue.setType(daoFactory.getIssueTypeDAO().loadAllEntities(project.getId()).get(0));
+        issue.setVersion(daoFactory.getIssueVersionDAO().loadAllEntities(project.getId()).get(0));
         issue.setDueDate_planned(new Date());
 
         issue = dao.persist(issue);

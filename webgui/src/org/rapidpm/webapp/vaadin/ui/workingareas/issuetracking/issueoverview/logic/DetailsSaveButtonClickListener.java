@@ -10,7 +10,6 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.MissingAttributeException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NameAlreadyInUseException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NoNameException;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uicomponents.IssueDetailsLayout;
 
 import java.util.ResourceBundle;
@@ -43,8 +42,7 @@ public class DetailsSaveButtonClickListener implements Button.ClickListener {
     @Override
     public void buttonClick(Button.ClickEvent event) {
         final IssueBase issueBase = detailsLayout.getCurrentIssue();
-        final IssueBaseDAO dao = DaoFactorySingelton.getInstance().getIssueBaseDAO(issueBase.getProjectid());
-
+        final IssueBaseDAO dao = DaoFactorySingelton.getInstance().getIssueBaseDAO();
         if (!dao.existInDatabase(issueBase.getId())) {
             Notification.show(messageBundle.getString("issuetracking_exception_issuedeleted"),
                     Notification.Type.WARNING_MESSAGE);

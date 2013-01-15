@@ -39,8 +39,7 @@ public class DetailsCancelButtonClickListener implements Button.ClickListener {
     @Override
     public void buttonClick(Button.ClickEvent event) {
         final IssueBase issueBase = detailsLayout.getCurrentIssue();
-        final IssueBaseDAO dao = DaoFactorySingelton.getInstance().getIssueBaseDAO(issueBase.getProjectid());
-
+        final IssueBaseDAO dao = DaoFactorySingelton.getInstance().getIssueBaseDAO();
         if (!dao.existInDatabase(issueBase.getId())) {
             Notification.show(messageBundle.getString("issuetracking_exception_issuedeleted"),
                     Notification.Type.WARNING_MESSAGE);

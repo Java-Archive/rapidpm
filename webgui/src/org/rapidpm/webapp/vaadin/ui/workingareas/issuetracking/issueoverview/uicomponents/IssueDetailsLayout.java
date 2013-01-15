@@ -85,13 +85,14 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     protected AbstractOrderedLayout buildSaveableForm() {
         converter = new FormattedDateStringToDateConverter(new SimpleDateFormat(Constants.DD_MM_YYYY));
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final Long projectId = screen.getUi().getCurrentProject().getId();
 
-        final List<IssueType> typeList = daoFactory.getIssueTypeDAO().loadAllEntities();
-        final List<IssueStatus> statusList = daoFactory.getIssueStatusDAO().loadAllEntities();
-        final List<IssuePriority> priorityList = daoFactory.getIssuePriorityDAO().loadAllEntities();
-        final List<IssueVersion> versionList = daoFactory.getIssueVersionDAO().loadAllEntities();
-        final List<IssueStoryPoint> storyPointList = daoFactory.getIssueStoryPointDAO().loadAllEntities();
-        final List<IssueComponent> componentsList = daoFactory.getIssueComponentDAO().loadAllEntities();
+        final List<IssueType> typeList = daoFactory.getIssueTypeDAO().loadAllEntities(projectId);
+        final List<IssueStatus> statusList = daoFactory.getIssueStatusDAO().loadAllEntities(projectId);
+        final List<IssuePriority> priorityList = daoFactory.getIssuePriorityDAO().loadAllEntities(projectId);
+        final List<IssueVersion> versionList = daoFactory.getIssueVersionDAO().loadAllEntities(projectId);
+        final List<IssueStoryPoint> storyPointList = daoFactory.getIssueStoryPointDAO().loadAllEntities(projectId);
+        final List<IssueComponent> componentsList = daoFactory.getIssueComponentDAO().loadAllEntities(projectId);
         final List<Benutzer> userList =  daoFactory.getBenutzerDAO().loadAllEntities();
 
         final VerticalLayout formLayout = new VerticalLayout();
@@ -534,7 +535,6 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         comp.setRequiredError(messageBundle.getString("issuetracking_issue_details_missingentry"));
         logger.warn(comp.getRequiredError() + ": " + comp.getCaption());
     }
-
 
     public IssueBase getCurrentIssue() {
         return issue;

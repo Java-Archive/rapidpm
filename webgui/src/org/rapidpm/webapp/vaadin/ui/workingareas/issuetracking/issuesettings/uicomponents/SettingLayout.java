@@ -9,7 +9,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.log
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.model.SettingsDataContainer;
 
 import java.util.ResourceBundle;
-
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -149,7 +149,9 @@ public class SettingLayout<T> extends VerticalLayout {
 
                 final T entity;
                 if (isAddButton) {
-                    entity = (T) aClass.newInstance();
+                    final Long projectid = screen.getUi().getCurrentProject().getId();
+                    entity = (T) aClass.getConstructor(Long.class).newInstance(projectid);
+
                     container.addEntityToTable(entity);
                     contentTable.select(entity);
                     if (logger.isDebugEnabled())
@@ -164,7 +166,7 @@ public class SettingLayout<T> extends VerticalLayout {
                 contentTable.setTableFieldFactory(new SingleRowEditTableFieldFactory(entity));
                 contentTable.setEditable(true);
                 buttonHorLayout.replaceComponent(addButtonLayout, saveButtonLayout);
-            } catch (IllegalAccessException | InstantiationException e) {
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                 logger.error(e);
             }
         }

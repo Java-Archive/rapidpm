@@ -29,7 +29,7 @@ public class IssueSettingsScreen  extends Screen {
 
     @Override
     public void setComponents() {
-        gridLayout = new GridLayout(2,3);
+        gridLayout = new GridLayout(2, 1);
         gridLayout.setSizeFull();
         gridLayout.setSpacing(true);
 

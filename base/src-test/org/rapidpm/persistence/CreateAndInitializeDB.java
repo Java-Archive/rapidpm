@@ -80,14 +80,23 @@ public class CreateAndInitializeDB {
     public void CreateAndInitialize(){
         System.out.println("Created DB");
         System.out.println("Start initializing");
-        initializeAttributes();
         initializeProject1();
         initializeProject2();
         System.out.println("Finished initializing");
         graphDb.shutdown();
     }
 
-    private void initializeAttributes(){
+    private void initializeAttributes(final Long projectId){
+        statusList.clear();
+        priorityList.clear();
+        typeList.clear();
+        componentList.clear();
+        relationList.clear();
+        versionList.clear();
+        storypointList.clear();
+        commentList.clear();
+        testCaseList.clear();
+        
         int i;
 
         final IssueStatusDAO statusDao = daoFactory.getIssueStatusDAO();
@@ -100,9 +109,10 @@ public class CreateAndInitializeDB {
 
         for (List<String> statusStringSingle : statusStrings) {
             i = 0;
-            IssueStatus status = statusDao.findByName(statusStringSingle.get(i));
+            IssueStatus status = statusDao.findByName(statusStringSingle.get(i), projectId);
             if (status == null) {
                 status = new IssueStatus();
+                status.setProjectId(projectId);
                 status.setStatusName(statusStringSingle.get(i++));
                 status.setStatusFileName(statusStringSingle.get(i++));
                 status = statusDao.persist(status);
@@ -121,9 +131,10 @@ public class CreateAndInitializeDB {
 
         for (List<String> priorityStringsSingle : priorityStrings) {
             i = 0;
-            IssuePriority priority = priorityDao.findByName(priorityStringsSingle.get(i));
+            IssuePriority priority = priorityDao.findByName(priorityStringsSingle.get(i), projectId);
             if (priority == null) {
                 priority = new IssuePriority();
+                priority.setProjectId(projectId);
                 priority.setPriorityName(priorityStringsSingle.get(i++));
                 priority.setPriorityFileName(priorityStringsSingle.get(i++));
                 priority.setPrio(Integer.valueOf(priorityStringsSingle.get(i++)));
@@ -143,9 +154,10 @@ public class CreateAndInitializeDB {
 
         for (List<String> typeStringSingle : typeStrings) {
             i = 0;
-            IssueType type = typeDao.findByName(typeStringSingle.get(i));
+            IssueType type = typeDao.findByName(typeStringSingle.get(i), projectId);
             if (type == null) {
                 type = new IssueType();
+                type.setProjectId(projectId);
                 type.setTypeName(typeStringSingle.get(i++));
                 type.setTypeFileName(typeStringSingle.get(i++));
                 type = typeDao.persist(type);
@@ -162,9 +174,10 @@ public class CreateAndInitializeDB {
         versionStrings.add("2.0");
 
         for (String versionStringSingle : versionStrings) {
-            IssueVersion version = versionDao.findByName(versionStringSingle);
+            IssueVersion version = versionDao.findByName(versionStringSingle, projectId);
             if (version == null) {
                 version = new IssueVersion();
+                version.setProjectId(projectId);
                 version.setVersionName(versionStringSingle);
                 version = versionDao.persist(version);
             }
@@ -174,9 +187,10 @@ public class CreateAndInitializeDB {
 
         final IssueStoryPointDAO storypointDao = daoFactory.getIssueStoryPointDAO();
         for( int j = 1 ; j < 11 ; j++ ) {
-            IssueStoryPoint storyPoint = storypointDao.findByName(String.valueOf(j));
+            IssueStoryPoint storyPoint = storypointDao.findByName(String.valueOf(j), projectId);
             if (storyPoint == null) {
                 storyPoint = new IssueStoryPoint();
+                storyPoint.setProjectId(projectId);
                 storyPoint.setStorypoint(j);
                 storyPoint = storypointDao.persist(storyPoint);
             }
@@ -193,9 +207,10 @@ public class CreateAndInitializeDB {
         componentStrings.add("Documentation");
 
         for (String componentStringSingle : componentStrings) {
-            IssueComponent component = componentDAO.findByName(componentStringSingle);
+            IssueComponent component = componentDAO.findByName(componentStringSingle, projectId);
             if (component == null) {
                 component = new IssueComponent();
+                component.setProjectId(projectId);
                 component.setComponentName(componentStringSingle);
                 component = componentDAO.persist(component);
             }
@@ -211,9 +226,10 @@ public class CreateAndInitializeDB {
 
         for (List<String> relationStringSingle : relationStrings) {
             i = 0;
-            IssueRelation relation = relationDAO.findByName(relationStringSingle.get(i));
+            IssueRelation relation = relationDAO.findByName(relationStringSingle.get(i), projectId);
             if (relation == null) {
                 relation = new IssueRelation();
+                relation.setProjectId(projectId);
                 relation.setRelationName(relationStringSingle.get(i++));
                 relation.setOutgoingName(relationStringSingle.get(i++));
                 relation.setIncomingName(relationStringSingle.get(i++));
@@ -274,9 +290,10 @@ public class CreateAndInitializeDB {
     }
 
     private void initializeProject1() {
+        final Long projectId = 1L;
+        initializeAttributes(projectId);
         final List<IssueBase> issues = new ArrayList<>();
         final List<List<Integer>> issueAttr = new ArrayList<>();
-        final Long projectId = 1L;
 
         //status,priority,type,  reporter,assignee,  dueDate_planned(3),_resolved(3),_closed(3),   version,
         // storypoints,  components(2),
@@ -311,7 +328,7 @@ issueAttr.add(Arrays.asList(3,2,4,  5,4,  2012, 7,12, 2012, 2,19, 2012, 2,19,  2
 issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2, 3,  4,-1,  -1,-1,  25,-1,  -1,  -1));
 
         final BenutzerDAO benutzerDao = daoFactory.getBenutzerDAO();
-        final IssueBaseDAO issueDao = daoFactory.getIssueBaseDAO(projectId);
+        final IssueBaseDAO issueDao = daoFactory.getIssueBaseDAO();
         //fill Issues with Attributes
         int i, x = 0;
         for (final List<Integer> attributes : issueAttr) {
@@ -414,8 +431,9 @@ issueAttr.add(Arrays.asList(0,3,3,  3,2,  2012, 7,12, 2012, 2,24, 2012, 2,31,  2
 
     private void initializeProject2() {
         final Long projectId = 2L;
+        initializeAttributes(projectId);
         final BenutzerDAO benutzerDao = daoFactory.getBenutzerDAO();
-        final IssueBaseDAO issueDao = daoFactory.getIssueBaseDAO(projectId);
+        final IssueBaseDAO issueDao = daoFactory.getIssueBaseDAO();
 
         for (int i = 0; i<3 ;i++) {
             IssueBase issueBase = new IssueBase(projectId);

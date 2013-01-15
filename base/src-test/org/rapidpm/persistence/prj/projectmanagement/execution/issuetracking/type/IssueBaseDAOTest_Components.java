@@ -21,13 +21,12 @@ import static org.junit.Assert.assertTrue;
 public class IssueBaseDAOTest_Components implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssueBaseDAOTest_Components.class);
 
-    private final Long projectId = 1L;
-    private final IssueBaseDAO dao = daoFactory.getIssueBaseDAO(projectId);
+    private final IssueBaseDAO dao = daoFactory.getIssueBaseDAO();
 
     @Test
     public void addComponent() {
-        IssueBase issue = dao.loadAllEntities().get(0);
-        final List<IssueComponent> componentList = daoFactory.getIssueComponentDAO().loadAllEntities();
+        IssueBase issue = dao.loadAllEntities(PROJECTID).get(0);
+        final List<IssueComponent> componentList = daoFactory.getIssueComponentDAO().loadAllEntities(PROJECTID);
 
         assertTrue(issue.addComponent(componentList.get(0)));
         issue = dao.persist(issue);
@@ -51,8 +50,8 @@ public class IssueBaseDAOTest_Components implements BaseDAOTest {
 
     @Test
     public void addComponent2() {
-        IssueBase issue = dao.loadAllEntities().get(0);
-        final List<IssueComponent> componentList = daoFactory.getIssueComponentDAO().loadAllEntities();
+        IssueBase issue = dao.loadAllEntities(PROJECTID).get(0);
+        final List<IssueComponent> componentList = daoFactory.getIssueComponentDAO().loadAllEntities(PROJECTID);
 
         boolean success;
 
@@ -102,12 +101,12 @@ public class IssueBaseDAOTest_Components implements BaseDAOTest {
 
     @Test(expected = NullPointerException.class)
     public void addComponentTo_SecondParameterNull() {
-        dao.addComponentTo(dao.loadAllEntities().get(0), null);
+        dao.addComponentTo(dao.loadAllEntities(PROJECTID).get(0), null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void addComponentTo_SecondParameterNoId() {
-        dao.addComponentTo(dao.loadAllEntities().get(0), new IssueComponent());
+        dao.addComponentTo(dao.loadAllEntities(PROJECTID).get(0), new IssueComponent());
     }
 
     @Test
@@ -127,12 +126,12 @@ public class IssueBaseDAOTest_Components implements BaseDAOTest {
 
     @Test(expected = NullPointerException.class)
     public void deleteComponentRelation_SecondParameterNull() {
-        dao.deleteComponentRelation(dao.loadAllEntities().get(0), null);
+        dao.deleteComponentRelation(dao.loadAllEntities(PROJECTID).get(0), null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void deleteComponentRelation_SecondParameterNoId() {
-        dao.deleteComponentRelation(dao.loadAllEntities().get(0), new IssueComponent());
+        dao.deleteComponentRelation(dao.loadAllEntities(PROJECTID).get(0), new IssueComponent());
     }
 
 
