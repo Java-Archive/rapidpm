@@ -38,6 +38,7 @@ public abstract class ComponentEditableVLayout extends VerticalLayout{
         setSpacing(true);
         saveableLayout = buildSaveableForm();
         if (saveableLayout != null) {
+            saveableLayout.setStyleName("abc");
             saveableLayout.setSizeFull();
             addComponent(saveableLayout);
             saveableLayout.addLayoutClickListener(new LayoutMouseClickListener());

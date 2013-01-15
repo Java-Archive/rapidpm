@@ -7,6 +7,7 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
 import java.util.ResourceBundle;
@@ -19,10 +20,9 @@ import java.util.ResourceBundle;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 
-public class PlanningUnitsTreePanelLayout extends HorizontalLayout {
+public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements Internationalizationable {
 
     private static final Logger logger = Logger.getLogger(PlanningUnitsTreePanelLayout.class);
-
     private VerticalLayout leftLayout = new VerticalLayout();
 
     private HorizontalLayout buttonLayout = new HorizontalLayout();
@@ -30,6 +30,7 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout {
 
     private Button addButton = new Button("+");
     private Button deleteButton = new Button("-");
+    private Button renameButton = new Button();
     private ResourceBundle messages;
     private DaoFactory daoFactory;
 
@@ -43,7 +44,18 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout {
         messages = screen.getMessagesBundle();
         createDeleteButton();
         createAddButton();
+        createRenameButton();
         buildForm();
+        doInternationalization();
+    }
+
+    private void createRenameButton() {
+        renameButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                screen.getUi().addWindow(new RenamePlanningUnitWindow(screen));
+            }
+        });
     }
 
     private void createAddButton() {
@@ -103,12 +115,22 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout {
     }
 
     protected void buildForm() {
-
-        buttonLayout.addComponent(addButton);
-        buttonLayout.addComponent(deleteButton);
-
+        buttonLayout.addComponents(addButton, deleteButton, renameButton);
         leftLayout.addComponent(buttonLayout);
         leftLayout.addComponent(screen.getPlanningUnitsTree());
         addComponent(leftLayout);
+    }
+
+    public Button getDeleteButton() {
+        return deleteButton;
+    }
+
+    public Button getRenameButton() {
+        return renameButton;
+    }
+
+    @Override
+    public void doInternationalization() {
+        renameButton.setCaption(messages.getString("rename"));
     }
 }
