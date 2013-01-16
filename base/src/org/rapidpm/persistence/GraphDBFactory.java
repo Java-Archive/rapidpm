@@ -23,7 +23,7 @@ import java.util.List;
 public class GraphDBFactory {
     private static final Logger logger = Logger.getLogger(GraphDBFactory.class);
 
-    public static final String DB_PATH = Constants.DB_PATH;
+    public static final String DB_PATH = Constants.GRAPHDB_PATH;
     private final GraphDatabaseService graphDb;
     private static GraphDBFactory instance;
 
