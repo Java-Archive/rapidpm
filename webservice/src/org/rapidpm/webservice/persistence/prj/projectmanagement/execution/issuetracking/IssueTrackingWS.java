@@ -24,7 +24,7 @@ public class IssueTrackingWS {
     private static final Logger logger = Logger.getLogger(IssueTrackingWS.class);
 
     private final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-    private IssueBaseDAO issueBaseDAO;
+    private final IssueBaseDAO issueBaseDAO = daoFactory.getIssueBaseDAO();
 
     private final EntityMapper<IssueBase, FlatIssueBase> issueBaseMapper = new EntityMapper<IssueBase, FlatIssueBase>(IssueBase.class, FlatIssueBase.class) {
         @Override
@@ -34,47 +34,43 @@ public class IssueTrackingWS {
     };
 
     @WebMethod
-    public List<IssuePriority> getAllIssuePriorities() {
+    public List<IssuePriority> getAllIssuePriorities(@WebParam(name = "projectId") final Long projectId) {
         // TODO check permission
         final IssuePriorityDAO issuePriorityDAO = daoFactory.getIssuePriorityDAO();
-        return issuePriorityDAO.loadAllEntities();
+        return issuePriorityDAO.loadAllEntities(projectId);
     }
 
     @WebMethod
-    public List<IssueStatus> getAllIssueStatuses() {
+    public List<IssueStatus> getAllIssueStatuses(@WebParam(name = "projectId") final Long projectId) {
         // TODO check permission
         final IssueStatusDAO issueStatusDAO = daoFactory.getIssueStatusDAO();
-        return issueStatusDAO.loadAllEntities();
+        return issueStatusDAO.loadAllEntities(projectId);
     }
 
     @WebMethod
-    public List<IssueType> getAllIssueTypes() {
+    public List<IssueType> getAllIssueTypes(@WebParam(name = "projectId") final Long projectId) {
         // TODO check permission
         final IssueTypeDAO issueTypeDAO = daoFactory.getIssueTypeDAO();
-        return issueTypeDAO.loadAllEntities();
+        return issueTypeDAO.loadAllEntities(projectId);
     }
 
     @WebMethod
-    public List<IssueVersion> getAllIssueVersions() {
+    public List<IssueVersion> getAllIssueVersions(@WebParam(name = "projectId") final Long projectId) {
         // TODO check permission
         final IssueVersionDAO issueVersionDAO = daoFactory.getIssueVersionDAO();
-        return issueVersionDAO.loadAllEntities();
+        return issueVersionDAO.loadAllEntities(projectId);
     }
 
     @WebMethod
-    public FlatIssueBase findIssueById(@WebParam(name = "projectId") final Long projectId,
-                                       @WebParam(name = "id") final Long id) {
+    public FlatIssueBase findIssueById(@WebParam(name = "id") final Long id) {
         issueBaseMapper.checkPermission(EntityMapper.PERMISSION_SELECT);
-        issueBaseDAO = daoFactory.getIssueBaseDAO(projectId);
         final IssueBase issueBase = issueBaseDAO.findByID(id);
         return issueBaseMapper.toFlatEntity(issueBase);
     }
 
     @WebMethod
-    public List<FlatIssueBase> findIssuesByIdList(@WebParam(name = "projectId") final Long projectId,
-                                                  @WebParam(name = "idList") final List<Long> idList) {
+    public List<FlatIssueBase> findIssuesByIdList(@WebParam(name = "idList") final List<Long> idList) {
         issueBaseMapper.checkPermission(EntityMapper.PERMISSION_SELECT);
-        issueBaseDAO = daoFactory.getIssueBaseDAO(projectId);
         final List<IssueBase> issueBaseList = new ArrayList<>();
         for (final Long id : idList) {
             final IssueBase issueBase = issueBaseDAO.findByID(id);
@@ -86,26 +82,20 @@ public class IssueTrackingWS {
     @WebMethod
     public void saveIssue(@WebParam(name = "issueBase") final FlatIssueBase flatIssueBase) {
         issueBaseMapper.checkPermission(EntityMapper.PERMISSION_UPDATE);
-        final Long projectId = flatIssueBase.getProjectId();
-        issueBaseDAO = daoFactory.getIssueBaseDAO(projectId);
         final IssueBase issueBase = issueBaseMapper.toEntity(flatIssueBase);
         issueBaseDAO.persist(issueBase);
     }
 
     @WebMethod
-    public void deleteIssue(@WebParam(name = "projectId") final Long projectId,
-                            @WebParam(name = "id") final Long id) {
+    public void deleteIssue(@WebParam(name = "id") final Long id) {
         issueBaseMapper.checkPermission(EntityMapper.PERMISSION_DELETE);
-        issueBaseDAO = daoFactory.getIssueBaseDAO(projectId);
         final IssueBase issueBase = issueBaseDAO.findByID(id);
         issueBaseDAO.delete(issueBase);
     }
 
     @WebMethod
-    public List<FlatIssueBase> getSubIssues(@WebParam(name = "projectId") final Long projectId,
-                                            @WebParam(name = "issueId") final Long issueId) {
+    public List<FlatIssueBase> getSubIssues(@WebParam(name = "issueId") final Long issueId) {
         issueBaseMapper.checkPermission(EntityMapper.PERMISSION_SELECT);
-        issueBaseDAO = daoFactory.getIssueBaseDAO(projectId);
         final IssueBase issueBase = issueBaseDAO.findByID(issueId);
         final List<IssueBase> subIssues = issueBaseDAO.getSubIssuesOf(issueBase);
         return issueBaseMapper.toFlatEntityList(subIssues);
@@ -114,8 +104,7 @@ public class IssueTrackingWS {
     @WebMethod
     public List<FlatIssueBase> getTopLevelIssues(@WebParam(name = "projectId") final Long projectId) {
         issueBaseMapper.checkPermission(EntityMapper.PERMISSION_SELECT);
-        issueBaseDAO = daoFactory.getIssueBaseDAO(projectId);
-        final List<IssueBase> issueBaseList = issueBaseDAO.loadTopLevelEntities();
+        final List<IssueBase> issueBaseList = issueBaseDAO.loadTopLevelEntities(projectId);
         return issueBaseMapper.toFlatEntityList(issueBaseList);
     }
 }
