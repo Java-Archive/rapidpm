@@ -13,8 +13,8 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
  * Time: 12:58
  * To change this template use File | Settings | File Templates.
  */
-public class GraphRelationRegistry {
-    private static final Logger logger = Logger.getLogger(GraphRelationRegistry.class);
+public abstract class GraphRelationFactory {
+    private static final Logger logger = Logger.getLogger(GraphRelationFactory.class);
 
     public static String getRelationAttributeName() {
         return "name";

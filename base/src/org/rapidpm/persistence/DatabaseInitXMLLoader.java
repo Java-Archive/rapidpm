@@ -65,8 +65,6 @@ public class DatabaseInitXMLLoader {
                             } else {
                                 field.set(instance, getValue("value", element));
                             }
-
-
                             field.setAccessible(isAccessible);
                         }
                     }
@@ -87,11 +85,4 @@ public class DatabaseInitXMLLoader {
         final Node node = nodes.item(0);
         return node.getNodeValue();
     }
-
-//    public static void main(String[] args) {
-//        IssuePriorityDAO dao = DaoFactorySingelton.getInstance().getIssuePriorityDAO();
-//        DatabaseInitXMLLoader init = new DatabaseInitXMLLoader();
-//        init.initDatatype(IssuePriority.class, dao.loadAllEntities(), dao);
-//    }
-
 }
