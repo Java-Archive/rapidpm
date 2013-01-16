@@ -2,7 +2,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Tree;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeValueChangeListener;
@@ -21,11 +20,9 @@ import java.util.Set;
 public class PlanningUnitsTree extends Tree{
     
     private PlanningUnitBeanItemContainer container;
+    private TreeValueChangeListener listener;
 
-
-
-    public PlanningUnitsTree(final ProjektplanungScreen screen, final PlanningUnit selectedPlanningUnit,
-                             final PlannedProject projekt){
+    public PlanningUnitsTree(final ProjektplanungScreen screen, final PlanningUnit selectedPlanningUnit){
         container = new PlanningUnitBeanItemContainer();
         if (selectedPlanningUnit != null) {
             setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
@@ -34,7 +31,8 @@ public class PlanningUnitsTree extends Tree{
             container.addBean(selectedPlanningUnit);
             buildTree(selectedPlanningUnit.getKindPlanningUnits(), selectedPlanningUnit);
             expandItemsRecursively(selectedPlanningUnit);
-            addValueChangeListener(new TreeValueChangeListener(screen));
+            listener = new TreeValueChangeListener(screen);
+            addValueChangeListener(listener);
             setContainerDataSource(container);
             final Iterator iterator = rootItemIds().iterator();
             while (iterator.hasNext()){
@@ -52,5 +50,9 @@ public class PlanningUnitsTree extends Tree{
                 buildTree(planningUnit.getKindPlanningUnits(), planningUnit);
             }
         }
+    }
+
+    public TreeValueChangeListener getListener() {
+        return listener;
     }
 }
