@@ -1,10 +1,8 @@
 .idea/workspace.xml
-out/*
+base/src-test/org/rapidpm/RekursionsDemoTest.java
 webgui/web/VAADIN/widgetsets/*
 webgui/conf/rebel.xml
-base/src-test/org/rapidpm/RekursionsDemoTest.java
 webgui/src/rebel.xml
 webservice/src-test-generated/*
-
-/projectFilesBackup/
-/out/
+./projectFilesBackup/
+out/*
