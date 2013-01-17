@@ -82,26 +82,26 @@ public class IssueBaseDAOTest_Relations implements BaseDAOTest {
         issue1 = dao.persist(issue1);
         assertTrue(issue1.getConnectedIssues(relation2, Direction.OUTGOING).contains(issue3));
 
-        assertTrue(relationDAO.getConnectedIssuesFromProject(relation1, issue1.getProjectId()).contains(issue1));
-        assertTrue(relationDAO.getConnectedIssuesFromProject(relation2, issue1.getProjectId()).contains(issue1));
+        assertTrue(relationDAO.getConnectedIssues(relation1).contains(issue1));
+        assertTrue(relationDAO.getConnectedIssues(relation2).contains(issue1));
 
         issue2.removeConnectionToIssue(issue1, relation1);
         issue2 = dao.persist(issue2);
         assertFalse(issue1.getConnectedIssues(relation1).contains(issue2));
         assertTrue(issue1.getConnectedIssues(relation1).contains(issue3));
 
-        assertTrue(relationDAO.getConnectedIssuesFromProject(relation1, issue1.getProjectId()).contains(issue1));
-        assertTrue(relationDAO.getConnectedIssuesFromProject(relation2, issue1.getProjectId()).contains(issue1));
+        assertTrue(relationDAO.getConnectedIssues(relation1).contains(issue1));
+        assertTrue(relationDAO.getConnectedIssues(relation2).contains(issue1));
 
         issue1.removeConnectionToIssue(issue3, relation1);
         issue1 = dao.persist(issue1);
         assertFalse(issue1.getConnectedIssues(relation1).contains(issue3));
-        assertFalse(relationDAO.getConnectedIssuesFromProject(relation1, issue1.getProjectId()).contains(issue1));
+        assertFalse(relationDAO.getConnectedIssues(relation1).contains(issue1));
 
         issue1.removeConnectionToIssue(issue3, relation2);
         issue1 = dao.persist(issue1);
         assertFalse(issue1.getConnectedIssues(relation2).contains(issue3));
-        assertFalse(relationDAO.getConnectedIssuesFromProject(relation2, issue1.getProjectId()).contains(issue1));
+        assertFalse(relationDAO.getConnectedIssues(relation2).contains(issue1));
     }
 
 

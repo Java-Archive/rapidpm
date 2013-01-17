@@ -758,7 +758,7 @@ public class GraphBaseDAO<T> {
     }
 
 
-    protected List<IssueBase> getConnectedIssuesFromProject(final T entity, final Long projectId) {
+    protected List<IssueBase> getConnectedIssues(final T entity) {
         if (entity == null)
             throw new NullPointerException("Entity is null");
 
@@ -766,27 +766,18 @@ public class GraphBaseDAO<T> {
         if (id == null)
             throw new IllegalArgumentException("Entity Id cant be null. Persist first.");
 
-        if (projectId < 0)
-            throw new IllegalArgumentException("ProjectId must be positiv");
-
         if (logger.isDebugEnabled())
-            logger.debug(this.getClass().getSimpleName() + ".getConnectedIssuesFromProject: " + projectId);
+            logger.debug(this.getClass().getSimpleName() + ".getConnectedIssues");
 
         final List<IssueBase> issueList = new ArrayList<>();
-        final Node statusNode = graphDb.getNodeById(id);
-        if (statusNode == null)
+        final Node entityNode = graphDb.getNodeById(id);
+        if (entityNode == null)
             throw new NullPointerException("Could not find item in Database.");
-        IssueBase issue = null;
+
         final RelationshipType relType = GraphRelationFactory.getRelationshipTypeForClass(clazz);
-        for (Relationship rel : statusNode.getRelationships(relType, Direction.INCOMING)) {
-            issue = getObjectFromNode(rel.getOtherNode(statusNode), IssueBase.class);
-            if (issue != null && (projectId == 0 || issue.getProjectId().equals(projectId))) {
-                issueList.add(issue);
-                if (logger.isDebugEnabled())
-                    logger.debug("Is connected Issues: " + issue);
-            } else
-            if (logger.isDebugEnabled())
-                logger.debug("Is not connected: " + issue);
+        for (Relationship rel : entityNode.getRelationships(relType, Direction.INCOMING)) {
+            final IssueBase issue = getObjectFromNode(rel.getOtherNode(entityNode), IssueBase.class);
+            issueList.add(issue);
         }
         return issueList;
     }

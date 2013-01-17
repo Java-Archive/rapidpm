@@ -22,8 +22,8 @@ public class IssueTypeDAO extends GraphBaseDAO<IssueType> {
         super(graphDb, IssueType.class, relDaoFactory);
     }
 
-    public List<IssueBase> getConnectedIssuesFromProject(final IssueType type, final Long projectId) {
-        return super.getConnectedIssuesFromProject(type, projectId);
+    public List<IssueBase> getConnectedIssues(final IssueType type) {
+        return super.getConnectedIssues(type);
     }
 
     public boolean delete(final IssueType entity, final IssueType assignTo){

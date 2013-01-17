@@ -22,8 +22,8 @@ public class IssuePriorityDAO extends GraphBaseDAO<IssuePriority> {
         super(graphDb, IssuePriority.class, relDaoFactory);
     }
 
-    public List<IssueBase> getConnectedIssuesFromProject(final IssuePriority priority, final Long projectId) {
-        return super.getConnectedIssuesFromProject(priority, projectId);
+    public List<IssueBase> getConnectedIssues(final IssuePriority priority) {
+        return super.getConnectedIssues(priority);
     }
 
     public boolean delete(final IssuePriority entity, final IssuePriority assignTo){

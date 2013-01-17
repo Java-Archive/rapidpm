@@ -22,8 +22,8 @@ public class IssueStatusDAO extends GraphBaseDAO<IssueStatus> {
         super(graphDb, IssueStatus.class, relDaoFactory);
     }
 
-    public List<IssueBase> getConnectedIssuesFromProject(final IssueStatus status, final Long projectId) {
-        return super.getConnectedIssuesFromProject(status, projectId);
+    public List<IssueBase> getConnectedIssues(final IssueStatus status) {
+        return super.getConnectedIssues(status);
     }
 
     public boolean delete(final IssueStatus entity, final IssueStatus assignTo){
