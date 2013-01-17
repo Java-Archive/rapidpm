@@ -167,7 +167,7 @@ public class SettingLayout<T> extends VerticalLayout {
                 contentTable.setEditable(true);
                 buttonHorLayout.replaceComponent(addButtonLayout, saveButtonLayout);
             } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                logger.error(e);
+                logger.error(e.getMessage(), e);
             }
         }
     }

@@ -13,8 +13,6 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
 import java.util.ArrayList;
 import java.util.List;
 
-import java.io.File;
-
 /**
  * Created with IntelliJ IDEA.
  * User: Alvin Schiller
@@ -25,7 +23,7 @@ import java.io.File;
 public class GraphDBFactory {
     private static final Logger logger = Logger.getLogger(GraphDBFactory.class);
 
-    public static final String DB_PATH = Constants.DB_PATH;
+    public static final String DB_PATH = Constants.GRAPHDB_PATH;
     private final GraphDatabaseService graphDb;
     private static GraphDBFactory instance;
 
@@ -62,45 +60,12 @@ public class GraphDBFactory {
 
             final Transaction tx = graphDb.beginTx();
             try{
-                for (Class clazz : classList) {
-                    final RelationshipType rel = GraphRelationRegistry.getRootToClassRootRelType(clazz);
-                    Node class_root = graphDb.createNode();
-                    class_root.setProperty(GraphRelationRegistry.getRelationAttributeName(), rel.name());
+                for (final Class clazz : classList) {
+                    final RelationshipType rel = GraphRelationFactory.getRootToClassRootRelType(clazz);
+                    final Node class_root = graphDb.createNode();
+                    class_root.setProperty(GraphRelationFactory.getRelationAttributeName(), rel.name());
                     root_node.createRelationshipTo(class_root, rel);
                 }
-
-
-//                final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-//
-//                final IssueStatus status1 = new IssueStatus();
-//                status1.setStatusName("Open");
-//                status1.setStatusFileName("status_open.gif");
-//                daoFactory.getIssueStatusDAO().persist(status1);
-//
-//                final IssuePriority priority1 = new IssuePriority();
-//                priority1.setPriorityName("Trivial");
-//                priority1.setPriorityFileName("priority_trivial.gif");
-//                priority1.setPrio(0);
-//                daoFactory.getIssuePriorityDAO().persist(priority1);
-//
-//                final IssueType type1 = new IssueType("Bug");
-//                daoFactory.getIssueTypeDAO().persist(type1);
-//
-//                final IssueVersion version1 = new IssueVersion(" - ");
-//                daoFactory.getIssueVersionDAO().persist(version1);
-//
-//                final IssueStoryPoint storypoint = new IssueStoryPoint(1);
-//                daoFactory.getIssueStoryPointDAO().persist(storypoint);
-//
-//                final IssueRelation relation1 = new IssueRelation();
-//                relation1.setRelationName("Duplicate");
-//                relation1.setOutgoingName("duplicates");
-//                relation1.setIncomingName("is duplicated by");
-//                daoFactory.getIssueRelationDAO().persist(relation1);
-//
-//                final IssueComponent component5 = new IssueComponent("Documentation");
-//                daoFactory.getIssueComponentDAO().persist(component5);
-
 
                 tx.success();
                 success = true;

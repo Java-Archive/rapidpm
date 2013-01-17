@@ -89,9 +89,11 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         final RapidPanel treePanel = new RapidPanel();
         treePanel.setStyleName(Reindeer.PANEL_LIGHT);
 
-        issueTree = new Tree(screen.getUi().getCurrentProject().getProjektName());
+        final PlannedProject project = screen.getUi().getCurrentProject();
+
+        issueTree = new Tree(project.getProjektName());
         issueTree.setNullSelectionAllowed(false);
-        issueTree.setContainerDataSource(TreeIssueBaseContainerSingleton.getInstance(screen.getUi().getCurrentProject()));
+        issueTree.setContainerDataSource(TreeIssueBaseContainerSingleton.getInstance(project));
         issueTree.setImmediate(true);
         if (issueTabSheet != null) {
             issueTree.addValueChangeListener(new TreeValueChangeListener(issueTabSheet, issueTree));
@@ -135,7 +137,6 @@ public class IssueTreeLayout extends VerticalLayout implements Internationalizat
         });
 
         subissueButton.addClickListener(new Button.ClickListener() {
-//            private boolean enabled = false;
 
             @Override
             public void buttonClick(Button.ClickEvent event) {

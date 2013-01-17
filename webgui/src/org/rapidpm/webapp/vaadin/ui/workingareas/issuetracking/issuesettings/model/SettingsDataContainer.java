@@ -107,7 +107,7 @@ public class SettingsDataContainer<T> extends IndexedContainer {
             method = DaoFactory.class.getDeclaredMethod("get" + clazz.getSimpleName() + "DAO");
             dao = (GraphBaseDAO<T>)method.invoke(DaoFactorySingelton.getInstance());
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            logger.error(e);
+            logger.error(e.getMessage(), e);
         }
         return dao;
     }
@@ -151,7 +151,7 @@ public class SettingsDataContainer<T> extends IndexedContainer {
                     }
                     i++;
                 } catch (IllegalAccessException e) {
-                    logger.error(e);
+                    logger.error(e.getMessage(), e);
                 }
                 field.setAccessible(isAccessible);
             }
@@ -213,7 +213,7 @@ public class SettingsDataContainer<T> extends IndexedContainer {
             method = dao.getClass().getDeclaredMethod("delete", methodClassParams);
             retVal = (Boolean) method.invoke(dao, args);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            logger.error(e);
+            logger.error(e.getMessage(), e);
         }
         return retVal;
     }
