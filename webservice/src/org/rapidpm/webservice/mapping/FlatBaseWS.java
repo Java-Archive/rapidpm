@@ -53,16 +53,19 @@ public abstract class FlatBaseWS<T, DT extends DAO<Long, T>, FT extends FlatEnti
     }
 
     @WebMethod
-    public void save(@WebParam(name = "entity") final FT flatEntity) {
+    public Long save(@WebParam(name = "entity") final FT flatEntity) {
         checkPermission(PERMISSION_UPDATE);
         final T entity = toEntity(flatEntity);
         daoFactory.saveOrUpdateTX(entity);
+        final Long id = FlatEntity.entityUtils.getOIDFromEntity(entity);
+        return id;
     }
 
     @WebMethod
-    public void delete(@WebParam(name = "id") final Long id) {
+    public boolean delete(@WebParam(name = "id") final Long id) {
         checkPermission(PERMISSION_DELETE);
         final T entity = dao.findByID(id);
         daoFactory.removeTX(entity);
+        return true;
     }
 }

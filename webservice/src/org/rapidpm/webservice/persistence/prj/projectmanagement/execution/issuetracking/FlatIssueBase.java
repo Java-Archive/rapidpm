@@ -202,17 +202,29 @@ public class FlatIssueBase extends FlatEntity<IssueBase> {
         issueBase.setProjectId(projectId);
         issueBase.setSummary(summary);
         issueBase.setStory(story);
-        final IssuePriorityDAO issuePriorityDAO = daoFactory.getIssuePriorityDAO();
-        issueBase.setPriority(issuePriorityDAO.findByID(priorityId));
-        final IssueStatusDAO issueStatusDAO = daoFactory.getIssueStatusDAO();
-        issueBase.setStatus(issueStatusDAO.findByID(statusId));
-        final IssueTypeDAO issueTypeDAO = daoFactory.getIssueTypeDAO();
-        issueBase.setType(issueTypeDAO.findByID(typeId));
+        if (priorityId != null) {
+            final IssuePriorityDAO issuePriorityDAO = daoFactory.getIssuePriorityDAO();
+            issueBase.setPriority(issuePriorityDAO.findByID(priorityId));
+        }
+        if (statusId != null) {
+            final IssueStatusDAO issueStatusDAO = daoFactory.getIssueStatusDAO();
+            issueBase.setStatus(issueStatusDAO.findByID(statusId));
+        }
+        if (typeId != null) {
+            final IssueTypeDAO issueTypeDAO = daoFactory.getIssueTypeDAO();
+            issueBase.setType(issueTypeDAO.findByID(typeId));
+        }
         final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
-        issueBase.setReporter(benutzerDAO.findByID(reporterId));
-        issueBase.setAssignee(benutzerDAO.findByID(assigneeId));
-        final IssueVersionDAO issueVersionDAO = daoFactory.getIssueVersionDAO();
-        issueBase.setVersion(issueVersionDAO.findByID(versionId));
+        if (reporterId != null) {
+            issueBase.setReporter(benutzerDAO.findByID(reporterId));
+        }
+        if (assigneeId != null) {
+            issueBase.setAssignee(benutzerDAO.findByID(assigneeId));
+        }
+        if (versionId != null) {
+            final IssueVersionDAO issueVersionDAO = daoFactory.getIssueVersionDAO();
+            issueBase.setVersion(issueVersionDAO.findByID(versionId));
+        }
         issueBase.setDueDate_planned(dueDate_planned);
         issueBase.setDueDate_resolved(dueDate_resolved);
         issueBase.setDueDate_closed(dueDate_closed);

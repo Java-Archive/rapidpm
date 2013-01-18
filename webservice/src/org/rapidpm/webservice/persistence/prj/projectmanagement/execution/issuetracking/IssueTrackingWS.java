@@ -1,6 +1,7 @@
 package org.rapidpm.webservice.persistence.prj.projectmanagement.execution.issuetracking;
 
 import org.apache.log4j.Logger;
+import org.neo4j.graphdb.NotFoundException;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
@@ -89,17 +90,26 @@ public class IssueTrackingWS {
     }
 
     @WebMethod
-    public void saveIssue(@WebParam(name = "issueBase") final FlatIssueBase flatIssueBase) {
+    public Long saveIssue(@WebParam(name = "issue") final FlatIssueBase flatIssue) {
         issueBaseMapper.checkPermission(EntityMapper.PERMISSION_UPDATE);
-        final IssueBase issueBase = issueBaseMapper.toEntity(flatIssueBase);
-        issueBaseDAO.persist(issueBase);
+        if (flatIssue != null) {
+            final IssueBase issueBase = issueBaseMapper.toEntity(flatIssue);
+            issueBaseDAO.persist(issueBase);
+            return issueBase.getId();
+        }
+        return null;
     }
 
     @WebMethod
-    public void deleteIssue(@WebParam(name = "id") final Long id) {
+    public boolean deleteIssue(@WebParam(name = "id") final Long id) {
         issueBaseMapper.checkPermission(EntityMapper.PERMISSION_DELETE);
-        final IssueBase issueBase = issueBaseDAO.findByID(id);
-        issueBaseDAO.delete(issueBase);
+        final IssueBase issueBase;
+        try {
+            issueBase = issueBaseDAO.findByID(id);
+        } catch (NotFoundException e) {
+            return false;
+        }
+        return issueBaseDAO.delete(issueBase);
     }
 
     @WebMethod
@@ -136,13 +146,21 @@ public class IssueTrackingWS {
     public boolean deleteComment(@WebParam(name = "issueId") final Long issueId,
                                  @WebParam(name = "commentId") final Long commentId) {
         issueCommentMapper.checkPermission(EntityMapper.PERMISSION_DELETE);
-        final IssueBase issueBase = issueBaseDAO.findByID(issueId);
-        if (issueBase != null) {
-            final IssueComment comment = issueCommentDAO.findByID(commentId);
-            if (comment != null && issueBase.removeComment(comment)) {
-                issueBaseDAO.persist(issueBase);
-                return true;
-            }
+        final IssueBase issueBase;
+        try {
+            issueBase = issueBaseDAO.findByID(issueId);
+        } catch (NotFoundException e) {
+            return false;
+        }
+        final IssueComment comment;
+        try {
+            comment = issueCommentDAO.findByID(commentId);
+        } catch (NotFoundException e) {
+            return false;
+        }
+        if (issueBase.removeComment(comment)) {
+            issueBaseDAO.persist(issueBase);
+            return true;
         }
         return false;
     }
