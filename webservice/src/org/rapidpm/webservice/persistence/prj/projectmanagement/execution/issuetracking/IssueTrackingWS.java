@@ -25,11 +25,20 @@ public class IssueTrackingWS {
 
     private final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
     private final IssueBaseDAO issueBaseDAO = daoFactory.getIssueBaseDAO();
+    private final IssueCommentDAO issueCommentDAO = daoFactory.getIssueCommentDAO();
 
     private final EntityMapper<IssueBase, FlatIssueBase> issueBaseMapper = new EntityMapper<IssueBase, FlatIssueBase>(IssueBase.class, FlatIssueBase.class) {
         @Override
         protected IssueBase findEntityById(final Long id) {
             return issueBaseDAO.findByID(id);
+        }
+    };
+
+    private final EntityMapper<IssueComment, FlatIssueComment> issueCommentMapper = new EntityMapper<IssueComment,
+            FlatIssueComment>(IssueComment.class, FlatIssueComment.class) {
+        @Override
+        protected IssueComment findEntityById(final Long id) {
+            return issueCommentDAO.findByID(id);
         }
     };
 
@@ -106,5 +115,35 @@ public class IssueTrackingWS {
         issueBaseMapper.checkPermission(EntityMapper.PERMISSION_SELECT);
         final List<IssueBase> issueBaseList = issueBaseDAO.loadTopLevelEntities(projectId);
         return issueBaseMapper.toFlatEntityList(issueBaseList);
+    }
+
+    @WebMethod
+    public Long addOrChangeComment(@WebParam(name = "issueId") final Long issueId,
+                                   @WebParam(name = "comment") final FlatIssueComment flatComment) {
+        issueCommentMapper.checkPermission(EntityMapper.PERMISSION_UPDATE);
+        final IssueBase issueBase = issueBaseDAO.findByID(issueId);
+        if (issueBase != null && flatComment != null) {
+            final IssueComment comment = issueCommentMapper.toEntity(flatComment);
+            if (issueBase.addOrChangeComment(comment)) {
+                issueBaseDAO.persist(issueBase);
+                return comment.getId();
+            }
+        }
+        return null;
+    }
+
+    @WebMethod
+    public boolean deleteComment(@WebParam(name = "issueId") final Long issueId,
+                                 @WebParam(name = "commentId") final Long commentId) {
+        issueCommentMapper.checkPermission(EntityMapper.PERMISSION_DELETE);
+        final IssueBase issueBase = issueBaseDAO.findByID(issueId);
+        if (issueBase != null) {
+            final IssueComment comment = issueCommentDAO.findByID(commentId);
+            if (comment != null && issueBase.removeComment(comment)) {
+                issueBaseDAO.persist(issueBase);
+                return true;
+            }
+        }
+        return false;
     }
 }
