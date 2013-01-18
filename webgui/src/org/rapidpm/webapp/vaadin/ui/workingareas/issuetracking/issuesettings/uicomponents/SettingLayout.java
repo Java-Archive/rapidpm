@@ -56,12 +56,16 @@ public class SettingLayout<T> extends VerticalLayout {
         buttonHorLayout.setSizeFull();
 
         addButtonLayout = new VerticalLayout();
-        addButtonLayout.setSizeFull();
+        //TODO RPM-364 just workaround
+        //addButtonLayout.setSizeFull();
+        addButtonLayout.setSizeUndefined();
         addButtonLayout.setSpacing(true);
         addButtonLayout.setMargin(true);
 
         saveButtonLayout = new VerticalLayout();
-        saveButtonLayout.setSizeFull();
+        //TODO RPM-364 just workaround
+        //saveButtonLayout.setSizeFull();
+        saveButtonLayout.setSizeUndefined();
         saveButtonLayout.setSpacing(true);
         saveButtonLayout.setMargin(true);
 
