@@ -121,6 +121,23 @@ public class IssueTrackingWS {
     }
 
     @WebMethod
+    public Long addSubIssue(@WebParam(name = "issueId") final Long issueId,
+                            @WebParam(name = "subIssue") final FlatIssueBase flatIssue) {
+        issueBaseMapper.checkPermission(EntityMapper.PERMISSION_UPDATE);
+        final IssueBase issue = issueBaseDAO.findByID(issueId);
+        final IssueBase subIssue = issueBaseMapper.toEntity(flatIssue);
+        if (issue != null && subIssue != null) {
+            subIssue.setProjectId(issue.getProjectId()); // erforderlich oder übernimmt die DAO das?
+            issueBaseDAO.persist(subIssue);
+            if (issue.addSubIssue(subIssue)) {
+                issueBaseDAO.persist(issue);
+                return subIssue.getId();
+            }
+        }
+        return null;
+    }
+
+    @WebMethod
     public List<FlatIssueBase> getTopLevelIssues(@WebParam(name = "projectId") final Long projectId) {
         issueBaseMapper.checkPermission(EntityMapper.PERMISSION_SELECT);
         final List<IssueBase> issueBaseList = issueBaseDAO.loadTopLevelEntities(projectId);
