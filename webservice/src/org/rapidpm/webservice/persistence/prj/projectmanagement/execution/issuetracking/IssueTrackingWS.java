@@ -2,6 +2,7 @@ package org.rapidpm.webservice.persistence.prj.projectmanagement.execution.issue
 
 import org.apache.log4j.Logger;
 import org.neo4j.graphdb.NotFoundException;
+import org.rapidpm.lang.StringUtils;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
@@ -12,6 +13,8 @@ import org.rapidpm.webservice.mapping.EntityMapper;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,6 +90,29 @@ public class IssueTrackingWS {
             issueBaseList.add(issueBase);
         }
         return issueBaseMapper.toFlatEntityList(issueBaseList);
+    }
+
+    @WebMethod
+    public Object getIssueAttribute(@WebParam(name = "id") final Long id,
+                                    @WebParam(name = "name") final String name) {
+        issueBaseMapper.checkPermission(EntityMapper.PERMISSION_SELECT);
+        final IssueBase issueBase = issueBaseDAO.findByID(id);
+        if (issueBase != null) {
+            final String getterName = "get" + StringUtils.firstCharUpper(name);
+            final Method getter;
+            try {
+                getter = IssueBase.class.getMethod(getterName);
+            } catch (NoSuchMethodException e) {
+                logger.error("getter '" + getterName + "' not found", e);
+                return null;
+            }
+            try {
+                return getter.invoke(issueBase);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                logger.error("getter '" + getterName + "' could not be invoked", e);
+            }
+        }
+        return null;
     }
 
     @WebMethod
