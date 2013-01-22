@@ -105,7 +105,7 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements In
                     final MainUI ui = screen.getUi();
                     ui.setWorkingArea(new ProjektplanungScreen(ui));
                 }catch (final PlatzhalterException e){
-                    Notification.show(messages.getString("planning_placeholder"));
+                    Notification.show(messages.getString("planning_placeholder_delete"));
                 } catch (final Exception e) {
                     e.printStackTrace();
                     Notification.show(messages.getString("planning_nodelete"));

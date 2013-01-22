@@ -52,7 +52,11 @@ public class ProjectAdministrationScreen extends Screen {
     }
 
     private void buildScreen() {
+        chosenProjectEditablePanel.setSizeUndefined();
+        chosenProjectEditablePanel.setWidth("100%");
+        currentProjectEditablePanel.setSizeUndefined();
         currentProjectEditablePanel.setWidth("100%");
+        projectsPanelLayout.setSizeUndefined();
         projectsPanelLayout.setWidth("100%");
         projectsPanelLayout.addComponent(projectsPanel);
         projectsPanelLayout.addComponent(chosenProjectEditablePanel);

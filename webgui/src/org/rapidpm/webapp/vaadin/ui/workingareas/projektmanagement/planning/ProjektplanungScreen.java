@@ -11,6 +11,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.textelement.TextElement;
+import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
@@ -68,6 +69,8 @@ public class ProjektplanungScreen extends Screen {
 
     private Button addParentsButton = new Button();
     private Button addDescriptionOrTestCaseButton = new Button();
+
+    public static final long PLATZHALTER_ID = 666l;
 
 
     public ProjektplanungScreen(final MainUI ui) {
@@ -240,8 +243,8 @@ public class ProjektplanungScreen extends Screen {
                     } else {
                         createNewPlanningUnitElements(newPlanningUnit, ressourceGroups, daoFactory);
                     }
-
-
+                    final Benutzer notAssignedUser = daoFactory.getBenutzerDAO().findByID(1l);
+                    newPlanningUnit.setResponsiblePerson(notAssignedUser);
                     daoFactory.saveOrUpdateTX(newPlanningUnit);
                     if (newPlanningUnit.getParent() == null) {
                         projekt.getPlanningUnits().add(newPlanningUnit);

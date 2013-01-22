@@ -115,6 +115,9 @@ public class AddWindow extends RapidWindow {
                             if(newPlanningUnitName.equals(parentsPlanningUnitName)){
                                 throw new SameNameException();
                             }
+                            if(newPlanningUnit.getParent().getId() == ProjektplanungScreen.PLATZHALTER_ID){
+                                newPlanningUnit.setParent(null);
+                            }
                         }
                         daoFactory.saveOrUpdateTX(newPlanningUnit);
                         newPlanningUnit.setKindPlanningUnits(new HashSet<PlanningUnit>());
