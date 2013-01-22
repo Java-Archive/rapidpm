@@ -207,4 +207,23 @@ public class IssueTrackingWS {
         }
         return false;
     }
+
+    @WebMethod
+    public List<IssueSearchSuggestion> search(@WebParam(name = "projectId") final Long projectId,
+                                              @WebParam(name = "query") final String query,
+                                              @WebParam(name = "maxResults") final int maxResults) {
+        final List<IssueSearchSuggestion> searchSuggestions = new ArrayList<>();
+        final String queryCI = query.toLowerCase();
+        final List<IssueBase> issueList = issueBaseDAO.loadAllEntities(projectId);
+        for (final IssueBase issue : issueList) {
+            if (issue.getText().toLowerCase().contains(queryCI) || issue.getSummary().toLowerCase().contains(queryCI)) {
+                final IssueSearchSuggestion searchSuggestion = new IssueSearchSuggestion(issue.getId(), issue.getText(), issue.getSummary());
+                searchSuggestions.add(searchSuggestion);
+                if (searchSuggestions.size() >= maxResults) {
+                    break;
+                }
+            }
+        }
+        return searchSuggestions;
+    }
 }
