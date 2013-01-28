@@ -38,7 +38,7 @@ public class PlannedProject {
     @Basic
     private String projektName;
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<PlanningUnit> planningUnits;
 
     @Basic

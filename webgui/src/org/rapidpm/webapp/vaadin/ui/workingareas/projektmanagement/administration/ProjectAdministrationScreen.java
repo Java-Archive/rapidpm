@@ -56,12 +56,10 @@ public class ProjectAdministrationScreen extends Screen {
         chosenProjectEditablePanel.setWidth("100%");
         currentProjectEditablePanel.setSizeUndefined();
         currentProjectEditablePanel.setWidth("100%");
-        projectsPanelLayout.setSizeUndefined();
+        projectsPanelLayout.setHeight("100%");
         projectsPanelLayout.setWidth("100%");
         projectsPanelLayout.addComponent(projectsPanel);
         projectsPanelLayout.addComponent(chosenProjectEditablePanel);
-        //projectsPanelLayout.setExpandRatio(projectsPanel,1);
-        //projectsPanelLayout.setExpandRatio(chosenProjectEditablePanel,1);
     }
 
     @Override
