@@ -16,8 +16,15 @@
     </facet>
     <facet type="JRebel" name="JRebel">
       <configuration>
-        <option name="allPaths" value="true" />
-        <option name="generateRebel" value="true" />
+        <option name="autosync" value="false" />
+        <option name="generateRebel" value="false" />
+        <option name="manualXML" value="false" />
+        <option name="privateKey" />
+        <option name="publicKey" />
+        <option name="remotingEnabled" value="false" />
+        <option name="secure" value="true" />
+        <option name="url" />
+        <option name="xmlDir" />
       </configuration>
     </facet>
   </component>

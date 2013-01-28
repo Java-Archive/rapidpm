@@ -3,6 +3,7 @@ base/src-test/org/rapidpm/RekursionsDemoTest.java
 webgui/web/VAADIN/widgetsets/*
 webgui/conf/rebel.xml
 webgui/src/rebel.xml
+base/src/rebel.xml
 webservice/src-test-generated/*
 ./projectFilesBackup/
 out/*

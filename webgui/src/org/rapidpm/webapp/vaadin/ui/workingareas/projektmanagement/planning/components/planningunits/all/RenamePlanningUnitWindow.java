@@ -36,11 +36,19 @@ public class RenamePlanningUnitWindow extends RapidWindow {
                     public void buttonClick(Button.ClickEvent event) {
                         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
                         try {
-                            fieldGroup.commit();
-                            final PlanningUnit planningUnit = ((BeanItem<PlanningUnit>) fieldGroup.getItemDataSource()).getBean();
-                            daoFactory.saveOrUpdateTX(planningUnit);
-                            RenamePlanningUnitWindow.this.close();
-                            screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
+                            final PlanningUnit changedPlanningUnit = ((BeanItem<PlanningUnit>)fieldGroup
+                                    .getItemDataSource()).getBean();
+                            if(changedPlanningUnit.getId() == ProjektplanungScreen.PLATZHALTER_ID){
+                                RenamePlanningUnitWindow.this.close();
+                                Notification.show(messagesBundle.getString("planning_placeholder_rename"));
+                            } else {
+                                fieldGroup.getField(PlanningUnit.PARENT).setRequired(false);
+                                fieldGroup.commit();
+                                final PlanningUnit planningUnit = ((BeanItem<PlanningUnit>) fieldGroup.getItemDataSource()).getBean();
+                                daoFactory.saveOrUpdateTX(planningUnit);
+                                RenamePlanningUnitWindow.this.close();
+                                screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
+                            }
                         } catch (final FieldGroup.CommitException e) {
                             Notification.show(messagesBundle.getString("incompletedata"));
                         }
