@@ -5,6 +5,9 @@
     <jdbc-url>jdbc:postgresql://localhost:5432/rapidpm</jdbc-url>
     <user-name>rapidpm</user-name>
     <user-password>dfd8dfcbdfdadfc3dfcedfdadfc7</user-password>
+    <schema-pattern>rapidpm.public</schema-pattern>
+    <default-schemas>rapidpm.public</default-schemas>
+    <default-dialect>PostgreSQL</default-dialect>
     <libraries>
       <library>
         <url>jar://$PROJECT_DIR$/lib/postgresql-9.1-901.jdbc4.jar!/</url>
@@ -18839,16 +18842,5 @@
         <parameter name="$2" sqlType="xml" length="0" precision="0" nullable="true" jdbcType="2009" type="" index="2" />
       </prototype>
     </procedure>
-  </data-source>
-  <data-source source="LOCAL" name="jelastic - rapidpm001" product="" version="" jdbc-version="" driver-name="" driver-version="" uuid="280c4ede-51fd-4d58-84f4-f80efae73a84">
-    <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-    <jdbc-url>jdbc:postgresql://postgres-rapidpm001.jelastic.dogado.eu:5432/rapidpm</jdbc-url>
-    <user-name>webadmin</user-name>
-    <user-password>df9bdf9adfdbdfc7dfc9dff9dfe8dfe6dfcbdff2</user-password>
-    <libraries>
-      <library>
-        <url>jar:///prog/PostgreSQL/pgJDBC/postgresql-9.1-901.jdbc4.jar!/</url>
-      </library>
-    </libraries>
   </data-source>
 </component>
