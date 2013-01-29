@@ -20,6 +20,7 @@ public class RapidWindow extends Window {
         contentLayout.setSpacing(true);
         contentLayout.setMargin(true);
         setContent(contentLayout);
+        setModal(true);
     }
 
     public void addComponent(final Component component){
@@ -30,4 +31,7 @@ public class RapidWindow extends Window {
         setContent(null);
     }
 
+    public VerticalLayout getContentLayout() {
+        return contentLayout;
+    }
 }

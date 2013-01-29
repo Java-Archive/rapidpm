@@ -1,18 +1,18 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.parents;
 
+import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.AbstractSelect;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.ListSelect;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,8 +21,9 @@ import java.util.Set;
  * Time: 08:37
  * To change this template use File | Settings | File Templates.
  */
-public class PlanningUnitSelect extends ListSelect {
+public class PlanningUnitSelect extends ListSelect implements Property.ValueChangeListener {
 
+    private List<Component> listenerComponents = new ArrayList<>();
     private DaoFactory baseDaoFactoryBean;
     private PlannedProject projectFromDB;
 
@@ -44,9 +45,36 @@ public class PlanningUnitSelect extends ListSelect {
         setImmediate(true);
         setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
         setItemCaptionPropertyId(PlanningUnit.NAME);
+        addValueChangeListener(this);
+    }
+
+    @Override
+    public void valueChange(Property.ValueChangeEvent event){
+        final boolean placeholderOnly = isContentOnlyPlaceholder();
+        for (Component listenerComponent : listenerComponents) {
+            if(placeholderOnly){
+                listenerComponent.setEnabled(false);
+            }
+        }
     }
 
     public PlannedProject getProjectFromDB() {
         return projectFromDB;
+    }
+
+    public void addListenerComponent(Component component) {
+        listenerComponents.add(component);
+    }
+
+    public boolean isContentOnlyPlaceholder() {
+        final Collection<?> itemIds = getItemIds();
+        final ArrayList<PlanningUnit> planningUnits = new ArrayList(itemIds);
+        if(itemIds == null || itemIds.isEmpty()){
+            return false;
+        } else if(itemIds.size() == 1 && planningUnits.get(0).getId().equals(ProjektplanungScreen.PLATZHALTER_ID)){
+            return true;
+        } else {
+            return false;
+        }
     }
 }

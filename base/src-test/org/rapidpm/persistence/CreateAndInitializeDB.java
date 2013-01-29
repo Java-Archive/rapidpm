@@ -72,7 +72,9 @@ public class CreateAndInitializeDB {
                     deleteFileOrDirectory( false , child );
                 }
             }
-            file.delete();
+            if (!file.delete()) {
+                throw new IllegalArgumentException("File coultn't be deleted: " + file.getName());
+            }
         }
     }
 

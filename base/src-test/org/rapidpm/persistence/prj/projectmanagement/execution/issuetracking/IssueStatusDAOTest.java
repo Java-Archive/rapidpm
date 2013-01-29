@@ -104,16 +104,11 @@ public class IssueStatusDAOTest implements BaseDAOTest {
 
     @Test(expected = NullPointerException.class)
     public void getConnectedIssues_FirstParameterNull() {
-        dao.getConnectedIssuesFromProject(null, null);
+        dao.getConnectedIssues(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void getConnectedIssues_firstParameterNoId() {
-        dao.getConnectedIssuesFromProject(new IssueStatus(), -1L);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void getConnectedIssues_SecondParameterNull() {
-        dao.getConnectedIssuesFromProject(dao.loadAllEntities(PROJECTID).get(0), -1L);
+        dao.getConnectedIssues(new IssueStatus());
     }
 }

@@ -8,7 +8,6 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ann
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.PersistInGraph;
 
-import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -48,7 +47,7 @@ public class IssueType  implements PersistInGraph {
 
 
     public List<IssueBase> getConnectedIssues() {
-        return DaoFactorySingelton.getInstance().getIssueTypeDAO().getConnectedIssuesFromProject(this, projectid);
+        return DaoFactorySingelton.getInstance().getIssueTypeDAO().getConnectedIssues(this);
     }
 
     public Long getId() {

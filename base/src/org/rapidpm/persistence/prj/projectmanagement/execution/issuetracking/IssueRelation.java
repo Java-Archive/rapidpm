@@ -45,7 +45,7 @@ public class IssueRelation implements RelationshipType, PersistInGraph {
 
 
     public List<IssueBase> getConnectedIssues() {
-        return DaoFactorySingelton.getInstance().getIssueRelationDAO().getConnectedIssuesFromProject(this, projectid);
+        return DaoFactorySingelton.getInstance().getIssueRelationDAO().getConnectedIssues(this);
     }
 
     public Long getId() {

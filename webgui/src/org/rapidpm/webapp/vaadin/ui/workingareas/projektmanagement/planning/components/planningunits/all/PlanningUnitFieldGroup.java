@@ -67,11 +67,8 @@ public class PlanningUnitFieldGroup extends FieldGroup {
         final List<Benutzer> users = daoFactory.getBenutzerDAO().loadAllEntities();
         final PlannedProject project = daoFactory.getProjectDAO().findByID(screen.getUi().getCurrentProject().getId());
         daoFactory.getEntityManager().refresh(project);
-        final Set<PlanningUnit> parentPlanningUnits = project.getPlanningUnits();
-        final Set<PlanningUnit> managedPlanningUnits = getAllPlanningUnits(parentPlanningUnits);
-        for(final PlanningUnit planningUnit : parentPlanningUnits){
-           managedPlanningUnits.add(daoFactory.getPlanningUnitDAO().findByID(planningUnit.getId()));
-        }
+        final Set<PlanningUnit> managedPlanningUnits = getAllPlanningUnits((PlanningUnit)screen.getPlanningUnitSelect()
+                .getValue());
 
         fieldList = new ArrayList<>();
         for (final Object propertyId : getUnboundPropertyIds()) {
@@ -109,14 +106,14 @@ public class PlanningUnitFieldGroup extends FieldGroup {
                     nullPlanningUnit.setPlanningUnitName(messages.getString("planning_noparent"));
                     parentBox = new ComboBox(messages.getString("planning_parent"),
                             new BeanItemContainer<>(PlanningUnit.class, managedPlanningUnits));
-                    parentBox.setNullSelectionAllowed(true);
+                    parentBox.setNullSelectionAllowed(false);
                     parentBox.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
                     parentBox.setItemCaptionPropertyId(PlanningUnit.NAME);
                     parentBox.setTextInputAllowed(false);
                     bind(parentBox, propertyId);
-                    parentBox.addItem(nullPlanningUnit);
-                    //parentBox.addItem(selectedPlanningUnit);
-                    parentBox.setNullSelectionItemId(nullPlanningUnit);
+                    final PlanningUnit selectedPlanningUnit = ((BeanItem<PlanningUnit>) getItemDataSource()).getBean();
+                    parentBox.select(selectedPlanningUnit.getParent());
+                    parentBox.setRequired(true);
                     fieldList.add(parentBox);
                     break;
                 case (PlanningUnit.RESPONSIBLE):
@@ -136,14 +133,10 @@ public class PlanningUnitFieldGroup extends FieldGroup {
         }
     }
 
-    private Set<PlanningUnit> getAllPlanningUnits(final Set<PlanningUnit> parentPlanningUnits) {
+    private Set<PlanningUnit> getAllPlanningUnits(final PlanningUnit parentPlanningUnit) {
         final Set<PlanningUnit> resultSet = new HashSet<>();
-        for(final PlanningUnit planningUnit : parentPlanningUnits){
-            getPlanningUnits(resultSet, planningUnit);
-        }
+        getPlanningUnits(resultSet, parentPlanningUnit);
         return resultSet;
-
-
     }
 
     private void getPlanningUnits(final Set<PlanningUnit> resultSet, final PlanningUnit planningUnit) {

@@ -89,8 +89,6 @@ public class AddIssueWindow extends RapidWindow  implements Internationalization
                         }
                     }
 
-
-
                     issueTree.setChildrenAllowed(parentItemId, true);
                     issueTree.setParent(itemId, parentItemId);
                     issueTree.setChildrenAllowed(itemId, false);

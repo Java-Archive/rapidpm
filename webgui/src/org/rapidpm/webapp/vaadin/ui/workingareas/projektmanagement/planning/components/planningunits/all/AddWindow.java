@@ -12,6 +12,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.exceptions.SameNameException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.DefaultValues;
@@ -26,7 +27,7 @@ import java.util.*;
  * Time: 10:37
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class AddWindow extends Window {
+public class AddWindow extends RapidWindow {
 
     public static final String HEIGHT = "600px";
     public static final String WIDTH = "750px";
@@ -114,7 +115,11 @@ public class AddWindow extends Window {
                             if(newPlanningUnitName.equals(parentsPlanningUnitName)){
                                 throw new SameNameException();
                             }
+                            if(newPlanningUnit.getParent().getId() == ProjektplanungScreen.PLATZHALTER_ID){
+                                newPlanningUnit.setParent(null);
+                            }
                         }
+                        newPlanningUnit.setPlanningUnitElementList(null);
                         daoFactory.saveOrUpdateTX(newPlanningUnit);
                         newPlanningUnit.setKindPlanningUnits(new HashSet<PlanningUnit>());
                         if(newPlanningUnit.getParent() != null ){
@@ -190,8 +195,8 @@ public class AddWindow extends Window {
             planningUnitElement.setPlannedHours(0);
             planningUnitElement.setPlannedMinutes(0);
             planningUnitElement.setRessourceGroup(ressourceGroup);
-            daoFactory.saveOrUpdateTX(planningUnitElement);
             planningUnit.getPlanningUnitElementList().add(planningUnitElement);
+            daoFactory.saveOrUpdateTX(planningUnitElement);
         }
     }
 
