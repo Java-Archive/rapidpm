@@ -41,7 +41,11 @@ public class BenutzerWS extends FlatBaseWS<Benutzer, BenutzerDAO, FlatBenutzer> 
         if (!user.isAuthenticated()) {
             final UsernamePasswordToken token = new UsernamePasswordToken(login, passwd);
             token.setRememberMe(true);
-            user.login(token); // throws AuthenticationException on failure
+//            try {
+                user.login(token); // throws AuthenticationException on failure
+//            } catch (AuthenticationException e) {
+//                throw new AuthenticationException("Login failed");
+//            }
         }
         // Authentication successful
         // TODO get Benutzer from Shiro?

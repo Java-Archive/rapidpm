@@ -2,7 +2,6 @@ package org.rapidpm.webservice.persistence.prj.projectmanagement.planning;
 
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
-import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webservice.mapping.FlatEntity;
 
@@ -64,11 +63,8 @@ public class FlatPlannedProject extends FlatEntity<PlannedProject> {
         id = plannedProject.getId();
         projektName = plannedProject.getProjektName();
         projektToken = plannedProject.getProjektToken();
-        creatorId = plannedProject.getCreator().getId();
-        final Benutzer responsiblePerson = plannedProject.getResponsiblePerson();
-        if (responsiblePerson != null) {
-            responsiblePersonId = responsiblePerson.getId();
-        }
+        creatorId = getId(plannedProject.getCreator());
+        responsiblePersonId = getId(plannedProject.getResponsiblePerson());
         info = plannedProject.getInfo();
     }
 

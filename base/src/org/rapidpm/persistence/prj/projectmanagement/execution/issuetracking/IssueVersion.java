@@ -49,7 +49,7 @@ public class IssueVersion implements PersistInGraph{
         return id;
     }
 
-    private void setId(final Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
