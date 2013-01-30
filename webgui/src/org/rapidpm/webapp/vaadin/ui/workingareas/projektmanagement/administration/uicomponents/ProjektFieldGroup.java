@@ -33,7 +33,8 @@ public class ProjektFieldGroup extends FieldGroup {
                     break;
                 case PlannedProject.EXTERNALDAILYRATE:
                     final AbstractTextField externalDailyRateField = (AbstractTextField) buildAndBind(propertyId);
-                    bind(externalDailyRateField, propertyId);
+                    externalDailyRateField.setNullRepresentation("");
+                    externalDailyRateField.setRequired(true);
                     break;
                 case PlannedProject.NAME:
                     final AbstractTextField nameField = (AbstractTextField) buildAndBind(propertyId);

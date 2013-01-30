@@ -31,14 +31,15 @@ public class ExternalDailyRateEditableLayout extends EditableLayout {
 
     public static final Logger logger = Logger.getLogger(ExternalDailyRateEditableLayout.class);
     private ProjektFieldGroup fieldGroup;
+    private TextField externalDailyRateField;
+    private PlannedProject currentProject;
 
     public ExternalDailyRateEditableLayout(final Screen screen, final Panel screenPanel) {
         super(screen, screenPanel);
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final PlannedProject plannedProjectFromSessionAttribute = screen.getUi()
                 .getSession().getAttribute(PlannedProject.class);
-        final PlannedProject currentProject = daoFactory.getPlannedProjectDAO().findByID
-                (plannedProjectFromSessionAttribute.getId());
+        currentProject = daoFactory.getPlannedProjectDAO().findByID(plannedProjectFromSessionAttribute.getId());
         fieldGroup = new ProjektFieldGroup(currentProject);
         saveButton.addClickListener(new Button.ClickListener() {
             @Override
@@ -62,14 +63,13 @@ public class ExternalDailyRateEditableLayout extends EditableLayout {
         cancelButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                final Iterator<Component> componentIterator = componentsLayout.iterator();
                 fieldGroup.discard();
-                while (componentIterator.hasNext()) {
-                    final Component component = componentIterator.next();
-                    if (component instanceof Field) {
-                        component.setReadOnly(true);
-                    }
-                }
+                externalDailyRateField = (TextField) fieldGroup.getField(PlannedProject.EXTERNALDAILYRATE);
+                externalDailyRateField.setReadOnly(true);
+                addConverterToField();
+                componentsLayout.addComponent(externalDailyRateField);
+                externalDailyRateField.setReadOnly(true);
+                externalDailyRateField.setConversionError(messages.getString("stdsatz_currencyOnly"));
                 buttonLayout.setVisible(false);
             }
         });
@@ -86,12 +86,43 @@ public class ExternalDailyRateEditableLayout extends EditableLayout {
 //                ((ComboBox)field).setTextInputAllowed(false);
 //            }
 //        }
-        fieldGroup.getField(PlannedProject.EXTERNALDAILYRATE).setReadOnly(true);
-        componentsLayout.addComponent(fieldGroup.getField(PlannedProject.EXTERNALDAILYRATE));
+        externalDailyRateField = (TextField) fieldGroup.getField(PlannedProject.EXTERNALDAILYRATE);
+        externalDailyRateField.setReadOnly(true);
+        addConverterToField();
+        componentsLayout.addComponent(externalDailyRateField);
+    }
+
+    public void addConverterToField() {
+        externalDailyRateField.setConverter(new StringToNumberConverter() {
+            @Override
+            protected NumberFormat getFormat(final Locale locale) {
+                return NumberFormat.getCurrencyInstance(locale);
+            }
+        });
     }
 
     @Override
     protected void setLayout() {
         componentsLayout = new FormLayout();
+    }
+
+    public PlannedProject getCurrentProject() {
+        return currentProject;
+    }
+
+    public TextField getExternalDailyRateField() {
+        return externalDailyRateField;
+    }
+
+    public void setExternalDailyRateField(final TextField externalDailyRateField) {
+        this.externalDailyRateField = externalDailyRateField;
+    }
+
+    public ProjektFieldGroup getFieldGroup() {
+        return fieldGroup;
+    }
+
+    public void setFieldGroup(ProjektFieldGroup fieldGroup) {
+        this.fieldGroup = fieldGroup;
     }
 }

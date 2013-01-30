@@ -94,6 +94,7 @@ public class ChosenProjectEditableRapidPanel extends EditableRapidPanel {
         tokenField.setEnabled(false);
         formLayout.addComponent(tokenField);
         formLayout.addComponent(fieldGroup.getField(PlannedProject.NAME));
+        formLayout.addComponent(fieldGroup.getField(PlannedProject.EXTERNALDAILYRATE));
     }
 
     @Override

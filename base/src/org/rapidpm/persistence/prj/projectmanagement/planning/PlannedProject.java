@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-public class PlannedProject {
+public class PlannedProject implements Comparable<PlannedProject>{
     private static final Logger logger = Logger.getLogger(PlannedProject.class);
 
     public static final String ID = "id";
@@ -236,5 +236,13 @@ public class PlannedProject {
 
     public void setExternalDailyRate(Double externalDailyRate) {
         this.externalDailyRate = externalDailyRate;
+    }
+
+    @Override
+    public int compareTo(PlannedProject o) {
+        if(this.getId() > o.getId()){
+            return 1;
+        }
+        return -1;
     }
 }

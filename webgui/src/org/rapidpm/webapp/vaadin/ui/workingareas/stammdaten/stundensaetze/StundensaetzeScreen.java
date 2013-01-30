@@ -1,5 +1,8 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze;
 
+import com.vaadin.data.Item;
+import com.vaadin.data.util.BeanItem;
+import com.vaadin.event.MouseEvents;
 import com.vaadin.ui.*;
 //import org.rapidpm.ejb3.EJBFactory;
 import com.vaadin.ui.themes.Reindeer;
@@ -12,6 +15,7 @@ import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.person
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents.ProjektFieldGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.StundensaetzeCalculator;
@@ -69,6 +73,19 @@ public class StundensaetzeScreen extends Screen {
             betriebsFieldsLayout.addComponent(mindestManntageField);
 
             externerTagessatzLayout = new ExternalDailyRateEditableLayout(this, externerTagessatzPanel);
+            externerTagessatzPanel.addClickListener(new MouseEvents.ClickListener() {
+                @Override
+                public void click(MouseEvents.ClickEvent event) {
+
+                    externerTagessatzLayout.setFieldGroup(new ProjektFieldGroup(externerTagessatzLayout.getCurrentProject()));
+                    externerTagessatzLayout.setExternalDailyRateField((TextField) externerTagessatzLayout.getFieldGroup()
+                            .getField(PlannedProject.EXTERNALDAILYRATE));
+                    externerTagessatzLayout.getComponentsLayout().removeAllComponents();
+                    externerTagessatzLayout.getComponentsLayout().addComponent(externerTagessatzLayout.getExternalDailyRateField());
+                    externerTagessatzLayout.getExternalDailyRateField().focus();
+                    externerTagessatzLayout.getExternalDailyRateField().selectAll();
+                }
+            });
             externerTagessatzPanel.setContent(externerTagessatzLayout);
             externerTagessatzPanel.setSizeUndefined();
             externerTagessatzPanel.setStyleName(Reindeer.PANEL_LIGHT);
