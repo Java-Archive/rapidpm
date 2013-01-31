@@ -108,23 +108,23 @@ INSERT INTO pk_gen(gen_key, gen_value) VALUES ('RessourceGroup_id', 9);
 
 INSERT INTO
         plannedproject(id, active, fakturierbar, info,projektname,projekttoken,creator_id,mandantengruppe_id,
-        responsibleperson_id)
-        VALUES (1, true, true, 'erstes testprojekt', 'Projekt Nr 1','PRO1', 1, 1,1);
+        responsibleperson_id, externaldailyrate)
+        VALUES (1, true, true, 'erstes testprojekt', 'Projekt Nr 1','PRO1', 1, 1,1,750.0);
 
 INSERT INTO
         plannedproject(id, active, fakturierbar, info,projektname,projekttoken,creator_id,mandantengruppe_id,
-        responsibleperson_id)
-        VALUES (2, true, true, 'zweites testprojekt', 'Projekt Nr 2', 'PRO2', 1, 1,1);
+        responsibleperson_id, externaldailyrate)
+        VALUES (2, true, true, 'zweites testprojekt', 'Projekt Nr 2', 'PRO2', 1, 1,1,750.0);
 
 INSERT INTO
         plannedproject(id, active, fakturierbar, info,projektname,projekttoken,creator_id,mandantengruppe_id,
-        responsibleperson_id)
-        VALUES (3, true, true, 'drittes testprojekt', 'Projekt Nr 3','PRO3', 1, 1,1);
+        responsibleperson_id, externaldailyrate)
+        VALUES (3, true, true, 'drittes testprojekt', 'Projekt Nr 3','PRO3', 1, 1,1,750.0);
 
 INSERT INTO
         plannedproject(id, active, fakturierbar, info,projektname,projekttoken,creator_id,mandantengruppe_id,
-        responsibleperson_id)
-        VALUES (4, true, true, 'viertes testprojekt', 'Projekt Nr 4','PRO4', 1, 1,1);
+        responsibleperson_id, externaldailyrate)
+        VALUES (4, true, true, 'viertes testprojekt', 'Projekt Nr 4','PRO4', 1, 1,1,750.0);
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlannedProject_id', 5);
 

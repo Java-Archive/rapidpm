@@ -2,6 +2,7 @@ package org.rapidpm.webapp.vaadin.ui;
 
 import com.vaadin.event.MouseEvents;
 import com.vaadin.ui.*;
+import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
 import java.util.Iterator;
@@ -14,7 +15,6 @@ import java.util.ResourceBundle;
  * Time: 09:16
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-@Deprecated
 public abstract class EditableLayout extends VerticalLayout {
 
     protected Button saveButton = new Button();
@@ -24,7 +24,7 @@ public abstract class EditableLayout extends VerticalLayout {
     protected Layout componentsLayout;
     protected HorizontalLayout buttonLayout = new HorizontalLayout();
 
-    public EditableLayout(final ProjektplanungScreen screen, final Panel screenPanel){
+    public EditableLayout(final Screen screen, final Panel screenPanel){
         setLayout();
         this.setStyleName("abc");
         this.setMargin(false);

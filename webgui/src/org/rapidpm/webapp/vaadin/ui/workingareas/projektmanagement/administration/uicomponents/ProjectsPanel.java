@@ -52,6 +52,7 @@ public class ProjectsPanel extends RapidPanel implements Internationalizationabl
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
         final List<PlannedProject> projects = daoFactory.getPlannedProjectDAO().loadAllEntities();
+        Collections.sort(projects);
 
         deleteProjectButton.setVisible(false);
         setSizeFull();

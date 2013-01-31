@@ -22,6 +22,7 @@ import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.windows.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -72,6 +73,7 @@ public abstract class BaseUI extends UI {
         final VaadinSession session = this.getSession();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final List<PlannedProject> projects = daoFactory.getPlannedProjectDAO().loadAllEntities();
+        Collections.sort(projects);
         if(projects == null || projects.isEmpty()){
             session.setAttribute(PlannedProject.class, null);
         } else {
