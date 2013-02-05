@@ -3,6 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administrati
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.AbstractTextField;
+import com.vaadin.ui.TextField;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
 /**
@@ -29,6 +30,11 @@ public class ProjektFieldGroup extends FieldGroup {
 //                field.setRequired(true);
 //                field.setValue("autom.");
 //                field.setEnabled(false);
+                    break;
+                case PlannedProject.EXTERNALDAILYRATE:
+                    final AbstractTextField externalDailyRateField = (AbstractTextField) buildAndBind(propertyId);
+                    externalDailyRateField.setNullRepresentation("");
+                    externalDailyRateField.setRequired(true);
                     break;
                 case PlannedProject.NAME:
                     final AbstractTextField nameField = (AbstractTextField) buildAndBind(propertyId);
