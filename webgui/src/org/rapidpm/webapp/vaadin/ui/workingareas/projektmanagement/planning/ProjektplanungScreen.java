@@ -11,6 +11,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.textelement.TextElement;
+import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
@@ -30,13 +31,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-//import com.vaadin.server.ThemeResource;
-//import org.rapidpm.Constants;
-//import org.rapidpm.ejb3.EJBFactory;
-//import org.rapidpm.persistence.DaoFactoryBean;
-//import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStatus;
-//import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
 /**
  * Created by IntelliJ IDEA.
@@ -66,8 +60,14 @@ public class ProjektplanungScreen extends Screen {
     private DaoFactory daoFactory = DaoFactorySingelton.getInstance();
     private TabSheet tabSheet = new TabSheet();
 
+    //Buttons im TreePanelLayout
+    private Button addButton = new Button("+");
+    private Button deleteButton = new Button("-");
+
     private Button addParentsButton = new Button();
     private Button addDescriptionOrTestCaseButton = new Button();
+
+    public static final long PLATZHALTER_ID = 666l;
 
 
     public ProjektplanungScreen(final MainUI ui) {
@@ -135,6 +135,8 @@ public class ProjektplanungScreen extends Screen {
         addParentPlanningUnitLayout.setComponentAlignment(addParentButton, Alignment.BOTTOM_LEFT);
         addParentPlanningUnitLayout.setComponentAlignment(addParentsButton, Alignment.BOTTOM_LEFT);
         planningUnitSelect = new PlanningUnitSelect(ui);
+        planningUnitSelect.addListenerComponent(deleteButton);
+        planningUnitSelect.addListenerComponent(addButton);
         addParentPlanningUnitField.setWidth("160px");
         final PlannedProject projectFromDB = planningUnitSelect.getProjectFromDB();
         final List<?> ids = (List<?>) planningUnitSelect.getItemIds();
@@ -240,8 +242,8 @@ public class ProjektplanungScreen extends Screen {
                     } else {
                         createNewPlanningUnitElements(newPlanningUnit, ressourceGroups, daoFactory);
                     }
-
-
+                    final Benutzer notAssignedUser = daoFactory.getBenutzerDAO().findByID(1l);
+                    newPlanningUnit.setResponsiblePerson(notAssignedUser);
                     daoFactory.saveOrUpdateTX(newPlanningUnit);
                     if (newPlanningUnit.getParent() == null) {
                         projekt.getPlanningUnits().add(newPlanningUnit);
@@ -278,7 +280,6 @@ public class ProjektplanungScreen extends Screen {
         treePanel.removeAllComponents();
         treePanel.addComponent(planningUnitsTreePanelLayout);
         final TreeValueChangeListener listener = planningUnitsTree.getListener();
-        final Button deleteButton = planningUnitsTreePanelLayout.getDeleteButton();
         final Button renameButton = planningUnitsTreePanelLayout.getRenameButton();
         listener.setDeleteButton(deleteButton);
         listener.setRenameButton(renameButton);
@@ -354,4 +355,13 @@ public class ProjektplanungScreen extends Screen {
     public void setTabSheet(TabSheet tabSheet) {
         this.tabSheet = tabSheet;
     }
+
+    public Button getAddButton() {
+        return addButton;
+    }
+
+    public Button getDeleteButton() {
+        return deleteButton;
+    }
+
 }

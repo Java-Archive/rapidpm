@@ -115,7 +115,11 @@ public class AddWindow extends RapidWindow {
                             if(newPlanningUnitName.equals(parentsPlanningUnitName)){
                                 throw new SameNameException();
                             }
+                            if(newPlanningUnit.getParent().getId() == ProjektplanungScreen.PLATZHALTER_ID){
+                                newPlanningUnit.setParent(null);
+                            }
                         }
+                        newPlanningUnit.setPlanningUnitElementList(null);
                         daoFactory.saveOrUpdateTX(newPlanningUnit);
                         newPlanningUnit.setKindPlanningUnits(new HashSet<PlanningUnit>());
                         if(newPlanningUnit.getParent() != null ){
@@ -191,8 +195,8 @@ public class AddWindow extends RapidWindow {
             planningUnitElement.setPlannedHours(0);
             planningUnitElement.setPlannedMinutes(0);
             planningUnitElement.setRessourceGroup(ressourceGroup);
-            daoFactory.saveOrUpdateTX(planningUnitElement);
             planningUnit.getPlanningUnitElementList().add(planningUnitElement);
+            daoFactory.saveOrUpdateTX(planningUnitElement);
         }
     }
 

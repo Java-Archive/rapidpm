@@ -81,9 +81,8 @@ public class PlanningDetailsEditableLayout extends EditableLayout {
 
     @Override
     protected void buildForm() {
-        //field.setReadOnly(true) verursacht javascript exception seit beta10
         for(final AbstractField field : fieldList){
-            field.setReadOnly(false);
+            field.setReadOnly(true);
             if(field instanceof AbstractSelect){
                 ((ComboBox)field).setNullSelectionAllowed(false);
                 ((ComboBox)field).setTextInputAllowed(false);

@@ -81,12 +81,12 @@ public class ProjectsPanel extends RapidPanel implements Internationalizationabl
                         //    @Override
                         //    public void onClose(ConfirmDialog dialog) {
                         //        if(dialog.isConfirmed()){
-                                    tryToDeleteProject(parentPlanningUnits, daoFactory, projektAusDB);
+                                    tryToDeleteProject(daoFactory, projektAusDB);
                         //        }
                         //    }
                         //});
                     }  else {
-                        tryToDeleteProject(parentPlanningUnits, daoFactory, projektAusDB);
+                        tryToDeleteProject(daoFactory, projektAusDB);
                     }
                 } catch (final TryToDeleteCurrentProjectException e){
                     Notification.show(messages.getString("project_deletecurrent"));
@@ -107,30 +107,8 @@ public class ProjectsPanel extends RapidPanel implements Internationalizationabl
         setComponents();
     }
 
-    private void tryToDeleteProject(final Set<PlanningUnit> parentPlanningUnits, final DaoFactory daoFactory,
+    private void tryToDeleteProject(final DaoFactory daoFactory,
                                     final PlannedProject projektAusDB) {
-        if(parentPlanningUnits != null){
-            for(final PlanningUnit planningUnit : parentPlanningUnits){
-                for (final PlanningUnit kindPlanningUnit : planningUnit.getKindPlanningUnits()) {
-                    kindPlanningUnit.setParent(null);
-                    daoFactory.saveOrUpdateTX(kindPlanningUnit);
-                }
-            }
-            projektAusDB.setPlanningUnits(new HashSet<PlanningUnit>());
-            daoFactory.saveOrUpdateTX(projektAusDB);
-            final List<PlanningUnitElement> planningUnitElements = new ArrayList<>();
-            for(final PlanningUnit planningUnit : parentPlanningUnits){
-                planningUnitElements.addAll(planningUnit.getPlanningUnitElementList());
-                planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
-                daoFactory.saveOrUpdateTX(planningUnit);
-            }
-            for(final PlanningUnitElement planningUnitElement : planningUnitElements){
-                daoFactory.removeTX(planningUnitElement);
-            }
-            for (final PlanningUnit planningUnit : parentPlanningUnits){
-                daoFactory.removeTX(planningUnit);
-            }
-        }
         daoFactory.removeTX(projektAusDB);
         ui.setWorkingArea(new ProjectAdministrationScreen(ui));
     }

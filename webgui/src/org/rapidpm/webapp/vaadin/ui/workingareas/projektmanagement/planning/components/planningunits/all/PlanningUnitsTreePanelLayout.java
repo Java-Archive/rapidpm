@@ -28,8 +28,8 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements In
     private HorizontalLayout buttonLayout = new HorizontalLayout();
     private PlannedProject projekt;
 
-    private Button addButton = new Button("+");
-    private Button deleteButton = new Button("-");
+    private Button addButton;
+    private Button deleteButton;
     private Button renameButton = new Button();
     private ResourceBundle messages;
     private DaoFactory daoFactory;
@@ -59,6 +59,7 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements In
     }
 
     private void createAddButton() {
+        addButton = screen.getAddButton();
         addButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -69,6 +70,7 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements In
     }
 
     private void createDeleteButton() {
+        deleteButton = screen.getDeleteButton();
         deleteButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
@@ -105,7 +107,7 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements In
                     final MainUI ui = screen.getUi();
                     ui.setWorkingArea(new ProjektplanungScreen(ui));
                 }catch (final PlatzhalterException e){
-                    Notification.show(messages.getString("planning_placeholder"));
+                    Notification.show(messages.getString("planning_placeholder_delete"));
                 } catch (final Exception e) {
                     e.printStackTrace();
                     Notification.show(messages.getString("planning_nodelete"));
@@ -132,5 +134,9 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements In
     @Override
     public void doInternationalization() {
         renameButton.setCaption(messages.getString("rename"));
+    }
+
+    public Button getAddButton() {
+        return addButton;
     }
 }
