@@ -105,7 +105,6 @@ public class Constants {
     public static final String EUR = " \u20AC";
     public static final Integer HOURS_DAY = 24;
     public static final Integer MINS_HOUR = 60;
-    public static final Integer MINS_DAY = HOURS_DAY * MINS_HOUR;
     public static final Double STD_ANTEILE = 1.0 / 60.0;
     public static final Integer MONTHS_PER_YEAR = 12;
     public static final Double STD_WORKING_DAYS_PER_MONTH = 20.0;
@@ -120,7 +119,7 @@ public class Constants {
 
     public static final String DAYSHOURSMINUTES_REGEX = "[0-9]{1,}:[012]{1}[0-9]{1}:[012345]{1}[0-9]{1}";
 
-    public static final String DAYSHOURSMINUTES_VALIDATOR_EXCEPTION_MESSAGE = "Format: [d*]d:hh:mm! (hh = 23 max., mm = 59 max.)";
+    public static final String DAYSHOURSMINUTES_VALIDATOR_REGEX_EXCEPTION_MESSAGE = "Format: [d*]d:hh:mm!";
     public static final String COMMIT_EXCEPTION_MESSAGE = "ungueltiger Wert in min. einem Feld.";
     public static final int FIELDLENGTH_LONG_NAME = 50;
     public static final int FIELDLENGTH_SMALL_NUMBER = 5;
@@ -129,4 +128,5 @@ public class Constants {
     public static final String GRAPHDB_PATH = "." + PATH_SEP + "data" + PATH_SEP + "graphDB";
     public static final String ISSUE_SETTINGS_XML_PATH = "rapidPmDefaultSettings.xml";
     public static final String TEXTAREA_WRITABLE_HEIGHT = "500px";
+    public static final String DEFAULT_HOURS_PER_WORKINGDAY = "8";
 }

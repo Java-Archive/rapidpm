@@ -1,11 +1,15 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 
 import com.vaadin.data.Validator;
+import com.vaadin.server.VaadinSession;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
 import java.util.regex.Pattern;
 
 import static org.rapidpm.Constants.DAYSHOURSMINUTES_REGEX;
-import static org.rapidpm.Constants.DAYSHOURSMINUTES_VALIDATOR_EXCEPTION_MESSAGE;
+import static org.rapidpm.Constants.DAYSHOURSMINUTES_VALIDATOR_REGEX_EXCEPTION_MESSAGE;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,12 +21,16 @@ import static org.rapidpm.Constants.DAYSHOURSMINUTES_VALIDATOR_EXCEPTION_MESSAGE
 public class DaysHoursMinutesFieldValidator implements Validator {
 
     private static final Pattern COMPILE = Pattern.compile(DAYSHOURSMINUTES_REGEX);
+    private final Screen screen;
+
+    public DaysHoursMinutesFieldValidator(final Screen screen) {
+        this.screen = screen;
+    }
 
     public boolean isValid(final Object value) {
         if (value == null || !(value instanceof String)) {
             return false;
         }
-
         return COMPILE.matcher(((String) value)).matches();
     }
 
@@ -30,7 +38,14 @@ public class DaysHoursMinutesFieldValidator implements Validator {
     public void validate(final Object value) throws InvalidValueException {
         if (!isValid(value)) {
             throw new InvalidValueException(
-                    DAYSHOURSMINUTES_VALIDATOR_EXCEPTION_MESSAGE);
+                    DAYSHOURSMINUTES_VALIDATOR_REGEX_EXCEPTION_MESSAGE);
+        } else {
+            final VaadinSession session = screen.getUi().getSession();
+            final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
+            final DaysHoursMinutesItem item = new DaysHoursMinutesItem(value.toString(), currentProject.getHoursPerWorkingDay());
+            if(currentProject.getHoursPerWorkingDay() < item.getHours()){
+                throw new InvalidValueException(screen.getMessagesBundle().getString("project_hourstoohigh"));
+            }
         }
     }
 }

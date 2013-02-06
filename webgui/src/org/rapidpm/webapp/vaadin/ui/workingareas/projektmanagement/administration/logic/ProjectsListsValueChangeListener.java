@@ -33,7 +33,7 @@ public class ProjectsListsValueChangeListener implements Property.ValueChangeLis
         if(event.getProperty().getValue() != null){
             deleteButton.setVisible(true);
             formLayout.removeAllComponents();
-            final ProjektFieldGroup fieldGroup = new ProjektFieldGroup(chosenProjekt);
+            final ProjektFieldGroup fieldGroup = new ProjektFieldGroup(chosenProjekt, projectsPanel.getMessagesBundle());
             chosenProjectEditablePanel.setFieldGroup(fieldGroup);
             chosenProjectEditablePanel.buildForm();
             chosenProjectEditablePanel.activate(false);

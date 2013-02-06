@@ -4,20 +4,19 @@ import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
 //import org.rapidpm.ejb3.EJBFactory;
 //import org.rapidpm.persistence.DaoFactoryBean;
+import com.vaadin.ui.themes.Reindeer;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TreeTableHeaderClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.ExpandTableCheckBox;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.UndoButton;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.OverviewTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.TreeTableFiller;
 
@@ -38,6 +37,8 @@ public class AufwandProjInitScreen extends Screen {
     private TextField unterschriftField;
     private TextField manntageField;
     private TextField summeField;
+    private Panel hoursPerWorkingDayPanel;
+    private HoursPerWorkingDayEditableLayout editableLayout;
 
     private HierarchicalContainer dataSource = new HierarchicalContainer();
     private MyTreeTable treeTable = new MyTreeTable();
@@ -62,6 +63,11 @@ public class AufwandProjInitScreen extends Screen {
 //        baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         try{
+            hoursPerWorkingDayPanel = new Panel();
+            editableLayout = new HoursPerWorkingDayEditableLayout(this, hoursPerWorkingDayPanel);
+            hoursPerWorkingDayPanel.setContent(editableLayout);
+            hoursPerWorkingDayPanel.setStyleName(Reindeer.PANEL_LIGHT);
+            hoursPerWorkingDayPanel.setSizeUndefined();
             final List<PlannedProject> plannedProjects = daoFactory.getPlannedProjectDAO().loadAllEntities();
             if(plannedProjects == null || plannedProjects.isEmpty()){
                 throw new NoProjectsException();
@@ -76,8 +82,7 @@ public class AufwandProjInitScreen extends Screen {
             final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, treeTable, dataSource);
             treeTableFiller.fill();
 
-            final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable,
-                    this.getUi());
+            final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(this, uebersichtTable);
             overviewTableFiller.fill();
 
             fillFields();
@@ -135,7 +140,7 @@ public class AufwandProjInitScreen extends Screen {
     }
 
     public void fillFields() {
-        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle, this.getUi());
+        final TimesCalculator timesCalculator = new TimesCalculator(this);
         timesCalculator.calculate();
         manntageField.setReadOnly(false);
         summeField.setReadOnly(false);
@@ -188,6 +193,7 @@ public class AufwandProjInitScreen extends Screen {
     @Override
     public void setComponents() {
         addComponent(felderLayout);
+        addComponent(hoursPerWorkingDayPanel);
         addComponent(unterschriftLayout);
         addComponent(table1layout);
         addComponent(table2layout);

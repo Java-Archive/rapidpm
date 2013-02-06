@@ -74,8 +74,7 @@ public class CostsScreen extends Screen {
             final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, treeTable, dataSource);
             treeTableFiller.fill();
 
-            final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable,
-                    this.getUi());
+            final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(this, uebersichtTable);
             overviewTableFiller.fill();
 
             uebersichtTable.setPageLength(4);
@@ -131,7 +130,7 @@ public class CostsScreen extends Screen {
     }
 
     private void fillFields() {
-        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle, this.getUi());
+        final TimesCalculator timesCalculator = new TimesCalculator(this);
         final CostsCalculator costsCalculator = new CostsCalculator(ui, messagesBundle);
         costsCalculator.calculate();
         timesCalculator.calculate();

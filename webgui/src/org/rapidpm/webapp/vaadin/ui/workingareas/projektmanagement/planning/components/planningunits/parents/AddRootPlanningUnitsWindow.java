@@ -186,8 +186,6 @@ public class AddRootPlanningUnitsWindow extends RapidWindow {
         planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
             final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
-            planningUnitElement.setPlannedDays(0);
-            planningUnitElement.setPlannedHours(0);
             planningUnitElement.setPlannedMinutes(0);
             planningUnitElement.setRessourceGroup(ressourceGroup);
             //daoFactory.saveOrUpdateTX(planningUnitElement);

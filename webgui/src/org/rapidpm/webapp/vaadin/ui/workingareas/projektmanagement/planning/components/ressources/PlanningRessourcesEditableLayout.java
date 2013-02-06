@@ -1,9 +1,11 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.ressources;
 
 import com.vaadin.event.MouseEvents;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
@@ -26,11 +28,13 @@ import java.util.List;
  */
 public class PlanningRessourcesEditableLayout extends EditableLayout {
 
+    private final ProjektplanungScreen screen;
     private List<TextField> ressourceGroupFields = new ArrayList<>();
 
     public PlanningRessourcesEditableLayout(final PlanningUnit planningUnit, final ProjektplanungScreen screen,
                                           final Panel screenPanel, boolean hasChildren) {
         super(screen, screenPanel);
+        this.screen = screen;
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO().loadAllEntities();
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
@@ -48,10 +52,10 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
                     for (final TextField textField : ressourceGroupFields) {
                         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
                             if (planningUnitElement.getRessourceGroup().getName().equals(textField.getCaption())) {
-                                DaysHoursMinutesItem item = new DaysHoursMinutesItem();
-                                item.setDays(planningUnitElement.getPlannedDays());
-                                item.setHours(planningUnitElement.getPlannedHours());
-                                item.setMinutes(planningUnitElement.getPlannedMinutes());
+                                final VaadinSession session = screen.getUi().getSession();
+                                final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
+                                final DaysHoursMinutesItem item = new DaysHoursMinutesItem(planningUnitElement,
+                                        currentProject.getHoursPerWorkingDay());
                                 textField.setValue(item.toString());
                             }
                         }
@@ -74,10 +78,11 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
                         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()
                                 ) {
                             if (planningUnitElement.getRessourceGroup().getName().equals(textField.getCaption())) {
-                                final String[] daysHoursMinutes = textField.getValue().split(":");
-                                planningUnitElement.setPlannedDays(Integer.parseInt(daysHoursMinutes[0]));
-                                planningUnitElement.setPlannedHours(Integer.parseInt(daysHoursMinutes[1]));
-                                planningUnitElement.setPlannedMinutes(Integer.parseInt(daysHoursMinutes[2]));
+                                final VaadinSession session = screen.getUi().getSession();
+                                final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
+                                final DaysHoursMinutesItem item = new DaysHoursMinutesItem(textField.getValue(),
+                                        currentProject.getHoursPerWorkingDay());
+                                planningUnitElement.setPlannedMinutes(item.getMinutesFromDaysHoursMinutes());
                                 daoFactory.saveOrUpdateTX(planningUnitElement);
                             }
                         }
@@ -90,7 +95,6 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
 
     private void buildField(final RessourceGroup ressourceGroup, final PlanningUnit planningUnit) {
         final TextField field = new TextField(ressourceGroup.getName());
-        final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem();
         PlanningUnitElement element = new PlanningUnitElement();
         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
             final String elementRessourceGroupName = planningUnitElement.getRessourceGroup().getName();
@@ -100,12 +104,13 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
         }
         final int index = planningUnit.getPlanningUnitElementList().indexOf(element);
         final PlanningUnitElement planningUnitElement = planningUnit.getPlanningUnitElementList().get(index);
-        daysHoursMinutesItem.setDays(planningUnitElement.getPlannedDays());
-        daysHoursMinutesItem.setHours(planningUnitElement.getPlannedHours());
-        daysHoursMinutesItem.setMinutes(planningUnitElement.getPlannedMinutes());
-        field.setValue(daysHoursMinutesItem.toString());
+        final VaadinSession session = screen.getUi().getSession();
+        final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
+        final DaysHoursMinutesItem item = new DaysHoursMinutesItem(planningUnitElement,
+                currentProject.getHoursPerWorkingDay());
+        field.setValue(item.toString());
         field.setReadOnly(true);
-        field.addValidator(new DaysHoursMinutesFieldValidator());
+        field.addValidator(new DaysHoursMinutesFieldValidator(screen));
         ressourceGroupFields.add(field);
     }
 

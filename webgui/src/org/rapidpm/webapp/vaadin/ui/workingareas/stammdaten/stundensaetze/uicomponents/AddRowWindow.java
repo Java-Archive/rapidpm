@@ -139,8 +139,6 @@ public class AddRowWindow extends RapidWindow {
 
                         for(final PlanningUnit planningUnit : planningUnits){
                             final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
-                            planningUnitElement.setPlannedDays(0);
-                            planningUnitElement.setPlannedHours(0);
                             planningUnitElement.setPlannedMinutes(0);
                             planningUnitElement.setRessourceGroup(persistedRessourceGroup);
                             final PlanningUnitElement persistedPlanningUnitElement = baseDaoFactoryBean.saveOrUpdateTX

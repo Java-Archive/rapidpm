@@ -129,11 +129,11 @@ public class TreeTableDataSourceFiller {
     }
 
     private Double getCosts(final PlanningUnitElement planningUnitElement) {
-        final int hoursFromDays = HOURS_DAY * planningUnitElement.getPlannedDays();
-        final int hours = planningUnitElement.getPlannedHours();
-        final double hoursFromMinutes = STD_ANTEILE * planningUnitElement.getPlannedMinutes();
+        //final int hoursFromDays = HOURS_DAY * planningUnitElement.getPlannedDays();
+        //final int hours = planningUnitElement.getPlannedHours();
+        //final double hoursFromMinutes = STD_ANTEILE * planningUnitElement.getPlannedMinutes();
 
-        final Double totalHours = hoursFromDays + hours + hoursFromMinutes;
+        final Double totalHours = planningUnitElement.getPlannedMinutes() / 60.0;
 
         final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
         final Double externalEurosPerHour = ressourceGroup.getExternalEurosPerHour();

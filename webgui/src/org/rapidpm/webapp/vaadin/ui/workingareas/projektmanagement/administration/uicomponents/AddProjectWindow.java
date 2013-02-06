@@ -6,6 +6,7 @@ import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 //import org.rapidpm.ejb3.EJBFactory;
 //import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -61,7 +62,7 @@ public class AddProjectWindow extends RapidWindow{
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
         final PlannedProject projekt = new PlannedProject();
-        fieldGroup = new ProjektFieldGroup(projekt);
+        fieldGroup = new ProjektFieldGroup(projekt, messages);
         makeCurrentProjectCheckBox = new CheckBox(messages.getString("makeCurrentProject"));
         final List<PlannedProject> projectList = daoFactory.getPlannedProjectDAO().loadAllEntities();
         if(projectList == null || projectList.isEmpty()){
@@ -88,8 +89,18 @@ public class AddProjectWindow extends RapidWindow{
         idField.setEnabled(false);
         formLayout.addComponent(idField);
         for (final Object propertyId : fieldGroup.getBoundPropertyIds()) {
-            final TextField field = (TextField)fieldGroup.getField(propertyId);
+            final Field field = fieldGroup.getField(propertyId);
             field.setReadOnly(false);
+            if(propertyId.toString().equals(PlannedProject.HOURSPERWORKINGDAY)){
+                field.setValue(Constants.DEFAULT_HOURS_PER_WORKINGDAY);
+                //als Standard 8 auswählen
+                final Iterator iterator = ((ComboBox)field).getItemIds().iterator();
+                for(int i=0; i<7; i++){
+                   iterator.next();
+                }
+                ((ComboBox)field).setValue(iterator.next());
+                //--
+            }
             formLayout.addComponent(field);
         }
         formLayout.addComponent(makeCurrentProjectCheckBox);
@@ -107,8 +118,7 @@ public class AddProjectWindow extends RapidWindow{
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 boolean allFilled = true;
-                Iterator<Component> it = AddProjectWindow.this.formLayout
-                        .getComponentIterator();
+                final Iterator<Component> it = AddProjectWindow.this.formLayout.getComponentIterator();
                 while (it.hasNext()) {
                     final Component component = it.next();
                     if (component instanceof AbstractField) {

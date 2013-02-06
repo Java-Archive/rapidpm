@@ -77,7 +77,8 @@ public class StundensaetzeScreen extends Screen {
                 @Override
                 public void click(MouseEvents.ClickEvent event) {
 
-                    externerTagessatzLayout.setFieldGroup(new ProjektFieldGroup(externerTagessatzLayout.getCurrentProject()));
+                    externerTagessatzLayout.setFieldGroup(new ProjektFieldGroup(externerTagessatzLayout
+                            .getCurrentProject(), messagesBundle));
                     externerTagessatzLayout.setExternalDailyRateField((TextField) externerTagessatzLayout.getFieldGroup()
                             .getField(PlannedProject.EXTERNALDAILYRATE));
                     externerTagessatzLayout.getComponentsLayout().removeAllComponents();
