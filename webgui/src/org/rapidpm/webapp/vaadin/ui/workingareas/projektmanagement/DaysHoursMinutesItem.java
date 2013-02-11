@@ -39,11 +39,8 @@ public class DaysHoursMinutesItem {
         this.hoursPerWorkingDay = hoursPerWorkingDay;
     }
 
-    public Integer getMinutesFromDaysHoursMinutes(){
-       return ((days * hoursPerWorkingDay * MINS_HOUR)+(hours * MINS_HOUR)+(minutes));
-    }
-
-    public void calculateMinutesToDaysHoursMinutes(){
+    public DaysHoursMinutesItem(final Integer minutes, final Integer hoursPerWorkingDay){
+        this.hoursPerWorkingDay = hoursPerWorkingDay;
         minutesTotal = minutes;
         final int newItemMinutes = minutesTotal % MINS_HOUR;
         final int firstStepHours = minutesTotal / MINS_HOUR;
@@ -51,10 +48,12 @@ public class DaysHoursMinutesItem {
         final int newItemDays = firstStepHours / hoursPerWorkingDay;
         days = newItemDays;
         hours = newItemHours;
-        minutes = newItemMinutes;
+        this.minutes = newItemMinutes;
     }
 
-
+    public Integer getMinutesFromDaysHoursMinutes(){
+       return ((days * hoursPerWorkingDay * MINS_HOUR)+(hours * MINS_HOUR)+(minutes));
+    }
 
     public int getTotalMinutes() {
         return minutesTotal;

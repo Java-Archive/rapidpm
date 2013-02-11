@@ -36,19 +36,14 @@ public class TimesCalculator {
     private PlannedProject currentProject;
 
     private Map<RessourceGroup, Double> relativeWerte = new HashMap<>();
-    private final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
+    private final Map<RessourceGroup, Integer> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
     private Integer gesamtSummeInMin;
     private Double mannTageExakt;
-    
-    private Integer workingHoursPerDay;
-//    private TimesCalculatorBean bean;
 
     public TimesCalculator(final Screen screen) {
         this.screen = screen;
         this.messages = screen.getMessagesBundle();
         this.ui = screen.getUi();
-//        bean = EJBFactory.getEjbInstance(TimesCalculatorBean.class);
-//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final RessourceGroupDAO ressourceGroupDAO = daoFactory.getRessourceGroupDAO();
         ressourceGroups = ressourceGroupDAO.loadAllEntities();
@@ -72,17 +67,14 @@ public class TimesCalculator {
 
     private void calculatePlanningUnitsAndTotalsAbsolut() {
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
-        final PlannedProject plannedProjectFromSession = ui.getSession().getAttribute(PlannedProject.class);
-        final PlannedProject projekt = plannedProjectDAO.findByID(plannedProjectFromSession.getId());
-        for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
+        for (final PlanningUnit planningUnit : currentProject.getPlanningUnits()) {
             daoFactory.getEntityManager().refresh(planningUnit);
             calculatePlanningUnits(planningUnit, planningUnit.getKindPlanningUnits());
         }
     }
 
 
-    private void calculatePlanningUnits(PlanningUnit parentPlanningUnit, final Set<PlanningUnit> planningUnits) {
+    private void calculatePlanningUnits(final PlanningUnit parentPlanningUnit, final Set<PlanningUnit> planningUnits) {
         if(planningUnits == null || planningUnits.isEmpty()){
             addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, parentPlanningUnit);
         } else {
@@ -97,67 +89,49 @@ public class TimesCalculator {
         }
     }
 
-    private void addiereZeileZurRessourceMap(final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap,
+    private void addiereZeileZurRessourceMap(final Map<RessourceGroup, Integer> ressourceGroupDaysHoursMinutesItemMap,
                                              final PlanningUnit planningUnit) {
         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-            final RessourceGroup oldRessourceGroup = planningUnitElement.getRessourceGroup();
+            final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
             final String aufgabe = messages.getString("aufgabe");
-            if (!oldRessourceGroup.getName().equals(aufgabe)) {
-                final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem(planningUnitElement,
-                        currentProject.getHoursPerWorkingDay());
-                if (ressourceGroupDaysHoursMinutesItemMap.containsKey(oldRessourceGroup)) {
-                    final int days = daysHoursMinutesItem.getDays() + ressourceGroupDaysHoursMinutesItemMap.get(oldRessourceGroup).getDays();
-                    final int hours = daysHoursMinutesItem.getHours() + ressourceGroupDaysHoursMinutesItemMap.get(oldRessourceGroup).getHours();
-                    final int minutes = daysHoursMinutesItem.getMinutes() + ressourceGroupDaysHoursMinutesItemMap.get(oldRessourceGroup).getMinutes();
-                    daysHoursMinutesItem.setDays(days);
-                    daysHoursMinutesItem.setHours(hours);
-                    daysHoursMinutesItem.setMinutes(minutes);
+            if (!ressourceGroup.getName().equals(aufgabe)) {
+                if (ressourceGroupDaysHoursMinutesItemMap.containsKey(ressourceGroup)) {
+                            final Integer oldMinutes = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup);
+                            ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup,
+                                    planningUnitElement.getPlannedMinutes() + oldMinutes);
+                } else {
+                    ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup, planningUnitElement.getPlannedMinutes());
                 }
-                planningUnitElement.setPlannedMinutes(daysHoursMinutesItem.getMinutesFromDaysHoursMinutes());
-                final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-                daoFactory.saveOrUpdateTX(planningUnitElement);
-                ressourceGroupDaysHoursMinutesItemMap.put(oldRessourceGroup, daysHoursMinutesItem);
             }
         }
     }
 
     private void calculateTotalsRelative() {
-        final Integer minsPerDay = (int)(currentProject.getHoursPerWorkingDay() * MINS_HOUR);
         gesamtSummeInMin = 0;
-        for (final Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry :
-                ressourceGroupDaysHoursMinutesItemMap.entrySet()) {
-            gesamtSummeInMin += absoluteWerteEntry.getValue().getDays() * minsPerDay;
-            gesamtSummeInMin += absoluteWerteEntry.getValue().getHours() * MINS_HOUR;
-            gesamtSummeInMin += absoluteWerteEntry.getValue().getMinutes();
+        for (final Map.Entry<RessourceGroup, Integer> absoluteWerteEntry : ressourceGroupDaysHoursMinutesItemMap
+                .entrySet()) {
+            gesamtSummeInMin += absoluteWerteEntry.getValue();
         }
-        for (final Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry :
-                ressourceGroupDaysHoursMinutesItemMap.entrySet()) {
+        for (final Map.Entry<RessourceGroup, Integer> absoluteWerteEntry : ressourceGroupDaysHoursMinutesItemMap
+                .entrySet()) {
             final RessourceGroup absoluterWertRessourceGroup = absoluteWerteEntry.getKey();
-
-            Integer absoluterWertWert = absoluteWerteEntry.getValue().getDays() * minsPerDay;
-            absoluterWertWert += absoluteWerteEntry.getValue().getHours() * MINS_HOUR;
-            absoluterWertWert += absoluteWerteEntry.getValue().getMinutes();
+            final Integer absoluterWertWert = absoluteWerteEntry.getValue();
             relativeWerte.put(absoluterWertRessourceGroup, absoluterWertWert.doubleValue() / gesamtSummeInMin.doubleValue() * 100.0);
         }
     }
-
-
 
     public Map<RessourceGroup, Double> getRelativeWerte() {
         return relativeWerte;
     }
 
-    public Map<RessourceGroup, DaysHoursMinutesItem> getAbsoluteWerte() {
+    public Map<RessourceGroup, Integer> getAbsoluteWerte() {
         return ressourceGroupDaysHoursMinutesItemMap;
     }
 
     public DaysHoursMinutesItem getGesamtSummeItem() {
         final VaadinSession session = screen.getUi().getSession();
         final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
-        final PlanningUnitElement tempPlanningUnitElement = new PlanningUnitElement();
-        tempPlanningUnitElement.setPlannedMinutes(gesamtSummeInMin);
-        final DaysHoursMinutesItem item = new DaysHoursMinutesItem(tempPlanningUnitElement, currentProject.getHoursPerWorkingDay());
-        item.calculateMinutesToDaysHoursMinutes();
+        final DaysHoursMinutesItem item = new DaysHoursMinutesItem(gesamtSummeInMin, currentProject.getHoursPerWorkingDay());
         return item;
     }
 

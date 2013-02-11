@@ -30,9 +30,8 @@ public class TreeTableDataSourceFiller {
 
     private static final Logger logger = Logger.getLogger(TreeTableDataSourceFiller.class);
 
-//    private TreeTableDataSourceFillerBean bean;
     private List<RessourceGroup> ressourceGroups;
-    private final Map<RessourceGroup, DaysHoursMinutesItem> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
+    private final Map<RessourceGroup, Integer> ressourceGroupMinutesMap = new HashMap<>();
     private ResourceBundle messages;
     private HierarchicalContainer dataSource;
     private AufwandProjInitScreen screen;
@@ -63,11 +62,7 @@ public class TreeTableDataSourceFiller {
     }
 
     private void calculatePlanningUnitsAndTotalsAbsolut() {
-        final PlannedProject projectFromSession = screen.getUi().getSession().getAttribute(PlannedProject.class);
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
-        final PlannedProject projectFromDB = plannedProjectDAO.findByID(projectFromSession.getId());
-        final Set<PlanningUnit> planningUnits = projectFromDB.getPlanningUnits();
+        final Set<PlanningUnit> planningUnits = currentProject.getPlanningUnits();
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
@@ -104,7 +99,6 @@ public class TreeTableDataSourceFiller {
             if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
                 for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
                     final DaysHoursMinutesItem item = new DaysHoursMinutesItem(planningUnitElement, currentProject.getHoursPerWorkingDay());
-                    planningUnitElement.setPlannedMinutes(item.getMinutes());
                     planningUnitItem.getItemProperty(planningUnitElement.getRessourceGroup().getName()).setValue(item.toString());
                 }
                 addiereZeileZurRessourceMap(planningUnit);
@@ -113,8 +107,9 @@ public class TreeTableDataSourceFiller {
             }
         }
         for (final RessourceGroup spalte : ressourceGroups) {
-            final String mapValue = ressourceGroupDaysHoursMinutesItemMap.get(spalte).toString();
-            dataSource.getItem(parent).getItemProperty(spalte.getName()).setValue(mapValue);
+            final Integer minutes = ressourceGroupMinutesMap.get(spalte);
+            final DaysHoursMinutesItem item = new DaysHoursMinutesItem(minutes, currentProject.getHoursPerWorkingDay());
+            dataSource.getItem(parent).getItemProperty(spalte.getName()).setValue(item.toString());
         }
     }
 
@@ -122,33 +117,18 @@ public class TreeTableDataSourceFiller {
         for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
             final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
             final String aufgabe = messages.getString("aufgabe");
+            int newMinutes;
             if (!ressourceGroup.getName().equals(aufgabe)) {
-                final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem(planningUnitElement,
-                        currentProject.getHoursPerWorkingDay());
-                if (ressourceGroupDaysHoursMinutesItemMap.containsKey(ressourceGroup)) {
-                    final Integer days = daysHoursMinutesItem.getDays();
-                    final Integer hours = daysHoursMinutesItem.getHours();
-                    final Integer minutes = daysHoursMinutesItem.getMinutes();
-                    final DaysHoursMinutesItem daysHoursMinutesItemFromMap = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup);
-                    daysHoursMinutesItem.setDays(days + daysHoursMinutesItemFromMap.getDays());
-                    daysHoursMinutesItem.setHours(hours + daysHoursMinutesItemFromMap
-                            .getHours());
-                    daysHoursMinutesItem.setMinutes(minutes + daysHoursMinutesItemFromMap.getMinutes());
+                if (ressourceGroupMinutesMap.containsKey(ressourceGroup)) {
+                    final Integer oldMinutes = ressourceGroupMinutesMap.get(ressourceGroup);
+                     newMinutes = planningUnitElement.getPlannedMinutes() + oldMinutes;
+                    ressourceGroupMinutesMap.put(ressourceGroup, newMinutes);
+                } else {
+                    ressourceGroupMinutesMap.put(ressourceGroup, planningUnitElement.getPlannedMinutes());
                 }
-                correctDaysHoursMinutesItem(daysHoursMinutesItem);
-                ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup, daysHoursMinutesItem);
+                final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+                daoFactory.saveOrUpdateTX(planningUnitElement);
             }
         }
-    }
-
-    private void correctDaysHoursMinutesItem(final DaysHoursMinutesItem item) {
-        final int itemContentInMinutes = item.getTotalMinutes();
-        final int newItemMinutes = itemContentInMinutes % MINS_HOUR;
-        final int firstStepHours = itemContentInMinutes / MINS_HOUR;
-        final int newItemHours = firstStepHours % currentProject.getHoursPerWorkingDay();
-        final int newItemDays = firstStepHours / currentProject.getHoursPerWorkingDay();
-        item.setDays(newItemDays);
-        item.setHours(newItemHours);
-        item.setMinutes(newItemMinutes);
     }
 }

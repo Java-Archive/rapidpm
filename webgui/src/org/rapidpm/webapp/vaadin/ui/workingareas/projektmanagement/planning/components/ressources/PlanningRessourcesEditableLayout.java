@@ -74,20 +74,28 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
             saveButton.addClickListener(new Button.ClickListener() {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
+                    boolean allValid = true;
                     for (final TextField textField : ressourceGroupFields) {
-                        for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()
-                                ) {
-                            if (planningUnitElement.getRessourceGroup().getName().equals(textField.getCaption())) {
-                                final VaadinSession session = screen.getUi().getSession();
-                                final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
-                                final DaysHoursMinutesItem item = new DaysHoursMinutesItem(textField.getValue(),
-                                        currentProject.getHoursPerWorkingDay());
-                                planningUnitElement.setPlannedMinutes(item.getMinutesFromDaysHoursMinutes());
-                                daoFactory.saveOrUpdateTX(planningUnitElement);
-                            }
+                        if (!textField.isValid()){
+                            allValid = false;
                         }
                     }
-                    screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
+                    if(allValid){
+                        for (final TextField textField : ressourceGroupFields) {
+                            for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()
+                                    ) {
+                                if (planningUnitElement.getRessourceGroup().getName().equals(textField.getCaption())) {
+                                    final VaadinSession session = screen.getUi().getSession();
+                                    final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
+                                    final DaysHoursMinutesItem item = new DaysHoursMinutesItem(textField.getValue(),
+                                            currentProject.getHoursPerWorkingDay());
+                                    planningUnitElement.setPlannedMinutes(item.getMinutesFromDaysHoursMinutes());
+                                    daoFactory.saveOrUpdateTX(planningUnitElement);
+                                }
+                            }
+                        }
+                        screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
+                    }
                 }
             });
         }

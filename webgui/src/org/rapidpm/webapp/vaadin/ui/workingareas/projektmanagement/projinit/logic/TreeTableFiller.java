@@ -2,6 +2,8 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.log
 
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.event.ItemClickEvent;
+import com.vaadin.server.VaadinSession;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
@@ -25,6 +27,8 @@ public class TreeTableFiller {
     private MyTreeTable treeTable;
     private AufwandProjInitScreen screen;
     private ResourceBundle messages;
+    private PlannedProject currentProject;
+
 
     public TreeTableFiller(final ResourceBundle bundle, final AufwandProjInitScreen screen,
                            final MyTreeTable treeTable, final HierarchicalContainer dataSource) {
@@ -35,6 +39,8 @@ public class TreeTableFiller {
     }
 
     public void fill() {
+        final VaadinSession session = screen.getUi().getSession();
+        currentProject = session.getAttribute(PlannedProject.class);
         final TimesCalculator timesCalculator = new TimesCalculator(screen);
         final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(screen, messages,
                 dataSource);
@@ -55,9 +61,11 @@ public class TreeTableFiller {
             }
         }
         treeTable.setFooterVisible(true);
-        final Map<RessourceGroup, DaysHoursMinutesItem> werteMap = timesCalculator.getAbsoluteWerte();
+        final Map<RessourceGroup, Integer> werteMap = timesCalculator.getAbsoluteWerte();
         for(final RessourceGroup ressourceGroup : werteMap.keySet()){
-            treeTable.setColumnFooter(ressourceGroup.getName(), werteMap.get(ressourceGroup).toString());
+            final DaysHoursMinutesItem item = new DaysHoursMinutesItem(werteMap.get(ressourceGroup),
+                    currentProject.getHoursPerWorkingDay());
+            treeTable.setColumnFooter(ressourceGroup.getName(), item.toString());
         }
         treeTable.setValue(null);
     }

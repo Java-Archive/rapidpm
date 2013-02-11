@@ -100,8 +100,6 @@ public class Constants {
 
     public static final String DECIMAL_FORMAT = "0.00";
 
-    public static final Integer WORKINGHOURS_DAY = 8;
-    public static final Integer KONSTANTE = 750;
     public static final String EUR = " \u20AC";
     public static final Integer HOURS_DAY = 24;
     public static final Integer MINS_HOUR = 60;
@@ -117,7 +115,7 @@ public class Constants {
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd.MM.yyyy");
 
-    public static final String DAYSHOURSMINUTES_REGEX = "[0-9]{1,}:[012]{1}[0-9]{1}:[012345]{1}[0-9]{1}";
+    public static final String DAYSHOURSMINUTES_REGEX = "[0-9]{1,}:[0-9]{1,}:[0-9]{1,}";
 
     public static final String DAYSHOURSMINUTES_VALIDATOR_REGEX_EXCEPTION_MESSAGE = "Format: [d*]d:hh:mm!";
     public static final String COMMIT_EXCEPTION_MESSAGE = "ungueltiger Wert in min. einem Feld.";

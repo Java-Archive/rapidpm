@@ -4,8 +4,10 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 //import org.rapidpm.ejb3.EJBFactory;
 //import org.rapidpm.persistence.DaoFactoryBean;
+import com.vaadin.server.VaadinSession;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
@@ -42,7 +44,6 @@ public class OverviewTableFiller {
     private MainUI ui;
     private List<RessourceGroup> ressourceGroups;
     private ResourceBundle messages;
-//    private OverviewTableFillerBean bean;
 
 
     public OverviewTableFiller(final Screen screen, final MyTable table) {
@@ -51,8 +52,6 @@ public class OverviewTableFiller {
         this.table = table;
         this.ui = screen.getUi();
 
-//        bean = EJBFactory.getEjbInstance(OverviewTableFillerBean.class);
-//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         ressourceGroups = daoFactory.getRessourceGroupDAO().loadAllEntities();
         for(final RessourceGroup ressourceGroup : ressourceGroups){
@@ -61,6 +60,8 @@ public class OverviewTableFiller {
     }
 
     public void fill() {
+        final VaadinSession session = screen.getUi().getSession();
+        final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
         table.removeAllItems();
         final String angabe = messages.getString("angabe");
         table.addContainerProperty(angabe, String.class, null);
@@ -106,15 +107,17 @@ public class OverviewTableFiller {
         absolutItemAngabeProperty.setValue(costsinit_sumInDDHHMM);
         for (final Object spalte : absolutItem.getItemPropertyIds()) {
             if (!spalte.equals(angabe)) {
-                final Map<RessourceGroup, DaysHoursMinutesItem> absoluteWerte = timesCalculator.getAbsoluteWerte();
-                for (final Map.Entry<RessourceGroup, DaysHoursMinutesItem> absoluteWerteEntry : absoluteWerte.entrySet()) {
+                final Map<RessourceGroup, Integer> absoluteWerte = timesCalculator.getAbsoluteWerte();
+                for (final Map.Entry<RessourceGroup, Integer> absoluteWerteEntry : absoluteWerte.entrySet()) {
                     final String spaltenName = spalte.toString();
                     final RessourceGroup key = absoluteWerteEntry.getKey();
                     final String spaltenNameAusMap = key.getName();
                     if (spaltenNameAusMap.equals(spaltenName)) {
                         final Property<String> absolutItemSpalteProperty = absolutItem.getItemProperty(spalte);
-                        final String mapValue = absoluteWerte.get(key).toString();
-                        absolutItemSpalteProperty.setValue(mapValue);
+                        final Integer minutesFromMap = absoluteWerte.get(key);
+                        final DaysHoursMinutesItem itemForMinutesFromMap = new DaysHoursMinutesItem(minutesFromMap,
+                                currentProject.getHoursPerWorkingDay());
+                        absolutItemSpalteProperty.setValue(itemForMinutesFromMap.toString());
                     }
                 }
             }

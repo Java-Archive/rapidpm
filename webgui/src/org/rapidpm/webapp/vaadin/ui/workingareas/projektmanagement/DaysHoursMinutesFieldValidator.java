@@ -39,13 +39,6 @@ public class DaysHoursMinutesFieldValidator implements Validator {
         if (!isValid(value)) {
             throw new InvalidValueException(
                     DAYSHOURSMINUTES_VALIDATOR_REGEX_EXCEPTION_MESSAGE);
-        } else {
-            final VaadinSession session = screen.getUi().getSession();
-            final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
-            final DaysHoursMinutesItem item = new DaysHoursMinutesItem(value.toString(), currentProject.getHoursPerWorkingDay());
-            if(currentProject.getHoursPerWorkingDay() < item.getHours()){
-                throw new InvalidValueException(screen.getMessagesBundle().getString("project_hourstoohigh"));
-            }
         }
     }
 }
