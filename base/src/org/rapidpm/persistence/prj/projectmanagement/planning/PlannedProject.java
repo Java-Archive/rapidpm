@@ -20,6 +20,7 @@ public class PlannedProject implements Comparable<PlannedProject>{
     public static final String NAME = "projektName";
     public static final String TOKEN = "projektToken";
     public static final String EXTERNALDAILYRATE = "externalDailyRate";
+    public static final String HOURSPERWORKINGDAY = "hoursPerWorkingDay";
 
     @Id
     @TableGenerator(name = "PKGenPlannedProject", table = "pk_gen", pkColumnName = "gen_key",
@@ -54,6 +55,8 @@ public class PlannedProject implements Comparable<PlannedProject>{
     @Basic
     private Double externalDailyRate;
 
+    @Basic
+    private Integer hoursPerWorkingDay;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private Benutzer creator;
@@ -73,6 +76,8 @@ public class PlannedProject implements Comparable<PlannedProject>{
 
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private Buch testCases;
+
+
 
 
 
@@ -236,6 +241,14 @@ public class PlannedProject implements Comparable<PlannedProject>{
 
     public void setExternalDailyRate(Double externalDailyRate) {
         this.externalDailyRate = externalDailyRate;
+    }
+
+    public Integer getHoursPerWorkingDay() {
+        return hoursPerWorkingDay;
+    }
+
+    public void setHoursPerWorkingDay(Integer hoursPerWorkingDay) {
+        this.hoursPerWorkingDay = hoursPerWorkingDay;
     }
 
     @Override

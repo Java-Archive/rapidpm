@@ -141,4 +141,8 @@ public class ProjectsPanel extends RapidPanel implements Internationalizationabl
     public Button getDeleteProjectButton() {
         return deleteProjectButton;
     }
+
+    public ResourceBundle getMessagesBundle() {
+        return messagesBundle;
+    }
 }

@@ -36,7 +36,7 @@ public class CostsScreen extends Screen {
     private TextField vertrieblerField;
     private DateField datumField;
     private TextField manntageField;
-    private TextField summeInMinField;
+    private TextField summeField;
     private TextField kostenField;
 
     //private Table einmaligeKostenTable = new Table();
@@ -74,8 +74,7 @@ public class CostsScreen extends Screen {
             final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, treeTable, dataSource);
             treeTableFiller.fill();
 
-            final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(messagesBundle, uebersichtTable,
-                    this.getUi());
+            final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(this, uebersichtTable);
             overviewTableFiller.fill();
 
             uebersichtTable.setPageLength(4);
@@ -116,7 +115,7 @@ public class CostsScreen extends Screen {
         fillFields();
         felderLayout.setWidth("350px");
         felderLayout.addComponent(manntageField);
-        felderLayout.addComponent(summeInMinField);
+        felderLayout.addComponent(summeField);
         felderLayout.addComponent(kostenField);
     }
 
@@ -131,19 +130,19 @@ public class CostsScreen extends Screen {
     }
 
     private void fillFields() {
-        final TimesCalculator timesCalculator = new TimesCalculator(messagesBundle, this.getUi());
+        final TimesCalculator timesCalculator = new TimesCalculator(this);
         final CostsCalculator costsCalculator = new CostsCalculator(ui, messagesBundle);
         costsCalculator.calculate();
         timesCalculator.calculate();
-        summeInMinField = new TextField();
-        summeInMinField.setValue(timesCalculator.getGesamtSummeItem().toString());
+        summeField = new TextField();
+        summeField.setValue(timesCalculator.getGesamtSummeItem().toString());
         manntageField = new TextField();
         kostenField = new TextField();
         manntageField.setValue(timesCalculator.getMannTageGerundet());
         kostenField.setValue(costsCalculator.getTotalCostsGerundet() + EUR);
         kostenField.setReadOnly(true);
         manntageField.setReadOnly(true);
-        summeInMinField.setReadOnly(true);
+        summeField.setReadOnly(true);
     }
 
     @Override
@@ -164,6 +163,6 @@ public class CostsScreen extends Screen {
         manntageField.setCaption(messagesBundle.getString("costsinit_manday"));
         vertrieblerField.setCaption(messagesBundle.getString("costsscreen_responsible"));
         kostenField.setCaption(messagesBundle.getString("costsscreen_costs"));
-        summeInMinField.setCaption(messagesBundle.getString("costsinit_sumInDDHHMM"));
+        summeField.setCaption(messagesBundle.getString("costsinit_sumInDDHHMM"));
     }
 }

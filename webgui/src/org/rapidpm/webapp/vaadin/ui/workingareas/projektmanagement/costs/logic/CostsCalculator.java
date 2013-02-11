@@ -93,12 +93,10 @@ public class CostsCalculator {
     }
 
     private Double getCosts(final PlanningUnitElement planningUnitElement) {
-        final int hoursFromDays = HOURS_DAY * planningUnitElement.getPlannedDays();
-        final int hours = planningUnitElement.getPlannedHours();
-        final double hoursFromMinutes = STD_ANTEILE * planningUnitElement.getPlannedMinutes();
-        final Double totalHours = hoursFromDays + hours + hoursFromMinutes;
+        final int minutes = planningUnitElement.getPlannedMinutes();
+        final double hoursFromMinutes = minutes / MINS_HOUR;
         final Double externalEurosPerHour = planningUnitElement.getRessourceGroup().getExternalEurosPerHour();
-        return totalHours * externalEurosPerHour;
+        return hoursFromMinutes * externalEurosPerHour;
     }
 
     public Map<RessourceGroup, Double> getRessourceGroupsCostsMap() {

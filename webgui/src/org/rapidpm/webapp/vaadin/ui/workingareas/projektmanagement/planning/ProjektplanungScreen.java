@@ -230,8 +230,6 @@ public class ProjektplanungScreen extends Screen {
                                     .getPlanningUnitElementList()) {
                                 final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
                                 planningUnitElement.setRessourceGroup(planningUnitElementFromParent.getRessourceGroup());
-                                planningUnitElement.setPlannedDays(planningUnitElementFromParent.getPlannedDays());
-                                planningUnitElement.setPlannedHours(planningUnitElementFromParent.getPlannedHours());
                                 planningUnitElement.setPlannedMinutes(planningUnitElementFromParent.getPlannedMinutes());
                                 daoFactory.saveOrUpdateTX(planningUnitElement);
                                 newPlanningUnit.getPlanningUnitElementList().add(planningUnitElement);
@@ -303,8 +301,6 @@ public class ProjektplanungScreen extends Screen {
         planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
         for(final RessourceGroup ressourceGroup : ressourceGroups){
             final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
-            planningUnitElement.setPlannedDays(0);
-            planningUnitElement.setPlannedHours(0);
             planningUnitElement.setPlannedMinutes(0);
             planningUnitElement.setRessourceGroup(ressourceGroup);
             daoFactory.saveOrUpdateTX(planningUnitElement);
