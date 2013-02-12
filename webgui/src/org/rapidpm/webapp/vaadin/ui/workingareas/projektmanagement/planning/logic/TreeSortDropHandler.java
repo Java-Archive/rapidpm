@@ -8,18 +8,28 @@ import com.vaadin.event.dd.DropHandler;
 import com.vaadin.event.dd.acceptcriteria.AcceptAll;
 import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
 import com.vaadin.shared.ui.dd.VerticalDropLocation;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Tree;
+import com.vaadin.ui.Window;
+import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.ConfirmDialog;
+import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.AddWindow;
 
 public class TreeSortDropHandler implements DropHandler {
     private final Tree tree;
+    private final Screen screen;
 
     /**
      * Tree must use {@link com.vaadin.data.util.HierarchicalContainer}.
      *
      * @param tree
+     * @param screen
      */
-    public TreeSortDropHandler(Tree tree) {
+    public TreeSortDropHandler(final Tree tree, final ProjektplanungScreen screen) {
         this.tree = tree;
+        this.screen = screen;
     }
 
     public AcceptCriterion getAcceptCriterion() {
@@ -55,6 +65,8 @@ public class TreeSortDropHandler implements DropHandler {
 
         moveNode(sourceItemId, targetItemId, location);
 
+
+
     }
 
     /**
@@ -86,6 +98,8 @@ public class TreeSortDropHandler implements DropHandler {
                     && container.hasChildren(targetItemId)) {
                 // move first in the container
                 container.moveAfterSibling(sourceItemId, null);
+                addWindow();
+
             }
         } else if (location == VerticalDropLocation.TOP) {
             Object parentId = container.getParent(targetItemId);
@@ -93,12 +107,31 @@ public class TreeSortDropHandler implements DropHandler {
                 // reorder only the two items, moving source above target
                 container.moveAfterSibling(sourceItemId, targetItemId);
                 container.moveAfterSibling(targetItemId, sourceItemId);
+                addWindow();
             }
         } else if (location == VerticalDropLocation.BOTTOM) {
             Object parentId = container.getParent(targetItemId);
             if (container.setParent(sourceItemId, parentId)) {
                 container.moveAfterSibling(sourceItemId, targetItemId);
+                addWindow();
             }
         }
     }
+
+    private void addWindow() {
+        final ConfirmDialog confirmDialog = new ConfirmDialog(screen.getMessagesBundle().getString
+                ("planning_confirmdrag"), screen) {
+            @Override
+            public void doThisOnOK() {
+                Notification.show("Todo");
+                //screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
+            }
+
+            @Override
+            public void doThisOnCancel() {
+                screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
+            }
+        };
+        screen.getUi().addWindow(confirmDialog);
     }
+}

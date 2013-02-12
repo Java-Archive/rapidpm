@@ -41,7 +41,7 @@ public class PlanningUnitsTree extends Tree{
                 expandItemsRecursively(iterator.next());
             }
             setDragMode(TreeDragMode.NODE);
-            setDropHandler(new TreeSortDropHandler(this));
+            setDropHandler(new TreeSortDropHandler(this, screen));
         }
     }
 
