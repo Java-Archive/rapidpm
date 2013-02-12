@@ -12,5 +12,6 @@ import org.rapidpm.persistence.DaoFactorySingelton;
  * To change this template use File | Settings | File Templates.
  */
 public interface BaseDAOTest {
+    final Long PROJECTID = 1L;
     final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 }

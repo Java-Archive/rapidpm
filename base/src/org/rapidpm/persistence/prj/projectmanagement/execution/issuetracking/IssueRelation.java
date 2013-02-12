@@ -3,6 +3,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 import org.neo4j.graphdb.RelationshipType;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.NonVisible;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.PersistInGraph;
@@ -22,6 +23,10 @@ public class IssueRelation implements RelationshipType, PersistInGraph {
     private Long id;
 
     @Simple
+    @NonVisible
+    private Long projectid;
+
+    @Simple
     private String relationName;
 
     @Simple
@@ -34,16 +39,29 @@ public class IssueRelation implements RelationshipType, PersistInGraph {
         //empty on purpose
     }
 
-    public List<IssueBase> getConnectedIssuesFromProject(final Long projectId) {
-        return DaoFactorySingelton.getInstance().getIssueRelationDAO().getConnectedIssuesFromProject(this, projectId);
+    public IssueRelation(final Long projectid) {
+        setProjectId(projectid);
+    }
+
+
+    public List<IssueBase> getConnectedIssues() {
+        return DaoFactorySingelton.getInstance().getIssueRelationDAO().getConnectedIssues(this);
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(final Long id) {
+    private void setId(final Long id) {
         this.id = id;
+    }
+
+    public Long getProjectId() {
+        return projectid;
+    }
+
+    public void setProjectId(final Long projectid) {
+        this.projectid = projectid;
     }
 
     public String getRelationName() {
@@ -71,16 +89,6 @@ public class IssueRelation implements RelationshipType, PersistInGraph {
     }
 
     @Override
-    public String toString() {
-        return "IssueRelation{" +
-                "id=" + id +
-                ", relationName='" + relationName + '\'' +
-                ", outgoingName='" + outgoingName + '\'' +
-                ", incomingName='" + incomingName + '\'' +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -90,6 +98,7 @@ public class IssueRelation implements RelationshipType, PersistInGraph {
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (incomingName != null ? !incomingName.equals(that.incomingName) : that.incomingName != null) return false;
         if (outgoingName != null ? !outgoingName.equals(that.outgoingName) : that.outgoingName != null) return false;
+        if (projectid != null ? !projectid.equals(that.projectid) : that.projectid != null) return false;
         if (relationName != null ? !relationName.equals(that.relationName) : that.relationName != null) return false;
 
         return true;
@@ -98,10 +107,22 @@ public class IssueRelation implements RelationshipType, PersistInGraph {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (projectid != null ? projectid.hashCode() : 0);
         result = 31 * result + (relationName != null ? relationName.hashCode() : 0);
         result = 31 * result + (outgoingName != null ? outgoingName.hashCode() : 0);
         result = 31 * result + (incomingName != null ? incomingName.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IssueRelation{" +
+                "id=" + id +
+                ", projectid=" + projectid +
+                ", relationName='" + relationName + '\'' +
+                ", outgoingName='" + outgoingName + '\'' +
+                ", incomingName='" + incomingName + '\'' +
+                '}';
     }
 
     @Override

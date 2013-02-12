@@ -7,7 +7,6 @@ import org.rapidpm.webservice.mapping.FlatBaseWS;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
-import java.util.List;
 
 /**
  * User: Alexander Vos
@@ -30,10 +29,6 @@ public class PlannedProjectWS extends FlatBaseWS<PlannedProject, PlannedProjectD
     @WebMethod
     public FlatPlannedProject getFirstProject() {
         checkPermission(PERMISSION_SELECT);
-        final List<PlannedProject> plannedProjects = dao.loadAllEntities();
-        if (plannedProjects != null && !plannedProjects.isEmpty()) {
-            return toFlatEntity(plannedProjects.get(0));
-        }
-        return null;
+        return toFlatEntity(dao.loadFirstProject());
     }
 }

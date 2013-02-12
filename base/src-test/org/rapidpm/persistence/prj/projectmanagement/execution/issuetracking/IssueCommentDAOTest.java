@@ -53,4 +53,14 @@ public class IssueCommentDAOTest implements BaseDAOTest {
         daoFactory.removeTX(comment);
         assertFalse(dao.loadAllEntities().contains(comment));
     }
+
+    @Test//(expected = IllegalArgumentException.class)
+    public void persistExistingName() {
+        final IssueComment comment = dao.loadAllEntities().get(0);
+        final IssueComment comTest = new IssueComment();
+        comTest.setCreated(comment.getCreated());
+        comTest.setCreator(comment.getCreator());
+        comTest.setText(comment.getText());
+        daoFactory.saveOrUpdateTX(comTest);
+    }
 }

@@ -437,8 +437,8 @@ public class DaoFactory {
 
 
     //IssueTracking - Graph
-    public IssueBaseDAO getIssueBaseDAO(final Long projectId) {
-        return new IssueBaseDAO(graphDb, this, projectId);
+    public IssueBaseDAO getIssueBaseDAO() {
+        return new IssueBaseDAO(graphDb, this);
     }
 
     public IssueStatusDAO getIssueStatusDAO() {

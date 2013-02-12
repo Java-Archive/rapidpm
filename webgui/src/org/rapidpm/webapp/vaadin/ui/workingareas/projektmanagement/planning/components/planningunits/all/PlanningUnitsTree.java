@@ -1,12 +1,11 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all;
 
-import com.vaadin.ui.AbstractSelect;
+import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.Tree;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeSortDropHandler;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeValueChangeListener;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.modell.PlanningUnitBeanItemContainer;
 
 import java.util.Iterator;
 import java.util.Set;
@@ -20,38 +19,44 @@ import java.util.Set;
  */
 public class PlanningUnitsTree extends Tree{
     
-    private PlanningUnitBeanItemContainer container;
+    private HierarchicalContainer container;
+    private TreeValueChangeListener listener;
 
 
 
     public PlanningUnitsTree(final ProjektplanungScreen screen, final PlanningUnit selectedPlanningUnit){
-        container = new PlanningUnitBeanItemContainer();
+        container = new HierarchicalContainer();
         if (selectedPlanningUnit != null) {
-            setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
-            setItemCaptionPropertyId(PlanningUnit.NAME);
+            setItemCaptionMode(ItemCaptionMode.ID);
+            //setItemCaptionPropertyId(PlanningUnit.NAME);
             setImmediate(true);
-            container.addBean(selectedPlanningUnit);
+            container.addItem(selectedPlanningUnit);
             buildTree(selectedPlanningUnit.getKindPlanningUnits(), selectedPlanningUnit);
             expandItemsRecursively(selectedPlanningUnit);
-            addValueChangeListener(new TreeValueChangeListener(screen));
+            listener = new TreeValueChangeListener(screen);
+            addValueChangeListener(listener);
             setContainerDataSource(container);
             final Iterator iterator = rootItemIds().iterator();
             while (iterator.hasNext()){
                 expandItemsRecursively(iterator.next());
             }
             setDragMode(TreeDragMode.NODE);
-            setDropHandler(new TreeSortDropHandler(this, container));
+            setDropHandler(new TreeSortDropHandler(this));
         }
     }
 
     private void buildTree(final Set<PlanningUnit> planningUnits, final PlanningUnit parentUnit) {
         for (final PlanningUnit planningUnit : planningUnits) {
-            container.addBean(planningUnit);
+            container.addItem(planningUnit);
             container.setParent(planningUnit, parentUnit);
             if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
             } else {
                 buildTree(planningUnit.getKindPlanningUnits(), planningUnit);
             }
         }
+    }
+
+    public TreeValueChangeListener getListener() {
+        return listener;
     }
 }

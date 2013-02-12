@@ -108,23 +108,23 @@ INSERT INTO pk_gen(gen_key, gen_value) VALUES ('RessourceGroup_id', 9);
 
 INSERT INTO
         plannedproject(id, active, fakturierbar, info,projektname,projekttoken,creator_id,mandantengruppe_id,
-        responsibleperson_id)
-        VALUES (1, true, true, 'erstes testprojekt', 'Projekt Nr 1','PRO1', 1, 1,1);
+        responsibleperson_id, externaldailyrate, hoursperworkingday)
+        VALUES (1, true, true, 'erstes testprojekt', 'Projekt Nr 1','PRO1', 1, 1,1,750.0,8);
 
 INSERT INTO
         plannedproject(id, active, fakturierbar, info,projektname,projekttoken,creator_id,mandantengruppe_id,
-        responsibleperson_id)
-        VALUES (2, true, true, 'zweites testprojekt', 'Projekt Nr 2', 'PRO2', 1, 1,1);
+        responsibleperson_id, externaldailyrate, hoursperworkingday)
+        VALUES (2, true, true, 'zweites testprojekt', 'Projekt Nr 2', 'PRO2', 1, 1,1,750.0, 9);
 
 INSERT INTO
         plannedproject(id, active, fakturierbar, info,projektname,projekttoken,creator_id,mandantengruppe_id,
-        responsibleperson_id)
-        VALUES (3, true, true, 'drittes testprojekt', 'Projekt Nr 3','PRO3', 1, 1,1);
+        responsibleperson_id, externaldailyrate, hoursperworkingday)
+        VALUES (3, true, true, 'drittes testprojekt', 'Projekt Nr 3','PRO3', 1, 1,1,750.0, 8);
 
 INSERT INTO
         plannedproject(id, active, fakturierbar, info,projektname,projekttoken,creator_id,mandantengruppe_id,
-        responsibleperson_id)
-        VALUES (4, true, true, 'viertes testprojekt', 'Projekt Nr 4','PRO4', 1, 1,1);
+        responsibleperson_id, externaldailyrate, hoursperworkingday)
+        VALUES (4, true, true, 'viertes testprojekt', 'Projekt Nr 4','PRO4', 1, 1,1,750.0, 9);
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlannedProject_id', 5);
 
@@ -292,341 +292,341 @@ VALUES (9, 11);
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_PlanningUnit_id', 11);
 
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (1, 3, 4, 20, 1);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (1, 300, 1);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (2, 1, 3, 10, 2);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (2, 400, 2);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (3, 2, 11, 5, 3);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (3, 200, 3);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (4, 4, 10, 0, 4);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (4, 150, 4);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (5, 5, 15, 50, 5);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (5, 800, 5);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (6, 2, 1, 30, 6);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (6, 340, 6);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (7, 1, 5, 20, 7);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (7, 220, 7);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (8, 3, 10, 30, 8);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (8, 800, 8);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (9, 2, 4, 20, 1);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (9, 320, 1);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (10, 3, 3, 10, 2);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (10, 150, 2);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (11, 5, 11, 5, 3);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (11, 100, 3);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (12, 2, 10, 0, 4);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (12, 300, 4);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (13, 2, 15, 50, 5);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (13, 250, 5);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (14, 3, 1, 30, 6);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (14, 730, 6);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (15, 4, 5, 20, 7);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (15, 600, 7);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (16, 5, 10, 30, 8);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (16, 210, 8);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (17, 2, 4, 20, 1);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (17, 400, 1);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (18, 3, 3, 10, 2);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (18, 90, 2);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (19, 5, 11, 5, 3);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (19, 110, 3);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (20, 2, 10, 0, 4);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (20, 111, 4);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (21, 2, 15, 50, 5);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (21, 112, 5);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (22, 3, 1, 30, 6);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (22, 666, 6);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (23, 4, 5, 20, 7);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (23, 1337, 7);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (24, 5, 10, 30, 8);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (24, 450, 8);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (25, 2, 4, 20, 1);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (25, 320, 1);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (26, 3, 3, 10, 2);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (26, 300, 2);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (27, 5, 11, 5, 3);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (27, 400, 3);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (28, 2, 10, 0, 4);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (28, 500, 4);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (29, 2, 15, 50, 5);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (29, 100, 5);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (30, 3, 1, 30, 6);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (30, 200, 6);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (31, 4, 5, 20, 7);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (31, 300, 7);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (32, 5, 10, 30, 8);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (32, 350, 8);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (33, 2, 4, 20, 1);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (33, 410, 1);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (34, 3, 3, 10, 2);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (34, 450, 2);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (35, 5, 11, 5, 3);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (35, 430, 3);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (36, 2, 10, 0, 4);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (36, 200, 4);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (37, 2, 15, 50, 5);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (37, 150, 5);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (38, 3, 1, 30, 6);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (38, 200, 6);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (39, 4, 5, 20, 7);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (39, 220, 7);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (40, 5, 10, 30, 8);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (40, 410, 8);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (41, 2, 4, 20, 1);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (41, 500, 1);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (42, 3, 3, 10, 2);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (42, 600, 2);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (43, 5, 11, 5, 3);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (43, 200, 3);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (44, 2, 10, 0, 4);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (44, 150, 4);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (45, 2, 15, 50, 5);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (45, 100, 5);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (46, 3, 1, 30, 6);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (46, 60, 6);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (47, 4, 5, 20, 7);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (47, 90, 7);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (48, 5, 10, 30, 8);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (48, 180, 8);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (49, 2, 4, 20, 1);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (49, 210, 1);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (50, 3, 3, 10, 2);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (50, 120, 2);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (51, 5, 11, 5, 3);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (51, 300, 3);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (52, 2, 10, 0, 4);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (52, 360, 4);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (53, 2, 15, 50, 5);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (53, 420, 5);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (54, 3, 1, 30, 6);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (54, 440, 6);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (55, 4, 5, 20, 7);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (55, 460, 7);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (56, 5, 10, 30, 8);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (56, 150, 8);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (57, 3, 4, 20, 1);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (57, 140, 1);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (58, 1, 3, 10, 2);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (58, 130, 2);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (59, 2, 11, 5, 3);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (59, 200, 3);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (60, 4, 10, 0, 4);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (60, 2000, 4);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (61, 5, 15, 50, 5);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (61, 140, 5);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (62, 2, 1, 30, 6);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (62, 240, 6);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (63, 1, 5, 20, 7);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (63, 340, 7);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (64, 3, 10, 30, 8);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (64, 390, 8);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (65, 2, 4, 20, 1);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (65, 380, 1);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (66, 3, 3, 10, 2);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (66, 310, 2);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (67, 5, 11, 5, 3);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (67, 230, 3);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (68, 2, 10, 0, 4);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (68, 100, 4);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (69, 2, 15, 50, 5);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (69, 110, 5);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (70, 3, 1, 30, 6);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (70, 115, 6);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (71, 4, 5, 20, 7);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (71, 120, 7);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (72, 5, 10, 30, 8);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (72, 125, 8);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (73, 2, 4, 20, 1);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (73, 130, 1);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (74, 3, 3, 10, 2);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (74, 140, 2);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (75, 5, 11, 5, 3);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (75, 150, 3);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (76, 2, 10, 0, 4);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (76, 160, 4);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (77, 2, 15, 50, 5);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (77, 180, 5);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (78, 3, 1, 30, 6);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (78, 200, 6);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (79, 4, 5, 20, 7);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (79, 150, 7);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (80, 5, 10, 30, 8);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (80, 170, 8);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (81, 2, 4, 20, 1);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (81, 190, 1);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (82, 3, 3, 10, 2);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (82, 90, 2);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (83, 5, 11, 5, 3);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (83, 80, 3);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (84, 2, 10, 0, 4);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (84, 70, 4);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (85, 2, 15, 50, 5);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (85, 70, 5);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (86, 3, 1, 30, 6);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (86, 70, 6);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (87, 4, 5, 20, 7);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (87, 20, 7);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (88, 5, 10, 30, 8);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (88, 10, 8);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (89, 2, 4, 20, 1);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (89, 110, 1);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (90, 3, 3, 10, 2);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (90, 140, 2);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (91, 5, 11, 5, 3);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (91, 120, 3);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (92, 2, 10, 0, 4);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (92, 150, 4);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (93, 2, 15, 50, 5);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (93, 100, 5);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (94, 3, 1, 30, 6);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (94, 95, 6);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (95, 4, 5, 20, 7);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (95, 230, 7);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (96, 5, 10, 30, 8);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (96, 235, 8);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (97, 2, 4, 20, 1);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (97, 400, 1);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (98, 3, 3, 10, 2);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (98, 380, 2);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (99, 5, 11, 5, 3);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (99, 390, 3);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (100, 2, 10, 0, 4);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (100, 370, 4);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (101, 2, 15, 50, 5);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (101, 250, 5);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (102, 3, 1, 30, 6);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (102, 333, 6);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (103, 4, 5, 20, 7);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (103, 210, 7);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (104, 5, 10, 30, 8);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (104, 150, 8);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (105, 2, 4, 20, 1);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (105, 160, 1);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (106, 3, 3, 10, 2);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (106, 180, 2);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (107, 5, 11, 5, 3);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (107, 555, 3);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (108, 2, 10, 0, 4);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (108, 500, 4);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (109, 2, 15, 50, 5);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (109, 160, 5);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (110, 3, 1, 30, 6);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (110, 180, 6);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (111, 4, 5, 20, 7);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (111, 190, 7);
 
-INSERT INTO planningunitelement(id,planneddays,plannedhours,plannedminutes,ressourcegroup_id)
-VALUES (112, 5, 10, 30, 8);
+INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
+VALUES (112, 200, 8);
 
 INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnitElement_id', 113);
 

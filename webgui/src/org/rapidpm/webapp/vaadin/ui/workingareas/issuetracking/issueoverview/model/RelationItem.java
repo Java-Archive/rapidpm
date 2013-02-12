@@ -25,7 +25,7 @@ public class RelationItem {
         return direction;
     }
 
-    public void setDirection(Direction direction) {
+    public void setDirection(final Direction direction) {
         this.direction = direction;
     }
 
@@ -33,7 +33,7 @@ public class RelationItem {
         return relation;
     }
 
-    public void setRelation(IssueRelation relation) {
+    public void setRelation(final IssueRelation relation) {
         this.relation = relation;
     }
 
@@ -41,12 +41,12 @@ public class RelationItem {
         return connIssue;
     }
 
-    public void setConnIssue(IssueBase connIssue) {
+    public void setConnIssue(final IssueBase connIssue) {
         this.connIssue = connIssue;
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 

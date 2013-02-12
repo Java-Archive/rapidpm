@@ -2,16 +2,10 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
 import org.apache.log4j.Logger;
 import org.neo4j.graphdb.*;
-import org.neo4j.graphdb.traversal.Evaluators;
-import org.neo4j.graphdb.traversal.TraversalDescription;
-import org.neo4j.graphdb.traversal.Traverser;
-import org.neo4j.kernel.Traversal;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.GraphBaseDAO;
-import org.rapidpm.persistence.GraphRelationRegistry;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,12 +22,8 @@ public class IssueComponentDAO extends GraphBaseDAO<IssueComponent> {
         super(graphDb, IssueComponent.class, relDaoFactory);
     }
 
-//    public List<IssueBase> getConnectedIssues(final IssueComponent component) {
-//        return getConnectedIssuesFromProject(component, 0L);
-//    }
-
-    public List<IssueBase> getConnectedIssuesFromProject(final IssueComponent component, final Long projectId) {
-        return super.getConnectedIssuesFromProject(component, projectId);
+    public List<IssueBase> getConnectedIssues(final IssueComponent component) {
+        return super.getConnectedIssues(component);
     }
 
     public boolean delete(final IssueComponent entity){

@@ -1,20 +1,17 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.logic;
 
 import com.vaadin.ui.UI;
+import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
-import org.rapidpm.persistence.prj.projectmanagement.ProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStoryPoint;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStoryPointDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCase;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCaseDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.textelement.TextElement;
 import org.rapidpm.webapp.vaadin.BaseUI;
-import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 
 import java.util.Date;
 import java.util.Set;
@@ -29,6 +26,7 @@ import java.util.Set;
 public class MappingPlanningUnitToIssueBase {
 
     private final PlannedProject project;
+    private final DaoFactory daoFactory;
     private final IssueBaseDAO dao;
 
     public MappingPlanningUnitToIssueBase(final PlannedProject project) {
@@ -36,7 +34,8 @@ public class MappingPlanningUnitToIssueBase {
             throw new NullPointerException("Project is null");
 
         this.project = project;
-        dao = DaoFactorySingelton.getInstance().getIssueBaseDAO(project.getId());
+        this.daoFactory = DaoFactorySingelton.getInstance();
+        this.dao = daoFactory.getIssueBaseDAO();
     }
 
     public boolean startMapping() {
@@ -65,31 +64,32 @@ public class MappingPlanningUnitToIssueBase {
         issue.setStory(story);
 
 
-        IssueStoryPointDAO storyPointDAO = DaoFactorySingelton.getInstance().getIssueStoryPointDAO();
-        IssueStoryPoint stp = new IssueStoryPoint(pu.getEstimatedStoryPoints());
-        IssueStoryPoint exist = storyPointDAO.findByName(stp.name());
+        final IssueStoryPointDAO storyPointDAO = daoFactory.getIssueStoryPointDAO();
+        final IssueStoryPoint exist = storyPointDAO.findByName(String.valueOf(pu.getEstimatedStoryPoints()), project.getId());
         if (exist != null) {
             issue.setStoryPoints(exist);
         } else {
+            IssueStoryPoint stp = new IssueStoryPoint(pu.getEstimatedStoryPoints());
+            stp.setProjectId(project.getId());
             issue.setStoryPoints(storyPointDAO.persist(stp));
         }
 
         for (final TextElement txtelement : pu.getTestcases()) {
             IssueTestCase testcase = new IssueTestCase(txtelement.getText());
-            issue.addOrChangeTestCase(DaoFactorySingelton.getInstance().saveOrUpdateTX(testcase));
+            issue.addOrChangeTestCase(daoFactory.saveOrUpdateTX(testcase));
         }
 
-        Set<PlanningUnit> children = pu.getKindPlanningUnits();
+        final Set<PlanningUnit> children = pu.getKindPlanningUnits();
         if (!children.isEmpty()) {
             for (final PlanningUnit childPu : children) {
                 issue.addSubIssue(mapPlanningUnitToIssue(childPu));
             }
         }
 
-        issue.setPriority(DaoFactorySingelton.getInstance().getIssuePriorityDAO().loadAllEntities().get(0));
-        issue.setStatus(DaoFactorySingelton.getInstance().getIssueStatusDAO().loadAllEntities().get(0));
-        issue.setType(DaoFactorySingelton.getInstance().getIssueTypeDAO().loadAllEntities().get(0));
-        issue.setVersion(DaoFactorySingelton.getInstance().getIssueVersionDAO().loadAllEntities().get(0));
+        issue.setPriority(daoFactory.getIssuePriorityDAO().loadAllEntities(project.getId()).get(0));
+        issue.setStatus(daoFactory.getIssueStatusDAO().loadAllEntities(project.getId()).get(0));
+        issue.setType(daoFactory.getIssueTypeDAO().loadAllEntities(project.getId()).get(0));
+        issue.setVersion(daoFactory.getIssueVersionDAO().loadAllEntities(project.getId()).get(0));
         issue.setDueDate_planned(new Date());
 
         issue = dao.persist(issue);

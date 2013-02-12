@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
-//TODO under construction!
 public class TableItemClickListener implements ItemClickListener {
 
     private static final Logger logger = Logger.getLogger(TableItemClickListener.class);
@@ -35,20 +34,10 @@ public class TableItemClickListener implements ItemClickListener {
 
     private ResourceBundle messages;
 
-    private PlannedProject projekt;
-    private List<PlanningUnit> planningUnits;
-
 
     public TableItemClickListener(final ResourceBundle bundle, final AufwandProjInitScreen screen) {
         this.messages = bundle;
         this.screen = screen;
-
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-
-        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
-        projekt = plannedProjectDAO.loadAllEntities().get(0);    //REFAC nicht NPE sicher
-        final PlanningUnitDAO planningUnitDAO = daoFactory.getPlanningUnitDAO();
-        planningUnits = planningUnitDAO.loadAllEntities();
     }
 
     @Override
@@ -82,7 +71,7 @@ public class TableItemClickListener implements ItemClickListener {
                 for (final Object propertyId : fieldGroup.getBoundPropertyIds()) {
                     final Field<?> field = fieldGroup.getField(propertyId);
                     if (!propertyId.equals(aufgabeFromBundle)) {
-                        field.addValidator(new DaysHoursMinutesFieldValidator());
+                        field.addValidator(new DaysHoursMinutesFieldValidator(screen));
                     }
                     field.setRequired(true);
                 }

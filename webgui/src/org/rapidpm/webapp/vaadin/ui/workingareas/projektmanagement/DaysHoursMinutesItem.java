@@ -2,6 +2,8 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 
+import static org.rapidpm.Constants.MINS_HOUR;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Marco Ebbinghaus
@@ -14,17 +16,50 @@ public class DaysHoursMinutesItem {
     private Integer hours;
     private Integer minutes;
 
-    public DaysHoursMinutesItem() {
-        days = 0;
-        hours = 0;
-        minutes = 0;
+    private Integer minutesTotal;
+    private Integer hoursPerWorkingDay;
+
+    public DaysHoursMinutesItem(final PlanningUnitElement planningUnitElement, final Integer hoursPerWorkingDay) {
+        this.hoursPerWorkingDay = hoursPerWorkingDay;
+        minutesTotal = planningUnitElement.getPlannedMinutes();
+        final int newItemMinutes = minutesTotal % MINS_HOUR;
+        final int firstStepHours = minutesTotal / MINS_HOUR;
+        final int newItemHours = firstStepHours % hoursPerWorkingDay;
+        final int newItemDays = firstStepHours / hoursPerWorkingDay;
+        days = newItemDays;
+        hours = newItemHours;
+        minutes = newItemMinutes;
     }
 
-    public DaysHoursMinutesItem(final PlanningUnitElement planningUnitElement) {
-        days = planningUnitElement.getPlannedDays();
-        hours = planningUnitElement.getPlannedHours();
-        minutes = planningUnitElement.getPlannedMinutes();
+    public DaysHoursMinutesItem(final String timeString, final Integer hoursPerWorkingDay){
+        final String[] daysHoursMinutes = timeString.split(":");
+        days = Integer.parseInt(daysHoursMinutes[0]);
+        hours = Integer.parseInt(daysHoursMinutes[1]);
+        minutes = Integer.parseInt(daysHoursMinutes[2]);
+        this.hoursPerWorkingDay = hoursPerWorkingDay;
     }
+
+    public DaysHoursMinutesItem(final Integer minutes, final Integer hoursPerWorkingDay){
+        this.hoursPerWorkingDay = hoursPerWorkingDay;
+        minutesTotal = minutes;
+        final int newItemMinutes = minutesTotal % MINS_HOUR;
+        final int firstStepHours = minutesTotal / MINS_HOUR;
+        final int newItemHours = firstStepHours % hoursPerWorkingDay;
+        final int newItemDays = firstStepHours / hoursPerWorkingDay;
+        days = newItemDays;
+        hours = newItemHours;
+        this.minutes = newItemMinutes;
+    }
+
+    public Integer getMinutesFromDaysHoursMinutes(){
+       return ((days * hoursPerWorkingDay * MINS_HOUR)+(hours * MINS_HOUR)+(minutes));
+    }
+
+    public int getTotalMinutes() {
+        return minutesTotal;
+    }
+
+
 
     public Integer getDays() {
         return days;

@@ -3,11 +3,11 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 //import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
+import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.NonVisible;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.PersistInGraph;
 
-import javax.persistence.*;
 import java.util.List;
 
 
@@ -29,6 +29,10 @@ public class IssuePriority  implements PersistInGraph {
     private Long id;
 
     @Simple
+    @NonVisible
+    private Long projectid;
+
+    @Simple
     private Integer prio;
 
     @Simple
@@ -46,14 +50,13 @@ public class IssuePriority  implements PersistInGraph {
         this.priorityName = priorityName;
     }
 
-//    public List<IssueBase> getConnectedIssues() {
-//        return GraphDaoFactory.getIssuePriorityDAO().getConnectedIssues(this);
-//    }    public List<IssueBase> getConnectedIssues() {
-//        return GraphDaoFactory.getIssuePriorityDAO().getConnectedIssues(this);
-//    }
+    public IssuePriority(final Long projectid) {
+        setProjectId(projectid);
+    }
 
-    public List<IssueBase> getConnectedIssuesFromProject(final Long projectId) {
-        return DaoFactorySingelton.getInstance().getIssuePriorityDAO().getConnectedIssuesFromProject(this, projectId);
+
+    public List<IssueBase> getConnectedIssues() {
+        return DaoFactorySingelton.getInstance().getIssuePriorityDAO().getConnectedIssues(this);
     }
 
     public Long getId() {
@@ -62,6 +65,14 @@ public class IssuePriority  implements PersistInGraph {
 
     public void setId(final Long id) {
         this.id = id;
+    }
+
+    public Long getProjectId() {
+        return projectid;
+    }
+
+    public void setProjectId(final Long projectid) {
+        this.projectid = projectid;
     }
 
     public int getPrio() {
@@ -89,16 +100,6 @@ public class IssuePriority  implements PersistInGraph {
     }
 
     @Override
-    public String toString() {
-        return "IssuePriority{" +
-                "id=" + id +
-                ", prio=" + prio +
-                ", priorityName='" + priorityName + '\'' +
-                ", priorityFileName='" + priorityFileName + '\'' +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -109,6 +110,7 @@ public class IssuePriority  implements PersistInGraph {
         if (prio != null ? !prio.equals(that.prio) : that.prio != null) return false;
         if (priorityFileName != null ? !priorityFileName.equals(that.priorityFileName) : that.priorityFileName != null) return false;
         if (priorityName != null ? !priorityName.equals(that.priorityName) : that.priorityName != null) return false;
+        if (projectid != null ? !projectid.equals(that.projectid) : that.projectid != null) return false;
 
         return true;
     }
@@ -116,10 +118,22 @@ public class IssuePriority  implements PersistInGraph {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (projectid != null ? projectid.hashCode() : 0);
         result = 31 * result + (prio != null ? prio.hashCode() : 0);
         result = 31 * result + (priorityName != null ? priorityName.hashCode() : 0);
         result = 31 * result + (priorityFileName != null ? priorityFileName.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "IssuePriority{" +
+                "id=" + id +
+                ", projectid=" + projectid +
+                ", prio=" + prio +
+                ", priorityName='" + priorityName + '\'' +
+                ", priorityFileName='" + priorityFileName + '\'' +
+                '}';
     }
 
     @Override

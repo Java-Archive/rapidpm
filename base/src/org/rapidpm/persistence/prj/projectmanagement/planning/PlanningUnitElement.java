@@ -23,8 +23,6 @@ public class PlanningUnitElement {
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenPlanningUnitElement")
     private Long id;
 
-    @Basic private int plannedDays;
-    @Basic private int plannedHours;
     @Basic private int plannedMinutes;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
@@ -36,22 +34,6 @@ public class PlanningUnitElement {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public int getPlannedDays() {
-        return plannedDays;
-    }
-
-    public void setPlannedDays(int plannedDays) {
-        this.plannedDays = plannedDays;
-    }
-
-    public int getPlannedHours() {
-        return plannedHours;
-    }
-
-    public void setPlannedHours(int plannedHours) {
-        this.plannedHours = plannedHours;
     }
 
     public int getPlannedMinutes() {
@@ -86,8 +68,6 @@ public class PlanningUnitElement {
     public String toString() {
         return "PlanningUnitElement{" +
                 "id=" + id +
-                ", plannedDays=" + plannedDays +
-                ", plannedHours=" + plannedHours +
                 ", plannedMinutes=" + plannedMinutes +
                 ", ressourceGroup=" + ressourceGroup +
                 '}';

@@ -25,7 +25,7 @@ public class TreeSubissueSortDropHandler implements DropHandler {
     private final Tree tree;
     private boolean activated = false;
 
-    private HashMap<IssueBase, List<IssueBase>> changedIssues;
+    private final Map<IssueBase, List<IssueBase>> changedIssues;
 
     private final AcceptCriterion declineAll = new ServerSideCriterion() {
         @Override
@@ -56,20 +56,20 @@ public class TreeSubissueSortDropHandler implements DropHandler {
     }
 
 
-    private void addIssueToMap(IssueBase key, IssueBase value) {
+    private void addIssueToMap(final IssueBase key, final IssueBase value) {
         if (key == null)
             throw new NullPointerException("Key to add cant be NULL");
 
         if (changedIssues.containsKey(key)) {
             changedIssues.get(key).add(value);
         } else {
-            List<IssueBase> valueList = new ArrayList<>();
+            final List<IssueBase> valueList = new ArrayList<>();
             valueList.add(value);
             changedIssues.put(key, valueList);
         }
     }
 
-    public HashMap<IssueBase, List<IssueBase>> getChangedIssues() {
+    public Map<IssueBase, List<IssueBase>> getChangedIssues() {
         return changedIssues;
     }
 
@@ -90,11 +90,11 @@ public class TreeSubissueSortDropHandler implements DropHandler {
         }
     }
 
-    public void drop(DragAndDropEvent dropEvent) {
+    public void drop(final DragAndDropEvent dropEvent) {
         // Called whenever a drop occurs on the component
 
         // Make sure the drag source is the same tree
-        Transferable t = dropEvent.getTransferable();
+        final Transferable t = dropEvent.getTransferable();
 
         // see the comment in getAcceptCriterion()
         if (t.getSourceComponent() != tree
@@ -102,17 +102,13 @@ public class TreeSubissueSortDropHandler implements DropHandler {
             return;
         }
 
-        Tree.TreeTargetDetails dropData = ((Tree.TreeTargetDetails) dropEvent
-                .getTargetDetails());
-
-        Object sourceItemId = ((DataBoundTransferable) t).getItemId();
-        // FIXME: Why "over", should be "targetItemId" or just
-        // "getItemId"
-        Object targetItemId = dropData.getItemIdOver();
+        final Tree.TreeTargetDetails dropData = ((Tree.TreeTargetDetails) dropEvent.getTargetDetails());
+        final Object sourceItemId = ((DataBoundTransferable) t).getItemId();
+        final Object targetItemId = dropData.getItemIdOver();
 
         // Location describes on which part of the node the drop took
         // place
-        VerticalDropLocation location = dropData.getDropLocation();
+        final VerticalDropLocation location = dropData.getDropLocation();
 
         moveNode(sourceItemId, targetItemId, location);
 
@@ -130,9 +126,8 @@ public class TreeSubissueSortDropHandler implements DropHandler {
      *            VerticalDropLocation indicating where the source node was
      *            dropped relative to the target node
      */
-    private void moveNode(Object sourceItemId, Object targetItemId,
-                          VerticalDropLocation location) {
-        HierarchicalContainer container = (HierarchicalContainer) tree
+    private void moveNode(final Object sourceItemId, final Object targetItemId, final VerticalDropLocation location) {
+        final HierarchicalContainer container = (HierarchicalContainer) tree
                 .getContainerDataSource();
 
         // Sorting goes as
@@ -142,7 +137,7 @@ public class TreeSubissueSortDropHandler implements DropHandler {
         // - If dropped on the BOTTOM part of a node, we move/add it
         // after the node
 
-        Object parentIdSource = container.getParent(sourceItemId);
+        final Object parentIdSource = container.getParent(sourceItemId);
 
         if (location == VerticalDropLocation.MIDDLE) {
             container.setChildrenAllowed(targetItemId, true);
@@ -153,14 +148,14 @@ public class TreeSubissueSortDropHandler implements DropHandler {
                 tree.expandItem(targetItemId);
             }
         } else if (location == VerticalDropLocation.TOP) {
-            Object parentId = container.getParent(targetItemId);
+            final Object parentId = container.getParent(targetItemId);
             if (container.setParent(sourceItemId, parentId)) {
                 // reorder only the two items, moving source above target
                 container.moveAfterSibling(sourceItemId, targetItemId);
                 container.moveAfterSibling(targetItemId, sourceItemId);
             }
         } else if (location == VerticalDropLocation.BOTTOM) {
-            Object parentId = container.getParent(targetItemId);
+            final Object parentId = container.getParent(targetItemId);
             if (container.setParent(sourceItemId, parentId)) {
                 container.moveAfterSibling(sourceItemId, targetItemId);
             }
@@ -172,30 +167,26 @@ public class TreeSubissueSortDropHandler implements DropHandler {
 
 
         if (location == VerticalDropLocation.MIDDLE) {
-            IssueBase issueMiddle = (IssueBase)container.getContainerProperty(targetItemId,
+            final IssueBase issueMiddle = (IssueBase)container.getContainerProperty(targetItemId,
                     TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
-            IssueBase subIssue = (IssueBase) container.getContainerProperty(sourceItemId,
+            final IssueBase subIssue = (IssueBase) container.getContainerProperty(sourceItemId,
                     TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
-//            issueMiddle.addSubIssue((IssueBase) container.getContainerProperty(sourceItemId,
-//                    TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue());
 
             addIssueToMap(issueMiddle, subIssue);
 
         } else {
-            Object parentIdTarget = container.getParent(targetItemId);
+            final Object parentIdTarget = container.getParent(targetItemId);
             if (parentIdTarget != null) {
-                IssueBase issueChild = (IssueBase)container.getContainerProperty(parentIdTarget,
+                final IssueBase issueChild = (IssueBase)container.getContainerProperty(parentIdTarget,
                         TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
-                IssueBase subIssue = (IssueBase) container.getContainerProperty(sourceItemId,
+                final IssueBase subIssue = (IssueBase) container.getContainerProperty(sourceItemId,
                         TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
-//                issueChild.addSubIssue((IssueBase) container.getContainerProperty(sourceItemId,
-//                        TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue());
+
                 addIssueToMap(issueChild, subIssue);
 
             } else {
-                IssueBase issueRoot = (IssueBase)container.getContainerProperty(sourceItemId,
+                final IssueBase issueRoot = (IssueBase)container.getContainerProperty(sourceItemId,
                         TreeIssueBaseContainer.PROPERTY_ISSUEBASE).getValue();
-                issueRoot.setAsRootIssue();
 
                 addIssueToMap(issueRoot, null);
             }

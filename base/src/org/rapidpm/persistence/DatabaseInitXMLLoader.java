@@ -15,6 +15,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -30,8 +31,8 @@ public class DatabaseInitXMLLoader {
     public DatabaseInitXMLLoader() {
     }
 
-    public <T> void initDatatype(final Class typeClass, final GraphBaseDAO<T> dao) {
-        final List<T> list = dao.loadAllEntities();
+    public <T> void initDatatype(final Class typeClass, final GraphBaseDAO<T> dao, final Long projectId) {
+        final List<T> list = dao.loadAllEntities(projectId);
         if (list.isEmpty()) {
             if (logger.isDebugEnabled())
                 logger.debug("Create entity for: "+ typeClass.getSimpleName());
@@ -49,7 +50,8 @@ public class DatabaseInitXMLLoader {
                 final NodeList nodes = doc.getElementsByTagName(typeClass.getSimpleName());
 
                 for (int i = 0; i < nodes.getLength(); i++) {
-                    final T instance = (T) typeClass.newInstance();
+                    final T instance = (T) typeClass.getConstructor(Long.class).newInstance(projectId);
+
                     final NodeList childNodes = nodes.item(i).getChildNodes();
                     for (int j = 0; j < childNodes.getLength(); j++) {
                         final Node node = childNodes.item(j);
@@ -63,15 +65,14 @@ public class DatabaseInitXMLLoader {
                             } else {
                                 field.set(instance, getValue("value", element));
                             }
-
-
                             field.setAccessible(isAccessible);
                         }
                     }
                     dao.persist(instance);
                 }
-            } catch (InstantiationException | IllegalAccessException | NoSuchFieldException | IOException | SAXException | ParserConfigurationException e) {
-             logger.error(e);
+            } catch (InstantiationException | IllegalAccessException | NoSuchFieldException | IOException
+                    | SAXException | ParserConfigurationException | NoSuchMethodException | InvocationTargetException e) {
+                logger.error(e);
             }
         }  else {
             if (logger.isDebugEnabled())
@@ -84,11 +85,4 @@ public class DatabaseInitXMLLoader {
         final Node node = nodes.item(0);
         return node.getNodeValue();
     }
-
-//    public static void main(String[] args) {
-//        IssuePriorityDAO dao = DaoFactorySingelton.getInstance().getIssuePriorityDAO();
-//        DatabaseInitXMLLoader init = new DatabaseInitXMLLoader();
-//        init.initDatatype(IssuePriority.class, dao.loadAllEntities(), dao);
-//    }
-
 }

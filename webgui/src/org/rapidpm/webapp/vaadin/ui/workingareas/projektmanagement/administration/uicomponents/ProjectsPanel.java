@@ -52,6 +52,7 @@ public class ProjectsPanel extends RapidPanel implements Internationalizationabl
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
         final List<PlannedProject> projects = daoFactory.getPlannedProjectDAO().loadAllEntities();
+        Collections.sort(projects);
 
         deleteProjectButton.setVisible(false);
         setSizeFull();
@@ -73,19 +74,20 @@ public class ProjectsPanel extends RapidPanel implements Internationalizationabl
                     }
                     final Set<PlanningUnit> parentPlanningUnits = projektAusDB.getPlanningUnits();
                     if(parentPlanningUnits != null && !parentPlanningUnits.isEmpty()){
-                        ConfirmDialog.show(ui, messagesBundle.getString("confirm"),
-                                messagesBundle.getString("project_confirmdelete"), messagesBundle.getString("ok"),
-                                messagesBundle.getString("cancel"),
-                                new ConfirmDialog.Listener() {
-                            @Override
-                            public void onClose(ConfirmDialog dialog) {
-                                if(dialog.isConfirmed()){
-                                    tryToDeleteProject(parentPlanningUnits, daoFactory, projektAusDB);
-                                }
-                            }
-                        });
+                        //TODO ConfirmDialog updaten oder selber schreiben
+                        //ConfirmDialog.show(ui, messagesBundle.getString("confirm"),
+                        //        messagesBundle.getString("project_confirmdelete"), messagesBundle.getString("ok"),
+                        //        messagesBundle.getString("cancel"),
+                        //        new ConfirmDialog.Listener() {
+                        //    @Override
+                        //    public void onClose(ConfirmDialog dialog) {
+                        //        if(dialog.isConfirmed()){
+                                    tryToDeleteProject(daoFactory, projektAusDB);
+                        //        }
+                        //    }
+                        //});
                     }  else {
-                        tryToDeleteProject(parentPlanningUnits, daoFactory, projektAusDB);
+                        tryToDeleteProject(daoFactory, projektAusDB);
                     }
                 } catch (final TryToDeleteCurrentProjectException e){
                     Notification.show(messages.getString("project_deletecurrent"));
@@ -106,30 +108,8 @@ public class ProjectsPanel extends RapidPanel implements Internationalizationabl
         setComponents();
     }
 
-    private void tryToDeleteProject(final Set<PlanningUnit> parentPlanningUnits, final DaoFactory daoFactory,
+    private void tryToDeleteProject(final DaoFactory daoFactory,
                                     final PlannedProject projektAusDB) {
-        if(parentPlanningUnits != null){
-            for(final PlanningUnit planningUnit : parentPlanningUnits){
-                for (final PlanningUnit kindPlanningUnit : planningUnit.getKindPlanningUnits()) {
-                    kindPlanningUnit.setParent(null);
-                    daoFactory.saveOrUpdateTX(kindPlanningUnit);
-                }
-            }
-            projektAusDB.setPlanningUnits(new HashSet<PlanningUnit>());
-            daoFactory.saveOrUpdateTX(projektAusDB);
-            final List<PlanningUnitElement> planningUnitElements = new ArrayList<>();
-            for(final PlanningUnit planningUnit : parentPlanningUnits){
-                planningUnitElements.addAll(planningUnit.getPlanningUnitElementList());
-                planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
-                daoFactory.saveOrUpdateTX(planningUnit);
-            }
-            for(final PlanningUnitElement planningUnitElement : planningUnitElements){
-                daoFactory.removeTX(planningUnitElement);
-            }
-            for (final PlanningUnit planningUnit : parentPlanningUnits){
-                daoFactory.removeTX(planningUnit);
-            }
-        }
         daoFactory.removeTX(projektAusDB);
         ui.setWorkingArea(new ProjectAdministrationScreen(ui));
     }
@@ -160,5 +140,9 @@ public class ProjectsPanel extends RapidPanel implements Internationalizationabl
 
     public Button getDeleteProjectButton() {
         return deleteProjectButton;
+    }
+
+    public ResourceBundle getMessagesBundle() {
+        return messagesBundle;
     }
 }

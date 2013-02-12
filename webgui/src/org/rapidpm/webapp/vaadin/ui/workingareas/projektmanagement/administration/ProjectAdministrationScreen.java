@@ -12,6 +12,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administratio
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsScreen;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -37,6 +38,7 @@ public class ProjectAdministrationScreen extends Screen {
             if(plannedProjects == null || plannedProjects.isEmpty()){
                 throw new NoProjectsException();
             }
+            Collections.sort(plannedProjects);
             chosenProjectEditablePanel = new ChosenProjectEditableRapidPanel(ui, messagesBundle);
             projectsPanel = new ProjectsPanel(ui, messagesBundle, chosenProjectEditablePanel);
             currentProjectEditablePanel = new CurrentProjectEditableRapidPanel(messagesBundle, this);
@@ -52,12 +54,14 @@ public class ProjectAdministrationScreen extends Screen {
     }
 
     private void buildScreen() {
+        chosenProjectEditablePanel.setSizeUndefined();
+        chosenProjectEditablePanel.setWidth("100%");
+        currentProjectEditablePanel.setSizeUndefined();
         currentProjectEditablePanel.setWidth("100%");
+        projectsPanelLayout.setHeight("100%");
         projectsPanelLayout.setWidth("100%");
         projectsPanelLayout.addComponent(projectsPanel);
         projectsPanelLayout.addComponent(chosenProjectEditablePanel);
-        //projectsPanelLayout.setExpandRatio(projectsPanel,1);
-        //projectsPanelLayout.setExpandRatio(chosenProjectEditablePanel,1);
     }
 
     @Override

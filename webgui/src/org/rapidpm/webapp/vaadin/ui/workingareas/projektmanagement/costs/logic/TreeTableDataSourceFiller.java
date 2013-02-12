@@ -28,7 +28,6 @@ import static org.rapidpm.Constants.STD_ANTEILE;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 public class TreeTableDataSourceFiller {
-//    private TreeTableDataSourceFillerBean bean;
     private List<RessourceGroup> ressourceGroups;
     private final Map<RessourceGroup, Double> ressourceGroupsCostsMap = new HashMap<>();
     private ResourceBundle messages;
@@ -41,9 +40,6 @@ public class TreeTableDataSourceFiller {
         this.screen = screen;
         messages = bundle;
         dataSource = dSource;
-
-//        bean = EJBFactory.getEjbInstance(TreeTableDataSourceFillerBean.class);
-//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         ressourceGroups = daoFactory.getRessourceGroupDAO().loadAllEntities();
         for(final RessourceGroup ressourceGroup : ressourceGroups){
@@ -129,11 +125,8 @@ public class TreeTableDataSourceFiller {
     }
 
     private Double getCosts(final PlanningUnitElement planningUnitElement) {
-        final int hoursFromDays = HOURS_DAY * planningUnitElement.getPlannedDays();
-        final int hours = planningUnitElement.getPlannedHours();
-        final double hoursFromMinutes = STD_ANTEILE * planningUnitElement.getPlannedMinutes();
 
-        final Double totalHours = hoursFromDays + hours + hoursFromMinutes;
+        final Double totalHours = planningUnitElement.getPlannedMinutes() / 60.0;
 
         final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
         final Double externalEurosPerHour = ressourceGroup.getExternalEurosPerHour();

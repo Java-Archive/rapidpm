@@ -36,6 +36,7 @@ public class IssueBase implements PersistInGraph {
     private String text;
 
     @Simple
+    @NonVisible
     private Long projectid;
 
     @Simple
@@ -94,11 +95,15 @@ public class IssueBase implements PersistInGraph {
     private PlanningUnit planningUnit;
 
     @LazyGraphPersist
+    @NonVisible
     private Map<Method, List<Object[]>> graphMap;
 
+    public IssueBase() {
+        //empty on purpose
+    }
 
     public IssueBase(final Long projectid) {
-        setProjectid(projectid);
+        setProjectId(projectid);
     }
 
 
@@ -143,7 +148,7 @@ public class IssueBase implements PersistInGraph {
     }
 
     public List<IssueBase> getConnectedIssues(final IssueRelation relation, final Direction direction) {
-        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).getConnectedIssuesWithRelation(this, relation, direction);
+        return DaoFactorySingelton.getInstance().getIssueBaseDAO().getConnectedIssuesWithRelation(this, relation, direction);
     }
 
     public boolean removeConnectionToIssue(final IssueBase issue, final IssueRelation relation) {
@@ -163,7 +168,7 @@ public class IssueBase implements PersistInGraph {
     }
 
     public List<IssueBase> getSubIssues() {
-        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).getSubIssuesOf(this);
+        return DaoFactorySingelton.getInstance().getIssueBaseDAO().getSubIssuesOf(this);
     }
 
     public boolean removeSubIssue(final IssueBase subIssue) {
@@ -183,7 +188,7 @@ public class IssueBase implements PersistInGraph {
     }
 
     public List<IssueComponent> getComponents() {
-        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).getComponentsOf(this);
+        return DaoFactorySingelton.getInstance().getIssueBaseDAO().getComponentsOf(this);
     }
 
     public boolean removeComponent(final IssueComponent component) {
@@ -240,11 +245,11 @@ public class IssueBase implements PersistInGraph {
         this.id = id;
     }
 
-    public Long getProjectid() {
+    public Long getProjectId() {
         return projectid;
     }
 
-    private void setProjectid(final Long projectid) {
+    public void setProjectId(final Long projectid) {
         this.projectid = projectid;
     }
 

@@ -118,7 +118,7 @@
         </attribute>
         <attribute>
             <name>statusFileName</name>
-            <value>status_reopend.gif</value>
+            <value>status_reopened.gif</value>
         </attribute>
     </IssueStatus>
     <IssueStatus>

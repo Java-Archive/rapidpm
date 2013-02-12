@@ -4,10 +4,8 @@ import org.apache.log4j.Logger;
 import org.neo4j.graphdb.*;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.GraphBaseDAO;
-import org.rapidpm.persistence.GraphRelationRegistry;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,12 +22,8 @@ public class IssueTypeDAO extends GraphBaseDAO<IssueType> {
         super(graphDb, IssueType.class, relDaoFactory);
     }
 
-//    public List<IssueBase> getConnectedIssues(final IssueType type) {
-//        return getConnectedIssuesFromProject(type, 0L);
-//    }
-
-    public List<IssueBase> getConnectedIssuesFromProject(final IssueType type, final Long projectId) {
-        return super.getConnectedIssuesFromProject(type, projectId);
+    public List<IssueBase> getConnectedIssues(final IssueType type) {
+        return super.getConnectedIssues(type);
     }
 
     public boolean delete(final IssueType entity, final IssueType assignTo){

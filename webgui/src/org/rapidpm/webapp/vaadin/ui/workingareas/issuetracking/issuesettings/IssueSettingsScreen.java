@@ -22,7 +22,6 @@ public class IssueSettingsScreen  extends Screen {
     public IssueSettingsScreen(final MainUI ui) {
         super(ui);
         setSizeFull();
-        //setMargin(true);
         setComponents();
         doInternationalization();
     }
@@ -30,11 +29,9 @@ public class IssueSettingsScreen  extends Screen {
 
     @Override
     public void setComponents() {
-
-        gridLayout = new GridLayout(2,3);
+        gridLayout = new GridLayout(2, 1);
         gridLayout.setSizeFull();
         gridLayout.setSpacing(true);
-        //gridLayout.setMargin(true);
 
         gridLayout.addComponent(new SettingLayout<IssueStatus>(this, getMessagesBundle().getString
                 ("issuetracking_issue_status"), IssueStatus.class, false));

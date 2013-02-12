@@ -9,6 +9,7 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.webapp.vaadin.ui.RapidWindow;
+import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.MissingAttributeException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NameAlreadyInUseException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.NoNameException;
@@ -23,14 +24,14 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.uic
  * Time: 11:19
  * To change this template use File | Settings | File Templates.
  */
-public class AddIssueWindow extends RapidWindow {
+public class AddIssueWindow extends RapidWindow  implements Internationalizationable {
     private static Logger logger = Logger.getLogger(AddIssueWindow.class);
 
     private final IssueOverviewScreen screen;
     private final Tree issueTree;
-    private AddIssueWindow self;
+    private final AddIssueWindow self;
 
-    private IssueDetailsLayout addDetailsLayout;
+    private final IssueDetailsLayout addDetailsLayout;
 
     public AddIssueWindow(final IssueOverviewScreen screen, final Tree issueTree) {
         if (screen == null)
@@ -41,7 +42,6 @@ public class AddIssueWindow extends RapidWindow {
         self = this;
         this.screen = screen;
         this.issueTree = issueTree;
-        setCaption(screen.getMessagesBundle().getString("issuetracking_issue_addwindow"));
         this.setModal(true);
         this.setResizable(false);
         this.setWidth("70%");
@@ -51,13 +51,18 @@ public class AddIssueWindow extends RapidWindow {
         this.addComponent(addDetailsLayout);
     }
 
+    @Override
+    public void doInternationalization() {
+        setCaption(screen.getMessagesBundle().getString("issuetracking_issue_addwindow"));
+    }
+
     private class AddIssueSaveClickListener implements Button.ClickListener {
 
         @Override
         public void buttonClick(Button.ClickEvent event) {
             try {
-                IssueBaseDAO issueDao;
-                issueDao = DaoFactorySingelton.getInstance().getIssueBaseDAO(screen.getUi().getCurrentProject().getId());
+                final IssueBaseDAO issueDao;
+                issueDao = DaoFactorySingelton.getInstance().getIssueBaseDAO();
 
                 IssueBase childIssue = addDetailsLayout.setIssueProperties(true);
                 if (childIssue != null) {
@@ -83,8 +88,6 @@ public class AddIssueWindow extends RapidWindow {
                             issueDao.persist(parentIssue);
                         }
                     }
-
-
 
                     issueTree.setChildrenAllowed(parentItemId, true);
                     issueTree.setParent(itemId, parentItemId);

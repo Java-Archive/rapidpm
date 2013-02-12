@@ -4,11 +4,13 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import org.apache.log4j.Logger;
 //import org.rapidpm.ejb3.EJBFactory;
 //import org.rapidpm.persistence.DaoFactoryBean;
+import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -75,9 +77,10 @@ public class SaveButtonClickListener implements ClickListener {
                     final int plannedDays = Integer.parseInt(daysHoursMinutes[0]);
                     final int plannedHours = Integer.parseInt(daysHoursMinutes[1]);
                     final int plannedMinutes = Integer.parseInt(daysHoursMinutes[2]);
-                    planningUnitElement.setPlannedDays(plannedDays);
-                    planningUnitElement.setPlannedHours(plannedHours);
-                    planningUnitElement.setPlannedMinutes(plannedMinutes);
+                    final VaadinSession session = screen.getUi().getSession();
+                    final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
+                    planningUnitElement.setPlannedMinutes((plannedDays * currentProject.getHoursPerWorkingDay() *
+                            Constants.MINS_HOUR) + (plannedHours * Constants.MINS_HOUR) + (plannedMinutes));
                     daoFactory.saveOrUpdateTX(planningUnitElement);
                 }
             }

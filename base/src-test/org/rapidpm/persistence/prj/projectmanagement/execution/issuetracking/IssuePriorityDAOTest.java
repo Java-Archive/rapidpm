@@ -22,22 +22,23 @@ public class IssuePriorityDAOTest implements BaseDAOTest {
     private static Logger logger = Logger.getLogger(IssuePriorityDAOTest.class);
 
     private final IssuePriorityDAO dao = daoFactory.getIssuePriorityDAO();
-    private final IssuePriority assignTo = dao.loadAllEntities().get(0);
+    private final IssuePriority assignTo = dao.loadAllEntities(PROJECTID).get(0);
 
 
     @Test
     public void equalsAndHashCodeTest() {
-        List<IssuePriority> priorityList = dao.loadAllEntities();
+        List<IssuePriority> priorityList = dao.loadAllEntities(PROJECTID);
         assertTrue(priorityList.get(0).equals(priorityList.get(0)));
         assertEquals(priorityList.get(0).hashCode(), priorityList.get(0).hashCode());
 
-        assertFalse(priorityList.get(0).equals(new IssueComment()));
-        assertNotSame(new IssueComment().hashCode(), priorityList.get(0).hashCode());
+        assertFalse(priorityList.get(0).equals(new IssuePriority()));
+        assertNotSame(new IssuePriority(PROJECTID).hashCode(), priorityList.get(0).hashCode());
     }
 
     @Test
     public void addChangeDelete() {
         IssuePriority priority = new IssuePriority(1, "test");
+        priority.setProjectId(PROJECTID);
         priority.setPriorityFileName("test_filename");
         priority = dao.persist(priority);
         assertEquals(priority, dao.findByID(priority.getId()));
@@ -49,13 +50,14 @@ public class IssuePriorityDAOTest implements BaseDAOTest {
         assertEquals(priority, dao.findByID(priority.getId()));
 
         dao.delete(priority, assignTo);
-        assertFalse(dao.loadAllEntities().contains(priority));
+        assertFalse(dao.loadAllEntities(PROJECTID).contains(priority));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void persistExistingName() {
-        final IssuePriority priority = dao.loadAllEntities().get(0);
+        final IssuePriority priority = dao.loadAllEntities(PROJECTID).get(0);
         final IssuePriority prioTest = new IssuePriority();
+        prioTest.setProjectId(PROJECTID);
         prioTest.setPriorityName(priority.getPriorityName());
         prioTest.setPriorityFileName(priority.getPriorityFileName());
         prioTest.setPrio(priority.getPrio());
@@ -64,11 +66,11 @@ public class IssuePriorityDAOTest implements BaseDAOTest {
 
     @Test
     public void getConnectedIssus() {
-        for (final IssuePriority priority : dao.loadAllEntities()) {
-            final List<IssueBase> prioConnIssueList = priority.getConnectedIssuesFromProject(1L);
+        for (final IssuePriority priority : dao.loadAllEntities(PROJECTID)) {
+            final List<IssueBase> prioConnIssueList = priority.getConnectedIssues();
             final List<IssueBase> issueList = new ArrayList<>();
 
-            for (final IssueBase issue : daoFactory.getIssueBaseDAO(1L).loadAllEntities()) {
+            for (final IssueBase issue : daoFactory.getIssueBaseDAO().loadAllEntities(PROJECTID)) {
                 if (issue.getPriority().equals(priority))
                     issueList.add(issue);
             }
@@ -93,27 +95,22 @@ public class IssuePriorityDAOTest implements BaseDAOTest {
 
     @Test(expected = NullPointerException.class)
     public void delete_SecondParameterNull() {
-        dao.delete(dao.loadAllEntities().get(0), null);
+        dao.delete(dao.loadAllEntities(PROJECTID).get(0), null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void delete_SecondParameterNoId() {
-        dao.delete(dao.loadAllEntities().get(0), new IssuePriority());
+        dao.delete(dao.loadAllEntities(PROJECTID).get(0), new IssuePriority());
     }
 
 
     @Test(expected = NullPointerException.class)
     public void getConnectedIssues_FirstParameterNull() {
-        dao.getConnectedIssuesFromProject(null, null);
+        dao.getConnectedIssues(null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void getConnectedIssues_firstParameterNoId() {
-        dao.getConnectedIssuesFromProject(new IssuePriority(), 1L);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void getConnectedIssues_SecondParameterNull() {
-        dao.getConnectedIssuesFromProject(dao.loadAllEntities().get(0), -1L);
+        dao.getConnectedIssues(new IssuePriority());
     }
 }

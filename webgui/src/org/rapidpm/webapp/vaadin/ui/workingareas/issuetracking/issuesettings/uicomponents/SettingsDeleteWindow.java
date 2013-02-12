@@ -9,6 +9,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.Iss
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.model.SettingsDataContainer;
 
 import java.util.Collection;
+import java.util.ResourceBundle;
 
 /**
 * Created with IntelliJ IDEA.
@@ -32,6 +33,7 @@ public class SettingsDeleteWindow<T> extends RapidWindow implements Internationa
     private final Table contentTable;
 
     private final SettingsDeleteWindow self = this;
+    private final ResourceBundle messageBundle;
 
     public SettingsDeleteWindow(final IssueSettingsScreen screen, final Class aClass, final Table contentTable,
                                 final boolean simpleErasing) {
@@ -42,6 +44,7 @@ public class SettingsDeleteWindow<T> extends RapidWindow implements Internationa
         if (contentTable == null)
             throw new NullPointerException("contentTable must not be NULL!");
         this.screen = screen;
+        this.messageBundle = screen.getMessagesBundle();
         this.aClass = aClass;
         this.simpleErasing = simpleErasing;
         this.contentTable = contentTable;
@@ -52,7 +55,7 @@ public class SettingsDeleteWindow<T> extends RapidWindow implements Internationa
     }
 
     private void setComponentens() {
-        VerticalLayout topLayout = new VerticalLayout();
+        final VerticalLayout topLayout = new VerticalLayout();
         topLayout.setSpacing(true);
 
         deleteLabel = new Label();
@@ -60,7 +63,7 @@ public class SettingsDeleteWindow<T> extends RapidWindow implements Internationa
         topLayout.addComponent(deleteLabel);
 
         if (!simpleErasing) {
-            SettingsDataContainer<T> container = new SettingsDataContainer(aClass);
+            final SettingsDataContainer<T> container = new SettingsDataContainer(aClass);
             table = new Table();
             table.setContainerDataSource(container);
             table.setVisibleColumns(container.getVisibleColumns().toArray());
@@ -99,13 +102,13 @@ public class SettingsDeleteWindow<T> extends RapidWindow implements Internationa
 
     @Override
     public void doInternationalization() {
-        setCaption(screen.getMessagesBundle().getString("issuetracking_settings_deletewindow"));
+        setCaption(messageBundle.getString("issuetracking_settings_deletewindow"));
 
-        deleteLabel.setCaption(screen.getMessagesBundle().getString("issuetracking_settings_delete_question"));
+        deleteLabel.setCaption(messageBundle.getString("issuetracking_settings_delete_question"));
         final Collection<?> ids = contentTable.getItem(removeItemId).getItemPropertyIds();
         String labelValue = "-      ";
         Object value;
-        for (Object propId : ids) {
+        for (final Object propId : ids) {
                 value = contentTable.getItem(removeItemId).getItemProperty(propId).getValue();
                 if (value != null)
                     labelValue += value.toString() + "   -   ";
@@ -113,10 +116,10 @@ public class SettingsDeleteWindow<T> extends RapidWindow implements Internationa
         deleteLabel.setValue(labelValue);
 
         if (!simpleErasing) {
-            table.setCaption(screen.getMessagesBundle().getString("issuetracking_settings_delete_tablecaption"));
+            table.setCaption(messageBundle.getString("issuetracking_settings_delete_tablecaption"));
         }
-        yesButton.setCaption(screen.getMessagesBundle().getString("yes"));
-        noButton.setCaption(screen.getMessagesBundle().getString("no"));
+        yesButton.setCaption(messageBundle.getString("yes"));
+        noButton.setCaption(messageBundle.getString("no"));
     }
 
 
@@ -126,7 +129,7 @@ public class SettingsDeleteWindow<T> extends RapidWindow implements Internationa
         @Override
         public void buttonClick(Button.ClickEvent event) {
             final boolean success;
-            SettingsDataContainer<T> container = (SettingsDataContainer<T>)contentTable.getContainerDataSource();
+            final SettingsDataContainer<T> container = (SettingsDataContainer<T>)contentTable.getContainerDataSource();
             if (!simpleErasing) {
                 final Object assignToItemId = table.getValue();
                 logger.info("AssignItemId" + assignToItemId);
@@ -136,7 +139,7 @@ public class SettingsDeleteWindow<T> extends RapidWindow implements Internationa
             }
 
             if (!success) {
-                Notification.show(screen.getMessagesBundle().getString("issuetracking_unsuccessfull_delete"),
+                Notification.show(messageBundle.getString("issuetracking_error_delete"),
                         Notification.Type.ERROR_MESSAGE);
             }
 

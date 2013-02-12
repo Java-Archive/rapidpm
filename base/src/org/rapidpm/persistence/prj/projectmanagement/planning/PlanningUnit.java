@@ -51,7 +51,7 @@ public class PlanningUnit {
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private List<PlannedMeeting> plannedMeetingList;
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<PlanningUnit> kindPlanningUnits;
 
     @Basic
@@ -63,7 +63,7 @@ public class PlanningUnit {
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private PlanningUnit parent;
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<PlanningUnitElement> planningUnitElementList;
 
 
@@ -225,16 +225,6 @@ public class PlanningUnit {
 
     @Override
     public String toString() {
-        return "PlanningUnit{" +
-                "id='" + id + '\'' +
-                ", estimatedStoryPoints=" + estimatedStoryPoints +
-                ", komplexitaet=" + komplexitaet +
-                ", planningUnitName='" + planningUnitName + '\'' +
-                ", orderNumber=" + orderNumber +
-                ", plannedMeetingList=" + plannedMeetingList +
-                ", responsiblePerson=" + responsiblePerson +
-                ", planningStatus=" + planningStatus +
-                ", plannedTravelList=" + plannedTravelList +
-                '}';
+        return planningUnitName;
     }
 }

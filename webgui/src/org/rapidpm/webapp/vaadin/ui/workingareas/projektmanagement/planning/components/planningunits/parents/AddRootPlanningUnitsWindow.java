@@ -10,6 +10,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
@@ -99,6 +100,7 @@ public class AddRootPlanningUnitsWindow extends RapidWindow {
                     @Override
                     public void doTask() {
                         final EntityManager entityManager = daoFactory.getEntityManager();
+                        final Benutzer notAssignedUser = daoFactory.getBenutzerDAO().findByID(1l);
                         for (final PlanningUnit newPlanningUnit : container.getItemIds()) {
                             newPlanningUnit.setId(null);
                             final List<PlanningUnitElement> newPlanningUnitElements = createNewPlanningUnitElements
@@ -106,6 +108,7 @@ public class AddRootPlanningUnitsWindow extends RapidWindow {
                             for (PlanningUnitElement newPlanningUnitElement : newPlanningUnitElements) {
                                 entityManager.persist(newPlanningUnitElement);
                             }
+                            newPlanningUnit.setResponsiblePerson(notAssignedUser);
                             newPlanningUnit.setPlanningUnitElementList(newPlanningUnitElements);
                             entityManager.persist(newPlanningUnit);
                             project.getPlanningUnits().add(newPlanningUnit);
@@ -183,8 +186,6 @@ public class AddRootPlanningUnitsWindow extends RapidWindow {
         planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
             final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
-            planningUnitElement.setPlannedDays(0);
-            planningUnitElement.setPlannedHours(0);
             planningUnitElement.setPlannedMinutes(0);
             planningUnitElement.setRessourceGroup(ressourceGroup);
             //daoFactory.saveOrUpdateTX(planningUnitElement);

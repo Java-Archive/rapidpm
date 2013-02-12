@@ -7,11 +7,9 @@ import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.GraphBaseDAO;
 //import org.rapidpm.persistence.GraphDaoFactory;
-import org.rapidpm.persistence.GraphRelationRegistry;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
+import org.rapidpm.persistence.GraphRelationFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComponent;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +25,8 @@ import java.util.List;
 public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
     private static final Logger logger = Logger.getLogger(IssueBaseDAO.class);
 
-    public IssueBaseDAO(final GraphDatabaseService graphDb, final DaoFactory relDaoFactory,
-                        final Long projectId) {
-        super(graphDb, IssueBase.class, relDaoFactory, projectId);
+    public IssueBaseDAO(final GraphDatabaseService graphDb, final DaoFactory relDaoFactory) {
+        super(graphDb, IssueBase.class, relDaoFactory);
     }
 
 
@@ -43,7 +40,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             tx.success();
             success = true;
         } catch (NullPointerException | IllegalArgumentException e) {
-            logger.error(e.getClass().getSimpleName() + e.getMessage());
+            logger.error(e.getMessage(), e);
         } finally {
             tx.finish();
             if (logger.isDebugEnabled()) {
@@ -92,7 +89,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         }
         if (!alreadyExist) {
             startNode.createRelationshipTo(endNode, relation);
-            final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueRelation.class);
+            final RelationshipType relType = GraphRelationFactory.getRelationshipTypeForClass(IssueRelation.class);
 
             boolean relExist = false;
             for (Relationship rel : startNode.getRelationships(relType, Direction.OUTGOING)) {
@@ -154,7 +151,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             tx.success();
             success = true;
         } catch (NullPointerException | IllegalArgumentException e) {
-            logger.error(e.getClass().getSimpleName() + e.getMessage());
+            logger.error(e.getMessage(), e);
         } finally {
             tx.finish();
             if (logger.isDebugEnabled()) {
@@ -211,7 +208,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
 
                     final Node relationNode = graphDb.getNodeById(relation.getId());
                     final RelationshipType relType;
-                    relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueRelation.class);
+                    relType = GraphRelationFactory.getRelationshipTypeForClass(IssueRelation.class);
 
                     for (Relationship relToRelNode : referenceNode.getRelationships(relType, Direction.OUTGOING)) {
                         if (relToRelNode.getEndNode().equals(relationNode)) {
@@ -245,7 +242,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             tx.success();
             success = true;
         } catch (NullPointerException | IllegalArgumentException e) {
-            logger.error(e.getClass().getSimpleName() + e.getMessage());
+            logger.error(e.getMessage(), e);
         } finally {
             tx.finish();
             if (logger.isDebugEnabled()) {
@@ -282,12 +279,12 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             logger.debug("addSubIssue");
 
         Node childNode = graphDb.getNodeById(childId);
-        final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
+        final RelationshipType relType = GraphRelationFactory.getSubIssueRelationshipType();
         setAsRootIssue(child);
 
         graphDb.getNodeById(parentId).createRelationshipTo(childNode, relType);
-        if (childNode.hasRelationship(GraphRelationRegistry.getClassRootToChildRelType(), Direction.INCOMING)) {
-            childNode.getSingleRelationship(GraphRelationRegistry.getClassRootToChildRelType(), Direction.INCOMING)
+        if (childNode.hasRelationship(GraphRelationFactory.getClassRootToChildRelType(), Direction.INCOMING)) {
+            childNode.getSingleRelationship(GraphRelationFactory.getClassRootToChildRelType(), Direction.INCOMING)
                     .delete();
         }
     }
@@ -305,7 +302,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         Node startNode = graphDb.getNodeById(issueId);
         List<IssueBase> issueList = new ArrayList<>();
 
-        final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
+        final RelationshipType relType = GraphRelationFactory.getSubIssueRelationshipType();
         for (Relationship rel : startNode.getRelationships(relType, Direction.OUTGOING)) {
             issueList.add(getObjectFromNode(rel.getOtherNode(startNode)));
         }
@@ -330,7 +327,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
                     logger.debug("Method 'deleteSubIssueRelation' unsuccessfull");
             }
         } catch (NullPointerException | IllegalArgumentException e) {
-            logger.error(e.getClass().getSimpleName() + e.getMessage());
+            logger.error(e.getMessage(), e);
         } finally {
             tx.finish();
             if (logger.isDebugEnabled()) {
@@ -367,7 +364,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         Node childNode = graphDb.getNodeById(childId);
         Node parentNode = graphDb.getNodeById(parentId);
 
-        final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
+        final RelationshipType relType = GraphRelationFactory.getSubIssueRelationshipType();
         if (childNode.hasRelationship(relType, Direction.INCOMING)) {
             for (Relationship rel : childNode.getRelationships(relType, Direction.INCOMING)) {
                 if (rel.getOtherNode(childNode).equals(parentNode)) {
@@ -395,7 +392,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             tx.success();
             success = true;
         } catch (NullPointerException | IllegalArgumentException e) {
-            logger.error(e.getClass().getSimpleName() + e.getMessage());
+            logger.error(e.getMessage(), e);
         } finally {
             tx.finish();
             if (logger.isDebugEnabled()) {
@@ -420,7 +417,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
 
         Node node = graphDb.getNodeById(issueId);
 
-        final RelationshipType relType = GraphRelationRegistry.getSubIssueRelationshipType();
+        final RelationshipType relType = GraphRelationFactory.getSubIssueRelationshipType();
         if (node.hasRelationship(relType, Direction.INCOMING)) {
             if (logger.isDebugEnabled())
                 logger.debug("Delete all subissue relations. Set as rootissue");
@@ -428,7 +425,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
                 rel.delete();
             }
 
-            class_root_node.createRelationshipTo(node, GraphRelationRegistry.getClassRootToChildRelType());
+            getProjectRootNode(issue.getProjectId()).createRelationshipTo(node,
+                    GraphRelationFactory.getClassRootToChildRelType());
         } else {
             if (logger.isDebugEnabled())
                 logger.debug("Is already a rootissue");
@@ -447,7 +445,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             tx.success();
             success = true;
         } catch (NullPointerException | IllegalArgumentException e) {
-            logger.error(e.getClass().getSimpleName() + e.getMessage());
+            logger.error(e.getMessage(), e);
         } finally {
             tx.finish();
             if (logger.isDebugEnabled()) {
@@ -479,7 +477,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         boolean exists = false;
         final Node issueNode = graphDb.getNodeById(issueId);
         final Node componentNode = graphDb.getNodeById(componentId);
-        final RelationshipType relShipType = GraphRelationRegistry.getRelationshipTypeForClass(IssueComponent.class);
+        final RelationshipType relShipType = GraphRelationFactory.getRelationshipTypeForClass(IssueComponent.class);
 
         for (final Relationship rel : issueNode.getRelationships())
             if (rel.getOtherNode(issueNode).equals(componentNode)) {
@@ -507,7 +505,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         final Node startNode = graphDb.getNodeById(issueId);
         final List<IssueComponent> componentList = new ArrayList<>();
 
-        final RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueComponent.class);
+        final RelationshipType relType = GraphRelationFactory.getRelationshipTypeForClass(IssueComponent.class);
         for (final Relationship rel : startNode.getRelationships(relType, Direction.OUTGOING)) {
             componentList.add(DaoFactorySingelton.getInstance().getIssueComponentDAO().findByID(rel.getOtherNode(startNode).getId()));
         }
@@ -533,7 +531,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
                     logger.debug("Method 'deleteSubIssueRelation' unsuccessfull");
             }
         } catch (NullPointerException | IllegalArgumentException e) {
-            logger.error(e.getClass().getSimpleName() + e.getMessage());
+            logger.error(e.getMessage(), e);
         } finally {
             tx.finish();
             if (logger.isDebugEnabled()) {
@@ -564,7 +562,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             logger.debug("deleteComponentRelation");
 
         final Node issueNode = graphDb.getNodeById(issueId);
-        RelationshipType relType = GraphRelationRegistry.getRelationshipTypeForClass(IssueComponent.class);
+        RelationshipType relType = GraphRelationFactory.getRelationshipTypeForClass(IssueComponent.class);
         for (final Relationship rel : issueNode.getRelationships(relType, Direction.OUTGOING))
             if (rel.getOtherNode(issueNode).equals(graphDb.getNodeById(componentId))) {
                 if (logger.isDebugEnabled())

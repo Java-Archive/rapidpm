@@ -2,10 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.log
 
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.Tree;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
@@ -33,6 +30,8 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
 
     private ProjektplanungScreen screen;
     private DaoFactory daoFactory;
+    private Button deleteButton;
+    private Button renameButton;
 
     public TreeValueChangeListener(final ProjektplanungScreen screen) {
         this.screen = screen;
@@ -43,16 +42,20 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
     public void valueChange(final Property.ValueChangeEvent valueClickEvent) {
         if (valueClickEvent.getProperty().getValue() != null) {
             final Object selectedId = valueClickEvent.getProperty().getValue();
+            System.out.println(selectedId.toString());
             final boolean hasChildren = ((Tree) valueClickEvent.getProperty()).hasChildren(selectedId);
             if (selectedId != null) {
-                final PlanningUnitsTree tree = screen.getPlanningUnitsTree();
-                final BeanItem<PlanningUnit> selectedPlanningUnitBeanItem = (BeanItem) tree.getItem(selectedId);
-                final PlanningUnit selectedParentPlanningUnit = selectedPlanningUnitBeanItem.getBean();
+                if(deleteButton != null){
+                    deleteButton.setEnabled(true);
+                }
+                if(renameButton != null){
+                    renameButton.setEnabled(true);
+                }
+                final PlanningUnit selectedParentPlanningUnit = (PlanningUnit) selectedId;
                 final RapidPanel detailPanel = screen.getDetailsPanel();
                 final RapidPanel mainPanel = screen.getMainPanel();
                 final RapidPanel ressourcesPanel = screen.getRessourcesPanel();
                 final RapidPanel descriptionsAndTestCasesPanel = screen.getRightColumn();
-
                 detailPanel.removeAllComponents();
                 mainPanel.removeAllComponents();
                 ressourcesPanel.removeAllComponents();
@@ -97,11 +100,24 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                 detailPanel.removeAllComponents();
                 detailPanel.addComponent(detailsPanelComponentsLayout);
                 mainPanel.addComponent(mainPanelLayout);
-
             } else {
                 logger.warn("nullselection");
             }
+        } else {
+            if(deleteButton != null){
+                deleteButton.setEnabled(false);
+            }
+            if(renameButton != null){
+                renameButton.setEnabled(false);
+            }
         }
+    }
 
+    public void setDeleteButton(final Button deleteButton) {
+        this.deleteButton = deleteButton;
+    }
+
+    public void setRenameButton(final Button renameButton){
+        this.renameButton = renameButton;
     }
 }
