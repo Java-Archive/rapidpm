@@ -98,7 +98,7 @@ public class TreeSortDropHandler implements DropHandler {
                     && container.hasChildren(targetItemId)) {
                 // move first in the container
                 container.moveAfterSibling(sourceItemId, null);
-                addWindow();
+                //addWindow();
 
             }
         } else if (location == VerticalDropLocation.TOP) {
@@ -107,13 +107,13 @@ public class TreeSortDropHandler implements DropHandler {
                 // reorder only the two items, moving source above target
                 container.moveAfterSibling(sourceItemId, targetItemId);
                 container.moveAfterSibling(targetItemId, sourceItemId);
-                addWindow();
+                //addWindow();
             }
         } else if (location == VerticalDropLocation.BOTTOM) {
             Object parentId = container.getParent(targetItemId);
             if (container.setParent(sourceItemId, parentId)) {
                 container.moveAfterSibling(sourceItemId, targetItemId);
-                addWindow();
+                //addWindow();
             }
         }
     }
