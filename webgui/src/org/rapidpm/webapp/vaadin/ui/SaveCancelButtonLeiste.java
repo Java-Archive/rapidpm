@@ -16,12 +16,10 @@ import java.util.ResourceBundle;
  */
 public abstract class SaveCancelButtonLeiste extends HorizontalLayout implements Internationalizationable {
 
-    private final ResourceBundle messages;
     protected Button saveButton = new Button();
     protected Button cancelButton = new Button();
 
-    public SaveCancelButtonLeiste(final ResourceBundle messages){
-        this.messages = messages;
+    public SaveCancelButtonLeiste(){
         saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         cancelButton.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
         addComponents(saveButton, cancelButton);
@@ -32,11 +30,7 @@ public abstract class SaveCancelButtonLeiste extends HorizontalLayout implements
     }
 
     @Override
-    public void doInternationalization() {
-        saveButton.setCaption(messages.getString("save"));
-        cancelButton.setCaption(messages.getString("cancel"));
-    }
-
+    public abstract void doInternationalization();
     public abstract void setSaveButtonListener();
     public abstract void setCancelButtonListener();
 }

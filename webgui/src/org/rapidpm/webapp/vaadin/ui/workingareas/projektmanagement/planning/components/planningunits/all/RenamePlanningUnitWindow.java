@@ -28,7 +28,13 @@ public class RenamePlanningUnitWindow extends RapidWindow {
         final ResourceBundle messagesBundle = screen.getMessagesBundle();
         setCaption(messagesBundle.getString("planning_renamePlanningUnit"));
         fieldGroup = new PlanningUnitFieldGroup(screen, (PlanningUnit) screen.getPlanningUnitsTree().getValue());
-        saveCancelButtonLeiste = new SaveCancelButtonLeiste(messagesBundle) {
+        saveCancelButtonLeiste = new SaveCancelButtonLeiste() {
+            @Override
+            public void doInternationalization() {
+                saveButton.setCaption(messagesBundle.getString("save"));
+                cancelButton.setCaption(messagesBundle.getString("cancel"));
+            }
+
             @Override
             public void setSaveButtonListener() {
                 saveButton.addClickListener(new Button.ClickListener() {
