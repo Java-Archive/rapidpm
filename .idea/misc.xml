@@ -5,6 +5,7 @@
   </component>
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/webgui" />
+    <file type="web" url="file://$PROJECT_DIR$/webservice" />
   </component>
   <component name="IdProvider" IDEtalkID="88DCCA6B4C1FDE51911EFF38D69C691D" />
   <component name="MavenProjectsManager">

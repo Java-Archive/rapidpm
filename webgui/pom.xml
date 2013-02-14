@@ -7,6 +7,7 @@
         <artifactId>rapidpm</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+
     <groupId>org.rapidpm</groupId>
     <artifactId>webgui</artifactId>
     <packaging>war</packaging>
@@ -45,6 +46,27 @@
         </pluginRepository>
     </pluginRepositories>
     <dependencies>
+
+        <dependency>
+            <groupId>org.rapidpm</groupId>
+            <artifactId>base</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.rapidpm</groupId>
+            <artifactId>tablemodell</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.axis</groupId>
+            <artifactId>axis</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+
         <dependency>
             <groupId>org.apache.openejb</groupId>
             <artifactId>javaee-api</artifactId>

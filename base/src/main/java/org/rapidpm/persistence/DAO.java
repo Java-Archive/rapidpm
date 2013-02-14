@@ -6,16 +6,14 @@
 package org.rapidpm.persistence;
 
 import com.google.common.base.Joiner;
+import org.apache.log4j.Logger;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.query.AuditEntity;
 import org.hibernate.envers.query.AuditQuery;
 import org.hibernate.envers.query.AuditQueryCreator;
-import org.jboss.logging.Logger;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;

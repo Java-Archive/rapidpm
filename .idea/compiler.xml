@@ -24,12 +24,14 @@
         <processorPath useClasspath="true" />
         <module name="base" />
         <module name="webgui" />
+        <module name="webservice" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="base" target="1.7" />
       <module name="rapidpm" target="1.7" />
       <module name="webgui" target="1.7" />
+      <module name="webservice" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

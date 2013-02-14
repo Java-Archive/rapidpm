@@ -4,8 +4,6 @@ import com.vaadin.data.util.HierarchicalContainer;
 import org.junit.Test;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created with IntelliJ IDEA.
