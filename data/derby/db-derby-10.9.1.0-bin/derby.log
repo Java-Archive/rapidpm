@@ -1,0 +1,11 @@
+Thu Aug 02 20:10:38 CEST 2012 : Apache Derby Network Server 10.9.1.0 - (1344872) wurde gestartet und ist bereit, Verbindungen am Port 1527 zu akzeptieren.
+----------------------------------------------------------------
+Thu Aug 02 20:14:21 CEST 2012:
+Booten von Derby Version The Apache Software Foundation - Apache Derby - 10.9.1.0 - (1344872): Instanz a816c00e-0138-e888-3adc-00003ede3d41
+für Datenbankverzeichnis /Users/svenruppert/Desktop/workspace/rapidpm/data/derby/db-derby-10.9.1.0-bin/rapidpm   mit Klassenladeprogrammn sun.misc.Launcher$AppClassLoader@7a9664a1
+
+java.vendor=Apple Inc.
+java.runtime.version=1.6.0_33-b03-424-11M3720
+user.dir=/Users/svenruppert/Desktop/workspace/rapidpm/data/derby/db-derby-10.9.1.0-bin
+derby.system.home=/Users/svenruppert/Desktop/workspace/rapidpm/data/derby/db-derby-10.9.1.0-bin
+Das Ladeprogramm für Datenbankklassen wurde gestartet - derby.database.classpath=''

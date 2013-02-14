@@ -1,0 +1,16 @@
+@import "../reindeer/legacy-styles.css";
+
+.abc{
+    background: #e4fcf3;
+    border-radius: 30px;
+}
+
+.v-verticallayout-medsizemargin
+        .v-verticallayout-margin {
+    padding-left:   10px;
+    padding-right:  10px;
+    padding-top:    50px;
+    padding-bottom: 0px;
+}
+
+

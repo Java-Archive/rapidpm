@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  ~ Copyright (c) 2009. This is part of the NeoScio PlannedProject from RapidPM - www.rapidpm.org.
+  ~ please contact sven.ruppert@me.com
+  -->
+
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN"
+        "log4j.dtd">
+
+<log4j:configuration>
+
+    <appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="NeoScio.log"/>
+        <param name="threshold" value="debug"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%d{ABSOLUTE} %5p %c{1}:%L - %m%n"/>
+        </layout>
+    </appender>
+
+
+    <logger name="de.rapidpm.">
+        <level value="debug"/>
+        <appender-ref ref="file"/>
+    </logger>
+
+    <logger name="de.rapidpm.webapp.tapestry">
+        <level value="info"/>
+        <appender-ref ref="file"/>
+    </logger>
+
+    <logger name="de.rapidpm.webapp.tapestry.services.ProtectedPageGateKeeper">
+        <level value="warn"/>
+        <appender-ref ref="file"/>
+    </logger>
+
+    <logger name="de.rapidpm.webapp.tapestry.state">
+        <level value="info"/>
+        <appender-ref ref="file"/>
+    </logger>
+
+    <logger name="de.rapidpm.webapp.tapestry.tools.LayoutUtils">
+        <level value="warn"/>
+        <appender-ref ref="file"/>
+    </logger>
+
+    <logger name="de.rapidpm.orm">
+        <level value="debug"/>
+        <appender-ref ref="file"/>
+    </logger>
+
+
+    <logger name="de.rapidpm.collector">
+        <level value="info"/>
+        <appender-ref ref="file"/>
+    </logger>
+    <logger name="de.rapidpm.collector.searchengines">
+        <level value="debug"/>
+        <appender-ref ref="file"/>
+    </logger>
+
+    <logger name="de.rapidpm.collector.webcrawler">
+        <level value="info"/>
+        <appender-ref ref="file"/>
+    </logger>
+
+    <logger name="de.rapidpm.indexer">
+        <level value="debug"/>
+        <appender-ref ref="file"/>
+    </logger>
+    <logger name="de.rapidpm.indexer.FileIndexer">
+        <level value="info"/>
+        <appender-ref ref="file"/>
+    </logger>
+
+    <logger name="de.rapidpm.analyzer">
+        <level value="debug"/>
+        <appender-ref ref="file"/>
+    </logger>
+
+    <logger name="de.rapidpm.tools">
+        <level value="info"/>
+        <appender-ref ref="file"/>
+    </logger>
+    <logger name="de.rapidpm.tools.StandardHighlighter">
+        <level value="info"/>
+        <appender-ref ref="file"/>
+    </logger>
+    <logger name="de.rapidpm.tools.orm">
+        <level value="debug"/>
+        <appender-ref ref="file"/>
+    </logger>
+    <logger name="de.rapidpm.tools.orm.ListCleaner">
+        <level value="info"/>
+        <appender-ref ref="file"/>
+    </logger>
+    <logger name="de.rapidpm.tools.hadoop">
+        <level value="warn"/>
+        <appender-ref ref="file"/>
+    </logger>
+    <logger name="de.rapidpm.hadoop">
+        <level value="info"/>
+        <appender-ref ref="file"/>
+    </logger>
+
+
+    <logger name="org.apache.lucene">
+        <level value="warn"/>
+        <appender-ref ref="file"/>
+    </logger>
+
+    <logger name="org.apache.hadoop">
+        <level value="info"/>
+        <appender-ref ref="file"/>
+    </logger>
+
+    <logger name="org.apache.http">
+        <level value="info"/>
+        <appender-ref ref="file"/>
+    </logger>
+
+    <logger name="org.apache.commons">
+        <level value="info"/>
+        <appender-ref ref="file"/>
+    </logger>
+
+    <logger name="org.apache.tapestry5">
+        <level value="info"/>
+        <appender-ref ref="file"/>
+    </logger>
+
+
+    <logger name="org.hibernate.cache">
+        <level value="info"/>
+        <appender-ref ref="file"/>
+    </logger>
+
+    <logger name="tapestry.transformer">
+        <level value="info"/>
+        <appender-ref ref="file"/>
+    </logger>
+
+
+</log4j:configuration>

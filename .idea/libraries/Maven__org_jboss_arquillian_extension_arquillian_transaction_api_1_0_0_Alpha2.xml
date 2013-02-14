@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.jboss.arquillian.extension:arquillian-transaction-api:1.0.0.Alpha2">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/arquillian/extension/arquillian-transaction-api/1.0.0.Alpha2/arquillian-transaction-api-1.0.0.Alpha2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/arquillian/extension/arquillian-transaction-api/1.0.0.Alpha2/arquillian-transaction-api-1.0.0.Alpha2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/arquillian/extension/arquillian-transaction-api/1.0.0.Alpha2/arquillian-transaction-api-1.0.0.Alpha2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
