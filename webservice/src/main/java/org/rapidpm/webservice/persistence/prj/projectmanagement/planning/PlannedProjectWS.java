@@ -9,9 +9,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 /**
- * User: Alexander Vos
- * Date: 03.12.12
- * Time: 12:45
+ * Projekt Web-Service.
  */
 @WebService(serviceName = "PlannedProjectWS")
 public class PlannedProjectWS extends FlatBaseWS<PlannedProject, PlannedProjectDAO, FlatPlannedProject> {
@@ -26,6 +24,11 @@ public class PlannedProjectWS extends FlatBaseWS<PlannedProject, PlannedProjectD
         return daoFactory.getPlannedProjectDAO();
     }
 
+    /**
+     * Ermittelt das erste Projekt.
+     *
+     * @return Das erste Projekt oder <code>null</code>.
+     */
     @WebMethod
     public FlatPlannedProject getFirstProject() {
         checkPermission(PERMISSION_SELECT);

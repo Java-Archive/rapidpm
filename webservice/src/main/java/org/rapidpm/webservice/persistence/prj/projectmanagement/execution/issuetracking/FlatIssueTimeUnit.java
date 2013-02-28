@@ -7,11 +7,6 @@ import org.rapidpm.webservice.mapping.FlatEntity;
 
 import java.util.Date;
 
-/**
- * User: Alexander Vos
- * Date: 17.12.12
- * Time: 13:36
- */
 public class FlatIssueTimeUnit extends FlatEntity<IssueTimeUnit> {
     private Date date;
     private int minutes;

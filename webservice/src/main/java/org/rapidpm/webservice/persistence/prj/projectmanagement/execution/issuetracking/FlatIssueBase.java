@@ -10,11 +10,6 @@ import org.rapidpm.webservice.mapping.FlatEntity;
 import java.util.Date;
 import java.util.List;
 
-/**
- * User: Alexander Vos
- * Date: 12.12.12
- * Time: 17:37
- */
 public class FlatIssueBase extends FlatEntity<IssueBase> {
     private String text;
     private Long projectId;

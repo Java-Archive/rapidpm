@@ -19,9 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: Alexander Vos
- * Date: 30.11.12
- * Time: 15:14
+ * Issue-Tracking Web-Service.
  */
 @WebService(serviceName = "IssueTrackingWS")
 public class IssueTrackingWS {
@@ -92,6 +90,13 @@ public class IssueTrackingWS {
         return issueBaseMapper.toFlatEntityList(issueBaseList);
     }
 
+    /**
+     * Ermittelt den Wert eines Issue-Attributes.
+     *
+     * @param id   Issue-ID.
+     * @param name Name des Attributes.
+     * @return Wert des Attributes oder <code>null</code>, wenn das Attribut nicht gefunden wurde.
+     */
     @WebMethod
     public Object getIssueAttribute(@WebParam(name = "id") final Long id,
                                     @WebParam(name = "name") final String name) {

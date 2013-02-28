@@ -2,7 +2,6 @@ package org.rapidpm.webservice.persistence.system.security;
 
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
@@ -15,9 +14,7 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 
 /**
- * User: Alexander Vos
- * Date: 22.11.12
- * Time: 13:59
+ * Benutzer Web-Service zum Verwalten von Benutzer- und Session-Daten (u.A. Login und Logout).
  */
 @WebService(serviceName = "BenutzerWS")
 public class BenutzerWS extends FlatBaseWS<Benutzer, BenutzerDAO, FlatBenutzer> {
@@ -32,6 +29,14 @@ public class BenutzerWS extends FlatBaseWS<Benutzer, BenutzerDAO, FlatBenutzer> 
         return daoFactory.getBenutzerDAO();
     }
 
+    /**
+     * Authentifiziert den Benutzer anhand eines Login und Passworts.
+     *
+     * @param login  Loginname/Benutzername.
+     * @param passwd Passwort.
+     * @return Das Benutzer-Objekt zu den Logindaten oder <code>null</code>, wenn die Logindaten ungültig sind.
+     * @throws AuthenticationException Wenn die Logindaten ungültig sind.
+     */
     // TODO hashed passwd, return SessionID
     @WebMethod
     public FlatBenutzer authenticate(@WebParam(name = "login") final String login,
@@ -41,11 +46,11 @@ public class BenutzerWS extends FlatBaseWS<Benutzer, BenutzerDAO, FlatBenutzer> 
         if (!user.isAuthenticated()) {
             final UsernamePasswordToken token = new UsernamePasswordToken(login, passwd);
             token.setRememberMe(true);
-//            try {
+            try {
                 user.login(token); // throws AuthenticationException on failure
-//            } catch (AuthenticationException e) {
-//                throw new AuthenticationException("Login failed");
-//            }
+            } catch (org.apache.shiro.authc.AuthenticationException e) {
+                throw new AuthenticationException("Login failed"); // throw generic failure message instead
+            }
         }
         // Authentication successful
         // TODO get Benutzer from Shiro?
@@ -53,9 +58,18 @@ public class BenutzerWS extends FlatBaseWS<Benutzer, BenutzerDAO, FlatBenutzer> 
         return toFlatEntity(benutzer);
     }
 
+    /**
+     * Meldet den aktuellen Benutzer ab und löscht die Session.
+     */
     @WebMethod
     public void logout() {
         final Subject user = SecurityUtils.getSubject();
         user.logout();
+    }
+
+    public static class AuthenticationException extends RuntimeException {
+        public AuthenticationException(String message) {
+            super(message);
+        }
     }
 }

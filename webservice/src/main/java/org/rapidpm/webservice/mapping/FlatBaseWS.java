@@ -8,9 +8,11 @@ import javax.jws.WebParam;
 import java.util.List;
 
 /**
- * User: Alexander Vos
- * Date: 03.12.12
- * Time: 13:53
+ * Basisklasse für einfache Web-Services.
+ *
+ * @param <T>  Entity type.
+ * @param <DT> DAO type.
+ * @param <FT> Flat-Entity type.
  */
 //@WebService
 // public abstract class FlatBaseWS<T, DT extends DAO<Long, T>, FT extends FlatEntity<T>>
@@ -25,6 +27,11 @@ public abstract class FlatBaseWS<T, DT extends DAO<Long, T>, FT extends FlatEnti
         dao = getDao();
     }
 
+    /**
+     * Benötigt, um die korrekte DAO für die Entity-Klasse zu ermitteln.
+     *
+     * @return DAO zur Entity-Klasse.
+     */
     protected abstract DT getDao();
 
     @Override
@@ -52,6 +59,13 @@ public abstract class FlatBaseWS<T, DT extends DAO<Long, T>, FT extends FlatEnti
         return toFlatEntityList(entityList);
     }
 
+    /**
+     * Konvertiert das Flat-Entity-Objekt in ein Entity-Objekt und speichert es ab.
+     *
+     * @param flatEntity Flat-Entity-Objekt.
+     * @return Die ID des gespeicherten Entity-Objekts.
+     * @see #toEntity(FlatEntity)
+     */
     @WebMethod
     public Long save(@WebParam(name = "entity") final FT flatEntity) {
         checkPermission(PERMISSION_UPDATE);

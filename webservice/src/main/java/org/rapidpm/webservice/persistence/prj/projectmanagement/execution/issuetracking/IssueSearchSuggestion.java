@@ -1,9 +1,9 @@
 package org.rapidpm.webservice.persistence.prj.projectmanagement.execution.issuetracking;
 
 /**
- * User: Alexander Vos
- * Date: 22.01.13
- * Time: 12:48
+ * Suchvorschläge für die Echtzeitsuche.
+ *
+ * @see IssueTrackingWS#search(Long, String, int)
  */
 public class IssueSearchSuggestion {
     private Long id;

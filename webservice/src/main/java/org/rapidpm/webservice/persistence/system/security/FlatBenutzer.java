@@ -7,11 +7,6 @@ import org.rapidpm.webservice.mapping.FlatEntity;
 
 import java.util.Set;
 
-/**
- * User: Alexander Vos
- * Date: 03.12.12
- * Time: 15:08
- */
 public class FlatBenutzer extends FlatEntity<Benutzer> {
     // TODO
     private String login;

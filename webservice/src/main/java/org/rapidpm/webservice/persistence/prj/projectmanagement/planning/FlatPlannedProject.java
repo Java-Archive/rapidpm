@@ -5,11 +5,6 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webservice.mapping.FlatEntity;
 
-/**
- * User: Alexander Vos
- * Date: 03.12.12
- * Time: 14:00
- */
 public class FlatPlannedProject extends FlatEntity<PlannedProject> {
     // TODO
     private String projektName;
