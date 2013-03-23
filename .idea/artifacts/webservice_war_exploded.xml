@@ -21,6 +21,7 @@
           <element id="library" level="project" name="Maven: antlr:antlr:2.7.7" />
           <element id="library" level="project" name="Maven: org.hibernate.common:hibernate-commons-annotations:4.0.1.Final" />
           <element id="library" level="project" name="Maven: org.hibernate:hibernate-envers:4.1.9.Final" />
+          <element id="library" level="project" name="Maven: org.hibernate:hibernate-validator:4.3.1.Final" />
           <element id="library" level="project" name="Maven: org.jdom:jdom:1.1" />
           <element id="library" level="project" name="Maven: org.apache.shiro:shiro-web:1.2.1" />
           <element id="library" level="project" name="Maven: org.apache.shiro:shiro-core:1.2.1" />
@@ -41,6 +42,8 @@
           <element id="library" level="project" name="Maven: commons-io:commons-io:2.1" />
           <element id="library" level="project" name="Maven: com.google.guava:guava:13.0.1" />
           <element id="library" level="project" name="Maven: joda-time:joda-time:2.1" />
+          <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.1" />
+          <element id="library" level="project" name="Maven: postgresql:postgresql:9.1-901-1.jdbc4" />
         </element>
       </element>
     </root>

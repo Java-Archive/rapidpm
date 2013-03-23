@@ -21,6 +21,5 @@
     <default-crucible-server>279af2a2-00de-4935-a947-6661496654ad</default-crucible-server>
     <default-fisheye-server>4542f3e9-c7b8-4d19-a0c2-f402d1706fa3</default-fisheye-server>
     <default-fisheye-repo>RapidPM</default-fisheye-repo>
-    <default-jira-server>547bedf8-d61a-412a-a592-1b07ff57d721</default-jira-server>
   </project-configuration>
 </atlassian-ide-plugin>
