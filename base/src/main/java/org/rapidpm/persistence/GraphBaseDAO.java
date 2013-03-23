@@ -354,7 +354,7 @@ public class GraphBaseDAO<T> {
                 .relationships(GraphRelationFactory.getRelationshipTypeForClass(clazz), Direction.OUTGOING )
                 .evaluator(Evaluators.excludeStartPosition());
         final Traverser trav = td.traverse( getProjectRootNode(projectId) );
-        final List<T> entityList = new ArrayList<T>();
+        final List<T> entityList = new ArrayList<>();
         for (final Node travNode : trav.nodes()) {
             entityList.add(getObjectFromNode(travNode));
         }

@@ -49,7 +49,8 @@ public class PlannedProject implements Comparable<PlannedProject>{
     private boolean fakturierbar;
 
     @Basic
-    @Column(columnDefinition = "TEXT")
+//    @Column(columnDefinition = "TEXT")
+    @Column(length = 20000)
     private String info;
 
     @Basic

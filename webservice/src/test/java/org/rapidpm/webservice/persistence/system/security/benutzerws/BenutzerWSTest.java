@@ -11,15 +11,15 @@ import org.junit.Test;
  */
 public class BenutzerWSTest {
 
-    @Test
-    public void testAuthentication001(){
-        final BenutzerWS_Service benutzerWSService = new BenutzerWS_Service();
-        final BenutzerWS wsPort = benutzerWSService.getBenutzerWSPort();
-        final FlatBenutzer flatBenutzer = wsPort.authenticate("sven.ruppert", "geheim");
-        System.out.println("flatBenutzer = " + flatBenutzer);
-
-
-    }
+//    @Test
+//    public void testAuthentication001(){
+//        final BenutzerWS_Service benutzerWSService = new BenutzerWS_Service();
+//        final BenutzerWS wsPort = benutzerWSService.getBenutzerWSPort();
+//        final FlatBenutzer flatBenutzer = wsPort.authenticate("sven.ruppert", "geheim");
+//        System.out.println("flatBenutzer = " + flatBenutzer);
+//
+//
+//    }
 
 
 

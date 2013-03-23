@@ -24,10 +24,12 @@ public class AbsatzKommentar {
             generator = "PKGenAbsatzKommentar")
     @Id
     private Long id;
+
     @Basic
-    String kommentar;
+    private String kommentar;
     @Basic
-    Date datum;
+    private Date datum;
+
     @OneToOne
     private Benutzer kommentator;
 

@@ -22,7 +22,7 @@ import static org.junit.Assert.assertNotNull;
 public class AdresseDAOTest extends BaseDAOTest {
     @Test
     public void testGetAdressenByPerson() throws Exception {
-        final AdresseDAO dao = daoFactoryFactory.getAdresseDAO();
+        final AdresseDAO dao = daoFactory.getAdresseDAO();
         final List<Adresse> adressen = dao.getAdressenForPerson(1L);
         assertNotNull(adressen);
         assertFalse(adressen.isEmpty());

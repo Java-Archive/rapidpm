@@ -1,10 +1,7 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
-import org.hibernate.type.ListType;
 import org.junit.Test;
-import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
-import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
+import org.rapidpm.persistence.prj.projectmanagement.execution.BaseIssueTrackingDAOTest;
 
 import java.util.Date;
 import java.util.List;
@@ -18,7 +15,7 @@ import static org.junit.Assert.*;
  * Time: 10:37
  * To change this template use File | Settings | File Templates.
  */
-public class IssueCommentDAOTest implements BaseDAOTest {
+public class IssueCommentDAOTest extends BaseIssueTrackingDAOTest {
 
     private final IssueCommentDAO dao = daoFactory.getIssueCommentDAO();
 

@@ -7,6 +7,7 @@ package org.rapidpm.persistence.prj.textelement.kommentar;
  * Time: 10:18
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
+
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.apache.log4j.Logger;
 
@@ -24,9 +25,9 @@ public class TextElementKommentar {
     @Id
     private Long id;
     @Basic
-    String kommentar;
+    private String kommentar;
     @Basic
-    Date datum;
+    private Date datum;
     @OneToOne
     private Benutzer kommentator;
 

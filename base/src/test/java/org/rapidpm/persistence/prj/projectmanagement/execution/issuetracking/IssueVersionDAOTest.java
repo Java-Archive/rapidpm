@@ -2,7 +2,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
+import org.rapidpm.persistence.prj.projectmanagement.execution.BaseIssueTrackingDAOTest;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
  * Time: 14:03
  * To change this template use File | Settings | File Templates.
  */
-public class IssueVersionDAOTest implements BaseDAOTest {
+public class IssueVersionDAOTest extends BaseIssueTrackingDAOTest {
     private static Logger logger = Logger.getLogger(IssueVersionDAOTest.class);
 
     private final IssueVersionDAO dao = daoFactory.getIssueVersionDAO();

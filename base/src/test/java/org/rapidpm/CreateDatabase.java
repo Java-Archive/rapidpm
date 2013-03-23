@@ -19,14 +19,15 @@ import javax.persistence.Persistence;
 public class CreateDatabase {
 
     public static void main(String[] args) {
-        final EntityManagerFactory emf = Persistence.createEntityManagerFactory("baseormJDBC");
-        final EntityManager entityManager = emf.createEntityManager();
-        final DaoFactory daoFactoryFactory = new DaoFactory();
-        daoFactoryFactory.setEntityManager(entityManager);
+//        final EntityManagerFactory emf = Persistence.createEntityManagerFactory("integration-test");
+//        final EntityManager entityManager = emf.createEntityManager();
+        final DaoFactory daoFactoryFactory = new DaoFactory(Constants.PERSISTENCE_UNIT_NAME_TEST);
+//        daoFactory.setEntityManager(entityManager);
+        final EntityManager entityManager = daoFactoryFactory.getEntityManager();
         final EntityTransaction transaction = entityManager.getTransaction();
         entityManager.flush();
         entityManager.close();
-        emf.close();
+//        emf.close();
 
 
 

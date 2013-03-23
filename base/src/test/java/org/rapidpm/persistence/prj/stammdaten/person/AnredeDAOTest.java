@@ -22,7 +22,7 @@ public class AnredeDAOTest extends BaseDAOTest {
      */
     @Test
     public void testLoadAnredeHerr() throws Exception {
-        final AnredeDAO dao = daoFactoryFactory.getAnredeDAO();
+        final AnredeDAO dao = daoFactory.getAnredeDAO();
         final Anrede anrede = dao.loadAnredeHerr();
         assertNotNull(anrede);
         assertEquals("Herr", anrede.getAnrede());
@@ -35,7 +35,7 @@ public class AnredeDAOTest extends BaseDAOTest {
      */
     @Test
     public void testLoadAnredeFrau() throws Exception {
-        final AnredeDAO dao = daoFactoryFactory.getAnredeDAO();
+        final AnredeDAO dao = daoFactory.getAnredeDAO();
         final Anrede anrede = dao.loadAnredeFrau();
         assertNotNull(anrede);
         assertEquals("Frau", anrede.getAnrede());

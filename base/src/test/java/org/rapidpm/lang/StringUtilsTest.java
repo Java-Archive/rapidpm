@@ -1,11 +1,10 @@
 package org.rapidpm.lang;
 
-import junit.framework.JUnit4TestAdapter;
-import junit.framework.Test;
+import org.junit.Test;
 import org.junit.After;
 import org.junit.Before;
 
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 /**
  * StringUtils Tester.
@@ -54,12 +53,7 @@ public class StringUtilsTest {
         assertEquals(1, i);
         i = s.split("\r").length;
         assertEquals(1, i);
-        System.out.println("s = !" + s + "!");
 
     }
 
-
-    public static Test suite() {
-        return new JUnit4TestAdapter(StringUtilsTest.class);
-    }
 }

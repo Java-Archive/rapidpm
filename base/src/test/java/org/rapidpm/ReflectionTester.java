@@ -29,61 +29,16 @@ public class ReflectionTester {
 
 
     public static void main(final String[] args) {
-        final DemoA demoA = new DemoA();
-//        final Class<? extends DemoA> aClass = demoA.getClass();
         final PackageClassLoader packageClassLoader = new PackageClassLoader();
-        final List<Class> classes = packageClassLoader.getClassesWithAnnotation("org.rapidpm.stammdaten", Entity.class);
+        final List<Class> classes = packageClassLoader.getClassesWithAnnotation("org.rapidpm", Entity.class);
         for (final Class aClass : classes) {
             final String className = aClass.getName();
             System.out.println("aClass1.getName() = " + className);
+            printInfo(aClass);
         }
     }
 
 
-    @Deprecated
-    public static class DemoA {
-        public DemoA() {
-        }
-
-
-        public DemoA(final String attributeString, final boolean attributeBoolean) {
-            this.attributeString = attributeString;
-            this.attributeBoolean = attributeBoolean;
-        }
-
-        @Deprecated
-        private String attributeString;
-
-        private boolean attributeBoolean;
-
-        private List<String> stringListe;
-
-        private Date datum;
-
-        public List<String> getStringListe() {
-            return stringListe;
-        }
-
-        public void setStringListe(final List<String> stringListe) {
-            this.stringListe = stringListe;
-        }
-
-        public String getAttributeString() {
-            return attributeString;
-        }
-
-        public void setAttributeString(final String attributeString) {
-            this.attributeString = attributeString;
-        }
-
-        public boolean isAttributeBoolean() {
-            return attributeBoolean;
-        }
-
-        public void setAttributeBoolean(final boolean attributeBoolean) {
-            this.attributeBoolean = attributeBoolean;
-        }
-    }
 
 
     private static void printInfo(final Class<? extends Object> aClass) {

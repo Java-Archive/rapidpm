@@ -26,16 +26,12 @@ public class RegistrationDAO extends DAO<Long, Registration> {
 
     //TODO noch fehlerhaft da niccht die bestehenden Logins geprüft werden.
     public boolean checkIfLoginIsAvailable(final String login, final String mandantengruppe) {
-        final List<Registration> resultList = entityManager.createQuery("from Registration  r where r.login=:login " + "and r.mandantengruppe.mandantengruppe=:mandantengruppe", Registration.class).setParameter("login", login).setParameter(
-                "mandantengruppe",
-                mandantengruppe).getResultList();
-        final Benutzer benutzer = new BenutzerDAO(entityManager).loadBenutzer(login, mandantengruppe);
+        final List<Registration> resultList = entityManager.createQuery("from Registration  r where r.login=:login " + "and r.mandantengruppe.mandantengruppe=:mandantengruppe", Registration.class)
+                .setParameter("login", login)
+                .setParameter("mandantengruppe",mandantengruppe)
+                .getResultList();
 
-        //        final List<Registration> registrationList = createWhereClause()
-        //                .eq("mandantengruppe.mandantengruppe", mandantengrupe)
-        //                .ne("registrationStatus.status", "Abgelehnt")
-        //                .eq("login", login)
-        //                .findList();
+        final Benutzer benutzer = new BenutzerDAO(entityManager).loadBenutzer(login, mandantengruppe);
         final boolean b = resultList.isEmpty() && benutzer == null;
         return b;
     }

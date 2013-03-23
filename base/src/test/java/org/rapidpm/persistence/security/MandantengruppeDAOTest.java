@@ -1,7 +1,5 @@
 package org.rapidpm.persistence.security;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.junit.Test;
 import org.rapidpm.persistence.DAOTest;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
@@ -53,7 +51,7 @@ public class MandantengruppeDAOTest extends DAOTest {
     public void testLoadAllRevisions() throws Exception {
         final List<Mandantengruppe> allRevisions = daoFactory.getMandantengruppeDAO().loadAllRevisionsFor(171L);
         for (final Mandantengruppe revision : allRevisions) {
-            System.out.println("revision = " + ToStringBuilder.reflectionToString(revision, ToStringStyle.SIMPLE_STYLE));
+            System.out.println("revision = " + revision);
         }
 
 

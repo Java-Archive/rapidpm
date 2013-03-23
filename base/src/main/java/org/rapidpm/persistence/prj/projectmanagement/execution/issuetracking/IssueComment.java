@@ -23,7 +23,8 @@ public class IssueComment {
     private Long id;
 
     @Basic
-    @Column(columnDefinition = "TEXT")
+//    @Column(columnDefinition = "TEXT")
+    @Column(length = 20000)
     private String text;
 
     @OneToOne

@@ -1,8 +1,8 @@
 package org.rapidpm.lang;
 
+import org.junit.Assert;
+import org.junit.Test;
 import org.rapidpm.Constants;
-import junit.framework.JUnit4TestAdapter;
-import junit.framework.Test;
 import org.apache.log4j.BasicConfigurator;
 import org.joda.time.DateTime;
 import org.junit.After;
@@ -38,7 +38,7 @@ public class DateUtilTest {
         //super.tearDown(); JUnit3
     }
 
-    @org.junit.Test
+    @Test
     public void testNextVersion() throws Exception {
         final String nextVersion = DateUtil.createNextVersion();
         //assertNotNull(nextVersion);
@@ -50,7 +50,7 @@ public class DateUtilTest {
     /**
      * Method: createNextVersions()
      */
-    @org.junit.Test
+    @Test
     public void testCreateNextVersions() throws Exception {
         //TODO: Test goes here...
     }
@@ -58,17 +58,21 @@ public class DateUtilTest {
     /**
      * Method: createVersions(final DateTime startDate, final DateTime stopDate)
      */
-    @org.junit.Test
+    @Test
     public void testCreateVersions() throws Exception {
         final DateTime startDate = new DateTime(2010, 8, 31, 0, 0, 0, 0);
-        final List<String> versions = DateUtil.createVersions(startDate, new DateTime(System.currentTimeMillis()));
-
+        final DateTime stopDate = new DateTime(2010, 9, 30, 0, 0, 0, 0);
+        final List<String> versions = DateUtil.createVersions(startDate, stopDate);
+        Assert.assertEquals("2010-09-10",versions.get(0));
+        Assert.assertEquals("2010-09-17",versions.get(1));
+        Assert.assertEquals("2010-09-24",versions.get(2));
+        Assert.assertEquals("2010-10-01",versions.get(3));
     }
 
     /**
      * Method: dateTime2String(Date date)
      */
-    @org.junit.Test
+    @Test
     public void testDateTime2String() throws Exception {
         //TODO: Test goes here...
     }
@@ -76,7 +80,7 @@ public class DateUtilTest {
     /**
      * Method: date2String(Date date)
      */
-    @org.junit.Test
+    @Test
     public void testDate2String() throws Exception {
         //TODO: Test goes here...
     }
@@ -84,7 +88,7 @@ public class DateUtilTest {
     /**
      * Method: string2DateTime(String string)
      */
-    @org.junit.Test
+    @Test
     public void testString2DateTime() throws Exception {
         //TODO: Test goes here...
     }
@@ -114,9 +118,6 @@ public class DateUtilTest {
     }
 
 
-    public static Test suite() {
-        return new JUnit4TestAdapter(DateUtilTest.class);
-    }
 
     @org.junit.Test
     public void testUpdateTimestamp() throws Exception {

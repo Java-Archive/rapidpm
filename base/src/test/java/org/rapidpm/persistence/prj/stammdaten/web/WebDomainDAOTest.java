@@ -23,9 +23,9 @@ public class WebDomainDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadWebDomainsFor() throws Exception {
-        final WebDomainDAO dao = daoFactoryFactory.getWebDomainDAO();
+        final WebDomainDAO dao = daoFactory.getWebDomainDAO();
 
-        final List<Berechtigung> berechtigungList = daoFactoryFactory.getBerechtigungDAO().loadAllEntities();
+        final List<Berechtigung> berechtigungList = daoFactory.getBerechtigungDAO().loadAllEntities();
         for (final Berechtigung berechtigung : berechtigungList) {
             System.out.println("berechtigung = " + berechtigung);
             final Set<String> webdomainSet = new HashSet<String>();
@@ -57,7 +57,7 @@ public class WebDomainDAOTest extends BaseDAOTest {
 
         for (int i = 0; i < 4; i++) {
             final long start = System.nanoTime();
-            final List<WebDomain> webDomains = daoFactoryFactory.getWebDomainDAO().loadWebDomainsFor("Hochschulsuchmaschine", "Universität");
+            final List<WebDomain> webDomains = daoFactory.getWebDomainDAO().loadWebDomainsFor("Hochschulsuchmaschine", "Universität");
             final long stop = System.nanoTime();
             System.out.println("diff [ms] = " + (stop - start) / 1000 / 1000);
             assertNotNull(webDomains);
@@ -67,7 +67,7 @@ public class WebDomainDAOTest extends BaseDAOTest {
         System.out.println(" = ");
         for (int i = 0; i < 4; i++) {
             final long start = System.nanoTime();
-            final List<WebDomain> webDomains = daoFactoryFactory.getWebDomainDAO().loadWebDomainsForSQL("Hochschulsuchmaschine", "Universität");
+            final List<WebDomain> webDomains = daoFactory.getWebDomainDAO().loadWebDomainsForSQL("Hochschulsuchmaschine", "Universität");
             final long stop = System.nanoTime();
             System.out.println("diff [ms] = " + (stop - start) / 1000 / 1000);
             assertNotNull(webDomains);

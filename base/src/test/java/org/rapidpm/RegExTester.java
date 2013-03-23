@@ -14,7 +14,7 @@ package org.rapidpm;
  *
  */
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
@@ -23,7 +23,7 @@ import org.junit.Test;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 public class RegExTester {
     private static final Logger logger = Logger.getLogger(RegExTester.class);

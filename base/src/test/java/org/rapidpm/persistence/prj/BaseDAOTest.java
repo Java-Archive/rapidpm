@@ -11,29 +11,24 @@ package org.rapidpm.persistence.prj;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 import static org.junit.Assert.assertEquals;
 
 public class BaseDAOTest {
 
-    protected EntityManagerFactory emf = Persistence.createEntityManagerFactory("baseormRapidPMJDBCbeta");
-    protected EntityManager entityManager = emf.createEntityManager();
-    protected DaoFactory daoFactoryFactory = new DaoFactory();
+    protected DaoFactory daoFactory = new DaoFactory(Constants.PERSISTENCE_UNIT_NAME_TEST);
 
 
     @Before
     public void setUp() throws Exception {
-        daoFactoryFactory.setEntityManager(entityManager);
+//        daoFactory.setEntityManager(entityManager);
     }
 
     @After
     public void tearDown() throws Exception {
-        emf.close();
+        daoFactory.getEntityManager().close();
     }
 
     @Test

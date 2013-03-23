@@ -17,7 +17,7 @@ public class AddressKlassifizierungDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadAddressAdressKlassifizierung() throws Exception {
-        final AddressKlassifizierungDAO dao = daoFactoryFactory.getAddressKlassifizierungDAO();
+        final AddressKlassifizierungDAO dao = daoFactory.getAddressKlassifizierungDAO();
         final AdressKlassifizierung klassifizierung = dao.loadAdressKlassifizierung("privat");
         assertNotNull(klassifizierung);
         assertEquals("privat", klassifizierung.getKlassifizierung());
@@ -25,7 +25,7 @@ public class AddressKlassifizierungDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadKlassifizierungPrivat() throws Exception {
-        final AddressKlassifizierungDAO dao = daoFactoryFactory.getAddressKlassifizierungDAO();
+        final AddressKlassifizierungDAO dao = daoFactory.getAddressKlassifizierungDAO();
         final AdressKlassifizierung klassifizierung = dao.loadKlassifizierungPrivat();
         assertNotNull(klassifizierung);
         assertEquals("privat", klassifizierung.getKlassifizierung());
@@ -33,7 +33,7 @@ public class AddressKlassifizierungDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadKlassifizierungBeruflich() throws Exception {
-        final AddressKlassifizierungDAO dao = daoFactoryFactory.getAddressKlassifizierungDAO();
+        final AddressKlassifizierungDAO dao = daoFactory.getAddressKlassifizierungDAO();
         final AdressKlassifizierung klassifizierung = dao.loadKlassifizierungBeruflich();
         assertNotNull(klassifizierung);
         assertEquals("beruflich", klassifizierung.getKlassifizierung());

@@ -9,14 +9,13 @@ package org.rapidpm.persistence.prj.projectmanagement;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.prj.BaseDAOTest;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectName;
 import org.rapidpm.persistence.system.security.Benutzer;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,7 +28,7 @@ public class ProjectDAOTest extends BaseDAOTest {
 
     @Test
     public void testPrjRegistrationen() throws Exception {
-        final List<PlannedProject> projectList = daoFactoryFactory.getProjectDAO().loadAllEntities();
+        final List<PlannedProject> projectList = daoFactory.getProjectDAO().loadAllEntities();
         assertNotNull(projectList);
         System.out.println("projectList.size() = " + projectList.size());
         assertFalse(projectList.isEmpty());
@@ -51,15 +50,16 @@ public class ProjectDAOTest extends BaseDAOTest {
         namen.add(n);
         p.setPlannedProjectName(namen);
 
-        final DaoFactory daoFactoryFactory = new DaoFactory();
-        daoFactoryFactory.setEntityManager(entityManager);
+//        final DaoFactory daoFactory = new DaoFactory(Constants.PERSISTENCE_UNIT_NAME_TEST);
+//        daoFactory.setEntityManager(entityManager);
 
-        final Benutzer benutzer = daoFactoryFactory.getBenutzerDAO().loadBenutzer("sven.ruppert", "NeoScioPortal");
+        final Benutzer benutzer = daoFactory.getBenutzerDAO().loadBenutzer("sven.ruppert", "NeoScioPortal");
         p.setCreator(benutzer);
         //        p.setIssues();
         p.setMandantengruppe(benutzer.getMandantengruppe());
         p.setResponsiblePerson(benutzer);
 
+        final EntityManager entityManager = daoFactory.getEntityManager();
         final EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
         entityManager.persist(p);
@@ -69,12 +69,12 @@ public class ProjectDAOTest extends BaseDAOTest {
 
     @Test
     public void testDeleteProject() throws Exception {
-        final DaoFactory daoFactoryFactory = new DaoFactory();
-        daoFactoryFactory.setEntityManager(entityManager);
-
+//        final DaoFactory daoFactory = new DaoFactory();
+//        daoFactory.setEntityManager(entityManager);
+        final EntityManager entityManager = daoFactory.getEntityManager();
         final EntityTransaction transaction = entityManager.getTransaction();
         transaction.begin();
-        final List<PlannedProject> projects = daoFactoryFactory.getProjectDAO().loadProjectsFor("NeoScioPortal");
+        final List<PlannedProject> projects = daoFactory.getProjectDAO().loadProjectsFor("NeoScioPortal");
         for (final PlannedProject project : projects) {
             entityManager.remove(project);
         }

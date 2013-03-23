@@ -34,9 +34,12 @@ public class Absatz {
     private Boolean freigeschaltet;
     @Basic
     private Integer absatznummer;
+
     @Basic
-    @Column(columnDefinition = "TEXT")
+//    @Column(columnDefinition = "String")
+    @Column(length = 20000)
     private String text;
+
     @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<AbsatzKommentar> kommentarliste;
 

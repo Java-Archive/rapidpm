@@ -22,21 +22,21 @@ import static org.junit.Assert.assertTrue;
 public class KommunikationsServiceUIDDAOTest extends BaseDAOTest {
     @Test
     public void testLoadServiceUIDsForOrganisationseinheit() throws Exception {
-        final KommunikationsServiceUIDDAO dao = daoFactoryFactory.getKommunikationServiceUIDDAO();
+        final KommunikationsServiceUIDDAO dao = daoFactory.getKommunikationServiceUIDDAO();
         final List<KommunikationsServiceUID> kommunikationsServiceUIDs = dao.loadServiceUIDsForOrganisationseinheit(1L);
         assertFalse(kommunikationsServiceUIDs.isEmpty());
     }
 
     @Test
     public void testIsEmailAlreadyRegisteredSystemweit() throws Exception {
-        final KommunikationsServiceUIDDAO dao = daoFactoryFactory.getKommunikationServiceUIDDAO();
+        final KommunikationsServiceUIDDAO dao = daoFactory.getKommunikationServiceUIDDAO();
         assertTrue(dao.isEmailRegistered("sven.ruppert@neoscio.de"));
         assertFalse(dao.isEmailRegistered("max.mustermann@test.de"));
     }
 
     @Test
     public void testIsEmailAlreadyRegisteredMandatenweit() throws Exception {
-        final KommunikationsServiceUIDDAO dao = daoFactoryFactory.getKommunikationServiceUIDDAO();
+        final KommunikationsServiceUIDDAO dao = daoFactory.getKommunikationServiceUIDDAO();
         assertTrue(dao.isEmailRegistered("sven.ruppert@neoscio.de", "NeoScioPortal"));
         assertFalse(dao.isEmailRegistered("sven.ruppert@neoscio.de", "Hochschulsuchmaschine"));
         assertFalse(dao.isEmailRegistered("max.mustermann@test.de", 16L));

@@ -49,8 +49,9 @@ public class LoggingEventParam {
         this.paramName = paramName;
     }
 
-    @Column(columnDefinition = "TEXT")
+//    @Column(columnDefinition = "TEXT")
     @Basic
+    @Column(length = 20000)
     private String paramValue;
 
     public String getParamValue() {

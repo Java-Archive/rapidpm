@@ -20,7 +20,7 @@ public class PositionDAOTest extends BaseDAOTest {
 
     @Test
     public void testLoadPositionen4OrgEinheit() throws Exception {
-        final List<Position> positionList = daoFactoryFactory.getPositionDAO().loadPositionForOrgeinheit(34L);
+        final List<Position> positionList = daoFactory.getPositionDAO().loadPositionForOrgeinheit(34L);
         assertNotNull(positionList);
         assertFalse(positionList.isEmpty());
         for (final Position position : positionList) {

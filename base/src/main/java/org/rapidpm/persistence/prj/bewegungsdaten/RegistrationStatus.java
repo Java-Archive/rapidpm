@@ -21,7 +21,6 @@ import javax.persistence.*;
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
 public class RegistrationStatus {
-    private static final Logger logger = Logger.getLogger(RegistrationStatus.class);
 
     @Id
     @TableGenerator(name = "PKGenRegistrationStatus", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "RegistrationStatus_id", valueColumnName = "gen_value", allocationSize = 1)

@@ -22,10 +22,10 @@ public class PositionDAOTest extends BaseDAOTest {
     @Test
     public void testLoad4OrgEinheit() throws Exception {
 
-        final List<Organisationseinheit> organisationseinheits = daoFactoryFactory.getOrganisationseinheitDAO().loadOrganisationseinheitenForMandantengruppe("KIO Oberberg", true);
+        final List<Organisationseinheit> organisationseinheits = daoFactory.getOrganisationseinheitDAO().loadOrganisationseinheitenForMandantengruppe("KIO Oberberg", true);
         for (final Organisationseinheit organisationseinheit : organisationseinheits) {
 
-            final List<Position> positions = daoFactoryFactory.getPositionDAO().loadPositionForOrgeinheit(organisationseinheit.getId());
+            final List<Position> positions = daoFactory.getPositionDAO().loadPositionForOrgeinheit(organisationseinheit.getId());
             assertNotNull(positions);
             for (final Position position : positions) {
                 assertNotNull(position);

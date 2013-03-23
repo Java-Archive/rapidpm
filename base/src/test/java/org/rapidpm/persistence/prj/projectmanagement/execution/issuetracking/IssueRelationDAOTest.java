@@ -3,7 +3,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.neo4j.graphdb.Direction;
-import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
+import org.rapidpm.persistence.prj.projectmanagement.execution.BaseIssueTrackingDAOTest;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 
@@ -19,7 +19,7 @@ import static org.junit.Assert.*;
  * Time: 13:46
  * To change this template use File | Settings | File Templates.
  */
-public class IssueRelationDAOTest implements BaseDAOTest {
+public class IssueRelationDAOTest extends BaseIssueTrackingDAOTest {
     private static Logger logger = Logger.getLogger(IssueRelationDAOTest.class);
 
     private final IssueRelationDAO dao = daoFactory.getIssueRelationDAO();

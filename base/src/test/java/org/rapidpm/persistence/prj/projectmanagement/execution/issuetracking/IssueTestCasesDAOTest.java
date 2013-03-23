@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
 import org.junit.Test;
-import org.rapidpm.persistence.prj.projectmanagement.execution.BaseDAOTest;
+import org.rapidpm.persistence.prj.projectmanagement.execution.BaseIssueTrackingDAOTest;
 
 
 import java.util.List;
@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
  * Time: 13:36
  * To change this template use File | Settings | File Templates.
  */
-public class IssueTestCasesDAOTest implements BaseDAOTest {
+public class IssueTestCasesDAOTest extends  BaseIssueTrackingDAOTest {
 
     private final IssueTestCaseDAO dao = daoFactory.getIssueTestCaseDAO();
 

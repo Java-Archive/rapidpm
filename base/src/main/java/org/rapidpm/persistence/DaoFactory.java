@@ -73,8 +73,8 @@ public class DaoFactory {
         return this.entityManager;
     }
 
-    public DaoFactory() {
-    }
+//    public DaoFactory() {
+//    }
 
 //    public <T> void remove(T entity) {
 //        T theentity = this.getEntityManager().merge(entity);
