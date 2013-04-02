@@ -1,9 +1,12 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.suche;
 
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
+
+import static org.rapidpm.Constants.PATTY_LOGO;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -13,6 +16,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 public class SearchScreenCRUD extends Screen {
+
+    private final Image pattyImage = new Image("", new ThemeResource(PATTY_LOGO));
 
     private HorizontalLayout outterLayout;
     private VerticalLayout searchBarLayout;
@@ -85,14 +90,13 @@ public class SearchScreenCRUD extends Screen {
         searchPanel.setSizeFull();
         outterLayout.setExpandRatio(searchBarPanel, 0.2f);
         outterLayout.setExpandRatio(searchPanel, 0.8f);
-        Label lbl = new Label("<Suchmaschinen-Logo>");
-        lbl.setSizeUndefined();
+        outterLayout.setSizeFull();
         frameLayout = new VerticalLayout();
-        frameLayout.addComponents(lbl, outterLayout);
-        frameLayout.setComponentAlignment(lbl, Alignment.MIDDLE_CENTER);
+        frameLayout.addComponents(pattyImage, outterLayout);
+        frameLayout.setComponentAlignment(pattyImage, Alignment.TOP_CENTER);
         frameLayout.setSizeFull();
-        frameLayout.setExpandRatio(lbl, 0.05f);
-        frameLayout.setExpandRatio(outterLayout, 0.95f);
+        frameLayout.setExpandRatio(pattyImage, 0.13f);
+        frameLayout.setExpandRatio(outterLayout, 0.87f);
         setComponents();
         doInternationalization();
     }
