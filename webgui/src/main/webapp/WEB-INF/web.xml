@@ -12,7 +12,6 @@
         <init-param>
             <description>Vaadin UI to display</description>
             <param-name>UI</param-name>
-            <!-- <param-value>org.rapidpm.MyVaadinUI</param-value> -->
             <param-value>org.rapidpm.webapp.vaadin.MainUI</param-value>
         </init-param>
                 <init-param>

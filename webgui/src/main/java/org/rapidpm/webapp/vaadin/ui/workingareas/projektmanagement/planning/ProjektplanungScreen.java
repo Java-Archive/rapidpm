@@ -118,7 +118,7 @@ public class ProjektplanungScreen extends Screen {
             buildPlanningUnitPanel();
             doInternationalization();
             setComponents();
-        } catch (final NoProjectsException e) {
+        } catch (NoProjectsException | NullPointerException e) {
             removeAllComponents();
             final NoProjectsScreen noProjectsScreen = new NoProjectsScreen(ui);
             addComponent(noProjectsScreen);
