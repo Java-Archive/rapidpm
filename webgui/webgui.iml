@@ -11,6 +11,19 @@
         </webroots>
       </configuration>
     </facet>
+    <facet type="JRebel" name="JRebel">
+      <configuration>
+        <option name="autosync" value="false" />
+        <option name="generateRebel" value="false" />
+        <option name="manualXML" value="true" />
+        <option name="privateKey" />
+        <option name="publicKey" />
+        <option name="remotingEnabled" value="false" />
+        <option name="secure" value="true" />
+        <option name="url" />
+        <option name="xmlDir" value="E:\Program Files (x86)\SmartGit 3\bin\rapidpm-maven\webgui\src\main\resources" />
+      </configuration>
+    </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_7" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />

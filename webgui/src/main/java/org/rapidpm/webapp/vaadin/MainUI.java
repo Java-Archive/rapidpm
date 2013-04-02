@@ -13,6 +13,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.Proj
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.BenutzerScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.suche.SearchScreenNoCRUD;
 import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.ZeitauswertungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.erfassung.ZeiterfassungScreen;
 
@@ -137,8 +138,14 @@ public class MainUI extends BaseUI {
             }
         });
 
-        setWorkingArea(new ProjektplanungScreen(this));
-
+        final MenuBar.MenuItem searchMenu = menuBar.addItem(messages.getString("search"), null);
+        searchMenu.addItem("Suchbildschirm - Gast (ohne CRUD)", new MenuBar.Command() {
+            @Override
+            public void menuSelected(MenuBar.MenuItem selectedItem) {
+                setWorkingArea(new SearchScreenNoCRUD(MainUI.this));
+            }
+        });
+        setWorkingArea(new SearchScreenNoCRUD(this));
     }
 
     public Locale getLocale(){
