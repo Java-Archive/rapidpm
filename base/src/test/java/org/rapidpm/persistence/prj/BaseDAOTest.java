@@ -13,12 +13,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingelton;
 
 import static org.junit.Assert.assertEquals;
 
 public class BaseDAOTest {
 
-    protected DaoFactory daoFactory = new DaoFactory(Constants.PERSISTENCE_UNIT_NAME_TEST);
+    protected  DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
 
     @Before
@@ -28,7 +29,7 @@ public class BaseDAOTest {
 
     @After
     public void tearDown() throws Exception {
-        daoFactory.getEntityManager().close();
+//        daoFactory.getEntityManager().close();
     }
 
     @Test

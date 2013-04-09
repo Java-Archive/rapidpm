@@ -35,7 +35,7 @@ public abstract class BaseUI extends UI {
     private static final Logger logger = Logger.getLogger(BaseUI.class);
 
     private static final boolean DEBUG_MODE = false;
-    private static final String VERSION = "alpha - build 20130112 - bf57b264fc2f9f0b14fd8bb967bd84b1fa50bbdd";
+    private static final String VERSION = "alpha - for testing only";
 
     private final HorizontalLayout linkLeistenLayout = new HorizontalLayout(); //obere buttonLeiste
     private final HorizontalLayout iconsLayout = new HorizontalLayout();
