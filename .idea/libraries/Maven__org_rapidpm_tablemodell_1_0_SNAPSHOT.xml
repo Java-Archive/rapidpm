@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: org.rapidpm:tablemodell:1.0-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/rapidpm/tablemodell/1.0-SNAPSHOT/tablemodell-1.0-SNAPSHOT.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/rapidpm/tablemodell/1.0-SNAPSHOT/tablemodell-1.0-20130319.141511-5.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/org/rapidpm/tablemodell/1.0-SNAPSHOT/tablemodell-1.0-SNAPSHOT-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/rapidpm/tablemodell/1.0-SNAPSHOT/tablemodell-1.0-20130319.141511-5-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/rapidpm/tablemodell/1.0-SNAPSHOT/tablemodell-1.0-SNAPSHOT-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/rapidpm/tablemodell/1.0-SNAPSHOT/tablemodell-1.0-20130319.141511-5-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

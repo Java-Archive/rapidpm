@@ -1,4 +1,7 @@
 .idea/workspace.xml
 out/*
 target
+base/data/graphDB/*
+base/data/derby/*
+base/derby.log
 webgui/src/main/resources/rebel.xml

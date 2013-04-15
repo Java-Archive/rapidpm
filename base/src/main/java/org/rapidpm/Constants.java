@@ -22,6 +22,7 @@ public class Constants {
 
     public static final boolean DEBUG = true;
     public static final boolean INTEGRATION_TEST = true;
+    public static final String SOLR_URL = "http://unser93289probierdns487.dlinkddns.com/solr-example";
 
 
     public static final String URL = "url";
