@@ -18,7 +18,7 @@
                 <init-param>
             <description>Application widgetset</description>
             <param-name>widgetset</param-name>
-            <param-value>org.rapidpm.AppWidgetSet</param-value>
+            <param-value>com.vaadin.DefaultWidgetSet</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

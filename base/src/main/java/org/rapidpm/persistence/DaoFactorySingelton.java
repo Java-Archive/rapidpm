@@ -14,15 +14,16 @@ public class DaoFactorySingelton {
     private static DaoFactory daoFactoryFactory;
 
     public static DaoFactory getInstance() {
+        if(daoFactoryFactory == null) {
+            if(Constants.INTEGRATION_TEST){
+                daoFactoryFactory = new DaoFactory(Constants.PERSISTENCE_UNIT_NAME_TEST);
+            }else{
+                daoFactoryFactory = new DaoFactory(Constants.PERSISTENCE_UNIT_NAME_PROD);
+            }
+        }
         return daoFactoryFactory;
     }
 
     private DaoFactorySingelton() {
-        if(Constants.INTEGRATION_TEST){
-            daoFactoryFactory = new DaoFactory(Constants.PERSISTENCE_UNIT_NAME_TEST);
-        }else{
-            daoFactoryFactory = new DaoFactory(Constants.PERSISTENCE_UNIT_NAME_PROD);
-        }
-
     }
 }

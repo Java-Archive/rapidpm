@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat;
 public class Constants {
 
     public static final boolean DEBUG = true;
-    public static final boolean INTEGRATION_TEST = true;
+    public static final boolean INTEGRATION_TEST = false;
 
 
     public static final String URL = "url";

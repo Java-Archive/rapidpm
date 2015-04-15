@@ -1,17 +1,16 @@
 package org.rapidpm;
 
-import org.jdom.Attribute;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.XMLOutputter;
+import org.jdom2.Attribute;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.XMLOutputter;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -72,16 +71,17 @@ public class JDomTester {
 
         final XMLOutputter outputter = new XMLOutputter();
 
-        final List<Element> contentListe = rootElement.getContent();
-        final Element element = document.getRootElement();
-        for (final Element documentElement : contentListe) {
-            final Attribute attributeURI = documentElement.getAttribute("uri");
-            final String url = attributeURI.getValue();
-
-
-            outputter.output(documentElement, System.out);
-            System.out.append(Constants.LINE_BREAK);
-        }
+        // TODO Fix for JDom2
+//        final List<Element> contentListe = rootElement.getContent();
+//        final Element element = document.getRootElement();
+//        for (final Element documentElement : contentListe) {
+//            final Attribute attributeURI = documentElement.getAttribute("uri");
+//            final String url = attributeURI.getValue();
+//
+//
+//            outputter.output(documentElement, System.out);
+//            System.out.append(Constants.LINE_BREAK);
+//        }
 
 /*
 

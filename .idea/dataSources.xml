@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" compressed="false" hash="3751490519" />
+  <component name="DataSourceManagerImpl" format="xml" hash="1252475849">
+    <data-source source="LOCAL" name="PostgreSQL - rapidpm@localhost" uuid="238d4823-1542-43b1-835d-25bf068bc69a">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/rapidpm</jdbc-url>
+      <libraries />
+    </data-source>
+  </component>
 </project>
-

@@ -4,10 +4,9 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.AbstractTextField;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.TextField;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
-import scala.actors.threadpool.Arrays;
 
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 /**
