@@ -7,7 +7,6 @@ package org.rapidpm.webapp.vaadin;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
-import com.vaadin.annotations.Theme;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinSession;
@@ -30,7 +29,7 @@ import java.util.ResourceBundle;
 import static org.rapidpm.Constants.IMAGE_LOGO;
 import static org.rapidpm.Constants.MESSAGESBUNDLE;
 
-@Theme("rapidpm")
+
 public abstract class BaseUI extends UI {
     private static final Logger logger = Logger.getLogger(BaseUI.class);
 

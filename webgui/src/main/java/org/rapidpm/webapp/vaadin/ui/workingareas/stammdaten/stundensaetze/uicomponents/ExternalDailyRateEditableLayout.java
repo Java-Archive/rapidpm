@@ -1,8 +1,11 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents;
 
 import com.vaadin.data.util.BeanItem;
-import com.vaadin.data.util.converter.StringToNumberConverter;
-import com.vaadin.ui.*;
+import com.vaadin.data.util.converter.StringToFloatConverter;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.TextField;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
@@ -11,11 +14,9 @@ import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.EditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents.ProjektFieldGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
 
 import java.text.NumberFormat;
-import java.util.Iterator;
 import java.util.Locale;
 
 import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
@@ -93,7 +94,7 @@ public class ExternalDailyRateEditableLayout extends EditableLayout {
     }
 
     public void addConverterToField() {
-        externalDailyRateField.setConverter(new StringToNumberConverter() {
+        externalDailyRateField.setConverter(new StringToFloatConverter() {
             @Override
             protected NumberFormat getFormat(final Locale locale) {
                 return NumberFormat.getCurrencyInstance(locale);

@@ -1,6 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic;
 
-import com.vaadin.data.util.converter.StringToNumberConverter;
+import com.vaadin.data.util.converter.StringToFloatConverter;
 import com.vaadin.ui.Table;
 import org.rapidpm.webapp.vaadin.ui.workingareas.ConverterAdder;
 
@@ -14,21 +14,21 @@ public class StundensaetzeConverterAdder implements ConverterAdder {
     @Override
     public void addConvertersTo(final Table tabelle) {
 
-        tabelle.setConverter(BRUTTOGEHALT, new StringToNumberConverter() {
+        tabelle.setConverter(BRUTTOGEHALT, new StringToFloatConverter() {
             @Override
             protected NumberFormat getFormat(final Locale locale) {
                 return NumberFormat.getCurrencyInstance(locale);
             }
         });
 
-        tabelle.setConverter(FACTURIZABLE, new StringToNumberConverter() {
+        tabelle.setConverter(FACTURIZABLE, new StringToFloatConverter() {
             @Override
             protected NumberFormat getFormat(Locale locale) {
                 return NumberFormat.getPercentInstance(locale);
             }
         });
 
-        tabelle.setConverter(EUROS_PER_HOUR, new StringToNumberConverter() {
+        tabelle.setConverter(EUROS_PER_HOUR, new StringToFloatConverter() {
             @Override
             protected NumberFormat getFormat(Locale locale) {
                 return NumberFormat.getCurrencyInstance(locale);
@@ -36,7 +36,7 @@ public class StundensaetzeConverterAdder implements ConverterAdder {
         });
 
         tabelle.setConverter(EXTERNAL_EUROS_PER_HOUR,
-                new StringToNumberConverter() {
+                new StringToFloatConverter() {
                     @Override
                     protected NumberFormat getFormat(Locale locale) {
                         return NumberFormat.getCurrencyInstance(locale);
@@ -44,28 +44,28 @@ public class StundensaetzeConverterAdder implements ConverterAdder {
                 });
 
         tabelle.setConverter(OPERATIVE_EUROS_PER_HOUR,
-                new StringToNumberConverter() {
+                new StringToFloatConverter() {
                     @Override
                     protected NumberFormat getFormat(Locale locale) {
                         return NumberFormat.getCurrencyInstance(locale);
                     }
                 });
 
-        tabelle.setConverter(BRUTTO_PER_MONTH, new StringToNumberConverter() {
+        tabelle.setConverter(BRUTTO_PER_MONTH, new StringToFloatConverter() {
             @Override
             protected NumberFormat getFormat(Locale locale) {
                 return NumberFormat.getCurrencyInstance(locale);
             }
         });
 
-        tabelle.setConverter(SUM_PER_MONTH, new StringToNumberConverter() {
+        tabelle.setConverter(SUM_PER_MONTH, new StringToFloatConverter() {
             @Override
             protected NumberFormat getFormat(Locale locale) {
                 return NumberFormat.getCurrencyInstance(locale);
             }
         });
 
-        tabelle.setConverter(SUM_PER_DAY, new StringToNumberConverter() {
+        tabelle.setConverter(SUM_PER_DAY, new StringToFloatConverter() {
             @Override
             protected NumberFormat getFormat(Locale locale) {
                 return NumberFormat.getCurrencyInstance(locale);

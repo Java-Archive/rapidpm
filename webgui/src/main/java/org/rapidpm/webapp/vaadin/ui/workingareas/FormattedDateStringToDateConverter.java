@@ -21,12 +21,13 @@ public final class FormattedDateStringToDateConverter implements Converter<Strin
         this.dateFormat = dateFormat;
     }
 
+
     @Override
-    public Date convertToModel(final String value, final Locale locale) throws ConversionException {
+    public Date convertToModel(final String s, final Class<? extends Date> aClass, final Locale locale) throws ConversionException {
         Date parsedDate = new Date();
 
         try {
-            parsedDate = dateFormat.parse(value);
+            parsedDate = dateFormat.parse(s);
         } catch (ParseException e) {
             e.printStackTrace();  //TODO Logger verwenden
         }
@@ -34,10 +35,10 @@ public final class FormattedDateStringToDateConverter implements Converter<Strin
     }
 
     @Override
-    public String convertToPresentation(final Date value, final Locale locale) throws ConversionException {
+    public String convertToPresentation(final Date date, final Class<? extends String> aClass, final Locale locale) throws ConversionException {
         String formattedDate = dateFormat.toPattern();
-        if(value != null)
-            formattedDate = dateFormat.format(value);
+        if(date != null)
+            formattedDate = dateFormat.format(date);
         return formattedDate;
     }
 

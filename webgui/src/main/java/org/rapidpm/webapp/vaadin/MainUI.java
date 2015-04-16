@@ -1,6 +1,9 @@
 package org.rapidpm.webapp.vaadin;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.annotations.Widgetset;
+import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.MenuBar;
 import org.rapidpm.webapp.vaadin.ui.workingareas.anfragenmanagement.AnfragenmanagementWorkingArea;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
@@ -16,6 +19,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.Stunde
 import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.ZeitauswertungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.erfassung.ZeiterfassungScreen;
 
+import javax.servlet.annotation.WebServlet;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -25,10 +29,17 @@ import java.util.ResourceBundle;
  * Date: 26.04.12
  * Time: 12:41
  */
-@Theme("rapidpm")
 //@JavaScript({   "http://localhost:8080/rapidpm/javascript/highcharts/highcharts.js",
 //                "http://localhost:8080/rapidpm/javascript/jquery/jquery-1.4.4.min.js"})
+@SuppressWarnings("serial")
+@Theme("mytheme")
+@Widgetset("com.vaadin.DefaultWidgetSet")
 public class MainUI extends BaseUI {
+
+    @WebServlet(urlPatterns = "/*", name = "MainUIServlet")
+    @VaadinServletConfiguration(ui = MainUI.class, productionMode = false)
+    public static class MainUIServlet extends VaadinServlet {
+    }
 
     @Override
     protected void initMenuBar(final MenuBar menuBar) {

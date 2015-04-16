@@ -14,7 +14,6 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.system.security.Benutzer;
-import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.FormattedDateStringToDateConverter;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.exceptions.MissingAttributeException;
@@ -194,7 +193,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 
 
         plannedDateLabel = new Label();
-        plannedDateLabel.setValue(converter.convertToPresentation(new Date(), Locale.getDefault()));
+        plannedDateLabel.setValue(converter.convertToPresentation(new Date(), String.class, Locale.getDefault()));
         dateLayout.addComponent(plannedDateLabel);
 
         resolvedDateField = new DateField();
@@ -401,7 +400,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
 //            issue.setReporter(userDao.loadBenutzerByEmail("nobody@rapidpm.org"));
 //        }
         reporterLabel.setValue(issue.getReporter().getLogin());
-        plannedDateLabel.setValue(converter.convertToPresentation(issue.getDueDate_planned(), Locale.getDefault()));
+        plannedDateLabel.setValue(converter.convertToPresentation(issue.getDueDate_planned(), String.class, Locale.getDefault()));
         resolvedDateField.setValue(issue.getDueDate_resolved().getTime() == 0L ? null : issue.getDueDate_resolved());
         closedDateField.setValue(issue.getDueDate_closed().getTime() == 0L ? null : issue.getDueDate_closed());
         storyPointSelect.select(issue.getStoryPoints());
@@ -491,7 +490,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         issue.setStatus((IssueStatus) statusSelect.getValue());
         issue.setPriority((IssuePriority) prioritySelect.getValue());
         issue.setAssignee((Benutzer) assigneeSelect.getValue());
-        issue.setDueDate_planned(converter.convertToModel(plannedDateLabel.getValue(), Locale.getDefault()));
+        issue.setDueDate_planned(converter.convertToModel(plannedDateLabel.getValue(), Date.class, Locale.getDefault()));
         issue.setDueDate_resolved(resolvedDateField.getValue() == null ? new Date(0) : resolvedDateField.getValue());
         issue.setDueDate_closed(closedDateField.getValue() == null ? new Date(0) : closedDateField.getValue());
         issue.setStoryPoints((IssueStoryPoint) storyPointSelect.getValue());

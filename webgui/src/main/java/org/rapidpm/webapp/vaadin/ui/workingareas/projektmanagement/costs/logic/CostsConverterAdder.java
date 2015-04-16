@@ -1,6 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic;
 
-import com.vaadin.data.util.converter.StringToNumberConverter;
+import com.vaadin.data.util.converter.StringToFloatConverter;
 import com.vaadin.ui.Table;
 import org.rapidpm.webapp.vaadin.ui.workingareas.ConverterAdder;
 
@@ -28,7 +28,7 @@ public class CostsConverterAdder implements ConverterAdder {
             final String aufgabe = messages.getString("aufgabe");
             if (!spaltenId.equals(aufgabe)) {
                 tabelle.setConverter(spaltenId,
-                        new StringToNumberConverter() {
+                        new StringToFloatConverter() {
                             @Override
                             protected NumberFormat getFormat(final Locale locale) {
                                 return NumberFormat.getCurrencyInstance(new Locale("de","DE"));
