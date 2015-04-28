@@ -19,7 +19,6 @@
           <element id="library" level="project" name="Maven: xml-apis:xml-apis:1.0.b2" />
           <element id="library" level="project" name="Maven: org.hibernate.common:hibernate-commons-annotations:4.0.5.Final" />
           <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final" />
-          <element id="library" level="project" name="Maven: org.javassist:javassist:3.18.1-GA" />
           <element id="library" level="project" name="Maven: antlr:antlr:2.7.7" />
           <element id="library" level="project" name="Maven: org.jboss:jandex:1.1.0.Final" />
           <element id="library" level="project" name="Maven: org.hibernate:hibernate-entitymanager:4.3.7.Final" />
@@ -48,7 +47,6 @@
           <element id="library" level="project" name="Maven: org.parboiled:parboiled-scala_2.10:1.1.6" />
           <element id="library" level="project" name="Maven: org.parboiled:parboiled-core:1.1.6" />
           <element id="library" level="project" name="Maven: net.sf.opencsv:opencsv:2.3" />
-          <element id="library" level="project" name="Maven: com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:1.4" />
           <element id="library" level="project" name="Maven: org.scala-lang:scala-library:2.10.4" />
           <element id="library" level="project" name="Maven: org.neo4j:neo4j-jmx:2.2.0" />
           <element id="library" level="project" name="Maven: org.neo4j:neo4j-consistency-check:2.2.0" />
@@ -57,6 +55,49 @@
           <element id="library" level="project" name="Maven: joda-time:joda-time:2.7" />
           <element id="library" level="project" name="Maven: org.apache.commons:commons-lang3:3.3.2" />
           <element id="library" level="project" name="Maven: postgresql:postgresql:9.1-901-1.jdbc4" />
+          <element id="library" level="project" name="Maven: com.orientechnologies:orientdb-core:2.0.8" />
+          <element id="library" level="project" name="Maven: org.xerial.snappy:snappy-java:1.1.0.1" />
+          <element id="library" level="project" name="Maven: com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:1.4.1" />
+          <element id="library" level="project" name="Maven: net.java.dev.jna:jna:4.0.0" />
+          <element id="library" level="project" name="Maven: net.java.dev.jna:jna-platform:4.0.0" />
+          <element id="library" level="project" name="Maven: com.orientechnologies:orientdb-client:2.0.8" />
+          <element id="library" level="project" name="Maven: com.orientechnologies:orientdb-tools:2.0.8" />
+          <element id="library" level="project" name="Maven: com.orientechnologies:orient-commons:2.0-M1" />
+          <element id="library" level="project" name="Maven: com.orientechnologies:orientdb-enterprise:2.0.8" />
+          <element id="library" level="project" name="Maven: com.orientechnologies:orientdb-object:2.0.8" />
+          <element id="library" level="project" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" />
+          <element id="library" level="project" name="Maven: org.javassist:javassist:3.16.1-GA" />
+          <element id="library" level="project" name="Maven: com.orientechnologies:orientdb-graphdb:2.0.8" />
+          <element id="library" level="project" name="Maven: com.orientechnologies:orientdb-server:2.0.8" />
+          <element id="library" level="project" name="Maven: javax.mail:mail:1.4" />
+          <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
+          <element id="library" level="project" name="Maven: com.tinkerpop.gremlin:gremlin-java:2.6.0" />
+          <element id="library" level="project" name="Maven: com.tinkerpop:pipes:2.6.0" />
+          <element id="library" level="project" name="Maven: com.tinkerpop.gremlin:gremlin-groovy:2.6.0" />
+          <element id="library" level="project" name="Maven: org.apache.ivy:ivy:2.3.0" />
+          <element id="library" level="project" name="Maven: org.codehaus.groovy:groovy:1.8.9" />
+          <element id="library" level="project" name="Maven: asm:asm:3.2" />
+          <element id="library" level="project" name="Maven: asm:asm-commons:3.2" />
+          <element id="library" level="project" name="Maven: asm:asm-util:3.2" />
+          <element id="library" level="project" name="Maven: asm:asm-analysis:3.2" />
+          <element id="library" level="project" name="Maven: asm:asm-tree:3.2" />
+          <element id="library" level="project" name="Maven: org.apache.ant:ant:1.8.3" />
+          <element id="library" level="project" name="Maven: org.apache.ant:ant-launcher:1.8.3" />
+          <element id="library" level="project" name="Maven: org.fusesource.jansi:jansi:1.5" />
+          <element id="library" level="project" name="Maven: jline:jline:0.9.94" />
+          <element id="library" level="project" name="Maven: com.tinkerpop.blueprints:blueprints-core:2.6.0" />
+          <element id="library" level="project" name="Maven: org.codehaus.jettison:jettison:1.3.3" />
+          <element id="library" level="project" name="Maven: stax:stax-api:1.0.1" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.2.3" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.2.3" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.2.3" />
+          <element id="library" level="project" name="Maven: com.carrotsearch:hppc:0.6.0" />
+          <element id="library" level="project" name="Maven: commons-configuration:commons-configuration:1.6" />
+          <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.1" />
+          <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.4" />
+          <element id="library" level="project" name="Maven: commons-digester:commons-digester:1.8" />
+          <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils-core:1.8.0" />
+          <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.1.1" />
           <element id="library" level="project" name="Maven: log4j:log4j:1.2.17" />
           <element id="library" level="project" name="Maven: javax.validation:validation-api:1.1.0.Final" />
           <element id="library" level="project" name="Maven: junit:junit:4.12" />
@@ -64,7 +105,7 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/webservice/target/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/webservice/target/webservice-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="webservice/web/Web" />
     </root>

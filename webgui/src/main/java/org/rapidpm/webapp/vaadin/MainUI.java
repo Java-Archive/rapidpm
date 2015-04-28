@@ -16,8 +16,6 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.Proj
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.BenutzerScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.auswertung.ZeitauswertungScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.zeitmanagement.erfassung.ZeiterfassungScreen;
 
 import javax.servlet.annotation.WebServlet;
 import java.util.Locale;
@@ -134,19 +132,6 @@ public class MainUI extends BaseUI {
             }
         });
 
-        final MenuBar.MenuItem zeitmanagementMenu = menuBar.addItem(messages.getString("time_management"), null);
-        zeitmanagementMenu.addItem(messages.getString("time_overview"), new MenuBar.Command() {
-            @Override
-            public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new ZeitauswertungScreen(MainUI.this));
-            }
-        });
-        zeitmanagementMenu.addItem(messages.getString("time_logging"), new MenuBar.Command() {
-            @Override
-            public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new ZeiterfassungScreen(MainUI.this));
-            }
-        });
 
         setWorkingArea(new ProjektplanungScreen(this));
 

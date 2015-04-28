@@ -1,7 +1,9 @@
 package org.rapidpm.persistence;
 
 
+import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import org.rapidpm.Constants;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -14,14 +16,8 @@ public class DaoFactorySingelton {
     private static DaoFactory daoFactoryFactory;
 
     public static DaoFactory getInstance() {
-        if(daoFactoryFactory == null) {
-            if(Constants.INTEGRATION_TEST){
-                daoFactoryFactory = new DaoFactory(Constants.PERSISTENCE_UNIT_NAME_TEST);
-            }else{
-                daoFactoryFactory = new DaoFactory(Constants.PERSISTENCE_UNIT_NAME_PROD);
-            }
-        }
-        return daoFactoryFactory;
+
+        return new DaoFactory("hallo");
     }
 
     private DaoFactorySingelton() {

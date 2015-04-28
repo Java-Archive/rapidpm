@@ -7,6 +7,10 @@ package org.rapidpm.webapp.vaadin;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
+import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
+import com.orientechnologies.orient.object.iterator.OObjectIteratorClass;
+import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinSession;
@@ -15,6 +19,7 @@ import com.vaadin.ui.themes.BaseTheme;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.StartDataCreator;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
@@ -69,35 +74,51 @@ public abstract class BaseUI extends UI {
     }
 
     private void loadFirstProject() {
+        boolean createSchemaAndFillWithSomeNodes = true;
+            if(createSchemaAndFillWithSomeNodes){
+                OObjectDatabaseTx db = new OObjectDatabaseTx ("remote:localhost/RapidPM").open("root", "admin");
+                db.getEntityManager().registerEntityClasses("org.rapidpm.persistence");
+                StartDataCreator.run(db);
+            }
+
         final VaadinSession session = this.getSession();
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final List<PlannedProject> projects = daoFactory.getPlannedProjectDAO().loadAllEntities();
-        Collections.sort(projects);
-        if(projects == null || projects.isEmpty()){
-            session.setAttribute(PlannedProject.class, null);
-        } else {
-            session.setAttribute(PlannedProject.class, projects.get(0));
-        }
-        currentProject = session.getAttribute(PlannedProject.class);
+        OrientGraph graph = new OrientGraph("remote:localhost/RapidPM", "root", "admin");
+        Iterable<Vertex> plannedProjects = graph.getVerticesOfClass("PlannedProject");
+        for (Vertex plannedProject : plannedProjects) {
+                for (String s : plannedProject.getPropertyKeys()) {
+                    System.out.println(plannedProject.getProperty(s));
+                }
+                System.out.println();
+                System.out.println();
+            }
+
+//        final List<PlannedProject> projects = db.getEntityManager()..loadAllEntities();
+//        Collections.sort(projects);
+//        if(projects == null || projects.isEmpty()){
+//            session.setAttribute(PlannedProject.class, null);
+//        } else {
+//            session.setAttribute(PlannedProject.class, projects.get(0));
+//        }
+//        currentProject = session.getAttribute(PlannedProject.class);
     }
 
     public void authentication(final String enteredLogin, final String enteredPasswd) throws Exception {
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
-        final List<Benutzer> benutzer = benutzerDAO.loadBenutzerForLogin(enteredLogin);
-        final String enteredPasswdHashed = hash(enteredPasswd);
-        for (final Benutzer user : benutzer) {
-            final String userLogin = user.getLogin();
-            final String userPasswd = user.getPasswd();
-            if (userLogin.equals(enteredLogin) && userPasswd.equals(enteredPasswdHashed)) {
-                currentUser = user;
-                getSession().setAttribute(Benutzer.class, currentUser);
-                setContent(null);
-                loadProtectedRessources();
-                return;
-            }
-        }
-        throw new Exception("Login failed..");
+//        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+//        final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
+//        final List<Benutzer> benutzer = benutzerDAO.loadBenutzerForLogin(enteredLogin);
+//        final String enteredPasswdHashed = hash(enteredPasswd);
+//        for (final Benutzer user : benutzer) {
+//            final String userLogin = user.getLogin();
+//            final String userPasswd = user.getPasswd();
+//            if (userLogin.equals(enteredLogin) && userPasswd.equals(enteredPasswdHashed)) {
+//                currentUser = user;
+//                getSession().setAttribute(Benutzer.class, currentUser);
+//                setContent(null);
+//                loadProtectedRessources();
+//                return;
+//            }
+//        }
+//        throw new Exception("Login failed..");
     }
 
     private String hash(final String enteredPasswd) {

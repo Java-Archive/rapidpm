@@ -59,8 +59,8 @@ public class DaoFactory {
     private final GraphDatabaseService graphDb = GraphDBFactory.getInstance().getGraphDBService();
 
     public DaoFactory(final String persistenceUnitName) {
-        final EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
-        this.entityManager = emf.createEntityManager();
+//        final EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
+//        this.entityManager = emf.createEntityManager();
     }
 
     protected EntityManager entityManager;
