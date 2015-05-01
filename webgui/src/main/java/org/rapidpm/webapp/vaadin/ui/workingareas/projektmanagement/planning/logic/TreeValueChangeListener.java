@@ -1,19 +1,17 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic;
 
 import com.vaadin.data.Property;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.descriptionandtestcases.DescriptionAndTestCasesFieldGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsEditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.information.PlanningInformationEditableLayout;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitsTree;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.ressources.PlanningRessourcesEditableLayout;
 
 /**
@@ -35,7 +33,7 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
 
     public TreeValueChangeListener(final ProjektplanungScreen screen) {
         this.screen = screen;
-        this.daoFactory = DaoFactorySingelton.getInstance();
+        this.daoFactory = DaoFactorySingleton.getInstance();
     }
 
     @Override

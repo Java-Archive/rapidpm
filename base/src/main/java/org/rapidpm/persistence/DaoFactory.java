@@ -8,6 +8,7 @@ package org.rapidpm.persistence;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.rapidpm.persistence.prj.bewegungsdaten.RegistrationDAO;
@@ -55,287 +56,72 @@ import java.util.InputMismatchException;
 
 public class DaoFactory {
     private static final Logger logger = Logger.getLogger(DaoFactory.class);
-    private DAO.EntityUtils entityUtils = new DAO.EntityUtils();
     private final GraphDatabaseService graphDb = GraphDBFactory.getInstance().getGraphDBService();
+    private OrientGraph orientDB;
 
-    public DaoFactory(final String persistenceUnitName) {
-//        final EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistenceUnitName);
-//        this.entityManager = emf.createEntityManager();
+    public DaoFactory(final String databaseName) {
+       orientDB = new OrientGraph("remote:localhost/"+databaseName, "root", "admin");
     }
 
-    protected EntityManager entityManager;
-
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public OrientGraph getOrientDB() {
+        return orientDB;
     }
 
-    public EntityManager getEntityManager() {
-        return this.entityManager;
+    public void setOrientDB(OrientGraph orientDB) {
+        this.orientDB = orientDB;
     }
-
-//    public DaoFactory() {
-//    }
-
-//    public <T> void remove(T entity) {
-//        T theentity = this.getEntityManager().merge(entity);
-//        this.getEntityManager().remove(theentity);
-//    }
-
-//    public <T> void saveOrUpdate(T entity) {
-//        if (logger.isInfoEnabled()) {
-//            logger.info("saveOrUpdateTX entity " + entity);
-//        }
-//        if (entity != null) {
-//            getEntityManager().merge(entity);
-//        }
-//        else{
-//            logger.warn("entity was null.");
-//        }
-//    }
-
-
-    public <T> T saveOrUpdateTX(final T entity) {
-        if (logger.isInfoEnabled()) {
-            logger.info("saveOrUpdateTX entity " + entity);
-        }
-        if (entity == null) {
-            if (logger.isInfoEnabled()) {
-                logger.info("Entity war null....");
-            }
-        } else {
-            final Long oid = entityUtils.getOIDFromEntity(entity);
-            if (oid == null || oid == -1L) {
-                simplePersistTX(entity);
-                return entity;
-            } else {
-                simpleMergeTX(entity);
-                return entity;
-            }
-        }
-        return null;
-    }
-
-
-    private <T> void simpleRemoveTX(final T entity) {
-        if (logger.isInfoEnabled()) {
-            logger.info("simpleRemove entity : " + entity);
-        }
-        new SimpleRemoveTransaction<T>().remove(entity);
-    }
-
-    private <T> void simplePersistTX(final T entity) {
-        if (logger.isInfoEnabled()) {
-            logger.info("simplePersist entity : " + entity);
-        }
-        new SimplePersistTransaction<T>().persist(entity);
-    }
-
-    private <T> void simpleMergeTX(final T entity) {
-        if (logger.isInfoEnabled()) {
-            logger.info("simpleMerge entity : " + entity);
-        }
-        new SimpleMergeTransaction<T>().persist(entity);
-    }
-
-    private class SimpleRemoveTransaction<T> {
-        private SimpleRemoveTransaction() {
-        }
-
-        public void remove(final T entity) {
-            new Transaction() {
-
-                public void doTask() {
-                    final EntityManager entityManager = getEntityManager();
-                    entityManager.remove(entity);
-                    //                    entityManager.refresh(entity);
-                }
-            }.execute();
-        }
-    }
-
-    private class SimplePersistTransaction<T> {
-        private SimplePersistTransaction() {
-        }
-
-        public void persist(final T entity) {
-            new Transaction() {
-
-                public void doTask() {
-                    final EntityManager entityManager = getEntityManager();
-                    entityManager.persist(entity);
-                    //                    entityManager.refresh(entity);
-                }
-            }.execute();
-        }
-    }
-    private class SimpleMergeTransaction<T> {
-        private SimpleMergeTransaction() {
-        }
-
-        public void persist(final T entity) {
-            new Transaction() {
-
-                public void doTask() {
-                    final EntityManager entityManager = getEntityManager();
-                    entityManager.merge(entity);
-                    //                    entityManager.refresh(entity);
-                }
-            }.execute();
-        }
-    }
-
-    public abstract class Transaction {
-        private final EntityTransaction transaction = entityManager.getTransaction();
-
-        protected Transaction() {
-        }
-
-        public abstract void doTask();
-
-        public void execute() throws InputMismatchException{
-            try {
-                transaction.begin();
-                doTask();
-                if (transaction.isActive()) {
-                    transaction.commit();
-                } else {
-                    logger.warn("tx nicht mehr active.. ");
-                }
-
-            } catch (PersistenceException e) {
-                e.printStackTrace();
-                logger.error(e);
-                throw new PersistenceException();
-            } finally {
-//                System.out.println("e = " + e);
-                if (transaction != null && transaction.isActive()) {
-                    transaction.rollback();
-                } else {
-                }
-            }
-
-        }
-    }
-
-    public <T> void removeTX(final T entity) {
-        if (logger.isInfoEnabled()) {
-            logger.info("removeTX entity: " + entity);
-        }
-        if (entity == null) {
-            if (logger.isInfoEnabled()) {
-                logger.info("Entity war null....");
-            }
-        } else {
-            final Class<?> aClass = entity.getClass();
-            final Entity annotation = aClass.getAnnotation(Entity.class);
-            //noinspection VariableNotUsedInsideIf
-            if (annotation == null) {
-                if (logger.isInfoEnabled()) {
-                    logger.info("Obj ist keine Entity.." + entity);
-                }
-            } else {
-                simpleRemoveTX(entity);
-            }
-        }
-    }
-
-
-    public <T> void saveOrUpdate(final T entity) {
-        if (logger.isInfoEnabled()) {
-            logger.info("saveOrUpdateTX entity " + entity);
-        }
-        if (entity == null) {
-            if (logger.isInfoEnabled()) {
-                logger.info("Entity war null....");
-            }
-        } else {
-            final Long oid = entityUtils.getOIDFromEntity(entity);
-            if (oid == null || oid == -1L) {
-                entityManager.persist(entity);
-            } else {
-                entityManager.merge(entity);
-            }
-        }
-    }
-
-
-    public <T> void remove(final T entity) {
-        if (logger.isInfoEnabled()) {
-            logger.info("remove entity: " + entity);
-        }
-        if (entity == null) {
-            if (logger.isInfoEnabled()) {
-                logger.info("Entity war null....");
-            }
-        } else {
-            final Class<?> aClass = entity.getClass();
-            final Entity annotation = aClass.getAnnotation(Entity.class);
-            //noinspection VariableNotUsedInsideIf
-            if (annotation == null) {
-                if (logger.isInfoEnabled()) {
-                    logger.info("Obj ist keine Entity..");
-                }
-            } else {
-                final T theentity = this.entityManager.merge(entity);
-                this.entityManager.remove(theentity);
-            }
-        }
-    }
-
-
-
 
     // pkg logging
 
     public LoggingEventEntryDAO getLoggingEventEntryDAO() {
-        return new LoggingEventEntryDAO(getEntityManager());
+        return new LoggingEventEntryDAO(orientDB);
     }
 
     public LogginEntityEntryDAO getLogginEntityEntryDAO() {
-        return new LogginEntityEntryDAO(getEntityManager());
+        return new LogginEntityEntryDAO(orientDB);
     }
 
     public LogginEntityActionDAO getLogginEntityActionDAO() {
-        return new LogginEntityActionDAO(getEntityManager());
+        return new LogginEntityActionDAO(orientDB);
     }
 
     //pkg security
 
     public BenutzerGruppeDAO getBenutzerGruppeDAO() {
-        return new BenutzerGruppeDAO(getEntityManager());
+        return new BenutzerGruppeDAO(orientDB);
     }
 
     public BenutzerWebapplikationDAO getBenutzerWebapplikationDAO() {
-        return new BenutzerWebapplikationDAO(getEntityManager());
+        return new BenutzerWebapplikationDAO(orientDB);
     }
 
     public BenutzerDAO getBenutzerDAO() {
-        return new BenutzerDAO(getEntityManager());
+        return new BenutzerDAO(orientDB);
     }
 
     public MandantengruppeDAO getMandantengruppeDAO() {
-        return new MandantengruppeDAO(getEntityManager());
+        return new MandantengruppeDAO(orientDB);
     }
 
     public PlannedProjectDAO getPlannedProjectDAO() {
-        return new PlannedProjectDAO(getEntityManager());
+        return new PlannedProjectDAO(orientDB);
     }
 
 
     public NewPasswdRequestDAO getNewPasswdRequestDAO() {
-        return new NewPasswdRequestDAO(getEntityManager());
+        return new NewPasswdRequestDAO(orientDB);
     }
 
     public PlanningUnitElementDAO getPlanningUnitElementDAO() {
-        return new PlanningUnitElementDAO(getEntityManager());
+        return new PlanningUnitElementDAO(orientDB);
     }
 
     public RolleDAO getRolleDAO() {
-        return new RolleDAO(getEntityManager());
+        return new RolleDAO(orientDB);
     }
 
     public BerechtigungDAO getBerechtigungDAO() {
-        return new BerechtigungDAO(getEntityManager());
+        return new BerechtigungDAO(orientDB);
     }
 
     //pkg webapp
@@ -343,95 +129,95 @@ public class DaoFactory {
 
 
     public OntologieDAO getOntologieDAO() {
-        return new OntologieDAO(getEntityManager());
+        return new OntologieDAO(orientDB);
     }
 
     public OntologieConnectionDAO getOntologieConnectionDAO() {
-        return new OntologieConnectionDAO(getEntityManager());
+        return new OntologieConnectionDAO(orientDB);
     }
 
     public OntologieEntryDAO getOntologieEntryDAO() {
-        return new OntologieEntryDAO(getEntityManager());
+        return new OntologieEntryDAO(orientDB);
     }
 
     //pkg webapp
 
     public OrganisationseinheitDAO getOrganisationseinheitDAO() {
-        return new OrganisationseinheitDAO(getEntityManager());
+        return new OrganisationseinheitDAO(orientDB);
     }
 
 
     public WebDomainDAO getWebDomainDAO() {
-        return new WebDomainDAO(getEntityManager());
+        return new WebDomainDAO(orientDB);
     }
 
     // pkg address
     //    public AdressDAO getAdressDAO(){}
 
     public AddressKlassifizierungDAO getAddressKlassifizierungDAO() {
-        return new AddressKlassifizierungDAO(getEntityManager());
+        return new AddressKlassifizierungDAO(orientDB);
     }
 
     public AdresseDAO getAdresseDAO() {
-        return new AdresseDAO(getEntityManager());
+        return new AdresseDAO(orientDB);
     }
 
 
     public StateDAO getStateDAO() {
-        return new StateDAO(getEntityManager());
+        return new StateDAO(orientDB);
     }
 
     public StateKlassifizierungDAO getStateKlassifizierungDAO() {
-        return new StateKlassifizierungDAO(getEntityManager());
+        return new StateKlassifizierungDAO(orientDB);
     }
 
     public LandDAO getLandDAO() {
-        return new LandDAO(getEntityManager());
+        return new LandDAO(orientDB);
     }
 
 
     //book
     public BuchDAO getBuchDAO() {
-        return new BuchDAO(getEntityManager());
+        return new BuchDAO(orientDB);
     }
 
     public BuchKapitelDAO getBuchKapitelDAO() {
-        return new BuchKapitelDAO(getEntityManager());
+        return new BuchKapitelDAO(orientDB);
     }
 
     public BuchKommentarDAO getBuchKommentarDAO() {
-        return new BuchKommentarDAO(getEntityManager());
+        return new BuchKommentarDAO(orientDB);
     }
 
     public BuchKapitelKommentarDAO getBuchKapitelKommentarDAO() {
-        return new BuchKapitelKommentarDAO(getEntityManager());
+        return new BuchKapitelKommentarDAO(orientDB);
     }
 
     public BuchSeitenKommentarDAO getBuchSeitenKommentarDAO() {
-        return new BuchSeitenKommentarDAO(getEntityManager());
+        return new BuchSeitenKommentarDAO(orientDB);
     }
 
 
 
     public ProjectDAO getProjectDAO() {
-        return new ProjectDAO(getEntityManager());
+        return new ProjectDAO(orientDB);
     }
 
     public ProjectNameDAO getProjectNameDAO() {
-        return new ProjectNameDAO(getEntityManager());
+        return new ProjectNameDAO(orientDB);
     }
 
     //IssueTracking - Relational
     public IssueTimeUnitDAO getIssueTimeUnitDAO() {
-        return new IssueTimeUnitDAO(getEntityManager());
+        return new IssueTimeUnitDAO(orientDB);
     }
 
     public IssueCommentDAO getIssueCommentDAO() {
-        return new IssueCommentDAO(getEntityManager());
+        return new IssueCommentDAO(orientDB);
     }
 
     public IssueTestCaseDAO getIssueTestCaseDAO() {
-        return new IssueTestCaseDAO(getEntityManager());
+        return new IssueTestCaseDAO(orientDB);
     }
 
 
@@ -473,156 +259,153 @@ public class DaoFactory {
     //pkg Kommunikation
 
     public KommunikationsServiceDAO getKommunikationsServiceDAO() {
-        return new KommunikationsServiceDAO(getEntityManager());
+        return new KommunikationsServiceDAO(orientDB);
     }
 
     public KommunikationsServiceKlassifizierungDAO getKommunikationsServiceKlassifizierungDAO() {
-        return new KommunikationsServiceKlassifizierungDAO(getEntityManager());
+        return new KommunikationsServiceKlassifizierungDAO(orientDB);
     }
 
     public KommunikationsServiceUIDDAO getKommunikationServiceUIDDAO() {
-        return new KommunikationsServiceUIDDAO(getEntityManager());
+        return new KommunikationsServiceUIDDAO(orientDB);
     }
 
     public KommunikationsServiceUIDPartDAO getKommunikationServiceUIDPartDAO() {
-        return new KommunikationsServiceUIDPartDAO(getEntityManager());
+        return new KommunikationsServiceUIDPartDAO(orientDB);
     }
 
     public KommunikationsServiceUIDPartKlassifikationDAO getKommunikationsServiceUIDPartKlassifikationDAO() {
-        return new KommunikationsServiceUIDPartKlassifikationDAO(getEntityManager());
+        return new KommunikationsServiceUIDPartKlassifikationDAO(orientDB);
     }
 
 
     //pkg msgCenter
 
     public MessageDAO getMessageDAO() {
-        return new MessageDAO(getEntityManager());
+        return new MessageDAO(orientDB);
     }
 
     public PersonalMessageDAO getPersonalMessageDAO() {
-        return new PersonalMessageDAO(getEntityManager());
+        return new PersonalMessageDAO(orientDB);
     }
 
     //pkg intern
     public RessourceGroupDAO getRessourceGroupDAO(){
-        return new RessourceGroupDAO(getEntityManager());
+        return new RessourceGroupDAO(orientDB);
     }
 
     //pkg organisationseinheiten
 
     public BrancheDAO getBrancheDAO() {
-        return new BrancheDAO(getEntityManager());
+        return new BrancheDAO(orientDB);
     }
 
     public BrancheAssocDAO getBranchenAssocDAO() {
-        return new BrancheAssocDAO(getEntityManager());
+        return new BrancheAssocDAO(orientDB);
     }
 
     public BranchenKlassifizierungDAO getBranchenKlassifizierungDAO() {
-        return new BranchenKlassifizierungDAO(getEntityManager());
+        return new BranchenKlassifizierungDAO(orientDB);
     }
 
     public GesellschaftsformDAO getGesellschaftsformDAO() {
-        return new GesellschaftsformDAO(getEntityManager());
+        return new GesellschaftsformDAO(orientDB);
     }
 
     public OrganisationseinheitMetaDataDAO getOrganisationseinheitMetaDataDAO() {
-        return new OrganisationseinheitMetaDataDAO(getEntityManager());
+        return new OrganisationseinheitMetaDataDAO(orientDB);
     }
 
     public AusbildungseinheitDAO getAusbildungseinheitDAO() {
-        return new AusbildungseinheitDAO(getEntityManager());
+        return new AusbildungseinheitDAO(orientDB);
     }
 
     public VerwaltungseinheitDAO getVerwaltungseinheitDAO() {
-        return new VerwaltungseinheitDAO(getEntityManager());
+        return new VerwaltungseinheitDAO(orientDB);
     }
 
     public WirtschaftseinheitDAO getWirtschaftseinheitDAO() {
-        return new WirtschaftseinheitDAO(getEntityManager());
+        return new WirtschaftseinheitDAO(orientDB);
     }
 
 
     public TaetigkeitsfeldKlassifizierungDAO getTaetigkeitsklassifizierungDAO() {
-        return new TaetigkeitsfeldKlassifizierungDAO(getEntityManager());
+        return new TaetigkeitsfeldKlassifizierungDAO(orientDB);
     }
 
     public TaetigkeitsfeldDAO getTaetigkeitsfeldDAO() {
-        return new TaetigkeitsfeldDAO(getEntityManager());
+        return new TaetigkeitsfeldDAO(orientDB);
     }
 
     public TaetigkeitsfeldAssocDAO getTaetigkeitsfeldAssocDAO() {
-        return new TaetigkeitsfeldAssocDAO(getEntityManager());
+        return new TaetigkeitsfeldAssocDAO(orientDB);
     }
 
     public PositionDAO getPositionDAO() {
-        return new PositionDAO(getEntityManager());
+        return new PositionDAO(orientDB);
     }
 
     //pkg person
 
     public PersonDAO getPersonDAO() {
-        return new PersonDAO(getEntityManager());
+        return new PersonDAO(orientDB);
     }
 
     public PersonenNameDAO getPersonenNameDAO() {
-        return new PersonenNameDAO(getEntityManager());
+        return new PersonenNameDAO(orientDB);
     }
 
     public AnredeDAO getAnredeDAO() {
-        return new AnredeDAO(getEntityManager());
+        return new AnredeDAO(orientDB);
     }
 
     public GeschlechtDAO getGeschlechtDAO() {
-        return new GeschlechtDAO(getEntityManager());
+        return new GeschlechtDAO(orientDB);
     }
 
     public NamensKlassifizierungDAO getNamensKlassifizierungDAO() {
-        return new NamensKlassifizierungDAO(getEntityManager());
+        return new NamensKlassifizierungDAO(orientDB);
     }
 
     public TitelDAO getTitelDAO() {
-        return new TitelDAO(getEntityManager());
+        return new TitelDAO(orientDB);
     }
 
 
     //pgk web//webdomains
 
     public WebDomainKlassifizierungDAO getWebDomainKlassifizierungDAO() {
-        return new WebDomainKlassifizierungDAO(getEntityManager());
+        return new WebDomainKlassifizierungDAO(orientDB);
     }
 
     public WebDomainMetaDataDAO getWebDomainMetaDataDAO() {
-        return new WebDomainMetaDataDAO(getEntityManager());
+        return new WebDomainMetaDataDAO(orientDB);
     }
 
     public PlanningUnitDAO getPlanningUnitDAO(){
-        return new PlanningUnitDAO(getEntityManager());
+        return new PlanningUnitDAO(orientDB);
     }
 
 
     //pkg Bewegungsdaten
     public RegistrationDAO getRegistrationDAO() {
-        return new RegistrationDAO(getEntityManager());
+        return new RegistrationDAO(orientDB);
     }
 
     public RegistrationStatusDAO getRegistrationStatusDAO() {
-        return new RegistrationStatusDAO(getEntityManager());
+        return new RegistrationStatusDAO(orientDB);
     }
 
     public KontaktAnfrageDAO getKontaktAnfrageDAO() {
-        return new KontaktAnfrageDAO(getEntityManager());
+        return new KontaktAnfrageDAO(orientDB);
     }
 
     public ProjektanfrageDAO getProjektanfrageDAO() {
-        return new ProjektanfrageDAO(getEntityManager());
+        return new ProjektanfrageDAO(orientDB);
     }
 
     public TextElementDAO getTextElementDAO() {
-        return new TextElementDAO((getEntityManager()));
+        return new TextElementDAO((orientDB));
     }
 
-    public DAO.EntityUtils getEntityUtils() {
-        return entityUtils;
-    }
 }

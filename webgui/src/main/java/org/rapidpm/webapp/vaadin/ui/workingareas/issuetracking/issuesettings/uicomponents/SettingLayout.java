@@ -150,7 +150,7 @@ public class SettingLayout<T> extends VerticalLayout {
 
                 final T entity;
                 if (isAddButton) {
-                    final Long projectid = screen.getUi().getCurrentProject().getId();
+                    final String projectid = screen.getUi().getCurrentProject().getId();
                     entity = (T) aClass.getConstructor(Long.class).newInstance(projectid);
 
                     container.addEntityToTable(entity);

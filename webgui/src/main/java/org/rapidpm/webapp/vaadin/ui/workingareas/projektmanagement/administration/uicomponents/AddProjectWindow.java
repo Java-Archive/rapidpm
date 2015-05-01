@@ -8,16 +8,12 @@ import org.apache.log4j.Logger;
 //import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.ProjectAdministrationScreen;
 
-import javax.persistence.EntityManager;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -59,12 +55,12 @@ public class AddProjectWindow extends RapidWindow{
 
 //        bean = EJBFactory.getEjbInstance(AddProjectWindowBean.class);
 //        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
 
         final PlannedProject projekt = new PlannedProject();
         fieldGroup = new ProjektFieldGroup(projekt, messages);
         makeCurrentProjectCheckBox = new CheckBox(messages.getString("makeCurrentProject"));
-        final List<PlannedProject> projectList = daoFactory.getPlannedProjectDAO().loadAllEntities();
+        final List<PlannedProject> projectList = daoFactory.getPlannedProjectDAO().findAll();
         if(projectList == null || projectList.isEmpty()){
             makeCurrentProjectCheckBox.setValue(true);
             makeCurrentProjectCheckBox.setEnabled(false);
@@ -132,7 +128,7 @@ public class AddProjectWindow extends RapidWindow{
                         fieldGroup.commit();
                         final BeanItem<PlannedProject> newProjectBeanItem = (BeanItem<PlannedProject>) fieldGroup
                                 .getItemDataSource();
-                        baseDaoFactoryBean.saveOrUpdateTX(newProjectBeanItem.getBean());
+//                        baseDaoFactoryBean.saveOrUpdateTX(newProjectBeanItem.getBean());
                         if(makeCurrentProjectCheckBox.getValue() == true){
                             ui.getSession().setAttribute(PlannedProject.class, newProjectBeanItem.getBean());
                         }

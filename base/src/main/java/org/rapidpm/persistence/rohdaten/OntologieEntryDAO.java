@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.rohdaten;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -13,15 +14,16 @@ import java.util.List;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 public class OntologieEntryDAO extends DAO<Long, OntologieEntry> {
-    public OntologieEntryDAO(final EntityManager entityManager) {
-        super(entityManager, OntologieEntry.class);
+    public OntologieEntryDAO(final OrientGraph orientDB) {
+        super(orientDB, OntologieEntry.class);
     }
 
 
     public List<OntologieEntry> loadOntologieEntries(final String ontologie, final String mandantengruppe) {
-        return entityManager.createQuery("select o.entryListe from Ontologie o inner join o.entryListe oe " + "where o.symbolischerName=:ontologie  " + "and o.mandantengruppe.mandantengruppe=:mandantengruppe ", OntologieEntry.class)
-                // "and o.mandantengruppe.mandantengruppe=:mandantengruppe ").setParameter("ontologie", ontologie)
-                .setParameter("mandantengruppe", mandantengruppe).getResultList();
+//        return orientDB.createQuery("select o.entryListe from Ontologie o inner join o.entryListe oe " + "where o.symbolischerName=:ontologie  " + "and o.mandantengruppe.mandantengruppe=:mandantengruppe ", OntologieEntry.class)
+//                // "and o.mandantengruppe.mandantengruppe=:mandantengruppe ").setParameter("ontologie", ontologie)
+//                .setParameter("mandantengruppe", mandantengruppe).getResultList();
+        return null;
 
         //        return createWhereClause()
         //                .eq("ontologie.symbolischerName", ontologie)
@@ -30,9 +32,10 @@ public class OntologieEntryDAO extends DAO<Long, OntologieEntry> {
     }
 
     public List<OntologieEntry> loadOntologieEntry(final String ontologie, final String value, final String mandantengruppe) {
-        return entityManager.createQuery("select o.entryListe from Ontologie o inner join o.entryListe oe " + "where o.symbolischerName=:ontologie  " + "and o.mandantengruppe.mandantengruppe=:mandantengruppe " + "and oe.value=:value ", OntologieEntry.class)
-                //"and oe.value=:value ")
-                .setParameter("ontologie", ontologie).setParameter("value", value).setParameter("mandantengruppe", mandantengruppe).getResultList();
+//        return orientDB.createQuery("select o.entryListe from Ontologie o inner join o.entryListe oe " + "where o.symbolischerName=:ontologie  " + "and o.mandantengruppe.mandantengruppe=:mandantengruppe " + "and oe.value=:value ", OntologieEntry.class)
+//                //"and oe.value=:value ")
+//                .setParameter("ontologie", ontologie).setParameter("value", value).setParameter("mandantengruppe", mandantengruppe).getResultList();
+        return null;
 
         //        return createWhereClause()
         //                .eq("ontologie.symbolischerName", ontologie)

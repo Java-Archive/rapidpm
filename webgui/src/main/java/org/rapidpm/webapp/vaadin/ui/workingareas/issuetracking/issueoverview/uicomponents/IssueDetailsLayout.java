@@ -10,7 +10,7 @@ import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.system.security.Benutzer;
@@ -83,16 +83,16 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
     @Override
     protected AbstractOrderedLayout buildSaveableForm() {
         converter = new FormattedDateStringToDateConverter(new SimpleDateFormat(Constants.DD_MM_YYYY));
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final Long projectId = screen.getUi().getCurrentProject().getId();
-
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+//        final Long projectId = screen.getUi().getCurrentProject().getId();
+        final Long projectId = 0l;
         final List<IssueType> typeList = daoFactory.getIssueTypeDAO().loadAllEntities(projectId);
         final List<IssueStatus> statusList = daoFactory.getIssueStatusDAO().loadAllEntities(projectId);
         final List<IssuePriority> priorityList = daoFactory.getIssuePriorityDAO().loadAllEntities(projectId);
         final List<IssueVersion> versionList = daoFactory.getIssueVersionDAO().loadAllEntities(projectId);
         final List<IssueStoryPoint> storyPointList = daoFactory.getIssueStoryPointDAO().loadAllEntities(projectId);
         final List<IssueComponent> componentsList = daoFactory.getIssueComponentDAO().loadAllEntities(projectId);
-        final List<Benutzer> userList =  daoFactory.getBenutzerDAO().loadAllEntities();
+        final List<Benutzer> userList =  daoFactory.getBenutzerDAO().findAll();
 
         final VerticalLayout formLayout = new VerticalLayout();
         formLayout.setSpacing(true);
@@ -396,7 +396,7 @@ public class IssueDetailsLayout extends ComponentEditableVLayout implements Inte
         prioritySelect.select(issue.getPriority());
         assigneeSelect.setValue(issue.getAssignee());
 //        if (issue.getReporter() == null) {
-//            final BenutzerDAO userDao = DaoFactorySingelton.getInstance().getBenutzerDAO();
+//            final BenutzerDAO userDao = DaoFactorySingleton.getInstance().getBenutzerDAO();
 //            issue.setReporter(userDao.loadBenutzerByEmail("nobody@rapidpm.org"));
 //        }
         reporterLabel.setValue(issue.getReporter().getLogin());

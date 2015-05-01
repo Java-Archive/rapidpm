@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
 //import org.rapidpm.persistence.GraphDaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Identifier;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.NonVisible;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
@@ -56,7 +56,7 @@ public class IssuePriority  implements PersistInGraph {
 
 
     public List<IssueBase> getConnectedIssues() {
-        return DaoFactorySingelton.getInstance().getIssuePriorityDAO().getConnectedIssues(this);
+        return DaoFactorySingleton.getInstance().getIssuePriorityDAO().getConnectedIssues(this);
     }
 
     public Long getId() {

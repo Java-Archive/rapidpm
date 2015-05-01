@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.neo4j.graphdb.NotFoundException;
 import org.rapidpm.lang.StringUtils;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
@@ -25,7 +25,7 @@ import java.util.List;
 public class IssueTrackingWS {
     private static final Logger logger = Logger.getLogger(IssueTrackingWS.class);
 
-    private final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+    private final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
     private final IssueBaseDAO issueBaseDAO = daoFactory.getIssueBaseDAO();
     private final IssueCommentDAO issueCommentDAO = daoFactory.getIssueCommentDAO();
 
@@ -40,7 +40,7 @@ public class IssueTrackingWS {
             FlatIssueComment>(IssueComment.class, FlatIssueComment.class) {
         @Override
         protected IssueComment findEntityById(final Long id) {
-            return issueCommentDAO.findByID(id);
+            return issueCommentDAO.findByID("");
         }
     };
 
@@ -202,7 +202,7 @@ public class IssueTrackingWS {
         }
         final IssueComment comment;
         try {
-            comment = issueCommentDAO.findByID(commentId);
+            comment = issueCommentDAO.findByID("");
         } catch (NotFoundException e) {
             return false;
         }

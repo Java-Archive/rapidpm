@@ -51,7 +51,7 @@ public class FlatIssueTimeUnit extends FlatEntity<IssueTimeUnit> {
         date = issueTimeUnit.getDate();
         minutes = issueTimeUnit.getMinutes();
         comment = issueTimeUnit.getComment();
-        workerId = getId(issueTimeUnit.getWorker());
+        workerId = getId();
     }
 
     @Override
@@ -60,6 +60,6 @@ public class FlatIssueTimeUnit extends FlatEntity<IssueTimeUnit> {
         issueTimeUnit.setMinutes(minutes);
         issueTimeUnit.setComment(comment);
         final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
-        issueTimeUnit.setWorker(benutzerDAO.findByID(workerId));
+        issueTimeUnit.setWorker(benutzerDAO.findByID(""));
     }
 }

@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -17,22 +18,24 @@ import java.util.List;
 public class PlanningUnitDAO extends DAO<Long, PlanningUnit> {
     private static final Logger logger = Logger.getLogger(PlanningUnitDAO.class);
 
-    public PlanningUnitDAO(final EntityManager entityManager) {
-        super(entityManager, PlanningUnit.class);
+    public PlanningUnitDAO(final OrientGraph orientDB) {
+        super(orientDB, PlanningUnit.class);
     }
 
     public PlanningUnit loadPlanningUnitByName(final String planningUnitName) {
-        final TypedQuery<PlanningUnit> typedQuery = entityManager.createQuery("from PlanningUnit pu "
-                + "where pu.planningUnitName=:planningUnitName ", PlanningUnit.class).setParameter("planningUnitName", planningUnitName);
-        final PlanningUnit singleResultOrNull = getSingleResultOrNull(typedQuery);
-        return singleResultOrNull;
+//        final TypedQuery<PlanningUnit> typedQuery = orientDB.createQuery("from PlanningUnit pu "
+//                + "where pu.planningUnitName=:planningUnitName ", PlanningUnit.class).setParameter("planningUnitName", planningUnitName);
+//        final PlanningUnit singleResultOrNull = getSingleResultOrNull(typedQuery);
+//        return singleResultOrNull;
+        return null;
     }
 
     public List<PlanningUnit> loadAllPlanningUnitsWithoutParents() {
-        final TypedQuery<PlanningUnit> typedQuery = entityManager.createQuery("from PlanningUnit pu "
-                + "where pu.parent=null ", PlanningUnit.class);
-        final List<PlanningUnit> resultList = typedQuery.getResultList();
-        return resultList;
+//        final TypedQuery<PlanningUnit> typedQuery = orientDB.createQuery("from PlanningUnit pu "
+//                + "where pu.parent=null ", PlanningUnit.class);
+//        final List<PlanningUnit> resultList = typedQuery.getResultList();
+//        return resultList;
+        return null;
     }
 
 

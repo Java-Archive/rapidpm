@@ -7,7 +7,7 @@ import com.vaadin.event.ItemClickEvent;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tablelisteners.StundensaetzeItemClickListener;
@@ -65,7 +65,7 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
 //                .getEjbInstance(EditGroupValueChangeListenerBean.class);
 //        final DaoFactoryBean baseDaoFactoryBean = editGroupValueChangeListenerBean.getDaoFactoryBean();
 
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         for (final Object listener : saveButton.getListeners(Component.Event.class)) {
             if (listener instanceof Button.ClickListener) {
                 saveButton.removeClickListener((Button.ClickListener) listener);
@@ -91,7 +91,7 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
                 public void buttonClick(Button.ClickEvent event) {
                     try {
                         for(RessourceGroup ressourceGroup : (Collection<RessourceGroup>) tabelle.getItemIds()){
-                            daoFactory.saveOrUpdate(ressourceGroup);
+//                            daoFactory.saveOrUpdate(ressourceGroup);
                         }
                         screen.generateTableAndCalculate();
                         saveButtonLayout.setVisible(false);
@@ -118,10 +118,10 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
 
                         //RessourceGroup in DB updaten
                         final RessourceGroup ressouregroupFromTable = (RessourceGroup)tabelle.getValue();
-                        final RessourceGroup ressourceGroupFromDB = daoFactory.getRessourceGroupDAO().findByID
-                                (ressouregroupFromTable.getId());
-                        tabelle.commit();
-                        daoFactory.saveOrUpdateTX(ressouregroupFromTable);
+//                        final RessourceGroup ressourceGroupFromDB = daoFactory.getRessourceGroupDAO().findByID
+//                                (ressouregroupFromTable.getId());
+//                        tabelle.commit();
+//                        daoFactory.saveOrUpdateTX(ressouregroupFromTable);
                         screen.generateTableAndCalculate();
 
                         saveButtonLayout.setVisible(false);

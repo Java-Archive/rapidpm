@@ -5,7 +5,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Tree;
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.webapp.vaadin.ui.RapidWindow;
@@ -62,7 +62,7 @@ public class AddIssueWindow extends RapidWindow  implements Internationalization
         public void buttonClick(Button.ClickEvent event) {
             try {
                 final IssueBaseDAO issueDao;
-                issueDao = DaoFactorySingelton.getInstance().getIssueBaseDAO();
+                issueDao = DaoFactorySingleton.getInstance().getIssueBaseDAO();
 
                 IssueBase childIssue = addDetailsLayout.setIssueProperties(true);
                 if (childIssue != null) {

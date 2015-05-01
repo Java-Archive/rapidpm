@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
@@ -24,30 +25,31 @@ public class TaetigkeitsfeldDAO extends DAO<Long, Taetigkeitsfeld> {
     private static final Logger logger = Logger.getLogger(TaetigkeitsfeldDAO.class);
 
 
-    public TaetigkeitsfeldDAO(final EntityManager entityManager) {
-        super(entityManager, Taetigkeitsfeld.class);
+    public TaetigkeitsfeldDAO(final OrientGraph orientDB) {
+        super(orientDB, Taetigkeitsfeld.class);
     }
 
     public Taetigkeitsfeld loadTaetigkeitsfeldFor(final String taetigkeitsfeldName) {
-        final Taetigkeitsfeld taetigkeitsfeld;
-        if (taetigkeitsfeldName == null || taetigkeitsfeldName.isEmpty()) {
-            final TypedQuery<Taetigkeitsfeld> typedQuery = entityManager.createQuery("from Taetigkeitsfeld  t where t.namen='Nicht eingeordnet'", Taetigkeitsfeld.class);
-            taetigkeitsfeld = getSingleResultOrNull(typedQuery);
-        } else {
-            try {
-                final TypedQuery<Taetigkeitsfeld> typedQuery = entityManager.createQuery("from Taetigkeitsfeld  t where t.namen=:taetigkeitsfeldName", Taetigkeitsfeld.class).setParameter("taetigkeitsfeldName", taetigkeitsfeldName);
-                taetigkeitsfeld = getSingleResultOrNull(typedQuery);
-            } catch (Exception e) {
-                logger.error(e);
-                final TypedQuery<Taetigkeitsfeld> typedQuery = entityManager.createQuery("from Taetigkeitsfeld  t where t.namen='Nicht eingeordnet'", Taetigkeitsfeld.class);
-                return getSingleResultOrNull(typedQuery);
-            }
-        }
-        return taetigkeitsfeld;
+//        final Taetigkeitsfeld taetigkeitsfeld;
+//        if (taetigkeitsfeldName == null || taetigkeitsfeldName.isEmpty()) {
+//            final TypedQuery<Taetigkeitsfeld> typedQuery = orientDB.createQuery("from Taetigkeitsfeld  t where t.namen='Nicht eingeordnet'", Taetigkeitsfeld.class);
+//            taetigkeitsfeld = getSingleResultOrNull(typedQuery);
+//        } else {
+//            try {
+//                final TypedQuery<Taetigkeitsfeld> typedQuery = orientDB.createQuery("from Taetigkeitsfeld  t where t.namen=:taetigkeitsfeldName", Taetigkeitsfeld.class).setParameter("taetigkeitsfeldName", taetigkeitsfeldName);
+//                taetigkeitsfeld = getSingleResultOrNull(typedQuery);
+//            } catch (Exception e) {
+//                logger.error(e);
+//                final TypedQuery<Taetigkeitsfeld> typedQuery = orientDB.createQuery("from Taetigkeitsfeld  t where t.namen='Nicht eingeordnet'", Taetigkeitsfeld.class);
+//                return getSingleResultOrNull(typedQuery);
+//            }
+//        }
+//        return taetigkeitsfeld;
+        return null;
         //        return createWhereClause().eq("namen", taetigkeitsfeldName).findUnique();
         //        final Taetigkeitsfeld result;
         //
-        //        final ObjectSet<Taetigkeitsfeld> objSet = entityManager.query(new Predicate<Taetigkeitsfeld>() {
+        //        final ObjectSet<Taetigkeitsfeld> objSet = orientDB.query(new Predicate<Taetigkeitsfeld>() {
         //            @Override
         //            public boolean match(final Taetigkeitsfeld taetigkeitsfeld) {
         //                return taetigkeitsfeld.getNamen().equals(taetigkeitsfeldName);
@@ -60,11 +62,11 @@ public class TaetigkeitsfeldDAO extends DAO<Long, Taetigkeitsfeld> {
         //            result = null;
         //        }
         //        return result;
-        //        Taetigkeitsfeld result = (Taetigkeitsfeld) entityManager.createNamedQuery("LoadTaetigkeitsfeldFor")
+        //        Taetigkeitsfeld result = (Taetigkeitsfeld) orientDB.createNamedQuery("LoadTaetigkeitsfeldFor")
         //                .setParameter("taetigkeitsfeld", taetigkeitsfeld).getSingleResult();
         //        if (result == null) {
         //            logger.warn("Das angeforderte Taetigkeitsfeld ist nicht in der DB : " + taetigkeitsfeld + " lade Taetigkeitsfeld Unbekannt");
-        //            result = (Taetigkeitsfeld) entityManager.createNamedQuery("LoadTaetigkeitsfeld_NichtEingeordnet").getSingleResult();
+        //            result = (Taetigkeitsfeld) orientDB.createNamedQuery("LoadTaetigkeitsfeld_NichtEingeordnet").getSingleResult();
         //        }
         //        return result;
     }
@@ -73,21 +75,23 @@ public class TaetigkeitsfeldDAO extends DAO<Long, Taetigkeitsfeld> {
 
     public List<Taetigkeitsfeld> loadTaetigkeitsfelderForMandantengruppe(final Mandantengruppe mandantengruppe) {
         //        return createWhereClause().eq("mandantengruppe.mandantengruppe", mandantengruppe).findList();
-        final List<Taetigkeitsfeld> resultList = entityManager.createQuery("from Taetigkeitsfeld t where t.id in ( select distinct(ta.taetigkeitsfeld.id) from TaetigkeitsfeldAssoc ta  where ta.mandantengruppe.id=:mandantengruppe)",
-                Taetigkeitsfeld.class).setParameter("mandantengruppe", mandantengruppe.getId()).getResultList();
-
-        if (resultList.isEmpty()) {
-            resultList.add(loadTaetigkeitsfeldNichtEingeordnet());
-        } else {
-            //
-        }
-        return resultList;
+//        final List<Taetigkeitsfeld> resultList = orientDB.createQuery("from Taetigkeitsfeld t where t.id in ( select distinct(ta.taetigkeitsfeld.id) from TaetigkeitsfeldAssoc ta  where ta.mandantengruppe.id=:mandantengruppe)",
+//                Taetigkeitsfeld.class).setParameter("mandantengruppe", mandantengruppe.getId()).getResultList();
+//
+//        if (resultList.isEmpty()) {
+//            resultList.add(loadTaetigkeitsfeldNichtEingeordnet());
+//        } else {
+//            //
+//        }
+//        return resultList;
+        return null;
     }
 
     public List<Taetigkeitsfeld> loadTaetigkeitsfelderForMandantengruppe(final String mandantengruppe) {
         //        return createWhereClause().eq("mandantengruppe.mandantengruppe", mandantengruppe).findList();
-        return entityManager.createQuery("from Taetigkeitsfeld t where t.id in ( select distinct(ta.taetigkeitsfeld.id) from TaetigkeitsfeldAssoc ta " + "where ta.mandantengruppe.mandantengruppe=:mandantengruppe)",
-                Taetigkeitsfeld.class).setParameter("mandantengruppe", mandantengruppe).getResultList();
+//        return orientDB.createQuery("from Taetigkeitsfeld t where t.id in ( select distinct(ta.taetigkeitsfeld.id) from TaetigkeitsfeldAssoc ta " + "where ta.mandantengruppe.mandantengruppe=:mandantengruppe)",
+//                Taetigkeitsfeld.class).setParameter("mandantengruppe", mandantengruppe).getResultList();
+        return null;
 
         //        final String sql = "select id from taetigkeitsfeld t where t.id in ( \n" +
         //                "select distinct(taetigkeitsfeld_id)   from taetigkeitsfeld_assoc ta \n" +
@@ -96,7 +100,7 @@ public class TaetigkeitsfeldDAO extends DAO<Long, Taetigkeitsfeld> {
         //        return createQuery(sql).findList();
 
 
-        //        final ObjectSet<Organisationseinheit> objSetOrgEinheiten = entityManager.query(new Predicate<Organisationseinheit>() {
+        //        final ObjectSet<Organisationseinheit> objSetOrgEinheiten = orientDB.query(new Predicate<Organisationseinheit>() {
         //            @Override
         //            public boolean match(final Organisationseinheit organisationseinheiten) {
         //                boolean result = false;
@@ -134,16 +138,17 @@ public class TaetigkeitsfeldDAO extends DAO<Long, Taetigkeitsfeld> {
         //        liste.addAll(tFeldSet);
         //
         //        return liste;
-        //        return (List<Taetigkeitsfeld>) entityManager.createNamedQuery("LoadTaetigkeitsfeldListeForMandantengruppe").setParameter(1, mandantengruppe).getResultList();
+        //        return (List<Taetigkeitsfeld>) orientDB.createNamedQuery("LoadTaetigkeitsfeldListeForMandantengruppe").setParameter(1, mandantengruppe).getResultList();
     }
 
 
     public Taetigkeitsfeld loadTaetigkeitsfeldNichtEingeordnet() {
-        final TypedQuery<Taetigkeitsfeld> typedQuery = entityManager.createQuery("from Taetigkeitsfeld  t where t.namen='Nicht eingeordnet'", Taetigkeitsfeld.class);
-        return getSingleResultOrNull(typedQuery);
+//        final TypedQuery<Taetigkeitsfeld> typedQuery = orientDB.createQuery("from Taetigkeitsfeld  t where t.namen='Nicht eingeordnet'", Taetigkeitsfeld.class);
+//        return getSingleResultOrNull(typedQuery);
+        return null;
 
         //        return createWhereClause().eq("namen", "Nicht eingeordnet").findUnique();
-        //        final ObjectSet<Taetigkeitsfeld> objSet = entityManager.query(new Predicate<Taetigkeitsfeld>() {
+        //        final ObjectSet<Taetigkeitsfeld> objSet = orientDB.query(new Predicate<Taetigkeitsfeld>() {
         //            @Override
         //            public boolean match(final Taetigkeitsfeld taetigkeitsfeld) {
         //                return taetigkeitsfeld.getNamen().equals("Nicht eingeordnet");
@@ -157,6 +162,6 @@ public class TaetigkeitsfeldDAO extends DAO<Long, Taetigkeitsfeld> {
         //            result = null;
         //        }
         //        return result;
-        //        return (Taetigkeitsfeld) entityManager.createNamedQuery("LoadTaetigkeitsfeld_NichtEingeordnet").getSingleResult();
+        //        return (Taetigkeitsfeld) orientDB.createNamedQuery("LoadTaetigkeitsfeld_NichtEingeordnet").getSingleResult();
     }
 }

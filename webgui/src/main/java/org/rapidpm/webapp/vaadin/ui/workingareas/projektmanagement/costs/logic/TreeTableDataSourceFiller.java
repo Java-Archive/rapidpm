@@ -6,7 +6,7 @@ import com.vaadin.data.util.HierarchicalContainer;
 //import org.rapidpm.ejb3.EJBFactory;
 //import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
@@ -14,11 +14,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElemen
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.CostsScreen;
 
-import javax.persistence.EntityManager;
 import java.util.*;
-
-import static org.rapidpm.Constants.HOURS_DAY;
-import static org.rapidpm.Constants.STD_ANTEILE;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -40,10 +36,10 @@ public class TreeTableDataSourceFiller {
         this.screen = screen;
         messages = bundle;
         dataSource = dSource;
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        ressourceGroups = daoFactory.getRessourceGroupDAO().loadAllEntities();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+        ressourceGroups = daoFactory.getRessourceGroupDAO().findAll();
         for(final RessourceGroup ressourceGroup : ressourceGroups){
-            daoFactory.getEntityManager().refresh(ressourceGroup);
+//            daoFactory.getEntityManager().refresh(ressourceGroup);
         }
         dataSource.removeAllItems();
         dataSource.addContainerProperty(messages.getString("aufgabe"), String.class, null);
@@ -59,7 +55,7 @@ public class TreeTableDataSourceFiller {
 
     private void computePlanningUnitsAndTotalsAbsolut() {
         final PlannedProject projectFromSession = screen.getUi().getSession().getAttribute(PlannedProject.class);
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
         final PlannedProject projectFromDB = plannedProjectDAO.findByID(projectFromSession.getId());
         final Set<PlanningUnit> planningUnits = projectFromDB.getPlanningUnits();

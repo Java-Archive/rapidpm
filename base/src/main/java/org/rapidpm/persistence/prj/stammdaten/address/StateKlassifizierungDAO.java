@@ -6,6 +6,7 @@ package org.rapidpm.persistence.prj.stammdaten.address; /**
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -15,7 +16,7 @@ public class StateKlassifizierungDAO extends DAO<Long, StateKlassifizierung> {
     private static final Logger logger = Logger.getLogger(StateKlassifizierungDAO.class);
 
 
-    public StateKlassifizierungDAO(final EntityManager entityManager) {
-        super(entityManager, StateKlassifizierung.class);
+    public StateKlassifizierungDAO(final OrientGraph orientDB) {
+        super(orientDB, StateKlassifizierung.class);
     }
 }

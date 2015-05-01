@@ -5,6 +5,7 @@
 
 package org.rapidpm.persistence.prj.stammdaten.person;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DAO;
 
@@ -19,14 +20,15 @@ import javax.persistence.TypedQuery;
  */
 public class GeschlechtDAO extends DAO<Long, Geschlecht> {
 
-    public GeschlechtDAO(final EntityManager entityManager) {
-        super(entityManager, org.rapidpm.persistence.prj.stammdaten.person.Geschlecht.class);
+    public GeschlechtDAO(final OrientGraph orientDB) {
+        super(orientDB, org.rapidpm.persistence.prj.stammdaten.person.Geschlecht.class);
     }
 
     public Geschlecht load(final String geschlechtTxt) {
-        final TypedQuery<Geschlecht> typedQuery = entityManager.createQuery("from Geschlecht g where g.geschlecht=:geschlechtTxt",
-                Geschlecht.class).setParameter("geschlechtTxt", geschlechtTxt);
-        return getSingleResultOrNull(typedQuery);
+//        final TypedQuery<Geschlecht> typedQuery = orientDB.createQuery("from Geschlecht g where g.geschlecht=:geschlechtTxt",
+//                Geschlecht.class).setParameter("geschlechtTxt", geschlechtTxt);
+//        return getSingleResultOrNull(typedQuery);
+        return null;
     }
 
     public Geschlecht loadGeschlechtMaennlich() {

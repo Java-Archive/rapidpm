@@ -4,7 +4,7 @@ import com.vaadin.event.MouseEvents;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
@@ -12,7 +12,6 @@ import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.person
 import org.rapidpm.webapp.vaadin.ui.EditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesFieldValidator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
 import java.util.ArrayList;
@@ -35,8 +34,8 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
                                           final Panel screenPanel, boolean hasChildren) {
         super(screen, screenPanel);
         this.screen = screen;
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO().loadAllEntities();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+        final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO().findAll();
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
             buildField(ressourceGroup, planningUnit);
         }
@@ -90,7 +89,7 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
                                     final DaysHoursMinutesItem item = new DaysHoursMinutesItem(textField.getValue(),
                                             currentProject.getHoursPerWorkingDay());
                                     planningUnitElement.setPlannedMinutes(item.getMinutesFromDaysHoursMinutes());
-                                    daoFactory.saveOrUpdateTX(planningUnitElement);
+//                                    daoFactory.saveOrUpdateTX(planningUnitElement);
                                 }
                             }
                         }

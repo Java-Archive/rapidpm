@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning;
 
+import com.tinkerpop.blueprints.Vertex;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.book.Buch;
 import org.rapidpm.persistence.prj.projectmanagement.planning.finance.PlannedOffer;
@@ -12,106 +13,50 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
-@Entity
+
 public class PlannedProject implements Comparable<PlannedProject>{
     private static final Logger logger = Logger.getLogger(PlannedProject.class);
 
     public static final String ID = "id";
+    public static final String ACTIVE = "active";
     public static final String NAME = "projektName";
     public static final String TOKEN = "projektToken";
+    public static final String INFO = "info";
+    public static final String FACT = "fakturierbar";
     public static final String EXTERNALDAILYRATE = "externalDailyRate";
     public static final String HOURSPERWORKINGDAY = "hoursPerWorkingDay";
 
-    @Id
-    @TableGenerator(name = "PKGenPlannedProject", table = "pk_gen", pkColumnName = "gen_key",
-            pkColumnValue = "PlannedProject_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenPlannedProject")
-    private Long id;
-
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+    private String id;
     private Mandantengruppe mandantengruppe;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<PlannedProjectName> plannedProjectName;
-
-    @Basic
     private String projektToken;
-
-    @Basic
     private String projektName;
-
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<PlanningUnit> planningUnits;
-
-    @Basic
     private boolean active;
-    @Basic
     private boolean fakturierbar;
-
-    @Basic
-//    @Column(columnDefinition = "TEXT")
-    @Column(length = 20000)
     private String info;
-
-    @Basic
     private Double externalDailyRate;
-
-    @Basic
     private Integer hoursPerWorkingDay;
-
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private Benutzer creator;
-
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private Benutzer responsiblePerson;
-
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private List<PlannedTravel> plannedTravelList;
-
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private List<PlannedOffer> plannedOfferList;
-
-
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private Buch specification;
-
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private Buch testCases;
 
+    public PlannedProject(){}
 
-
-
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("PlannedProject");
-        sb.append("{active=").append(active);
-        sb.append(", id=").append(id);
-        sb.append(", mandantengruppe=").append(mandantengruppe);
-        sb.append(", plannedProjectName=").append(plannedProjectName);
-        sb.append(", fakturierbar=").append(fakturierbar);
-        sb.append(", creator=").append(creator);
-        sb.append(", responsiblePerson=").append(responsiblePerson);
-        //        sb.append(", created=").append(created);
-        sb.append(", info='").append(info).append('\'');
-        sb.append('}');
-        return sb.toString();
+    public PlannedProject(Vertex plannedProjectVertex) {
+        id = plannedProjectVertex.getId().toString();
+        active = plannedProjectVertex.getProperty(ACTIVE);
+        fakturierbar = plannedProjectVertex.getProperty(FACT);
+        info = plannedProjectVertex.getProperty(INFO);
+        projektName = plannedProjectVertex.getProperty(NAME);
+        projektToken = plannedProjectVertex.getProperty(projektToken);
+        externalDailyRate = plannedProjectVertex.getProperty(EXTERNALDAILYRATE);
+        hoursPerWorkingDay = plannedProjectVertex.getProperty(HOURSPERWORKINGDAY);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PlannedProject)) return false;
-
-        PlannedProject that = (PlannedProject) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-
-        return true;
-    }
-
-    @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
@@ -172,11 +117,11 @@ public class PlannedProject implements Comparable<PlannedProject>{
         this.fakturierbar = fakturierbar;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(final Long id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -254,9 +199,36 @@ public class PlannedProject implements Comparable<PlannedProject>{
 
     @Override
     public int compareTo(PlannedProject o) {
-        if(this.getId() > o.getId()){
-            return 1;
-        }
-        return -1;
+        return 1;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder();
+        sb.append("PlannedProject");
+        sb.append("{active=").append(active);
+        sb.append(", id=").append(id);
+        sb.append(", mandantengruppe=").append(mandantengruppe);
+        sb.append(", plannedProjectName=").append(plannedProjectName);
+        sb.append(", fakturierbar=").append(fakturierbar);
+        sb.append(", creator=").append(creator);
+        sb.append(", responsiblePerson=").append(responsiblePerson);
+        //        sb.append(", created=").append(created);
+        sb.append(", info='").append(info).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof PlannedProject)) return false;
+
+        PlannedProject that = (PlannedProject) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+
+        return true;
+    }
+
 }

@@ -1,7 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.model;
 
 import org.neo4j.graphdb.Direction;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelationDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
@@ -52,7 +52,7 @@ public class RelationsDataContainer extends AbstractIssueDataContainer {
         setCurrentIssue(issue);
         resetTransactions();
         this.removeAllItems();
-        final IssueRelationDAO relationDAO = DaoFactorySingelton.getInstance().getIssueRelationDAO();
+        final IssueRelationDAO relationDAO = DaoFactorySingleton.getInstance().getIssueRelationDAO();
         for (IssueRelation relation : relationDAO.loadAllEntities(issue.getProjectId())) {
 
             for (IssueBase connIssue : issue.getConnectedIssues(relation, Direction.OUTGOING)) {

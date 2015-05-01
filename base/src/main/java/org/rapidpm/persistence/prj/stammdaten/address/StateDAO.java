@@ -9,6 +9,7 @@ package org.rapidpm.persistence.prj.stammdaten.address;
  *
  */
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -18,13 +19,14 @@ import javax.persistence.TypedQuery;
 public class StateDAO extends DAO<Long, State> {
     private static final Logger logger = Logger.getLogger(StateDAO.class);
 
-    public StateDAO(final EntityManager entityManager) {
-        super(entityManager, State.class);
+    public StateDAO(final OrientGraph orientDB) {
+        super(orientDB, State.class);
     }
 
     public State loadStateForShortname(final String shortname) {
-        final TypedQuery<State> typedQuery = entityManager.createQuery("from State s where s.kurzName=:shortname", State.class)
-                .setParameter("shortname", shortname);
-        return getSingleResultOrNull(typedQuery);
+//        final TypedQuery<State> typedQuery = orientDB.createQuery("from State s where s.kurzName=:shortname", State.class)
+//                .setParameter("shortname", shortname);
+//        return getSingleResultOrNull(typedQuery);
+        return null;
     }
 }

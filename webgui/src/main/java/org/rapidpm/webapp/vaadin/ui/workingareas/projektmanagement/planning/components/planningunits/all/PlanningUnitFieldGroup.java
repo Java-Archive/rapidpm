@@ -6,7 +6,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
@@ -42,7 +42,7 @@ public class PlanningUnitFieldGroup extends FieldGroup {
     public PlanningUnitFieldGroup(final ProjektplanungScreen screen){
         this.screen = screen;
         this.messages = screen.getMessagesBundle();
-        daoFactory = DaoFactorySingelton.getInstance();
+        daoFactory = DaoFactorySingleton.getInstance();
         final PlanningUnit planningUnit = new PlanningUnit();
         planningUnit.setTestcases(new ArrayList<TextElement>());
         planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
@@ -54,7 +54,7 @@ public class PlanningUnitFieldGroup extends FieldGroup {
     public PlanningUnitFieldGroup(final ProjektplanungScreen screen, final PlanningUnit thePlanningUnit) {
         this.screen = screen;
         this.messages = screen.getMessagesBundle();
-        daoFactory = DaoFactorySingelton.getInstance();
+        daoFactory = DaoFactorySingleton.getInstance();
         selectedPlanningUnit = daoFactory.getPlanningUnitDAO().findByID(thePlanningUnit.getId());
         if(selectedPlanningUnit == null){
             selectedPlanningUnit = thePlanningUnit;
@@ -64,9 +64,9 @@ public class PlanningUnitFieldGroup extends FieldGroup {
     }
 
     private void buildForm() {
-        final List<Benutzer> users = daoFactory.getBenutzerDAO().loadAllEntities();
+        final List<Benutzer> users = daoFactory.getBenutzerDAO().findAll();
         final PlannedProject project = daoFactory.getProjectDAO().findByID(screen.getUi().getCurrentProject().getId());
-        daoFactory.getEntityManager().refresh(project);
+//        daoFactory.getEntityManager().refresh(project);
         final Set<PlanningUnit> managedPlanningUnits = getAllPlanningUnits((PlanningUnit)screen.getPlanningUnitSelect()
                 .getValue());
 

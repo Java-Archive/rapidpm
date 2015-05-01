@@ -18,7 +18,7 @@ import java.util.Set;
  */
 public abstract class FlatEntity<T> {
     private static final Logger logger = Logger.getLogger(FlatEntity.class);
-    protected static final DAO.EntityUtils entityUtils = new DAO.EntityUtils();
+//    protected static final DAO.EntityUtils entityUtils = new DAO.EntityUtils();
 
     protected Long id;
 
@@ -53,12 +53,12 @@ public abstract class FlatEntity<T> {
      * @return Die ID des Entity-Objekts oder <code>null</code>, wenn das Objekt kein Entity-Objekt ist
      *         oder keine ID besitzt.
      */
-    protected static Long getId(final Object entity) {
-        if (entity != null) {
-            return entityUtils.getOIDFromEntity(entity);
-        }
-        return null;
-    }
+//    protected static Long getId(final Object entity) {
+//        if (entity != null) {
+//            return entityUtils.getOIDFromEntity(entity);
+//        }
+//        return null;
+//    }
 
     /**
      * Ermittelt ein Set von IDs anhand von einem mehreren Entity-Objekten.
@@ -66,20 +66,20 @@ public abstract class FlatEntity<T> {
      * @param entities Die Entity-Objekte.
      * @return Set der IDs der Entity-Objekte.
      */
-    protected static Set<Long> entitiesToIds(final Iterable<?> entities) {
-        final Set<Long> idSet = new HashSet<>();
-        for (final Object entity : entities) {
-            if (entity != null) {
-                final Long id = entityUtils.getOIDFromEntity(entity);
-                if (id != null && id > 0L) {
-                    idSet.add(id);
-                } else {
-                    logger.warn("Entity has no valid ID: " + entity);
-                }
-            } else {
-                logger.warn("Entity is null.");
-            }
-        }
-        return idSet;
-    }
+//    protected static Set<Long> entitiesToIds(final Iterable<?> entities) {
+//        final Set<Long> idSet = new HashSet<>();
+//        for (final Object entity : entities) {
+//            if (entity != null) {
+//                final Long id = entityUtils.getOIDFromEntity(entity);
+//                if (id != null && id > 0L) {
+//                    idSet.add(id);
+//                } else {
+//                    logger.warn("Entity has no valid ID: " + entity);
+//                }
+//            } else {
+//                logger.warn("Entity is null.");
+//            }
+//        }
+//        return idSet;
+//    }
 }

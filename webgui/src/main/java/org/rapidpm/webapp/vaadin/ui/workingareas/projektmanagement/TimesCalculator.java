@@ -4,9 +4,8 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 //import org.rapidpm.persistence.DaoFactoryBean;
 import com.vaadin.server.VaadinSession;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
@@ -44,9 +43,9 @@ public class TimesCalculator {
         this.screen = screen;
         this.messages = screen.getMessagesBundle();
         this.ui = screen.getUi();
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         final RessourceGroupDAO ressourceGroupDAO = daoFactory.getRessourceGroupDAO();
-        ressourceGroups = ressourceGroupDAO.loadAllEntities();
+        ressourceGroups = ressourceGroupDAO.findAll();
     }
 
     public void calculate() {
@@ -66,9 +65,9 @@ public class TimesCalculator {
     }
 
     private void calculatePlanningUnitsAndTotalsAbsolut() {
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         for (final PlanningUnit planningUnit : currentProject.getPlanningUnits()) {
-            daoFactory.getEntityManager().refresh(planningUnit);
+//            daoFactory.getEntityManager().refresh(planningUnit);
             calculatePlanningUnits(planningUnit, planningUnit.getKindPlanningUnits());
         }
     }

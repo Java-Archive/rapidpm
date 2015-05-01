@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.bewegungsdaten.anfragen;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -12,8 +13,8 @@ import javax.persistence.EntityManager;
  */
 public class ProjektanfrageDAO extends DAO<Long, Projektanfrage> {
 
-    public ProjektanfrageDAO(final EntityManager entityManager) {
-        super(entityManager, Projektanfrage.class);
+    public ProjektanfrageDAO(final OrientGraph orientDB) {
+        super(orientDB, Projektanfrage.class);
     }
 
 }

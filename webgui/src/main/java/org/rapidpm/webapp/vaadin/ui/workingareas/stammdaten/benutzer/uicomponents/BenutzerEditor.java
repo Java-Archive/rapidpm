@@ -9,7 +9,7 @@ import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.Rolle;
 import org.rapidpm.webapp.vaadin.MainUI;
@@ -148,7 +148,7 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
 
         saveButton = new Button();
         saveButton.addClickListener(new Button.ClickListener() {
-            private final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+            private final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
 
             @Override
             public void buttonClick(final Button.ClickEvent clickEvent) {
@@ -173,9 +173,9 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
                     if (valid) {
                         final List<String> userNames = new ArrayList<>();
                         final List<String> userEmails = new ArrayList<>();
-                        final List<Benutzer> users = daoFactory.getBenutzerDAO().loadAllEntities();
+                        final List<Benutzer> users = daoFactory.getBenutzerDAO().findAll();
                         for (final Benutzer user : users) {
-                            daoFactory.getEntityManager().refresh(user);
+//                            daoFactory.getEntityManager().refresh(user);
                             userNames.add(user.getLogin());
                             userEmails.add(user.getEmail());
                         }
@@ -217,7 +217,7 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
 
                         // in die DB speichern
                         final Benutzer benutzer = benutzerBean.getBean();
-                        daoFactory.saveOrUpdateTX(benutzer);
+//                        daoFactory.saveOrUpdateTX(benutzer);
 
                         final MainUI ui = screen.getUi();
                         ui.setWorkingArea(new BenutzerScreen(ui));

@@ -3,7 +3,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ty
 
 //import org.rapidpm.persistence.GraphDaoFactory;
 import org.neo4j.graphdb.Direction;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.*;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
@@ -106,6 +106,10 @@ public class IssueBase implements PersistInGraph {
         setProjectId(projectid);
     }
 
+    public IssueBase(final String projectid) {
+        //
+    }
+
 
     private boolean addToMap(String methodName, Object[] args) {
         boolean success = false;
@@ -139,7 +143,7 @@ public class IssueBase implements PersistInGraph {
 
 
     public boolean connectToIssueAs(final IssueBase issue, final IssueRelation relation) {
-        //return DaoFactorySingelton.getIssueBaseDAO(projectid).connectEntitiesWithRelationTx(this, issue, relation);
+        //return DaoFactorySingleton.getIssueBaseDAO(projectid).connectEntitiesWithRelationTx(this, issue, relation);
         return addToMap("connectEntitiesWithRelationTx", new Object[]{this, issue, relation});
     }
 
@@ -148,51 +152,51 @@ public class IssueBase implements PersistInGraph {
     }
 
     public List<IssueBase> getConnectedIssues(final IssueRelation relation, final Direction direction) {
-        return DaoFactorySingelton.getInstance().getIssueBaseDAO().getConnectedIssuesWithRelation(this, relation, direction);
+        return DaoFactorySingleton.getInstance().getIssueBaseDAO().getConnectedIssuesWithRelation(this, relation, direction);
     }
 
     public boolean removeConnectionToIssue(final IssueBase issue, final IssueRelation relation) {
-//        return DaoFactorySingelton.getIssueBaseDAO(projectid).deleteRelationOfEntitiesTx(this, issue, relation, Direction.BOTH);
+//        return DaoFactorySingleton.getIssueBaseDAO(projectid).deleteRelationOfEntitiesTx(this, issue, relation, Direction.BOTH);
         return removeConnectionToIssue(issue, relation, Direction.BOTH);
     }
 
     public boolean removeConnectionToIssue(final IssueBase issue, final IssueRelation relation, final Direction direction) {
-//        return DaoFactorySingelton.getIssueBaseDAO(projectid).deleteRelationOfEntitiesTx(this, issue, relation, direction);
+//        return DaoFactorySingleton.getIssueBaseDAO(projectid).deleteRelationOfEntitiesTx(this, issue, relation, direction);
         return addToMap("deleteRelationOfEntitiesTx", new Object[]{this, issue, relation, direction});
     }
 
 
     public boolean addSubIssue(final IssueBase subIssue) {
-//        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).addSubIssueTx(this, subIssue);
+//        return DaoFactorySingleton.getInstance().getIssueBaseDAO(projectid).addSubIssueTx(this, subIssue);
         return addToMap("addSubIssueTx", new Object[]{this, subIssue});
     }
 
     public List<IssueBase> getSubIssues() {
-        return DaoFactorySingelton.getInstance().getIssueBaseDAO().getSubIssuesOf(this);
+        return DaoFactorySingleton.getInstance().getIssueBaseDAO().getSubIssuesOf(this);
     }
 
     public boolean removeSubIssue(final IssueBase subIssue) {
-//        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).deleteSubIssueRelationTx(this, subIssue);
+//        return DaoFactorySingleton.getInstance().getIssueBaseDAO(projectid).deleteSubIssueRelationTx(this, subIssue);
         return addToMap("deleteSubIssueRelationTx", new Object[]{this, subIssue});
     }
 
     public boolean setAsRootIssue() {
-//        return DaoFactorySingelton.getInstance().getIssueBaseDAO(projectid).setAsRootIssueTx(this);
+//        return DaoFactorySingleton.getInstance().getIssueBaseDAO(projectid).setAsRootIssueTx(this);
         return addToMap("setAsRootIssueTx", new Object[]{this});
     }
 
 
     public boolean addComponent(final IssueComponent component) {
-//        return DaoFactorySingelton.getIssueBaseDAO(projectid).addComponentToTx(this, component);
+//        return DaoFactorySingleton.getIssueBaseDAO(projectid).addComponentToTx(this, component);
         return addToMap("addComponentToTx", new Object[]{this, component});
     }
 
     public List<IssueComponent> getComponents() {
-        return DaoFactorySingelton.getInstance().getIssueBaseDAO().getComponentsOf(this);
+        return DaoFactorySingleton.getInstance().getIssueBaseDAO().getComponentsOf(this);
     }
 
     public boolean removeComponent(final IssueComponent component) {
-//        return DaoFactorySingelton.getIssueBaseDAO(projectid).deleteComponentRelationTx(this, component);
+//        return DaoFactorySingleton.getIssueBaseDAO(projectid).deleteComponentRelationTx(this, component);
         return addToMap("deleteComponentRelationTx", new Object[]{this, component});
     }
 

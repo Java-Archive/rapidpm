@@ -37,7 +37,7 @@ public class PlanningUnit {
     @TableGenerator(name = "PKGenPlanningUnit", table = "pk_gen", pkColumnName = "gen_key",
             pkColumnValue = "PlanningUnit_id", valueColumnName = "gen_value", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenPlanningUnit")
-    private Long id;
+    private String id;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     private List<PlannedTravel> plannedTravelList;
@@ -110,11 +110,11 @@ public class PlanningUnit {
         this.komplexitaet = komplexitaet;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

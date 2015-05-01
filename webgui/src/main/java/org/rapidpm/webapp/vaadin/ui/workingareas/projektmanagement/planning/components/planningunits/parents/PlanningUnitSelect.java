@@ -6,7 +6,7 @@ import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.ListSelect;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
@@ -28,11 +28,11 @@ public class PlanningUnitSelect extends ListSelect implements Property.ValueChan
     private PlannedProject projectFromDB;
 
     public PlanningUnitSelect(final MainUI ui){
-        baseDaoFactoryBean = DaoFactorySingelton.getInstance();
+        baseDaoFactoryBean = DaoFactorySingleton.getInstance();
         final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
         projectFromDB = baseDaoFactoryBean.getPlannedProjectDAO().findByID
                 (projectFromSession.getId());
-        baseDaoFactoryBean.getEntityManager().refresh(projectFromDB);
+//        baseDaoFactoryBean.getEntityManager().refresh(projectFromDB);
         final Set<PlanningUnit> allPlanningUnitsOfProject = projectFromDB.getPlanningUnits();
         final Set<PlanningUnit> planningUnitsWithoutParent = new HashSet<>();
         for (final PlanningUnit planningUnit : allPlanningUnitsOfProject) {

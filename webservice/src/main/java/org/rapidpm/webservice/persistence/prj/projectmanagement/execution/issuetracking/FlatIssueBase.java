@@ -176,12 +176,12 @@ public class FlatIssueBase extends FlatEntity<IssueBase> {
         projectId = issueBase.getProjectId();
         summary = issueBase.getSummary();
         story = issueBase.getStory();
-        priorityId = getId(issueBase.getPriority());
-        statusId = getId(issueBase.getStatus());
-        typeId = getId(issueBase.getType());
-        reporterId = getId(issueBase.getReporter());
-        assigneeId = getId(issueBase.getAssignee());
-        versionId = getId(issueBase.getVersion());
+//        priorityId = getId(issueBase.getPriority());
+//        statusId = getId(issueBase.getStatus());
+//        typeId = getId(issueBase.getType());
+//        reporterId = getId(issueBase.getReporter());
+//        assigneeId = getId(issueBase.getAssignee());
+//        versionId = getId(issueBase.getVersion());
         dueDate_planned = issueBase.getDueDate_planned();
         dueDate_resolved = issueBase.getDueDate_resolved();
         dueDate_closed = issueBase.getDueDate_closed();
@@ -211,10 +211,10 @@ public class FlatIssueBase extends FlatEntity<IssueBase> {
         }
         final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
         if (reporterId != null) {
-            issueBase.setReporter(benutzerDAO.findByID(reporterId));
+            issueBase.setReporter(benutzerDAO.findByID(""));
         }
         if (assigneeId != null) {
-            issueBase.setAssignee(benutzerDAO.findByID(assigneeId));
+            issueBase.setAssignee(benutzerDAO.findByID(""));
         }
         if (versionId != null) {
             final IssueVersionDAO issueVersionDAO = daoFactory.getIssueVersionDAO();
@@ -234,7 +234,7 @@ public class FlatIssueBase extends FlatEntity<IssueBase> {
             new EntityMapper<IssueTimeUnit, FlatIssueTimeUnit>(IssueTimeUnit.class, FlatIssueTimeUnit.class) {
                 @Override
                 protected IssueTimeUnit findEntityById(final Long id) {
-                    return daoFactory.getIssueTimeUnitDAO().findByID(id);
+                    return daoFactory.getIssueTimeUnitDAO().findByID("");
                 }
             };
 
@@ -243,7 +243,7 @@ public class FlatIssueBase extends FlatEntity<IssueBase> {
             new EntityMapper<IssueComment, FlatIssueComment>(IssueComment.class, FlatIssueComment.class) {
                 @Override
                 protected IssueComment findEntityById(final Long id) {
-                    return daoFactory.getIssueCommentDAO().findByID(id);
+                    return daoFactory.getIssueCommentDAO().findByID("");
                 }
             };
 }

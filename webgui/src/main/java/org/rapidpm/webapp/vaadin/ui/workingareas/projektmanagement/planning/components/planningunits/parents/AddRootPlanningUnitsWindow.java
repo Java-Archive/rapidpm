@@ -5,7 +5,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
@@ -50,7 +50,7 @@ public class AddRootPlanningUnitsWindow extends RapidWindow {
         setCaption(messages.getString("planning_addPlanningUnit"));
         newPlanningUnitField.focus();
         transientIdCounter = 0l;
-        project = DaoFactorySingelton.getInstance().getProjectDAO().findByID(ui.getSession().getAttribute(PlannedProject.class).getId());
+        project = DaoFactorySingleton.getInstance().getProjectDAO().findByID(ui.getSession().getAttribute(PlannedProject.class).getId());
         container = new BeanItemContainer<>(PlanningUnit.class);
         addButton = new Button("+");
         deleteButton = new Button("-");
@@ -95,29 +95,29 @@ public class AddRootPlanningUnitsWindow extends RapidWindow {
         saveButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent event) {
-                final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-                daoFactory.new Transaction() {
-                    @Override
-                    public void doTask() {
-                        final EntityManager entityManager = daoFactory.getEntityManager();
-                        final Benutzer notAssignedUser = daoFactory.getBenutzerDAO().findByID(1l);
-                        for (final PlanningUnit newPlanningUnit : container.getItemIds()) {
-                            newPlanningUnit.setId(null);
-                            final List<PlanningUnitElement> newPlanningUnitElements = createNewPlanningUnitElements
-                                    (newPlanningUnit, daoFactory.getRessourceGroupDAO().loadAllEntities());
-                            for (PlanningUnitElement newPlanningUnitElement : newPlanningUnitElements) {
-                                entityManager.persist(newPlanningUnitElement);
-                            }
-                            newPlanningUnit.setResponsiblePerson(notAssignedUser);
-                            newPlanningUnit.setPlanningUnitElementList(newPlanningUnitElements);
-                            entityManager.persist(newPlanningUnit);
-                            project.getPlanningUnits().add(newPlanningUnit);
-                        }
-                        entityManager.merge(project);
-                        entityManager.flush();
-                        entityManager.refresh(project);
-                    }
-                }.execute();
+                final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+//                daoFactory.new Transaction() {
+//                    @Override
+//                    public void doTask() {
+//                        final EntityManager orientDB = daoFactory.getEntityManager();
+//                        final Benutzer notAssignedUser = daoFactory.getBenutzerDAO().findByID(1l);
+//                        for (final PlanningUnit newPlanningUnit : container.getItemIds()) {
+//                            newPlanningUnit.setId(null);
+//                            final List<PlanningUnitElement> newPlanningUnitElements = createNewPlanningUnitElements
+//                                    (newPlanningUnit, daoFactory.getRessourceGroupDAO().loadAllEntities());
+//                            for (PlanningUnitElement newPlanningUnitElement : newPlanningUnitElements) {
+//                                orientDB.persist(newPlanningUnitElement);
+//                            }
+//                            newPlanningUnit.setResponsiblePerson(notAssignedUser);
+//                            newPlanningUnit.setPlanningUnitElementList(newPlanningUnitElements);
+//                            orientDB.persist(newPlanningUnit);
+//                            project.getPlanningUnits().add(newPlanningUnit);
+//                        }
+//                        orientDB.merge(project);
+//                        orientDB.flush();
+//                        orientDB.refresh(project);
+//                    }
+//                }.execute();
                 AddRootPlanningUnitsWindow.this.close();
                 ui.setWorkingArea(new ProjektplanungScreen(ui));
             }
@@ -165,7 +165,7 @@ public class AddRootPlanningUnitsWindow extends RapidWindow {
                     }
                     final PlanningUnit newPlanningUnit = new PlanningUnit();
                     newPlanningUnit.setPlanningUnitName(newPlanningUnitName);
-                    newPlanningUnit.setId(transientIdCounter);
+                    newPlanningUnit.setId(String.valueOf(transientIdCounter));
                     container.addBean(newPlanningUnit);
                     transientIdCounter++;
                     newPlanningUnitField.setValue("");

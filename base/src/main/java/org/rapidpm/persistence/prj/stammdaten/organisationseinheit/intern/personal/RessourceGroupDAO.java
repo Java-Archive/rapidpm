@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -16,14 +17,15 @@ import javax.persistence.TypedQuery;
 public class RessourceGroupDAO extends DAO<Long, RessourceGroup> {
     private static final Logger logger = Logger.getLogger(RessourceGroupDAO.class);
 
-    public RessourceGroupDAO(final EntityManager entityManager) {
-        super(entityManager, RessourceGroup.class);
+    public RessourceGroupDAO(final OrientGraph orientDB) {
+        super(orientDB, RessourceGroup.class);
     }
 
     public RessourceGroup loadRessourceGroupByName(final String name) {
-        final TypedQuery<RessourceGroup> typedQuery = entityManager.createQuery("from RessourceGroup rg "
-                + "where rg.name=:name ", RessourceGroup.class).setParameter("name", name);
-        final RessourceGroup singleResultOrNull = getSingleResultOrNull(typedQuery);
-        return singleResultOrNull;
+//        final TypedQuery<RessourceGroup> typedQuery = orientDB.createQuery("from RessourceGroup rg "
+//                + "where rg.name=:name ", RessourceGroup.class).setParameter("name", name);
+//        final RessourceGroup singleResultOrNull = getSingleResultOrNull(typedQuery);
+//        return singleResultOrNull;
+        return null;
     }
 }

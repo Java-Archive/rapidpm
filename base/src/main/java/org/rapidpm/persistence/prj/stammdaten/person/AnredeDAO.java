@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.stammdaten.person;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -22,8 +23,8 @@ import javax.persistence.TypedQuery;
 public class AnredeDAO extends DAO<Long, Anrede> {
     private static final Logger logger = Logger.getLogger(AnredeDAO.class);
 
-    public AnredeDAO(final EntityManager entityManager) {
-        super(entityManager, Anrede.class);
+    public AnredeDAO(final OrientGraph orientDB) {
+        super(orientDB, Anrede.class);
     }
 
 
@@ -33,22 +34,23 @@ public class AnredeDAO extends DAO<Long, Anrede> {
 
     public Anrede loadAnredeHerr() {
         return load("Herr");
-        //        return (Anrede) entityManager.createNamedQuery("LoadAnredeHerr").getSingleResult();
+        //        return (Anrede) orientDB.createNamedQuery("LoadAnredeHerr").getSingleResult();
     }
 
     public Anrede loadAnredeNothing() {
         return load("Nothing");
-        //        return (Anrede) entityManager.createNamedQuery("LoadAnredeHerr").getSingleResult();
+        //        return (Anrede) orientDB.createNamedQuery("LoadAnredeHerr").getSingleResult();
     }
 
     public Anrede load(final String anredeTxt) {
-        final TypedQuery<Anrede> typedQuery = entityManager.createQuery("from Anrede a where a.anrede=:anredeTxt", Anrede.class).setParameter(
-                "anredeTxt",
-                anredeTxt);
-        return getSingleResultOrNull(typedQuery);
+//        final TypedQuery<Anrede> typedQuery = orientDB.createQuery("from Anrede a where a.anrede=:anredeTxt", Anrede.class).setParameter(
+//                "anredeTxt",
+//                anredeTxt);
+//        return getSingleResultOrNull(typedQuery);
+        return null;
         //        return createWhereClause().eq("anrede", anredeTxt).findUnique();
         //        final Anrede result;
-        //        final ObjectSet<Anrede> objSet = entityManager.query(new Predicate<Anrede>() {
+        //        final ObjectSet<Anrede> objSet = orientDB.query(new Predicate<Anrede>() {
         //            @Override
         //            public boolean match(final Anrede anrede) {
         //                return anrede.getAnrede().equals(anredeTxt);

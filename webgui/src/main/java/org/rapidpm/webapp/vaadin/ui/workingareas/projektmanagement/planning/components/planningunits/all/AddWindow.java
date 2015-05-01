@@ -6,7 +6,7 @@ import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
@@ -54,7 +54,7 @@ public class AddWindow extends RapidWindow {
         setPositionX(POSITION_X);
         setPositionY(POSITION_Y);
 
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
 
         fieldGroup = new PlanningUnitFieldGroup(screen);
 
@@ -115,22 +115,22 @@ public class AddWindow extends RapidWindow {
                             if(newPlanningUnitName.equals(parentsPlanningUnitName)){
                                 throw new SameNameException();
                             }
-                            if(newPlanningUnit.getParent().getId() == ProjektplanungScreen.PLATZHALTER_ID){
+                            if(newPlanningUnit.getParent().getId() == String.valueOf(ProjektplanungScreen.PLATZHALTER_ID)){
                                 newPlanningUnit.setParent(null);
                             }
                         }
                         newPlanningUnit.setPlanningUnitElementList(null);
-                        daoFactory.saveOrUpdateTX(newPlanningUnit);
+//                        daoFactory.saveOrUpdateTX(newPlanningUnit);
                         newPlanningUnit.setKindPlanningUnits(new HashSet<PlanningUnit>());
                         if(newPlanningUnit.getParent() != null ){
                             final PlanningUnit parentPlanningUnit = daoFactory.getPlanningUnitDAO().findByID
                                     (newPlanningUnit.getParent().getId());
                             parentPlanningUnit.getKindPlanningUnits().add(newPlanningUnit);
-                            daoFactory.saveOrUpdateTX(parentPlanningUnit);
+//                            daoFactory.saveOrUpdateTX(parentPlanningUnit);
                         }
 
                         final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO()
-                                .loadAllEntities();
+                                .findAll();
                         if(newPlanningUnit.getParent() != null){
                             final Set<PlanningUnit> geschwisterPlanningUnits = newPlanningUnit.getParent().getKindPlanningUnits();
                             if(geschwisterPlanningUnits == null || geschwisterPlanningUnits.size() <= 1){
@@ -140,7 +140,7 @@ public class AddWindow extends RapidWindow {
                                     final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
                                     planningUnitElement.setRessourceGroup(planningUnitElementFromParent.getRessourceGroup());
                                     planningUnitElement.setPlannedMinutes(planningUnitElementFromParent.getPlannedMinutes());
-                                    daoFactory.saveOrUpdateTX(planningUnitElement);
+//                                    daoFactory.saveOrUpdateTX(planningUnitElement);
                                     newPlanningUnit.getPlanningUnitElementList().add(planningUnitElement);
                                 }
                             } else {
@@ -152,12 +152,12 @@ public class AddWindow extends RapidWindow {
 
 
 
-                        daoFactory.saveOrUpdateTX(newPlanningUnit);
+//                        daoFactory.saveOrUpdateTX(newPlanningUnit);
                         if(newPlanningUnit.getParent() == null ){
                             projekt.getPlanningUnits().add(newPlanningUnit);
                         }
-                        daoFactory.saveOrUpdateTX(projekt);
-                        daoFactory.getEntityManager().refresh(projekt);
+//                        daoFactory.saveOrUpdateTX(projekt);
+//                        daoFactory.getEntityManager().refresh(projekt);
                         AddWindow.this.close();
                         final MainUI ui = screen.getUi();
                         ui.setWorkingArea(new ProjektplanungScreen(ui));
@@ -192,7 +192,7 @@ public class AddWindow extends RapidWindow {
             planningUnitElement.setPlannedMinutes(0);
             planningUnitElement.setRessourceGroup(ressourceGroup);
             planningUnit.getPlanningUnitElementList().add(planningUnitElement);
-            daoFactory.saveOrUpdateTX(planningUnitElement);
+//            daoFactory.saveOrUpdateTX(planningUnitElement);
         }
     }
 

@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.bewegungsdaten.msgcenter;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -18,13 +19,13 @@ public class MessageDAO extends DAO<Long, Message> {
     private static final Logger logger = Logger.getLogger(MessageDAO.class);
 
 
-    public MessageDAO(final EntityManager entityManager) {
-        super(entityManager, Message.class);
+    public MessageDAO(final OrientGraph orientDB) {
+        super(orientDB, Message.class);
     }
 
     public List<Message> loadMessagesFor(final String webappName, final String mandantengruppe, final String klassifizierung) {
-        return entityManager.createQuery("from Message  m where m.benutzerWebapplikation.webappName=:webappName " + "and m.mandantengruppe.mandantengruppe=:mandantengruppe " + "and m.messageKlassifizierung.name=:klassifizierung",
-                Message.class).setParameter("webappName", webappName).setParameter("mandantengruppe", mandantengruppe).setParameter("klassifizierung", klassifizierung).getResultList();
+//        return orientDB.createQuery("from Message  m where m.benutzerWebapplikation.webappName=:webappName " + "and m.mandantengruppe.mandantengruppe=:mandantengruppe " + "and m.messageKlassifizierung.name=:klassifizierung",
+//                Message.class).setParameter("webappName", webappName).setParameter("mandantengruppe", mandantengruppe).setParameter("klassifizierung", klassifizierung).getResultList();
         //        return createWhereClause()
         //                .eq("mandantengruppe.mandantengruppe", mandantengruppe)
         //                .eq("messageKlassifizierung.name", klassifizierung)
@@ -34,11 +35,12 @@ public class MessageDAO extends DAO<Long, Message> {
         //                SQLCreator.and("mandantengruppe_id", SQLCreator.mandantengruppeID(mandantengruppe)) +
         //                SQLCreator.and("message_klassifizierung_id", SQLCreator.messageklassifizierungID(klassifizierung));
         //        return createQuery(sql).findList();
+        return null;
     }
 
     public List<Message> loadMessagesFor(final String webappName, final String mandantengruppe, final String klassifizierung, final String login) {
-        return entityManager.createQuery("from Message  m where m.benutzerWebapplikation.webappName=:webappName " + "and m.mandantengruppe.mandantengruppe=:mandantengruppe " + "and m.messageKlassifizierung.name=:klassifizierung " + "and m.creator.login=:login",
-                Message.class).setParameter("webappName", webappName).setParameter("mandantengruppe", mandantengruppe).setParameter("klassifizierung", klassifizierung).setParameter("login", login).getResultList();
+//        return orientDB.createQuery("from Message  m where m.benutzerWebapplikation.webappName=:webappName " + "and m.mandantengruppe.mandantengruppe=:mandantengruppe " + "and m.messageKlassifizierung.name=:klassifizierung " + "and m.creator.login=:login",
+//                Message.class).setParameter("webappName", webappName).setParameter("mandantengruppe", mandantengruppe).setParameter("klassifizierung", klassifizierung).setParameter("login", login).getResultList();
 
         //        return createWhereClause()
         //                .eq("mandantengruppe.mandantengruppe", mandantengruppe)
@@ -52,32 +54,32 @@ public class MessageDAO extends DAO<Long, Message> {
         //                SQLCreator.and("message_klassifizierung_id", SQLCreator.messageklassifizierungID(klassifizierung)) +
         //                SQLCreator.and("benutzer_id", SQLCreator.benutzerID(login, mandantengruppe));
         //        return createQuery(sql).findList();
-
+return null;
     }
 
     public List<Message> loadMessagesForMandantengruppe(final String mandantengruppe) {
-        return entityManager.createQuery("from Message m where m.mandantengruppe.mandantengruppe=:mandantengruppe", Message.class).setParameter("mandantengruppe", mandantengruppe).getResultList();
+//        return orientDB.createQuery("from Message m where m.mandantengruppe.mandantengruppe=:mandantengruppe", Message.class).setParameter("mandantengruppe", mandantengruppe).getResultList();
 
         //        return createWhereClause()
         //                .eq("mandantengruppe.mandantengruppe", mandantengruppe)
         //                .findList();
         //        final String sql = "select id from message where mandantengruppe_id=" + SQLCreator.mandantengruppeID(mandantengruppe);
         //        return createQuery(sql).findList();
-        //        final ObjectSet<Message> objSet = entityManager.query(new Predicate<Message>() {
+        //        final ObjectSet<Message> objSet = orientDB.query(new Predicate<Message>() {
         //            @Override
         //            public boolean match(final Message message) {
         //                return chkMandantengruppe(message, mandantengruppe);
         //            }
         //        });
         //        return objSet;
-
+return null;
     }
 
     public List<Message> loadMessagesForUsers(final String webappName, final String mandantengruppe, final String klassifizierung, final String benutzergruppenName) {
-        return entityManager.createQuery("from Message  m where m.benutzerWebapplikation.webappName=:webappName " + "and m.mandantengruppe.mandantengruppe=:mandantengruppe " + "and m.messageKlassifizierung.name=:klassifizierung " + "and m.benutzerGruppe.gruppenname=:benutzergruppenName",
-                Message.class)
-
-                .setParameter("mandantengruppe", mandantengruppe).setParameter("klassifizierung", klassifizierung).setParameter("benutzergruppenName", benutzergruppenName).getResultList();
+//        return orientDB.createQuery("from Message  m where m.benutzerWebapplikation.webappName=:webappName " + "and m.mandantengruppe.mandantengruppe=:mandantengruppe " + "and m.messageKlassifizierung.name=:klassifizierung " + "and m.benutzerGruppe.gruppenname=:benutzergruppenName",
+//                Message.class)
+//
+//                .setParameter("mandantengruppe", mandantengruppe).setParameter("klassifizierung", klassifizierung).setParameter("benutzergruppenName", benutzergruppenName).getResultList();
 
 
         //        return createWhereClause()
@@ -93,7 +95,7 @@ public class MessageDAO extends DAO<Long, Message> {
         //                SQLCreator.and("message_klassifizierung_id", SQLCreator.messageklassifizierungID(klassifizierung)) +
         //                SQLCreator.and("benutzer_gruppe_id", SQLCreator.benutzerGruppeID(benutzergruppenName));
         //        return createQuery(sql).findList();
-        //        final ObjectSet<Message> objSet = entityManager.query(new Predicate<Message>() {
+        //        final ObjectSet<Message> objSet = orientDB.query(new Predicate<Message>() {
         //            @Override
         //            public boolean match(final Message message) {
         //                final boolean b0 = chkMandantengruppe(message, mandantengruppe);
@@ -105,12 +107,12 @@ public class MessageDAO extends DAO<Long, Message> {
         //            }
         //        });
         //        return objSet;
-
+return null;
     }
     //TODO wo ist er Unterschied ??
 
     //    public List<Message> loadMessagesForAdmin(final String webappName, final String mandantengruppe, final String klassifizierung) {
-    //        return  entityManager.createQuery("from Message  m where m.benutzerWebapplikation.webappName=:webappName " +
+    //        return  orientDB.createQuery("from Message  m where m.benutzerWebapplikation.webappName=:webappName " +
     //                                                  "and m.mandantengruppe.mandantengruppe=:mandantengruppe " +
     //                                                  "and m.messageKlassifizierung.name=:klassifizierung " +
     //                                                  , Message.class).getResultList();
@@ -125,7 +127,7 @@ public class MessageDAO extends DAO<Long, Message> {
     ////                SQLCreator.and("mandantengruppe_id", SQLCreator.mandantengruppeID(mandantengruppe)) +
     ////                SQLCreator.and("message_klassifizierung_id",  SQLCreator.messageklassifizierungID(klassifizierung));
     ////        return createQuery(sql).findList();
-    ////        final ObjectSet<Message> objSet = entityManager.query(new Predicate<Message>() {
+    ////        final ObjectSet<Message> objSet = orientDB.query(new Predicate<Message>() {
     ////            @Override
     ////            public boolean match(final Message message) {
     ////                final boolean b0 = chkMandantengruppe(message, mandantengruppe);
@@ -141,7 +143,7 @@ public class MessageDAO extends DAO<Long, Message> {
     //    }
 
 
-    //        final ObjectSet<Message> objSet = entityManager.query(new Predicate<Message>() {
+    //        final ObjectSet<Message> objSet = orientDB.query(new Predicate<Message>() {
     //            @Override
     //            public boolean match(final Message message) {
     //                final boolean b0 = chkWebAppName(message, webappName);
@@ -219,7 +221,7 @@ public class MessageDAO extends DAO<Long, Message> {
 //                SQLCreator.and("benutzer_id", "");
 //return createQuery(sql).findList();
 
-//        final ObjectSet<Message> objSet = entityManager.query(new Predicate<Message>() {
+//        final ObjectSet<Message> objSet = orientDB.query(new Predicate<Message>() {
 //            @Override
 //            public boolean match(final Message message) {
 //                final boolean b0 = chkMandantengruppe(message, mandantengruppe);

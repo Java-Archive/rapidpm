@@ -5,7 +5,7 @@ import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.UI;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.GraphBaseDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.NonVisible;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.annotations.Simple;
@@ -58,7 +58,7 @@ public class SettingsDataContainer<T> extends IndexedContainer {
             logger.debug("Fill table with DAO entities");
         this.removeAllItems();
         //TODO
-        for (final T entity : dao.loadAllEntities(((BaseUI)UI.getCurrent()).getCurrentProject().getId())) {
+        for (final T entity : dao.loadAllEntities(0l)) {
             addEntityToTable(entity);
         }
     }
@@ -105,7 +105,7 @@ public class SettingsDataContainer<T> extends IndexedContainer {
         final Method method;
         try {
             method = DaoFactory.class.getDeclaredMethod("get" + clazz.getSimpleName() + "DAO");
-            dao = (GraphBaseDAO<T>)method.invoke(DaoFactorySingelton.getInstance());
+            dao = (GraphBaseDAO<T>)method.invoke(DaoFactorySingleton.getInstance());
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             logger.error(e.getMessage(), e);
         }

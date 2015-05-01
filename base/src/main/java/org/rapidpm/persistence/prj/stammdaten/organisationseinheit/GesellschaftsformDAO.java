@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.gesellschaftsformen.Gesellschaftsform;
@@ -23,8 +24,8 @@ public class GesellschaftsformDAO extends DAO<Long, Gesellschaftsform> {
     private static final Logger logger = Logger.getLogger(GesellschaftsformDAO.class);
     public static final String UNBEKANNT = "";
 
-    public GesellschaftsformDAO(final EntityManager entityManager) {
-        super(entityManager, Gesellschaftsform.class);
+    public GesellschaftsformDAO(final OrientGraph orientDB) {
+        super(orientDB, Gesellschaftsform.class);
     }
 
 
@@ -46,16 +47,16 @@ public class GesellschaftsformDAO extends DAO<Long, Gesellschaftsform> {
 
     public Gesellschaftsform loadGesellschaftsformUnbekannt() {
         return load(UNBEKANNT);
-        //        return (Gesellschaftsform) entityManager.createNamedQuery("LoadGesellschaftsformUnbekannt").getSingleResult();
+        //        return (Gesellschaftsform) orientDB.createNamedQuery("LoadGesellschaftsformUnbekannt").getSingleResult();
     }
 
     private Gesellschaftsform load(final String abkuerzung) {
-        final TypedQuery<Gesellschaftsform> query = entityManager.createQuery("from Gesellschaftsform g where g.abkuerzung=:abkuerzung", Gesellschaftsform.class);
-        final TypedQuery<Gesellschaftsform> typedQuery = query.setParameter("abkuerzung", abkuerzung);
-        return getSingleResultOrNull(typedQuery);
+//        final TypedQuery<Gesellschaftsform> query = orientDB.createQuery("from Gesellschaftsform g where g.abkuerzung=:abkuerzung", Gesellschaftsform.class);
+//        final TypedQuery<Gesellschaftsform> typedQuery = query.setParameter("abkuerzung", abkuerzung);
+//        return getSingleResultOrNull(typedQuery);
         //        return createWhereClause().eq("abkuerzung", abkuerzung).findUnique();
         //        final Gesellschaftsform gesellschaftsform;
-        //        final ObjectSet<Gesellschaftsform> objSet = entityManager.query(new Predicate<Gesellschaftsform>() {
+        //        final ObjectSet<Gesellschaftsform> objSet = orientDB.query(new Predicate<Gesellschaftsform>() {
         //            @Override
         //            public boolean match(final Gesellschaftsform gesellschaftsform) {
         //                return gesellschaftsform.getBezeichnung().equals(abkuerzung);
@@ -68,6 +69,7 @@ public class GesellschaftsformDAO extends DAO<Long, Gesellschaftsform> {
         //            gesellschaftsform = null;
         //        }
         //        return gesellschaftsform;
+        return null;
     }
 
 

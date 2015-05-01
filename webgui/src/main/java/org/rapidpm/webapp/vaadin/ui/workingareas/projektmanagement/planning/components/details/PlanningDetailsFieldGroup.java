@@ -8,14 +8,10 @@ import com.vaadin.ui.*;
 //import org.rapidpm.ejb3.EJBFactory;
 //import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.system.security.Benutzer;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -34,7 +30,7 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
 
     public PlanningDetailsFieldGroup(final ResourceBundle messages, final PlanningUnit unmanagedPlanningUnit) {
         this.messages = messages;
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().findByID(unmanagedPlanningUnit.getId());
         if(planningUnit == null){
             setItemDataSource(new BeanItem<>(unmanagedPlanningUnit));
@@ -46,8 +42,8 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
     }
 
     private void buildForm() {
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final List<Benutzer> users = daoFactory.getBenutzerDAO().loadAllEntities();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+        final List<Benutzer> users = daoFactory.getBenutzerDAO().findAll();
         for (final Object propertyId : getUnboundPropertyIds()) {
             final String spaltenName = propertyId.toString();
             switch(spaltenName){

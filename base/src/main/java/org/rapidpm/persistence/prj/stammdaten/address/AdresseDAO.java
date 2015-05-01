@@ -9,6 +9,7 @@ package org.rapidpm.persistence.prj.stammdaten.address;
  *
  */
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -18,13 +19,14 @@ import java.util.List;
 public class AdresseDAO extends DAO<Long, Adresse> {
     private static final Logger logger = Logger.getLogger(AdresseDAO.class);
 
-    public AdresseDAO(final EntityManager entityManager) {
-        super(entityManager, Adresse.class);
+    public AdresseDAO(final OrientGraph orientDB) {
+        super(orientDB, Adresse.class);
     }
 
     public List<Adresse> getAdressenForPerson(final Long personOID) {
-        return entityManager.createQuery("select adr from Person p inner join p.adressen adr where p.id=:pid", Adresse.class)
-                .setParameter("pid", personOID)
-                .getResultList();
+//        return orientDB.createQuery("select adr from Person p inner join p.adressen adr where p.id=:pid", Adresse.class)
+//                .setParameter("pid", personOID)
+//                .getResultList();
+        return null;
     }
 }

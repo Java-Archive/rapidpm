@@ -3,14 +3,13 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic;
 //import org.rapidpm.ejb3.EJBFactory;
 //import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
 
-import javax.persistence.EntityManager;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -36,10 +35,10 @@ public class CostsCalculator {
     public CostsCalculator(MainUI ui, final ResourceBundle bundle) {
 //        bean = EJBFactory.getEjbInstance(CostsCalcutorBean.class);
 //        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
         projekt = daoFactory.getPlannedProjectDAO().findByID(projectFromSession.getId());
-        daoFactory.getEntityManager().refresh(projekt);
+//        daoFactory.getEntityManager().refresh(projekt);
         messages = bundle;
     }
 

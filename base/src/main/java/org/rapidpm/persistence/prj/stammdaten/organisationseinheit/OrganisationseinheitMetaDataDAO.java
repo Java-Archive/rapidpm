@@ -6,6 +6,7 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit; /**
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -15,7 +16,7 @@ public class OrganisationseinheitMetaDataDAO extends DAO<Long, Organisationseinh
     private static final Logger logger = Logger.getLogger(OrganisationseinheitMetaDataDAO.class);
 
 
-    public OrganisationseinheitMetaDataDAO(final EntityManager entityManager) {
-        super(entityManager, OrganisationseinheitMetaData.class);
+    public OrganisationseinheitMetaDataDAO(final OrientGraph orientDB) {
+        super(orientDB, OrganisationseinheitMetaData.class);
     }
 }

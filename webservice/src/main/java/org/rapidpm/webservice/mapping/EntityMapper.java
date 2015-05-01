@@ -3,7 +3,7 @@ package org.rapidpm.webservice.mapping;
 import org.apache.log4j.Logger;
 import org.apache.shiro.authz.AuthorizationException;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +45,7 @@ public abstract class EntityMapper<T, FT extends FlatEntity> {
     public EntityMapper(final Class<T> entityType, final Class<FT> flatEntityType) {
         this.entityType = entityType;
         this.flatEntityType = flatEntityType;
-        daoFactory = DaoFactorySingelton.getInstance();
+        daoFactory = DaoFactorySingleton.getInstance();
     }
 
     /**

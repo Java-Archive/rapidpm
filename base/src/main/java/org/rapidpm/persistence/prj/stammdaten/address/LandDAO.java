@@ -9,6 +9,7 @@ package org.rapidpm.persistence.prj.stammdaten.address;
  *
  */
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -18,19 +19,19 @@ import javax.persistence.TypedQuery;
 public class LandDAO extends DAO<Long, Land> {
     private static final Logger logger = Logger.getLogger(LandDAO.class);
 
-    public LandDAO(final EntityManager entityManager) {
-        super(entityManager, Land.class);
+    public LandDAO(final OrientGraph orientDB) {
+        super(orientDB, Land.class);
     }
 
 
     public Land loadLandForIsoCode(final String isoCode) {
-        final TypedQuery<Land> typedQuery = entityManager.createQuery("from Land l where l.isoCode=:isoCode", Land.class).setParameter("isoCode",
-                isoCode);
-        return getSingleResultOrNull(typedQuery);
+//        final TypedQuery<Land> typedQuery = orientDB.createQuery("from Land l where l.isoCode=:isoCode", Land.class).setParameter("isoCode",
+//                isoCode);
+//        return getSingleResultOrNull(typedQuery);
         //        return createWhereClause().eq("isoCode", isoCode).findUnique();
 
         //        Land result = null;
-        //        final ObjectSet<Land> laender = entityManager.query(new Predicate<Land>() {
+        //        final ObjectSet<Land> laender = orientDB.query(new Predicate<Land>() {
         //            @Override
         //            public boolean match(final Land land) {
         //                final String iso = land.getIsoCode();
@@ -44,12 +45,13 @@ public class LandDAO extends DAO<Long, Land> {
         //          result = null;
         //        }
         //        return result;
+        return null;
     }
 
     //    public Land loadLandForIsoCode(final String isoCode) {
     //        Land result = null;
     //        try {
-    //            result = (Land) entityManager.createNamedQuery("LoadLandForIsoCode").setParameter("isoCode", isoCode).getSingleResult();
+    //            result = (Land) orientDB.createNamedQuery("LoadLandForIsoCode").setParameter("isoCode", isoCode).getSingleResult();
     //        } catch (Exception e) {
     //            logger.info("Es wurde kein Land für den angegebenen ISO Code gefunden: " + isoCode);
     //

@@ -6,6 +6,7 @@ package org.rapidpm.persistence.system.logging; /**
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -14,8 +15,8 @@ import javax.persistence.EntityManager;
 public class LogginEntityEntryDAO extends DAO<Long, LoggingEntityEntry> {
     private static final Logger logger = Logger.getLogger(LogginEntityEntryDAO.class);
 
-    public LogginEntityEntryDAO(final EntityManager entityManager) {
-        super(entityManager, LoggingEntityEntry.class);
+    public LogginEntityEntryDAO(final OrientGraph orientDB) {
+        super(orientDB, LoggingEntityEntry.class);
     }
 
 }

@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.stammdaten.person;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -13,8 +14,8 @@ import javax.persistence.EntityManager;
  */
 public class TitelDAO extends DAO<Long, Titel> {
 
-    public TitelDAO(final EntityManager entityManager) {
-        super(entityManager, Titel.class);
+    public TitelDAO(final OrientGraph orientDB) {
+        super(orientDB, Titel.class);
     }
 
     //   public List<Titel> loadTitelFor

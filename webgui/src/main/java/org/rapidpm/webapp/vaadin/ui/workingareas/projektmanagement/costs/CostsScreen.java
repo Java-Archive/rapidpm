@@ -3,7 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs;
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
@@ -57,9 +57,9 @@ public class CostsScreen extends Screen {
 
     public CostsScreen(MainUI ui) {
         super(ui);
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         try{
-            final List<PlannedProject> plannedProjects = daoFactory.getPlannedProjectDAO().loadAllEntities();
+            final List<PlannedProject> plannedProjects = daoFactory.getPlannedProjectDAO().findAll();
             if(plannedProjects == null || plannedProjects.isEmpty()){
                 throw new NoProjectsException();
             }

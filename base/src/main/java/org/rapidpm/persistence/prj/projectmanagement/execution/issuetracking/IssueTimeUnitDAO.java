@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -22,12 +23,12 @@ import java.util.List;
 public class IssueTimeUnitDAO extends DAO<Long, IssueTimeUnit> {
     private static final Logger logger = Logger.getLogger(IssueTimeUnitDAO.class);
 
-    public IssueTimeUnitDAO(final EntityManager entityManager) {
-        super(entityManager, IssueTimeUnit.class);
+    public IssueTimeUnitDAO(final OrientGraph orientDB) {
+        super(orientDB, IssueTimeUnit.class);
     }
 
     //    public List<IssueTimeUnit> loadTimeUnitsForIssue(final long issueNr){
-    //        return entityManager.createQuery("from IssueTimeUnit t where t.issueNr=:issueNr", IssueTimeUnit.class).setParameter("issueNr", issueNr).getResultList();
+    //        return orientDB.createQuery("from IssueTimeUnit t where t.issueNr=:issueNr", IssueTimeUnit.class).setParameter("issueNr", issueNr).getResultList();
     //        //        return createWhereClause().eq("issue_nr", issueNr).findList();
     //    }
 
@@ -50,7 +51,7 @@ public class IssueTimeUnitDAO extends DAO<Long, IssueTimeUnit> {
      */
     public List<IssueTimeUnit> loadTimeUnitsFor(final String mandantengruppe, final String login, final String versionVon, final String versionBis, final String status, final String project) {
 
-        //        final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+        //        final CriteriaBuilder builder = orientDB.getCriteriaBuilder();
         //        final CriteriaQuery<IssueTimeUnit> timeUnitCriteriaQuery = builder.createQuery(IssueTimeUnit.class);
         //        final Root<IssueTimeUnit> timeUnitRoot = timeUnitCriteriaQuery.from(IssueTimeUnit.class);
 
@@ -62,14 +63,14 @@ public class IssueTimeUnitDAO extends DAO<Long, IssueTimeUnit> {
         //        final Predicate predicate = builder.equal(objectPath, objectPath);
         //        final CriteriaQuery<AdressKlassifizierung> where = criteriaQuery.where(predicate);
         //
-        //        final AdressKlassifizierung adressKlassifizierung = entityManager.createQuery(criteriaQuery).getSingleResult();
+        //        final AdressKlassifizierung adressKlassifizierung = orientDB.createQuery(criteriaQuery).getSingleResult();
         //        return adressKlassifizierung;
 
         //        final CriteriaQuery<IssueTimeUnit> selectMain = timeUnitCriteriaQuery.select(timeUnitRoot);
         //
         //        boolean first = true;
         //        if (login != null && !login.isEmpty()) {
-        //            final TypedQuery<IssueTimeUnit> queryLogin = entityManager.createQuery("from IssueTimeUnit t where  t.worker.login='" + login + "' ", IssueTimeUnit.class);
+        //            final TypedQuery<IssueTimeUnit> queryLogin = orientDB.createQuery("from IssueTimeUnit t where  t.worker.login='" + login + "' ", IssueTimeUnit.class);
         //            final Path<Benutzer> worker = timeUnitRoot.<Benutzer>get("worker");
         //            final Path<String> pathWorkerLogin = worker.<String>get("login");
         //            selectMain.where(pathWorkerLogin)

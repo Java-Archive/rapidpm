@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -15,8 +16,8 @@ import javax.persistence.EntityManager;
 public class PlanningUnitElementDAO extends DAO<Long, PlanningUnitElement> {
     private static final Logger logger = Logger.getLogger(PlanningUnitElementDAO.class);
 
-    public PlanningUnitElementDAO(final EntityManager entityManager) {
-        super(entityManager, PlanningUnitElement.class);
+    public PlanningUnitElementDAO(final OrientGraph orientDB) {
+        super(orientDB, PlanningUnitElement.class);
     }
 
 

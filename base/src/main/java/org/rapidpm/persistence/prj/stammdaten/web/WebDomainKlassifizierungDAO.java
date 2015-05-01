@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.stammdaten.web;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -22,19 +23,20 @@ public class WebDomainKlassifizierungDAO extends DAO<Long, WebDomainKlassifizier
     private static final Logger logger = Logger.getLogger(WebDomainKlassifizierungDAO.class);
 
 
-    public WebDomainKlassifizierungDAO(final EntityManager entityManager) {
-        super(entityManager, WebDomainKlassifizierung.class);
+    public WebDomainKlassifizierungDAO(final OrientGraph orientDB) {
+        super(orientDB, WebDomainKlassifizierung.class);
     }
 
     public WebDomainKlassifizierung loadGeschaeftlich() {
-        final
-        TypedQuery<WebDomainKlassifizierung>
-                typedQuery =
-                entityManager.createQuery("from WebDomainKlassifizierung wdk " + "where wdk.klassifizierung='geschäftlich'",
-                        WebDomainKlassifizierung.class);
-        return getSingleResultOrNull(typedQuery);
+//        final
+//        TypedQuery<WebDomainKlassifizierung>
+//                typedQuery =
+//                orientDB.createQuery("from WebDomainKlassifizierung wdk " + "where wdk.klassifizierung='geschäftlich'",
+//                        WebDomainKlassifizierung.class);
+//        return getSingleResultOrNull(typedQuery);
+        return null;
         //        return createWhereClause().eq("kategorie", "geschäftlich").findUnique();
-        //        final ObjectSet<WebDomainKlassifizierung> objSet = entityManager.query(new Predicate<WebDomainKlassifizierung>() {
+        //        final ObjectSet<WebDomainKlassifizierung> objSet = orientDB.query(new Predicate<WebDomainKlassifizierung>() {
         //            @Override
         //            public boolean match(final WebDomainKlassifizierung webDomainKlassifizierung) {
         //                return webDomainKlassifizierung.getWebDomainKlassifizierung().equals("geschäftlich");
@@ -48,18 +50,19 @@ public class WebDomainKlassifizierungDAO extends DAO<Long, WebDomainKlassifizier
         //            result = null;
         //        }
         //        return result;
-        //        return (WebDomainKlassifizierung) entityManager.createNamedQuery("LoadWebDomainKlassifizierungGeschaeftlich").getSingleResult();
+        //        return (WebDomainKlassifizierung) orientDB.createNamedQuery("LoadWebDomainKlassifizierungGeschaeftlich").getSingleResult();
     }
 
     public WebDomainKlassifizierung loadPrivat() {
-        final
-        TypedQuery<WebDomainKlassifizierung>
-                typedQuery =
-                entityManager.createQuery("from WebDomainKlassifizierung wdk " + "where wdk.klassifizierung='privat'", WebDomainKlassifizierung.class);
-        return getSingleResultOrNull(typedQuery);
+//        final
+//        TypedQuery<WebDomainKlassifizierung>
+//                typedQuery =
+//                orientDB.createQuery("from WebDomainKlassifizierung wdk " + "where wdk.klassifizierung='privat'", WebDomainKlassifizierung.class);
+//        return getSingleResultOrNull(typedQuery);
+        return null;
 
         //        return createWhereClause().eq("kategorie", "privat").findUnique();
-        //        final ObjectSet<WebDomainKlassifizierung> objSet = entityManager.query(new Predicate<WebDomainKlassifizierung>() {
+        //        final ObjectSet<WebDomainKlassifizierung> objSet = orientDB.query(new Predicate<WebDomainKlassifizierung>() {
         //            @Override
         //            public boolean match(final WebDomainKlassifizierung webDomainKlassifizierung) {
         //                return webDomainKlassifizierung.getWebDomainKlassifizierung().equals("privat");
@@ -75,17 +78,18 @@ public class WebDomainKlassifizierungDAO extends DAO<Long, WebDomainKlassifizier
         //        return result;
 
 
-        //        return (WebDomainKlassifizierung) entityManager.createNamedQuery("LoadWebDomainKlassifizierungPrivat").getSingleResult();
+        //        return (WebDomainKlassifizierung) orientDB.createNamedQuery("LoadWebDomainKlassifizierungPrivat").getSingleResult();
     }
 
     public WebDomainKlassifizierung load(final String name) {
-        final
-        TypedQuery<WebDomainKlassifizierung>
-                typedQuery =
-                entityManager.createQuery("from WebDomainKlassifizierung wdk " + "where wdk.klassifizierung=:name",
-                        WebDomainKlassifizierung.class).setParameter("name", name);
-        return getSingleResultOrNull(typedQuery);
+//        final
+//        TypedQuery<WebDomainKlassifizierung>
+//                typedQuery =
+//                orientDB.createQuery("from WebDomainKlassifizierung wdk " + "where wdk.klassifizierung=:name",
+//                        WebDomainKlassifizierung.class).setParameter("name", name);
+//        return getSingleResultOrNull(typedQuery);
 
+        return null;
     }
 
 

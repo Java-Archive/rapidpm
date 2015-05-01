@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.msg;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.system.security.Benutzer;
@@ -22,15 +23,15 @@ import java.util.List;
 public class PersonalMessageDAO extends DAO<Long, PersonalMessage> {
     private static final Logger logger = Logger.getLogger(PersonalMessageDAO.class);
 
-    public PersonalMessageDAO(final EntityManager entityManager) {
-        super(entityManager, PersonalMessage.class);
+    public PersonalMessageDAO(final OrientGraph orientDB) {
+        super(orientDB, PersonalMessage.class);
     }
 
 
     public List<PersonalMessage> loadUnreadMessagesForEmpfaenger(final Benutzer benutzer) {
         //        final String mandantengruppe = benutzer.getMandantengruppe().getMandantengruppe();
-        return entityManager.createQuery("from PersonalMessage  pm where pm.empfaenger=:benutzer and pm.unread=true", PersonalMessage.class).setParameter("benutzer", benutzer).getResultList();
-
+//        return orientDB.createQuery("from PersonalMessage  pm where pm.empfaenger=:benutzer and pm.unread=true", PersonalMessage.class).setParameter("benutzer", benutzer).getResultList();
+        return null;
         //        final String sql = "select id from personal_message pm where pm.unread = true \n" +
         //                SQLCreator.and("pm.empfaenger_id", SQLCreator.benutzerID(benutzer));
         //        return createQuery(sql).findList();
@@ -39,8 +40,8 @@ public class PersonalMessageDAO extends DAO<Long, PersonalMessage> {
     }
 
     public List<PersonalMessage> loadMessagesForEmpfaenger(final Benutzer benutzer) {
-        return entityManager.createQuery("from PersonalMessage  pm where pm.empfaenger=:benutzer", PersonalMessage.class).setParameter("benutzer", benutzer).getResultList();
-
+//        return orientDB.createQuery("from PersonalMessage  pm where pm.empfaenger=:benutzer", PersonalMessage.class).setParameter("benutzer", benutzer).getResultList();
+        return null;
         //        final String mandantengruppe = benutzer.getMandantengruppe().getMandantengruppe();
         //        final List<PersonalMessage> msgList = createWhereClause().eq("empfaenger.login", benutzer.getLogin()).eq("empfaenger.mandantengruppe.mandantengruppe", mandantengruppe).findList();
         //        return msgList;
@@ -50,8 +51,9 @@ public class PersonalMessageDAO extends DAO<Long, PersonalMessage> {
     }
 
     public List<PersonalMessage> loadMessagesForSender(final Benutzer benutzer) {
-        return entityManager.createQuery("from PersonalMessage  pm where pm.sender=:benutzer", PersonalMessage.class).setParameter("benutzer", benutzer).getResultList();
+//        return orientDB.createQuery("from PersonalMessage  pm where pm.sender=:benutzer", PersonalMessage.class).setParameter("benutzer", benutzer).getResultList();
         //        final String mandantengruppe = benutzer.getMandantengruppe().getMandantengruppe();
+        return null;
         //        final List<PersonalMessage> msgList = createWhereClause().eq("sender.login", benutzer.getLogin()).eq("sender.mandantengruppe.mandantengruppe", mandantengruppe).findList();
         //        return msgList;
         //        final String sql = "select id from personal_message pm where pm.sender_id = " + SQLCreator.benutzerID(benutzer) + " \n";
@@ -65,7 +67,7 @@ public class PersonalMessageDAO extends DAO<Long, PersonalMessage> {
     //        pmsru.setSubject("Registration : " + mandantengruppe);
     //        pmsru.setUnread(true);
     //        pmsru.setSender(sender);
-    //        pmsru.setEmpfaenger(new BenutzerDAO(entityManager).loadBenutzer(assigne, "NeoScioPortal"));
+    //        pmsru.setEmpfaenger(new BenutzerDAO(orientDB).loadBenutzer(assigne, "NeoScioPortal"));
     //        persist(pmsru);
     //
     //    }
@@ -77,7 +79,7 @@ public class PersonalMessageDAO extends DAO<Long, PersonalMessage> {
     //        pmsru.setSubject("New Passwdord : " + mandantengruppe);
     //        pmsru.setUnread(true);
     //        pmsru.setSender(sender);
-    //        pmsru.setEmpfaenger(new BenutzerDAO(entityManager).loadBenutzer(assigne, "NeoScioPortal"));
+    //        pmsru.setEmpfaenger(new BenutzerDAO(orientDB).loadBenutzer(assigne, "NeoScioPortal"));
     //        persist(pmsru);
     //    }
     //
@@ -88,7 +90,7 @@ public class PersonalMessageDAO extends DAO<Long, PersonalMessage> {
     //        pmsru.setSubject("Kontaktanfrage : " + mandantengruppe);
     //        pmsru.setUnread(true);
     //        pmsru.setSender(sender);
-    //        pmsru.setEmpfaenger(new BenutzerDAO(entityManager).loadBenutzer(assigne, "NeoScioPortal"));
+    //        pmsru.setEmpfaenger(new BenutzerDAO(orientDB).loadBenutzer(assigne, "NeoScioPortal"));
     //        persist(pmsru);
     //    }
 

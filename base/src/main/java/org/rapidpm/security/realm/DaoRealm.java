@@ -7,7 +7,7 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
@@ -26,7 +26,7 @@ public class DaoRealm extends AuthorizingRealm {
     private static final Logger logger = Logger.getLogger(DaoRealm.class);
 
     // TODO CDI @Inject
-    private final BenutzerDAO benutzerDAO = DaoFactorySingelton.getInstance().getBenutzerDAO();
+    private final BenutzerDAO benutzerDAO = DaoFactorySingleton.getInstance().getBenutzerDAO();
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(final AuthenticationToken token) throws AuthenticationException {

@@ -2,7 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.log
 
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.*;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
@@ -33,28 +33,28 @@ public class PlanningCalculator {
 
     public PlanningCalculator(final ResourceBundle bundle, MainUI ui) {
         this.messages = bundle;
-        daoFactory = DaoFactorySingelton.getInstance();
+        daoFactory = DaoFactorySingleton.getInstance();
         final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
         final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
         projekt = plannedProjectDAO.findByID(projectFromSession.getId());
-        daoFactory.getEntityManager().refresh(projekt);
+//        daoFactory.getEntityManager().refresh(projekt);
     }
 
     public void calculate() {
         for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
             resetParents(planningUnit);
             calculateRessources(planningUnit);
-            daoFactory.new Transaction() {
-                @Override
-                public void doTask() {
-                    final EntityManager entityManager = daoFactory.getEntityManager();
-                    for(final PlanningUnitElement planningUnitElement : planningUnitElements2.keySet()){
-                        entityManager.persist(planningUnitElement);
-                    }
-                    entityManager.flush();
-                    entityManager.refresh(projekt);
-                }
-            }.execute();
+//            daoFactory.new Transaction() {
+//                @Override
+//                public void doTask() {
+//                    final EntityManager orientDB = daoFactory.getEntityManager();
+//                    for(final PlanningUnitElement planningUnitElement : planningUnitElements2.keySet()){
+//                        orientDB.persist(planningUnitElement);
+//                    }
+//                    orientDB.flush();
+//                    orientDB.refresh(projekt);
+//                }
+//            }.execute();
         }
 
     }
@@ -69,16 +69,16 @@ public class PlanningCalculator {
             for(final PlanningUnit kindPlanningUnit : planningUnit.getKindPlanningUnits()){
                 resetParents(kindPlanningUnit);
             }
-            daoFactory.new Transaction() {
-                @Override
-                public void doTask() {
-                    final EntityManager entityManager = daoFactory.getEntityManager();
-                    for(final PlanningUnitElement planningUnitElement : planningUnitElements1.keySet()){
-                        entityManager.persist(planningUnitElement);
-                    }
-                    entityManager.flush();
-                }
-            }.execute();
+//            daoFactory.new Transaction() {
+//                @Override
+//                public void doTask() {
+//                    final EntityManager orientDB = daoFactory.getEntityManager();
+//                    for(final PlanningUnitElement planningUnitElement : planningUnitElements1.keySet()){
+//                        orientDB.persist(planningUnitElement);
+//                    }
+//                    orientDB.flush();
+//                }
+//            }.execute();
         } else {
             //do nothing
         }

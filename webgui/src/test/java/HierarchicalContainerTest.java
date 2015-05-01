@@ -19,7 +19,7 @@ public class HierarchicalContainerTest {
         HierarchicalContainer container = new HierarchicalContainer();
 
         PlanningUnit unit1 = new PlanningUnit();
-        unit1.setId(1l);
+        unit1.setId("1");
         container.addItem(unit1);
 
         for (Object o : container.getItemIds()) {

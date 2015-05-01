@@ -3,7 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.textelement.TextElement;
 import org.rapidpm.persistence.system.security.Benutzer;
@@ -25,7 +25,7 @@ public class DescriptionAndTestCasesFieldGroup extends FieldGroup {
         this.screen = screen;
         this.messages = messages;
         this.selectedPlanningUnit = selectedPlanningUnit;
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().findByID(selectedPlanningUnit.getId());
         if(planningUnit == null){
             beanItemPlanningUnit = new BeanItem<>(selectedPlanningUnit);
@@ -38,8 +38,8 @@ public class DescriptionAndTestCasesFieldGroup extends FieldGroup {
     }
 
     private void buildForm() {
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final List<Benutzer> users = daoFactory.getBenutzerDAO().loadAllEntities();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+        final List<Benutzer> users = daoFactory.getBenutzerDAO().findAll();
         for (final Object propertyId : getUnboundPropertyIds()) {
             final String spaltenName = propertyId.toString();
             final PlanningUnit dataSource = beanItemPlanningUnit.getBean();

@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.bewegungsdaten;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -21,8 +22,8 @@ public class RegistrationStatusDAO extends DAO<Long, RegistrationStatus> {
     //        return super.loadAllEntities(RegistrationStatus.class);
     //    }
 
-    public RegistrationStatusDAO(final EntityManager entityManager) {
-        super(entityManager, RegistrationStatus.class);
+    public RegistrationStatusDAO(final OrientGraph orientDB) {
+        super(orientDB, RegistrationStatus.class);
     }
 
     public RegistrationStatus loadRegistrationStatus_Zur_Pruefung() {
@@ -30,7 +31,7 @@ public class RegistrationStatusDAO extends DAO<Long, RegistrationStatus> {
 
 
         //        try {
-        //            final Query query = entityManager.createNamedQuery("LoadRegistrationStatus_Zur_Pruefung");
+        //            final Query query = orientDB.createNamedQuery("LoadRegistrationStatus_Zur_Pruefung");
         //            result = (RegistrationStatus) query.getSingleResult();
         //        } catch (Exception e) {
         //            logger.error(e);
@@ -40,13 +41,13 @@ public class RegistrationStatusDAO extends DAO<Long, RegistrationStatus> {
     }
 
     public RegistrationStatus load(final String txt) {
-        final TypedQuery<RegistrationStatus> typedQuery = entityManager.createQuery("from RegistrationStatus  rs where rs.status=:txt",
-                RegistrationStatus.class).setParameter("txt", txt);
-        return getSingleResultOrNull(typedQuery);
-
+//        final TypedQuery<RegistrationStatus> typedQuery = orientDB.createQuery("from RegistrationStatus  rs where rs.status=:txt",
+//                RegistrationStatus.class).setParameter("txt", txt);
+//        return getSingleResultOrNull(typedQuery);
+        return null;
         //        return createWhereClause().eq("status", txt).findUnique();
         //        final RegistrationStatus result;
-        //        final ObjectSet<RegistrationStatus> objSet = entityManager.query(new Predicate<RegistrationStatus>() {
+        //        final ObjectSet<RegistrationStatus> objSet = orientDB.query(new Predicate<RegistrationStatus>() {
         //            @Override
         //            public boolean match(final RegistrationStatus registrationStatus) {
         //                final String status = registrationStatus.getIssueStatus();
@@ -66,7 +67,7 @@ public class RegistrationStatusDAO extends DAO<Long, RegistrationStatus> {
         return load("Abgelehnt");
         //        RegistrationStatus result;
         //        try {
-        //            final Query query = entityManager.createNamedQuery("LoadRegistrationStatus_abgelehnt");
+        //            final Query query = orientDB.createNamedQuery("LoadRegistrationStatus_abgelehnt");
         //            result = (RegistrationStatus) query.getSingleResult();
         //        } catch (Exception e) {
         //            logger.error(e);
@@ -79,7 +80,7 @@ public class RegistrationStatusDAO extends DAO<Long, RegistrationStatus> {
         return load("freigeschaltet");
         //        RegistrationStatus result;
         //        try {
-        //            final Query query = entityManager.createNamedQuery("LoadRegistrationStatus_freigeschaltet");
+        //            final Query query = orientDB.createNamedQuery("LoadRegistrationStatus_freigeschaltet");
         //            result = (RegistrationStatus) query.getSingleResult();
         //        } catch (Exception e) {
         //            logger.error(e);

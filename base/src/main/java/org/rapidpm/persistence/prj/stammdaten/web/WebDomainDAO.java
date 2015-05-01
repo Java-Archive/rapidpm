@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.stammdaten.web;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -21,59 +22,63 @@ import java.util.List;
 public class WebDomainDAO extends DAO<Long, WebDomain> {
     private static final Logger logger = Logger.getLogger(WebDomainDAO.class);
 
-    public WebDomainDAO(final EntityManager entityManager) {
-        super(entityManager, WebDomain.class);
+    public WebDomainDAO(final OrientGraph orientDB) {
+        super(orientDB, WebDomain.class);
     }
 
     public List<WebDomain> loadWebDomainsFor(final String suchmaschinenmodul, final String taetigkeitsfeld) {
-        return entityManager.createQuery("select w from Organisationseinheit o inner join o.webDomains w " +
-                "where o.id in (select o.id from Organisationseinheit o inner join o.taetigkeitsfeldAssocs ta " +
-                "where ta.taetigkeitsfeld.namen=:taetigkeitsfeld and ta.mandantengruppe.mandantengruppe=:suchmaschinenmodul)", WebDomain.class)
-                .setParameter("suchmaschinenmodul", suchmaschinenmodul).setParameter("taetigkeitsfeld", taetigkeitsfeld).getResultList();
+//        return orientDB.createQuery("select w from Organisationseinheit o inner join o.webDomains w " +
+//                "where o.id in (select o.id from Organisationseinheit o inner join o.taetigkeitsfeldAssocs ta " +
+//                "where ta.taetigkeitsfeld.namen=:taetigkeitsfeld and ta.mandantengruppe.mandantengruppe=:suchmaschinenmodul)", WebDomain.class)
+//                .setParameter("suchmaschinenmodul", suchmaschinenmodul).setParameter("taetigkeitsfeld", taetigkeitsfeld).getResultList();
+        return null;
     }
 
     public List<WebDomain> loadWebDomainsForSQL(final String suchmaschinenmodul, final String taetigkeitsfeld) {
-        return entityManager.createNativeQuery("select * from webdomain w where w.id in (\n" +
-                "          select ow.webdomains_id from organisationseinheit_webdomain ow where ow.organisationseinheit_id in (\n" +
-                "          select otfa.organisationseinheit_id from organisationseinheit_taetigkeitsfeldassoc otfa where otfa.taetigkeitsfeldassocs_id in (\n" +
-                "          select tfa.id from taetigkeitsfeldassoc tfa\n" +
-                "  where tfa.mandantengruppe_id =\n" +
-                "          (select id from mandantengruppe m\n" +
-                "            where m.mandantengruppe= '" + suchmaschinenmodul + "')\n" +
-                "          and\n" +
-                "          tfa.klassifizierung_id =\n" +
-                "                  (select id from taetigkeitsfeldklassifizierung tfk\n" +
-                "                    where tfk.klassifizierung= 'Haupttätigkeit')\n" +
-                "          and\n" +
-                "          tfa.taetigkeitsfeld_id in\n" +
-                "                  (select id from taetigkeitsfeld t where t.namen='" + taetigkeitsfeld + "')\n" +
-                "        )\n" +
-                "        )\n" +
-                "        )", WebDomain.class)
-                .getResultList();
+//        return orientDB.createNativeQuery("select * from webdomain w where w.id in (\n" +
+//                "          select ow.webdomains_id from organisationseinheit_webdomain ow where ow.organisationseinheit_id in (\n" +
+//                "          select otfa.organisationseinheit_id from organisationseinheit_taetigkeitsfeldassoc otfa where otfa.taetigkeitsfeldassocs_id in (\n" +
+//                "          select tfa.id from taetigkeitsfeldassoc tfa\n" +
+//                "  where tfa.mandantengruppe_id =\n" +
+//                "          (select id from mandantengruppe m\n" +
+//                "            where m.mandantengruppe= '" + suchmaschinenmodul + "')\n" +
+//                "          and\n" +
+//                "          tfa.klassifizierung_id =\n" +
+//                "                  (select id from taetigkeitsfeldklassifizierung tfk\n" +
+//                "                    where tfk.klassifizierung= 'Haupttätigkeit')\n" +
+//                "          and\n" +
+//                "          tfa.taetigkeitsfeld_id in\n" +
+//                "                  (select id from taetigkeitsfeld t where t.namen='" + taetigkeitsfeld + "')\n" +
+//                "        )\n" +
+//                "        )\n" +
+//                "        )", WebDomain.class)
+//                .getResultList();
+        return null;
     }
 
 
     public List<WebDomain> loadWebDomainsFor(final String suchmaschinenmodul, final Long taetigkeitsfeldOID) {
-        return entityManager.createQuery("select w from Organisationseinheit o inner join o.webDomains w " +
-                "where o.id in (select o.id from Organisationseinheit o inner join o.taetigkeitsfeldAssocs ta " +
-                "where ta.taetigkeitsfeld.id=:taetigkeitsfeldOID and ta.mandantengruppe.mandantengruppe=:suchmaschinenmodul)",
-                WebDomain.class)
-                .setParameter("suchmaschinenmodul", suchmaschinenmodul)
-                .setParameter("taetigkeitsfeldOID", taetigkeitsfeldOID)
-                .getResultList();
+//        return orientDB.createQuery("select w from Organisationseinheit o inner join o.webDomains w " +
+//                "where o.id in (select o.id from Organisationseinheit o inner join o.taetigkeitsfeldAssocs ta " +
+//                "where ta.taetigkeitsfeld.id=:taetigkeitsfeldOID and ta.mandantengruppe.mandantengruppe=:suchmaschinenmodul)",
+//                WebDomain.class)
+//                .setParameter("suchmaschinenmodul", suchmaschinenmodul)
+//                .setParameter("taetigkeitsfeldOID", taetigkeitsfeldOID)
+//                .getResultList();
+        return null;
     }
 
     public List<WebDomain> loadWebDomainsFor(final String suchmaschinenmodul) {
-        return entityManager.createQuery("select w from Organisationseinheit o inner join o.webDomains w " +
-                "where o.id in (select o.id from Organisationseinheit o inner join o.taetigkeitsfeldAssocs ta " +
-                "where  ta.mandantengruppe.mandantengruppe=:suchmaschinenmodul)", WebDomain.class)
-                .setParameter("suchmaschinenmodul", suchmaschinenmodul)
-                .getResultList();
+//        return orientDB.createQuery("select w from Organisationseinheit o inner join o.webDomains w " +
+//                "where o.id in (select o.id from Organisationseinheit o inner join o.taetigkeitsfeldAssocs ta " +
+//                "where  ta.mandantengruppe.mandantengruppe=:suchmaschinenmodul)", WebDomain.class)
+//                .setParameter("suchmaschinenmodul", suchmaschinenmodul)
+//                .getResultList();
+        return null;
     }
     //REFAC DAO anpassen um mit der OID zu suchen
 //    public List<WebDomain> loadWebDomainsFor(final Long suchmaschinenmodul){
-//        return entityManager.createQuery("select w from Organisationseinheit o inner join o.webdomains w " +
+//        return orientDB.createQuery("select w from Organisationseinheit o inner join o.webdomains w " +
 //                "where o.id in (select o.id from Organisationseinheit o inner join o.taetigkeitsfeldAssocs ta " +
 //                "where  ta.mandantengruppe.mandantengruppe=:suchmaschinenmodul)",WebDomain.class)
 //                .setParameter("suchmaschinenmodul", suchmaschinenmodul)
@@ -81,14 +86,15 @@ public class WebDomainDAO extends DAO<Long, WebDomain> {
 //    }
 
     public List<WebDomain> loadWebDomainsByName(final String domainname) {
-        return entityManager.createQuery("select w from WebDomain w where w.domainName=:domainname", WebDomain.class).setParameter("domainname", domainname).getResultList();
+//        return orientDB.createQuery("select w from WebDomain w where w.domainName=:domainname", WebDomain.class).setParameter("domainname", domainname).getResultList();
+        return null;
     }
 
 
     //    public WebDomain loadWebDomain(final String domainName) {
     //        WebDomain result = null;
     //        try {
-    //            result = (WebDomain) entityManager.createNamedQuery("LoadWebDomain")
+    //            result = (WebDomain) orientDB.createNamedQuery("LoadWebDomain")
     //                    .setParameter("domainName", domainName)
     //                    .getSingleResult();
     //        } catch (Exception e) {

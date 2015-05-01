@@ -4,7 +4,7 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.ty
 import org.apache.log4j.Logger;
 import org.neo4j.graphdb.*;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.GraphBaseDAO;
 //import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.GraphRelationFactory;
@@ -507,7 +507,7 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
 
         final RelationshipType relType = GraphRelationFactory.getRelationshipTypeForClass(IssueComponent.class);
         for (final Relationship rel : startNode.getRelationships(relType, Direction.OUTGOING)) {
-            componentList.add(DaoFactorySingelton.getInstance().getIssueComponentDAO().findByID(rel.getOtherNode(startNode).getId()));
+            componentList.add(DaoFactorySingleton.getInstance().getIssueComponentDAO().findByID(rel.getOtherNode(startNode).getId()));
         }
 
         if (logger.isDebugEnabled())

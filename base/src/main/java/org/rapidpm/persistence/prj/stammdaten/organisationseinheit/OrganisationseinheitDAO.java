@@ -14,6 +14,7 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
  *
  */
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.gesellschaftsformen.Gesellschaftsform;
@@ -27,36 +28,39 @@ import java.util.List;
 public class OrganisationseinheitDAO extends DAO<Long, Organisationseinheit> {
     private static final Logger logger = Logger.getLogger(OrganisationseinheitDAO.class);
 
-    public OrganisationseinheitDAO(final EntityManager entityManager) {
-        super(entityManager, Organisationseinheit.class);
+    public OrganisationseinheitDAO(final OrientGraph orientDB) {
+        super(orientDB, Organisationseinheit.class);
     }
 
 
     public Organisationseinheit findByID(final Long oid, final boolean fetcheagerAll) {
-        final Organisationseinheit byID = findByID(oid);
-        if (fetcheagerAll) {
-            return fetchEagerAll(byID);
-        } else {
-            return byID;
-        }
+//        final Organisationseinheit byID = findByID(oid);
+//        if (fetcheagerAll) {
+//            return fetchEagerAll(byID);
+//        } else {
+//            return byID;
+//        }
+        return null;
     }
 
     public List<Organisationseinheit> loadWithOIDList(final List<Long> oidList, final boolean fetcheagerAll) {
-        final List<Organisationseinheit> organisationseinheitList = loadWithOIDList(oidList);
-        if (fetcheagerAll) {
-            return fetchEagerAll(organisationseinheitList);
-        } else {
-            return organisationseinheitList;
-        }
+//        final List<Organisationseinheit> organisationseinheitList = loadWithOIDList(oidList);
+//        if (fetcheagerAll) {
+//            return fetchEagerAll(organisationseinheitList);
+//        } else {
+//            return organisationseinheitList;
+//        }
+        return null;
     }
 
     public List<Organisationseinheit> loadAllEntities(final boolean fetcheagerAll) {
-        final List<Organisationseinheit> organisationseinheitList = loadAllEntities();
-        if (fetcheagerAll) {
-            return fetchEagerAll(organisationseinheitList);
-        } else {
-            return organisationseinheitList;
-        }
+//        final List<Organisationseinheit> organisationseinheitList = loadAllEntities();
+//        if (fetcheagerAll) {
+//            return fetchEagerAll(organisationseinheitList);
+//        } else {
+//            return organisationseinheitList;
+//        }
+        return null;
     }
 
     public List<Organisationseinheit> loadOrganisationseinheitenForMandantengruppe(final String mandantengruppenName, final boolean fetcheagerAll) {
@@ -70,46 +74,51 @@ public class OrganisationseinheitDAO extends DAO<Long, Organisationseinheit> {
 
 
     public List<Organisationseinheit> loadOrganisationseinheitForWebDomain(final String webdomain) {
-        return entityManager.createQuery("select o from Organisationseinheit o inner join o.webDomains w where w.domainName=:webdomain", Organisationseinheit.class).setParameter("webdomain", webdomain).getResultList();
+        //return orientDB.createQuery("select o from Organisationseinheit o inner join o.webDomains w where w.domainName=:webdomain", Organisationseinheit.class).setParameter("webdomain", webdomain).getResultList();
+        return null;
     }
 
     public List<Organisationseinheit> loadOrganisationseinheitForWebDomain(final String webdomain, final String mandantengruppe) {
-        return entityManager.createQuery("select o from Organisationseinheit o inner join o.webDomains w where w.domainName=:webdomain and o.mandantengruppe.mandantengruppe=:mandantengruppe", Organisationseinheit.class)
-                .setParameter("webdomain", webdomain)
-                .setParameter("mandantengruppe", mandantengruppe).getResultList();
+//        return orientDB.createQuery("select o from Organisationseinheit o inner join o.webDomains w where w.domainName=:webdomain and o.mandantengruppe.mandantengruppe=:mandantengruppe", Organisationseinheit.class)
+//                .setParameter("webdomain", webdomain)
+//                .setParameter("mandantengruppe", mandantengruppe).getResultList();
+        return null;
     }
 
     public List<ViewOrgEinheitWebDomain> loadViewOrgEinheitWebDomain(final String mandantengruppe) {
-        final List<ViewOrgEinheitWebDomain> resultList = entityManager.createQuery("select NEW org.rapidpm.ormviews.ViewOrgEinheitWebDomain(o.organisationsName, o.id, w.id, w.domainName) " +
-                "from Organisationseinheit o inner join o.webDomains w where o.id in (select distinct(o.id) from Organisationseinheit o where o.mandantengruppe.mandantengruppe=:mandantengruppe)")
-                .setParameter("mandantengruppe",
-                        mandantengruppe).getResultList();
-        return resultList;
+//        final List<ViewOrgEinheitWebDomain> resultList = orientDB.createQuery("select NEW org.rapidpm.ormviews.ViewOrgEinheitWebDomain(o.organisationsName, o.id, w.id, w.domainName) " +
+//                "from Organisationseinheit o inner join o.webDomains w where o.id in (select distinct(o.id) from Organisationseinheit o where o.mandantengruppe.mandantengruppe=:mandantengruppe)")
+//                .setParameter("mandantengruppe",
+//                        mandantengruppe).getResultList();
+//        return resultList;
+        return null;
     }
 
     public List<ViewOrgEinheitHptTaetigkeitsfeld> loadViewOrgEinheitHptTaetigkeitsfeld(final String mandantengruppe) {
-        final
-        List<ViewOrgEinheitHptTaetigkeitsfeld>
-                resultList =
-                entityManager.createQuery("select NEW org.rapidpm.ormviews.ViewOrgEinheitHptTaetigkeitsfeld(o.organisationsName, o.id, ta.taetigkeitsfeld.namen, ta.taetigkeitsfeld.id) " + "from Organisationseinheit  o inner join o.taetigkeitsfeldAssocs ta "
-                        + "where o.id in (select distinct(o.id) from Organisationseinheit o where o.mandantengruppe.mandantengruppe=:mandantengruppe) " + "and ta.klassifizierung.klassifizierung='Haupttätigkeit'").setParameter(
-                        "mandantengruppe",
-                        mandantengruppe).getResultList();
-        return resultList;
+//        final
+//        List<ViewOrgEinheitHptTaetigkeitsfeld>
+//                resultList =
+//                orientDB.createQuery("select NEW org.rapidpm.ormviews.ViewOrgEinheitHptTaetigkeitsfeld(o.organisationsName, o.id, ta.taetigkeitsfeld.namen, ta.taetigkeitsfeld.id) " + "from Organisationseinheit  o inner join o.taetigkeitsfeldAssocs ta "
+//                        + "where o.id in (select distinct(o.id) from Organisationseinheit o where o.mandantengruppe.mandantengruppe=:mandantengruppe) " + "and ta.klassifizierung.klassifizierung='Haupttätigkeit'").setParameter(
+//                        "mandantengruppe",
+//                        mandantengruppe).getResultList();
+//        return resultList;
+        return null;
     }
 
 
     public List<Organisationseinheit> loadOrganisationseinheitenForMandantengruppe(final String mandantengruppenName) {
-        //final TypedQuery<Organisationseinheit> query = entityManager.createQuery("from Organisationseinheit o inner join o.mandantengruppen m where m.mandantengruppe=:mandantengruppenName", Organisationseinheit.class)
-        // final TypedQuery query = entityManager.createQuery("select o from Organisationseinheit o inner join o.mandantengruppen m where m.mandantengruppe=:mandantengruppenName", Organisationseinheit.class).setParameter("mandantengruppenName",
-        final TypedQuery query = entityManager.createQuery("select o from Organisationseinheit o where o.mandantengruppe.mandantengruppe=:mandantengruppenName", Organisationseinheit.class).setParameter("mandantengruppenName", mandantengruppenName);
-        return query.getResultList();
+        //final TypedQuery<Organisationseinheit> query = orientDB.createQuery("from Organisationseinheit o inner join o.mandantengruppen m where m.mandantengruppe=:mandantengruppenName", Organisationseinheit.class)
+        // final TypedQuery query = orientDB.createQuery("select o from Organisationseinheit o inner join o.mandantengruppen m where m.mandantengruppe=:mandantengruppenName", Organisationseinheit.class).setParameter("mandantengruppenName",
+//        final TypedQuery query = orientDB.createQuery("select o from Organisationseinheit o where o.mandantengruppe.mandantengruppe=:mandantengruppenName", Organisationseinheit.class).setParameter("mandantengruppenName", mandantengruppenName);
+//        return query.getResultList();
+        return null;
 
         //        return createWhereClause().eq("mandantengruppen.mandantengruppe", mandantengruppenName).findList();
         //        final String sql = "select id from organisationseinheiten o where o.id in ( " +
         //                "select organisationseinheit_id from organisationseinheit_mandantengr om where om.mandantengruppe_id ="+SQLCreator.mandantengruppeID(mandantengruppenName)+" )";
         //        return createQuery(sql).findList();
-        //        final ObjectSet<Organisationseinheit> objSet = entityManager.query(new Predicate<Organisationseinheit>() {
+        //        final ObjectSet<Organisationseinheit> objSet = orientDB.query(new Predicate<Organisationseinheit>() {
         //            @Override
         //            public boolean match(final Organisationseinheit organisationseinheiten) {
         //                final Set<Mandantengruppe> mandantengruppes = organisationseinheiten.getMandantengruppen();
@@ -129,10 +138,11 @@ public class OrganisationseinheitDAO extends DAO<Long, Organisationseinheit> {
     }
 
     public List<Organisationseinheit> loadOrganisationseinheitenForMandantengruppe(final Long mandantengruppe) {
-        //final TypedQuery<Organisationseinheit> query = entityManager.createQuery("from Organisationseinheit o inner join o.mandantengruppen m where m.mandantengruppe=:mandantengruppe", Organisationseinheit.class)
-        //final TypedQuery query = entityManager.createQuery("select o from Organisationseinheit o inner join o.mandantengruppen m where m.id=:mandantengruppe", Organisationseinheit.class).setParameter("mandantengruppe", mandantengruppe);
-        final TypedQuery query = entityManager.createQuery("select o from Organisationseinheit o where o.mandantengruppe.id=:mandantengruppe", Organisationseinheit.class).setParameter("mandantengruppe", mandantengruppe);
-        return query.getResultList();
+        //final TypedQuery<Organisationseinheit> query = orientDB.createQuery("from Organisationseinheit o inner join o.mandantengruppen m where m.mandantengruppe=:mandantengruppe", Organisationseinheit.class)
+        //final TypedQuery query = orientDB.createQuery("select o from Organisationseinheit o inner join o.mandantengruppen m where m.id=:mandantengruppe", Organisationseinheit.class).setParameter("mandantengruppe", mandantengruppe);
+//        final TypedQuery query = orientDB.createQuery("select o from Organisationseinheit o where o.mandantengruppe.id=:mandantengruppe", Organisationseinheit.class).setParameter("mandantengruppe", mandantengruppe);
+//        return query.getResultList();
+        return null;
     }
 
     public List<Organisationseinheit> loadOrganisationseinheitenForMandantengruppe(final Long mandantengruppe, final boolean fetcheagerAll) {
@@ -155,22 +165,22 @@ public class OrganisationseinheitDAO extends DAO<Long, Organisationseinheit> {
 
 
     public List<Organisationseinheit> loadOrganisationseinheitenFor(final String mandantengruppenName, final String taetigkeitsfeld) {
-        final List<Organisationseinheit> result =
-                //entityManager.createQuery("select o from Organisationseinheit o " + "where o.id in (select distinct(o.id) from Organisationseinheit o inner join o.mandantengruppen m where m.mandantengruppe=:mandantengruppenName) " + "and o.id in
-                // (select distinct(o.id) from Organisationseinheit o inner join o.taetigkeitsfeldAssocs ta  where ta.taetigkeitsfeld.namen=:taetigkeitsfeld)",
-                entityManager.createQuery("select o from Organisationseinheit o " + "where o.id in (select distinct(o.id) from Organisationseinheit o where o.mandantengruppe.mandantengruppe=:mandantengruppenName) " + "and o.id in (select distinct(o.id) from Organisationseinheit o inner join o.taetigkeitsfeldAssocs ta  where ta.taetigkeitsfeld.namen=:taetigkeitsfeld)",
-                        Organisationseinheit.class)
-                        //                entityManager.createQuery("select o from Organisationseinheit o " +
-                        //                                          "inner join o.mandantengruppen m " +
-                        //                                          "inner join o.taetigkeitsfeldAssocs ta " +
-                        //                                          "where m.mandantengruppe=:mandantengruppenName " +
-                        //                                          "and ta.taetigkeitsfeld.namen=:taetigkeitsfeld " +
-                        //                                          "and ta.mandantengruppe.mandantengruppe=:mandantengruppenName",
-                        //                                          Organisationseinheit.class)
-                        //"and ta.mandantengruppe.mandantengruppe=:mandantengruppenName")
-                        .setParameter("mandantengruppenName", mandantengruppenName).setParameter("taetigkeitsfeld", taetigkeitsfeld).getResultList();
-        return result;
-
+//        final List<Organisationseinheit> result =
+//                //orientDB.createQuery("select o from Organisationseinheit o " + "where o.id in (select distinct(o.id) from Organisationseinheit o inner join o.mandantengruppen m where m.mandantengruppe=:mandantengruppenName) " + "and o.id in
+//                // (select distinct(o.id) from Organisationseinheit o inner join o.taetigkeitsfeldAssocs ta  where ta.taetigkeitsfeld.namen=:taetigkeitsfeld)",
+//                orientDB.createQuery("select o from Organisationseinheit o " + "where o.id in (select distinct(o.id) from Organisationseinheit o where o.mandantengruppe.mandantengruppe=:mandantengruppenName) " + "and o.id in (select distinct(o.id) from Organisationseinheit o inner join o.taetigkeitsfeldAssocs ta  where ta.taetigkeitsfeld.namen=:taetigkeitsfeld)",
+//                        Organisationseinheit.class)
+//                        //                orientDB.createQuery("select o from Organisationseinheit o " +
+//                        //                                          "inner join o.mandantengruppen m " +
+//                        //                                          "inner join o.taetigkeitsfeldAssocs ta " +
+//                        //                                          "where m.mandantengruppe=:mandantengruppenName " +
+//                        //                                          "and ta.taetigkeitsfeld.namen=:taetigkeitsfeld " +
+//                        //                                          "and ta.mandantengruppe.mandantengruppe=:mandantengruppenName",
+//                        //                                          Organisationseinheit.class)
+//                        //"and ta.mandantengruppe.mandantengruppe=:mandantengruppenName")
+//                        .setParameter("mandantengruppenName", mandantengruppenName).setParameter("taetigkeitsfeld", taetigkeitsfeld).getResultList();
+//        return result;
+        return null;
         //        return createWhereClause()
         //                .eq("mandantengruppen.mandantengruppe", mandantengruppenName)
         //                .eq("taetigkeitsfeldAssocs.taetigkeitsfeld.namen", taetigkeitsfeld)
@@ -182,7 +192,7 @@ public class OrganisationseinheitDAO extends DAO<Long, Organisationseinheit> {
         //               "and ta.mandantengruppe_id = ("+SQLCreator.mandantengruppeID(mandantengruppenName)+"))";
         //        return createQuery(sql).findList();
 
-        //        final ObjectSet<Organisationseinheit> objSet = entityManager.query(new Predicate<Organisationseinheit>() {
+        //        final ObjectSet<Organisationseinheit> objSet = orientDB.query(new Predicate<Organisationseinheit>() {
         //            @Override
         //            public boolean match(final Organisationseinheit organisationseinheiten) {
         //                final Set<Mandantengruppe> mandantengruppes = organisationseinheiten.getMandantengruppen();
@@ -226,12 +236,13 @@ public class OrganisationseinheitDAO extends DAO<Long, Organisationseinheit> {
     }
 
     public Organisationseinheit loadOrganisationseinheitForID(final long id) {
-        final TypedQuery<Organisationseinheit> query = entityManager.createQuery("from Organisationseinheit o where o.id=:id", Organisationseinheit.class);
-        final TypedQuery<Organisationseinheit> typedQuery = query.setParameter("id", id);
-        return getSingleResultOrNull(typedQuery);
+//        final TypedQuery<Organisationseinheit> query = orientDB.createQuery("from Organisationseinheit o where o.id=:id", Organisationseinheit.class);
+//        final TypedQuery<Organisationseinheit> typedQuery = query.setParameter("id", id);
+//        return getSingleResultOrNull(typedQuery);
+        return null;
 
         //        return createWhereClause().eq("id", id).findUnique();
-        //        final ObjectSet<Organisationseinheit> objSet = entityManager.query(new Predicate<Organisationseinheit>() {
+        //        final ObjectSet<Organisationseinheit> objSet = orientDB.query(new Predicate<Organisationseinheit>() {
         //                    @Override
         //                    public boolean match(final Organisationseinheit organisationseinheiten) {
         //                        final boolean b = organisationseinheiten.getId().equals(id);

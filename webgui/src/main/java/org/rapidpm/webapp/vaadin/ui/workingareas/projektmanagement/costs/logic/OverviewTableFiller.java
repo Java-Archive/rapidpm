@@ -6,7 +6,7 @@ import com.vaadin.data.Property;
 //import org.rapidpm.persistence.DaoFactoryBean;
 import com.vaadin.server.VaadinSession;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
@@ -52,10 +52,10 @@ public class OverviewTableFiller {
         this.table = table;
         this.ui = screen.getUi();
 
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        ressourceGroups = daoFactory.getRessourceGroupDAO().loadAllEntities();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+        ressourceGroups = daoFactory.getRessourceGroupDAO().findAll();
         for(final RessourceGroup ressourceGroup : ressourceGroups){
-            daoFactory.getEntityManager().refresh(ressourceGroup);
+//            daoFactory.getEntityManager().refresh(ressourceGroup);
         }
     }
 

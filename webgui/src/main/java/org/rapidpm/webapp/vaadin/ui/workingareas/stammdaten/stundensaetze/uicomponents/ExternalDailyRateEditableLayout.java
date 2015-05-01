@@ -8,7 +8,7 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.EditableLayout;
@@ -37,7 +37,7 @@ public class ExternalDailyRateEditableLayout extends EditableLayout {
 
     public ExternalDailyRateEditableLayout(final Screen screen, final Panel screenPanel) {
         super(screen, screenPanel);
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         final PlannedProject plannedProjectFromSessionAttribute = screen.getUi()
                 .getSession().getAttribute(PlannedProject.class);
         currentProject = daoFactory.getPlannedProjectDAO().findByID(plannedProjectFromSessionAttribute.getId());
@@ -49,8 +49,8 @@ public class ExternalDailyRateEditableLayout extends EditableLayout {
                     fieldGroup.commit();
                     final BeanItem<PlannedProject> beanItem = (BeanItem)fieldGroup.getItemDataSource();
                     final PlannedProject editedPlannedProject = beanItem.getBean();
-                    final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-                    daoFactory.saveOrUpdateTX(editedPlannedProject);
+                    final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+//                    daoFactory.saveOrUpdateTX(editedPlannedProject);
                     final MainUI ui = screen.getUi();
                     ui.setWorkingArea(new StundensaetzeScreen(ui));
                 }catch (final NullPointerException e){

@@ -3,7 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administrati
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.*;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
@@ -45,9 +45,9 @@ public class ProjectsPanel extends RapidPanel implements Internationalizationabl
 
 //        bean = EJBFactory.getEjbInstance(ProjectsPanelBean.class);
 //        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
 
-        final List<PlannedProject> projects = daoFactory.getPlannedProjectDAO().loadAllEntities();
+        final List<PlannedProject> projects = daoFactory.getPlannedProjectDAO().findAll();
         Collections.sort(projects);
 
         deleteProjectButton.setVisible(false);
@@ -64,7 +64,7 @@ public class ProjectsPanel extends RapidPanel implements Internationalizationabl
                     final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
                     final PlannedProject projekt = (PlannedProject)projectSelect.getValue();
                     final PlannedProject projektAusDB = daoFactory.getPlannedProjectDAO().findByID(projekt.getId());
-                    if(projectFromSession.equals(projektAusDB) && daoFactory.getPlannedProjectDAO().loadAllEntities()
+                    if(projectFromSession.equals(projektAusDB) && daoFactory.getPlannedProjectDAO().findAll()
                             .size() > 1){
                         throw new TryToDeleteCurrentProjectException();
                     }
@@ -106,7 +106,7 @@ public class ProjectsPanel extends RapidPanel implements Internationalizationabl
 
     private void tryToDeleteProject(final DaoFactory daoFactory,
                                     final PlannedProject projektAusDB) {
-        daoFactory.removeTX(projektAusDB);
+//        daoFactory.removeTX(projektAusDB);
         ui.setWorkingArea(new ProjectAdministrationScreen(ui));
     }
 

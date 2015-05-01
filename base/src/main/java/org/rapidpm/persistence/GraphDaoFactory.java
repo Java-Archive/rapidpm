@@ -18,7 +18,7 @@
 //    private static final Logger logger = Logger.getLogger(GraphDaoFactory.class);
 //
 //    private static final GraphDatabaseService graphDb = GraphDBFactory.getInstance().getGraphDBService();
-//    private static final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+//    private static final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
 //    private static GraphDaoFactory instance;
 //
 //    public static GraphDaoFactory getInstance() {

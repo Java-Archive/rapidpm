@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -20,8 +21,8 @@ import javax.persistence.EntityManager;
 public class BrancheAssocDAO extends DAO<Long, BrancheAssoc> {
     private static final Logger logger = Logger.getLogger(BrancheAssocDAO.class);
 
-    public BrancheAssocDAO(final EntityManager entityManager) {
-        super(entityManager, BrancheAssoc.class);
+    public BrancheAssocDAO(final OrientGraph orientDB) {
+        super(orientDB, BrancheAssoc.class);
     }
 
     //    public BranchenAssoc loadBranchenAssocForWZ2008(final String branchenSchluessel, final String klassifizierung) {
@@ -29,7 +30,7 @@ public class BrancheAssocDAO extends DAO<Long, BrancheAssoc> {
     //
     //        BranchenAssoc branchenAssoc = null;
     //        try {
-    //            final List<BranchenAssoc> resultList = entityManager.createNamedQuery("LoadBranchenAssocForWZ2008Codes")
+    //            final List<BranchenAssoc> resultList = orientDB.createNamedQuery("LoadBranchenAssocForWZ2008Codes")
     //                    .setParameter("branchenSchluessel", branchenSchluessel)
     //                    .setParameter("klassifizierung", klassifizierung)
     //                    .getResultList();

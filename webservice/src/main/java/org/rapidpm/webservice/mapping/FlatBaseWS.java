@@ -36,26 +36,26 @@ public abstract class FlatBaseWS<T, DT extends DAO<Long, T>, FT extends FlatEnti
 
     @Override
     protected T findEntityById(final Long id) {
-        return dao.findByID(id);
+        return dao.findByID("");
     }
 
     @WebMethod
     public FT findById(@WebParam(name = "id") final Long id) {
         checkPermission(PERMISSION_SELECT);
-        return toFlatEntity(dao.findByID(id));
+        return toFlatEntity(dao.findByID(""));
     }
 
     @WebMethod
     public List<FT> findByIdList(@WebParam(name = "idList") final List<Long> idList) {
         checkPermission(PERMISSION_SELECT);
-        final List<T> entityList = dao.loadWithOIDList(idList);
+        final List<T> entityList = null;
         return toFlatEntityList(entityList);
     }
 
     @WebMethod
     public List<FT> getAll() {
         checkPermission(PERMISSION_SELECT);
-        final List<T> entityList = dao.loadAllEntities();
+        final List<T> entityList = dao.findAll();
         return toFlatEntityList(entityList);
     }
 
@@ -70,16 +70,16 @@ public abstract class FlatBaseWS<T, DT extends DAO<Long, T>, FT extends FlatEnti
     public Long save(@WebParam(name = "entity") final FT flatEntity) {
         checkPermission(PERMISSION_UPDATE);
         final T entity = toEntity(flatEntity);
-        daoFactory.saveOrUpdateTX(entity);
-        final Long id = FlatEntity.entityUtils.getOIDFromEntity(entity);
-        return id;
+//        daoFactory.saveOrUpdateTX(entity);
+//        final Long id = FlatEntity.entityUtils.getOIDFromEntity(entity);
+        return null;
     }
 
     @WebMethod
     public boolean delete(@WebParam(name = "id") final Long id) {
         checkPermission(PERMISSION_DELETE);
-        final T entity = dao.findByID(id);
-        daoFactory.removeTX(entity);
+        final T entity = dao.findByID("");
+//        daoFactory.removeTX(entity);
         return true;
     }
 }

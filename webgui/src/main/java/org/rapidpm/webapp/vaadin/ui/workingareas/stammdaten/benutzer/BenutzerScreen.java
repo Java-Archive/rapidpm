@@ -10,7 +10,7 @@ import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.Rolle;
 import org.rapidpm.persistence.system.security.berechtigungen.RolleDAO;
@@ -53,17 +53,17 @@ public class BenutzerScreen extends Screen {
 
 //        final BenutzerScreenBean bean = EJBFactory.getEjbInstance(BenutzerScreenBean.class);
 //        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         final MandantengruppeDAO mandantengruppeDAO = daoFactory.getMandantengruppeDAO();
         final RolleDAO rolleDAO = daoFactory.getRolleDAO();
         final BenutzerGruppeDAO benutzerGruppeDAO = daoFactory.getBenutzerGruppeDAO();
         final BenutzerWebapplikationDAO benutzerWebapplikationDAO = daoFactory.getBenutzerWebapplikationDAO();
         final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
-        final List<Mandantengruppe> mandantengruppen = mandantengruppeDAO.loadAllEntities();
-        final List<BenutzerGruppe> benutzerGruppen = benutzerGruppeDAO.loadAllEntities();
-        final List<BenutzerWebapplikation> benutzerWebapplikationen = benutzerWebapplikationDAO.loadAllEntities();
-        final List<Rolle> rollen = rolleDAO.loadAllEntities();
-        final List<Benutzer> benutzer = benutzerDAO.loadAllEntities();
+        final List<Mandantengruppe> mandantengruppen = mandantengruppeDAO.findAll();
+        final List<BenutzerGruppe> benutzerGruppen = benutzerGruppeDAO.findAll();
+        final List<BenutzerWebapplikation> benutzerWebapplikationen = benutzerWebapplikationDAO.findAll();
+        final List<Rolle> rollen = rolleDAO.findAll();
+        final List<Benutzer> benutzer = benutzerDAO.findAll();
         final VerticalLayout benutzerTableLayout = new VerticalLayout();
         benutzerTableLayout.setSpacing(true);
         contentLayout.addComponent(benutzerTableLayout);
@@ -117,12 +117,12 @@ public class BenutzerScreen extends Screen {
                 if(!isUserDeletingHimself){
 //                    final BenutzerScreenBean stammdatenScreenBean = EJBFactory.getEjbInstance(BenutzerScreenBean.class);
 //                    final DaoFactoryBean daoFactoryBean = stammdatenScreenBean.getDaoFactoryBean();
-                    final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+                    final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
                     final List<Benutzer> benutzerFromDB = daoFactory.getBenutzerDAO().loadBenutzerForLogin
                             (selectedBenutzer.getLogin());
                     if(benutzerFromDB != null && !benutzerFromDB.isEmpty()){
                         try{
-                            daoFactory.removeTX(selectedBenutzer);
+//                            daoFactory.removeTX(selectedBenutzer);
                             benutzerTable.removeItem(tableItemId);
                             benutzerEditor.setVisible(false);
                         } catch (final PersistenceException e){
@@ -153,8 +153,8 @@ public class BenutzerScreen extends Screen {
                 final Benutzer selectedBenutzer = beanItem.getBean();
 //                final BenutzerScreenBean stammdatenScreenBean = EJBFactory.getEjbInstance(BenutzerScreenBean.class);
 //                final DaoFactoryBean daoFactoryBean = stammdatenScreenBean.getDaoFactoryBean();
-                final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-                daoFactory.saveOrUpdate(selectedBenutzer);
+                final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+//                daoFactory.saveOrUpdate(selectedBenutzer);
             }
         });
         resetButton.setEnabled(false);

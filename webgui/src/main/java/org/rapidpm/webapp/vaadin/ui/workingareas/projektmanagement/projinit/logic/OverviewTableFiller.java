@@ -6,7 +6,7 @@ import com.vaadin.data.Property;
 //import org.rapidpm.persistence.DaoFactoryBean;
 import com.vaadin.server.VaadinSession;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
@@ -14,7 +14,6 @@ import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 
 import java.text.DecimalFormat;
@@ -50,9 +49,9 @@ public class OverviewTableFiller {
         messages = screen.getMessagesBundle();
         this.table = table;
         this.ui = screen.getUi();
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         final RessourceGroupDAO ressourceGroupDAO = daoFactory.getRessourceGroupDAO();
-        ressourceGroups = ressourceGroupDAO.loadAllEntities();
+        ressourceGroups = ressourceGroupDAO.findAll();
 
 }
 

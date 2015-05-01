@@ -9,6 +9,7 @@ package org.rapidpm.persistence.prj.stammdaten.person;
  *
  */
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -18,23 +19,24 @@ import javax.persistence.TypedQuery;
 public class NamensKlassifizierungDAO extends DAO<Long, NamensKlassifizierung> {
     private static final Logger logger = Logger.getLogger(NamensKlassifizierungDAO.class);
 
-    public NamensKlassifizierungDAO(final EntityManager entityManager) {
-        super(entityManager, NamensKlassifizierung.class);
+    public NamensKlassifizierungDAO(final OrientGraph orientDB) {
+        super(orientDB, NamensKlassifizierung.class);
     }
 
     public NamensKlassifizierung loadNamensKlassifizierungVorname() {
         return load("Vorname");
-        //        return (NamensKlassifizierung) entityManager.createNamedQuery("LoadNamensKlassifizierungVorname").getSingleResult();
+        //        return (NamensKlassifizierung) orientDB.createNamedQuery("LoadNamensKlassifizierungVorname").getSingleResult();
     }
 
     private NamensKlassifizierung load(final String klassifizierung) {
-        final TypedQuery<NamensKlassifizierung> typedQuery = entityManager.createQuery(
-                "from NamensKlassifizierung nk where nk.klassifizierung=:klassifizierung",
-                NamensKlassifizierung.class).setParameter("klassifizierung", klassifizierung);
-        return getSingleResultOrNull(typedQuery);
+//        final TypedQuery<NamensKlassifizierung> typedQuery = orientDB.createQuery(
+//                "from NamensKlassifizierung nk where nk.klassifizierung=:klassifizierung",
+//                NamensKlassifizierung.class).setParameter("klassifizierung", klassifizierung);
+//        return getSingleResultOrNull(typedQuery);
+        return null;
         //        return createWhereClause().eq("klassifizierung", klassifizierung).findUnique();
         //        final NamensKlassifizierung result;
-        //        final ObjectSet<NamensKlassifizierung> objSet = entityManager.query(new Predicate<NamensKlassifizierung>() {
+        //        final ObjectSet<NamensKlassifizierung> objSet = orientDB.query(new Predicate<NamensKlassifizierung>() {
         //            @Override
         //            public boolean match(final NamensKlassifizierung namensKlassifizierung) {
         //                return namensKlassifizierung.getKlassifizierung().equals(vorname);

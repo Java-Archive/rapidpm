@@ -8,7 +8,6 @@ package org.rapidpm.webapp.vaadin;
  */
 
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
-import com.orientechnologies.orient.object.iterator.OObjectIteratorClass;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import com.vaadin.server.ThemeResource;
@@ -17,16 +16,14 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.BaseTheme;
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.StartDataCreator;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.system.security.Benutzer;
-import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.windows.*;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -74,7 +71,7 @@ public abstract class BaseUI extends UI {
     }
 
     private void loadFirstProject() {
-        boolean createSchemaAndFillWithSomeNodes = true;
+        boolean createSchemaAndFillWithSomeNodes = false;
             if(createSchemaAndFillWithSomeNodes){
                 OObjectDatabaseTx db = new OObjectDatabaseTx ("remote:localhost/RapidPM").open("root", "admin");
                 db.getEntityManager().registerEntityClasses("org.rapidpm.persistence");
@@ -82,16 +79,11 @@ public abstract class BaseUI extends UI {
             }
 
         final VaadinSession session = this.getSession();
-        OrientGraph graph = new OrientGraph("remote:localhost/RapidPM", "root", "admin");
-        Iterable<Vertex> plannedProjects = graph.getVerticesOfClass("PlannedProject");
-        for (Vertex plannedProject : plannedProjects) {
-                for (String s : plannedProject.getPropertyKeys()) {
-                    System.out.println(plannedProject.getProperty(s));
-                }
-                System.out.println();
-                System.out.println();
-            }
-
+        final PlannedProjectDAO plannedProjectDAO = DaoFactorySingleton.getInstance().getPlannedProjectDAO();
+        final List<PlannedProject> plannedProjects = plannedProjectDAO.findAll();
+        for (final PlannedProject plannedProject : plannedProjects) {
+            System.out.println(plannedProject);
+        }
 //        final List<PlannedProject> projects = db.getEntityManager()..loadAllEntities();
 //        Collections.sort(projects);
 //        if(projects == null || projects.isEmpty()){
@@ -103,7 +95,7 @@ public abstract class BaseUI extends UI {
     }
 
     public void authentication(final String enteredLogin, final String enteredPasswd) throws Exception {
-//        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+//        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
 //        final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
 //        final List<Benutzer> benutzer = benutzerDAO.loadBenutzerForLogin(enteredLogin);
 //        final String enteredPasswdHashed = hash(enteredPasswd);

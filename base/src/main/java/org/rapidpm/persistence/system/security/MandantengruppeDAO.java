@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.system.security;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -17,8 +18,8 @@ import javax.persistence.TypedQuery;
 public class MandantengruppeDAO extends DAO<Long, Mandantengruppe> {
     private static final Logger logger = Logger.getLogger(MandantengruppeDAO.class);
 
-    public MandantengruppeDAO(final EntityManager entityManager) {
-        super(entityManager, Mandantengruppe.class);
+    public MandantengruppeDAO(final OrientGraph orientDB) {
+        super(orientDB, Mandantengruppe.class);
     }
 
 
@@ -27,13 +28,13 @@ public class MandantengruppeDAO extends DAO<Long, Mandantengruppe> {
     //    }
 
     //    public Mandantengruppe loadMandantengruppeByBenutzerID(long id) {
-    //        entityManager.query(new Predicate<Benutzer>(){
+    //        orientDB.query(new Predicate<Benutzer>(){
     //            @Override
     //            public boolean match(Benutzer mandantengruppe) {
     //
     //            }
     //        })
-    //        final Query query = entityManager.createNamedQuery("LoadMandantengruppeByBenutzerID")
+    //        final Query query = orientDB.createNamedQuery("LoadMandantengruppeByBenutzerID")
     //                .setParameter("id", id);
     //        Mandantengruppe m;
     //        try {
@@ -52,13 +53,14 @@ public class MandantengruppeDAO extends DAO<Long, Mandantengruppe> {
     }
 
     public Mandantengruppe loadMandantengruppe(final String mandantengruppenName) {
-        final TypedQuery<Mandantengruppe> typedQuery = entityManager.createQuery(
-                "from Mandantengruppe  m where m.mandantengruppe=:mandantengruppenName",
-                Mandantengruppe.class).setParameter("mandantengruppenName", mandantengruppenName);
-        return getSingleResultOrNull(typedQuery);
+//        final TypedQuery<Mandantengruppe> typedQuery = orientDB.createQuery(
+//                "from Mandantengruppe  m where m.mandantengruppe=:mandantengruppenName",
+//                Mandantengruppe.class).setParameter("mandantengruppenName", mandantengruppenName);
+//        return getSingleResultOrNull(typedQuery);
+        return null;
         //        return createWhereClause().eq("mandantengruppe", mandantengruppenName).findUnique();
         //        Mandantengruppe mandantengruppe = null;
-        //        final ObjectSet<Mandantengruppe> objSet = entityManager.query(new Predicate<Mandantengruppe>() {
+        //        final ObjectSet<Mandantengruppe> objSet = orientDB.query(new Predicate<Mandantengruppe>() {
         //            @Override
         //            public boolean match(final Mandantengruppe mandantengruppe) {
         //                return mandantengruppe.getMandantengruppe().equals(mandantengruppenName);
@@ -72,7 +74,7 @@ public class MandantengruppeDAO extends DAO<Long, Mandantengruppe> {
         //        }
         //
         ////        try {
-        ////            mandantengruppe = (Mandantengruppe) entityManager.createNamedQuery("LoadMandantengruppe")
+        ////            mandantengruppe = (Mandantengruppe) orientDB.createNamedQuery("LoadMandantengruppe")
         ////                    .setParameter("mandantengruppe", mandantengruppenName)
         ////                    .getSingleResult();
         ////        } catch (Exception e) {

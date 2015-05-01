@@ -1,19 +1,16 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze;
 
-import com.vaadin.data.Item;
-import com.vaadin.data.util.BeanItem;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.ui.*;
 //import org.rapidpm.ejb3.EJBFactory;
 import com.vaadin.ui.themes.Reindeer;
 import org.rapidpm.persistence.DaoFactory;
 //import org.rapidpm.persistence.DaoFactoryBean;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.webapp.vaadin.MainUI;
-import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents.ProjektFieldGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoProjectsException;
@@ -61,8 +58,8 @@ public class StundensaetzeScreen extends Screen {
     public StundensaetzeScreen(final MainUI ui) {
         super(ui);
         try{
-           final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-            final List<PlannedProject> plannedProjects = daoFactory.getPlannedProjectDAO().loadAllEntities();
+           final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+            final List<PlannedProject> plannedProjects = daoFactory.getPlannedProjectDAO().findAll();
             if(plannedProjects == null || plannedProjects.isEmpty()){
                 throw new NoProjectsException();
             }
@@ -137,10 +134,10 @@ public class StundensaetzeScreen extends Screen {
     public void generateTableAndCalculate() {
 //        screenBean = EJBFactory.getEjbInstance(StundensaetzeScreenBean.class);
 //        final DaoFactoryBean baseDaoFactoryBean = screenBean.getDaoFactoryBean();
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         final RessourceGroupDAO ressourceGroupDAO = daoFactory.getRessourceGroupDAO();
 
-        final List<RessourceGroup> ressourceGroups = ressourceGroupDAO.loadAllEntities();
+        final List<RessourceGroup> ressourceGroups = ressourceGroupDAO.findAll();
         final List<RessourceGroup> containerBeans = new ArrayList<>();
         for(final RessourceGroup ressourceGroup : ressourceGroups){
             containerBeans.add(ressourceGroup);

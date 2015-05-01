@@ -7,6 +7,7 @@ package org.rapidpm.persistence.prj.book.kommentar;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -16,7 +17,7 @@ public class BuchKapitelKommentarDAO extends DAO<Long, BuchKapitelKommentar> {
     private static final Logger logger = Logger.getLogger(BuchKapitelKommentarDAO.class);
 
 
-    public BuchKapitelKommentarDAO(final EntityManager entityManager) {
-        super(entityManager, BuchKapitelKommentar.class);
+    public BuchKapitelKommentarDAO(final OrientGraph orientDB) {
+        super(orientDB, BuchKapitelKommentar.class);
     }
 }

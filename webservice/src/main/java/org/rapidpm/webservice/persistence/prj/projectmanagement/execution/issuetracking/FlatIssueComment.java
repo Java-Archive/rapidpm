@@ -40,7 +40,7 @@ public class FlatIssueComment extends FlatEntity<IssueComment> {
     public void fromEntity(final IssueComment issueComment) {
         id = issueComment.getId();
         text = issueComment.getText();
-        creatorId = getId(issueComment.getCreator());
+        creatorId = getId();
         created = issueComment.getCreated();
     }
 
@@ -48,7 +48,7 @@ public class FlatIssueComment extends FlatEntity<IssueComment> {
     public void toEntity(final IssueComment issueComment, final DaoFactory daoFactory) {
         issueComment.setText(text);
         final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
-        issueComment.setCreator(benutzerDAO.findByID(creatorId));
+        issueComment.setCreator(benutzerDAO.findByID(""));
         issueComment.setCreated(created);
     }
 }

@@ -8,7 +8,7 @@ import com.vaadin.ui.Button.ClickListener;
 import org.apache.log4j.Logger;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
@@ -62,7 +62,7 @@ public class AddRowWindow extends RapidWindow {
 
         addComponent(horizontalButtonLayout);
 
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         addListeners(daoFactory, ui, screen);
         doInternationalization();
 
@@ -109,12 +109,12 @@ public class AddRowWindow extends RapidWindow {
                 }
                 if (allFilled) {
                     try {
-                        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+                        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
                         final List<String> ressourceGroupNames = new ArrayList<>();
                         final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO()
-                                .loadAllEntities();
+                                .findAll();
                         for(final RessourceGroup ressourceGroup : ressourceGroups){
-                            daoFactory.getEntityManager().refresh(ressourceGroup);
+//                            daoFactory.getEntityManager().refresh(ressourceGroup);
                             ressourceGroupNames.add(ressourceGroup.getName());
                         }
                         //final Table tabelle = screen.getTabelle();
@@ -132,22 +132,20 @@ public class AddRowWindow extends RapidWindow {
                             throw new InvalidNameException();
                         }
 
-                        final RessourceGroup persistedRessourceGroup = baseDaoFactoryBean.saveOrUpdateTX
-                                (ressourceGroup);
+                        final RessourceGroup persistedRessourceGroup = null;
                         final List<PlanningUnit> planningUnits = baseDaoFactoryBean.getPlanningUnitDAO()
-                                .loadAllEntities();
+                                .findAll();
 
                         for(final PlanningUnit planningUnit : planningUnits){
                             final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
                             planningUnitElement.setPlannedMinutes(0);
                             planningUnitElement.setRessourceGroup(persistedRessourceGroup);
-                            final PlanningUnitElement persistedPlanningUnitElement = baseDaoFactoryBean.saveOrUpdateTX
-                                    (planningUnitElement);
+                            final PlanningUnitElement persistedPlanningUnitElement = null;
                             if(planningUnit.getPlanningUnitElementList() == null){
                                 planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
                             }
                             planningUnit.getPlanningUnitElementList().add(persistedPlanningUnitElement);
-                            baseDaoFactoryBean.saveOrUpdateTX(planningUnit);
+//                            baseDaoFactoryBean.saveOrUpdateTX(planningUnit);
                         }
                         screen.generateTableAndCalculate();
 

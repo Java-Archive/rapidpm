@@ -8,6 +8,7 @@ package org.rapidpm.persistence.prj.stammdaten.kommunikation;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -18,8 +19,8 @@ public class KommunikationsServiceUIDPartKlassifikationDAO extends DAO<Long, Kom
     private static final Logger logger = Logger.getLogger(KommunikationsServiceUIDPartKlassifikationDAO.class);
 
 
-    public KommunikationsServiceUIDPartKlassifikationDAO(final EntityManager entityManager) {
-        super(entityManager, KommunikationsServiceUIDPartKlassifikation.class);
+    public KommunikationsServiceUIDPartKlassifikationDAO(final OrientGraph orientDB) {
+        super(orientDB, KommunikationsServiceUIDPartKlassifikation.class);
     }
 
     public KommunikationsServiceUIDPartKlassifikation loadComplete() {
@@ -45,11 +46,11 @@ public class KommunikationsServiceUIDPartKlassifikationDAO extends DAO<Long, Kom
 
 
     public KommunikationsServiceUIDPartKlassifikation load(final String klassifizierung) {
-        final TypedQuery<KommunikationsServiceUIDPartKlassifikation> typedQuery = entityManager.createQuery(
-                "from KommunikationsServiceUIDPartKlassifikation k where k.bezeichnung=:bezeichnung",
-                KommunikationsServiceUIDPartKlassifikation.class).setParameter("bezeichnung", klassifizierung);
-        return getSingleResultOrNull(typedQuery);
-
+//        final TypedQuery<KommunikationsServiceUIDPartKlassifikation> typedQuery = orientDB.createQuery(
+//                "from KommunikationsServiceUIDPartKlassifikation k where k.bezeichnung=:bezeichnung",
+//                KommunikationsServiceUIDPartKlassifikation.class).setParameter("bezeichnung", klassifizierung);
+//        return getSingleResultOrNull(typedQuery);
+        return null;
     }
 
 

@@ -1,10 +1,14 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning;
 
+import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -16,14 +20,18 @@ import javax.persistence.TypedQuery;
 public class PlannedProjectDAO extends DAO<Long, PlannedProject> {
     private static final Logger logger = Logger.getLogger(PlannedProjectDAO.class);
 
-    public PlannedProjectDAO(final EntityManager entityManager) {
-        super(entityManager, PlannedProject.class);
+    public PlannedProjectDAO(final OrientGraph orientDB) {
+        super(orientDB, PlannedProject.class);
     }
 
     public PlannedProject loadFirstProject() {
-        final TypedQuery<PlannedProject> typedQuery = entityManager.createQuery(
-                "select p from PlannedProject p", PlannedProject.class)
-                .setMaxResults(1);
-        return getSingleResultOrNull(typedQuery);
+        final List<PlannedProject> plannedProjects = findAll();
+        if(plannedProjects == null || plannedProjects.isEmpty()){
+            final PlannedProject somethingWentWrongProject = new PlannedProject();
+            somethingWentWrongProject.setProjektName("Chaos");
+            return somethingWentWrongProject;
+        } else {
+            return plannedProjects.get(0);
+        }
     }
 }

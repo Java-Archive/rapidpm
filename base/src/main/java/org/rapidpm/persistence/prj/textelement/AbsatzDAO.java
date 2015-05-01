@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.textelement;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -17,7 +18,7 @@ public class AbsatzDAO extends DAO<Long, Absatz> {
     private static final Logger logger = Logger.getLogger(AbsatzDAO.class);
 
 
-    public AbsatzDAO(final EntityManager entityManager) {
-        super(entityManager, Absatz.class);
+    public AbsatzDAO(final OrientGraph orientDB) {
+        super(orientDB, Absatz.class);
     }
 }

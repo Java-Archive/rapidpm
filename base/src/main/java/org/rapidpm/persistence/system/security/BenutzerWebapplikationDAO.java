@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.system.security;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -21,8 +22,8 @@ import javax.persistence.TypedQuery;
 public class BenutzerWebapplikationDAO extends DAO<Long, BenutzerWebapplikation> {
     private static final Logger logger = Logger.getLogger(BenutzerWebapplikationDAO.class);
 
-    public BenutzerWebapplikationDAO(final EntityManager entityManager) {
-        super(entityManager, BenutzerWebapplikation.class);
+    public BenutzerWebapplikationDAO(final OrientGraph orientDB) {
+        super(orientDB, BenutzerWebapplikation.class);
     }
 
     //    public List<BenutzerWebapplikation> loadAllEntities() {
@@ -30,12 +31,13 @@ public class BenutzerWebapplikationDAO extends DAO<Long, BenutzerWebapplikation>
     //    }
 
     public BenutzerWebapplikation loadBenutzerWebapplikation(final String name) {
-        final TypedQuery<BenutzerWebapplikation> typedQuery = entityManager.createQuery("from BenutzerWebapplikation  bw where bw.webappName=:name",
-                BenutzerWebapplikation.class).setParameter("name", name);
-        return getSingleResultOrNull(typedQuery);
+//        final TypedQuery<BenutzerWebapplikation> typedQuery = orientDB.createQuery("from BenutzerWebapplikation  bw where bw.webappName=:name",
+//                BenutzerWebapplikation.class).setParameter("name", name);
+//        return getSingleResultOrNull(typedQuery);
+        return null;
         //        return createWhereClause().eq("webapp_name", name).findUnique();
         //        BenutzerWebapplikation webapplikation = null;
-        //        final ObjectSet<BenutzerWebapplikation> objSet = entityManager.query(new Predicate<BenutzerWebapplikation>() {
+        //        final ObjectSet<BenutzerWebapplikation> objSet = orientDB.query(new Predicate<BenutzerWebapplikation>() {
         //            @Override
         //            public boolean match(final BenutzerWebapplikation webapplikation) {
         //                return webapplikation.getWebappName().equals(name);

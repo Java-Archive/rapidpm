@@ -8,6 +8,7 @@ package org.rapidpm.persistence.prj.book;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -17,8 +18,8 @@ public class BuchDAO extends DAO<Long, Buch> {
     private static final Logger logger = Logger.getLogger(BuchDAO.class);
 
 
-    public BuchDAO(final EntityManager entityManager) {
-        super(entityManager, Buch.class);
+    public BuchDAO(final OrientGraph orientDB) {
+        super(orientDB, Buch.class);
     }
 
 

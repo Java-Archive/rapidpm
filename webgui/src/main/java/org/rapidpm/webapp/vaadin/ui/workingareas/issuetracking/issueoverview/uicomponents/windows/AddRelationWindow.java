@@ -6,7 +6,7 @@ import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 //import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueRelation;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.webapp.vaadin.ui.RapidWindow;
@@ -27,7 +27,7 @@ import java.util.ResourceBundle;
  */
 public class AddRelationWindow extends RapidWindow implements Internationalizationable {
     private static Logger logger = Logger.getLogger(AddRelationWindow.class);
-    private DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+    private DaoFactory daoFactory = DaoFactorySingleton.getInstance();
 
     private final static String PROPERTY_NAME = "name";
     private final IssueOverviewScreen screen;
@@ -64,8 +64,8 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
         baseLayout.setSizeFull();
         baseLayout.setSpacing(true);
 
-        final Long projectId = screen.getUi().getCurrentProject().getId();
-        final List<IssueRelation> relationList = daoFactory.getIssueRelationDAO().loadAllEntities(projectId);
+//        final Long projectId = screen.getUi().getCurrentProject().getId();
+        final List<IssueRelation> relationList = daoFactory.getIssueRelationDAO().loadAllEntities(0l);
         relationsSelect = new ComboBox();
         relationsSelect.setWidth("100%");
         relationsSelect.addContainerProperty(PROPERTY_NAME, String.class, null);
@@ -79,7 +79,7 @@ public class AddRelationWindow extends RapidWindow implements Internationalizati
         relationsSelect.setFilteringMode(FilteringMode.CONTAINS);
         baseLayout.addComponent(relationsSelect);
 
-        final List<IssueBase> issueList = daoFactory.getIssueBaseDAO().loadAllEntities(projectId);
+        final List<IssueBase> issueList = daoFactory.getIssueBaseDAO().loadAllEntities(0l);
         issueSelect = new ComboBox();
         issueSelect.setWidth("100%");
         issueSelect.addContainerProperty(PROPERTY_NAME, String.class, null);

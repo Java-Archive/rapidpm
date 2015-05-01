@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.system.security;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
@@ -18,22 +19,24 @@ import java.util.List;
 public class BenutzerDAO extends DAO<Long, Benutzer> {
     private static final Logger logger = Logger.getLogger(BenutzerDAO.class);
 
-    public BenutzerDAO(final EntityManager entityManager) {
-        super(entityManager, Benutzer.class);
+    public BenutzerDAO(final OrientGraph orientDB) {
+        super(orientDB, Benutzer.class);
     }
 
 
     public List<Benutzer> loadBenutzerForLogin(final String login) {
-        return entityManager.createQuery("from Benutzer b where b.login=:login", Benutzer.class).setParameter("login", login).getResultList();
+//        return orientDB.createQuery("from Benutzer b where b.login=:login", Benutzer.class).setParameter("login", login).getResultList();
+        return null;
     }
 
     public Benutzer loadBenutzer(final String login, final String mandantengruppe) {
-        final TypedQuery<Benutzer> typedQuery = entityManager.createQuery("from Benutzer b " + "where b.login=:login " + "and b.mandantengruppe.mandantengruppe=:mandantengruppe", Benutzer.class).setParameter("login", login).setParameter(
-                "mandantengruppe",
-                mandantengruppe);
-        final Benutzer singleResultOrNull = getSingleResultOrNull(typedQuery);
-        return singleResultOrNull;
+//        final TypedQuery<Benutzer> typedQuery = orientDB.createQuery("from Benutzer b " + "where b.login=:login " + "and b.mandantengruppe.mandantengruppe=:mandantengruppe", Benutzer.class).setParameter("login", login).setParameter(
+//                "mandantengruppe",
+//                mandantengruppe);
+//        final Benutzer singleResultOrNull = getSingleResultOrNull(typedQuery);
+//        return singleResultOrNull;
         //        return createWhereClause()
+        return null;
         //                .eq("login", login)
         //                .eq("mandantengruppe.mandantengruppe", mandantengruppe).findUnique();
         //        final String sql = "select id from benutzer b where b.login='" + login + "'" +
@@ -41,7 +44,7 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
         //        return createQuery(sql).findUnique();
 
         //        final Benutzer result = null;
-        //        final ObjectSet<Benutzer> benutzers = entityManager.query(new Predicate<Benutzer>() {
+        //        final ObjectSet<Benutzer> benutzers = orientDB.query(new Predicate<Benutzer>() {
         //            @Override
         //            public boolean match(final Benutzer benutzer) {
         //                final String loginUser = benutzer.getLogin();
@@ -66,9 +69,10 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
     }
 
     public Benutzer loadBenutzer(final String login, final Long mandantengruppe) {
-        final TypedQuery<Benutzer> typedQuery = entityManager.createQuery("from Benutzer b " + "where b.login=:login " + "and b.mandantengruppe.id=:mandantengruppe", Benutzer.class).setParameter("login", login).setParameter("mandantengruppe",
-                mandantengruppe);
-        return getSingleResultOrNull(typedQuery);
+//        final TypedQuery<Benutzer> typedQuery = orientDB.createQuery("from Benutzer b " + "where b.login=:login " + "and b.mandantengruppe.id=:mandantengruppe", Benutzer.class).setParameter("login", login).setParameter("mandantengruppe",
+//                mandantengruppe);
+//        return getSingleResultOrNull(typedQuery);
+        return null;
         //        return createWhereClause()
         //                .eq("login", login)
         //                .eq("mandantengruppe.mandantengruppe", mandantengruppe).findUnique();
@@ -77,7 +81,7 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
         //        return createQuery(sql).findUnique();
 
         //        final Benutzer result = null;
-        //        final ObjectSet<Benutzer> benutzers = entityManager.query(new Predicate<Benutzer>() {
+        //        final ObjectSet<Benutzer> benutzers = orientDB.query(new Predicate<Benutzer>() {
         //            @Override
         //            public boolean match(final Benutzer benutzer) {
         //                final String loginUser = benutzer.getLogin();
@@ -103,7 +107,8 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
 
 
     public List<Benutzer> loadBenutzerByMandantenGruppe(final String mandantengruppe, final boolean hidden) {
-        return entityManager.createQuery("from Benutzer b where b.mandantengruppe.mandantengruppe=:mandantengruppe and b.hidden=:hidden", Benutzer.class).setParameter("hidden", hidden).setParameter("mandantengruppe", mandantengruppe).getResultList();
+//        return orientDB.createQuery("from Benutzer b where b.mandantengruppe.mandantengruppe=:mandantengruppe and b.hidden=:hidden", Benutzer.class).setParameter("hidden", hidden).setParameter("mandantengruppe", mandantengruppe).getResultList();
+    return null;
 
 
         //        return createWhereClause()
@@ -113,7 +118,7 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
         //        final String sql = "select id from benutzer b where b.hidden='" + hidden + "'" +
         //                SQLCreator.and("b.mandantengruppe_id", SQLCreator.mandantengruppeID(mandantengruppe));
         //        return createQuery(sql).findList();
-        //        final ObjectSet<Benutzer> objSet = entityManager.query(new Predicate<Benutzer>() {
+        //        final ObjectSet<Benutzer> objSet = orientDB.query(new Predicate<Benutzer>() {
         //            @Override
         //            public boolean match(final Benutzer benutzer) {
         //                final boolean b = benutzer.getMandantengruppe().getMandantengruppe().equals(mandantengruppe);
@@ -125,16 +130,17 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
     }
 
     public List<Benutzer> loadBenutzerByMandantenGruppe(final Long mandantengruppeOID, final boolean hidden) {
-        return entityManager.createQuery("from Benutzer b where b.mandantengruppe.id=:mandantengruppeOID and b.hidden=:hidden", Benutzer.class).setParameter("hidden", hidden).setParameter("mandantengruppeOID", mandantengruppeOID).getResultList();
+//        return orientDB.createQuery("from Benutzer b where b.mandantengruppe.id=:mandantengruppeOID and b.hidden=:hidden", Benutzer.class).setParameter("hidden", hidden).setParameter("mandantengruppeOID", mandantengruppeOID).getResultList();
+        return null;
     }
 
     public List<Benutzer> loadBenutzerByMandantenGruppe(final String mandantengruppe, final boolean hidden, final Boolean active) {
-        return entityManager.createQuery("from Benutzer b " + "where b.mandantengruppe.mandantengruppe=:mandantengruppe " + "and b.hidden=:hidden and b.active=:active", Benutzer.class).setParameter("hidden", hidden).setParameter("active",
-                active).setParameter(
-                "mandantengruppe",
-                mandantengruppe).getResultList();
+//        return orientDB.createQuery("from Benutzer b " + "where b.mandantengruppe.mandantengruppe=:mandantengruppe " + "and b.hidden=:hidden and b.active=:active", Benutzer.class).setParameter("hidden", hidden).setParameter("active",
+//                active).setParameter(
+//                "mandantengruppe",
+//                mandantengruppe).getResultList();
 
-
+        return null;
         //        return createWhereClause()
         //                .eq("mandantengruppe.mandantengruppe", mandantengruppe)
         //                .eq("hidden", hidden)
@@ -145,7 +151,7 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
         //                SQLCreator.and("active", active.toString()) +
         //                SQLCreator.and("b.mandantengruppe_id", SQLCreator.mandantengruppeID(mandantengruppe));
         //        return createQuery(sql).findList();
-        //        final ObjectSet<Benutzer> objSet = entityManager.query(new Predicate<Benutzer>() {
+        //        final ObjectSet<Benutzer> objSet = orientDB.query(new Predicate<Benutzer>() {
         //            @Override
         //            public boolean match(final Benutzer benutzer) {
         //                final boolean b = benutzer.getMandantengruppe().getMandantengruppe().equals(mandantengruppe);
@@ -158,16 +164,16 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
     }
 
     public List<Benutzer> loadBenutzerByMandantenGruppe(final Long mandantengruppe, final boolean hidden, final Boolean active) {
-        return entityManager.createQuery("from Benutzer b " + "where b.mandantengruppe.id=:mandantengruppe " + "and b.hidden=:hidden and b.active=:active", Benutzer.class).setParameter("hidden", hidden).setParameter("active", active).setParameter(
-                "mandantengruppe",
-                mandantengruppe).getResultList();
-
+//        return orientDB.createQuery("from Benutzer b " + "where b.mandantengruppe.id=:mandantengruppe " + "and b.hidden=:hidden and b.active=:active", Benutzer.class).setParameter("hidden", hidden).setParameter("active", active).setParameter(
+//                "mandantengruppe",
+//                mandantengruppe).getResultList();
+        return null;
 
     }
 
     public List<Benutzer> aktiveBenutzerByMandantenGruppe(final String mandantengruppe, final Boolean aktiv) {
-        return entityManager.createQuery("from Benutzer b " + "where b.active=:aktiv " + "and b.mandantengruppe.mandantengruppe=:mandantengruppe", Benutzer.class).setParameter("mandantengruppe", mandantengruppe).setParameter("aktiv",
-                aktiv).getResultList();
+//        return orientDB.createQuery("from Benutzer b " + "where b.active=:aktiv " + "and b.mandantengruppe.mandantengruppe=:mandantengruppe", Benutzer.class).setParameter("mandantengruppe", mandantengruppe).setParameter("aktiv",
+//                aktiv).getResultList();
         //        return createWhereClause()
         //                .eq("mandantengruppe.mandantengruppe", mandantengruppe)
         //                .eq("active", aktiv)
@@ -176,7 +182,7 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
         //                SQLCreator.and("b.mandantengruppe_id", SQLCreator.mandantengruppeID(mandantengruppe));
         //        return createQuery(sql).findList();
 
-        //        final ObjectSet<Benutzer> objSet = entityManager.query(new Predicate<Benutzer>() {
+        //        final ObjectSet<Benutzer> objSet = orientDB.query(new Predicate<Benutzer>() {
         //            @Override
         //            public boolean match(final Benutzer benutzer) {
         //                final String mandantenGrp = benutzer.getMandantengruppe().getMandantengruppe();
@@ -186,10 +192,12 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
         //            }
         //        });
         //        return objSet;
+        return null;
     }
 
     public List<Benutzer> aktiveBenutzerByMandantenGruppe(final Long mandantengruppe, final Boolean aktiv) {
-        return entityManager.createQuery("from Benutzer b " + "where b.active=:aktiv " + "and b.mandantengruppe.id=:mandantengruppe", Benutzer.class).setParameter("mandantengruppe", mandantengruppe).setParameter("aktiv", aktiv).getResultList();
+//        return orientDB.createQuery("from Benutzer b " + "where b.active=:aktiv " + "and b.mandantengruppe.id=:mandantengruppe", Benutzer.class).setParameter("mandantengruppe", mandantengruppe).setParameter("aktiv", aktiv).getResultList();
+        return null;
     }
 
     public Benutzer loadBenutzer(final String login, final String passwd, final String webappName) {
@@ -198,33 +206,33 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
             logger.warn("Login oder Passwd ist null, lade anonymen Benutzer");
             benutzer = loadAnonymousBenutzer(webappName);
         } else {
-            final TypedQuery<Benutzer> typedQuery1 = entityManager.createQuery("from Benutzer b where b.login=:login and b.hidden=false and b.active=true and b.passwd=:passwd and b.benutzerWebapplikation.webappName=:webappName", Benutzer.class);
-            final TypedQuery<Benutzer> typedQuery = typedQuery1.setParameter("login", login).setParameter("passwd", passwd).setParameter("webappName", webappName);
-            benutzer = getSingleResultOrNull(typedQuery);
-
-            //            benutzer = createWhereClause()
-            //                    .eq("login", login)
-            //                    .eq("hidden", false)
-            //                    .eq("passwd", passwd)
-            //                    .eq("active", true)
-            //                    .eq("benutzerWebapplikation.webappName", webappName).findUnique();
-            if (benutzer == null) {
-                benutzer = loadAnonymousBenutzer(webappName);
-            }
-
-            if (benutzer == null) {       //TODO Executer um alle Anfragen...
-                benutzer = findByID(-1L);
-            } else {
-
-            }
-
+//            final TypedQuery<Benutzer> typedQuery1 = orientDB.createQuery("from Benutzer b where b.login=:login and b.hidden=false and b.active=true and b.passwd=:passwd and b.benutzerWebapplikation.webappName=:webappName", Benutzer.class);
+//            final TypedQuery<Benutzer> typedQuery = typedQuery1.setParameter("login", login).setParameter("passwd", passwd).setParameter("webappName", webappName);
+//            benutzer = getSingleResultOrNull(typedQuery);
+//
+//            //            benutzer = createWhereClause()
+//            //                    .eq("login", login)
+//            //                    .eq("hidden", false)
+//            //                    .eq("passwd", passwd)
+//            //                    .eq("active", true)
+//            //                    .eq("benutzerWebapplikation.webappName", webappName).findUnique();
+//            if (benutzer == null) {
+//                benutzer = loadAnonymousBenutzer(webappName);
+//            }
+//
+//            if (benutzer == null) {       //TODO Executer um alle Anfragen...
+//                benutzer = findByID(-1L);
+//            } else {
+//
+//            }
+            return null;
             //            final String sql = "select id from benutzer b where b.login = '" + login + "'" +
             //                    SQLCreator.and("hidden", "false") +
             //                    SQLCreator.andValue("passwd", passwd) +
             //                    SQLCreator.and("active", "true") +
             //                    SQLCreator.and("b.webapp_id", SQLCreator.webapplikationID(webappName));
             //            benutzer = createQuery(sql).findUnique();
-            //            final ObjectSet<Benutzer> objSet = entityManager.query(new Predicate<Benutzer>() {
+            //            final ObjectSet<Benutzer> objSet = orientDB.query(new Predicate<Benutzer>() {
             //                @Override
             //                public boolean match(final Benutzer benutzer) {
             //                    final boolean b1 = benutzer.getLogin().equals(login);
@@ -239,8 +247,8 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
             //            if (size == 1) {
             //                benutzer = objSet.get(0);
             //                benutzer.setLastLogin(new Date());
-            //                entityManager.store(benutzer);
-            //                entityManager.commit();
+            //                orientDB.store(benutzer);
+            //                orientDB.commit();
             //            } else {
             //                logger.warn("Lade User Anonymous . ");
             //                benutzer = loadAnonymousBenutzer(webappName);
@@ -251,123 +259,128 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
     }
 
     public Benutzer loadBenutzer(final String login, final String passwd, final Long webappOID) {
-        Benutzer benutzer = null;
-        if (login == null || login.isEmpty() || passwd == null || passwd.isEmpty()) {
-            logger.warn("Login oder Passwd ist null, lade anonymen Benutzer");
-            benutzer = loadAnonymousBenutzer(webappOID);
-        } else {
-            final TypedQuery<Benutzer> typedQuery1 = entityManager.createQuery("from Benutzer b where b.login=:login and b.hidden=false and b.active=true and b.passwd=:passwd " + "and b.benutzerWebapplikation.id=:webappOID", Benutzer.class);
-            final TypedQuery<Benutzer> typedQuery = typedQuery1.setParameter("login", login).setParameter("passwd", passwd).setParameter("webappOID", webappOID);
-
-            benutzer = getSingleResultOrNull(typedQuery);
-            if (benutzer == null) {
-                benutzer = loadAnonymousBenutzer(webappOID);
-            }
-
-            if (benutzer == null) {       //TODO Executer um alle Anfragen...
-                benutzer = findByID(-1L);
-            } else {
-
-            }
-        }
-        return benutzer;
+//        Benutzer benutzer = null;
+//        if (login == null || login.isEmpty() || passwd == null || passwd.isEmpty()) {
+//            logger.warn("Login oder Passwd ist null, lade anonymen Benutzer");
+//            benutzer = loadAnonymousBenutzer(webappOID);
+//        } else {
+//            final TypedQuery<Benutzer> typedQuery1 = orientDB.createQuery("from Benutzer b where b.login=:login and b.hidden=false and b.active=true and b.passwd=:passwd " + "and b.benutzerWebapplikation.id=:webappOID", Benutzer.class);
+//            final TypedQuery<Benutzer> typedQuery = typedQuery1.setParameter("login", login).setParameter("passwd", passwd).setParameter("webappOID", webappOID);
+//
+//            benutzer = getSingleResultOrNull(typedQuery);
+//            if (benutzer == null) {
+//                benutzer = loadAnonymousBenutzer(webappOID);
+//            }
+//
+//            if (benutzer == null) {       //TODO Executer um alle Anfragen...
+//                benutzer = findByID(-1L);
+//            } else {
+//
+//            }
+//        }
+//        return benutzer;
+        return null;
     }
 
     public Benutzer loadBenutzerInclSystemBenutzer(final String login, final String passwd, final String webappName) {
-        Benutzer benutzer = null;
-        if (login == null || login.isEmpty() || passwd == null || passwd.isEmpty()) {
-            logger.warn("Login oder Passwd ist null, lade anonymen Benutzer");
-            benutzer = loadAnonymousBenutzer(webappName);
-        } else {
-            final TypedQuery<Benutzer> typedQuery = entityManager.createQuery("from Benutzer b " + "where b.login=:login " + "and b.active=true " + "and b.passwd=:passwd " + "and b.benutzerWebapplikation.webappName=:webappName",
-                    Benutzer.class).setParameter("login", login).setParameter("passwd", passwd).setParameter("webappName", webappName);
-            benutzer = getSingleResultOrNull(typedQuery);
-
-
-            //            benutzer = createWhereClause()
-            //                    .eq("login", login)
-            //                    .eq("passwd", passwd)
-            //                    .eq("active", true)
-            //                    .eq("benutzerWebapplikation.webappName", webappName).findUnique();
-            if (benutzer == null) {
-                benutzer = loadAnonymousBenutzer(webappName);
-            }
-            //            final String sql = "select id from benutzer b where b.login = '" + login + "'" +
-            ////                    SQLCreator.and("hidden", "false")+
-            //                    SQLCreator.andValue("passwd", passwd) +
-            //                    SQLCreator.andValue("active", "true") +
-            //                    SQLCreator.and("b.benutzer_webapplikation_id", SQLCreator.webapplikationID(webappName));
-            //            benutzer = createQuery(sql).findUnique();
-            //            final ObjectSet<Benutzer> objSet = entityManager.query(new Predicate<Benutzer>() {
-            //                @Override
-            //                public boolean match(final Benutzer benutzer) {
-            //                    final boolean b1 = benutzer.getLogin().equals(login);
-            //                    final Boolean b2 = benutzer.getActive();
-            //                    final boolean b3 = benutzer.getPasswd().equals(passwd);
-            //                    final boolean b4 = benutzer.getBenutzerWebapplikation().getWebappName().equals(webappName);
-            ////                    final Boolean b5 = benutzer.getHidden();
-            //                    return b1 && b2 && b3 && b4;
-            //                }
-            //            });
-            //            final int size = objSet.size();
-            //            if (size == 1) {
-            //                benutzer = objSet.get(0);
-            //                benutzer.setLastLogin(new Date());
-            //                entityManager.store(benutzer);
-            //                entityManager.commit();
-            //            } else {
-            //                logger.warn("Lade User Anonymous . ");
-            //                benutzer = loadAnonymousBenutzer(webappName);
-            //            }
-        }
-        return benutzer;
+//        Benutzer benutzer = null;
+//        if (login == null || login.isEmpty() || passwd == null || passwd.isEmpty()) {
+//            logger.warn("Login oder Passwd ist null, lade anonymen Benutzer");
+//            benutzer = loadAnonymousBenutzer(webappName);
+//        } else {
+//            final TypedQuery<Benutzer> typedQuery = orientDB.createQuery("from Benutzer b " + "where b.login=:login " + "and b.active=true " + "and b.passwd=:passwd " + "and b.benutzerWebapplikation.webappName=:webappName",
+//                    Benutzer.class).setParameter("login", login).setParameter("passwd", passwd).setParameter("webappName", webappName);
+//            benutzer = getSingleResultOrNull(typedQuery);
+//
+//
+//            //            benutzer = createWhereClause()
+//            //                    .eq("login", login)
+//            //                    .eq("passwd", passwd)
+//            //                    .eq("active", true)
+//            //                    .eq("benutzerWebapplikation.webappName", webappName).findUnique();
+//            if (benutzer == null) {
+//                benutzer = loadAnonymousBenutzer(webappName);
+//            }
+//            //            final String sql = "select id from benutzer b where b.login = '" + login + "'" +
+//            ////                    SQLCreator.and("hidden", "false")+
+//            //                    SQLCreator.andValue("passwd", passwd) +
+//            //                    SQLCreator.andValue("active", "true") +
+//            //                    SQLCreator.and("b.benutzer_webapplikation_id", SQLCreator.webapplikationID(webappName));
+//            //            benutzer = createQuery(sql).findUnique();
+//            //            final ObjectSet<Benutzer> objSet = orientDB.query(new Predicate<Benutzer>() {
+//            //                @Override
+//            //                public boolean match(final Benutzer benutzer) {
+//            //                    final boolean b1 = benutzer.getLogin().equals(login);
+//            //                    final Boolean b2 = benutzer.getActive();
+//            //                    final boolean b3 = benutzer.getPasswd().equals(passwd);
+//            //                    final boolean b4 = benutzer.getBenutzerWebapplikation().getWebappName().equals(webappName);
+//            ////                    final Boolean b5 = benutzer.getHidden();
+//            //                    return b1 && b2 && b3 && b4;
+//            //                }
+//            //            });
+//            //            final int size = objSet.size();
+//            //            if (size == 1) {
+//            //                benutzer = objSet.get(0);
+//            //                benutzer.setLastLogin(new Date());
+//            //                orientDB.store(benutzer);
+//            //                orientDB.commit();
+//            //            } else {
+//            //                logger.warn("Lade User Anonymous . ");
+//            //                benutzer = loadAnonymousBenutzer(webappName);
+//            //            }
+//        }
+//        return benutzer;
+        return null;
     }
 
     public Benutzer loadBenutzerInclSystemBenutzer(final String login, final String passwd, final Long webappOID) {
-        Benutzer benutzer = null;
-        if (login == null || login.isEmpty() || passwd == null || passwd.isEmpty()) {
-            logger.warn("Login oder Passwd ist null, lade anonymen Benutzer");
-            benutzer = loadAnonymousBenutzer(webappOID);
-        } else {
-            final TypedQuery<Benutzer> typedQuery = entityManager.createQuery("from Benutzer b where b.login=:login and b.active=true and b.passwd=:passwd " + "and b.benutzerWebapplikation.id=:webappOID", Benutzer.class).setParameter("login",
-                    login).setParameter(
-                    "passwd",
-                    passwd).setParameter("webappOID", webappOID);
-            benutzer = getSingleResultOrNull(typedQuery);
-            if (benutzer == null) {
-                benutzer = loadAnonymousBenutzer(webappOID);
-            }
-        }
-        return benutzer;
+//        Benutzer benutzer = null;
+//        if (login == null || login.isEmpty() || passwd == null || passwd.isEmpty()) {
+//            logger.warn("Login oder Passwd ist null, lade anonymen Benutzer");
+//            benutzer = loadAnonymousBenutzer(webappOID);
+//        } else {
+//            final TypedQuery<Benutzer> typedQuery = orientDB.createQuery("from Benutzer b where b.login=:login and b.active=true and b.passwd=:passwd " + "and b.benutzerWebapplikation.id=:webappOID", Benutzer.class).setParameter("login",
+//                    login).setParameter(
+//                    "passwd",
+//                    passwd).setParameter("webappOID", webappOID);
+//            benutzer = getSingleResultOrNull(typedQuery);
+//            if (benutzer == null) {
+//                benutzer = loadAnonymousBenutzer(webappOID);
+//            }
+//        }
+//        return benutzer;
+        return null;
     }
 
 
     public Benutzer loadAnonymousBenutzer(final String webappName) {
-        final String login = "Anonymous_" + webappName.replace("_App", "");
-        if (logger.isDebugEnabled()) {
-            logger.debug("loadAnonymousUser: login:=" + login);
-        }
-        if (logger.isDebugEnabled()) {
-            logger.debug("loadAnonymousUser: webApp:=" + webappName);
-        }
-        final TypedQuery<Benutzer> benutzerTypedQuery = entityManager.createQuery("from Benutzer b  where b.login=:login  " +
-                "and b.benutzerWebapplikation.webappName=:webappName", Benutzer.class)
-                .setParameter("login", login)
-                .setParameter("webappName",
-                        webappName);
-        return getSingleResultOrNull(benutzerTypedQuery);
+//        final String login = "Anonymous_" + webappName.replace("_App", "");
+//        if (logger.isDebugEnabled()) {
+//            logger.debug("loadAnonymousUser: login:=" + login);
+//        }
+//        if (logger.isDebugEnabled()) {
+//            logger.debug("loadAnonymousUser: webApp:=" + webappName);
+//        }
+//        final TypedQuery<Benutzer> benutzerTypedQuery = orientDB.createQuery("from Benutzer b  where b.login=:login  " +
+//                "and b.benutzerWebapplikation.webappName=:webappName", Benutzer.class)
+//                .setParameter("login", login)
+//                .setParameter("webappName",
+//                        webappName);
+//        return getSingleResultOrNull(benutzerTypedQuery);
+        return null;
     }
 
     public Benutzer loadAnonymousBenutzer(final Long webappOID) {
         //        final String login = "Anonymous_" + webappName.replace("_App", "");
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("loadAnonymousUser: webappOID:=" + webappOID);
-        }
-        final TypedQuery<Benutzer> benutzerTypedQuery = entityManager.createQuery("from Benutzer b  where b.login like 'Anonymous_%' and b.benutzerWebapplikation.id=:webappOID", Benutzer.class)
-                //                        .setParameter("login", login)
-                .setParameter("webappOID", webappOID);
-        return getSingleResultOrNull(benutzerTypedQuery);
+//        if (logger.isDebugEnabled()) {
+//            logger.debug("loadAnonymousUser: webappOID:=" + webappOID);
+//        }
+//        final TypedQuery<Benutzer> benutzerTypedQuery = orientDB.createQuery("from Benutzer b  where b.login like 'Anonymous_%' and b.benutzerWebapplikation.id=:webappOID", Benutzer.class)
+//                //                        .setParameter("login", login)
+//                .setParameter("webappOID", webappOID);
+//        return getSingleResultOrNull(benutzerTypedQuery);
+        return null;
 
     }
 
@@ -381,7 +394,7 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
             //                    "where r.mandantengruppe_id=(" + SQLCreator.mandantengruppeID(mandantengruppe) + ")" +
             //                    "and r.login = '" + wishedLogin + "'";
             //            final Benutzer registration = createQuery(sql).findUnique();
-//            final RegistrationDAO registrationDAO = new RegistrationDAO(entityManager);
+//            final RegistrationDAO registrationDAO = new RegistrationDAO(orientDB);
 //            return registrationDAO.checkIfLoginIsAvailable(wishedLogin, mandantengruppe);
             return true;
         } else {
@@ -389,7 +402,7 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
             return false;
         }
 
-        //        final ObjectSet<Benutzer> objSetOne = entityManager.query(new Predicate<Benutzer>() {
+        //        final ObjectSet<Benutzer> objSetOne = orientDB.query(new Predicate<Benutzer>() {
         //            @Override
         //            public boolean match(final Benutzer benutzer) {
         //                final boolean b1 = benutzer.getLogin().equals(wishedLogin);
@@ -399,7 +412,7 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
         //        });
         //        final int i = objSetOne.size();
         //        if (i == 0) {
-        //            final ObjectSet<Registration> objSetTwo = entityManager.query(new Predicate<Registration>() {
+        //            final ObjectSet<Registration> objSetTwo = orientDB.query(new Predicate<Registration>() {
         //                @Override
         //                public boolean match(final Registration registration) {
         //                    final boolean b1 = registration.getMandantengruppe().getMandantengruppe().equals(mandantengruppe);
@@ -423,36 +436,39 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
     }
 
     public Benutzer loadBenutzerByEmail(final String email) {
-        final TypedQuery<Benutzer> typedQuery = entityManager.createQuery(
-                "select b from Benutzer" +
-                        "  b where b.email=:email ",
-                Benutzer.class)
-                .setParameter("email", email);
-        return getSingleResultOrNull(typedQuery);
+//        final TypedQuery<Benutzer> typedQuery = orientDB.createQuery(
+//                "select b from Benutzer" +
+//                        "  b where b.email=:email ",
+//                Benutzer.class)
+//                .setParameter("email", email);
+//        return getSingleResultOrNull(typedQuery);
+        return null;
     }
 
     public Benutzer loadBenutzerByEmail(final String email, final Long mandantengruppeOID) {
-        final TypedQuery<Benutzer> typedQuery = entityManager.createQuery(
-                "select b from Benutzer" +
-                        "  b where b.email=:email " +
-                        " and b.mandantengruppe.id=:mandantengruppeOID",
-                Benutzer.class)
-                .setParameter("email", email)
-                .setParameter("mandantengruppeOID", mandantengruppeOID);
-        return getSingleResultOrNull(typedQuery);
+//        final TypedQuery<Benutzer> typedQuery = orientDB.createQuery(
+//                "select b from Benutzer" +
+//                        "  b where b.email=:email " +
+//                        " and b.mandantengruppe.id=:mandantengruppeOID",
+//                Benutzer.class)
+//                .setParameter("email", email)
+//                .setParameter("mandantengruppeOID", mandantengruppeOID);
+//        return getSingleResultOrNull(typedQuery);
+        return null;
     }
 
     public Benutzer loadBenutzerByEmail(final String email, final String mandantengruppe) {
-        final TypedQuery<Benutzer> typedQuery = entityManager.createQuery(
-                "select b from Benutzer b where b.email=:email " +
-                        " and b.mandantengruppe.mandantengruppe=:mandantengruppe",
-                Benutzer.class)
-                .setParameter("email", email)
-                .setParameter("mandantengruppe", mandantengruppe);
-        return getSingleResultOrNull(typedQuery);
+//        final TypedQuery<Benutzer> typedQuery = orientDB.createQuery(
+//                "select b from Benutzer b where b.email=:email " +
+//                        " and b.mandantengruppe.mandantengruppe=:mandantengruppe",
+//                Benutzer.class)
+//                .setParameter("email", email)
+//                .setParameter("mandantengruppe", mandantengruppe);
+//        return getSingleResultOrNull(typedQuery);
+        return null;
     }
 //    public Benutzer loadBenutzerByEmail(final String email, final Long mandantengruppeOID) {
-//        final TypedQuery<Benutzer> typedQuery = entityManager.createQuery(
+//        final TypedQuery<Benutzer> typedQuery = orientDB.createQuery(
 //                "select b" +
 //                        " from Person p" +
 //                        " inner join p.benutzer b" +
@@ -467,7 +483,7 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
 //    }
 //
 //    public Benutzer loadBenutzerByEmail(final String email, final String mandantengruppe) {
-//        final TypedQuery<Benutzer> typedQuery = entityManager.createQuery(
+//        final TypedQuery<Benutzer> typedQuery = orientDB.createQuery(
 //                "select b" +
 //                        " from Person p" +
 //                        " inner join p.benutzer b" +
@@ -482,11 +498,12 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
 //    }
 
     public Benutzer authenticate(final String login, final String passwd) {
-        final TypedQuery<Benutzer> typedQuery = entityManager.createQuery(
-                "select b from Benutzer b where b.login=:login and b.passwd=:passwd", Benutzer.class)
-                .setParameter("login", login)
-                .setParameter("passwd", passwd)
-                .setMaxResults(1);
-        return getSingleResultOrNull(typedQuery);
+//        final TypedQuery<Benutzer> typedQuery = orientDB.createQuery(
+//                "select b from Benutzer b where b.login=:login and b.passwd=:passwd", Benutzer.class)
+//                .setParameter("login", login)
+//                .setParameter("passwd", passwd)
+//                .setMaxResults(1);
+//        return getSingleResultOrNull(typedQuery);
+        return null;
     }
 }

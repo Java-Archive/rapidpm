@@ -97,35 +97,35 @@ public class GraphBaseDAO<T> {
     }
 
     private Node createNewProjectRootNode(final Long projectId) {
-        final Transaction tx = graphDb.beginTx();
-        Node newProjectNode = null;
-        try {
-            final DAO projectDao = getDaoInstance(PlannedProject.class);
-            PlannedProject project = (PlannedProject) projectDao.findByID(projectId);
-            if (project == null) {
-                if (logger.isDebugEnabled())
-                    logger.debug("No Project with id " + projectId + " found!");
-                throw new NullPointerException("No Project with id " + projectId + " found!");
-            }
-            newProjectNode = graphDb.createNode();
-            newProjectNode.setProperty(GraphRelationFactory.getRelationAttributeProjectId(), projectId);
-            if (clazz.equals(IssueBase.class)) {
-                newProjectNode.setProperty(GraphRelationFactory.getRelationAttributeProjectToken(), project.getProjektToken());
-                newProjectNode.setProperty(GraphRelationFactory.getRelationAttributeTokenId(), 1);
-            }
-            class_root_node.createRelationshipTo(newProjectNode, GraphRelationFactory.getRootToClassRootRelType(clazz));
-            tx.success();
-        } finally {
-            tx.finish();
-            if (newProjectNode == null) {
-                throw new NullPointerException("Couldn't create new project root node");
-            }
-
-            new DatabaseInitXMLLoader().initDatatype(clazz, this, projectId);
-
-            return newProjectNode;
-        }
-
+//        final Transaction tx = graphDb.beginTx();
+//        Node newProjectNode = null;
+//        try {
+//            final DAO projectDao = getDaoInstance(PlannedProject.class);
+//            PlannedProject project = (PlannedProject) projectDao.findByID(projectId);
+//            if (project == null) {
+//                if (logger.isDebugEnabled())
+//                    logger.debug("No Project with id " + projectId + " found!");
+//                throw new NullPointerException("No Project with id " + projectId + " found!");
+//            }
+//            newProjectNode = graphDb.createNode();
+//            newProjectNode.setProperty(GraphRelationFactory.getRelationAttributeProjectId(), projectId);
+//            if (clazz.equals(IssueBase.class)) {
+//                newProjectNode.setProperty(GraphRelationFactory.getRelationAttributeProjectToken(), project.getProjektToken());
+//                newProjectNode.setProperty(GraphRelationFactory.getRelationAttributeTokenId(), 1);
+//            }
+//            class_root_node.createRelationshipTo(newProjectNode, GraphRelationFactory.getRootToClassRootRelType(clazz));
+//            tx.success();
+//        } finally {
+//            tx.finish();
+//            if (newProjectNode == null) {
+//                throw new NullPointerException("Couldn't create new project root node");
+//            }
+//
+//            new DatabaseInitXMLLoader().initDatatype(clazz, this, projectId);
+//
+//            return newProjectNode;
+//        }
+    return null;
     }
 
     public T persist(final T entity) throws IllegalArgumentException{
@@ -191,100 +191,100 @@ public class GraphBaseDAO<T> {
     }
 
     private void setProperties(final Node node, final T entity) {
-        if (node == null)
-            throw new NullPointerException(clazz.getSimpleName() + ": Node to persist to can't be null");
-        if (entity == null)
-            throw new NullPointerException(clazz.getSimpleName() + ": Object to persist can't be null");
-
-        if (logger.isDebugEnabled())
-            logger.debug("setProperties: " + entity);
-
-        final Field[] fieldNames = entity.getClass().getDeclaredFields();
-        try {
-            for (final Field field : fieldNames) {
-                boolean isAccessible = field.isAccessible();
-                field.setAccessible(true);
-                if (field.isAnnotationPresent(Simple.class)) {
-                    if (field.getType().equals(Date.class)) {
-                        node.setProperty(field.getName(), field.get(entity) == null ? 0L : ((Date)field.get(entity))
-                                .getTime());
-                    } else {
-                        if (field.get(entity) != null)
-                            node.setProperty(field.getName(), field.get(entity));
-                    }
-                }
-                else if (field.isAnnotationPresent(Relational.class)) {
-                    final Class aClass = field.getAnnotation(Relational.class).clazz();
-
-                    if (field.getType().equals(List.class)) {
-                        //get List from Entity
-                        final DAO relDao = getDaoInstance(aClass);
-                        final List entityList = (List)field.get(entity);
-                        final Iterator it = entityList.iterator();
-                        Long[] ids = new Long[entityList.size()];
-                        int i = 0;
-
-                        //persist comments
-                        while (it.hasNext()) {
-                            Object single = it.next();
-                            if (relDao != null)
-                                daoFactory.saveOrUpdateTX(single);
-                            ids[i++] = getIdFromEntity(single, aClass);
-                        }
-
-                        //remove deleted Objects from relDB
-                        final long[] nodeIds = (long[])node.getProperty(field.getName(), new long[]{});
-                        boolean deleteInRel;
-                        for (long singleNodeId : nodeIds) {
-                            deleteInRel = true;
-                            for (Object singleEntity : entityList) {
-                                if (getIdFromEntity(singleEntity, aClass) == (singleNodeId)) {
-                                    deleteInRel = false;
-                                    break;
-                                } else {
-                                    deleteInRel = true;
-                                }
-                            }
-                            if (deleteInRel) {
-                                daoFactory.removeTX(relDao.findByID(singleNodeId));
-                            }
-                        }
-
-                        node.setProperty(field.getName(), ids);
-                    } else {
-                        if (field.get(entity) != null)
-                                node.setProperty(field.getName(), getIdFromEntity(field.get(entity), aClass));
-                    }
-                }
-                else if (field.isAnnotationPresent(Graph.class)) {
-                    if (field.get(entity) != null) {
-                        final Class aClass = field.getAnnotation(Graph.class).clazz();
-                        Long id = getIdFromEntity(field.get(entity), aClass);
-                        if (id != null && id != 0) {
-                            connectSingleAttribute(node, graphDb.getNodeById(id), aClass);
-                        }
-                    }
-                }
-                else if (field.isAnnotationPresent(LazyGraphPersist.class)) {
-                    final Object fieldValue = field.get(entity);
-                    if (fieldValue != null) {
-                        final Map valueMap = Map.class.cast(fieldValue);
-
-                        for (Iterator it = valueMap.keySet().iterator(); it.hasNext();) {
-                            final Method method = Method.class.cast(it.next());
-                            final List<Object[]> argsList = List.class.cast(valueMap.get(method));
-                            for (Object[] args : argsList) {
-                                method.invoke(this, args);
-                            }
-                        }
-                    }
-                    field.set(entity, null);
-                }
-                field.setAccessible(isAccessible);
-            }
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            logger.error(e.getMessage(), e);
-        }
+//        if (node == null)
+//            throw new NullPointerException(clazz.getSimpleName() + ": Node to persist to can't be null");
+//        if (entity == null)
+//            throw new NullPointerException(clazz.getSimpleName() + ": Object to persist can't be null");
+//
+//        if (logger.isDebugEnabled())
+//            logger.debug("setProperties: " + entity);
+//
+//        final Field[] fieldNames = entity.getClass().getDeclaredFields();
+//        try {
+//            for (final Field field : fieldNames) {
+//                boolean isAccessible = field.isAccessible();
+//                field.setAccessible(true);
+//                if (field.isAnnotationPresent(Simple.class)) {
+//                    if (field.getType().equals(Date.class)) {
+//                        node.setProperty(field.getName(), field.get(entity) == null ? 0L : ((Date)field.get(entity))
+//                                .getTime());
+//                    } else {
+//                        if (field.get(entity) != null)
+//                            node.setProperty(field.getName(), field.get(entity));
+//                    }
+//                }
+//                else if (field.isAnnotationPresent(Relational.class)) {
+//                    final Class aClass = field.getAnnotation(Relational.class).clazz();
+//
+//                    if (field.getType().equals(List.class)) {
+//                        //get List from Entity
+//                        final DAO relDao = getDaoInstance(aClass);
+//                        final List entityList = (List)field.get(entity);
+//                        final Iterator it = entityList.iterator();
+//                        Long[] ids = new Long[entityList.size()];
+//                        int i = 0;
+//
+//                        //persist comments
+//                        while (it.hasNext()) {
+//                            Object single = it.next();
+//                            if (relDao != null)
+//                                daoFactory.saveOrUpdateTX(single);
+//                            ids[i++] = getIdFromEntity(single, aClass);
+//                        }
+//
+//                        //remove deleted Objects from relDB
+//                        final long[] nodeIds = (long[])node.getProperty(field.getName(), new long[]{});
+//                        boolean deleteInRel;
+//                        for (long singleNodeId : nodeIds) {
+//                            deleteInRel = true;
+//                            for (Object singleEntity : entityList) {
+//                                if (getIdFromEntity(singleEntity, aClass) == (singleNodeId)) {
+//                                    deleteInRel = false;
+//                                    break;
+//                                } else {
+//                                    deleteInRel = true;
+//                                }
+//                            }
+//                            if (deleteInRel) {
+//                                daoFactory.removeTX(relDao.findByID(singleNodeId));
+//                            }
+//                        }
+//
+//                        node.setProperty(field.getName(), ids);
+//                    } else {
+//                        if (field.get(entity) != null)
+//                                node.setProperty(field.getName(), getIdFromEntity(field.get(entity), aClass));
+//                    }
+//                }
+//                else if (field.isAnnotationPresent(Graph.class)) {
+//                    if (field.get(entity) != null) {
+//                        final Class aClass = field.getAnnotation(Graph.class).clazz();
+//                        Long id = getIdFromEntity(field.get(entity), aClass);
+//                        if (id != null && id != 0) {
+//                            connectSingleAttribute(node, graphDb.getNodeById(id), aClass);
+//                        }
+//                    }
+//                }
+//                else if (field.isAnnotationPresent(LazyGraphPersist.class)) {
+//                    final Object fieldValue = field.get(entity);
+//                    if (fieldValue != null) {
+//                        final Map valueMap = Map.class.cast(fieldValue);
+//
+//                        for (Iterator it = valueMap.keySet().iterator(); it.hasNext();) {
+//                            final Method method = Method.class.cast(it.next());
+//                            final List<Object[]> argsList = List.class.cast(valueMap.get(method));
+//                            for (Object[] args : argsList) {
+//                                method.invoke(this, args);
+//                            }
+//                        }
+//                    }
+//                    field.set(entity, null);
+//                }
+//                field.setAccessible(isAccessible);
+//            }
+//        } catch (IllegalAccessException | InvocationTargetException e) {
+//            logger.error(e.getMessage(), e);
+//        }
     }
 
     private void connectSingleAttribute(Node startNode, Node endNode, Class aClass) {
@@ -456,73 +456,74 @@ public class GraphBaseDAO<T> {
     }
 
     protected <E> E getObjectFromNode(final Node node, final Class clazz) {
-        if (logger.isDebugEnabled())
-            logger.debug("getObjectFromNode: " + clazz.getSimpleName());
-
-        if (node == null)
-            throw new NullPointerException("Node is null.");
-        if (clazz == null)
-            throw new NullPointerException("Class is null.");
-
-        E entity = null;
-        try {
-            entity = (E) clazz.getConstructor().newInstance();
-
-            final Field[] fieldNames = entity.getClass().getDeclaredFields();
-            for (final Field field : fieldNames) {
-                final boolean isAccessible = field.isAccessible();
-                field.setAccessible(true);
-                if (field.isAnnotationPresent(Identifier.class)) {
-                    field.set(entity, field.getType().cast(node.getId()));
-                }
-
-                if (field.isAnnotationPresent(Simple.class)) {
-                    if (field.getType().equals(Date.class)) {
-                        field.set(entity, new Date(Long.class.cast(node.getProperty(field.getName()))));
-
-                    } else
-                        field.set(entity, field.getType().cast(node.getProperty(field.getName(), null)));
-                }
-
-                else if (field.isAnnotationPresent(Relational.class)) {
-                    //Load via relational DAO's
-                    final DAO relDao = getDaoInstance(field.getAnnotation(Relational.class).clazz());
-                    if (relDao != null) {
-                        if (field.getType().equals(List.class)) {
-                            final long[] entityList = (long[])node.getProperty(field.getName(), new long[]{});
-                            final List<Object> ids = new ArrayList<>();
-                            for (final Object single : entityList) {
-                                final Object obj = relDao.findByID((Long)single);
-                                if (obj != null)
-                                    ids.add(obj);
-                                else logger.error("Requested object not in rel databse: " + field.getAnnotation
-                                        (Relational.class).clazz().getSimpleName() + " " + (Long) single);
-                            }
-                            field.set(entity, ids);
-                        } else {
-                            if (node.getProperty(field.getName(), null) != null)
-                                field.set(entity, relDao.findByID(Long.class.cast(node.getProperty(field.getName()))));
-                        }
-                    }
-                }
-                else if (field.isAnnotationPresent(Graph.class)) {
-                    final Class aClass = field.getAnnotation(Graph.class).clazz();
-
-                    final Relationship rel = node.getSingleRelationship(GraphRelationFactory
-                            .getRelationshipTypeForClass(aClass),
-                            Direction.OUTGOING);
-                    if (rel != null) {
-                        final Node otherNode = rel.getOtherNode(node);
-                        if (otherNode != null)
-                            field.set(entity, getObjectFromNode(otherNode, aClass));
-                    }
-                }
-                field.setAccessible(isAccessible);
-            }
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            logger.error(e.getMessage(), e);
-        }
-        return entity;
+//        if (logger.isDebugEnabled())
+//            logger.debug("getObjectFromNode: " + clazz.getSimpleName());
+//
+//        if (node == null)
+//            throw new NullPointerException("Node is null.");
+//        if (clazz == null)
+//            throw new NullPointerException("Class is null.");
+//
+//        E entity = null;
+//        try {
+//            entity = (E) clazz.getConstructor().newInstance();
+//
+//            final Field[] fieldNames = entity.getClass().getDeclaredFields();
+//            for (final Field field : fieldNames) {
+//                final boolean isAccessible = field.isAccessible();
+//                field.setAccessible(true);
+//                if (field.isAnnotationPresent(Identifier.class)) {
+//                    field.set(entity, field.getType().cast(node.getId()));
+//                }
+//
+//                if (field.isAnnotationPresent(Simple.class)) {
+//                    if (field.getType().equals(Date.class)) {
+//                        field.set(entity, new Date(Long.class.cast(node.getProperty(field.getName()))));
+//
+//                    } else
+//                        field.set(entity, field.getType().cast(node.getProperty(field.getName(), null)));
+//                }
+//
+//                else if (field.isAnnotationPresent(Relational.class)) {
+//                    //Load via relational DAO's
+//                    final DAO relDao = getDaoInstance(field.getAnnotation(Relational.class).clazz());
+//                    if (relDao != null) {
+//                        if (field.getType().equals(List.class)) {
+//                            final long[] entityList = (long[])node.getProperty(field.getName(), new long[]{});
+//                            final List<Object> ids = new ArrayList<>();
+//                            for (final Object single : entityList) {
+//                                final Object obj = relDao.findByID((Long)single);
+//                                if (obj != null)
+//                                    ids.add(obj);
+//                                else logger.error("Requested object not in rel databse: " + field.getAnnotation
+//                                        (Relational.class).clazz().getSimpleName() + " " + (Long) single);
+//                            }
+//                            field.set(entity, ids);
+//                        } else {
+//                            if (node.getProperty(field.getName(), null) != null)
+//                                field.set(entity, relDao.findByID(Long.class.cast(node.getProperty(field.getName()))));
+//                        }
+//                    }
+//                }
+//                else if (field.isAnnotationPresent(Graph.class)) {
+//                    final Class aClass = field.getAnnotation(Graph.class).clazz();
+//
+//                    final Relationship rel = node.getSingleRelationship(GraphRelationFactory
+//                            .getRelationshipTypeForClass(aClass),
+//                            Direction.OUTGOING);
+//                    if (rel != null) {
+//                        final Node otherNode = rel.getOtherNode(node);
+//                        if (otherNode != null)
+//                            field.set(entity, getObjectFromNode(otherNode, aClass));
+//                    }
+//                }
+//                field.setAccessible(isAccessible);
+//            }
+//        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+//            logger.error(e.getMessage(), e);
+//        }
+//        return entity;
+        return null;
     }
 
     protected Long getProjectIdFromEntity(final Object entity) {

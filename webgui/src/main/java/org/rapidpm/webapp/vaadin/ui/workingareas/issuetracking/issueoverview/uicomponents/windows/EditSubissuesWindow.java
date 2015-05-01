@@ -3,7 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.ui
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
@@ -149,7 +149,7 @@ public class EditSubissuesWindow extends Window implements Internationalizationa
 
         @Override
         public void buttonClick(Button.ClickEvent event) {
-            final IssueBaseDAO dao = DaoFactorySingelton.getInstance().getIssueBaseDAO();
+            final IssueBaseDAO dao = DaoFactorySingleton.getInstance().getIssueBaseDAO();
             final Map<IssueBase, List<IssueBase>> map = dropHandler.getChangedIssues();
             if (!map.isEmpty()) {
                 for (final IssueBase key : map.keySet()) {

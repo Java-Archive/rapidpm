@@ -3,7 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.lo
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Notification;
 import org.apache.log4j.Logger;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
@@ -42,7 +42,7 @@ public class DetailsSaveButtonClickListener implements Button.ClickListener {
     @Override
     public void buttonClick(Button.ClickEvent event) {
         final IssueBase issueBase = detailsLayout.getCurrentIssue();
-        final IssueBaseDAO dao = DaoFactorySingelton.getInstance().getIssueBaseDAO();
+        final IssueBaseDAO dao = DaoFactorySingleton.getInstance().getIssueBaseDAO();
         if (!dao.existInDatabase(issueBase.getId())) {
             Notification.show(messageBundle.getString("issuetracking_exception_issuedeleted"),
                     Notification.Type.WARNING_MESSAGE);

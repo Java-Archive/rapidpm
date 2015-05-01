@@ -4,11 +4,10 @@ import com.vaadin.data.util.HierarchicalContainer;
 import org.apache.log4j.Logger;
 //import org.rapidpm.persistence.GraphDaoFactory;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
-import java.text.Collator;
 import java.util.*;
 
 
@@ -32,7 +31,7 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
         if (currentProject == null)
             throw new NullPointerException("Project must not be null");
 
-        this.daoFactory = DaoFactorySingelton.getInstance();
+        this.daoFactory = DaoFactorySingleton.getInstance();
         this.currentProject = currentProject;
         this.comparator = new ComparatorIssues();
         this.addContainerProperty(PROPERTY_CAPTION, String.class, null);
@@ -41,7 +40,7 @@ public class TreeIssueBaseContainer extends HierarchicalContainer {
     }
 
     private void filltree() {
-        final List<IssueBase> topLevelIssues = daoFactory.getIssueBaseDAO().loadTopLevelEntities(currentProject.getId());
+        final List<IssueBase> topLevelIssues = daoFactory.getIssueBaseDAO().loadTopLevelEntities(0l);
         Collections.sort(topLevelIssues, comparator);
         for (final IssueBase issue : topLevelIssues) {
             final Object itemId = addItem();

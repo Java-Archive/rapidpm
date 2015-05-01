@@ -2,7 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.lo
 
 import com.vaadin.ui.UI;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStoryPoint;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueStoryPointDAO;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueTestCase;
@@ -34,7 +34,7 @@ public class MappingPlanningUnitToIssueBase {
             throw new NullPointerException("Project is null");
 
         this.project = project;
-        this.daoFactory = DaoFactorySingelton.getInstance();
+        this.daoFactory = DaoFactorySingleton.getInstance();
         this.dao = daoFactory.getIssueBaseDAO();
     }
 
@@ -65,18 +65,18 @@ public class MappingPlanningUnitToIssueBase {
 
 
         final IssueStoryPointDAO storyPointDAO = daoFactory.getIssueStoryPointDAO();
-        final IssueStoryPoint exist = storyPointDAO.findByName(String.valueOf(pu.getEstimatedStoryPoints()), project.getId());
+        final IssueStoryPoint exist = storyPointDAO.findByName(String.valueOf(pu.getEstimatedStoryPoints()), 0l);
         if (exist != null) {
             issue.setStoryPoints(exist);
         } else {
             IssueStoryPoint stp = new IssueStoryPoint(pu.getEstimatedStoryPoints());
-            stp.setProjectId(project.getId());
+            stp.setProjectId(0l);
             issue.setStoryPoints(storyPointDAO.persist(stp));
         }
 
         for (final TextElement txtelement : pu.getTestcases()) {
             IssueTestCase testcase = new IssueTestCase(txtelement.getText());
-            issue.addOrChangeTestCase(daoFactory.saveOrUpdateTX(testcase));
+//            issue.addOrChangeTestCase(daoFactory.saveOrUpdateTX(testcase));
         }
 
         final Set<PlanningUnit> children = pu.getKindPlanningUnits();
@@ -86,10 +86,10 @@ public class MappingPlanningUnitToIssueBase {
             }
         }
 
-        issue.setPriority(daoFactory.getIssuePriorityDAO().loadAllEntities(project.getId()).get(0));
-        issue.setStatus(daoFactory.getIssueStatusDAO().loadAllEntities(project.getId()).get(0));
-        issue.setType(daoFactory.getIssueTypeDAO().loadAllEntities(project.getId()).get(0));
-        issue.setVersion(daoFactory.getIssueVersionDAO().loadAllEntities(project.getId()).get(0));
+        issue.setPriority(daoFactory.getIssuePriorityDAO().loadAllEntities(0l).get(0));
+        issue.setStatus(daoFactory.getIssueStatusDAO().loadAllEntities(0l).get(0));
+        issue.setType(daoFactory.getIssueTypeDAO().loadAllEntities(0l).get(0));
+        issue.setVersion(daoFactory.getIssueVersionDAO().loadAllEntities(0l).get(0));
         issue.setDueDate_planned(new Date());
 
         issue = dao.persist(issue);

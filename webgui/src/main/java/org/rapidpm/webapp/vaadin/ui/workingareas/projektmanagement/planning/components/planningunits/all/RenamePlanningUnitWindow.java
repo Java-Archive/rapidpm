@@ -4,7 +4,7 @@ import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.SaveCancelButtonLeiste;
@@ -40,18 +40,18 @@ public class RenamePlanningUnitWindow extends RapidWindow {
                 saveButton.addClickListener(new Button.ClickListener() {
                     @Override
                     public void buttonClick(Button.ClickEvent event) {
-                        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+                        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
                         try {
                             final PlanningUnit changedPlanningUnit = ((BeanItem<PlanningUnit>)fieldGroup
                                     .getItemDataSource()).getBean();
-                            if(changedPlanningUnit.getId() == ProjektplanungScreen.PLATZHALTER_ID){
+                            if(changedPlanningUnit.getId() == String.valueOf(ProjektplanungScreen.PLATZHALTER_ID)){
                                 RenamePlanningUnitWindow.this.close();
                                 Notification.show(messagesBundle.getString("planning_placeholder_rename"));
                             } else {
                                 fieldGroup.getField(PlanningUnit.PARENT).setRequired(false);
                                 fieldGroup.commit();
                                 final PlanningUnit planningUnit = ((BeanItem<PlanningUnit>) fieldGroup.getItemDataSource()).getBean();
-                                daoFactory.saveOrUpdateTX(planningUnit);
+//                                daoFactory.saveOrUpdateTX(planningUnit);
                                 RenamePlanningUnitWindow.this.close();
                                 screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
                             }

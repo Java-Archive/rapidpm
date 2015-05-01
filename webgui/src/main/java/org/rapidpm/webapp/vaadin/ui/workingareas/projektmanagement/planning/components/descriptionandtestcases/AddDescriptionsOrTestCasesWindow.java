@@ -3,7 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.textelement.TextElement;
 import org.rapidpm.webapp.vaadin.MainUI;
@@ -108,27 +108,27 @@ public class AddDescriptionsOrTestCasesWindow extends RapidWindow {
             }
             newTextElements.add(textElement);
         }
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        daoFactory.new Transaction() {
-            @Override
-            public void doTask() {
-                final EntityManager entityManager = daoFactory.getEntityManager();
-                for (final TextElement newTextElement : newTextElements) {
-                    if((comboBox.getValue()).equals(DescriptionTestcaseEnum.DESCRIPTION)){
-                       if(selectedPlanningUnitInTree.getDescriptions() == null)
-                           selectedPlanningUnitInTree.setDescriptions(new ArrayList<TextElement>());
-                        selectedPlanningUnitInTree.getDescriptions().add(newTextElement);
-                    } else {
-                        if(selectedPlanningUnitInTree.getTestcases() == null)
-                            selectedPlanningUnitInTree.setTestcases(new ArrayList<TextElement>());
-                        selectedPlanningUnitInTree.getTestcases().add(newTextElement);
-                    }
-                    entityManager.persist(newTextElement);
-                }
-                entityManager.flush();
-
-            }
-        }.execute();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+//        daoFactory.new Transaction() {
+//            @Override
+//            public void doTask() {
+//                final EntityManager orientDB = daoFactory.getEntityManager();
+//                for (final TextElement newTextElement : newTextElements) {
+//                    if((comboBox.getValue()).equals(DescriptionTestcaseEnum.DESCRIPTION)){
+//                       if(selectedPlanningUnitInTree.getDescriptions() == null)
+//                           selectedPlanningUnitInTree.setDescriptions(new ArrayList<TextElement>());
+//                        selectedPlanningUnitInTree.getDescriptions().add(newTextElement);
+//                    } else {
+//                        if(selectedPlanningUnitInTree.getTestcases() == null)
+//                            selectedPlanningUnitInTree.setTestcases(new ArrayList<TextElement>());
+//                        selectedPlanningUnitInTree.getTestcases().add(newTextElement);
+//                    }
+//                    orientDB.persist(newTextElement);
+//                }
+//                orientDB.flush();
+//
+//            }
+//        }.execute();
 
 
     }

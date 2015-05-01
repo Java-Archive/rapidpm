@@ -12,17 +12,15 @@ import org.apache.log4j.Logger;
 //import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.datenmodell.KnotenBlattEnum;
 
-import javax.persistence.EntityManager;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
@@ -50,7 +48,7 @@ public class SaveButtonClickListener implements ClickListener {
 
 //        bean = EJBFactory.getEjbInstance(SaveButtonClickListenerBean.class);
 //        baseDaoFactoryBean = bean.getDaoFactoryBean();
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
     }
 
     @Override
@@ -58,10 +56,10 @@ public class SaveButtonClickListener implements ClickListener {
         try {
             final Item item = screen.getDataSource().getItem(itemId);
             final String planningUnitNameBeforeCommit = item.getItemProperty(messages.getString("aufgabe")).getValue().toString();
-            final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+            final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
             final PlanningUnitDAO planningUnitDAO = daoFactory.getPlanningUnitDAO();
             foundPlanningUnit = planningUnitDAO.loadPlanningUnitByName(planningUnitNameBeforeCommit);
-            daoFactory.getEntityManager().refresh(foundPlanningUnit);
+//            daoFactory.getEntityManager().refresh(foundPlanningUnit);
 
             fieldGroup.commit();
             final String planningUnitNameAfterCommit = item.getItemProperty(messages.getString("aufgabe")).getValue().toString();
@@ -81,10 +79,10 @@ public class SaveButtonClickListener implements ClickListener {
                     final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
                     planningUnitElement.setPlannedMinutes((plannedDays * currentProject.getHoursPerWorkingDay() *
                             Constants.MINS_HOUR) + (plannedHours * Constants.MINS_HOUR) + (plannedMinutes));
-                    daoFactory.saveOrUpdateTX(planningUnitElement);
+//                    daoFactory.saveOrUpdateTX(planningUnitElement);
                 }
             }
-            daoFactory.saveOrUpdateTX(foundPlanningUnit);
+//            daoFactory.saveOrUpdateTX(foundPlanningUnit);
             final MainUI ui = screen.getUi();
             ui.setWorkingArea(new AufwandProjInitScreen(ui));
         }catch (CommitException e){

@@ -55,12 +55,12 @@ public class FlatPlannedProject extends FlatEntity<PlannedProject> {
 
     @Override
     public void fromEntity(final PlannedProject plannedProject) {
-        id = plannedProject.getId();
-        projektName = plannedProject.getProjektName();
-        projektToken = plannedProject.getProjektToken();
-        creatorId = getId(plannedProject.getCreator());
-        responsiblePersonId = getId(plannedProject.getResponsiblePerson());
-        info = plannedProject.getInfo();
+//        id = plannedProject.getId();
+//        projektName = plannedProject.getProjektName();
+//        projektToken = plannedProject.getProjektToken();
+//        creatorId = getId(plannedProject.getCreator());
+//        responsiblePersonId = getId(plannedProject.getResponsiblePerson());
+//        info = plannedProject.getInfo();
     }
 
     @Override
@@ -68,8 +68,8 @@ public class FlatPlannedProject extends FlatEntity<PlannedProject> {
         plannedProject.setProjektName(projektName);
         plannedProject.setProjektToken(projektToken);
         final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
-        plannedProject.setCreator(benutzerDAO.findByID(creatorId));
-        plannedProject.setResponsiblePerson(benutzerDAO.findByID(responsiblePersonId));
+//        plannedProject.setCreator(benutzerDAO.findByID(creatorId));
+//        plannedProject.setResponsiblePerson(benutzerDAO.findByID(responsiblePersonId));
         plannedProject.setInfo(info);
     }
 }

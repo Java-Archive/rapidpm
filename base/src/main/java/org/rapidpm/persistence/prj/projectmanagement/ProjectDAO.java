@@ -1,5 +1,6 @@
 package org.rapidpm.persistence.prj.projectmanagement;
 
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -24,31 +25,32 @@ public class ProjectDAO extends DAO<Long, PlannedProject> {
     private static final Logger logger = Logger.getLogger(ProjectDAO.class);
 
 
-    public ProjectDAO(final EntityManager entityManager) {
-        super(entityManager, PlannedProject.class);
+    public ProjectDAO(final OrientGraph orientDB) {
+        super(orientDB, PlannedProject.class);
     }
 
     public List<PlannedProject> loadProjectsFor(final Boolean active, final String mandantengruppe) {
-        return entityManager.createQuery("from Project  p where p.active=:active and p.mandantengruppe.mandantengruppe=:mandantengruppe", PlannedProject.class).setParameter("active", active).setParameter("mandantengruppe", mandantengruppe).getResultList();
+//        return orientDB.createQuery("from Project  p where p.active=:active and p.mandantengruppe.mandantengruppe=:mandantengruppe", PlannedProject.class).setParameter("active", active).setParameter("mandantengruppe", mandantengruppe).getResultList();
         //        return createWhereClause().eq("active", active).eq("mandantengruppe.mandantengruppe", mandantengruppe).findList();
         //        final String sql = "select id from project p \n" +
         //                " where p.mandantengruppe_id = (" + mandantengruppeID(mandantengruppe) + ") \n" +
         //                and("bi.active", active.toString());
         //        return createQuery(sql).findList();
-
+        return null;
     }
 
     public List<PlannedProject> loadProjectsFor(final String mandantengruppe) {
-        return entityManager.createQuery("from Project  p where p.mandantengruppe.mandantengruppe=:mandantengruppe", PlannedProject.class).setParameter("mandantengruppe", mandantengruppe).getResultList();
+//        return orientDB.createQuery("from Project  p where p.mandantengruppe.mandantengruppe=:mandantengruppe", PlannedProject.class).setParameter("mandantengruppe", mandantengruppe).getResultList();
         //        return createWhereClause().eq("mandantengruppe.mandantengruppe", mandantengruppe).findList();
 
         //        final String sql = "select id from project p \n" +
         //                " where p.mandantengruppe_id = (" + mandantengruppeID(mandantengruppe) + ") \n";
-        //        return createQuery(sql).findList();
+        //       return createQuery(sql).findList();
+        return null;
     }
 
     //    public PlannedProject loadProjectFor(final String mandantengruppe, final String prjName){
-    //        final TypedQuery<PlannedProject> typedQuery = entityManager.createQuery(
+    //        final TypedQuery<PlannedProject> typedQuery = orientDB.createQuery(
     //                "from PlannedProject  p where p.mandantengruppe.mandantengruppe=:mandantengruppe and p.projectName=:prjName",
     //                PlannedProject.class).setParameter("mandantengruppe", mandantengruppe).setParameter("prjName", prjName);
     //        return getSingleResultOrNull(typedQuery);

@@ -6,11 +6,10 @@ import com.vaadin.ui.*;
 //import org.rapidpm.persistence.DaoFactoryBean;
 import com.vaadin.ui.themes.Reindeer;
 import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.webapp.vaadin.MainUI;
-import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TreeTableHeaderClickListener;
@@ -61,14 +60,14 @@ public class AufwandProjInitScreen extends Screen {
 
 //        bean = EJBFactory.getEjbInstance(AufwandProjInitScreenBean.class);
 //        baseDaoFactoryBean = bean.getDaoFactoryBean();
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         try{
             hoursPerWorkingDayPanel = new Panel();
             editableLayout = new HoursPerWorkingDayEditableLayout(this, hoursPerWorkingDayPanel);
             hoursPerWorkingDayPanel.setContent(editableLayout);
             hoursPerWorkingDayPanel.setStyleName(Reindeer.PANEL_LIGHT);
             hoursPerWorkingDayPanel.setSizeUndefined();
-            final List<PlannedProject> plannedProjects = daoFactory.getPlannedProjectDAO().loadAllEntities();
+            final List<PlannedProject> plannedProjects = daoFactory.getPlannedProjectDAO().findAll();
             if(plannedProjects == null || plannedProjects.isEmpty()){
                 throw new NoProjectsException();
             }
@@ -149,7 +148,7 @@ public class AufwandProjInitScreen extends Screen {
         manntageField.setReadOnly(true);
         summeField.setReadOnly(true);
         final PlannedProject projectFromSession = ui.getCurrentProject();
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
         final PlannedProject projekt = plannedProjectDAO.findByID(projectFromSession.getId());
         projektField.setValue(projekt.getProjektName());
