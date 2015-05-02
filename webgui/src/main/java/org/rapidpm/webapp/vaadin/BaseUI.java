@@ -24,6 +24,7 @@ import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.windows.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -71,27 +72,26 @@ public abstract class BaseUI extends UI {
     }
 
     private void loadFirstProject() {
-        boolean createSchemaAndFillWithSomeNodes = false;
-            if(createSchemaAndFillWithSomeNodes){
-                OObjectDatabaseTx db = new OObjectDatabaseTx ("remote:localhost/RapidPM").open("root", "admin");
-                db.getEntityManager().registerEntityClasses("org.rapidpm.persistence");
-                StartDataCreator.run(db);
-            }
-
+        final OObjectDatabaseTx db = new OObjectDatabaseTx ("plocal:orient/RapidPM");
+        if(!db.exists()){
+            db.create();
+            db.getEntityManager().registerEntityClasses("org.rapidpm.persistence");
+            StartDataCreator.run(db);
+        }
         final VaadinSession session = this.getSession();
         final PlannedProjectDAO plannedProjectDAO = DaoFactorySingleton.getInstance().getPlannedProjectDAO();
         final List<PlannedProject> plannedProjects = plannedProjectDAO.findAll();
         for (final PlannedProject plannedProject : plannedProjects) {
-            System.out.println(plannedProject);
+            System.out.println("Project found: " + plannedProject.toString());
         }
-//        final List<PlannedProject> projects = db.getEntityManager()..loadAllEntities();
-//        Collections.sort(projects);
-//        if(projects == null || projects.isEmpty()){
-//            session.setAttribute(PlannedProject.class, null);
-//        } else {
-//            session.setAttribute(PlannedProject.class, projects.get(0));
-//        }
-//        currentProject = session.getAttribute(PlannedProject.class);
+        Collections.sort(plannedProjects);
+        if(plannedProjects.isEmpty()){
+            session.setAttribute(PlannedProject.class, null);
+        } else {
+            session.setAttribute(PlannedProject.class, plannedProjects.get(0));
+            Notification.show("Current Project: " + plannedProjects.get(0).toString());
+        }
+        currentProject = session.getAttribute(PlannedProject.class);
     }
 
     public void authentication(final String enteredLogin, final String enteredPasswd) throws Exception {

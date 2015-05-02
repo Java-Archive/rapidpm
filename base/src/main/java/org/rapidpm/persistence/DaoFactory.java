@@ -60,7 +60,7 @@ public class DaoFactory {
     private OrientGraph orientDB;
 
     public DaoFactory(final String databaseName) {
-       orientDB = new OrientGraph("remote:localhost/"+databaseName, "root", "admin");
+       orientDB = new OrientGraph("plocal:orient/"+databaseName);
     }
 
     public OrientGraph getOrientDB() {

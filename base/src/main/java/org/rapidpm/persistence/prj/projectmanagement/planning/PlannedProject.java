@@ -52,7 +52,7 @@ public class PlannedProject implements Comparable<PlannedProject>{
         fakturierbar = plannedProjectVertex.getProperty(FACT);
         info = plannedProjectVertex.getProperty(INFO);
         projektName = plannedProjectVertex.getProperty(NAME);
-        projektToken = plannedProjectVertex.getProperty(projektToken);
+        projektToken = plannedProjectVertex.getProperty(TOKEN);
         externalDailyRate = plannedProjectVertex.getProperty(EXTERNALDAILYRATE);
         hoursPerWorkingDay = plannedProjectVertex.getProperty(HOURSPERWORKINGDAY);
     }
@@ -204,19 +204,16 @@ public class PlannedProject implements Comparable<PlannedProject>{
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("PlannedProject");
-        sb.append("{active=").append(active);
-        sb.append(", id=").append(id);
-        sb.append(", mandantengruppe=").append(mandantengruppe);
-        sb.append(", plannedProjectName=").append(plannedProjectName);
-        sb.append(", fakturierbar=").append(fakturierbar);
-        sb.append(", creator=").append(creator);
-        sb.append(", responsiblePerson=").append(responsiblePerson);
-        //        sb.append(", created=").append(created);
-        sb.append(", info='").append(info).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "PlannedProject{" +
+                "id='" + id + '\'' +
+                ", projektName='" + projektName + '\'' +
+                ", projektToken='" + projektToken + '\'' +
+                ", info='" + info + '\'' +
+                ", active=" + active +
+                ", fakturierbar=" + fakturierbar +
+                ", externalDailyRate=" + externalDailyRate +
+                ", hoursPerWorkingDay=" + hoursPerWorkingDay +
+                '}';
     }
 
     @Override

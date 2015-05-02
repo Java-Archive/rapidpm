@@ -32,5 +32,7 @@
 @mixin mytheme {
   @include valo;
 
+  $v-app-loading-text: "Initializing Database (may take some minutes on first application start)....." !default;
+
   // Insert your own theme rules here
 }

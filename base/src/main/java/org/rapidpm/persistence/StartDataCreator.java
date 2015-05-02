@@ -200,7 +200,5 @@ public class StartDataCreator {
         db.save(geschlecht2);
 
         db.commit();
-//        db.close();
-
     }
 }
