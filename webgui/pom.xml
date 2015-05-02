@@ -3,14 +3,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.rapidpm</groupId>
-        <artifactId>rapidpm</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.2.3.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
 
     <artifactId>webgui</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>Vaadin Web Application</name>
 
@@ -53,6 +54,11 @@
     </dependencyManagement>
 
     <dependencies>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-spring-boot-starter</artifactId>
+            <version>1.0.0.beta3</version>
+        </dependency>
         <dependency>
             <groupId>org.rapidpm</groupId>
             <artifactId>base</artifactId>
@@ -215,6 +221,20 @@
                     <scanIntervalSeconds>2</scanIntervalSeconds>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>org.rapidpm.webapp.vaadin.RapidPMApplication</mainClass>
+                </configuration>
+            </plugin>
         </plugins>
 
         <pluginManagement>
@@ -250,6 +270,7 @@
                         </lifecycleMappingMetadata>
                     </configuration>
                 </plugin>
+
             </plugins>
         </pluginManagement>
 

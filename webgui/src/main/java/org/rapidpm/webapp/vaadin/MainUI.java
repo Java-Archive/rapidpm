@@ -4,6 +4,7 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.MenuBar;
 import org.rapidpm.webapp.vaadin.ui.workingareas.anfragenmanagement.AnfragenmanagementWorkingArea;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
@@ -31,6 +32,7 @@ import java.util.ResourceBundle;
 //                "http://localhost:8080/rapidpm/javascript/jquery/jquery-1.4.4.min.js"})
 @SuppressWarnings("serial")
 @Theme("mytheme")
+@SpringUI
 @Widgetset("com.vaadin.DefaultWidgetSet")
 public class MainUI extends BaseUI {
 
