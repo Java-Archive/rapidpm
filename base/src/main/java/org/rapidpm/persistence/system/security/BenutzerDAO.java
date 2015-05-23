@@ -1,12 +1,18 @@
 package org.rapidpm.persistence.system.security;
 
+import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
+import org.rapidpm.persistence.EntityUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * NeoScio
@@ -23,11 +29,12 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
         super(orientDB, Benutzer.class);
     }
 
-
     public List<Benutzer> loadBenutzerForLogin(final String login) {
-//        return orientDB.createQuery("from Benutzer b where b.login=:login", Benutzer.class).setParameter("login", login).getResultList();
-        return null;
+            return findAll().stream()
+                            .filter(p -> p.getLogin().equals(login))
+                            .collect(Collectors.toList());
     }
+
 
     public Benutzer loadBenutzer(final String login, final String mandantengruppe) {
 //        final TypedQuery<Benutzer> typedQuery = orientDB.createQuery("from Benutzer b " + "where b.login=:login " + "and b.mandantengruppe.mandantengruppe=:mandantengruppe", Benutzer.class).setParameter("login", login).setParameter(

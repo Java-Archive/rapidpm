@@ -14,25 +14,26 @@ package org.rapidpm.persistence.system.security;
  *
  */
 
+import com.tinkerpop.blueprints.Vertex;
 import org.apache.log4j.Logger;
 import org.hibernate.envers.Audited;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.system.security.berechtigungen.Rolle;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.Set;
 
-//@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
-
-//@XmlAccessorType(XmlAccessType.FIELD)
-//@XmlType(name = "Benutzer")
-@Entity
-@Audited
 public class Benutzer {
 
+    public static final String CLASS = "Benutzer";
+
     public static final String ID ="id";
+    public static final String ACTIVE = "active";
     public static final String HIDDEN = "hidden";
     public static final String LOGIN = "login";
     public static final String EMAIL = "email";
@@ -41,65 +42,34 @@ public class Benutzer {
 
     private static final Logger logger = Logger.getLogger(Benutzer.class);
 
-    @Id
-    @TableGenerator(name = "PKGenBenutzer",
-            table = "pk_gen",
-            pkColumnName = "gen_key",
-            pkColumnValue = "Benutzer_id",
-            valueColumnName = "gen_value",
-            allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenBenutzer")
-    private Long id;
-
-
-    @Basic
+    private String id;
     private Boolean hidden;
-
-    @Basic
-    @NotNull
-    @Size(min = 3)
     private String login;
-
-    @Basic  //TODO unique Constrain fehlt evtl pro Mandant
     private String email;
 
 
-    @Basic
-    @NotNull //@Size(min = 8)
     private String passwd;
-    @Basic
     private Date lastLogin;
-    @Basic
     private Integer failedLogins;
-    @Basic
     private Boolean active;
-    @Basic
     private Date validFrom;
-    @Basic
     private Date validUntil;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH}, optional = false, fetch = FetchType.EAGER)
     private Mandantengruppe mandantengruppe;
-
-    // TODO entfernen?
-    @ManyToOne(cascade = {CascadeType.REFRESH}, optional = false, fetch = FetchType.EAGER)
     private BenutzerGruppe benutzerGruppe;
-
-    @ManyToOne(cascade = {CascadeType.REFRESH}, optional = false, fetch = FetchType.EAGER)
     private BenutzerWebapplikation benutzerWebapplikation;
-
-    @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private Set<Rolle> rollen;
 
+    public Benutzer() {
+    }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(final Long id) {
+    public void setId(String id) {
         this.id = id;
     }
-
 
     //Der Login darf nur unique pro Mandantengruppe sein.
     public String getLogin() {

@@ -22,20 +22,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 
-//@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
-@Entity
-@Audited
 public class Mandantengruppe {
     private static final Logger logger = Logger.getLogger(Mandantengruppe.class);
 
-    @Id
-    @TableGenerator(name = "PKGenMandantengruppe",
-            table = "pk_gen",
-            pkColumnName = "gen_key",
-            pkColumnValue = "Mandantengruppe_id",
-            valueColumnName = "gen_value",
-            allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenMandantengruppe")
     private Long id;
 
     public Long getId() {
@@ -47,10 +36,6 @@ public class Mandantengruppe {
     }
 
 
-    @Column(unique = true)
-    @Basic
-    @NotNull
-    @Size(min = 1)
     private String mandantengruppe;
 
 

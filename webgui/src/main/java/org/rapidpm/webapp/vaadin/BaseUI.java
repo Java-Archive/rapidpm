@@ -16,11 +16,13 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.BaseTheme;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.StartDataCreator;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.system.security.Benutzer;
+import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.windows.*;
 
@@ -95,22 +97,22 @@ public abstract class BaseUI extends UI {
     }
 
     public void authentication(final String enteredLogin, final String enteredPasswd) throws Exception {
-//        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-//        final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
-//        final List<Benutzer> benutzer = benutzerDAO.loadBenutzerForLogin(enteredLogin);
-//        final String enteredPasswdHashed = hash(enteredPasswd);
-//        for (final Benutzer user : benutzer) {
-//            final String userLogin = user.getLogin();
-//            final String userPasswd = user.getPasswd();
-//            if (userLogin.equals(enteredLogin) && userPasswd.equals(enteredPasswdHashed)) {
-//                currentUser = user;
-//                getSession().setAttribute(Benutzer.class, currentUser);
-//                setContent(null);
-//                loadProtectedRessources();
-//                return;
-//            }
-//        }
-//        throw new Exception("Login failed..");
+        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+        final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
+        final List<Benutzer> benutzer = benutzerDAO.loadBenutzerForLogin(enteredLogin);
+        final String enteredPasswdHashed = hash(enteredPasswd);
+        for (final Benutzer user : benutzer) {
+            final String userLogin = user.getLogin();
+            final String userPasswd = user.getPasswd();
+            if (userLogin.equals(enteredLogin) && userPasswd.equals(enteredPasswdHashed)) {
+                currentUser = user;
+                System.out.println(currentUser);
+                getSession().setAttribute(Benutzer.class, currentUser);
+                setContent(null);
+                loadProtectedRessources();
+                return;
+            }
+        }
     }
 
     private String hash(final String enteredPasswd) {

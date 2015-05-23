@@ -46,17 +46,6 @@ public class PlannedProject implements Comparable<PlannedProject>{
 
     public PlannedProject(){}
 
-    public PlannedProject(Vertex plannedProjectVertex) {
-        id = plannedProjectVertex.getId().toString();
-        active = plannedProjectVertex.getProperty(ACTIVE);
-        fakturierbar = plannedProjectVertex.getProperty(FACT);
-        info = plannedProjectVertex.getProperty(INFO);
-        projektName = plannedProjectVertex.getProperty(NAME);
-        projektToken = plannedProjectVertex.getProperty(TOKEN);
-        externalDailyRate = plannedProjectVertex.getProperty(EXTERNALDAILYRATE);
-        hoursPerWorkingDay = plannedProjectVertex.getProperty(HOURSPERWORKINGDAY);
-    }
-
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
     }
