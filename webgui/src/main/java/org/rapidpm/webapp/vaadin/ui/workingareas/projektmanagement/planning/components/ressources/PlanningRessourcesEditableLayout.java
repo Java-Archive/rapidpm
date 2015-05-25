@@ -3,6 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -14,6 +15,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinu
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
+import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -103,7 +105,8 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
     private void buildField(final RessourceGroup ressourceGroup, final PlanningUnit planningUnit) {
         final TextField field = new TextField(ressourceGroup.getName());
         PlanningUnitElement element = new PlanningUnitElement();
-        for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+        for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+            planningUnitElement = DaoFactorySingleton.getInstance().getPlanningUnitElementDAO().findByID(planningUnitElement.getId(), true);
             final String elementRessourceGroupName = planningUnitElement.getRessourceGroup().getName();
             if (elementRessourceGroupName.equals(ressourceGroup.getName())) {
                 element = planningUnitElement;

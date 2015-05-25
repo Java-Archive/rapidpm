@@ -2,10 +2,12 @@ package org.rapidpm.persistence.prj.stammdaten.address;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.security.InvalidKeyException;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -55,4 +57,8 @@ public class AddressKlassifizierungDAO extends DAO<Long, AdressKlassifizierung> 
         return loadAdressKlassifizierung("beruflich");
     }
 
+    @Override
+    public AdressKlassifizierung loadFull(AdressKlassifizierung entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
 }

@@ -31,18 +31,18 @@ public class PlannedProject implements Comparable<PlannedProject>{
     private Set<PlannedProjectName> plannedProjectName;
     private String projektToken;
     private String projektName;
-    private Set<PlanningUnit> planningUnits;
     private boolean active;
     private boolean fakturierbar;
     private String info;
     private Double externalDailyRate;
     private Integer hoursPerWorkingDay;
-    private Benutzer creator;
-    private Benutzer responsiblePerson;
-    private List<PlannedTravel> plannedTravelList;
-    private List<PlannedOffer> plannedOfferList;
-    private Buch specification;
-    private Buch testCases;
+    private transient Set<PlanningUnit> planningUnits;
+    private transient Benutzer creator;
+    private transient Benutzer responsiblePerson;
+    private transient List<PlannedTravel> plannedTravelList;
+    private transient List<PlannedOffer> plannedOfferList;
+    private transient Buch specification;
+    private transient Buch testCases;
 
     public PlannedProject(){}
 

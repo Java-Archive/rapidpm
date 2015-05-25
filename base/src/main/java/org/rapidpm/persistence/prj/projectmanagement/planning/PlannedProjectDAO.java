@@ -1,14 +1,17 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning;
 
+import com.orientechnologies.orient.core.sql.OCommandSQL;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
+import org.rapidpm.persistence.EntityUtils;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import java.util.ArrayList;
+import java.security.InvalidKeyException;
+import java.util.HashSet;
 import java.util.List;
+
+import static org.rapidpm.persistence.Edges.CONSISTS_OF;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -33,5 +36,24 @@ public class PlannedProjectDAO extends DAO<Long, PlannedProject> {
         } else {
             return plannedProjects.get(0);
         }
+    }
+
+    public void addPlanningUnitToProject(final PlannedProject plannedProject, final PlanningUnit planningUnit){
+        final Vertex plannedProjectVertex = orientDB.getVertex(plannedProject.getId());
+        final Vertex planningUnitVertex = orientDB.getVertex(planningUnit.getId());
+        addEdgeFromVertexToVertex(plannedProjectVertex, CONSISTS_OF, planningUnitVertex);
+    }
+
+    @Override
+    public PlannedProject loadFull(final PlannedProject projekt) throws InvalidKeyException {
+        if(projekt.getId() == null){
+            throw new InvalidKeyException("Can't load details for Project without ID");
+        }
+        projekt.setPlanningUnits(new HashSet<>());
+        final Iterable<Vertex> planningUnits = orientDB.command(new OCommandSQL("select expand( out('"+CONSISTS_OF+"') ) from PlannedProject where @rid = " + projekt.getId())).execute();
+        for (final Vertex planningUnitVertex : planningUnits) {
+            projekt.getPlanningUnits().add(new EntityUtils<>(PlanningUnit.class).convertVertexToEntity(planningUnitVertex));
+        }
+        return projekt;
     }
 }

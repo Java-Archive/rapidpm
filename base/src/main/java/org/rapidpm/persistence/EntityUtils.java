@@ -2,12 +2,17 @@ package org.rapidpm.persistence;
 
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
+import com.tinkerpop.blueprints.impls.orient.OrientVertex;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Marco on 23.05.2015.
@@ -37,11 +42,8 @@ public class EntityUtils<E> {
                 for (final Field field : entityClass.getDeclaredFields()) {
                     field.setAccessible(true);
                     if(field.getName().equals(property)){
-                        try {
-                            field.set(entity, vertex.getProperty(property));
-                        } catch (IllegalAccessException e) {
-                            e.printStackTrace();
-                        }
+                        field.set(entity, vertex.getProperty(property));
+                        break;
                     }
                 }
             }
@@ -50,6 +52,41 @@ public class EntityUtils<E> {
             idField.set(entity, vertex.getId().toString());
             return entity;
         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException | NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public OrientVertex convertEntityToVertex(final E entity) {
+        try {
+            final OrientVertex vertex = new OrientVertex();
+            for (final Field field : entityClass.getDeclaredFields()) {
+                if(!Modifier.isTransient(field.getModifiers()) &&
+                        !Modifier.isStatic(field.getModifiers()) &&
+                        field.get(entity) != null){
+                    vertex.setProperty(field.getName(), field.get(entity));
+                }
+            }
+            return vertex;
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Map<String, Object> convertEntityToKeyValueMap(final E entity) {
+        try {
+            final Map<String, Object> keyValueMap = new HashMap<>();
+            for (final Field field : entityClass.getDeclaredFields()) {
+                field.setAccessible(true);
+                if(!Modifier.isTransient(field.getModifiers()) &&
+                        !Modifier.isStatic(field.getModifiers()) &&
+                        field.get(entity) != null){
+                    keyValueMap.put(field.getName(), field.get(entity));
+                }
+            }
+            return keyValueMap;
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
         return null;

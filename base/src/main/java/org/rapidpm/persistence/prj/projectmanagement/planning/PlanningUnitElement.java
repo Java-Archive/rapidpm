@@ -14,25 +14,18 @@ import javax.persistence.*;
  * Planungseintrag in der Planungsgruppe und den PlanRessourcen.
  *
  */
-@Entity
 public class PlanningUnitElement {
 
-    @Id
-    @TableGenerator(name = "PKGenPlanningUnitElement", table = "pk_gen", pkColumnName = "gen_key",
-            pkColumnValue = "PlanningUnitElement_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenPlanningUnitElement")
-    private Long id;
+    private String id;
+    private int plannedMinutes;
 
-    @Basic private int plannedMinutes;
+    private transient RessourceGroup ressourceGroup;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    private RessourceGroup ressourceGroup;
-
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

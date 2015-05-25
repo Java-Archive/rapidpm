@@ -2,11 +2,13 @@ package org.rapidpm.persistence.rohdaten;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.security.InvalidKeyException;
 import java.util.List;
 
 /**
@@ -110,4 +112,8 @@ public class OntologieDAO extends DAO<Long, Ontologie> {
         //        }
     }
 
+    @Override
+    public Ontologie loadFull(Ontologie entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
 }

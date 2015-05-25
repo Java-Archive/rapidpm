@@ -2,9 +2,11 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -23,6 +25,11 @@ public class BrancheAssocDAO extends DAO<Long, BrancheAssoc> {
 
     public BrancheAssocDAO(final OrientGraph orientDB) {
         super(orientDB, BrancheAssoc.class);
+    }
+
+    @Override
+    public BrancheAssoc loadFull(BrancheAssoc entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
 
     //    public BranchenAssoc loadBranchenAssocForWZ2008(final String branchenSchluessel, final String klassifizierung) {

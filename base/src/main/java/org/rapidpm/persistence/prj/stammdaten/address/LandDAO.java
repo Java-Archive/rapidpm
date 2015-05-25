@@ -11,10 +11,12 @@ package org.rapidpm.persistence.prj.stammdaten.address;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.security.InvalidKeyException;
 
 public class LandDAO extends DAO<Long, Land> {
     private static final Logger logger = Logger.getLogger(LandDAO.class);
@@ -46,6 +48,11 @@ public class LandDAO extends DAO<Long, Land> {
         //        }
         //        return result;
         return null;
+    }
+
+    @Override
+    public Land loadFull(Land entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
 
     //    public Land loadLandForIsoCode(final String isoCode) {

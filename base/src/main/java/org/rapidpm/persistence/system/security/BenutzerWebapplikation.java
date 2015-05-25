@@ -15,37 +15,23 @@ package org.rapidpm.persistence.system.security;
  */
 
 import org.apache.log4j.Logger;
-import org.hibernate.envers.Audited;
 
-import javax.persistence.*;
 
-//@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
-@Entity
-@Audited
 public class BenutzerWebapplikation {
     private static final Logger logger = Logger.getLogger(BenutzerWebapplikation.class);
 
-    @Id
-    @TableGenerator(name = "PKGenBenutzerWebapplikation", table = "pk_gen",
-            pkColumnName = "gen_key",
-            pkColumnValue = "BenutzerWebapplikation_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE,
-            generator = "PKGenBenutzerWebapplikation")
-    private Long id;
+    private String id;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(final Long id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
 
-    @Column(unique = true)
-    @Basic
     private String webappName;
-
 
     public String getWebappName() {
         return webappName;

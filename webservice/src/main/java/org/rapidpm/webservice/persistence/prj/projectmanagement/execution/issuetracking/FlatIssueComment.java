@@ -1,10 +1,12 @@
 package org.rapidpm.webservice.persistence.prj.projectmanagement.execution.issuetracking;
 
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.IssueComment;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webservice.mapping.FlatEntity;
 
+import java.security.InvalidKeyException;
 import java.util.Date;
 
 public class FlatIssueComment extends FlatEntity<IssueComment> {
@@ -48,7 +50,7 @@ public class FlatIssueComment extends FlatEntity<IssueComment> {
     public void toEntity(final IssueComment issueComment, final DaoFactory daoFactory) {
         issueComment.setText(text);
         final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
-        issueComment.setCreator(benutzerDAO.findByID(""));
+        issueComment.setCreator(benutzerDAO.findByID("", true));
         issueComment.setCreated(created);
     }
 }

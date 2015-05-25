@@ -11,10 +11,12 @@ package org.rapidpm.persistence.prj.stammdaten.address;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.security.InvalidKeyException;
 
 public class StateDAO extends DAO<Long, State> {
     private static final Logger logger = Logger.getLogger(StateDAO.class);
@@ -28,5 +30,10 @@ public class StateDAO extends DAO<Long, State> {
 //                .setParameter("shortname", shortname);
 //        return getSingleResultOrNull(typedQuery);
         return null;
+    }
+
+    @Override
+    public State loadFull(State entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
 }

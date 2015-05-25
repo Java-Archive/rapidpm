@@ -77,7 +77,7 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements In
                 try {
                     final PlanningUnit planningUnit = (PlanningUnit) screen.getPlanningUnitsTree().getValue();
                     final PlanningUnit managedPlanningUnit = daoFactory.getPlanningUnitDAO().findByID
-                            (planningUnit.getId());
+                            (planningUnit.getId(), true);
                     if(managedPlanningUnit == null){
                         throw new PlatzhalterException();
                     }
@@ -86,7 +86,7 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements In
                         throw new Exception();
                     }
                     final PlanningUnit parentPlanningUnit = managedPlanningUnit.getParent();
-                    projekt = daoFactory.getPlannedProjectDAO().findByID(projekt.getId());
+                    projekt = daoFactory.getPlannedProjectDAO().findByID(projekt.getId(), true);
 
                     if(parentPlanningUnit == null){
                         projekt.getPlanningUnits().remove(managedPlanningUnit);

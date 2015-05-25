@@ -2,11 +2,13 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.security.InvalidKeyException;
 import java.util.List;
 
 /**
@@ -163,5 +165,10 @@ public class TaetigkeitsfeldDAO extends DAO<Long, Taetigkeitsfeld> {
         //        }
         //        return result;
         //        return (Taetigkeitsfeld) orientDB.createNamedQuery("LoadTaetigkeitsfeld_NichtEingeordnet").getSingleResult();
+    }
+
+    @Override
+    public Taetigkeitsfeld loadFull(Taetigkeitsfeld entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
 }

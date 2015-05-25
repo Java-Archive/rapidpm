@@ -8,9 +8,11 @@ package org.rapidpm.persistence.prj.stammdaten.address; /**
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 
 public class StateKlassifizierungDAO extends DAO<Long, StateKlassifizierung> {
     private static final Logger logger = Logger.getLogger(StateKlassifizierungDAO.class);
@@ -18,5 +20,10 @@ public class StateKlassifizierungDAO extends DAO<Long, StateKlassifizierung> {
 
     public StateKlassifizierungDAO(final OrientGraph orientDB) {
         super(orientDB, StateKlassifizierung.class);
+    }
+
+    @Override
+    public StateKlassifizierung loadFull(StateKlassifizierung entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
 }

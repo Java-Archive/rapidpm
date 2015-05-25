@@ -60,8 +60,10 @@ public class TreeTableDataSourceFiller {
     }
 
     private void calculatePlanningUnitsAndTotalsAbsolut() {
+        currentProject = DaoFactorySingleton.getInstance().getPlannedProjectDAO().findByID(currentProject.getId(), true);
         final Set<PlanningUnit> planningUnits = currentProject.getPlanningUnits();
-        for (final PlanningUnit planningUnit : planningUnits) {
+        for (PlanningUnit planningUnit : planningUnits) {
+            planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
             final String aufgabe = messages.getString("aufgabe");
@@ -69,7 +71,8 @@ public class TreeTableDataSourceFiller {
             final Set<PlanningUnit> planningUnitList = planningUnit.getKindPlanningUnits();
             if (planningUnitList == null || planningUnitList.isEmpty()) {
                 for (final RessourceGroup spalte : ressourceGroups) {
-                    for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+                    for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+                        planningUnitElement = DaoFactorySingleton.getInstance().getPlanningUnitElementDAO().findByID(planningUnitElement.getId(), true);
                         if (planningUnitElement.getRessourceGroup().equals(spalte)) {
                             planningUnitElement.setPlannedMinutes(planningUnitElement.getPlannedMinutes());
                             final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem
@@ -87,15 +90,17 @@ public class TreeTableDataSourceFiller {
 
 
     private void calculatePlanningUnits(final Set<PlanningUnit> planningUnits, final String parent) {
-        for (final PlanningUnit planningUnit : planningUnits) {
+        for (PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
             final String aufgabe = messages.getString("aufgabe");
             planningUnitItem.getItemProperty(aufgabe).setValue(planningUnitName);
             dataSource.setParent(planningUnitName, parent);
+            planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
             final Set<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
             if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
-                for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+                for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+                    planningUnitElement = DaoFactorySingleton.getInstance().getPlanningUnitElementDAO().findByID(planningUnitElement.getId(), true);
                     final DaysHoursMinutesItem item = new DaysHoursMinutesItem(planningUnitElement, currentProject.getHoursPerWorkingDay());
                     planningUnitItem.getItemProperty(planningUnitElement.getRessourceGroup().getName()).setValue(item.toString());
                 }
@@ -112,7 +117,8 @@ public class TreeTableDataSourceFiller {
     }
 
     private void addiereZeileZurRessourceMap(final PlanningUnit planningUnit) {
-        for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+        for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+            planningUnitElement = DaoFactorySingleton.getInstance().getPlanningUnitElementDAO().findByID(planningUnitElement.getId(), true);
             final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
             final String aufgabe = messages.getString("aufgabe");
             int newMinutes;

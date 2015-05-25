@@ -7,13 +7,18 @@ package org.rapidpm.webapp.vaadin;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
-import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
-import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.BaseTheme;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
@@ -24,7 +29,11 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
-import org.rapidpm.webapp.vaadin.ui.windows.*;
+import org.rapidpm.webapp.vaadin.ui.windows.DisclaimerWindow;
+import org.rapidpm.webapp.vaadin.ui.windows.ImpressumWindow;
+import org.rapidpm.webapp.vaadin.ui.windows.KontaktWindow;
+import org.rapidpm.webapp.vaadin.ui.windows.LoginMask;
+import org.rapidpm.webapp.vaadin.ui.windows.SupportWindow;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +42,6 @@ import java.util.ResourceBundle;
 
 import static org.rapidpm.Constants.IMAGE_LOGO;
 import static org.rapidpm.Constants.MESSAGESBUNDLE;
-
 
 public abstract class BaseUI extends UI {
     private static final Logger logger = Logger.getLogger(BaseUI.class);
@@ -74,11 +82,8 @@ public abstract class BaseUI extends UI {
     }
 
     private void loadFirstProject() {
-        final OObjectDatabaseTx db = new OObjectDatabaseTx ("plocal:orient/RapidPM");
-        if(!db.exists()){
-            db.create();
-            db.getEntityManager().registerEntityClasses("org.rapidpm.persistence");
-            StartDataCreator.run(db);
+        if(DaoFactorySingleton.getInstance().getOrientDB().countVertices() <= 0){
+            StartDataCreator.run();
         }
         final VaadinSession session = this.getSession();
         final PlannedProjectDAO plannedProjectDAO = DaoFactorySingleton.getInstance().getPlannedProjectDAO();
@@ -91,7 +96,6 @@ public abstract class BaseUI extends UI {
             session.setAttribute(PlannedProject.class, null);
         } else {
             session.setAttribute(PlannedProject.class, plannedProjects.get(0));
-            Notification.show("Current Project: " + plannedProjects.get(0).toString());
         }
         currentProject = session.getAttribute(PlannedProject.class);
     }
@@ -184,8 +188,8 @@ public abstract class BaseUI extends UI {
     }
 
     private void createIconsLayout() {
-        final Image iconLeft = new Image("", new ThemeResource(IMAGE_LOGO));
-        final Image iconRight = new Image("", new ThemeResource(IMAGE_LOGO));
+        final Image iconLeft = new Image(null, new ThemeResource(IMAGE_LOGO));
+        final Image iconRight = new Image(null, new ThemeResource(IMAGE_LOGO));
         iconsLayout.setWidth("100%");
         iconsLayout.addComponent(iconLeft);
         iconsLayout.setComponentAlignment(iconLeft, Alignment.TOP_LEFT);
@@ -244,7 +248,7 @@ public abstract class BaseUI extends UI {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 getSession().close();
-                getPage().setLocation("/rapidpm");
+                getPage().setLocation("/");
             }
         });
         buttonKontakt.setStyleName(BaseTheme.BUTTON_LINK);

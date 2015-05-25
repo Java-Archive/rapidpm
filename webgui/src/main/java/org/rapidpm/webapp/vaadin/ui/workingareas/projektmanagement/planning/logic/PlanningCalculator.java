@@ -1,5 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic;
 
+import com.vaadin.ui.Notification;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingleton;
@@ -7,7 +8,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.*;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
 
-import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 import java.util.*;
 
 /**
@@ -36,7 +37,7 @@ public class PlanningCalculator {
         daoFactory = DaoFactorySingleton.getInstance();
         final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
         final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
-        projekt = plannedProjectDAO.findByID(projectFromSession.getId());
+        projekt = plannedProjectDAO.findByID(projectFromSession.getId(), true);
 //        daoFactory.getEntityManager().refresh(projekt);
     }
 

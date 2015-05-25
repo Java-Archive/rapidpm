@@ -2,9 +2,11 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 import java.util.Collections;
 import java.util.List;
 
@@ -130,5 +132,10 @@ public class IssueTimeUnitDAO extends DAO<Long, IssueTimeUnit> {
         //        //create RAWL SQL
         //        return createQuery(sql).findList();
         return Collections.emptyList();
+    }
+
+    @Override
+    public IssueTimeUnit loadFull(IssueTimeUnit entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
 }

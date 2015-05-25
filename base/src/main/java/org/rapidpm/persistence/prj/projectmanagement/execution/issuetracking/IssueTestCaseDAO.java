@@ -2,9 +2,11 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,5 +20,10 @@ public class IssueTestCaseDAO extends DAO<Long, IssueTestCase> {
 
     public IssueTestCaseDAO(final OrientGraph orientDB) {
         super(orientDB, IssueTestCase.class);
+    }
+
+    @Override
+    public IssueTestCase loadFull(IssueTestCase entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
 }

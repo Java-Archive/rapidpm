@@ -211,10 +211,10 @@ public class FlatIssueBase extends FlatEntity<IssueBase> {
         }
         final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
         if (reporterId != null) {
-            issueBase.setReporter(benutzerDAO.findByID(""));
+            issueBase.setReporter(benutzerDAO.findByID("", true));
         }
         if (assigneeId != null) {
-            issueBase.setAssignee(benutzerDAO.findByID(""));
+            issueBase.setAssignee(benutzerDAO.findByID("", true));
         }
         if (versionId != null) {
             final IssueVersionDAO issueVersionDAO = daoFactory.getIssueVersionDAO();
@@ -234,7 +234,7 @@ public class FlatIssueBase extends FlatEntity<IssueBase> {
             new EntityMapper<IssueTimeUnit, FlatIssueTimeUnit>(IssueTimeUnit.class, FlatIssueTimeUnit.class) {
                 @Override
                 protected IssueTimeUnit findEntityById(final Long id) {
-                    return daoFactory.getIssueTimeUnitDAO().findByID("");
+                    return daoFactory.getIssueTimeUnitDAO().findByID("", true);
                 }
             };
 
@@ -243,7 +243,7 @@ public class FlatIssueBase extends FlatEntity<IssueBase> {
             new EntityMapper<IssueComment, FlatIssueComment>(IssueComment.class, FlatIssueComment.class) {
                 @Override
                 protected IssueComment findEntityById(final Long id) {
-                    return daoFactory.getIssueCommentDAO().findByID("");
+                    return daoFactory.getIssueCommentDAO().findByID("", true);
                 }
             };
 }

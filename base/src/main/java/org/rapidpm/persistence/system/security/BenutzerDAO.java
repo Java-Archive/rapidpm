@@ -1,16 +1,11 @@
 package org.rapidpm.persistence.system.security;
 
-import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
-import org.rapidpm.persistence.EntityUtils;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.security.InvalidKeyException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -512,5 +507,10 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
 //                .setMaxResults(1);
 //        return getSingleResultOrNull(typedQuery);
         return null;
+    }
+
+    @Override
+    public Benutzer loadFull(Benutzer entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
 }

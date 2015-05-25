@@ -13,23 +13,19 @@ import javax.persistence.*;
  * Date: 20.12.11
  * Time: 14:21
  */
-@Entity
+
 public class Geschlecht {
 
-    @Id
-    @TableGenerator(name = "PKGenGeschlecht", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "Geschlecht_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenGeschlecht")
-    private Long id;
+    private String id;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(final Long id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
-    @Basic
     private String geschlecht;
 
     public String getGeschlecht() {

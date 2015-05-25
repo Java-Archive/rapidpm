@@ -14,21 +14,13 @@ package org.rapidpm.persistence.system.security;
  *
  */
 
-import com.tinkerpop.blueprints.Vertex;
 import org.apache.log4j.Logger;
-import org.hibernate.envers.Audited;
-import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.system.security.berechtigungen.Rolle;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.Set;
 
-public class Benutzer {
+public class Benutzer{
 
     public static final String CLASS = "Benutzer";
 

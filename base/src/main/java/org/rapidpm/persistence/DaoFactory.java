@@ -8,6 +8,7 @@ package org.rapidpm.persistence;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
+import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
 import org.neo4j.graphdb.GraphDatabaseService;
@@ -61,6 +62,7 @@ public class DaoFactory {
 
     public DaoFactory(final String databaseName) {
        orientDB = new OrientGraph("plocal:orient/"+databaseName);
+       //orientDB = new OrientGraph("remote:localhost/"+databaseName, "root", "admin");
     }
 
     public OrientGraph getOrientDB() {

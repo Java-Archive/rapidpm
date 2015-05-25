@@ -40,7 +40,7 @@ public class IssueTrackingWS {
             FlatIssueComment>(IssueComment.class, FlatIssueComment.class) {
         @Override
         protected IssueComment findEntityById(final Long id) {
-            return issueCommentDAO.findByID("");
+            return issueCommentDAO.findByID("", true);
         }
     };
 
@@ -202,7 +202,7 @@ public class IssueTrackingWS {
         }
         final IssueComment comment;
         try {
-            comment = issueCommentDAO.findByID("");
+            comment = issueCommentDAO.findByID("", true);
         } catch (NotFoundException e) {
             return false;
         }

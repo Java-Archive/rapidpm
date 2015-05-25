@@ -101,7 +101,7 @@ public class AddWindow extends RapidWindow {
             public void buttonClick(Button.ClickEvent event) {
                     try {
                         final PlannedProject projekt = daoFactory.getPlannedProjectDAO().findByID(ui
-                                .getCurrentProject().getId());
+                                .getCurrentProject().getId(), true);
                         fieldGroup.commit();
                         //PlanningUnitBeanItem mit der neuen (transienten) PlanningUnit
                         final BeanItem<PlanningUnit> beanItem = (BeanItem)fieldGroup.getItemDataSource();
@@ -124,7 +124,7 @@ public class AddWindow extends RapidWindow {
                         newPlanningUnit.setKindPlanningUnits(new HashSet<PlanningUnit>());
                         if(newPlanningUnit.getParent() != null ){
                             final PlanningUnit parentPlanningUnit = daoFactory.getPlanningUnitDAO().findByID
-                                    (newPlanningUnit.getParent().getId());
+                                    (newPlanningUnit.getParent().getId(), true);
                             parentPlanningUnit.getKindPlanningUnits().add(newPlanningUnit);
 //                            daoFactory.saveOrUpdateTX(parentPlanningUnit);
                         }

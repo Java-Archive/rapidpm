@@ -2,10 +2,10 @@ package org.rapidpm.persistence.system.security;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
+import java.security.InvalidKeyException;
 
 /**
  * NeoScio
@@ -81,5 +81,10 @@ public class MandantengruppeDAO extends DAO<Long, Mandantengruppe> {
         ////            logger.warn("Konnten mandantengruppe nicht laden " + e);
         ////        }
         //        return mandantengruppe;
+    }
+
+    @Override
+    public Mandantengruppe loadFull(Mandantengruppe entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
 }

@@ -2,9 +2,11 @@ package org.rapidpm.persistence.prj.bewegungsdaten.anfragen;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -26,4 +28,8 @@ public class KontaktAnfrageDAO extends DAO<Long, KontaktAnfrage> {
     }
 
 
+    @Override
+    public KontaktAnfrage loadFull(KontaktAnfrage entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
 }

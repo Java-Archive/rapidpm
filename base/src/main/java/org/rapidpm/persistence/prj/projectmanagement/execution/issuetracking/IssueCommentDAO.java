@@ -9,9 +9,10 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 
 public class IssueCommentDAO extends DAO<Long, IssueComment> {
     private static final Logger logger = Logger.getLogger(IssueCommentDAO.class);
@@ -21,4 +22,8 @@ public class IssueCommentDAO extends DAO<Long, IssueComment> {
         super(orientDB, IssueComment.class);
     }
 
+    @Override
+    public IssueComment loadFull(IssueComment entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
 }

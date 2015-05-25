@@ -7,10 +7,12 @@ package org.rapidpm.persistence.prj.stammdaten.person;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.rapidpm.Constants;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.security.InvalidKeyException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -43,4 +45,8 @@ public class GeschlechtDAO extends DAO<Long, Geschlecht> {
         return load("Nothing");
     }
 
+    @Override
+    public Geschlecht loadFull(Geschlecht entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
 }

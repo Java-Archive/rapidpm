@@ -8,9 +8,11 @@ package org.rapidpm.persistence.prj.stammdaten.person; /**
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 
 public class PersonenNameDAO extends DAO<Long, PersonenName> {
     private static final Logger logger = Logger.getLogger(PersonenNameDAO.class);
@@ -18,5 +20,10 @@ public class PersonenNameDAO extends DAO<Long, PersonenName> {
 
     public PersonenNameDAO(final OrientGraph orientDB) {
         super(orientDB, PersonenName.class);
+    }
+
+    @Override
+    public PersonenName loadFull(PersonenName entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
 }

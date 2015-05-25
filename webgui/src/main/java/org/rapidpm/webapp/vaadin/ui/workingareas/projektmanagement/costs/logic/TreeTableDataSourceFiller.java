@@ -57,9 +57,10 @@ public class TreeTableDataSourceFiller {
         final PlannedProject projectFromSession = screen.getUi().getSession().getAttribute(PlannedProject.class);
         final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
-        final PlannedProject projectFromDB = plannedProjectDAO.findByID(projectFromSession.getId());
+        final PlannedProject projectFromDB = plannedProjectDAO.findByID(projectFromSession.getId(), true);
         final Set<PlanningUnit> planningUnits = projectFromDB.getPlanningUnits();
-        for (final PlanningUnit planningUnit : planningUnits) {
+        for (PlanningUnit planningUnit : planningUnits) {
+            planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
             planningUnitItem.getItemProperty(messages.getString("aufgabe")).setValue(planningUnitName);
@@ -67,7 +68,8 @@ public class TreeTableDataSourceFiller {
             if (planningUnitList == null || planningUnitList.isEmpty()) {
                 for (final RessourceGroup spalte : ressourceGroups) {
                     final List<PlanningUnitElement> planningUnitElementList = planningUnit.getPlanningUnitElementList();
-                    for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
+                    for (PlanningUnitElement planningUnitElement : planningUnitElementList) {
+                        planningUnitElement = DaoFactorySingleton.getInstance().getPlanningUnitElementDAO().findByID(planningUnitElement.getId(), true);
                         final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
                         if (ressourceGroup.equals(spalte)) {
                             planningUnitItem.getItemProperty(spalte.getName()).setValue(getCosts(planningUnitElement));
@@ -82,13 +84,15 @@ public class TreeTableDataSourceFiller {
 
 
     private void computePlanningUnits(final Set<PlanningUnit> planningUnits, final String parent) {
-        for (final PlanningUnit planningUnit : planningUnits) {
+        for (PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
             planningUnitItem.getItemProperty(messages.getString("aufgabe")).setValue(planningUnitName);
             dataSource.setParent(planningUnitName, parent);
+            planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
             if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
-                for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+                for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+                    planningUnitElement = DaoFactorySingleton.getInstance().getPlanningUnitElementDAO().findByID(planningUnitElement.getId(), true);
                     final Double costs = getCosts(planningUnitElement);
                     final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
                     planningUnitItem.getItemProperty(ressourceGroup.getName()).setValue(costs);
@@ -108,7 +112,8 @@ public class TreeTableDataSourceFiller {
 
     private void addiereZeileZurRessourceMap(final PlanningUnit planningUnit) {
         final List<PlanningUnitElement> planningUnitElementList = planningUnit.getPlanningUnitElementList();
-        for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
+        for (PlanningUnitElement planningUnitElement : planningUnitElementList) {
+            planningUnitElement = DaoFactorySingleton.getInstance().getPlanningUnitElementDAO().findByID(planningUnitElement.getId(), true);
             final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
             if (!ressourceGroup.getName().equals(messages.getString("aufgabe"))) {
                 Double costs = getCosts(planningUnitElement);

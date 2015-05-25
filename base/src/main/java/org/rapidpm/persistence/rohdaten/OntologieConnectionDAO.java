@@ -1,9 +1,11 @@
 package org.rapidpm.persistence.rohdaten;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -23,4 +25,8 @@ public class OntologieConnectionDAO extends DAO<Long, OntologieConnection> {
         return null;
     }
 
+    @Override
+    public OntologieConnection loadFull(OntologieConnection entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
 }

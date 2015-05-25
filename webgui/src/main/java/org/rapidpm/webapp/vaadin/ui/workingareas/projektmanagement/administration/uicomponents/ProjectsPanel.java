@@ -63,7 +63,7 @@ public class ProjectsPanel extends RapidPanel implements Internationalizationabl
                 try {
                     final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
                     final PlannedProject projekt = (PlannedProject)projectSelect.getValue();
-                    final PlannedProject projektAusDB = daoFactory.getPlannedProjectDAO().findByID(projekt.getId());
+                    final PlannedProject projektAusDB = daoFactory.getPlannedProjectDAO().findByID(projekt.getId(), true);
                     if(projectFromSession.equals(projektAusDB) && daoFactory.getPlannedProjectDAO().findAll()
                             .size() > 1){
                         throw new TryToDeleteCurrentProjectException();

@@ -24,7 +24,6 @@ import java.util.List;
  *  - GF
  *
  */
-@Entity
 public class RessourceGroup {
 
     public static final String NAME = "name";
@@ -41,21 +40,17 @@ public class RessourceGroup {
     public static final String SUM_PER_MONTH = "transientSumPerMonth";
     public static final String SUM_PER_DAY = "transientSumPerDay";
 
-    @Id
-    @TableGenerator(name = "PKGenRessourceGroup", table = "pk_gen", pkColumnName = "gen_key",
-            pkColumnValue = "RessourceGroup_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenRessourceGroup")
-    private Long id;
+    private String id;
 
-    @Basic private String name;
+    private String name;
 
-    @Basic private Integer hoursPerWeek;
-    @Basic private Integer weeksPerYear;
-    @Basic private Integer planAnzahl;
+    private Integer hoursPerWeek;
+    private Integer weeksPerYear;
+    private Integer planAnzahl;
 
-    @Basic private Double facturizable;
-    @Basic private Double externalEurosPerHour;
-    @Basic private Double bruttoGehalt;
+    private Double facturizable;
+    private Double externalEurosPerHour;
+    private Double bruttoGehalt;
 
     /*evtl für spätere Verwendung*/
     //@Basic private String description;
@@ -71,11 +66,11 @@ public class RessourceGroup {
     @Transient private Double transientSumPerMonth;
     @Transient private Double transientSumPerDay;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

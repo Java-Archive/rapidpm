@@ -2,9 +2,11 @@ package org.rapidpm.persistence.prj.textelement;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,5 +22,10 @@ public class AbsatzDAO extends DAO<Long, Absatz> {
 
     public AbsatzDAO(final OrientGraph orientDB) {
         super(orientDB, Absatz.class);
+    }
+
+    @Override
+    public Absatz loadFull(Absatz entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
 }

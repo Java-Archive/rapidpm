@@ -37,7 +37,7 @@ public class CostsCalculator {
 //        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
-        projekt = daoFactory.getPlannedProjectDAO().findByID(projectFromSession.getId());
+        projekt = daoFactory.getPlannedProjectDAO().findByID(projectFromSession.getId(), true);
 //        daoFactory.getEntityManager().refresh(projekt);
         messages = bundle;
     }
@@ -56,8 +56,10 @@ public class CostsCalculator {
 
     private void calculatePlanningUnitsAndTotalsAbsolut() {
         //final Integer currentProjectIndex = bean.getCurrentProjectIndex();
+        projekt = DaoFactorySingleton.getInstance().getPlannedProjectDAO().findByID(projekt.getId(), true);
         final Set<PlanningUnit> planningUnits = projekt.getPlanningUnits();
-        for (final PlanningUnit planningUnit : planningUnits) {
+        for (PlanningUnit planningUnit : planningUnits) {
+            planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
             calculatePlanningUnits(planningUnit, planningUnit.getKindPlanningUnits());
         }
     }
@@ -67,7 +69,8 @@ public class CostsCalculator {
         if(planningUnits == null || planningUnits.isEmpty()){
             addiereZeileZurRessourceMap(parentPlanningUnit);
         } else {
-            for (final PlanningUnit planningUnit : planningUnits) {
+            for (PlanningUnit planningUnit : planningUnits) {
+                planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
                 if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
                     addiereZeileZurRessourceMap(planningUnit);
                 } else {
@@ -78,7 +81,8 @@ public class CostsCalculator {
     }
 
     private void addiereZeileZurRessourceMap(final PlanningUnit planningUnit) {
-        for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+        for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+            planningUnitElement = DaoFactorySingleton.getInstance().getPlanningUnitElementDAO().findByID(planningUnitElement.getId(), true);
             final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
             if (!ressourceGroup.getName().equals(messages.getString("aufgabe"))) {
                 final RessourceGroup ressourceGroup1 = ressourceGroup;

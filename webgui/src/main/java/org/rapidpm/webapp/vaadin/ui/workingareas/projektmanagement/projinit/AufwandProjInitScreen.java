@@ -150,7 +150,7 @@ public class AufwandProjInitScreen extends Screen {
         final PlannedProject projectFromSession = ui.getCurrentProject();
         final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
-        final PlannedProject projekt = plannedProjectDAO.findByID(projectFromSession.getId());
+        final PlannedProject projekt = plannedProjectDAO.findByID(projectFromSession.getId(), true);
         projektField.setValue(projekt.getProjektName());
     }
 

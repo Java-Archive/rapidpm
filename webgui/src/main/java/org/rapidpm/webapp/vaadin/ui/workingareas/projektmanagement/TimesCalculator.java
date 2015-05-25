@@ -66,8 +66,9 @@ public class TimesCalculator {
 
     private void calculatePlanningUnitsAndTotalsAbsolut() {
         final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-        for (final PlanningUnit planningUnit : currentProject.getPlanningUnits()) {
-//            daoFactory.getEntityManager().refresh(planningUnit);
+        currentProject = daoFactory.getPlannedProjectDAO().findByID(currentProject.getId(), true);
+        for (PlanningUnit planningUnit : currentProject.getPlanningUnits()) {
+            planningUnit = daoFactory.getPlanningUnitDAO().findByID(planningUnit.getId(), true);
             calculatePlanningUnits(planningUnit, planningUnit.getKindPlanningUnits());
         }
     }
@@ -77,7 +78,8 @@ public class TimesCalculator {
         if(planningUnits == null || planningUnits.isEmpty()){
             addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, parentPlanningUnit);
         } else {
-            for (final PlanningUnit planningUnit : planningUnits) {
+            for (PlanningUnit planningUnit : planningUnits) {
+                planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
                 final Set<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
                 if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
                     addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, planningUnit);
@@ -90,14 +92,15 @@ public class TimesCalculator {
 
     private void addiereZeileZurRessourceMap(final Map<RessourceGroup, Integer> ressourceGroupDaysHoursMinutesItemMap,
                                              final PlanningUnit planningUnit) {
-        for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+        for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+            planningUnitElement = DaoFactorySingleton.getInstance().getPlanningUnitElementDAO().findByID(planningUnitElement.getId(), true);
             final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
             final String aufgabe = messages.getString("aufgabe");
             if (!ressourceGroup.getName().equals(aufgabe)) {
                 if (ressourceGroupDaysHoursMinutesItemMap.containsKey(ressourceGroup)) {
-                            final Integer oldMinutes = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup);
-                            ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup,
-                                    planningUnitElement.getPlannedMinutes() + oldMinutes);
+                    final Integer oldMinutes = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup);
+                    ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup,
+                            planningUnitElement.getPlannedMinutes() + oldMinutes);
                 } else {
                     ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup, planningUnitElement.getPlannedMinutes());
                 }

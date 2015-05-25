@@ -2,9 +2,11 @@ package org.rapidpm.persistence.prj.bewegungsdaten.msgcenter;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 import java.util.List;
 
 /**
@@ -108,6 +110,11 @@ return null;
         //        });
         //        return objSet;
 return null;
+    }
+
+    @Override
+    public Message loadFull(Message entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
     //TODO wo ist er Unterschied ??
 

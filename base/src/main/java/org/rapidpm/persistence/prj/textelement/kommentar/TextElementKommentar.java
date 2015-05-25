@@ -14,22 +14,14 @@ import org.apache.log4j.Logger;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity
 public class TextElementKommentar {
     private static final Logger logger = Logger.getLogger(TextElementKommentar.class);
 
-    @TableGenerator(name = "PKGenTextElementKommentar", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "TextElementKommentar_id",
-            valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE,
-            generator = "PKGenTextElementKommentar")
-    @Id
     private Long id;
-    @Basic
     private String kommentar;
-    @Basic
     private Date datum;
-    @OneToOne
-    private Benutzer kommentator;
+
+    private transient Benutzer kommentator;
 
     public Benutzer getKommentator() {
         return kommentator;

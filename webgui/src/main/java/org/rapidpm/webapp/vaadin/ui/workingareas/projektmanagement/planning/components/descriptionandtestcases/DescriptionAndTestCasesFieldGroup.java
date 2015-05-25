@@ -26,7 +26,7 @@ public class DescriptionAndTestCasesFieldGroup extends FieldGroup {
         this.messages = messages;
         this.selectedPlanningUnit = selectedPlanningUnit;
         final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-        final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().findByID(selectedPlanningUnit.getId());
+        final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().findByID(selectedPlanningUnit.getId(), true);
         if(planningUnit == null){
             beanItemPlanningUnit = new BeanItem<>(selectedPlanningUnit);
         } else {

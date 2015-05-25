@@ -49,7 +49,7 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                 if(renameButton != null){
                     renameButton.setEnabled(true);
                 }
-                final PlanningUnit selectedParentPlanningUnit = (PlanningUnit) selectedId;
+                PlanningUnit selectedParentPlanningUnit = (PlanningUnit) selectedId;
                 final RapidPanel detailPanel = screen.getDetailsPanel();
                 final RapidPanel mainPanel = screen.getMainPanel();
                 final RapidPanel ressourcesPanel = screen.getRessourcesPanel();
@@ -68,7 +68,8 @@ public class TreeValueChangeListener implements Property.ValueChangeListener {
                         (selectedParentPlanningUnit, screen, detailPanel);
                 final VerticalLayout mainPanelLayout = new PlanningInformationEditableLayout(selectedParentPlanningUnit,
                         screen, mainPanel);
-                if(daoFactory.getPlanningUnitDAO().findByID(selectedParentPlanningUnit.getId()) != null){
+                selectedParentPlanningUnit = daoFactory.getPlanningUnitDAO().findByID(selectedParentPlanningUnit.getId(), true);
+                if(selectedParentPlanningUnit != null){
                     final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesEditableLayout(selectedParentPlanningUnit,
                             screen, ressourcesPanel, hasChildren);
                     ressourcesPanel.addComponent(ressourcesPanelLayout);

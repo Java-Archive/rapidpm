@@ -2,10 +2,12 @@ package org.rapidpm.persistence.prj.stammdaten.kommunikation;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.security.InvalidKeyException;
 import java.util.List;
 
 public class KommunikationsServiceDAO extends DAO<Long, KommunikationsService> {
@@ -56,4 +58,8 @@ public class KommunikationsServiceDAO extends DAO<Long, KommunikationsService> {
         return null;
     }
 
+    @Override
+    public KommunikationsService loadFull(KommunikationsService entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
 }

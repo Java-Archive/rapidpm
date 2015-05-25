@@ -8,9 +8,11 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit; /**
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 
 public class TaetigkeitsfeldAssocDAO extends DAO<Long, TaetigkeitsfeldAssoc> {
     private static final Logger logger = Logger.getLogger(TaetigkeitsfeldAssocDAO.class);
@@ -18,5 +20,10 @@ public class TaetigkeitsfeldAssocDAO extends DAO<Long, TaetigkeitsfeldAssoc> {
 
     public TaetigkeitsfeldAssocDAO(final OrientGraph orientDB) {
         super(orientDB, TaetigkeitsfeldAssoc.class);
+    }
+
+    @Override
+    public TaetigkeitsfeldAssoc loadFull(TaetigkeitsfeldAssoc entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
 }

@@ -60,6 +60,6 @@ public class FlatIssueTimeUnit extends FlatEntity<IssueTimeUnit> {
         issueTimeUnit.setMinutes(minutes);
         issueTimeUnit.setComment(comment);
         final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
-        issueTimeUnit.setWorker(benutzerDAO.findByID(""));
+        issueTimeUnit.setWorker(benutzerDAO.findByID("", true));
     }
 }

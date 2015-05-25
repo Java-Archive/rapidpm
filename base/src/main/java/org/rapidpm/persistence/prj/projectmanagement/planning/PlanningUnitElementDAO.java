@@ -1,10 +1,24 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning;
 
+import com.orientechnologies.orient.core.sql.OCommandSQL;
+import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
+import org.rapidpm.persistence.Edges;
+import org.rapidpm.persistence.EntityUtils;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.persistence.prj.textelement.TextElement;
 
 import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
+import java.util.ArrayList;
+import java.util.HashSet;
+
+import static org.rapidpm.persistence.Edges.*;
+import static org.rapidpm.persistence.Edges.CONSISTS_OF;
+import static org.rapidpm.persistence.Edges.IS_FATHER_OF;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -20,5 +34,29 @@ public class PlanningUnitElementDAO extends DAO<Long, PlanningUnitElement> {
         super(orientDB, PlanningUnitElement.class);
     }
 
+    @Override
+    public PlanningUnitElement createEntity(PlanningUnitElement entity) {
+        final RessourceGroup ressourceGroup = entity.getRessourceGroup();
+        entity = super.createEntity(entity);
+        addRessourceGroupToPlanningUnitElement(entity, ressourceGroup);
+        return entity;
+    }
 
+    private void addRessourceGroupToPlanningUnitElement(final PlanningUnitElement planningUnitElement, final RessourceGroup ressourceGroup){
+        final Vertex planningUnitElementVertex = orientDB.getVertex(planningUnitElement.getId());
+        final Vertex ressourceGroupVertex = orientDB.getVertex(ressourceGroup.getId());
+        addEdgeFromVertexToVertex(planningUnitElementVertex, VALID_FOR, ressourceGroupVertex);
+    }
+
+    @Override
+    public PlanningUnitElement loadFull(PlanningUnitElement planningUnitElement) throws InvalidKeyException, NotYetImplementedException {
+        if(planningUnitElement.getId() == null){
+            throw new InvalidKeyException("Can't load details for PlanningUnit without ID");
+        }
+        final Iterable<Vertex> ressourceGroup = orientDB.command(new OCommandSQL("select expand( out('"+VALID_FOR+"') ) from PlanningUnitElement where @rid = " + planningUnitElement.getId())).execute();
+        for (final Vertex ressourceGroupVertex : ressourceGroup) {
+            planningUnitElement.setRessourceGroup(new EntityUtils<>(RessourceGroup.class).convertVertexToEntity(ressourceGroupVertex));
+        }
+        return planningUnitElement;
+    }
 }

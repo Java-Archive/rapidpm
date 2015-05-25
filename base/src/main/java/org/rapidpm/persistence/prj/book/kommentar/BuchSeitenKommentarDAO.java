@@ -10,9 +10,11 @@ package org.rapidpm.persistence.prj.book.kommentar;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 
 public class BuchSeitenKommentarDAO extends DAO<Long, BuchSeitenKommentar> {
     private static final Logger logger = Logger.getLogger(BuchSeitenKommentarDAO.class);
@@ -20,5 +22,10 @@ public class BuchSeitenKommentarDAO extends DAO<Long, BuchSeitenKommentar> {
 
     public BuchSeitenKommentarDAO(final OrientGraph orientDB) {
         super(orientDB, BuchSeitenKommentar.class);
+    }
+
+    @Override
+    public BuchSeitenKommentar loadFull(BuchSeitenKommentar entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
 }

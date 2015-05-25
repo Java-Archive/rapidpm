@@ -19,7 +19,6 @@ import java.util.Set;
  *
  */
 
-@Entity
 public class PlanningUnit {
 
     public static final String NAME = "planningUnitName";
@@ -31,68 +30,21 @@ public class PlanningUnit {
     public static final String ORDERNUMBER = "orderNumber";
     public static final String PARENT = "parent";
 
-
-
-    @Id
-    @TableGenerator(name = "PKGenPlanningUnit", table = "pk_gen", pkColumnName = "gen_key",
-            pkColumnValue = "PlanningUnit_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenPlanningUnit")
     private String id;
-
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    private List<PlannedTravel> plannedTravelList;
-
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    private PlanningStatus planningStatus;
-
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    private Benutzer responsiblePerson;
-
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    private List<PlannedMeeting> plannedMeetingList;
-
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, orphanRemoval = true)
-    private Set<PlanningUnit> kindPlanningUnits;
-
-    @Basic
     private int orderNumber;
-
-    @Basic
     private String planningUnitName;
-
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    private PlanningUnit parent;
-
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, orphanRemoval = true)
-    private List<PlanningUnitElement> planningUnitElementList;
-
-
-    @Basic
     private int komplexitaet;
-
-    @Basic
     private int estimatedStoryPoints;
 
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinTable(name="planningunit_testcase")
-    private List<TextElement> testcases;
-
-    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinTable(name="planningunit_description")
-    private List<TextElement> descriptions;
-
-
-    //@OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    //private PlanningRisk planningRisk;
-
-
-//    public PlanningRisk getPlanningRisk() {
-//        return planningRisk;
-//    }
-//
-//    public void setPlanningRisk(PlanningRisk planningRisk) {
-//        this.planningRisk = planningRisk;
-//    }
+    private transient List<PlannedTravel> plannedTravelList;
+    private transient PlanningStatus planningStatus;
+    private transient Benutzer responsiblePerson;
+    private transient List<PlannedMeeting> plannedMeetingList;
+    private transient Set<PlanningUnit> kindPlanningUnits;
+    private transient PlanningUnit parent;
+    private transient List<PlanningUnitElement> planningUnitElementList;
+    private transient List<TextElement> testcases;
+    private transient List<TextElement> descriptions;
 
     public int getEstimatedStoryPoints() {
         return estimatedStoryPoints;

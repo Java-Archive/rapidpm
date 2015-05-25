@@ -375,7 +375,7 @@ VALUES (27, 400, 3);
 
 INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
 VALUES (28, 500, 4);
-
+4
 INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
 VALUES (29, 100, 5);
 

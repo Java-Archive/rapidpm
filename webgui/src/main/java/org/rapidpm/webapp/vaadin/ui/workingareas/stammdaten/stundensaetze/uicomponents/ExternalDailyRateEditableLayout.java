@@ -40,7 +40,7 @@ public class ExternalDailyRateEditableLayout extends EditableLayout {
         final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         final PlannedProject plannedProjectFromSessionAttribute = screen.getUi()
                 .getSession().getAttribute(PlannedProject.class);
-        currentProject = daoFactory.getPlannedProjectDAO().findByID(plannedProjectFromSessionAttribute.getId());
+        currentProject = daoFactory.getPlannedProjectDAO().findByID(plannedProjectFromSessionAttribute.getId(), true);
         fieldGroup = new ProjektFieldGroup(currentProject, messages);
         saveButton.addClickListener(new Button.ClickListener() {
             @Override

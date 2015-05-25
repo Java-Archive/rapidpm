@@ -2,10 +2,12 @@ package org.rapidpm.persistence.prj.projectmanagement;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
 import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 import java.util.List;
 
 /**
@@ -47,6 +49,11 @@ public class ProjectDAO extends DAO<Long, PlannedProject> {
         //                " where p.mandantengruppe_id = (" + mandantengruppeID(mandantengruppe) + ") \n";
         //       return createQuery(sql).findList();
         return null;
+    }
+
+    @Override
+    public PlannedProject loadFull(PlannedProject entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
 
     //    public PlannedProject loadProjectFor(final String mandantengruppe, final String prjName){

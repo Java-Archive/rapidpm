@@ -13,7 +13,6 @@ import org.rapidpm.persistence.prj.textelement.kommentar.TextElementKommentar;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
 public class TextElement implements Comparable<TextElement> {
 
     public static final String ID = "id";
@@ -25,30 +24,19 @@ public class TextElement implements Comparable<TextElement> {
 
     private static final Logger logger = Logger.getLogger(TextElement.class);
 
-    @TableGenerator(name = "PKGenTextElement", table = "pk_gen", pkColumnName = "gen_key",
-            pkColumnValue = "TextElement_id",
-            valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenTextElement")
-    @Id
-    private Long id;
-    @Basic
+    private String id;
     private Boolean freigeschaltet;
-    @Basic
     private Integer textElementNummer;
-    @Basic
     private String bezeichnung;
-    @Basic
     @Column(length = 20000)
     private String text;
+    private transient List<TextElementKommentar> kommentarliste;
 
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    private List<TextElementKommentar> kommentarliste;
-
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(final Long id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
@@ -96,10 +84,7 @@ public class TextElement implements Comparable<TextElement> {
 
     @Override
     public int compareTo(TextElement o) {
-        if(this.getId() > o.getId()){
-            return 1;
-        }
-        return -1;
+        return this.getId().compareTo(o.getId());
     }
 
     @Override

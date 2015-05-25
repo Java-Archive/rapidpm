@@ -11,10 +11,12 @@ package org.rapidpm.persistence.prj.stammdaten.person;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.security.InvalidKeyException;
 
 public class NamensKlassifizierungDAO extends DAO<Long, NamensKlassifizierung> {
     private static final Logger logger = Logger.getLogger(NamensKlassifizierungDAO.class);
@@ -60,4 +62,8 @@ public class NamensKlassifizierungDAO extends DAO<Long, NamensKlassifizierung> {
     }
 
 
+    @Override
+    public NamensKlassifizierung loadFull(NamensKlassifizierung entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
 }

@@ -117,22 +117,22 @@ public class MainUI extends BaseUI {
             }
         });
 
-        final MenuBar.MenuItem issuetracking = menuBar.addItem(messages.getString("issuetracking"), null,
-                null);
-
-        issuetracking.addItem(messages.getString("issuetracking_overview"), new MenuBar.Command() {
-            @Override
-            public void menuSelected(MenuBar.MenuItem selectedItem) {
-                setWorkingArea(new IssueOverviewScreen(MainUI.this));
-            }
-        });
-
-        issuetracking.addItem(messages.getString("issuetracking_settings"), new MenuBar.Command() {
-            @Override
-            public void menuSelected(MenuBar.MenuItem selectedItem) {
-                setWorkingArea(new IssueSettingsScreen(MainUI.this));
-            }
-        });
+//        final MenuBar.MenuItem issuetracking = menuBar.addItem(messages.getString("issuetracking"), null,
+//                null);
+//
+//        issuetracking.addItem(messages.getString("issuetracking_overview"), new MenuBar.Command() {
+//            @Override
+//            public void menuSelected(MenuBar.MenuItem selectedItem) {
+//                setWorkingArea(new IssueOverviewScreen(MainUI.this));
+//            }
+//        });
+//
+//        issuetracking.addItem(messages.getString("issuetracking_settings"), new MenuBar.Command() {
+//            @Override
+//            public void menuSelected(MenuBar.MenuItem selectedItem) {
+//                setWorkingArea(new IssueSettingsScreen(MainUI.this));
+//            }
+//        });
 
 
         setWorkingArea(new ProjektplanungScreen(this));

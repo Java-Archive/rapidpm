@@ -15,9 +15,11 @@ package org.rapidpm.persistence.prj.stammdaten.kommunikation;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 
 public class KommunikationsServiceUIDPartDAO extends DAO<Long, KommunikationsServiceUIDPart> {
     private static final Logger logger = Logger.getLogger(KommunikationsServiceUIDPartDAO.class);
@@ -25,5 +27,10 @@ public class KommunikationsServiceUIDPartDAO extends DAO<Long, KommunikationsSer
 
     public KommunikationsServiceUIDPartDAO(final OrientGraph orientDB) {
         super(orientDB, KommunikationsServiceUIDPart.class);
+    }
+
+    @Override
+    public KommunikationsServiceUIDPart loadFull(KommunikationsServiceUIDPart entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
 }

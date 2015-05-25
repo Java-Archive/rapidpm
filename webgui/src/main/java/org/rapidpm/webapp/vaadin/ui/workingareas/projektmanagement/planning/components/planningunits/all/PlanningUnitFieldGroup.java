@@ -55,7 +55,7 @@ public class PlanningUnitFieldGroup extends FieldGroup {
         this.screen = screen;
         this.messages = screen.getMessagesBundle();
         daoFactory = DaoFactorySingleton.getInstance();
-        selectedPlanningUnit = daoFactory.getPlanningUnitDAO().findByID(thePlanningUnit.getId());
+        selectedPlanningUnit = daoFactory.getPlanningUnitDAO().findByID(thePlanningUnit.getId(), true);
         if(selectedPlanningUnit == null){
             selectedPlanningUnit = thePlanningUnit;
         }
@@ -65,8 +65,6 @@ public class PlanningUnitFieldGroup extends FieldGroup {
 
     private void buildForm() {
         final List<Benutzer> users = daoFactory.getBenutzerDAO().findAll();
-        final PlannedProject project = daoFactory.getProjectDAO().findByID(screen.getUi().getCurrentProject().getId());
-//        daoFactory.getEntityManager().refresh(project);
         final Set<PlanningUnit> managedPlanningUnits = getAllPlanningUnits((PlanningUnit)screen.getPlanningUnitSelect()
                 .getValue());
 

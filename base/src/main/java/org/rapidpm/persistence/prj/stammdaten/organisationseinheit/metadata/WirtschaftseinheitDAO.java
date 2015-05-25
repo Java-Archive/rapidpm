@@ -8,9 +8,11 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit.metadata; /*
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 
 public class WirtschaftseinheitDAO extends DAO<Long, Wirtschaftseinheit> {
     private static final Logger logger = Logger.getLogger(WirtschaftseinheitDAO.class);
@@ -18,5 +20,10 @@ public class WirtschaftseinheitDAO extends DAO<Long, Wirtschaftseinheit> {
 
     public WirtschaftseinheitDAO(final OrientGraph orientDB) {
         super(orientDB, Wirtschaftseinheit.class);
+    }
+
+    @Override
+    public Wirtschaftseinheit loadFull(Wirtschaftseinheit entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
 }

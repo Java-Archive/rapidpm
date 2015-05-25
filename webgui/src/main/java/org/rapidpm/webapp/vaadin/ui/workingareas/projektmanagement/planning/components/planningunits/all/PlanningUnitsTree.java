@@ -2,6 +2,8 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.Tree;
+import org.rapidpm.persistence.DaoFactory;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeSortDropHandler;
@@ -45,8 +47,9 @@ public class PlanningUnitsTree extends Tree{
         }
     }
 
-    private void buildTree(final Set<PlanningUnit> planningUnits, final PlanningUnit parentUnit) {
-        for (final PlanningUnit planningUnit : planningUnits) {
+    private void buildTree(final Set<PlanningUnit> planningUnits, PlanningUnit parentUnit) {
+        for (PlanningUnit planningUnit : planningUnits) {
+            planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
             container.addItem(planningUnit);
             container.setParent(planningUnit, parentUnit);
             if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {

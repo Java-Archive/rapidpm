@@ -8,10 +8,12 @@ package org.rapidpm.persistence.prj.projectmanagement; /**
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectName;
 
 import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 
 public class ProjectNameDAO extends DAO<Long, PlannedProjectName> {
     private static final Logger logger = Logger.getLogger(ProjectNameDAO.class);
@@ -22,4 +24,8 @@ public class ProjectNameDAO extends DAO<Long, PlannedProjectName> {
     }
 
 
+    @Override
+    public PlannedProjectName loadFull(PlannedProjectName entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
 }

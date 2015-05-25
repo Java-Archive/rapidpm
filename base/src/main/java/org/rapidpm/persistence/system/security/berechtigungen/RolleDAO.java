@@ -2,10 +2,10 @@ package org.rapidpm.persistence.system.security.berechtigungen;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
+import java.security.InvalidKeyException;
 
 /**
  * User: Alexander Vos
@@ -27,5 +27,10 @@ public class RolleDAO extends DAO<Long, Rolle> {
 //                .setParameter("name", name);
 //        return getSingleResultOrNull(query);
         return null;
+    }
+
+    @Override
+    public Rolle loadFull(Rolle entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
 }

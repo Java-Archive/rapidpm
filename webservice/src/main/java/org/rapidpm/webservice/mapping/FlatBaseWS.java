@@ -36,13 +36,13 @@ public abstract class FlatBaseWS<T, DT extends DAO<Long, T>, FT extends FlatEnti
 
     @Override
     protected T findEntityById(final Long id) {
-        return dao.findByID("");
+        return dao.findByID("", true);
     }
 
     @WebMethod
     public FT findById(@WebParam(name = "id") final Long id) {
         checkPermission(PERMISSION_SELECT);
-        return toFlatEntity(dao.findByID(""));
+        return toFlatEntity(dao.findByID("", true));
     }
 
     @WebMethod
@@ -78,7 +78,7 @@ public abstract class FlatBaseWS<T, DT extends DAO<Long, T>, FT extends FlatEnti
     @WebMethod
     public boolean delete(@WebParam(name = "id") final Long id) {
         checkPermission(PERMISSION_DELETE);
-        final T entity = dao.findByID("");
+        final T entity = dao.findByID("", true);
 //        daoFactory.removeTX(entity);
         return true;
     }

@@ -17,7 +17,7 @@ public class DaoFactorySingleton {
 
     public static DaoFactory getInstance() {
         if(daoFactory == null){
-            return new DaoFactory("RapidPM");
+            daoFactory = new DaoFactory("RapidPM");
         }
         return daoFactory;
     }

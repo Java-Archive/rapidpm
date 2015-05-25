@@ -1,9 +1,11 @@
 package org.rapidpm.persistence.prj.bewegungsdaten.anfragen;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,4 +19,8 @@ public class ProjektanfrageDAO extends DAO<Long, Projektanfrage> {
         super(orientDB, Projektanfrage.class);
     }
 
+    @Override
+    public Projektanfrage loadFull(Projektanfrage entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
 }

@@ -62,7 +62,7 @@ public class BenutzerScreen extends Screen {
         final List<Mandantengruppe> mandantengruppen = mandantengruppeDAO.findAll();
         final List<BenutzerGruppe> benutzerGruppen = benutzerGruppeDAO.findAll();
         final List<BenutzerWebapplikation> benutzerWebapplikationen = benutzerWebapplikationDAO.findAll();
-        final List<Rolle> rollen = rolleDAO.findAll();
+        //final List<Rolle> rollen = rolleDAO.findAll();
         final List<Benutzer> benutzer = benutzerDAO.findAll();
         final VerticalLayout benutzerTableLayout = new VerticalLayout();
         benutzerTableLayout.setSpacing(true);
@@ -83,7 +83,7 @@ public class BenutzerScreen extends Screen {
         benutzerEditor.setMandantengruppen(mandantengruppen);
         benutzerEditor.setBenutzerGruppen(benutzerGruppen);
         benutzerEditor.setBenutzerWebapplikationen(benutzerWebapplikationen);
-        benutzerEditor.setRollen(rollen);
+        //benutzerEditor.setRollen(rollen);
         contentLayout.addComponent(benutzerEditor);
         contentLayout.setExpandRatio(benutzerTableLayout, 3);
         contentLayout.setExpandRatio(benutzerEditor, 1);

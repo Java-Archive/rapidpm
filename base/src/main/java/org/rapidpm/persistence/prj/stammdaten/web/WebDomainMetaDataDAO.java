@@ -8,9 +8,11 @@ package org.rapidpm.persistence.prj.stammdaten.web; /**
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 
 public class WebDomainMetaDataDAO extends DAO<Long, WebDomainMetaData> {
     private static final Logger logger = Logger.getLogger(WebDomainMetaDataDAO.class);
@@ -18,5 +20,10 @@ public class WebDomainMetaDataDAO extends DAO<Long, WebDomainMetaData> {
 
     public WebDomainMetaDataDAO(final OrientGraph orientDB) {
         super(orientDB, WebDomainMetaData.class);
+    }
+
+    @Override
+    public WebDomainMetaData loadFull(WebDomainMetaData entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
 }

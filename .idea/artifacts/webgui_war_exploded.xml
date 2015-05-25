@@ -146,6 +146,12 @@
         <element id="file-copy" path="$PROJECT_DIR$/webgui/target/webgui-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="webgui/web/Web" />
+      <element id="directory" name="VAADIN">
+        <element id="directory" name="widgetsets">
+          <element id="gwt-compiler-output" facet="webgui/gwt/GWT" />
+        </element>
+        <element id="gwt-compiler-output" facet="webgui/gwt/GWT" />
+      </element>
     </root>
   </artifact>
 </component>

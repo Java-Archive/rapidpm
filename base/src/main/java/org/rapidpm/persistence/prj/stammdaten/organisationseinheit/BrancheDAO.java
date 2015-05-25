@@ -2,10 +2,12 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.security.InvalidKeyException;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -63,4 +65,8 @@ public class BrancheDAO extends DAO<Long, Branche> {
         return null;
     }
 
+    @Override
+    public Branche loadFull(Branche entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
 }

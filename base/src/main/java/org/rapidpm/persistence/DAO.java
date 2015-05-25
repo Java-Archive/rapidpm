@@ -8,6 +8,7 @@ package org.rapidpm.persistence;
 import com.google.common.base.Joiner;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
+import com.tinkerpop.blueprints.impls.orient.OrientVertex;
 import com.tinkerpop.gremlin.Tokens;
 import org.apache.log4j.Logger;
 import org.hibernate.envers.AuditReader;
@@ -15,6 +16,7 @@ import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.query.AuditEntity;
 import org.hibernate.envers.query.AuditQuery;
 import org.hibernate.envers.query.AuditQueryCreator;
+import org.rapidpm.exception.NotYetImplementedException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -23,6 +25,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.security.InvalidKeyException;
 import java.util.*;
 
 /**
@@ -37,7 +40,7 @@ import java.util.*;
  * Time: 22:27:47
  */
 
-public class DAO<K extends Number, E> implements Serializable {
+public abstract class DAO<K extends Number, E> implements Serializable {
     private static final Logger logger = Logger.getLogger(DAO.class);
 
     protected DAO(final OrientGraph orientDB, final Class<E> entityClass) {
@@ -64,12 +67,26 @@ public class DAO<K extends Number, E> implements Serializable {
      * Liefert die Entität passend zum PKey
      *
      * @param rid PKey der Entität
+     * @param b
      * @return Die Entität oder null falls nichts gefunden wurde.
      */
-    public E findByID(final String rid) {
+    public E findByID(final String rid, boolean loadFull){
             final Vertex vertex = orientDB.getVertex(rid);
-            return entityUtils.convertVertexToEntity(vertex);
+            final E entity = entityUtils.convertVertexToEntity(vertex);
+        if(loadFull) {
+            try {
+                loadFull(entity);
+            } catch (InvalidKeyException e) {
+                logger.error(e.getMessage());
+            } catch (NotYetImplementedException e) {
+                logger.error(e.getMessage());
+            }
+
+        }
+        return entity;
     }
+
+    public abstract E loadFull(final E entity) throws InvalidKeyException, NotYetImplementedException;
 
     public List<E> findAll(){
         try {
@@ -79,6 +96,26 @@ public class DAO<K extends Number, E> implements Serializable {
             e.printStackTrace();
         }
         return new ArrayList<>();
+    }
+
+    public E createEntity(final E entity){
+        final OrientVertex[] v = new OrientVertex[1];
+        new OrientDBTransactionExecutor(orientDB) {
+            @Override
+            public void doSpecificDBWork() {
+                v[0] = orientDB.addVertex("class:"+entityClass.getSimpleName(), entityUtils.convertEntityToKeyValueMap(entity));
+            }
+        }.execute();
+        return entityUtils.convertVertexToEntity(v[0]);
+    }
+
+    public void addEdgeFromVertexToVertex(final Vertex fromVertex, final String edgeLabel, final Vertex toVertex) {
+        new OrientDBTransactionExecutor(orientDB) {
+            @Override
+            public void doSpecificDBWork() {
+                fromVertex.addEdge(edgeLabel, toVertex);
+            }
+        }.execute();
     }
 
 

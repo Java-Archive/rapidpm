@@ -39,7 +39,7 @@ public class FlatBenutzer extends FlatEntity<Benutzer> {
 
     @Override
     public void fromEntity(final Benutzer benutzer) {
-        id = benutzer.getId();
+        //id = benutzer.getId();
         login = benutzer.getLogin();
         email = benutzer.getEmail();
         rollen = benutzer.getRollen();

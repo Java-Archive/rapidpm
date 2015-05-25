@@ -2,9 +2,11 @@ package org.rapidpm.persistence.prj.stammdaten.web;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
+import java.security.InvalidKeyException;
 import java.util.List;
 
 /**
@@ -88,6 +90,11 @@ public class WebDomainDAO extends DAO<Long, WebDomain> {
     public List<WebDomain> loadWebDomainsByName(final String domainname) {
 //        return orientDB.createQuery("select w from WebDomain w where w.domainName=:domainname", WebDomain.class).setParameter("domainname", domainname).getResultList();
         return null;
+    }
+
+    @Override
+    public WebDomain loadFull(WebDomain entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
     }
 
 

@@ -10,14 +10,12 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.exceptions.SameNameException;
 
 import javax.naming.InvalidNameException;
-import javax.persistence.EntityManager;
 import java.util.*;
 
 /**
@@ -50,7 +48,7 @@ public class AddRootPlanningUnitsWindow extends RapidWindow {
         setCaption(messages.getString("planning_addPlanningUnit"));
         newPlanningUnitField.focus();
         transientIdCounter = 0l;
-        project = DaoFactorySingleton.getInstance().getProjectDAO().findByID(ui.getSession().getAttribute(PlannedProject.class).getId());
+        project = DaoFactorySingleton.getInstance().getProjectDAO().findByID(ui.getSession().getAttribute(PlannedProject.class).getId(), true);
         container = new BeanItemContainer<>(PlanningUnit.class);
         addButton = new Button("+");
         deleteButton = new Button("-");

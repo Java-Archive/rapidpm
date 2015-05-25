@@ -31,7 +31,7 @@ public class PlanningDetailsFieldGroup extends FieldGroup {
     public PlanningDetailsFieldGroup(final ResourceBundle messages, final PlanningUnit unmanagedPlanningUnit) {
         this.messages = messages;
         final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-        final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().findByID(unmanagedPlanningUnit.getId());
+        final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().findByID(unmanagedPlanningUnit.getId(), true);
         if(planningUnit == null){
             setItemDataSource(new BeanItem<>(unmanagedPlanningUnit));
         } else {
