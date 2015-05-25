@@ -5,7 +5,13 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.spring.annotation.SpringUI;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.UI;
+import org.rapidpm.webapp.vaadin.ui.windows.DisclaimerWindow;
+import org.rapidpm.webapp.vaadin.ui.windows.ImpressumWindow;
+import org.rapidpm.webapp.vaadin.ui.windows.KontaktWindow;
+import org.rapidpm.webapp.vaadin.ui.windows.SupportWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.anfragenmanagement.AnfragenmanagementWorkingArea;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.IssueSettingsScreen;
@@ -46,75 +52,33 @@ public class MainUI extends BaseUI {
 
         messages = ResourceBundle.getBundle("MessagesBundle", locale);
         final MenuBar.MenuItem stammdatenMenu = menuBar.addItem(messages.getString("masterdata"), null);
-        stammdatenMenu.addItem(messages.getString("users"), new MenuBar.Command() {
-            @Override
-            public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new BenutzerScreen(MainUI.this));
-            }
-        });
+        stammdatenMenu.addItem(messages.getString("users"), menuItem -> setWorkingArea(new BenutzerScreen(MainUI.this)));
+        stammdatenMenu.addItem(messages.getString("hourlyrates"), menuItem -> setWorkingArea(new StundensaetzeScreen(MainUI.this)));
 
-        stammdatenMenu.addItem(messages.getString("hourlyrates"), new MenuBar.Command() {
-            @Override
-            public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new StundensaetzeScreen(MainUI.this));
-            }
-        });
-
-        menuBar.addItem(messages.getString("requestmanagement"), new MenuBar.Command() {
-            @Override
-            public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new AnfragenmanagementWorkingArea());
-            }
-        });
+        menuBar.addItem(messages.getString("requestmanagement"), menuItem -> setWorkingArea(new AnfragenmanagementWorkingArea()));
 
         final MenuBar.MenuItem projektmanagement = menuBar.addItem(messages.getString("projectmanagement"), null,
                 null);
 
-
-        projektmanagement.addItem(messages.getString("projectplanning"), new MenuBar.Command() {
-            @Override
-            public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new ProjektplanungScreen(MainUI.this));
-            }
-        });
-
-
-        projektmanagement.addItem(messages.getString("projectinit"), new MenuBar.Command() {
-            @Override
-            public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new AufwandProjInitScreen(MainUI.this));
-            }
-        });
-
-        projektmanagement.addItem(messages.getString("costs"), new MenuBar.Command() {
-            @Override
-            public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new CostsScreen(MainUI.this));
-            }
-        });
-
-
-        projektmanagement.addItem(messages.getString("distribution"), new MenuBar.Command() {
-            @Override
-            public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new VertriebScreen(MainUI.this));
-            }
-        }).setEnabled(false);
-
-        projektmanagement.addItem(messages.getString("offer"), new MenuBar.Command() {
-            @Override
-            public void menuSelected(final MenuBar.MenuItem menuItem) {
-                setWorkingArea(new OfferScreen(MainUI.this));
-            }
-        }).setEnabled(false);
-
+        projektmanagement.addItem(messages.getString("projectplanning"), menuItem -> setWorkingArea(new ProjektplanungScreen(MainUI.this)));
+        projektmanagement.addItem(messages.getString("projectinit"), menuItem -> setWorkingArea(new AufwandProjInitScreen(MainUI.this)));
+        projektmanagement.addItem(messages.getString("costs"), menuItem -> setWorkingArea(new CostsScreen(MainUI.this)));
+        projektmanagement.addItem(messages.getString("distribution"), menuItem -> setWorkingArea(new VertriebScreen(MainUI.this))).setEnabled(false);
+        projektmanagement.addItem(messages.getString("offer"), menuItem -> setWorkingArea(new OfferScreen(MainUI.this))).setEnabled(false);
         projektmanagement.addSeparator();
+        projektmanagement.addItem(messages.getString("administrateprojects"), selectedItem -> setWorkingArea(new ProjectAdministrationScreen(MainUI.this)));
 
-        projektmanagement.addItem(messages.getString("administrateprojects"), new MenuBar.Command() {
-            @Override
-            public void menuSelected(MenuBar.MenuItem selectedItem) {
-                setWorkingArea(new ProjectAdministrationScreen(MainUI.this));
-            }
+        final MenuBar.MenuItem help = menuBar.addItem(messages.getString("?"), null,
+                null);
+
+        help.addItem(messages.getString("contact"), menuItem -> UI.getCurrent().addWindow(new KontaktWindow()));
+        help.addItem(messages.getString("support"), menuItem -> UI.getCurrent().addWindow(new SupportWindow()));
+        help.addItem(messages.getString("impressum"), menuItem -> UI.getCurrent().addWindow(new ImpressumWindow()));
+        help.addItem(messages.getString("disclaimer"), menuItem -> UI.getCurrent().addWindow(new DisclaimerWindow()));
+        help.addItem(messages.getString("sitemap"), menuItem -> UI.getCurrent().addWindow(new KontaktWindow()));
+        help.addItem(messages.getString("logout"), menuItem -> {
+            getSession().close();
+            getPage().setLocation("/");
         });
 
 //        final MenuBar.MenuItem issuetracking = menuBar.addItem(messages.getString("issuetracking"), null,

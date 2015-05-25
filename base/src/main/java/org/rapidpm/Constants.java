@@ -86,7 +86,7 @@ public class Constants {
 
     public static final String MESSAGESBUNDLE ="MessagesBundle";
 
-    public static final String IMAGE_LOGO = "images/logo_sru.png";
+    public static final String IMAGE_LOGO = "images/rapidpm.PNG";
 
     public static final String IMAGES_DIRECTORY = "images/";
 

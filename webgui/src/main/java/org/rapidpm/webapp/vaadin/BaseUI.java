@@ -10,6 +10,7 @@ package org.rapidpm.webapp.vaadin;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -49,7 +50,6 @@ public abstract class BaseUI extends UI {
     private static final boolean DEBUG_MODE = false;
     private static final String VERSION = "alpha - for testing only";
 
-    private final HorizontalLayout linkLeistenLayout = new HorizontalLayout(); //obere buttonLeiste
     private final HorizontalLayout iconsLayout = new HorizontalLayout();
     private final MenuBar menubar = new MenuBar();
     private final RapidPanel workingArea = new RapidPanel();
@@ -165,24 +165,19 @@ public abstract class BaseUI extends UI {
         mainlayout.setSizeFull();
         workingArea.setSizeFull();
 
-        createLinkLeistenLayout();
         createIconsLayout();
 
         initMenuBar(menubar);
         menubar.setSizeUndefined();
-
-
-        linkLeistenLayout.setSizeUndefined();
         iconsLayout.setSizeUndefined();
         iconsLayout.setWidth("100%");
         menubar.setWidth("100%");
+        workingArea.setSizeFull();
         mainlayout.setSpacing(false);
-        mainlayout.addComponent(linkLeistenLayout);
         mainlayout.addComponent(iconsLayout);
         mainlayout.addComponent(menubar);
         mainlayout.addComponent(workingArea);
         mainlayout.setExpandRatio(workingArea, 1);
-        workingArea.setSizeFull();
         mainlayout.setSpacing(false);
         setContent(mainlayout);
     }
@@ -195,81 +190,17 @@ public abstract class BaseUI extends UI {
         iconsLayout.setComponentAlignment(iconLeft, Alignment.TOP_LEFT);
 
         final Label versionLabel = new Label(VERSION);
+        versionLabel.setSizeUndefined();
         iconsLayout.addComponent(versionLabel);
-        iconsLayout.setComponentAlignment(versionLabel, Alignment.TOP_CENTER);
+        iconsLayout.setComponentAlignment(versionLabel, Alignment.MIDDLE_CENTER);
 
         iconsLayout.addComponent(iconRight);
         iconsLayout.setComponentAlignment(iconRight, Alignment.TOP_RIGHT);
+        iconsLayout.setMargin(new MarginInfo(false, false, false, false));
+        iconsLayout.setExpandRatio(versionLabel, 1.0f);
     }
 
     protected abstract void initMenuBar(MenuBar menuBar);
-
-    private void createLinkLeistenLayout() {
-        linkLeistenLayout.setSizeFull();
-        linkLeistenLayout.setSpacing(true);
-        final Button buttonKontakt = new Button("Kontakt", new Button.ClickListener() {
-
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                UI.getCurrent().addWindow(new KontaktWindow());
-            }
-//                getMainWindow().addWindow(new KontaktWindow());
-        });
-        final Button buttonSupport = new Button("Support", new Button.ClickListener() {
-
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                UI.getCurrent().addWindow(new SupportWindow());
-            }
-        });
-        final Button buttonImpressum = new Button("Impressum", new Button.ClickListener() {
-
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                UI.getCurrent().addWindow(new ImpressumWindow());
-            }
-        });
-        final Button buttonDisclaimer = new Button("Disclaimer", new Button.ClickListener() {
-
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                UI.getCurrent().addWindow(new DisclaimerWindow());
-            }
-        });
-        final Button buttonSitemap = new Button("Sitemap", new Button.ClickListener() {
-
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                UI.getCurrent().addWindow(new KontaktWindow());
-            }
-        });
-        final Button buttonAbmelden = new Button("Abmelden", new Button.ClickListener() {
-
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                getSession().close();
-                getPage().setLocation("/");
-            }
-        });
-        buttonKontakt.setStyleName(BaseTheme.BUTTON_LINK);
-        buttonSupport.setStyleName(BaseTheme.BUTTON_LINK);
-        buttonImpressum.setStyleName(BaseTheme.BUTTON_LINK);
-        buttonDisclaimer.setStyleName(BaseTheme.BUTTON_LINK);
-        buttonSitemap.setStyleName(BaseTheme.BUTTON_LINK);
-        buttonAbmelden.setStyleName(BaseTheme.BUTTON_LINK);
-
-        linkLeistenLayout.addComponent(buttonAbmelden);
-        linkLeistenLayout.addComponent(new Label("|"));
-        linkLeistenLayout.addComponent(buttonKontakt);
-        linkLeistenLayout.addComponent(new Label("|"));
-        linkLeistenLayout.addComponent(buttonSupport);
-        linkLeistenLayout.addComponent(new Label("|"));
-        linkLeistenLayout.addComponent(buttonImpressum);
-        linkLeistenLayout.addComponent(new Label("|"));
-        linkLeistenLayout.addComponent(buttonDisclaimer);
-        linkLeistenLayout.addComponent(new Label("|"));
-        linkLeistenLayout.addComponent(buttonSitemap);
-    }
 
     private void buildLoginScreen() {
         final LoginMask mask = new LoginMask(this);
