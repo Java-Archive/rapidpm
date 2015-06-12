@@ -2,6 +2,7 @@ package org.rapidpm.persistence.system.security;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
@@ -21,6 +22,11 @@ import java.security.InvalidKeyException;
 
 public class BenutzerGruppeDAO extends DAO<Long, BenutzerGruppe> {
     private static final Logger logger = Logger.getLogger(BenutzerGruppeDAO.class);
+
+    @Override
+    public BenutzerGruppe createEntityFull(BenutzerGruppe tempUserGroup) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+        return createEntityFlat(tempUserGroup);
+    }
 
     public BenutzerGruppeDAO(final OrientGraph orientDB) {
         super(orientDB, BenutzerGruppe.class);
@@ -66,6 +72,6 @@ public class BenutzerGruppeDAO extends DAO<Long, BenutzerGruppe> {
 
     @Override
     public BenutzerGruppe loadFull(BenutzerGruppe entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
+        return findByID(entity.getId(), false);
     }
 }

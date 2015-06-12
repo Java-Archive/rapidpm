@@ -4,17 +4,22 @@ import com.orientechnologies.orient.core.sql.OCommandSQL;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.Edges;
 import org.rapidpm.persistence.EntityUtils;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
 import org.rapidpm.persistence.prj.textelement.TextElement;
+import org.rapidpm.persistence.system.security.Benutzer;
 
 import javax.persistence.EntityManager;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import static org.rapidpm.persistence.Edges.*;
 import static org.rapidpm.persistence.Edges.CONSISTS_OF;
@@ -35,14 +40,29 @@ public class PlanningUnitElementDAO extends DAO<Long, PlanningUnitElement> {
     }
 
     @Override
-    public PlanningUnitElement createEntity(PlanningUnitElement entity) {
-        final RessourceGroup ressourceGroup = entity.getRessourceGroup();
-        entity = super.createEntity(entity);
-        addRessourceGroupToPlanningUnitElement(entity, ressourceGroup);
-        return entity;
+    public PlanningUnitElement createEntityFull(PlanningUnitElement tempPUE) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+
+        final PlanningUnitElement persistedPUE = createEntityFlat(tempPUE);
+
+        final RessourceGroup ressourceGroup = tempPUE.getRessourceGroup();
+
+        final RessourceGroupDAO ressourceGroupDAO = DaoFactorySingleton.getInstance().getRessourceGroupDAO();
+        if(ressourceGroup == null){
+            throw new MissingNonOptionalPropertyException("ressourceGroup");
+        }
+        RessourceGroup persistedRessourceGroup = null;
+        if(ressourceGroup.getId() == null || ressourceGroup.getId().equals("")){
+            persistedRessourceGroup = ressourceGroupDAO.createEntityFull(ressourceGroup);
+        } else {
+            persistedRessourceGroup = ressourceGroup;
+        }
+        addRessourceGroupToPlanningUnitElement(persistedRessourceGroup, persistedPUE);
+        persistedPUE.setRessourceGroup(persistedRessourceGroup);
+
+        return persistedPUE;
     }
 
-    private void addRessourceGroupToPlanningUnitElement(final PlanningUnitElement planningUnitElement, final RessourceGroup ressourceGroup){
+    private void addRessourceGroupToPlanningUnitElement(final RessourceGroup ressourceGroup, final PlanningUnitElement planningUnitElement){
         final Vertex planningUnitElementVertex = orientDB.getVertex(planningUnitElement.getId());
         final Vertex ressourceGroupVertex = orientDB.getVertex(ressourceGroup.getId());
         addEdgeFromVertexToVertex(planningUnitElementVertex, VALID_FOR, ressourceGroupVertex);

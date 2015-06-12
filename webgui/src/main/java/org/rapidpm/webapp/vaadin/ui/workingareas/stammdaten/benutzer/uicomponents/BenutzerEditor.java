@@ -34,24 +34,6 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
 
     private BeanItem<Benutzer> benutzerBean;
 
-//    @Inject
-//    @LoggerQualifier
-//    private Logger logger;
-
-    @Inject
-    private UserTransaction userTransaction;
-
-
-    //REFAC per CDI ?
-//    @Inject
-//    private StammdatenScreensBean stammdatenScreenBean;
-//    private final BenutzerEditorBean bean = EJBFactory.getEjbInstance(BenutzerEditorBean.class);
-
-    private Collection<Mandantengruppe> mandantengruppen;
-    private Collection<BenutzerGruppe> benutzerGruppen;
-    private Collection<BenutzerWebapplikation> benutzerWebapplikationen;
-    private Collection<Rolle> rollen;
-
     private TextField idTextField;
     private TextField loginTextField;
     private PasswordField passwdTextField;
@@ -62,7 +44,7 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
     private ComboBox mandantengruppenSelect;
     private ComboBox benutzerGruppenSelect;
     private ComboBox benutzerWebapplikationenSelect;
-    private ListSelect rollenSelect;
+    //private ListSelect rollenSelect;
     private CheckBox isActiveCheckbox;
     private CheckBox isHiddenCheckBox;
     private Button saveButton;
@@ -76,10 +58,7 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
         setVisible(false);
         idTextField = new TextField();
         idTextField.setRequired(false);
-//        idTextField.setReadOnly(true);
         idTextField.setEnabled(false);
-        idTextField.setConverter(Long.class); // vaadin 7
-//REFAC        idTextField.addValidator(new IntegerRangeValidator("ungültige ID", 0, Integer.MAX_VALUE));
         addComponent(idTextField);
 
         loginTextField = new TextField();
@@ -98,7 +77,7 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
         addComponent(emailTextField);
 
         validFromDateField = new DateField();
-        validFromDateField.setConverter(Date.class);
+        validFromDateField.setDateFormat(BenutzerScreen.DATE_FORMAT.toPattern());
         addComponent(validFromDateField);
 
         validUntilDateFiled = new DateField();
@@ -106,6 +85,7 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
         addComponent(validUntilDateFiled);
 
         lastLoginDateField = new DateField();
+        lastLoginDateField.setEnabled(false);
         lastLoginDateField.setDateFormat(BenutzerScreen.DATE_FORMAT.toPattern());
         addComponent(lastLoginDateField);
 
@@ -134,11 +114,11 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
         benutzerWebapplikationenSelect.setFilteringMode(FilteringMode.CONTAINS);
         addComponent(benutzerWebapplikationenSelect);
 
-        rollenSelect = new ListSelect();
-        rollenSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.ID);
-        rollenSelect.setItemCaptionPropertyId("name");
-        rollenSelect.setMultiSelect(true);
-        addComponent(rollenSelect);
+//        rollenSelect = new ListSelect();
+//        rollenSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.ID);
+//        rollenSelect.setItemCaptionPropertyId("name");
+//        rollenSelect.setMultiSelect(true);
+//        addComponent(rollenSelect);
 
         isActiveCheckbox = new CheckBox();
         addComponent(isActiveCheckbox);
@@ -154,9 +134,6 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
             public void buttonClick(final Button.ClickEvent clickEvent) {
                 if (benutzerBean == null) {
                     benutzerBean = new BeanItem<>(new Benutzer());
-                } else {
-                    final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
-                    final Benutzer benutzer = benutzerBean.getBean();
                 }
                 boolean valid = true;
                 for (final Component component : BenutzerEditor.this.components) {
@@ -175,29 +152,28 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
                         final List<String> userEmails = new ArrayList<>();
                         final List<Benutzer> users = daoFactory.getBenutzerDAO().findAll();
                         for (final Benutzer user : users) {
-//                            daoFactory.getEntityManager().refresh(user);
                             userNames.add(user.getLogin());
                             userEmails.add(user.getEmail());
                         }
                         final String enteredLoginName = loginTextField.getValue().toString();
-                        if (userNames.contains(enteredLoginName) && idTextField.getValue().isEmpty()) {
+                        if (userNames.contains(enteredLoginName) && idTextField.getValue().equals("autom.")) {
                             throw new UsernameAlreadyExistsException();
                         }
-                        if (userEmails.contains(emailTextField.getValue().toString()) && idTextField.getValue().isEmpty()) {
+                        if (userEmails.contains(emailTextField.getValue().toString()) && idTextField.getValue().equals("autom.")) {
                             throw new EmailAlreadyExistsException();
                         }
                         if (enteredLoginName.matches(Constants.EMPTY_OR_SPACES_ONLY_PATTERN) || enteredLoginName
                                 .toCharArray().length <= 2) {
                             throw new WrongLoginNameException();
                         }
-                        final Set<Rolle> rolleSet = new HashSet<>();
-                        final Object rollenSelectValue = rollenSelect.getValue();
-                        if (rollenSelectValue instanceof Rolle) {
-                            rolleSet.add((Rolle) rollenSelectValue);
-                        } else if (rollenSelectValue instanceof Collection) {
-                            final Collection<Rolle> rollenCollection = (Collection<Rolle>) rollenSelectValue;
-                            rolleSet.addAll(rollenCollection);
-                        }
+//                        final Set<Rolle> rolleSet = new HashSet<>();
+//                        final Object rollenSelectValue = rollenSelect.getValue();
+//                        if (rollenSelectValue instanceof Rolle) {
+//                            rolleSet.add((Rolle) rollenSelectValue);
+//                        } else if (rollenSelectValue instanceof Collection) {
+//                            final Collection<Rolle> rollenCollection = (Collection<Rolle>) rollenSelectValue;
+//                            rolleSet.addAll(rollenCollection);
+//                        }
 
                         // Tabelle aktualisieren
                         //                    benutzerBean.getItemProperty("id").setValue(Long.parseLong(idTextField.getValue().toString())); // ID wird von der DB verwaltet
@@ -207,21 +183,24 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
                         benutzerBean.getItemProperty("passwd").setValue(passwdTextField.getValue());
                         benutzerBean.getItemProperty("email").setValue(emailTextField.getValue());
                         benutzerBean.getItemProperty("lastLogin").setValue(lastLoginDateField.getValue());
-                        //REFAC beheben von detached persistent Beans
-                        benutzerBean.getItemProperty("mandantengruppe").setValue(mandantengruppenSelect.getValue());
-                        benutzerBean.getItemProperty("benutzerGruppe").setValue(benutzerGruppenSelect.getValue());
-                        benutzerBean.getItemProperty("benutzerWebapplikation").setValue(benutzerWebapplikationenSelect.getValue());
-                        benutzerBean.getItemProperty("rollen").setValue(rolleSet);
                         benutzerBean.getItemProperty("active").setValue(isActiveCheckbox.getValue());
                         benutzerBean.getItemProperty("hidden").setValue(isHiddenCheckBox.getValue());
 
                         // in die DB speichern
-                        final Benutzer benutzer = benutzerBean.getBean();
-//                        daoFactory.saveOrUpdateTX(benutzer);
-
-                        final MainUI ui = screen.getUi();
-                        ui.setWorkingArea(new BenutzerScreen(ui));
-                        setVisible(false);
+                        Benutzer benutzer = benutzerBean.getBean();
+                        final boolean edit = (benutzer.getId() != null);
+                        if(edit){
+                            Notification.show("EDIT TODO");
+                        } else {
+                            // create
+                            benutzer = daoFactory.getBenutzerDAO().createEntityFlat(benutzer);
+                            daoFactory.getBenutzerDAO().setUserGroupForUser((BenutzerGruppe)benutzerGruppenSelect.getValue(), benutzer);
+                            daoFactory.getBenutzerDAO().setMandantenGruppeForUser((Mandantengruppe) mandantengruppenSelect.getValue(), benutzer);
+                            daoFactory.getBenutzerDAO().setWebapplicationForUser((BenutzerWebapplikation) benutzerWebapplikationenSelect.getValue(), benutzer);
+                            final MainUI ui = screen.getUi();
+                            ui.setWorkingArea(new BenutzerScreen(ui));
+                            setVisible(false);
+                        }
                     } else {
                         Notification.show(messages.getString("incompletedata"));
                     }
@@ -254,7 +233,9 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
         this.benutzerBean = benutzerBean;
         final Benutzer benutzer = benutzerBean.getBean();
         if (benutzer.getId() != null) {
-            idTextField.setValue(benutzer.getId().toString());
+            idTextField.setValue(benutzer.getId());
+        } else {
+            idTextField.setValue("autom.");
         }
         loginTextField.setValue(benutzer.getLogin());
         passwdTextField.setValue(benutzer.getPasswd());
@@ -265,43 +246,40 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
         mandantengruppenSelect.select(benutzer.getMandantengruppe());
         benutzerGruppenSelect.select(benutzer.getBenutzerGruppe());
         benutzerWebapplikationenSelect.select(benutzer.getBenutzerWebapplikation());
-        rollenSelect.setValue(null); // Selektion aufheben
-        if (benutzer.getRollen() != null) {
-            for (final Rolle rolle : benutzer.getRollen()) {
-                rollenSelect.select(rolle);
-            }
-        }
+//        rollenSelect.setValue(null); // Selektion aufheben
+//        if (benutzer.getRollen() != null) {
+//            for (final Rolle rolle : benutzer.getRollen()) {
+//                rollenSelect.select(rolle);
+//            }
+//        }
         isActiveCheckbox.setValue(benutzer.getActive());
         isHiddenCheckBox.setValue(benutzer.getHidden());
     }
 
 
     public void setMandantengruppen(final Collection<Mandantengruppe> mandantengruppen) {
-        this.mandantengruppen = mandantengruppen;
         this.mandantengruppenSelect.setContainerDataSource(new BeanItemContainer<>(Mandantengruppe.class, mandantengruppen));
     }
 
     public void setBenutzerGruppen(final Collection<BenutzerGruppe> benutzerGruppen) {
-        this.benutzerGruppen = benutzerGruppen;
         this.benutzerGruppenSelect.setContainerDataSource(new BeanItemContainer<>(BenutzerGruppe.class, benutzerGruppen));
     }
 
     public void setBenutzerWebapplikationen(final Collection<BenutzerWebapplikation> benutzerWebapplikationen) {
-        this.benutzerWebapplikationen = benutzerWebapplikationen;
         this.benutzerWebapplikationenSelect.setContainerDataSource(new BeanItemContainer<>(BenutzerWebapplikation.class, benutzerWebapplikationen));
     }
 
-    public void setRollen(final Collection<Rolle> rollen) {
-        this.rollen = rollen;
-        this.rollenSelect.setContainerDataSource(new BeanItemContainer<>(Rolle.class, rollen));
-    }
+//    public void setRollen(final Collection<Rolle> rollen) {
+//        this.rollen = rollen;
+//        this.rollenSelect.setContainerDataSource(new BeanItemContainer<>(Rolle.class, rollen));
+//    }
 
     @Override
     public void doInternationalization() {
         isActiveCheckbox.setCaption(messages.getString("users_active"));
         isHiddenCheckBox.setCaption(messages.getString("users_hidden"));
         saveButton.setCaption(messages.getString("save"));
-        rollenSelect.setCaption(messages.getString("users_roles"));
+//        rollenSelect.setCaption(messages.getString("users_roles"));
         benutzerWebapplikationenSelect.setCaption(messages.getString("users_webapp"));
         benutzerGruppenSelect.setCaption(messages.getString("users_usergroups"));
         mandantengruppenSelect.setCaption(messages.getString("users_mandantgroups"));
@@ -313,5 +291,21 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
         loginTextField.setCaption(messages.getString("users_login"));
         idTextField.setCaption(messages.getString("users_id"));
         setCaption(messages.getString("users_usereditor"));
+    }
+
+    public void reset() {
+        isActiveCheckbox.setValue(null);
+        isHiddenCheckBox.setValue(null);
+//        rollenSelect.setValue(null);
+        benutzerWebapplikationenSelect.setValue(null);
+        benutzerGruppenSelect.setValue(null);
+        mandantengruppenSelect.setValue(null);
+        lastLoginDateField.setValue(null);
+        validFromDateField.setValue(null);
+        validUntilDateFiled.setValue(null);
+        emailTextField.setValue(null);
+        passwdTextField.setValue(null);
+        loginTextField.setValue(null);
+        idTextField.setValue(null);
     }
 }

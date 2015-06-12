@@ -7,6 +7,8 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import org.apache.log4j.Logger;
 import org.rapidpm.Constants;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
@@ -18,14 +20,15 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.Stunde
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.exceptions.NameExistsException;
 
 import javax.naming.InvalidNameException;
+import java.security.InvalidKeyException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddRowWindow extends RapidWindow {
-    public static final String HEIGHT = "400px";
-    public static final String WIDTH = "400px";
+    public static final String HEIGHT = "600px";
+    public static final String WIDTH = "500px";
     public static final int POSITION_X = 50;
     public static final int POSITION_Y = 100;
 
@@ -122,9 +125,9 @@ public class AddRowWindow extends RapidWindow {
                         //RessourceGroupBeanItem mit der neuen (transienten) RessourceGroup
                         final BeanItem<RessourceGroup> beanItem = (BeanItem)fieldGroup.getItemDataSource();
                         //Bean aus dem BeanItem
-                        final RessourceGroup ressourceGroup = beanItem.getBean();
+                        final RessourceGroup temporaryRessourceGroup = beanItem.getBean();
 
-                        final String ressourceGroupName = ressourceGroup.getName();
+                        final String ressourceGroupName = temporaryRessourceGroup.getName();
                         if(ressourceGroupNames.contains(ressourceGroupName)){
                             throw new NameExistsException();
                         }
@@ -132,20 +135,19 @@ public class AddRowWindow extends RapidWindow {
                             throw new InvalidNameException();
                         }
 
-                        final RessourceGroup persistedRessourceGroup = null;
                         final List<PlanningUnit> planningUnits = baseDaoFactoryBean.getPlanningUnitDAO()
                                 .findAll();
-
+                        final RessourceGroup persistedRessourceGroup = daoFactory.getRessourceGroupDAO().createEntityFull(temporaryRessourceGroup);
                         for(final PlanningUnit planningUnit : planningUnits){
-                            final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
-                            planningUnitElement.setPlannedMinutes(0);
-                            planningUnitElement.setRessourceGroup(persistedRessourceGroup);
-                            final PlanningUnitElement persistedPlanningUnitElement = null;
+                            final PlanningUnitElement temporaryPlanningUnitElement = new PlanningUnitElement();
+                            temporaryPlanningUnitElement.setPlannedMinutes(0);
+                            temporaryPlanningUnitElement.setRessourceGroup(persistedRessourceGroup);
                             if(planningUnit.getPlanningUnitElementList() == null){
                                 planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
                             }
-                            planningUnit.getPlanningUnitElementList().add(persistedPlanningUnitElement);
-//                            baseDaoFactoryBean.saveOrUpdateTX(planningUnit);
+                            final PlanningUnitElement persistedPUE = daoFactory.getPlanningUnitElementDAO().createEntityFull(temporaryPlanningUnitElement);
+                            daoFactory.getPlanningUnitDAO().addPlanningUnitElementToPlanningUnit(persistedPUE, planningUnit);
+
                         }
                         screen.generateTableAndCalculate();
 
@@ -156,6 +158,12 @@ public class AddRowWindow extends RapidWindow {
                         Notification.show(messages.getString("stdsatz_nameexists"));
                     } catch (InvalidNameException e) {
                         Notification.show(messages.getString("stdsatz_invalidname"));
+                    } catch (MissingNonOptionalPropertyException e) {
+                        e.printStackTrace();
+                    } catch (InvalidKeyException e) {
+                        e.printStackTrace();
+                    } catch (NotYetImplementedException e) {
+                        e.printStackTrace();
                     }
                 } else {
                     final Label lbl = new Label();

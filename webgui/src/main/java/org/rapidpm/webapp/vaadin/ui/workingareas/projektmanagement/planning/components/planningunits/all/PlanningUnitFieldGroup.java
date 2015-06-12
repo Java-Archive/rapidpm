@@ -65,8 +65,8 @@ public class PlanningUnitFieldGroup extends FieldGroup {
 
     private void buildForm() {
         final List<Benutzer> users = daoFactory.getBenutzerDAO().findAll();
-        final Set<PlanningUnit> managedPlanningUnits = getAllPlanningUnits((PlanningUnit)screen.getPlanningUnitSelect()
-                .getValue());
+        PlanningUnit planningUnitFromSelectComponent = (PlanningUnit) screen.getPlanningUnitSelect().getValue();
+        final Set<PlanningUnit> managedPlanningUnits = getAllPlanningUnits(planningUnitFromSelectComponent);
 
         fieldList = new ArrayList<>();
         for (final Object propertyId : getUnboundPropertyIds()) {
@@ -139,10 +139,11 @@ public class PlanningUnitFieldGroup extends FieldGroup {
 
     private void getPlanningUnits(final Set<PlanningUnit> resultSet, final PlanningUnit planningUnit) {
         resultSet.add(planningUnit);
-        final Set<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
+        final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
         if(kindPlanningUnits != null && !kindPlanningUnits.isEmpty()){
             resultSet.addAll(kindPlanningUnits);
-            for(final PlanningUnit kindKindPlanningUnit : kindPlanningUnits){
+            for(PlanningUnit kindKindPlanningUnit : kindPlanningUnits){
+                kindKindPlanningUnit = daoFactory.getPlanningUnitDAO().findByID(kindKindPlanningUnit.getId(), true);
                 getPlanningUnits(resultSet, kindKindPlanningUnit);
             }
         }

@@ -8,10 +8,10 @@ package org.rapidpm.persistence.prj.stammdaten.person; /**
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
 import java.security.InvalidKeyException;
 
 public class PersonenNameDAO extends DAO<Long, PersonenName> {
@@ -24,6 +24,11 @@ public class PersonenNameDAO extends DAO<Long, PersonenName> {
 
     @Override
     public PersonenName loadFull(PersonenName entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public PersonenName createEntityFull(PersonenName entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         throw new NotYetImplementedException();
     }
 }

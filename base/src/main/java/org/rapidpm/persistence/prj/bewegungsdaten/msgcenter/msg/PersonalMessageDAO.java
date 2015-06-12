@@ -2,11 +2,11 @@ package org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.msg;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.system.security.Benutzer;
 
-import javax.persistence.EntityManager;
 import java.security.InvalidKeyException;
 import java.util.List;
 
@@ -64,6 +64,11 @@ public class PersonalMessageDAO extends DAO<Long, PersonalMessage> {
 
     @Override
     public PersonalMessage loadFull(PersonalMessage entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public PersonalMessage createEntityFull(PersonalMessage entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         throw new NotYetImplementedException();
     }
 

@@ -47,10 +47,10 @@ public class Benutzer{
     private Date validFrom;
     private Date validUntil;
 
-    private Mandantengruppe mandantengruppe;
-    private BenutzerGruppe benutzerGruppe;
-    private BenutzerWebapplikation benutzerWebapplikation;
-    private Set<Rolle> rollen;
+    private transient Mandantengruppe mandantengruppe;
+    private transient BenutzerGruppe benutzerGruppe;
+    private transient BenutzerWebapplikation benutzerWebapplikation;
+    private transient Set<Rolle> rollen;
 
     public Benutzer() {
     }

@@ -8,10 +8,10 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit.metadata; /*
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
 import java.security.InvalidKeyException;
 
 public class AusbildungseinheitDAO extends DAO<Long, Ausbildungseinheit> {
@@ -24,6 +24,11 @@ public class AusbildungseinheitDAO extends DAO<Long, Ausbildungseinheit> {
 
     @Override
     public Ausbildungseinheit loadFull(Ausbildungseinheit entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public Ausbildungseinheit createEntityFull(Ausbildungseinheit entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         throw new NotYetImplementedException();
     }
 }

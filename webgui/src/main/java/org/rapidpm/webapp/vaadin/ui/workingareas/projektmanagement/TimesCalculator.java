@@ -74,13 +74,13 @@ public class TimesCalculator {
     }
 
 
-    private void calculatePlanningUnits(final PlanningUnit parentPlanningUnit, final Set<PlanningUnit> planningUnits) {
+    private void calculatePlanningUnits(final PlanningUnit parentPlanningUnit, final List<PlanningUnit> planningUnits) {
         if(planningUnits == null || planningUnits.isEmpty()){
             addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, parentPlanningUnit);
         } else {
             for (PlanningUnit planningUnit : planningUnits) {
                 planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
-                final Set<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
+                final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
                 if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
                     addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, planningUnit);
                 } else {

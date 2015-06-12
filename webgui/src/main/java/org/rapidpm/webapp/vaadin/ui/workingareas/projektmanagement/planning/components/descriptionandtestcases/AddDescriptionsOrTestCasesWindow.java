@@ -1,5 +1,9 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.descriptionandtestcases;
 
+import com.vaadin.data.Validator;
+import com.vaadin.data.util.converter.StringToIntegerConverter;
+import com.vaadin.data.validator.IntegerRangeValidator;
+import com.vaadin.event.FieldEvents;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import org.rapidpm.persistence.DaoFactory;
@@ -41,12 +45,24 @@ public class AddDescriptionsOrTestCasesWindow extends RapidWindow {
         this.messages = messages;
         buttonLayout = new HorizontalLayout();
         quantityField = new TextField(messages.getString("planning_quantity"));
-        //quantityField.addValidator(new IntegerRangeValidator("0-99", 1, 99)); Validatoren wohl zur Zeit nicht
-        // funktionstüchtig. Errorsymbol wird selbst beim ersten laden des Fensters angezeigt. (http://dev.vaadin
-        // .com/ticket/10561)
+        quantityField.setValue("1");
+        quantityField.setConverter(new StringToIntegerConverter());
+        quantityField.addValidator(new IntegerRangeValidator("0-99", 1, 99));
+        quantityField.setValidationVisible(true);
+        quantityField.validate();
         quantityField.focus();
         quantityField.setWidth("40px");
-        quantityField.setValue("1");
+        quantityField.addBlurListener(new FieldEvents.BlurListener() {
+            @Override
+            public void blur(FieldEvents.BlurEvent blurEvent) {
+                try {
+                    quantityField.validate();
+                } catch (Validator.InvalidValueException e) {
+                    // do nothing, error is shown in GUI
+                }
+            }
+        });
+
         comboBox = new ComboBox(messages.getString("planning_kind"), Arrays.asList(DescriptionTestcaseEnum.values()));
         comboBox.setNullSelectionAllowed(false);
         comboBox.setTextInputAllowed(false);
@@ -78,59 +94,55 @@ public class AddDescriptionsOrTestCasesWindow extends RapidWindow {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 quantityField.commit();
-                //if(quantityField.isValid()){
-                try{
-                    createNewTextElements();
-                    close();
-                    ui.setWorkingArea(new ProjektplanungScreen(ui));
-                } catch(final NumberFormatException e){
+                if (quantityField.isValid()) {
+                    try {
+                        createNewTextElements();
+                        close();
+                        ui.setWorkingArea(new ProjektplanungScreen(ui));
+                    } catch (final NumberFormatException e) {
+                        Notification.show("1-99!");
+                    }
+                } else {
                     Notification.show("1-99!");
                 }
-                //} else {
-                //    System.out.println("."+quantityField.getValue()+".");
-                //}
-
             }
         });
     }
 
     private void createNewTextElements() {
         final Integer quantity = Integer.valueOf(quantityField.getValue());
-        final List<TextElement> newTextElements = new ArrayList<>();
+        final List<TextElement> tempNewTextElements = new ArrayList<>();
         for (int i = 0; i < quantity; i++) {
             final TextElement textElement = new TextElement();
-            if((comboBox.getValue()).equals(DescriptionTestcaseEnum.DESCRIPTION)){
+            if ((comboBox.getValue()).equals(DescriptionTestcaseEnum.DESCRIPTION)) {
                 textElement.setBezeichnung(messages.getString("planning_descriptionNoTitle"));
                 textElement.setText(messages.getString("planning_descriptionNoText"));
             } else {
                 textElement.setBezeichnung(messages.getString("planning_testcaseNoTitle"));
                 textElement.setText(messages.getString("planning_testcaseNoText"));
             }
-            newTextElements.add(textElement);
+            tempNewTextElements.add(textElement);
         }
         final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-//        daoFactory.new Transaction() {
-//            @Override
-//            public void doTask() {
-//                final EntityManager orientDB = daoFactory.getEntityManager();
-//                for (final TextElement newTextElement : newTextElements) {
-//                    if((comboBox.getValue()).equals(DescriptionTestcaseEnum.DESCRIPTION)){
-//                       if(selectedPlanningUnitInTree.getDescriptions() == null)
-//                           selectedPlanningUnitInTree.setDescriptions(new ArrayList<TextElement>());
-//                        selectedPlanningUnitInTree.getDescriptions().add(newTextElement);
-//                    } else {
-//                        if(selectedPlanningUnitInTree.getTestcases() == null)
-//                            selectedPlanningUnitInTree.setTestcases(new ArrayList<TextElement>());
-//                        selectedPlanningUnitInTree.getTestcases().add(newTextElement);
-//                    }
-//                    orientDB.persist(newTextElement);
-//                }
-//                orientDB.flush();
-//
-//            }
-//        }.execute();
-
-
+        if ((comboBox.getValue()).equals(DescriptionTestcaseEnum.DESCRIPTION)) {
+            for (TextElement newTextElement : tempNewTextElements) {
+                if (selectedPlanningUnitInTree.getDescriptions() == null) {
+                    selectedPlanningUnitInTree.setDescriptions(new ArrayList<TextElement>());
+                }
+                newTextElement = daoFactory.getTextElementDAO().createEntityFlat(newTextElement);
+                daoFactory.getPlanningUnitDAO().addDescriptionToPlanningUnit(newTextElement, selectedPlanningUnitInTree);
+                selectedPlanningUnitInTree.getDescriptions().add(newTextElement);
+            }
+        } else {
+            for (TextElement newTextElement : tempNewTextElements) {
+                if (selectedPlanningUnitInTree.getTestcases() == null) {
+                    selectedPlanningUnitInTree.setTestcases(new ArrayList<TextElement>());
+                }
+                newTextElement = daoFactory.getTextElementDAO().createEntityFlat(newTextElement);
+                daoFactory.getPlanningUnitDAO().addTestCaseToPlanningUnit(newTextElement, selectedPlanningUnitInTree);
+                selectedPlanningUnitInTree.getTestcases().add(newTextElement);
+            }
+        }
     }
 
     private void doInternationalization() {

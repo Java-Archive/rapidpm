@@ -1,14 +1,26 @@
 package org.rapidpm.persistence.prj.projectmanagement;
 
+import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.apache.tools.ant.Project;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
+import org.rapidpm.persistence.DaoFactorySingleton;
+import org.rapidpm.persistence.Edges;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitDAO;
+import org.rapidpm.persistence.system.security.Benutzer;
+import org.rapidpm.persistence.system.security.BenutzerDAO;
 
 import javax.persistence.EntityManager;
 import java.security.InvalidKeyException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -26,9 +38,52 @@ public class ProjectDAO extends DAO<Long, PlannedProject> {
 
     private static final Logger logger = Logger.getLogger(ProjectDAO.class);
 
-
     public ProjectDAO(final OrientGraph orientDB) {
         super(orientDB, PlannedProject.class);
+    }
+
+    @Override
+    public PlannedProject createEntityFull(final PlannedProject tempPlannedProject) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+
+        final PlannedProject persistedPlannedProject = createEntityFlat(tempPlannedProject);
+
+        final List<PlanningUnit> temporaryPlanningUnits = tempPlannedProject.getPlanningUnits();
+        if(temporaryPlanningUnits == null){
+            throw new MissingNonOptionalPropertyException("planningUnits");
+        }
+
+        final PlanningUnitDAO planningUnitDAO = DaoFactorySingleton.getInstance().getPlanningUnitDAO();
+        persistedPlannedProject.setPlanningUnits(new ArrayList<>());
+        for (final PlanningUnit temporaryPlanningUnit : temporaryPlanningUnits) {
+            persistedPlannedProject.getPlanningUnits().add(planningUnitDAO.createEntityFull(temporaryPlanningUnit));
+        }
+
+        final BenutzerDAO benutzerDAO = DaoFactorySingleton.getInstance().getBenutzerDAO();
+        final Benutzer responsiblePerson = tempPlannedProject.getResponsiblePerson();
+        if(responsiblePerson == null){
+            throw new MissingNonOptionalPropertyException("responsiblePerson");
+        }
+        Benutzer persistedResponsiblePerson = null;
+        if(responsiblePerson.getId() == null || responsiblePerson.getId().equals("")){
+            persistedResponsiblePerson = benutzerDAO.createEntityFull(responsiblePerson);
+        } else {
+            persistedResponsiblePerson = responsiblePerson;
+        }
+        persistedPlannedProject.setResponsiblePerson(persistedResponsiblePerson);
+
+        final Benutzer creationUser = tempPlannedProject.getCreator();
+        if(creationUser == null){
+            throw new MissingNonOptionalPropertyException("creator");
+        }
+        Benutzer persistedCreationUser = null;
+        if(creationUser.getId() == null || creationUser.getId().equals("")){
+            persistedCreationUser = benutzerDAO.createEntityFull(creationUser);
+        } else {
+            persistedCreationUser = creationUser;
+        }
+        persistedPlannedProject.setCreator(persistedCreationUser);
+
+        return persistedPlannedProject;
     }
 
     public List<PlannedProject> loadProjectsFor(final Boolean active, final String mandantengruppe) {
@@ -54,6 +109,12 @@ public class ProjectDAO extends DAO<Long, PlannedProject> {
     @Override
     public PlannedProject loadFull(PlannedProject entity) throws InvalidKeyException, NotYetImplementedException {
         throw new NotYetImplementedException();
+    }
+
+    public void addPlanningUnitToProject(final PlanningUnit newPlanningUnit, final PlannedProject project) {
+        final Vertex projectVertex = orientDB.getVertex(project.getId());
+        final Vertex newPlanningUnitVertex = orientDB.getVertex(newPlanningUnit.getId());
+        addEdgeFromVertexToVertex(projectVertex, Edges.CONSISTS_OF, newPlanningUnitVertex);
     }
 
     //    public PlannedProject loadProjectFor(final String mandantengruppe, final String prjName){

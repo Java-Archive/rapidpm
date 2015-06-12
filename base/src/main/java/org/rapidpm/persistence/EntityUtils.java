@@ -36,12 +36,14 @@ public class EntityUtils<E> {
     // Booya!!!
     public E convertVertexToEntity(final Vertex vertex) {
         try {
-            Constructor<?> constructor = entityClass.getConstructor();
+            final Constructor<?> constructor = entityClass.getConstructor();
             E entity = (E) constructor.newInstance();
             for (final String property : vertex.getPropertyKeys()) {
                 for (final Field field : entityClass.getDeclaredFields()) {
                     field.setAccessible(true);
-                    if(field.getName().equals(property)){
+                    if (!Modifier.isTransient(field.getModifiers()) &&
+                            !Modifier.isStatic(field.getModifiers()) &&
+                            field.getName().equals(property)) {
                         field.set(entity, vertex.getProperty(property));
                         break;
                     }
@@ -61,9 +63,9 @@ public class EntityUtils<E> {
         try {
             final OrientVertex vertex = new OrientVertex();
             for (final Field field : entityClass.getDeclaredFields()) {
-                if(!Modifier.isTransient(field.getModifiers()) &&
+                if (!Modifier.isTransient(field.getModifiers()) &&
                         !Modifier.isStatic(field.getModifiers()) &&
-                        field.get(entity) != null){
+                        field.get(entity) != null) {
                     vertex.setProperty(field.getName(), field.get(entity));
                 }
             }
@@ -79,9 +81,9 @@ public class EntityUtils<E> {
             final Map<String, Object> keyValueMap = new HashMap<>();
             for (final Field field : entityClass.getDeclaredFields()) {
                 field.setAccessible(true);
-                if(!Modifier.isTransient(field.getModifiers()) &&
+                if (!Modifier.isTransient(field.getModifiers()) &&
                         !Modifier.isStatic(field.getModifiers()) &&
-                        field.get(entity) != null){
+                        field.get(entity) != null) {
                     keyValueMap.put(field.getName(), field.get(entity));
                 }
             }

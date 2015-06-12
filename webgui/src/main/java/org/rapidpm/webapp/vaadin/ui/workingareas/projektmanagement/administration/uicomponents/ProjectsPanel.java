@@ -68,7 +68,7 @@ public class ProjectsPanel extends RapidPanel implements Internationalizationabl
                             .size() > 1){
                         throw new TryToDeleteCurrentProjectException();
                     }
-                    final Set<PlanningUnit> parentPlanningUnits = projektAusDB.getPlanningUnits();
+                    final List<PlanningUnit> parentPlanningUnits = projektAusDB.getPlanningUnits();
                     if(parentPlanningUnits != null && !parentPlanningUnits.isEmpty()){
                         //TODO ConfirmDialog updaten oder selber schreiben
                         //ConfirmDialog.show(ui, messagesBundle.getString("confirm"),

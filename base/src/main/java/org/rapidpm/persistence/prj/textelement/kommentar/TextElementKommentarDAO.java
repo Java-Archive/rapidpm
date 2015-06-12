@@ -9,10 +9,10 @@ package org.rapidpm.persistence.prj.textelement.kommentar;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
 import java.security.InvalidKeyException;
 
 public class TextElementKommentarDAO extends DAO<Long, TextElementKommentar> {
@@ -25,6 +25,11 @@ public class TextElementKommentarDAO extends DAO<Long, TextElementKommentar> {
 
     @Override
     public TextElementKommentar loadFull(TextElementKommentar entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public TextElementKommentar createEntityFull(TextElementKommentar entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         throw new NotYetImplementedException();
     }
 }

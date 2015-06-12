@@ -2,6 +2,7 @@ package org.rapidpm.persistence.system.security;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
@@ -29,6 +30,11 @@ public class NewPasswdRequestDAO extends DAO<Long, NewPasswdRequest> {
 
     @Override
     public NewPasswdRequest loadFull(NewPasswdRequest entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public NewPasswdRequest createEntityFull(NewPasswdRequest entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         throw new NotYetImplementedException();
     }
 }

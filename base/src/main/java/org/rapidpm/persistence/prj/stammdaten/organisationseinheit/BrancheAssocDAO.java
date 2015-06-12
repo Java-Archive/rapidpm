@@ -2,10 +2,10 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
 import java.security.InvalidKeyException;
 
 /**
@@ -29,6 +29,11 @@ public class BrancheAssocDAO extends DAO<Long, BrancheAssoc> {
 
     @Override
     public BrancheAssoc loadFull(BrancheAssoc entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public BrancheAssoc createEntityFull(BrancheAssoc entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         throw new NotYetImplementedException();
     }
 

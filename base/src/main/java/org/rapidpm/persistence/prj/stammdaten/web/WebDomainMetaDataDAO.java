@@ -8,10 +8,10 @@ package org.rapidpm.persistence.prj.stammdaten.web; /**
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
 import java.security.InvalidKeyException;
 
 public class WebDomainMetaDataDAO extends DAO<Long, WebDomainMetaData> {
@@ -24,6 +24,11 @@ public class WebDomainMetaDataDAO extends DAO<Long, WebDomainMetaData> {
 
     @Override
     public WebDomainMetaData loadFull(WebDomainMetaData entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public WebDomainMetaData createEntityFull(WebDomainMetaData entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         throw new NotYetImplementedException();
     }
 }

@@ -2,6 +2,7 @@ package org.rapidpm.persistence.system.security;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
@@ -22,6 +23,10 @@ public class MandantengruppeDAO extends DAO<Long, Mandantengruppe> {
         super(orientDB, Mandantengruppe.class);
     }
 
+    @Override
+    public Mandantengruppe createEntityFull(Mandantengruppe entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+        return createEntityFlat(entity);
+    }
 
     //    public List<Mandantengruppe> loadAllEntities() {
     //        return super.loadAllEntities(Mandantengruppe.class);
@@ -85,6 +90,6 @@ public class MandantengruppeDAO extends DAO<Long, Mandantengruppe> {
 
     @Override
     public Mandantengruppe loadFull(Mandantengruppe entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
+        return findByID(entity.getId(), false);
     }
 }

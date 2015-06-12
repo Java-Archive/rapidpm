@@ -16,14 +16,13 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
-import org.rapidpm.persistence.DAO;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.gesellschaftsformen.Gesellschaftsform;
 import org.rapidpm.ormviews.ViewOrgEinheitHptTaetigkeitsfeld;
 import org.rapidpm.ormviews.ViewOrgEinheitWebDomain;
+import org.rapidpm.persistence.DAO;
+import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.gesellschaftsformen.Gesellschaftsform;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.security.InvalidKeyException;
 import java.util.List;
 
@@ -320,6 +319,11 @@ public class OrganisationseinheitDAO extends DAO<Long, Organisationseinheit> {
 
     @Override
     public Organisationseinheit loadFull(Organisationseinheit entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public Organisationseinheit createEntityFull(Organisationseinheit entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         throw new NotYetImplementedException();
     }
 }

@@ -35,11 +35,10 @@ public class DaoRealm extends AuthorizingRealm {
         if (username == null) {
             throw new AccountException("Null usernames are not allowed by this realm.");
         }
-        final List<Benutzer> benutzerList = benutzerDAO.loadBenutzerForLogin(username);
-        if (benutzerList.isEmpty()) {
+        final Benutzer benutzer = benutzerDAO.loadBenutzerForLogin(username);
+        if (benutzer == null) {
             throw new UnknownAccountException("No account found for user [" + username + "]");
         }
-        final Benutzer benutzer = benutzerList.get(0);
         final String password = benutzer.getPasswd();
         final SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(username, password, getName());
 //        final String salt = benutzer.getPasswdSalt(); // TODO get salt
@@ -55,11 +54,10 @@ public class DaoRealm extends AuthorizingRealm {
         final String username = (String) getAvailablePrincipal(principals);
         final Set<String> roles = new HashSet<>();
         final Set<String> permissions = new HashSet<>();
-        final List<Benutzer> benutzerList = benutzerDAO.loadBenutzerForLogin(username);
-        if (benutzerList.isEmpty()) {
+        final Benutzer benutzer = benutzerDAO.loadBenutzerForLogin(username);
+        if (benutzer == null) {
             throw new AuthorizationException("No account found for user [" + username + "]");
         }
-        final Benutzer benutzer = benutzerList.get(0);
         final Set<Rolle> rollen = benutzer.getRollen();
         for (final Rolle rolle : rollen) {
             roles.add(rolle.getName());

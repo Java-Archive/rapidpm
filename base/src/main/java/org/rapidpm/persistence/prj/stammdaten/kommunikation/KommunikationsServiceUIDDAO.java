@@ -10,11 +10,10 @@ package org.rapidpm.persistence.prj.stammdaten.kommunikation;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.security.InvalidKeyException;
 import java.util.List;
 
@@ -81,6 +80,11 @@ public class KommunikationsServiceUIDDAO extends DAO<Long, KommunikationsService
 
     @Override
     public KommunikationsServiceUID loadFull(KommunikationsServiceUID entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public KommunikationsServiceUID createEntityFull(KommunikationsServiceUID entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         throw new NotYetImplementedException();
     }
 }

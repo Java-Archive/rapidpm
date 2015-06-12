@@ -39,7 +39,9 @@ public class LoginMask extends VerticalLayout {
         loginLayout = new FormLayout();
         usernameField = new TextField("username");
         usernameField.focus();
+        usernameField.setValue("marco.ebbinghaus");
         passwordField = new PasswordField("password");
+        passwordField.setValue("geheim");
         loginButton = new Button("Login");
         loginButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         languageBox = new ComboBox("Language", Arrays.asList(Languages.values()));

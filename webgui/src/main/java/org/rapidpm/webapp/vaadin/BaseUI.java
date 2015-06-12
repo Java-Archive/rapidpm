@@ -18,10 +18,13 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.BaseTheme;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
+import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.StartDataCreator;
@@ -36,6 +39,7 @@ import org.rapidpm.webapp.vaadin.ui.windows.KontaktWindow;
 import org.rapidpm.webapp.vaadin.ui.windows.LoginMask;
 import org.rapidpm.webapp.vaadin.ui.windows.SupportWindow;
 
+import java.security.InvalidKeyException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -57,7 +61,7 @@ public abstract class BaseUI extends UI {
 
     protected Benutzer currentUser;
     protected PlannedProject currentProject;
-    protected Locale locale = new Locale("de","DE");
+    protected Locale locale = new Locale("de", "DE");
     public static ResourceBundle messages;
 
     @Override
@@ -82,8 +86,13 @@ public abstract class BaseUI extends UI {
     }
 
     private void loadFirstProject() {
-        if(DaoFactorySingleton.getInstance().getOrientDB().countVertices() <= 0){
-            StartDataCreator.run();
+        if (DaoFactorySingleton.getInstance().getOrientDB().countVertices() <= 0) {
+            try {
+                StartDataCreator.run();
+            } catch (MissingNonOptionalPropertyException | InvalidKeyException | NotYetImplementedException e) {
+                Notification.show("Error during creation of StartData: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
         final VaadinSession session = this.getSession();
         final PlannedProjectDAO plannedProjectDAO = DaoFactorySingleton.getInstance().getPlannedProjectDAO();
@@ -92,7 +101,7 @@ public abstract class BaseUI extends UI {
             System.out.println("Project found: " + plannedProject.toString());
         }
         Collections.sort(plannedProjects);
-        if(plannedProjects.isEmpty()){
+        if (plannedProjects.isEmpty()) {
             session.setAttribute(PlannedProject.class, null);
         } else {
             session.setAttribute(PlannedProject.class, plannedProjects.get(0));
@@ -103,19 +112,17 @@ public abstract class BaseUI extends UI {
     public void authentication(final String enteredLogin, final String enteredPasswd) throws Exception {
         final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
-        final List<Benutzer> benutzer = benutzerDAO.loadBenutzerForLogin(enteredLogin);
+        final Benutzer benutzer = benutzerDAO.loadBenutzerForLogin(enteredLogin);
         final String enteredPasswdHashed = hash(enteredPasswd);
-        for (final Benutzer user : benutzer) {
-            final String userLogin = user.getLogin();
-            final String userPasswd = user.getPasswd();
-            if (userLogin.equals(enteredLogin) && userPasswd.equals(enteredPasswdHashed)) {
-                currentUser = user;
-                System.out.println(currentUser);
-                getSession().setAttribute(Benutzer.class, currentUser);
-                setContent(null);
-                loadProtectedRessources();
-                return;
-            }
+        final String userLogin = benutzer.getLogin();
+        final String userPasswd = benutzer.getPasswd();
+        if (userLogin.equals(enteredLogin) && userPasswd.equals(enteredPasswdHashed)) {
+            currentUser = benutzer;
+            System.out.println(currentUser);
+            getSession().setAttribute(Benutzer.class, currentUser);
+            setContent(null);
+            loadProtectedRessources();
+            return;
         }
     }
 
@@ -217,7 +224,7 @@ public abstract class BaseUI extends UI {
         return currentProject;
     }
 
-    public Benutzer getCurrentUser(){
+    public Benutzer getCurrentUser() {
         return currentUser;
     }
 }

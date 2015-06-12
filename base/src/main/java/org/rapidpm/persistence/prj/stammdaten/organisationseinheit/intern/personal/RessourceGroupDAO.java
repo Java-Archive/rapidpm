@@ -2,8 +2,11 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.perso
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
+import org.rapidpm.persistence.DaoFactorySingleton;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -23,6 +26,11 @@ public class RessourceGroupDAO extends DAO<Long, RessourceGroup> {
         super(orientDB, RessourceGroup.class);
     }
 
+    @Override
+    public RessourceGroup createEntityFull(RessourceGroup tempRessourceGroup) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+        return createEntityFlat(tempRessourceGroup);
+    }
+
     public RessourceGroup loadRessourceGroupByName(final String name) {
 //        final TypedQuery<RessourceGroup> typedQuery = orientDB.createQuery("from RessourceGroup rg "
 //                + "where rg.name=:name ", RessourceGroup.class).setParameter("name", name);
@@ -33,6 +41,6 @@ public class RessourceGroupDAO extends DAO<Long, RessourceGroup> {
 
     @Override
     public RessourceGroup loadFull(RessourceGroup entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
+        return findByID(entity.getId(), false);
     }
 }

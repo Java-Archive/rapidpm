@@ -65,8 +65,7 @@ public class PlanningDetailsEditableLayout extends EditableLayout {
                     fieldGroup.commit();
                     final BeanItem<PlanningUnit> beanItem = (BeanItem)fieldGroup.getItemDataSource();
                     final PlanningUnit editedPlanningUnit = beanItem.getBean();
-                    final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-//                    daoFactory.saveOrUpdateTX(editedPlanningUnit);
+                    //DaoFactorySingleton.getInstance().getPlanningUnitDAO().e
                     final MainUI ui = screen.getUi();
                     ui.setWorkingArea(new ProjektplanungScreen(ui));
                 }catch (final NullPointerException e){

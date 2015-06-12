@@ -58,13 +58,13 @@ public class TreeTableDataSourceFiller {
         final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
         final PlannedProject projectFromDB = plannedProjectDAO.findByID(projectFromSession.getId(), true);
-        final Set<PlanningUnit> planningUnits = projectFromDB.getPlanningUnits();
+        final List<PlanningUnit> planningUnits = projectFromDB.getPlanningUnits();
         for (PlanningUnit planningUnit : planningUnits) {
             planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
             planningUnitItem.getItemProperty(messages.getString("aufgabe")).setValue(planningUnitName);
-            final Set<PlanningUnit> planningUnitList = planningUnit.getKindPlanningUnits();
+            final List<PlanningUnit> planningUnitList = planningUnit.getKindPlanningUnits();
             if (planningUnitList == null || planningUnitList.isEmpty()) {
                 for (final RessourceGroup spalte : ressourceGroups) {
                     final List<PlanningUnitElement> planningUnitElementList = planningUnit.getPlanningUnitElementList();
@@ -83,7 +83,7 @@ public class TreeTableDataSourceFiller {
     }
 
 
-    private void computePlanningUnits(final Set<PlanningUnit> planningUnits, final String parent) {
+    private void computePlanningUnits(final List<PlanningUnit> planningUnits, final String parent) {
         for (PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);

@@ -2,6 +2,7 @@ package org.rapidpm.persistence.system.security.berechtigungen;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
@@ -31,6 +32,11 @@ public class RolleDAO extends DAO<Long, Rolle> {
 
     @Override
     public Rolle loadFull(Rolle entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public Rolle createEntityFull(Rolle entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         throw new NotYetImplementedException();
     }
 }

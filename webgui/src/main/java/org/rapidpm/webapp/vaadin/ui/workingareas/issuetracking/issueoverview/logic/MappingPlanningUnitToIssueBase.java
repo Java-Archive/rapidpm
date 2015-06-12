@@ -14,6 +14,7 @@ import org.rapidpm.persistence.prj.textelement.TextElement;
 import org.rapidpm.webapp.vaadin.BaseUI;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -79,7 +80,7 @@ public class MappingPlanningUnitToIssueBase {
 //            issue.addOrChangeTestCase(daoFactory.saveOrUpdateTX(testcase));
         }
 
-        final Set<PlanningUnit> children = pu.getKindPlanningUnits();
+        final List<PlanningUnit> children = pu.getKindPlanningUnits();
         if (!children.isEmpty()) {
             for (final PlanningUnit childPu : children) {
                 issue.addSubIssue(mapPlanningUnitToIssue(childPu));

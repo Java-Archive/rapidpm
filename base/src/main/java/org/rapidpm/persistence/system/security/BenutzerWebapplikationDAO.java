@@ -2,6 +2,7 @@ package org.rapidpm.persistence.system.security;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
@@ -55,6 +56,11 @@ public class BenutzerWebapplikationDAO extends DAO<Long, BenutzerWebapplikation>
 
     @Override
     public BenutzerWebapplikation loadFull(BenutzerWebapplikation entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
+        return findByID(entity.getId(), false);
+    }
+
+    @Override
+    public BenutzerWebapplikation createEntityFull(BenutzerWebapplikation entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+        return createEntityFlat(entity);
     }
 }

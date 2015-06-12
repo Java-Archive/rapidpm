@@ -2,11 +2,10 @@ package org.rapidpm.persistence.prj.stammdaten.web;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.security.InvalidKeyException;
 
 /**
@@ -97,6 +96,11 @@ public class WebDomainKlassifizierungDAO extends DAO<Long, WebDomainKlassifizier
 
     @Override
     public WebDomainKlassifizierung loadFull(WebDomainKlassifizierung entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public WebDomainKlassifizierung createEntityFull(WebDomainKlassifizierung entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         throw new NotYetImplementedException();
     }
 }

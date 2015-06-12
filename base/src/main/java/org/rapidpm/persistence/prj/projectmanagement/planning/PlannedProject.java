@@ -27,8 +27,8 @@ public class PlannedProject implements Comparable<PlannedProject>{
     public static final String HOURSPERWORKINGDAY = "hoursPerWorkingDay";
 
     private String id;
-    private Mandantengruppe mandantengruppe;
-    private Set<PlannedProjectName> plannedProjectName;
+
+
     private String projektToken;
     private String projektName;
     private boolean active;
@@ -36,7 +36,9 @@ public class PlannedProject implements Comparable<PlannedProject>{
     private String info;
     private Double externalDailyRate;
     private Integer hoursPerWorkingDay;
-    private transient Set<PlanningUnit> planningUnits;
+    private transient List<PlannedProjectName> plannedProjectName;
+    private transient Mandantengruppe mandantengruppe;
+    private transient List<PlanningUnit> planningUnits;
     private transient Benutzer creator;
     private transient Benutzer responsiblePerson;
     private transient List<PlannedTravel> plannedTravelList;
@@ -130,11 +132,11 @@ public class PlannedProject implements Comparable<PlannedProject>{
         this.mandantengruppe = mandantengruppe;
     }
 
-    public Set<PlannedProjectName> getPlannedProjectName() {
+    public List<PlannedProjectName> getPlannedProjectName() {
         return plannedProjectName;
     }
 
-    public void setPlannedProjectName(final Set<PlannedProjectName> plannedProjectName) {
+    public void setPlannedProjectName(final List<PlannedProjectName> plannedProjectName) {
         this.plannedProjectName = plannedProjectName;
     }
 
@@ -146,11 +148,11 @@ public class PlannedProject implements Comparable<PlannedProject>{
         this.responsiblePerson = responsiblePerson;
     }
 
-    public Set<PlanningUnit> getPlanningUnits() {
+    public List<PlanningUnit> getPlanningUnits() {
         return planningUnits;
     }
 
-    public void setPlanningUnits(Set<PlanningUnit> planningUnits) {
+    public void setPlanningUnits(List<PlanningUnit> planningUnits) {
         this.planningUnits = planningUnits;
     }
 

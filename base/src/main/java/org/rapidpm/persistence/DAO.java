@@ -16,6 +16,7 @@ import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.query.AuditEntity;
 import org.hibernate.envers.query.AuditQuery;
 import org.hibernate.envers.query.AuditQueryCreator;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 
 import javax.persistence.EntityManager;
@@ -33,7 +34,7 @@ import java.util.*;
  *
  * @author Sven Ruppert
  * @version 0.1
- *          <p/>
+ *          <p>
  *          This Source Code is part of the RapidPM - www.rapidpm.org project.
  *          please contact sven.ruppert@me.com
  * @since 13.03.2010
@@ -51,7 +52,7 @@ public abstract class DAO<K extends Number, E> implements Serializable {
 
     protected Class<E> entityClass;
     protected OrientGraph orientDB = null;
-    protected  EntityUtils<E> entityUtils;
+    protected EntityUtils<E> entityUtils;
 
 
     public void setOrientDB(final OrientGraph orientDB) {
@@ -67,28 +68,27 @@ public abstract class DAO<K extends Number, E> implements Serializable {
      * Liefert die Entität passend zum PKey
      *
      * @param rid PKey der Entität
-     * @param b
      * @return Die Entität oder null falls nichts gefunden wurde.
      */
-    public E findByID(final String rid, boolean loadFull){
-            final Vertex vertex = orientDB.getVertex(rid);
-            final E entity = entityUtils.convertVertexToEntity(vertex);
-        if(loadFull) {
+    public E findByID(final String rid, boolean loadFull) {
+        final Vertex vertex = orientDB.getVertex(rid);
+        final E entity = entityUtils.convertVertexToEntity(vertex);
+        if (loadFull) {
             try {
                 loadFull(entity);
             } catch (InvalidKeyException e) {
                 logger.error(e.getMessage());
             } catch (NotYetImplementedException e) {
-                logger.error(e.getMessage());
+                logger.error(e.getCause());
             }
 
         }
         return entity;
     }
 
-    public abstract E loadFull(final E entity) throws InvalidKeyException, NotYetImplementedException;
+    protected abstract E loadFull(final E entity) throws InvalidKeyException, NotYetImplementedException;
 
-    public List<E> findAll(){
+    public List<E> findAll() {
         try {
             final Iterable<Vertex> entityVertices = orientDB.getVerticesOfClass(entityClass.getSimpleName());
             return entityUtils.convertVerticesToEntities(entityVertices);
@@ -98,16 +98,18 @@ public abstract class DAO<K extends Number, E> implements Serializable {
         return new ArrayList<>();
     }
 
-    public E createEntity(final E entity){
+    public E createEntityFlat(final E entity) {
         final OrientVertex[] v = new OrientVertex[1];
         new OrientDBTransactionExecutor(orientDB) {
             @Override
             public void doSpecificDBWork() {
-                v[0] = orientDB.addVertex("class:"+entityClass.getSimpleName(), entityUtils.convertEntityToKeyValueMap(entity));
+                v[0] = orientDB.addVertex("class:" + entityClass.getSimpleName(), entityUtils.convertEntityToKeyValueMap(entity));
             }
         }.execute();
         return entityUtils.convertVertexToEntity(v[0]);
     }
+
+    public abstract E createEntityFull(final E entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException;
 
     public void addEdgeFromVertexToVertex(final Vertex fromVertex, final String edgeLabel, final Vertex toVertex) {
         new OrientDBTransactionExecutor(orientDB) {

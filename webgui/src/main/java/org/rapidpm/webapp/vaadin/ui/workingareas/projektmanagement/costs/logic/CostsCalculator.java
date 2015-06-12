@@ -57,7 +57,7 @@ public class CostsCalculator {
     private void calculatePlanningUnitsAndTotalsAbsolut() {
         //final Integer currentProjectIndex = bean.getCurrentProjectIndex();
         projekt = DaoFactorySingleton.getInstance().getPlannedProjectDAO().findByID(projekt.getId(), true);
-        final Set<PlanningUnit> planningUnits = projekt.getPlanningUnits();
+        final List<PlanningUnit> planningUnits = projekt.getPlanningUnits();
         for (PlanningUnit planningUnit : planningUnits) {
             planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
             calculatePlanningUnits(planningUnit, planningUnit.getKindPlanningUnits());
@@ -65,7 +65,7 @@ public class CostsCalculator {
     }
 
 
-    private void calculatePlanningUnits(final PlanningUnit parentPlanningUnit, final Set<PlanningUnit> planningUnits) {
+    private void calculatePlanningUnits(final PlanningUnit parentPlanningUnit, final List<PlanningUnit> planningUnits) {
         if(planningUnits == null || planningUnits.isEmpty()){
             addiereZeileZurRessourceMap(parentPlanningUnit);
         } else {

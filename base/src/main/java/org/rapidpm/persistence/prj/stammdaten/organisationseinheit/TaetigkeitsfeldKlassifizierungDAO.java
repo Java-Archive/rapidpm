@@ -2,11 +2,10 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.security.InvalidKeyException;
 
 /**
@@ -86,6 +85,11 @@ public class TaetigkeitsfeldKlassifizierungDAO extends DAO<Long, Taetigkeitsfeld
 
     @Override
     public TaetigkeitsfeldKlassifizierung loadFull(TaetigkeitsfeldKlassifizierung entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public TaetigkeitsfeldKlassifizierung createEntityFull(TaetigkeitsfeldKlassifizierung entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         throw new NotYetImplementedException();
     }
 }

@@ -19,6 +19,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinu
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.datenmodell.KnotenBlattEnum;
 
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -56,7 +57,7 @@ public class TableItemClickListener implements ItemClickListener {
         final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().loadPlanningUnitByName(planningUnitName);
         if (planningUnit != null) {
-            final Set<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
+            final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
             if (kindPlanningUnits != null && (!kindPlanningUnits.isEmpty()) ) {
                 knotenBlattEnum = KnotenBlattEnum.KNOTEN;
                 buildRequiredFields(formUnterlayout, fieldGroup);

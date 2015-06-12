@@ -10,10 +10,10 @@ package org.rapidpm.persistence.prj.book.kommentar;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
 import java.security.InvalidKeyException;
 
 public class BuchSeitenKommentarDAO extends DAO<Long, BuchSeitenKommentar> {
@@ -26,6 +26,11 @@ public class BuchSeitenKommentarDAO extends DAO<Long, BuchSeitenKommentar> {
 
     @Override
     public BuchSeitenKommentar loadFull(BuchSeitenKommentar entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public BuchSeitenKommentar createEntityFull(BuchSeitenKommentar entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         throw new NotYetImplementedException();
     }
 }

@@ -60,13 +60,15 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements In
 
     private void createAddButton() {
         addButton = screen.getAddButton();
-        addButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                final AddWindow window = new AddWindow(screen.getUi(),screen);
-                window.show();
-            }
-        });
+        if(addButton.getListeners(Button.ClickEvent.class).size() <= 0){
+            addButton.addClickListener(new Button.ClickListener() {
+                @Override
+                public void buttonClick(Button.ClickEvent event) {
+                    final AddWindow window = new AddWindow(screen.getUi(),screen);
+                    window.show();
+                }
+            });
+        }
     }
 
     private void createDeleteButton() {

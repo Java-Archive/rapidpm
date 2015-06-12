@@ -10,10 +10,10 @@ package org.rapidpm.persistence.prj.book;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
 import java.security.InvalidKeyException;
 
 public class BuchDAO extends DAO<Long, Buch> {
@@ -27,6 +27,11 @@ public class BuchDAO extends DAO<Long, Buch> {
 
     @Override
     public Buch loadFull(Buch entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public Buch createEntityFull(Buch entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         throw new NotYetImplementedException();
     }
 }

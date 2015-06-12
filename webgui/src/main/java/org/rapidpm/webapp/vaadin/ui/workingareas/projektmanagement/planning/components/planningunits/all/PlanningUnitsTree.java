@@ -10,6 +10,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logi
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic.TreeValueChangeListener;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -47,7 +48,7 @@ public class PlanningUnitsTree extends Tree{
         }
     }
 
-    private void buildTree(final Set<PlanningUnit> planningUnits, PlanningUnit parentUnit) {
+    private void buildTree(final List<PlanningUnit> planningUnits, PlanningUnit parentUnit) {
         for (PlanningUnit planningUnit : planningUnits) {
             planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
             container.addItem(planningUnit);

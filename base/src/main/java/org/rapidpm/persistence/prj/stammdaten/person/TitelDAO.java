@@ -1,10 +1,10 @@
 package org.rapidpm.persistence.prj.stammdaten.person;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
 import java.security.InvalidKeyException;
 
 /**
@@ -22,6 +22,11 @@ public class TitelDAO extends DAO<Long, Titel> {
 
     @Override
     public Titel loadFull(Titel entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public Titel createEntityFull(Titel entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         throw new NotYetImplementedException();
     }
 

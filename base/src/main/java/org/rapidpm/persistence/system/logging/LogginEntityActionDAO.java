@@ -8,10 +8,10 @@ package org.rapidpm.persistence.system.logging; /**
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
 import java.security.InvalidKeyException;
 
 public class LogginEntityActionDAO extends DAO<Long, LoggingEntityAction> {
@@ -41,6 +41,11 @@ public class LogginEntityActionDAO extends DAO<Long, LoggingEntityAction> {
 
     @Override
     public LoggingEntityAction loadFull(LoggingEntityAction entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public LoggingEntityAction createEntityFull(LoggingEntityAction entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         throw new NotYetImplementedException();
     }
 }

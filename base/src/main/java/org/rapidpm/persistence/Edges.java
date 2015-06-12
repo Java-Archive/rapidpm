@@ -16,4 +16,11 @@ public class Edges {
 
     // PlanningUnitElement
     public static final String VALID_FOR = "validFor";
+
+    // Benutzer
+    public static final String IS_RESPONSIBLE_FOR = "isResponsibleFor";
+    public static final String CREATED = "created";
+    public static final String BELONGS_TO = "belongsTo"; // UserGroup
+    public static final String IS_PART_OF = "isPartOf"; // Mandantengruppe
+    public static final String BELONGS_TO_WEBAPP = "belongsToWebapp"; // Webapplication
 }

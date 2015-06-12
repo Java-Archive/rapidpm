@@ -2,11 +2,10 @@ package org.rapidpm.persistence.prj.bewegungsdaten;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.security.InvalidKeyException;
 
 /**
@@ -94,5 +93,10 @@ public class RegistrationStatusDAO extends DAO<Long, RegistrationStatus> {
     @Override
     public RegistrationStatus loadFull(RegistrationStatus entity) throws InvalidKeyException, NotYetImplementedException {
         throw new NotYetImplementedException();
+    }
+
+    @Override
+    public RegistrationStatus createEntityFull(RegistrationStatus entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+        return null;
     }
 }

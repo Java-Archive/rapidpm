@@ -2,10 +2,10 @@ package org.rapidpm.persistence.prj.stammdaten.web;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
 import java.security.InvalidKeyException;
 import java.util.List;
 
@@ -94,6 +94,11 @@ public class WebDomainDAO extends DAO<Long, WebDomain> {
 
     @Override
     public WebDomain loadFull(WebDomain entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public WebDomain createEntityFull(WebDomain entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         throw new NotYetImplementedException();
     }
 

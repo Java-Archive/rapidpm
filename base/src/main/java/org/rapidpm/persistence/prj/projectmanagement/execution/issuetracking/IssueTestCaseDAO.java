@@ -2,10 +2,10 @@ package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
 import java.security.InvalidKeyException;
 
 /**
@@ -24,6 +24,11 @@ public class IssueTestCaseDAO extends DAO<Long, IssueTestCase> {
 
     @Override
     public IssueTestCase loadFull(IssueTestCase entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public IssueTestCase createEntityFull(IssueTestCase entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         throw new NotYetImplementedException();
     }
 }

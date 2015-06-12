@@ -59,12 +59,12 @@ public class RessourceGroup {
     //@Basic private String currency; // USD / EUR / ..
     /*evtl für spätere Verwendung*/
 
-    @Transient private Integer transientHoursPerYear;
-    @Transient private Double transientEurosPerHour;
-    @Transient private Double transientOperativeEurosPerHour;
-    @Transient private Double transientBruttoPerMonth;
-    @Transient private Double transientSumPerMonth;
-    @Transient private Double transientSumPerDay;
+    private transient Integer transientHoursPerYear;
+    private transient Double transientEurosPerHour;
+    private transient Double transientOperativeEurosPerHour;
+    private transient Double transientBruttoPerMonth;
+    private transient Double transientSumPerMonth;
+    private transient Double transientSumPerDay;
 
     public String getId() {
         return id;

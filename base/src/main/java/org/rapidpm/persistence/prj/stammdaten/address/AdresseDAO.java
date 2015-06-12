@@ -11,10 +11,10 @@ package org.rapidpm.persistence.prj.stammdaten.address;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
 import java.security.InvalidKeyException;
 import java.util.List;
 
@@ -34,6 +34,11 @@ public class AdresseDAO extends DAO<Long, Adresse> {
 
     @Override
     public Adresse loadFull(Adresse entity) throws InvalidKeyException, NotYetImplementedException {
+        throw new NotYetImplementedException();
+    }
+
+    @Override
+    public Adresse createEntityFull(Adresse entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         throw new NotYetImplementedException();
     }
 }

@@ -2,6 +2,7 @@ package org.rapidpm.persistence.prj.textelement;
 
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
@@ -18,5 +19,10 @@ public class TextElementDAO extends DAO<Long, TextElement> {
     @Override
     public TextElement loadFull(TextElement entity) throws InvalidKeyException, NotYetImplementedException {
         throw new NotYetImplementedException();
+    }
+
+    @Override
+    public TextElement createEntityFull(TextElement entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+        return createEntityFlat(entity);
     }
 }

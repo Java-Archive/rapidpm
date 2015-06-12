@@ -40,7 +40,7 @@ public class PlanningUnit {
     private transient PlanningStatus planningStatus;
     private transient Benutzer responsiblePerson;
     private transient List<PlannedMeeting> plannedMeetingList;
-    private transient Set<PlanningUnit> kindPlanningUnits;
+    private transient List<PlanningUnit> kindPlanningUnits;
     private transient PlanningUnit parent;
     private transient List<PlanningUnitElement> planningUnitElementList;
     private transient List<TextElement> testcases;
@@ -94,11 +94,11 @@ public class PlanningUnit {
         this.planningUnitElementList = planningUnitElementList;
     }
 
-    public Set<PlanningUnit> getKindPlanningUnits() {
+    public List<PlanningUnit> getKindPlanningUnits() {
         return kindPlanningUnits;
     }
 
-    public void setKindPlanningUnits(Set<PlanningUnit> kindPlanningUnits) {
+    public void setKindPlanningUnits(List<PlanningUnit> kindPlanningUnits) {
         this.kindPlanningUnits = kindPlanningUnits;
     }
 

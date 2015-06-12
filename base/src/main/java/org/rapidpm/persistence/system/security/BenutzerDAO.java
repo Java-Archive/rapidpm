@@ -1,14 +1,22 @@
 package org.rapidpm.persistence.system.security;
 
+import com.orientechnologies.orient.core.sql.OCommandSQL;
+import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
+import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
+import org.rapidpm.persistence.DaoFactorySingleton;
+import org.rapidpm.persistence.EntityUtils;
 
 import java.security.InvalidKeyException;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
+import static org.rapidpm.persistence.Edges.BELONGS_TO;
+import static org.rapidpm.persistence.Edges.BELONGS_TO_WEBAPP;
+import static org.rapidpm.persistence.Edges.IS_PART_OF;
 /**
  * NeoScio
  * User: Manfred
@@ -24,10 +32,71 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
         super(orientDB, Benutzer.class);
     }
 
-    public List<Benutzer> loadBenutzerForLogin(final String login) {
-            return findAll().stream()
-                            .filter(p -> p.getLogin().equals(login))
-                            .collect(Collectors.toList());
+    @Override
+    public Benutzer createEntityFull(Benutzer temporaryUser) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+
+        final Benutzer persistedUser = createEntityFlat(temporaryUser);
+
+        final BenutzerGruppeDAO userGroupDAO = DaoFactorySingleton.getInstance().getBenutzerGruppeDAO();
+        final MandantengruppeDAO mandantengruppeDAO = DaoFactorySingleton.getInstance().getMandantengruppeDAO();
+        final BenutzerWebapplikationDAO webapplikationDAO = DaoFactorySingleton.getInstance().getBenutzerWebapplikationDAO();
+        final BenutzerGruppe userGroup = temporaryUser.getBenutzerGruppe();
+        final Mandantengruppe mandantengruppe = temporaryUser.getMandantengruppe();
+        final BenutzerWebapplikation webapplikation = temporaryUser.getBenutzerWebapplikation();
+        if (userGroup == null) {
+            throw new MissingNonOptionalPropertyException("userGroup");
+        }
+        BenutzerGruppe persistedUserGroup = null;
+        if (userGroup.getId() == null || userGroup.getId().equals("")) {
+            persistedUserGroup = userGroupDAO.createEntityFull(userGroup);
+        } else {
+            persistedUserGroup = userGroup;
+        }
+        setUserGroupForUser(persistedUserGroup, persistedUser);
+        persistedUser.setBenutzerGruppe(persistedUserGroup);
+
+        Mandantengruppe persistedMandantenGruppe = null;
+        if (mandantengruppe.getId() == null || mandantengruppe.getId().equals("")) {
+            persistedMandantenGruppe = mandantengruppeDAO.createEntityFull(mandantengruppe);
+        } else {
+            persistedMandantenGruppe = mandantengruppe;
+        }
+        setMandantenGruppeForUser(persistedMandantenGruppe, persistedUser);
+        persistedUser.setMandantengruppe(persistedMandantenGruppe);
+
+        BenutzerWebapplikation persistedWebapplikation = null;
+        if (webapplikation.getId() == null || webapplikation.getId().equals("")) {
+            persistedWebapplikation = webapplikationDAO.createEntityFull(webapplikation);
+        } else {
+            persistedWebapplikation = webapplikation;
+        }
+        setWebapplicationForUser(persistedWebapplikation, persistedUser);
+        persistedUser.setBenutzerWebapplikation(persistedWebapplikation);
+
+        return persistedUser;
+    }
+
+    public void setUserGroupForUser(final BenutzerGruppe userGroup, final Benutzer user) {
+        final Vertex userGroupVertex = orientDB.getVertex(userGroup.getId());
+        final Vertex userVertex = orientDB.getVertex(user.getId());
+        addEdgeFromVertexToVertex(userVertex, BELONGS_TO, userGroupVertex);
+    }
+
+    public void setMandantenGruppeForUser(final Mandantengruppe mandantengruppe, final Benutzer user) {
+        final Vertex mandantengruppeVertex = orientDB.getVertex(mandantengruppe.getId());
+        final Vertex userVertex = orientDB.getVertex(user.getId());
+        addEdgeFromVertexToVertex(userVertex, IS_PART_OF, mandantengruppeVertex);
+    }
+
+    public void setWebapplicationForUser(final BenutzerWebapplikation webapplikation, final Benutzer user) {
+        final Vertex webApplicationVertex = orientDB.getVertex(webapplikation.getId());
+        final Vertex userVertex = orientDB.getVertex(user.getId());
+        addEdgeFromVertexToVertex(userVertex, BELONGS_TO_WEBAPP, webApplicationVertex);
+    }
+
+    public Benutzer loadBenutzerForLogin(final String login) {
+        final Optional<Benutzer> benutzer = findAll().stream().filter(p -> p.getLogin().equals(login)).findFirst();
+        return benutzer.orElse(null);
     }
 
 
@@ -110,7 +179,7 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
 
     public List<Benutzer> loadBenutzerByMandantenGruppe(final String mandantengruppe, final boolean hidden) {
 //        return orientDB.createQuery("from Benutzer b where b.mandantengruppe.mandantengruppe=:mandantengruppe and b.hidden=:hidden", Benutzer.class).setParameter("hidden", hidden).setParameter("mandantengruppe", mandantengruppe).getResultList();
-    return null;
+        return null;
 
 
         //        return createWhereClause()
@@ -510,7 +579,22 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
     }
 
     @Override
-    public Benutzer loadFull(Benutzer entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
+    public Benutzer loadFull(Benutzer user) throws InvalidKeyException, NotYetImplementedException {
+        if(user.getId() == null){
+            throw new InvalidKeyException("Can't load details for User without ID");
+        }
+        final Iterable<Vertex> userGroups = orientDB.command(new OCommandSQL("select expand( out('"+BELONGS_TO+"') ) from Benutzer where @rid = " + user.getId())).execute();
+        final Iterable<Vertex> mandantenGruppen = orientDB.command(new OCommandSQL("select expand( out('"+IS_PART_OF+"') ) from Benutzer where @rid = " + user.getId())).execute();
+        final Iterable<Vertex> userWebapps = orientDB.command(new OCommandSQL("select expand( out('"+BELONGS_TO_WEBAPP+"') ) from Benutzer where @rid = " + user.getId())).execute();
+        for (final Vertex userGroupVertex : userGroups) {
+            user.setBenutzerGruppe(new EntityUtils<>(BenutzerGruppe.class).convertVertexToEntity(userGroupVertex));
+        }
+        for (final Vertex mandantenGruppeVertex : mandantenGruppen) {
+            user.setMandantengruppe(new EntityUtils<>(Mandantengruppe.class).convertVertexToEntity(mandantenGruppeVertex));
+        }
+        for (final Vertex userWebappVertex : userWebapps) {
+            user.setBenutzerWebapplikation(new EntityUtils<>(BenutzerWebapplikation.class).convertVertexToEntity(userWebappVertex));
+        }
+        return user;
     }
 }

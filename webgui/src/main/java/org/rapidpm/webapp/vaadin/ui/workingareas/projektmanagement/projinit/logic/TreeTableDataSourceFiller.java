@@ -61,14 +61,14 @@ public class TreeTableDataSourceFiller {
 
     private void calculatePlanningUnitsAndTotalsAbsolut() {
         currentProject = DaoFactorySingleton.getInstance().getPlannedProjectDAO().findByID(currentProject.getId(), true);
-        final Set<PlanningUnit> planningUnits = currentProject.getPlanningUnits();
+        final List<PlanningUnit> planningUnits = currentProject.getPlanningUnits();
         for (PlanningUnit planningUnit : planningUnits) {
             planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
             final String aufgabe = messages.getString("aufgabe");
             planningUnitItem.getItemProperty(aufgabe).setValue(planningUnitName);
-            final Set<PlanningUnit> planningUnitList = planningUnit.getKindPlanningUnits();
+            final List<PlanningUnit> planningUnitList = planningUnit.getKindPlanningUnits();
             if (planningUnitList == null || planningUnitList.isEmpty()) {
                 for (final RessourceGroup spalte : ressourceGroups) {
                     for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
@@ -89,7 +89,7 @@ public class TreeTableDataSourceFiller {
     }
 
 
-    private void calculatePlanningUnits(final Set<PlanningUnit> planningUnits, final String parent) {
+    private void calculatePlanningUnits(final List<PlanningUnit> planningUnits, final String parent) {
         for (PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
@@ -97,7 +97,7 @@ public class TreeTableDataSourceFiller {
             planningUnitItem.getItemProperty(aufgabe).setValue(planningUnitName);
             dataSource.setParent(planningUnitName, parent);
             planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
-            final Set<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
+            final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
             if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
                 for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
                     planningUnitElement = DaoFactorySingleton.getInstance().getPlanningUnitElementDAO().findByID(planningUnitElement.getId(), true);
