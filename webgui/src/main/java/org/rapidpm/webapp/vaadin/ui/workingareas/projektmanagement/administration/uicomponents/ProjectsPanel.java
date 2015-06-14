@@ -7,6 +7,7 @@ import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.ConfirmDialog;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Componentssetable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
@@ -36,8 +37,10 @@ public class ProjectsPanel extends RapidPanel implements Internationalizationabl
     private Button deleteProjectButton = new Button();
 
     private HorizontalLayout buttonLayout = new HorizontalLayout();
+    private ProjectAdministrationScreen screen;
 
-    public ProjectsPanel(final MainUI theUi, final ResourceBundle messages, final ChosenProjectEditableRapidPanel chosenProjectEditablePanel){
+    public ProjectsPanel(ProjectAdministrationScreen screen, final MainUI theUi, final ResourceBundle messages, final ChosenProjectEditableRapidPanel chosenProjectEditablePanel){
+        this.screen = screen;
         setCaption(messages.getString("project_projects"));
         this.messagesBundle = messages;
         this.formPanel = chosenProjectEditablePanel;
@@ -70,20 +73,20 @@ public class ProjectsPanel extends RapidPanel implements Internationalizationabl
                     }
                     final List<PlanningUnit> parentPlanningUnits = projektAusDB.getPlanningUnits();
                     if(parentPlanningUnits != null && !parentPlanningUnits.isEmpty()){
-                        //TODO ConfirmDialog updaten oder selber schreiben
-                        //ConfirmDialog.show(ui, messagesBundle.getString("confirm"),
-                        //        messagesBundle.getString("project_confirmdelete"), messagesBundle.getString("ok"),
-                        //        messagesBundle.getString("cancel"),
-                        //        new ConfirmDialog.Listener() {
-                        //    @Override
-                        //    public void onClose(ConfirmDialog dialog) {
-                        //        if(dialog.isConfirmed()){
-                                    tryToDeleteProject(daoFactory, projektAusDB);
-                        //        }
-                        //    }
-                        //});
+                        ConfirmDialog confirmDialog = new ConfirmDialog(messagesBundle.getString("project_confirmdelete"), screen) {
+                            @Override
+                            public void doThisOnOK() {
+                                tryToDeleteProject(projektAusDB);
+                            }
+
+                            @Override
+                            public void doThisOnCancel() {
+                                //do nothing but closing the window, Screen is reloaded in tryToDeleteProject
+                            }
+                        };
+                        confirmDialog.show();
                     }  else {
-                        tryToDeleteProject(daoFactory, projektAusDB);
+                        tryToDeleteProject(projektAusDB);
                     }
                 } catch (final TryToDeleteCurrentProjectException e){
                     Notification.show(messages.getString("project_deletecurrent"));
@@ -104,9 +107,8 @@ public class ProjectsPanel extends RapidPanel implements Internationalizationabl
         setComponents();
     }
 
-    private void tryToDeleteProject(final DaoFactory daoFactory,
-                                    final PlannedProject projektAusDB) {
-//        daoFactory.removeTX(projektAusDB);
+    private void tryToDeleteProject(final PlannedProject projektAusDB) {
+        DaoFactorySingleton.getInstance().getPlannedProjectDAO().deleteByEntity(projektAusDB, true);
         ui.setWorkingArea(new ProjectAdministrationScreen(ui));
     }
 

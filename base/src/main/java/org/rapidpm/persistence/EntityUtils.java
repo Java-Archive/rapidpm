@@ -59,14 +59,17 @@ public class EntityUtils<E> {
         return null;
     }
 
-    public OrientVertex convertEntityToVertex(final E entity) {
+    public OrientVertex convertEntityToTransientVertex(final E entity) {
         try {
             final OrientVertex vertex = new OrientVertex();
             for (final Field field : entityClass.getDeclaredFields()) {
+                field.setAccessible(true);
                 if (!Modifier.isTransient(field.getModifiers()) &&
                         !Modifier.isStatic(field.getModifiers()) &&
                         field.get(entity) != null) {
-                    vertex.setProperty(field.getName(), field.get(entity));
+                    if(!field.getName().equals("id")){
+                        vertex.setProperty(field.getName(), field.get(entity));
+                    }
                 }
             }
             return vertex;

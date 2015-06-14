@@ -21,19 +21,13 @@ public class DelRowLogic {
         this.screen = screen;
         this.button = button;
         this.messages = messages;
-//        bean = EJBFactory.getEjbInstance(DelRowLogicBean.class);
-
     }
 
     public void execute() {
-        //Bean aus dem BeanItem
-//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final RessourceGroup ressourceGroup = (RessourceGroup) button.getItemId();
-
         try{
             final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-//            daoFactory.removeTX(ressourceGroup);
-
+            daoFactory.getRessourceGroupDAO().deleteByEntity(ressourceGroup, true);
             screen.generateTableAndCalculate();
             screen.getSaveButtonLayout().setVisible(false);
         } catch (final PersistenceException e){

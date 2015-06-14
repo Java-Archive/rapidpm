@@ -7,6 +7,7 @@ import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.textelement.TextElement;
+import org.rapidpm.webapp.vaadin.ui.ConfirmDialog;
 import org.rapidpm.webapp.vaadin.ui.EditableLayout;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
@@ -80,17 +81,18 @@ public class TextElementEditableLayout extends EditableLayout {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 final ResourceBundle messagesBundle = screen.getMessagesBundle();
-//                ConfirmDialog.show(screen.getUi(), messagesBundle.getString("confirm"),
-//                        messagesBundle.getString("project_confirmdelete"), messagesBundle.getString("ok"),
-//                        messagesBundle.getString("cancel"),
-//                        new ConfirmDialog.Listener() {
-//                            @Override
-//                            public void onClose(ConfirmDialog dialog) {
-//                                if (dialog.isConfirmed()) {
-                                    deleteTextElement(textElement);
-//                                }
-//                            }
-//                        });
+                final ConfirmDialog confirmDialog = new ConfirmDialog(messagesBundle.getString("issuetracking_issue_deletequestion"), screen) {
+                    @Override
+                    public void doThisOnOK() {
+                        deleteTextElement(textElement);
+                    }
+
+                    @Override
+                    public void doThisOnCancel() {
+                        // do nothing else than closing the dialog
+                    }
+                };
+                confirmDialog.show();
             }
         });
 
@@ -146,16 +148,7 @@ public class TextElementEditableLayout extends EditableLayout {
         } else if(selectedPlanningUnit.getTestcases().contains(textElement)) {
             selectedPlanningUnit.getTestcases().remove(textElement);
         }
-//        daoFactory.new Transaction() {
-//            @Override
-//            public void doTask() {
-//                final EntityManager orientDB = daoFactory.getEntityManager();
-//                orientDB.merge(selectedPlanningUnit);
-//                orientDB.remove(textElement);
-//                orientDB.flush();
-//                orientDB.refresh(selectedPlanningUnit);
-//            }
-//        }.execute();
+        daoFactory.getTextElementDAO().deleteByEntity(textElement, true);
         screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
     }
 

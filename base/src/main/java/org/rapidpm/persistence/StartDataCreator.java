@@ -958,9 +958,9 @@ public class StartDataCreator {
 
         plannedProject1.setPlanningUnits(Arrays.asList(planningUnit1, planningUnit8, planningUnit13, planningUnit14));
         plannedProject1 = DaoFactorySingleton.getInstance().getPlannedProjectDAO().createEntityFull(plannedProject1);
-        plannedProject2 = DaoFactorySingleton.getInstance().getPlannedProjectDAO().createEntityFlat(plannedProject2);
-        plannedProject3 = DaoFactorySingleton.getInstance().getPlannedProjectDAO().createEntityFlat(plannedProject3);
-        plannedProject4 = DaoFactorySingleton.getInstance().getPlannedProjectDAO().createEntityFlat(plannedProject4);
+//        plannedProject2 = DaoFactorySingleton.getInstance().getPlannedProjectDAO().createEntityFlat(plannedProject2);
+//        plannedProject3 = DaoFactorySingleton.getInstance().getPlannedProjectDAO().createEntityFlat(plannedProject3);
+//        plannedProject4 = DaoFactorySingleton.getInstance().getPlannedProjectDAO().createEntityFlat(plannedProject4);
 
         final List<PlanningUnit> allPlanningUnits = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findAll();
         for (PlanningUnit planningUnit : allPlanningUnits) {

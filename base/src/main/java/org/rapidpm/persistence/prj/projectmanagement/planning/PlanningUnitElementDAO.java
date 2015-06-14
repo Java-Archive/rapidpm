@@ -79,4 +79,9 @@ public class PlanningUnitElementDAO extends DAO<Long, PlanningUnitElement> {
         }
         return planningUnitElement;
     }
+
+    @Override
+    public void deleteByIDFull(final String id) {
+        deleteByIDFlat(id);
+    }
 }

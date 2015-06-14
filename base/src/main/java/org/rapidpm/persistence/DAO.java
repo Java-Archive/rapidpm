@@ -5,27 +5,16 @@
 
 package org.rapidpm.persistence;
 
-import com.google.common.base.Joiner;
+import com.orientechnologies.orient.core.sql.OCommandSQL;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import com.tinkerpop.blueprints.impls.orient.OrientVertex;
-import com.tinkerpop.gremlin.Tokens;
 import org.apache.log4j.Logger;
-import org.hibernate.envers.AuditReader;
-import org.hibernate.envers.AuditReaderFactory;
-import org.hibernate.envers.query.AuditEntity;
-import org.hibernate.envers.query.AuditQuery;
-import org.hibernate.envers.query.AuditQueryCreator;
 import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.io.Serializable;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.security.InvalidKeyException;
 import java.util.*;
 
@@ -119,6 +108,55 @@ public abstract class DAO<K extends Number, E> implements Serializable {
             }
         }.execute();
     }
+
+    private Map<String, Object> checkAndConvertEntityBeforeDeletion(E entity) {
+        final Map<String, Object> entityFieldMap = entityUtils.convertEntityToKeyValueMap(entity);
+        if(!entityFieldMap.containsKey("id") || entityFieldMap.get("id").toString().equals("") ){
+            logger.error("couldn't delete transient entity of class "+entity.getClass().getSimpleName());
+            return null;
+        }
+        return entityFieldMap;
+    }
+
+
+    public void deleteByEntity(final E entity, final boolean deleteFull){
+        final Map<String, Object> entityFieldMap = checkAndConvertEntityBeforeDeletion(entity);
+        if(entityFieldMap == null) {
+            return;
+        }
+        deleteByID(entityFieldMap.get("id").toString(), deleteFull);
+    }
+
+    public void deleteByID(final String id, final boolean deleteFull) {
+        if(id == null || id.equals("")){
+            logger.error("tried to delete entity without id");
+            return;
+        }
+        new OrientDBTransactionExecutor(orientDB) {
+            @Override
+            public void doSpecificDBWork() {
+                if (deleteFull) {
+                    deleteByIDFull(id);
+                } else {
+                    deleteByIDFlat(id);
+                }
+            }
+        }.execute();
+    }
+
+    /*
+    *   DON'T USE THIS FROM OUTSIDE
+    */
+    public void deleteByIDFlat(final String id){
+        final String deleteQuery = "DELETE VERTEX " + id;
+        orientDB.getRawGraph().command(new OCommandSQL(deleteQuery)).execute();
+
+    }
+
+    public void deleteByIDFull(final String id){
+
+    }
+
 
 
 //    //TODO die Abfrage fehlt noch..

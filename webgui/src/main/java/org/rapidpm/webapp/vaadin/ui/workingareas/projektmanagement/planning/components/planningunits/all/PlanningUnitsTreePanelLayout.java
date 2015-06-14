@@ -7,6 +7,7 @@ import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.ConfirmDialog;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
@@ -78,36 +79,31 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements In
             public void buttonClick(Button.ClickEvent event) {
                 try {
                     final PlanningUnit planningUnit = (PlanningUnit) screen.getPlanningUnitsTree().getValue();
-                    final PlanningUnit managedPlanningUnit = daoFactory.getPlanningUnitDAO().findByID
-                            (planningUnit.getId(), true);
-                    if(managedPlanningUnit == null){
+                    final PlanningUnit persistedFullPlanningUnit = daoFactory.getPlanningUnitDAO().findByID(planningUnit.getId(), true);
+                    if(persistedFullPlanningUnit == null){
                         throw new PlatzhalterException();
                     }
-                    if(managedPlanningUnit.getKindPlanningUnits() != null && !managedPlanningUnit.getKindPlanningUnits
-                            ().isEmpty()){
-                        throw new Exception();
+                    String message;
+                    if(persistedFullPlanningUnit.getKindPlanningUnits() != null && !persistedFullPlanningUnit.getKindPlanningUnits().isEmpty()){
+                        message = messages.getString("planning_confirmdelete");
+                    } else {
+                        message = messages.getString("issuetracking_issue_deletequestion");
                     }
-                    final PlanningUnit parentPlanningUnit = managedPlanningUnit.getParent();
-                    projekt = daoFactory.getPlannedProjectDAO().findByID(projekt.getId(), true);
-
-                    if(parentPlanningUnit == null){
-                        projekt.getPlanningUnits().remove(managedPlanningUnit);
-//                        daoFactory.saveOrUpdateTX(projekt);
-                    }
-                    else{
-                        parentPlanningUnit.getKindPlanningUnits().remove(managedPlanningUnit);
-//                        daoFactory.saveOrUpdateTX(parentPlanningUnit);
-                    }
-//                    daoFactory.removeTX(managedPlanningUnit);
-                    for(final PlanningUnit pu : projekt.getPlanningUnits()){
-                        logger.info(pu.getPlanningUnitName()+": "+pu.getKindPlanningUnits());
-                        for(final PlanningUnit pu1 : pu.getKindPlanningUnits()){
-                            logger.info("\t"+pu1.getPlanningUnitName()+": "+pu1.getKindPlanningUnits());
+                    ConfirmDialog confirmDialog = new ConfirmDialog(message, screen) {
+                        @Override
+                        public void doThisOnOK() {
+                            daoFactory.getPlanningUnitDAO().deleteByEntity(persistedFullPlanningUnit, true);
+                            projekt = daoFactory.getPlannedProjectDAO().findByID(projekt.getId(), true);
+                            final MainUI ui = screen.getUi();
+                            ui.setWorkingArea(new ProjektplanungScreen(ui));
                         }
-                    }
 
-                    final MainUI ui = screen.getUi();
-                    ui.setWorkingArea(new ProjektplanungScreen(ui));
+                        @Override
+                        public void doThisOnCancel() {
+                            // do nothing else than closing the window. Screen will be reloaded anyways.
+                        }
+                    };
+                    confirmDialog.show();
                 }catch (final PlatzhalterException e){
                     Notification.show(messages.getString("planning_placeholder_delete"));
                 } catch (final Exception e) {

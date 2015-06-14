@@ -60,6 +60,10 @@ public abstract class ConfirmDialog extends RapidWindow {
         addComponent(buttonLeiste);
     }
 
+    public void show() {
+        ui.addWindow(this);
+    }
+
     public void setModal(boolean b){
         super.setModal(b);
     }

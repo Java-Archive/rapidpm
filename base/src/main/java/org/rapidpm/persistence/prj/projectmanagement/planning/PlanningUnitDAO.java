@@ -8,6 +8,7 @@ import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.DaoFactorySingleton;
+import org.rapidpm.persistence.Edges;
 import org.rapidpm.persistence.EntityUtils;
 import org.rapidpm.persistence.prj.textelement.TextElement;
 import org.rapidpm.persistence.prj.textelement.TextElementDAO;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import static org.rapidpm.persistence.Edges.CONSISTS_OF;
 import static org.rapidpm.persistence.Edges.HAS;
 import static org.rapidpm.persistence.Edges.HAS_DESCRIPTION;
 import static org.rapidpm.persistence.Edges.HAS_TESTCASE;
@@ -201,5 +203,19 @@ public class PlanningUnitDAO extends DAO<Long, PlanningUnit> {
 //        final List<PlanningUnit> resultList = typedQuery.getResultList();
 //        return resultList;
         return null;
+    }
+
+    @Override
+    public void deleteByIDFull(final String id) {
+        final Iterable<Vertex> planningUnitElements = orientDB.command(new OCommandSQL("select expand( in('"+HAS+"') ) from PlanningUnitElement where @rid = " + id)).execute();
+        for (final Vertex pueVertex : planningUnitElements) {
+            DaoFactorySingleton.getInstance().getPlanningUnitElementDAO().deleteByIDFull(pueVertex.getId().toString());
+        }
+        deleteByIDFlat(id);
+        final Iterable<Vertex> childPlanningUnits = orientDB.command(new OCommandSQL("select expand( out('"+IS_FATHER_OF+"') ) from PlanningUnit where @rid = " + id)).execute();
+        for (final Vertex childPlanningUnitVertex : childPlanningUnits) {
+            deleteByIDFull(childPlanningUnitVertex.getId().toString());
+        }
+
     }
 }

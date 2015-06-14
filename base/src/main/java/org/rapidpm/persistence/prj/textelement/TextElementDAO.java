@@ -25,4 +25,9 @@ public class TextElementDAO extends DAO<Long, TextElement> {
     public TextElement createEntityFull(TextElement entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
         return createEntityFlat(entity);
     }
+
+    @Override
+    public void deleteByIDFull(final String id) {
+        super.deleteByIDFlat(id);
+    }
 }

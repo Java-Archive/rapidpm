@@ -126,14 +126,12 @@ public class BenutzerScreen extends Screen {
                 final boolean isUserDeletingHimself = currentUser.getLogin().equals(selectedBenutzer.getLogin());
 
                 if(!isUserDeletingHimself){
-//                    final BenutzerScreenBean stammdatenScreenBean = EJBFactory.getEjbInstance(BenutzerScreenBean.class);
-//                    final DaoFactoryBean daoFactoryBean = stammdatenScreenBean.getDaoFactoryBean();
                     final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
                     final Benutzer benutzerFromDB = daoFactory.getBenutzerDAO().loadBenutzerForLogin(selectedBenutzer.getLogin());
                     if(benutzerFromDB != null){
                         try{
-//                            daoFactory.removeTX(selectedBenutzer);
                             benutzerTable.removeItem(tableItemId);
+                            daoFactory.getBenutzerDAO().deleteByEntity(benutzerFromDB, false);
                             benutzerEditor.setVisible(false);
                         } catch (final PersistenceException e){
                             Notification.show(messagesBundle.getString("users_userinuse"));
@@ -207,7 +205,6 @@ public class BenutzerScreen extends Screen {
                 neuerBenutzer.setMandantengruppe(mandantengruppen.get(0));
                 neuerBenutzer.setValidFrom(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
                 neuerBenutzer.setValidUntil(Date.from(LocalDate.now().plus(Period.ofYears(1)).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-                //localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()
                 benutzerDS.addBean(neuerBenutzer);
                 benutzerTable.select(neuerBenutzer);
             }

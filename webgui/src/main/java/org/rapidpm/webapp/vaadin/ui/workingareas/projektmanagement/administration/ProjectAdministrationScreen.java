@@ -40,7 +40,7 @@ public class ProjectAdministrationScreen extends Screen {
             }
             Collections.sort(plannedProjects);
             chosenProjectEditablePanel = new ChosenProjectEditableRapidPanel(ui, messagesBundle);
-            projectsPanel = new ProjectsPanel(ui, messagesBundle, chosenProjectEditablePanel);
+            projectsPanel = new ProjectsPanel(this, ui, messagesBundle, chosenProjectEditablePanel);
             currentProjectEditablePanel = new CurrentProjectEditableRapidPanel(messagesBundle, this);
 
             buildScreen();
