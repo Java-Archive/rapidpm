@@ -102,7 +102,7 @@ public class OverviewTableFiller {
         relativItemAngabeProperty.setValue(costsinit_sumInPercent);
         for (final Object spalte : relativZeile.getItemPropertyIds()) {
             if (!spalte.equals(angabe)) {
-                final Map<RessourceGroup, Double> relativeWerte = calculator.getRelativeWerte();
+                final Map<RessourceGroup, Double> relativeWerte = calculator.getPercentPerResourceGroup();
                 for (final Map.Entry<RessourceGroup, Double> relativeWerteEntry : relativeWerte.entrySet()) {
                     final String spaltenNameAusMap = relativeWerteEntry.getKey().getName();
                     final String spaltenName = spalte.toString();

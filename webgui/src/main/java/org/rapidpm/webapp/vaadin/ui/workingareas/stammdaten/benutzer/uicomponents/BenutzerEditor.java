@@ -188,22 +188,23 @@ public class BenutzerEditor extends FormLayout implements Internationalizationab
                         benutzerBean.getItemProperty("lastLogin").setValue(lastLoginDateField.getValue());
                         benutzerBean.getItemProperty("active").setValue(isActiveCheckbox.getValue());
                         benutzerBean.getItemProperty("hidden").setValue(isHiddenCheckBox.getValue());
-
-                        // in die DB speichern
                         Benutzer benutzer = benutzerBean.getBean();
+                        benutzer.setBenutzerGruppe((BenutzerGruppe)benutzerGruppenSelect.getValue());
+                        benutzer.setBenutzerWebapplikation((BenutzerWebapplikation) benutzerWebapplikationenSelect.getValue());
+                        benutzer.setMandantengruppe((Mandantengruppe) mandantengruppenSelect.getValue());
                         final boolean edit = (benutzer.getId() != null);
                         if(edit){
-                            Notification.show("EDIT TODO");
+                            daoFactory.getBenutzerDAO().updateByEntity(benutzer, true);
                         } else {
                             // create
                             benutzer = daoFactory.getBenutzerDAO().createEntityFlat(benutzer);
                             daoFactory.getBenutzerDAO().setUserGroupForUser((BenutzerGruppe)benutzerGruppenSelect.getValue(), benutzer);
                             daoFactory.getBenutzerDAO().setMandantenGruppeForUser((Mandantengruppe) mandantengruppenSelect.getValue(), benutzer);
                             daoFactory.getBenutzerDAO().setWebapplicationForUser((BenutzerWebapplikation) benutzerWebapplikationenSelect.getValue(), benutzer);
-                            final MainUI ui = screen.getUi();
-                            ui.setWorkingArea(new BenutzerScreen(ui));
-                            setVisible(false);
                         }
+                        final MainUI ui = screen.getUi();
+                        ui.setWorkingArea(new BenutzerScreen(ui));
+                        setVisible(false);
                     } else {
                         Notification.show(messages.getString("incompletedata"));
                     }

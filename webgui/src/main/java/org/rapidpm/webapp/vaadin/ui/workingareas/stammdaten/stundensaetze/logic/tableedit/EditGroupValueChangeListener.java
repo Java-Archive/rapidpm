@@ -90,8 +90,9 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
                 @Override
                 public void buttonClick(Button.ClickEvent event) {
                     try {
+                        tabelle.commit();
                         for(RessourceGroup ressourceGroup : (Collection<RessourceGroup>) tabelle.getItemIds()){
-//                            daoFactory.saveOrUpdate(ressourceGroup);
+                            DaoFactorySingleton.getInstance().getRessourceGroupDAO().updateByEntity(ressourceGroup, false);
                         }
                         screen.generateTableAndCalculate();
                         saveButtonLayout.setVisible(false);
@@ -117,11 +118,9 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
                     try {
 
                         //RessourceGroup in DB updaten
-                        final RessourceGroup ressouregroupFromTable = (RessourceGroup)tabelle.getValue();
-//                        final RessourceGroup ressourceGroupFromDB = daoFactory.getRessourceGroupDAO().findByID
-//                                (ressouregroupFromTable.getId());
-//                        tabelle.commit();
-//                        daoFactory.saveOrUpdateTX(ressouregroupFromTable);
+                        tabelle.commit();
+                        final RessourceGroup ressourceGroup = (RessourceGroup)tabelle.getValue();
+                        daoFactory.getRessourceGroupDAO().updateByEntity(ressourceGroup, false);
                         screen.generateTableAndCalculate();
 
                         saveButtonLayout.setVisible(false);

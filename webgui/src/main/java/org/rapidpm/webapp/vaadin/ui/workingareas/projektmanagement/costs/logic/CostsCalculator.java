@@ -62,7 +62,7 @@ public class CostsCalculator {
     private void calculatePlanningUnitsAndTotalsAbsolut() {
         //final Integer currentProjectIndex = bean.getCurrentProjectIndex();
         projekt = DaoFactorySingleton.getInstance().getPlannedProjectDAO().findByID(projekt.getId(), true);
-        final List<PlanningUnit> planningUnits = projekt.getPlanningUnits();
+        final List<PlanningUnit> planningUnits = projekt.getTopLevelPlanningUnits();
         for (PlanningUnit planningUnit : planningUnits) {
             planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
             calculatePlanningUnits(planningUnit, planningUnit.getKindPlanningUnits());
@@ -103,7 +103,7 @@ public class CostsCalculator {
     private Double getCosts(final PlanningUnitElement planningUnitElement) {
         final int minutes = planningUnitElement.getPlannedMinutes();
         final double hoursFromMinutes = minutes / MINS_HOUR;
-        final Double externalEurosPerHour = planningUnitElement.getRessourceGroup().getExternalEurosPerHour();
+        final Float externalEurosPerHour = planningUnitElement.getRessourceGroup().getExternalEurosPerHour();
         return hoursFromMinutes * externalEurosPerHour;
     }
 

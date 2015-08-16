@@ -5,6 +5,7 @@ import com.vaadin.ui.Button;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.CostsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.TreeTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.TreeTableValue;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -31,7 +32,7 @@ public class UndoButton extends Button implements Button.ClickListener {
     @Override
     public void buttonClick(Button.ClickEvent event) {
         final TreeTableFiller treeTableFiller = new TreeTableFiller(screen.getMessagesBundle(), screen, treeTable,
-                dataSource);
+                dataSource, TreeTableValue.COSTS);
         treeTableFiller.fill();
         treeTable.markAsDirty();
 

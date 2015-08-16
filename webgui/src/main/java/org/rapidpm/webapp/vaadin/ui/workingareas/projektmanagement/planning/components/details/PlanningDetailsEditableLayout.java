@@ -3,6 +3,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.EditableLayout;
@@ -54,6 +55,7 @@ public class PlanningDetailsEditableLayout extends EditableLayout {
                     }
                 }
                 buttonLayout.setVisible(false);
+                active = false;
             }
         });
         saveButton.addClickListener(new Button.ClickListener() {
@@ -63,7 +65,7 @@ public class PlanningDetailsEditableLayout extends EditableLayout {
                     fieldGroup.commit();
                     final BeanItem<PlanningUnit> beanItem = (BeanItem)fieldGroup.getItemDataSource();
                     final PlanningUnit editedPlanningUnit = beanItem.getBean();
-                    //DaoFactorySingleton.getInstance().getPlanningUnitDAO().e
+                    DaoFactorySingleton.getInstance().getPlanningUnitDAO().updateByEntity(editedPlanningUnit, true);
                     final MainUI ui = screen.getUi();
                     ui.setWorkingArea(new ProjektplanungScreen(ui));
                 }catch (final NullPointerException e){

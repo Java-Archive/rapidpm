@@ -142,7 +142,7 @@ public class AddRootPlanningUnitsWindow extends RapidWindow {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 try {
-                    final List<PlanningUnit> existingPlanningUnits = project.getPlanningUnits();
+                    final List<PlanningUnit> existingPlanningUnits = project.getTopLevelPlanningUnits();
                     existingPlanningUnits.addAll(container.getItemIds());
                     final String newPlanningUnitName = newPlanningUnitField.getValue();
                     if (newPlanningUnitName.matches(Constants.EMPTY_OR_SPACES_ONLY_PATTERN)) {

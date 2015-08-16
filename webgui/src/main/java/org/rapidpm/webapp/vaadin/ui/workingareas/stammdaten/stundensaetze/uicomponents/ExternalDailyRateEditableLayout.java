@@ -72,6 +72,7 @@ public class ExternalDailyRateEditableLayout extends EditableLayout {
                 externalDailyRateField.setReadOnly(true);
                 externalDailyRateField.setConversionError(messages.getString("stdsatz_currencyOnly"));
                 buttonLayout.setVisible(false);
+                active = false;
             }
         });
         buildForm();

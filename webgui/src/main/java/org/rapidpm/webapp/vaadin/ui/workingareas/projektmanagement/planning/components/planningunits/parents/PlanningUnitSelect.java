@@ -35,7 +35,7 @@ public class PlanningUnitSelect extends ListSelect implements Property.ValueChan
         final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
         projectFromDB = baseDaoFactoryBean.getPlannedProjectDAO().findByID(projectFromSession.getId(), true);
 //        baseDaoFactoryBean.getEntityManager().refresh(projectFromDB);
-        final List<PlanningUnit> allPlanningUnitsOfProject = projectFromDB.getPlanningUnits();
+        final List<PlanningUnit> allPlanningUnitsOfProject = projectFromDB.getTopLevelPlanningUnits();
         final List<PlanningUnit> planningUnitsWithoutParent = new ArrayList<>();
         for (PlanningUnit planningUnit : allPlanningUnitsOfProject) {
             if(planningUnit.getParent() == null){

@@ -16,6 +16,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoP
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.OverviewTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.TreeTableFiller;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.TreeTableValue;
 
 import java.util.Date;
 import java.util.List;
@@ -79,7 +80,7 @@ public class AufwandProjInitScreen extends Screen {
             undoButton = new UndoButton(this, treeTable, dataSource);
             undoButton.setVisible(false);
 
-            final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, treeTable, dataSource);
+            final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, treeTable, dataSource, TreeTableValue.TIMES);
             treeTableFiller.fill();
 
             final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(this, uebersichtTable);
@@ -87,7 +88,7 @@ public class AufwandProjInitScreen extends Screen {
 
             fillFields();
 
-            uebersichtTable.setPageLength(2);
+            uebersichtTable.setPageLength(3);
             uebersichtTable.setConnectedTable(treeTable);
             uebersichtTable.setSizeFull();
             treeTable.setConnectedTable(uebersichtTable);

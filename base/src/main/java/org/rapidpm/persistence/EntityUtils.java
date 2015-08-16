@@ -7,7 +7,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +46,18 @@ public class EntityUtils<E> {
                     if (!Modifier.isTransient(field.getModifiers()) &&
                             !Modifier.isStatic(field.getModifiers()) &&
                             field.getName().equals(property)) {
-                        field.set(entity, vertex.getProperty(property));
+                        if(field.getType() == Date.class){
+                            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            Date value = null;
+                            try {
+                                value = formatter.parse(vertex.getProperty(property).toString());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            field.set(entity, value);
+                        } else {
+                            field.set(entity, (vertex.getProperty(property)));
+                        }
                         break;
                     }
                 }
@@ -85,7 +100,14 @@ public class EntityUtils<E> {
                 if (!Modifier.isTransient(field.getModifiers()) &&
                         !Modifier.isStatic(field.getModifiers()) &&
                         field.get(entity) != null) {
-                    keyValueMap.put(field.getName(), field.get(entity));
+                    if(field.getType() == Date.class) {
+                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String value = null;
+                        value = formatter.format(field.get(entity));
+                        keyValueMap.put(field.getName(), value);
+                    } else {
+                        keyValueMap.put(field.getName(), field.get(entity));
+                    }
                 }
             }
             return keyValueMap;

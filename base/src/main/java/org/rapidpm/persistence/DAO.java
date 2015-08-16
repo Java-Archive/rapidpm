@@ -6,19 +6,22 @@
 package org.rapidpm.persistence;
 
 import com.orientechnologies.orient.core.sql.OCommandSQL;
+import com.tinkerpop.blueprints.Direction;
+import com.tinkerpop.blueprints.Edge;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import com.tinkerpop.blueprints.impls.orient.OrientVertex;
 import org.apache.log4j.Logger;
 import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
+import org.rapidpm.persistence.prj.textelement.TextElement;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.security.InvalidKeyException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -149,9 +152,9 @@ public abstract class DAO<K extends Number, E> implements Serializable {
     /*
     *   DON'T USE THIS FROM OUTSIDE
     */
-    public void deleteByIDFlat(final String id){
-        final String deleteQuery = "DELETE VERTEX " + id;
-        orientDB.getRawGraph().command(new OCommandSQL(deleteQuery)).execute();
+    protected void deleteByIDFlat(final String id){
+        final String deleteCommand = "DELETE VERTEX " + id;
+        orientDB.getRawGraph().command(new OCommandSQL(deleteCommand)).execute();
 
     }
 
@@ -159,6 +162,71 @@ public abstract class DAO<K extends Number, E> implements Serializable {
 
     }
 
+    public void updateByEntity(final E entity, final boolean full){
+        if(full){
+           updateByEntityFull(entity);
+        } else {
+            updateByEntityFlat(entity);
+        }
+    }
+
+    protected void updateByEntityFull(final E entity){
+
+    }
+
+
+    protected void updateByEntityFlat(final E entity) {
+        new OrientDBTransactionExecutor(orientDB) {
+            @Override
+            public void doSpecificDBWork() {
+                final Map<String, Object> fieldValueMap = entityUtils.convertEntityToKeyValueMap(entity);
+                final String id = fieldValueMap.get("id").toString();
+                fieldValueMap.remove("id");
+                String updateCommand = "UPDATE " + entity.getClass().getSimpleName()+ " SET ? WHERE @rid = '" + id + "'";
+                updateCommand = updateCommand.replace("?", createFieldUpdateString(fieldValueMap));
+                orientDB.getRawGraph().command(new OCommandSQL(updateCommand)).execute();
+            }
+        }.execute();
+    }
+
+    protected OrientVertex removeEdgesOfKindFromVertex(final Direction direction, final String edgeLabel,final Vertex vertex) {
+        new OrientDBTransactionExecutor(orientDB) {
+            @Override
+            public void doSpecificDBWork() {
+                Iterable<Edge> edges = vertex.getEdges(direction, edgeLabel);
+                for (final Edge oneEdge : edges) {
+                    OrientVertex vertex1 = (OrientVertex) oneEdge.getVertex(Direction.IN);
+                    OrientVertex vertex2 = (OrientVertex) oneEdge.getVertex(Direction.OUT);
+                    vertex1.reload();
+                    vertex2.reload();
+                    oneEdge.remove();
+                }
+            }
+        }.execute();
+        final OrientVertex updatedVertex = orientDB.getVertex(vertex.getId());
+        updatedVertex.reload();
+        return updatedVertex;
+
+    }
+
+    private String createFieldUpdateString(Map<String, Object> fieldValueMap) {
+        final StringBuilder sb = new StringBuilder();
+        for (final String fieldName : fieldValueMap.keySet()) {
+            String value;
+            final Object valueObject = fieldValueMap.get(fieldName);
+            if(valueObject instanceof String) {
+                value = "'" + valueObject.toString() + "'";
+            } else if (valueObject instanceof Date) {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                value = formatter.format(valueObject);
+            } else {
+                value = valueObject.toString();
+            }
+            sb.append(fieldName + " = " + value);
+            sb.append(", ");
+        }
+        return sb.substring(0, sb.length() - 2);
+    }
 
 
 //    //TODO die Abfrage fehlt noch..

@@ -43,7 +43,7 @@ public class ProjectDAO extends DAO<Long, PlannedProject> {
 
         final PlannedProject persistedPlannedProject = createEntityFlat(tempPlannedProject);
 
-        final List<PlanningUnit> temporaryPlanningUnits = tempPlannedProject.getPlanningUnits();
+        final List<PlanningUnit> temporaryPlanningUnits = tempPlannedProject.getTopLevelPlanningUnits();
         if(temporaryPlanningUnits == null){
             throw new MissingNonOptionalPropertyException("planningUnits");
         }
@@ -51,7 +51,7 @@ public class ProjectDAO extends DAO<Long, PlannedProject> {
         final PlanningUnitDAO planningUnitDAO = DaoFactorySingleton.getInstance().getPlanningUnitDAO();
         persistedPlannedProject.setPlanningUnits(new ArrayList<>());
         for (final PlanningUnit temporaryPlanningUnit : temporaryPlanningUnits) {
-            persistedPlannedProject.getPlanningUnits().add(planningUnitDAO.createEntityFull(temporaryPlanningUnit));
+            persistedPlannedProject.getTopLevelPlanningUnits().add(planningUnitDAO.createEntityFull(temporaryPlanningUnit));
         }
 
         final BenutzerDAO benutzerDAO = DaoFactorySingleton.getInstance().getBenutzerDAO();

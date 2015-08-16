@@ -152,16 +152,22 @@ public class AddWindow extends RapidWindow {
                                 newPlanningUnitTO.setParent(daoFactory.getPlanningUnitDAO().findByID(newPlanningUnitTO.getParent().getId(), true));
                             }
                             for (final PlanningUnitElement planningUnitElementFromParent : newPlanningUnitTO.getParent().getPlanningUnitElementList()) {
-                                final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
-                                planningUnitElement.setRessourceGroup(planningUnitElementFromParent.getRessourceGroup());
-                                planningUnitElement.setPlannedMinutes(planningUnitElementFromParent.getPlannedMinutes());
-                                temporaryNewPUEsForPlanningUnit.add(planningUnitElement);
+                                // Wenn Geschwister-Blaetter vorhanden sind initialisiere mit 00:00:00 fuer alle
+                                if(newPlanningUnitTO.getParent().getKindPlanningUnits().size() > 1){
+                                    temporaryNewPUEsForPlanningUnit = createNewPlanningUnitElements(ressourceGroups);
+                                } else {
+                                    // Wenn einziges Blatt uebernehme PUEs vom Vater
+                                    final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
+                                    planningUnitElement.setRessourceGroup(planningUnitElementFromParent.getRessourceGroup());
+                                    planningUnitElement.setPlannedMinutes(planningUnitElementFromParent.getPlannedMinutes());
+                                    temporaryNewPUEsForPlanningUnit.add(planningUnitElement);
+                                }
                             }
                         } else {
-                            temporaryNewPUEsForPlanningUnit = createNewPlanningUnitElements(newPlanningUnitTO, ressourceGroups);
+                            temporaryNewPUEsForPlanningUnit = createNewPlanningUnitElements(ressourceGroups);
                         }
                     } else {
-                        temporaryNewPUEsForPlanningUnit = createNewPlanningUnitElements(newPlanningUnitTO, ressourceGroups);
+                        temporaryNewPUEsForPlanningUnit = createNewPlanningUnitElements(ressourceGroups);
                     }
                     for (final PlanningUnitElement newPlanningUnitElement : temporaryNewPUEsForPlanningUnit) {
                         persistedNewPUEsForPlanningUnit.add(daoFactory.getPlanningUnitElementDAO().createEntityFull(newPlanningUnitElement));
@@ -170,7 +176,7 @@ public class AddWindow extends RapidWindow {
 
                     if (newPlanningUnitTO.getParent() == null) {
                         daoFactory.getPlannedProjectDAO().addPlanningUnitToProject(persistedPlanningUnit, projekt);
-                        projekt.getPlanningUnits().add(persistedPlanningUnit);
+                        projekt.getTopLevelPlanningUnits().add(persistedPlanningUnit);
                     }
                     AddWindow.this.close();
                     final MainUI ui = screen.getUi();
@@ -202,14 +208,14 @@ public class AddWindow extends RapidWindow {
 
     }
 
-    //Erzeugt neue 00:00:00-PlanningUnitElements für die neue PlanningUnit und weist diese der PlanningUnit zu.
-    private List<PlanningUnitElement> createNewPlanningUnitElements(final PlanningUnit planningUnit,
-                                                                    final List<RessourceGroup> ressourceGroups) {
+    //Erzeugt neue 00:00:00-PlanningUnitElements für die neue PlanningUnit
+    private List<PlanningUnitElement> createNewPlanningUnitElements(final List<RessourceGroup> ressourceGroups) {
         final List<PlanningUnitElement> pues = new ArrayList<>();
         for (final RessourceGroup ressourceGroup : ressourceGroups) {
             final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
             planningUnitElement.setPlannedMinutes(0);
             planningUnitElement.setRessourceGroup(ressourceGroup);
+            pues.add(planningUnitElement);
         }
         return pues;
     }

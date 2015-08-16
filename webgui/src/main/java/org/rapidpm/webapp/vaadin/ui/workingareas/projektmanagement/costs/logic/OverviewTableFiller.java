@@ -83,7 +83,7 @@ public class OverviewTableFiller {
         final Item externItem = table.addItem(EXTERN);
         final Item relativItem = table.addItem(RELATIV);
         final Item absolutItem = table.addItem(ABSOLUT);
-        final Item kostenItem = table.addItem(KOSTEN);
+        //final Item kostenItem = table.addItem(KOSTEN);
 
         final Item item = table.getItem(EXTERN);
         final Property<String> externItemAngabeProperty = item.getItemProperty(angabe);
@@ -130,7 +130,7 @@ public class OverviewTableFiller {
         relativItemAngabeProperty.setValue(costsinit_sumInPercent);
         for (final Object spalte : relativItem.getItemPropertyIds()) {
             if (!spalte.equals(angabe)) {
-                final Map<RessourceGroup, Double> relativeWerte = timesCalculator.getRelativeWerte();
+                final Map<RessourceGroup, Double> relativeWerte = timesCalculator.getPercentPerResourceGroup();
                 for (final Map.Entry<RessourceGroup, Double> relativeWerteEntry : relativeWerte.entrySet()) {
                     final RessourceGroup key = relativeWerteEntry.getKey();
                     final String spaltenNameAusMap = key.getName();
@@ -144,23 +144,23 @@ public class OverviewTableFiller {
             }
         }
 
-        final Property<String> kostenItemAngabeProperty = kostenItem.getItemProperty(angabe);
-        final String costsscreen_sumInEuro = messages.getString("costsscreen_sumInEuro");
-        kostenItemAngabeProperty.setValue(costsscreen_sumInEuro);
-        for (final Object spalte : kostenItem.getItemPropertyIds()) {
-            if (!spalte.equals(angabe)) {
-                final Map<RessourceGroup, Double> kostenMap = costsCalculator.getRessourceGroupsCostsMap();
-                for (final Map.Entry<RessourceGroup, Double> kostenEntry : kostenMap.entrySet()) {
-                    final String spaltenName = spalte.toString();
-                    final RessourceGroup key = kostenEntry.getKey();
-                    final String spaltenNameAusMap = key.getName();
-                    if (spaltenNameAusMap.equals(spaltenName)) {
-                        final Property<String> kostenItemSpalteProperty = kostenItem.getItemProperty(spalte);
-                        final String mapValue = format.format(kostenMap.get(key));
-                        kostenItemSpalteProperty.setValue(mapValue + " " + EUR);
-                    }
-                }
-            }
-        }
+//        final Property<String> kostenItemAngabeProperty = kostenItem.getItemProperty(angabe);
+//        final String costsscreen_sumInEuro = messages.getString("costsscreen_sumInEuro");
+//        kostenItemAngabeProperty.setValue(costsscreen_sumInEuro);
+//        for (final Object spalte : kostenItem.getItemPropertyIds()) {
+//            if (!spalte.equals(angabe)) {
+//                final Map<RessourceGroup, Double> kostenMap = costsCalculator.getRessourceGroupsCostsMap();
+//                for (final Map.Entry<RessourceGroup, Double> kostenEntry : kostenMap.entrySet()) {
+//                    final String spaltenName = spalte.toString();
+//                    final RessourceGroup key = kostenEntry.getKey();
+//                    final String spaltenNameAusMap = key.getName();
+//                    if (spaltenNameAusMap.equals(spaltenName)) {
+//                        final Property<String> kostenItemSpalteProperty = kostenItem.getItemProperty(spalte);
+//                        final String mapValue = format.format(kostenMap.get(key));
+//                        kostenItemSpalteProperty.setValue(mapValue + " " + EUR);
+//                    }
+//                }
+//            }
+//        }
     }
 }

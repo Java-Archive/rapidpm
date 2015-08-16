@@ -189,10 +189,10 @@ public class AddProjectWindow extends RapidWindow{
         } catch (NotYetImplementedException | InvalidKeyException | MissingNonOptionalPropertyException e) {
             e.printStackTrace();
         }
-        if(persistedNewProject.getPlanningUnits() == null){
+        if(persistedNewProject.getTopLevelPlanningUnits() == null){
             persistedNewProject.setPlanningUnits(new ArrayList<>());
         }
-        persistedNewProject.getPlanningUnits().add(firstPlanningUnit);
+        persistedNewProject.getTopLevelPlanningUnits().add(firstPlanningUnit);
     }
 
     public void show() {

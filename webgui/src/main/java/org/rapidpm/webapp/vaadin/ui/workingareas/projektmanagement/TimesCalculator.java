@@ -39,7 +39,7 @@ public class TimesCalculator {
 
     private PlannedProject currentProject;
 
-    private Map<RessourceGroup, Double> relativeWerte = new HashMap<>();
+    private Map<RessourceGroup, Double> percentPerResourceGroup = new HashMap<>();
     private final Map<RessourceGroup, Integer> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
     private Integer gesamtSummeInMin;
     private Double mannTageExakt;
@@ -57,7 +57,7 @@ public class TimesCalculator {
         final VaadinSession session = screen.getUi().getSession();
         currentProject = session.getAttribute(PlannedProject.class);
         for (final RessourceGroup spalte : this.ressourceGroups) {
-            relativeWerte.put(spalte, 0.0);
+            percentPerResourceGroup.put(spalte, 0.0);
         }
 
         calculatePlanningUnitsAndTotalsAbsolut();
@@ -72,7 +72,7 @@ public class TimesCalculator {
     private void calculatePlanningUnitsAndTotalsAbsolut() {
         final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         currentProject = daoFactory.getPlannedProjectDAO().findByID(currentProject.getId(), true);
-        for (PlanningUnit planningUnit : currentProject.getPlanningUnits()) {
+        for (PlanningUnit planningUnit : currentProject.getTopLevelPlanningUnits()) {
             planningUnit = daoFactory.getPlanningUnitDAO().findByID(planningUnit.getId(), true);
             calculatePlanningUnits(planningUnit, planningUnit.getKindPlanningUnits());
         }
@@ -123,12 +123,12 @@ public class TimesCalculator {
                 .entrySet()) {
             final RessourceGroup absoluterWertRessourceGroup = absoluteWerteEntry.getKey();
             final Integer absoluterWertWert = absoluteWerteEntry.getValue();
-            relativeWerte.put(absoluterWertRessourceGroup, absoluterWertWert.doubleValue() / gesamtSummeInMin.doubleValue() * 100.0);
+            percentPerResourceGroup.put(absoluterWertRessourceGroup, absoluterWertWert.doubleValue() / gesamtSummeInMin.doubleValue() * 100.0);
         }
     }
 
-    public Map<RessourceGroup, Double> getRelativeWerte() {
-        return relativeWerte;
+    public Map<RessourceGroup, Double> getPercentPerResourceGroup() {
+        return percentPerResourceGroup;
     }
 
     public Map<RessourceGroup, Integer> getAbsoluteWerte() {

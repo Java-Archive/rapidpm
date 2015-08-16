@@ -1,5 +1,7 @@
 package org.rapidpm.persistence;
 
+import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
+import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -15,7 +17,12 @@ import org.rapidpm.persistence.system.security.BenutzerWebapplikation;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
 
 import java.security.InvalidKeyException;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -47,6 +54,8 @@ public class StartDataCreator {
         benutzer1.setHidden(false);
         benutzer1.setLogin("<not assigned>");
         benutzer1.setPasswd("geheim");
+        benutzer1.setValidFrom(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+        benutzer1.setValidUntil(Date.from(LocalDate.now().plus(Period.ofYears(1)).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
         benutzer1.setMandantengruppe(mandantengruppe);
         benutzer1.setBenutzerWebapplikation(webapplikation);
         benutzer1.setBenutzerGruppe(benutzerGruppe1);
@@ -60,6 +69,8 @@ public class StartDataCreator {
         benutzer2.setEmail("sven.ruppert@rapidpm.org");
         benutzer2.setFailedLogins(0);
         benutzer2.setHidden(false);
+        benutzer2.setValidFrom(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+        benutzer2.setValidUntil(Date.from(LocalDate.now().plus(Period.ofYears(1)).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
         benutzer2.setLogin("sven.ruppert");
         benutzer2.setPasswd("geheim");
         benutzer2.setMandantengruppe(mandantengruppe);
@@ -72,6 +83,8 @@ public class StartDataCreator {
         benutzer3.setEmail("marco.ebbinghaus@rapidpm.org");
         benutzer3.setFailedLogins(0);
         benutzer3.setHidden(false);
+        benutzer3.setValidFrom(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+        benutzer3.setValidUntil(Date.from(LocalDate.now().plus(Period.ofYears(1)).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
         benutzer3.setLogin("marco.ebbinghaus");
         benutzer3.setPasswd("geheim");
         benutzer3.setMandantengruppe(mandantengruppe);
@@ -84,9 +97,9 @@ public class StartDataCreator {
         ressourceGroup1.setHoursPerWeek(40);
         ressourceGroup1.setWeeksPerYear(50);
         ressourceGroup1.setPlanAnzahl(1);
-        ressourceGroup1.setFacturizable(0.5);
-        ressourceGroup1.setExternalEurosPerHour(125.0);
-        ressourceGroup1.setBruttoGehalt(200000.0);
+        ressourceGroup1.setFacturizable(0.5f);
+        ressourceGroup1.setExternalEurosPerHour(125.0f);
+        ressourceGroup1.setBruttoGehalt(200000.0f);
         ressourceGroup1 = DaoFactorySingleton.getInstance().getRessourceGroupDAO().createEntityFlat(ressourceGroup1);
 
         RessourceGroup ressourceGroup2 = new RessourceGroup();
@@ -94,9 +107,9 @@ public class StartDataCreator {
         ressourceGroup2.setHoursPerWeek(40);
         ressourceGroup2.setWeeksPerYear(46);
         ressourceGroup2.setPlanAnzahl(1);
-        ressourceGroup2.setFacturizable(0.5);
-        ressourceGroup2.setExternalEurosPerHour(125.0);
-        ressourceGroup2.setBruttoGehalt(83000.0);
+        ressourceGroup2.setFacturizable(0.5f);
+        ressourceGroup2.setExternalEurosPerHour(125.0f);
+        ressourceGroup2.setBruttoGehalt(83000.0f);
         ressourceGroup2 = DaoFactorySingleton.getInstance().getRessourceGroupDAO().createEntityFlat(ressourceGroup2);
 
         RessourceGroup ressourceGroup3 = new RessourceGroup();
@@ -104,9 +117,9 @@ public class StartDataCreator {
         ressourceGroup3.setHoursPerWeek(40);
         ressourceGroup3.setWeeksPerYear(46);
         ressourceGroup3.setPlanAnzahl(1);
-        ressourceGroup3.setFacturizable(0.75);
-        ressourceGroup3.setExternalEurosPerHour(75.0);
-        ressourceGroup3.setBruttoGehalt(72000.0);
+        ressourceGroup3.setFacturizable(0.75f);
+        ressourceGroup3.setExternalEurosPerHour(75.0f);
+        ressourceGroup3.setBruttoGehalt(72000.0f);
         ressourceGroup3 = DaoFactorySingleton.getInstance().getRessourceGroupDAO().createEntityFlat(ressourceGroup3);
 
         RessourceGroup ressourceGroup4 = new RessourceGroup();
@@ -114,19 +127,19 @@ public class StartDataCreator {
         ressourceGroup4.setHoursPerWeek(40);
         ressourceGroup4.setWeeksPerYear(46);
         ressourceGroup4.setPlanAnzahl(1);
-        ressourceGroup4.setFacturizable(0.75);
-        ressourceGroup4.setExternalEurosPerHour(65.0);
-        ressourceGroup4.setBruttoGehalt(72000.0);
+        ressourceGroup4.setFacturizable(0.75f);
+        ressourceGroup4.setExternalEurosPerHour(65.0f);
+        ressourceGroup4.setBruttoGehalt(72000.0f);
         ressourceGroup4 = DaoFactorySingleton.getInstance().getRessourceGroupDAO().createEntityFlat(ressourceGroup4);
 
         RessourceGroup ressourceGroup5 = new RessourceGroup();
-        ressourceGroup5.setName("Senior Projektmitarbeiter");
+        ressourceGroup5.setName("2nd Senior Projektmitarbeiter");
         ressourceGroup5.setHoursPerWeek(40);
         ressourceGroup5.setWeeksPerYear(46);
         ressourceGroup5.setPlanAnzahl(1);
-        ressourceGroup5.setFacturizable(0.75);
-        ressourceGroup5.setExternalEurosPerHour(45.0);
-        ressourceGroup5.setBruttoGehalt(45000.0);
+        ressourceGroup5.setFacturizable(0.75f);
+        ressourceGroup5.setExternalEurosPerHour(45.0f);
+        ressourceGroup5.setBruttoGehalt(45000.0f);
         ressourceGroup5 = DaoFactorySingleton.getInstance().getRessourceGroupDAO().createEntityFlat(ressourceGroup5);
 
         RessourceGroup ressourceGroup6 = new RessourceGroup();
@@ -134,9 +147,9 @@ public class StartDataCreator {
         ressourceGroup6.setHoursPerWeek(40);
         ressourceGroup6.setWeeksPerYear(46);
         ressourceGroup6.setPlanAnzahl(1);
-        ressourceGroup6.setFacturizable(0.75);
-        ressourceGroup6.setExternalEurosPerHour(25.0);
-        ressourceGroup6.setBruttoGehalt(17000.0);
+        ressourceGroup6.setFacturizable(0.75f);
+        ressourceGroup6.setExternalEurosPerHour(25.0f);
+        ressourceGroup6.setBruttoGehalt(17000.0f);
         ressourceGroup6 = DaoFactorySingleton.getInstance().getRessourceGroupDAO().createEntityFlat(ressourceGroup6);
 
         RessourceGroup ressourceGroup7 = new RessourceGroup();
@@ -144,9 +157,9 @@ public class StartDataCreator {
         ressourceGroup7.setHoursPerWeek(40);
         ressourceGroup7.setWeeksPerYear(46);
         ressourceGroup7.setPlanAnzahl(1);
-        ressourceGroup7.setFacturizable(0.8);
-        ressourceGroup7.setExternalEurosPerHour(90.0);
-        ressourceGroup7.setBruttoGehalt(125000.0);
+        ressourceGroup7.setFacturizable(0.8f);
+        ressourceGroup7.setExternalEurosPerHour(90.0f);
+        ressourceGroup7.setBruttoGehalt(125000.0f);
         ressourceGroup7 = DaoFactorySingleton.getInstance().getRessourceGroupDAO().createEntityFlat(ressourceGroup7);
 
         RessourceGroup ressourceGroup8 = new RessourceGroup();
@@ -154,9 +167,9 @@ public class StartDataCreator {
         ressourceGroup8.setHoursPerWeek(20);
         ressourceGroup8.setWeeksPerYear(46);
         ressourceGroup8.setPlanAnzahl(1);
-        ressourceGroup8.setFacturizable(0.01);
-        ressourceGroup8.setExternalEurosPerHour(0.0);
-        ressourceGroup8.setBruttoGehalt(62000.0);
+        ressourceGroup8.setFacturizable(0.01f);
+        ressourceGroup8.setExternalEurosPerHour(0.0f);
+        ressourceGroup8.setBruttoGehalt(62000.0f);
         ressourceGroup8 = DaoFactorySingleton.getInstance().getRessourceGroupDAO().createEntityFlat(ressourceGroup8);
 
         PlannedProject plannedProject1 = new PlannedProject();
@@ -165,7 +178,7 @@ public class StartDataCreator {
         plannedProject1.setInfo("erstes testprojekt");
         plannedProject1.setProjektName("Projekt Nr 1");
         plannedProject1.setProjektToken("PRO1");
-        plannedProject1.setExternalDailyRate(750.0);
+        plannedProject1.setExternalDailyRate(750.0f);
         plannedProject1.setHoursPerWorkingDay(8);
         plannedProject1.setResponsiblePerson(benutzer2);
         plannedProject1.setCreator(benutzer2);
@@ -176,7 +189,7 @@ public class StartDataCreator {
         plannedProject2.setInfo("zweites testprojekt");
         plannedProject2.setProjektName("Projekt Nr 2");
         plannedProject2.setProjektToken("PRO2");
-        plannedProject2.setExternalDailyRate(750.0);
+        plannedProject2.setExternalDailyRate(750.0f);
         plannedProject2.setHoursPerWorkingDay(9);
 
         PlannedProject plannedProject3 = new PlannedProject();
@@ -185,7 +198,7 @@ public class StartDataCreator {
         plannedProject3.setInfo("drittes testprojekt");
         plannedProject3.setProjektName("Projekt Nr 3");
         plannedProject3.setProjektToken("PRO3");
-        plannedProject3.setExternalDailyRate(750.0);
+        plannedProject3.setExternalDailyRate(750.0f);
         plannedProject3.setHoursPerWorkingDay(8);
 
         PlannedProject plannedProject4 = new PlannedProject();
@@ -194,7 +207,7 @@ public class StartDataCreator {
         plannedProject4.setInfo("viertes testprojekt");
         plannedProject4.setProjektName("Projekt Nr 4");
         plannedProject4.setProjektToken("PRO4");
-        plannedProject4.setExternalDailyRate(750.0);
+        plannedProject4.setExternalDailyRate(750.0f);
         plannedProject4.setHoursPerWorkingDay(9);
 
         Anrede anrede1 = new Anrede();

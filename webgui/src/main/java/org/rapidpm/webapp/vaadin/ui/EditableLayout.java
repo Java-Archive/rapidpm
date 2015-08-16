@@ -1,7 +1,9 @@
 package org.rapidpm.webapp.vaadin.ui;
 
+import com.vaadin.event.MouseEvents;
 import com.vaadin.ui.*;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
 import java.util.Iterator;
 import java.util.ResourceBundle;
@@ -20,6 +22,7 @@ public abstract class EditableLayout extends VerticalLayout {
     protected ResourceBundle messages;
 
     protected Layout componentsLayout;
+    protected boolean active = false;
     protected HorizontalLayout buttonLayout = new HorizontalLayout();
 
     public EditableLayout(final Screen screen, final Panel screenPanel){
@@ -29,17 +32,26 @@ public abstract class EditableLayout extends VerticalLayout {
         messages = screen.getMessagesBundle();
         saveButton.setCaption(messages.getString("save"));
         cancelButton.setCaption(messages.getString("cancel"));
-        screenPanel.addClickListener(event -> {
-            for (final Component component : componentsLayout) {
-                if (component instanceof Table) {
-                    if (!((Table) component).isEditable()) {
-                        ((Table) component).setEditable(true);
+        screenPanel.addClickListener(new MouseEvents.ClickListener() {
+            @Override
+            public void click(MouseEvents.ClickEvent event) {
+                if(!active){
+                    final Iterator<Component> componentIterator = componentsLayout.iterator();
+                    while(componentIterator.hasNext()){
+                        final Component component = componentIterator.next();
+
+                        if (component instanceof Table) {
+                            if(!((Table) component).isEditable()){
+                                ((Table) component).setEditable(true);
+                            }
+                        } else if( component instanceof AbstractField){
+                            component.setReadOnly(false);
+                        }
                     }
-                } else if (component instanceof AbstractField) {
-                    component.setReadOnly(false);
+                    buttonLayout.setVisible(true);
+                    active = true;
                 }
             }
-            buttonLayout.setVisible(true);
         });
 
         buttonLayout.addComponent(saveButton);

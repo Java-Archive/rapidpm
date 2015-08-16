@@ -44,9 +44,9 @@ public class RessourceGroup {
     private Integer weeksPerYear;
     private Integer planAnzahl;
 
-    private Double facturizable;
-    private Double externalEurosPerHour;
-    private Double bruttoGehalt;
+    private Float facturizable;
+    private Float externalEurosPerHour;
+    private Float bruttoGehalt;
 
     /*evtl für spätere Verwendung*/
     //@Basic private String description;
@@ -56,11 +56,11 @@ public class RessourceGroup {
     /*evtl für spätere Verwendung*/
 
     private transient Integer transientHoursPerYear;
-    private transient Double transientEurosPerHour;
-    private transient Double transientOperativeEurosPerHour;
-    private transient Double transientBruttoPerMonth;
-    private transient Double transientSumPerMonth;
-    private transient Double transientSumPerDay;
+    private transient Float transientEurosPerHour;
+    private transient Float transientOperativeEurosPerHour;
+    private transient Float transientBruttoPerMonth;
+    private transient Float transientSumPerMonth;
+    private transient Float transientSumPerDay;
 
     public String getId() {
         return id;
@@ -110,11 +110,11 @@ public class RessourceGroup {
 //        this.currency = currency;
 //    }
 
-    public Double getBruttoGehalt() {
+    public Float getBruttoGehalt() {
         return bruttoGehalt;
     }
 
-    public void setBruttoGehalt(Double bruttoGehalt) {
+    public void setBruttoGehalt(Float bruttoGehalt) {
         this.bruttoGehalt = bruttoGehalt;
     }
 
@@ -135,19 +135,19 @@ public class RessourceGroup {
     }
 
 
-    public Double getFacturizable() {
+    public Float getFacturizable() {
         return facturizable;
     }
 
-    public void setFacturizable(Double facturizable) {
+    public void setFacturizable(Float facturizable) {
         this.facturizable = facturizable;
     }
 
-    public Double getExternalEurosPerHour() {
+    public Float getExternalEurosPerHour() {
         return externalEurosPerHour;
     }
 
-    public void setExternalEurosPerHour(Double externalEurosPerHour) {
+    public void setExternalEurosPerHour(Float externalEurosPerHour) {
         this.externalEurosPerHour = externalEurosPerHour;
     }
 
@@ -168,48 +168,48 @@ public class RessourceGroup {
         this.transientHoursPerYear = transientHoursPerYear;
     }
 
-    public Double getTransientEurosPerHour() {
+    public Float getTransientEurosPerHour() {
         transientEurosPerHour = bruttoGehalt / (getTransientHoursPerYear() * facturizable);
         return transientEurosPerHour;
     }
 
-    public void setTransientEurosPerHour(Double transientEurosPerHour) {
+    public void setTransientEurosPerHour(Float transientEurosPerHour) {
         this.transientEurosPerHour = transientEurosPerHour;
     }
 
-    public Double getTransientOperativeEurosPerHour() {
+    public Float getTransientOperativeEurosPerHour() {
         transientOperativeEurosPerHour = externalEurosPerHour - getTransientEurosPerHour();
         return transientOperativeEurosPerHour;
     }
 
-    public void setTransientOperativeEurosPerHour(Double transientOperativeEurosPerHour) {
+    public void setTransientOperativeEurosPerHour(Float transientOperativeEurosPerHour) {
         this.transientOperativeEurosPerHour = transientOperativeEurosPerHour;
     }
 
-    public Double getTransientBruttoPerMonth() {
+    public Float getTransientBruttoPerMonth() {
         transientBruttoPerMonth = bruttoGehalt / Constants.MONTHS_PER_YEAR;
         return transientBruttoPerMonth;
     }
 
-    public void setTransientBruttoPerMonth(Double transientBruttoPerMonth) {
+    public void setTransientBruttoPerMonth(Float transientBruttoPerMonth) {
         this.transientBruttoPerMonth = transientBruttoPerMonth;
     }
 
-    public Double getTransientSumPerMonth() {
+    public Float getTransientSumPerMonth() {
         transientSumPerMonth = getTransientBruttoPerMonth() * planAnzahl;
         return transientSumPerMonth;
     }
 
-    public void setTransientSumPerMonth(Double transientSumPerMonth) {
+    public void setTransientSumPerMonth(Float transientSumPerMonth) {
         this.transientSumPerMonth = transientSumPerMonth;
     }
 
-    public Double getTransientSumPerDay() {
+    public Float getTransientSumPerDay() {
         transientSumPerDay = getTransientSumPerMonth() / Constants.STD_WORKING_DAYS_PER_MONTH;
         return transientSumPerDay;
     }
 
-    public void setTransientSumPerDay(Double transientSumPerDay) {
+    public void setTransientSumPerDay(Float transientSumPerDay) {
         this.transientSumPerDay = transientSumPerDay;
     }
 

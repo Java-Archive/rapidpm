@@ -3,15 +3,21 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.log
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.event.ItemClickEvent;
 import com.vaadin.server.VaadinSession;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import static org.rapidpm.Constants.MINS_HOUR;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -20,31 +26,32 @@ import java.util.ResourceBundle;
  * Time: 15:52
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
+//TODO TreeTableFiller-Klassen mergen!!!
 public class TreeTableFiller {
 
     private static final int WIDTH = 200;
+
     private HierarchicalContainer dataSource;
     private MyTreeTable treeTable;
     private AufwandProjInitScreen screen;
+    private TreeTableValue cellValue;
     private ResourceBundle messages;
     private PlannedProject currentProject;
 
 
     public TreeTableFiller(final ResourceBundle bundle, final AufwandProjInitScreen screen,
-                           final MyTreeTable treeTable, final HierarchicalContainer dataSource) {
+                           final MyTreeTable treeTable, final HierarchicalContainer dataSource, TreeTableValue cellValue) {
         this.messages = bundle;
         this.dataSource = dataSource;
         this.treeTable = treeTable;
         this.screen = screen;
+        this.cellValue = cellValue;
     }
 
     public void fill() {
         final VaadinSession session = screen.getUi().getSession();
         currentProject = session.getAttribute(PlannedProject.class);
-        final TimesCalculator timesCalculator = new TimesCalculator(screen);
-        final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(screen, messages,
-                dataSource);
-        timesCalculator.calculate();
+        final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(screen, messages, dataSource, cellValue);
         treeTableDataSourceFiller.fill();
         for(final Object listener : treeTable.getListeners(ItemClickEvent.ItemClickListener.class)){
             treeTable.removeItemClickListener((ItemClickEvent.ItemClickListener)listener);
@@ -61,12 +68,25 @@ public class TreeTableFiller {
             }
         }
         treeTable.setFooterVisible(true);
-        final Map<RessourceGroup, Integer> werteMap = timesCalculator.getAbsoluteWerte();
-        for(final RessourceGroup ressourceGroup : werteMap.keySet()){
-            final DaysHoursMinutesItem item = new DaysHoursMinutesItem(werteMap.get(ressourceGroup),
-                    currentProject.getHoursPerWorkingDay());
-            treeTable.setColumnFooter(ressourceGroup.getName(), item.toString());
-        }
+        fillFooter();
         treeTable.setValue(null);
+    }
+
+    private void fillFooter() {
+        final Map<RessourceGroup, Integer> ressourceGroupTimesMap = new HashMap<>();
+        final PlannedProject plannedProject = DaoFactorySingleton.getInstance().getPlannedProjectDAO().findByID(screen.getUi().getCurrentProject().getId(), true);
+        final List<PlanningUnit> topLevelPlanningUnits = plannedProject.getTopLevelPlanningUnits();
+        for (PlanningUnit topLevelPlanningUnit : topLevelPlanningUnits) {
+            topLevelPlanningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(topLevelPlanningUnit.getId(), true);
+            for (PlanningUnitElement planningUnitElement : topLevelPlanningUnit.getPlanningUnitElementList()) {
+                if(!ressourceGroupTimesMap.containsKey(planningUnitElement.getRessourceGroup())){
+                    ressourceGroupTimesMap.put(planningUnitElement.getRessourceGroup(), 0);
+                }
+                ressourceGroupTimesMap.put(planningUnitElement.getRessourceGroup(), ressourceGroupTimesMap.get(planningUnitElement.getRessourceGroup()) + planningUnitElement.getPlannedMinutes());
+            }
+        }
+        for (final RessourceGroup ressourceGroup : ressourceGroupTimesMap.keySet()) {
+            treeTable.setColumnFooter(ressourceGroup.getName(), new DaysHoursMinutesItem(ressourceGroupTimesMap.get(ressourceGroup), currentProject.getHoursPerWorkingDay()).toString());
+        }
     }
 }

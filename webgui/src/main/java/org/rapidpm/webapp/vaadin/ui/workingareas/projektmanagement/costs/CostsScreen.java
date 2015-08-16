@@ -18,6 +18,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject.NoP
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.ExpandTableCheckBox;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic.TreeTableValue;
 
 import java.util.Date;
 import java.util.List;
@@ -71,7 +72,7 @@ public class CostsScreen extends Screen {
 
             expandCheckBox = new ExpandTableCheckBox(treeTable, dataSource);
 
-            final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, treeTable, dataSource);
+            final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, treeTable, dataSource, TreeTableValue.COSTS);
             treeTableFiller.fill();
 
             final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(this, uebersichtTable);
