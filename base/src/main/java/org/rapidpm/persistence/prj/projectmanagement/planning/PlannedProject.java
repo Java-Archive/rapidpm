@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning;
 
-import com.tinkerpop.blueprints.Vertex;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.book.Buch;
 import org.rapidpm.persistence.prj.projectmanagement.planning.finance.PlannedOffer;
@@ -8,10 +7,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
 
-import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 
 public class PlannedProject implements Comparable<PlannedProject>{

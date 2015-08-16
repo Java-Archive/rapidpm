@@ -7,14 +7,12 @@ package org.rapidpm.tools.registry;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import org.apache.log4j.Logger;
 import org.rapidpm.lang.ClassUtils;
 import org.rapidpm.lang.PackageClassLoader;
-import org.apache.log4j.Logger;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Abstrakte Basisklasse für globale Typ-Registries.

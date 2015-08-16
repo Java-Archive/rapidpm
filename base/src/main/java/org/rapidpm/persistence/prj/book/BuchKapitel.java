@@ -7,8 +7,8 @@ package org.rapidpm.persistence.prj.book;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
-import org.rapidpm.persistence.prj.book.kommentar.BuchKapitelKommentar;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.prj.book.kommentar.BuchKapitelKommentar;
 
 import javax.persistence.*;
 import java.util.List;

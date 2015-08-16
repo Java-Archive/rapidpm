@@ -6,8 +6,6 @@ import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.security.InvalidKeyException;
 
 /**

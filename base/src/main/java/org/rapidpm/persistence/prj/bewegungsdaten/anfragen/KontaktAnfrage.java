@@ -14,10 +14,10 @@ package org.rapidpm.persistence.prj.bewegungsdaten.anfragen;
  *
  */
 
+import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.stammdaten.person.Anrede;
 import org.rapidpm.persistence.system.security.BenutzerWebapplikation;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.Date;

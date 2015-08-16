@@ -14,9 +14,7 @@ import java.security.InvalidKeyException;
 import java.util.List;
 import java.util.Optional;
 
-import static org.rapidpm.persistence.Edges.BELONGS_TO;
-import static org.rapidpm.persistence.Edges.BELONGS_TO_WEBAPP;
-import static org.rapidpm.persistence.Edges.IS_PART_OF;
+import static org.rapidpm.persistence.Edges.*;
 /**
  * NeoScio
  * User: Manfred

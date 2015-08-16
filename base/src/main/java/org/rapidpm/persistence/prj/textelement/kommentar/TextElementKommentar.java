@@ -8,10 +8,9 @@ package org.rapidpm.persistence.prj.textelement.kommentar;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 
-import org.rapidpm.persistence.system.security.Benutzer;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.system.security.Benutzer;
 
-import javax.persistence.*;
 import java.util.Date;
 
 public class TextElementKommentar {

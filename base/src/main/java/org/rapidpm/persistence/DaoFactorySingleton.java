@@ -1,10 +1,6 @@
 package org.rapidpm.persistence;
 
 
-import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
-import org.rapidpm.Constants;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
-
 /**
  * RapidPM - www.rapidpm.org
  * User: svenruppert

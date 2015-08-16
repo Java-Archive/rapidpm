@@ -4,8 +4,8 @@
 
 package org.rapidpm.validate;
 
-import org.rapidpm.lang.PackageClassLoader;
 import org.apache.log4j.Logger;
+import org.rapidpm.lang.PackageClassLoader;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;

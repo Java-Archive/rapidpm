@@ -8,8 +8,8 @@ package org.rapidpm.persistence.system.logging;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
-import org.rapidpm.persistence.system.security.Benutzer;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.system.security.Benutzer;
 
 import javax.persistence.*;
 import java.util.Date;

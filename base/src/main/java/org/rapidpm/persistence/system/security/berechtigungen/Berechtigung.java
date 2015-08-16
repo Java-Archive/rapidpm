@@ -1,14 +1,7 @@
 package org.rapidpm.persistence.system.security.berechtigungen;
 
-import org.hibernate.envers.Audited;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.TableGenerator;
+import javax.persistence.*;
 
 /**
  * Created by RapidPM - www.rapidpm.org
@@ -19,7 +12,6 @@ import javax.persistence.TableGenerator;
  */
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
-@Audited
 public class Berechtigung {
 
     @Id

@@ -14,6 +14,7 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
  *
  */
 
+import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.stammdaten.address.Adresse;
 import org.rapidpm.persistence.prj.stammdaten.kommunikation.KommunikationsServiceUID;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.gesellschaftsformen.Gesellschaftsform;
@@ -22,7 +23,6 @@ import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.metadata.Verw
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.metadata.Wirtschaftseinheit;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomain;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.List;

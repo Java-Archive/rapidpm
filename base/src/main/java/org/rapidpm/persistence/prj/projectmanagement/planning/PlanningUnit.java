@@ -5,9 +5,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.
 import org.rapidpm.persistence.prj.textelement.TextElement;
 import org.rapidpm.persistence.system.security.Benutzer;
 
-import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 /**
  *

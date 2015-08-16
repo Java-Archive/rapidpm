@@ -5,8 +5,6 @@
 
 package org.rapidpm.persistence.prj.stammdaten.person;
 
-import javax.persistence.*;
-
 /**
  * Created by IntelliJ IDEA.
  * User: Alexander Vos

@@ -1,7 +1,5 @@
 package org.rapidpm.persistence;
 
-import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
-import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -18,7 +16,6 @@ import org.rapidpm.persistence.system.security.Mandantengruppe;
 
 import java.security.InvalidKeyException;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 /**

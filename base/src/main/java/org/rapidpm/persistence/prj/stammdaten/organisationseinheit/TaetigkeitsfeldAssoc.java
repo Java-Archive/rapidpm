@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
 
-import org.rapidpm.persistence.system.security.Mandantengruppe;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.system.security.Mandantengruppe;
 
 import javax.persistence.*;
 

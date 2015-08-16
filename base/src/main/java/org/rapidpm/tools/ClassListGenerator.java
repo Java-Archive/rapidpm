@@ -6,9 +6,9 @@ package org.rapidpm.tools; /**
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
+import org.apache.log4j.Logger;
 import org.rapidpm.Constants;
 import org.rapidpm.lang.PackageClassLoader;
-import org.apache.log4j.Logger;
 
 import java.io.FileWriter;
 import java.io.IOException;
