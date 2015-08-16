@@ -22,6 +22,7 @@ public abstract class EditableLayout extends VerticalLayout {
     protected ResourceBundle messages;
 
     protected Layout componentsLayout;
+    protected boolean active = false;
     protected HorizontalLayout buttonLayout = new HorizontalLayout();
 
     public EditableLayout(final Screen screen, final Panel screenPanel){
@@ -34,19 +35,22 @@ public abstract class EditableLayout extends VerticalLayout {
         screenPanel.addClickListener(new MouseEvents.ClickListener() {
             @Override
             public void click(MouseEvents.ClickEvent event) {
-                final Iterator<Component> componentIterator = componentsLayout.iterator();
-                while(componentIterator.hasNext()){
-                    final Component component = componentIterator.next();
+                if(!active){
+                    final Iterator<Component> componentIterator = componentsLayout.iterator();
+                    while(componentIterator.hasNext()){
+                        final Component component = componentIterator.next();
 
-                    if (component instanceof Table) {
-                        if(!((Table) component).isEditable()){
-                            ((Table) component).setEditable(true);
+                        if (component instanceof Table) {
+                            if(!((Table) component).isEditable()){
+                                ((Table) component).setEditable(true);
+                            }
+                        } else if( component instanceof AbstractField){
+                            component.setReadOnly(false);
                         }
-                    } else if( component instanceof AbstractField){
-                        component.setReadOnly(false);
                     }
+                    buttonLayout.setVisible(true);
+                    active = true;
                 }
-                buttonLayout.setVisible(true);
             }
         });
 

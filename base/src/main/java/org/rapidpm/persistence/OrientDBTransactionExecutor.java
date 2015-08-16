@@ -1,5 +1,6 @@
 package org.rapidpm.persistence;
 
+import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 
 /**
@@ -19,6 +20,7 @@ public abstract class OrientDBTransactionExecutor {
             graph.commit();
         } catch( Exception e ) {
             graph.rollback();
+            e.printStackTrace();
         }
     }
 

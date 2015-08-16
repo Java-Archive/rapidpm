@@ -82,7 +82,7 @@ public class Constants {
     public static final Integer MINS_HOUR = 60;
     public static final Double STD_ANTEILE = 1.0 / 60.0;
     public static final Integer MONTHS_PER_YEAR = 12;
-    public static final Double STD_WORKING_DAYS_PER_MONTH = 20.0;
+    public static final Float STD_WORKING_DAYS_PER_MONTH = 20.0f;
 
     public static final String MESSAGESBUNDLE ="MessagesBundle";
 

@@ -75,19 +75,19 @@
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.5" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.3.2" level="project" />
     <orderEntry type="library" name="Maven: postgresql:postgresql:9.1-901-1.jdbc4" level="project" />
-    <orderEntry type="library" name="Maven: com.orientechnologies:orientdb-core:2.0.8" level="project" />
+    <orderEntry type="library" name="Maven: com.orientechnologies:orientdb-core:2.1-rc4" level="project" />
     <orderEntry type="library" name="Maven: org.xerial.snappy:snappy-java:1.1.0.1" level="project" />
     <orderEntry type="library" name="Maven: com.googlecode.concurrentlinkedhashmap:concurrentlinkedhashmap-lru:1.4.1" level="project" />
     <orderEntry type="library" name="Maven: net.java.dev.jna:jna:4.0.0" level="project" />
     <orderEntry type="library" name="Maven: net.java.dev.jna:jna-platform:4.0.0" level="project" />
-    <orderEntry type="library" name="Maven: com.orientechnologies:orientdb-client:2.0.8" level="project" />
-    <orderEntry type="library" name="Maven: com.orientechnologies:orientdb-tools:2.0.8" level="project" />
-    <orderEntry type="library" name="Maven: com.orientechnologies:orientdb-object:2.0.8" level="project" />
+    <orderEntry type="library" name="Maven: com.orientechnologies:orientdb-client:2.1-rc4" level="project" />
+    <orderEntry type="library" name="Maven: com.orientechnologies:orientdb-tools:2.1-rc4" level="project" />
+    <orderEntry type="library" name="Maven: com.orientechnologies:orientdb-object:2.1-rc4" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.0.Final" level="project" />
     <orderEntry type="library" name="Maven: com.orientechnologies:orient-commons:2.0-M1" level="project" />
-    <orderEntry type="library" name="Maven: com.orientechnologies:orientdb-enterprise:2.0.8" level="project" />
-    <orderEntry type="library" name="Maven: com.orientechnologies:orientdb-graphdb:2.0.8" level="project" />
-    <orderEntry type="library" name="Maven: com.orientechnologies:orientdb-server:2.0.8" level="project" />
+    <orderEntry type="library" name="Maven: com.orientechnologies:orientdb-enterprise:2.1-rc4" level="project" />
+    <orderEntry type="library" name="Maven: com.orientechnologies:orientdb-graphdb:2.1-rc4" level="project" />
+    <orderEntry type="library" name="Maven: com.orientechnologies:orientdb-server:2.1-rc4" level="project" />
     <orderEntry type="library" name="Maven: javax.mail:mail:1.4" level="project" />
     <orderEntry type="library" name="Maven: javax.activation:activation:1.1" level="project" />
     <orderEntry type="library" name="Maven: com.tinkerpop.gremlin:gremlin-java:2.6.0" level="project" />

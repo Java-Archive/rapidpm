@@ -15,7 +15,6 @@ import org.rapidpm.webapp.vaadin.BaseUI;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,7 +40,7 @@ public class MappingPlanningUnitToIssueBase {
 
     public boolean startMapping() {
         boolean puToMap = false;
-        for (final PlanningUnit pu : project.getPlanningUnits()) {
+        for (final PlanningUnit pu : project.getTopLevelPlanningUnits()) {
             puToMap = true;
             if (pu.getParent() == null) {
                 mapPlanningUnitToIssue(pu);

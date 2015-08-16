@@ -1,14 +1,18 @@
 package org.rapidpm.persistence.system.security;
 
 import com.orientechnologies.orient.core.sql.OCommandSQL;
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
+import com.tinkerpop.blueprints.impls.orient.OrientVertex;
 import org.apache.log4j.Logger;
 import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.EntityUtils;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 
 import java.security.InvalidKeyException;
 import java.util.List;
@@ -17,6 +21,8 @@ import java.util.Optional;
 import static org.rapidpm.persistence.Edges.BELONGS_TO;
 import static org.rapidpm.persistence.Edges.BELONGS_TO_WEBAPP;
 import static org.rapidpm.persistence.Edges.IS_PART_OF;
+import static org.rapidpm.persistence.Edges.IS_RESPONSIBLE_FOR_PLANNINGUNIT;
+
 /**
  * NeoScio
  * User: Manfred
@@ -97,6 +103,35 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
     public Benutzer loadBenutzerForLogin(final String login) {
         final Optional<Benutzer> benutzer = findAll().stream().filter(p -> p.getLogin().equals(login)).findFirst();
         return benutzer.orElse(null);
+    }
+
+    @Override
+    public void updateByEntityFull(final Benutzer benutzer) {
+        updateByEntityFlat(benutzer);
+        updateBenutzergruppeForUser(benutzer.getBenutzerGruppe(), benutzer);
+        updateWebapplicationForUser(benutzer.getBenutzerWebapplikation(), benutzer);
+        updateMandantengruppeForUser(benutzer.getMandantengruppe(), benutzer);
+    }
+
+    private void updateMandantengruppeForUser(Mandantengruppe mandantengruppe, Benutzer benutzer) {
+        OrientVertex userVertex = orientDB.getVertex(benutzer.getId());
+        final Vertex mandantengruppeVertex = orientDB.getVertex(mandantengruppe.getId());
+        userVertex = removeEdgesOfKindFromVertex(Direction.OUT, IS_PART_OF, userVertex);
+        addEdgeFromVertexToVertex(userVertex, IS_PART_OF, mandantengruppeVertex);
+    }
+
+    private void updateWebapplicationForUser(BenutzerWebapplikation benutzerWebapplikation, Benutzer benutzer) {
+        OrientVertex userVertex = orientDB.getVertex(benutzer.getId());
+        final Vertex webapplicationVertex = orientDB.getVertex(benutzerWebapplikation.getId());
+        userVertex = removeEdgesOfKindFromVertex(Direction.OUT, BELONGS_TO_WEBAPP, userVertex);
+        addEdgeFromVertexToVertex(userVertex, BELONGS_TO_WEBAPP, webapplicationVertex);
+    }
+
+    private void updateBenutzergruppeForUser(BenutzerGruppe benutzerGruppe, Benutzer benutzer) {
+        OrientVertex userVertex = orientDB.getVertex(benutzer.getId());
+        final Vertex userGroupVertex = orientDB.getVertex(benutzerGruppe.getId());
+        userVertex = removeEdgesOfKindFromVertex(Direction.OUT, BELONGS_TO, userVertex);
+        addEdgeFromVertexToVertex(userVertex, BELONGS_TO, userGroupVertex);
     }
 
 

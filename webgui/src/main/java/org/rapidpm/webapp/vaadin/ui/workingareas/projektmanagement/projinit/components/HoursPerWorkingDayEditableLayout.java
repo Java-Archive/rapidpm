@@ -62,6 +62,7 @@ public class HoursPerWorkingDayEditableLayout extends EditableLayout {
                 componentsLayout.addComponent(hoursBox);
                 hoursBox.setReadOnly(true);
                 buttonLayout.setVisible(false);
+                active = false;
             }
         });
         buildForm();

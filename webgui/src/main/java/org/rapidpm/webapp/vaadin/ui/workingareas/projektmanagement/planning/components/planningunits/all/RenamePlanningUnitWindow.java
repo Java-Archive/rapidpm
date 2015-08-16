@@ -51,7 +51,7 @@ public class RenamePlanningUnitWindow extends RapidWindow {
                                 fieldGroup.getField(PlanningUnit.PARENT).setRequired(false);
                                 fieldGroup.commit();
                                 final PlanningUnit planningUnit = ((BeanItem<PlanningUnit>) fieldGroup.getItemDataSource()).getBean();
-//                                daoFactory.saveOrUpdateTX(planningUnit);
+                                daoFactory.getPlanningUnitDAO().updateByEntity(planningUnit, false);
                                 RenamePlanningUnitWindow.this.close();
                                 screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
                             }

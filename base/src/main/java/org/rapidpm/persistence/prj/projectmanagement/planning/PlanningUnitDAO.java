@@ -1,14 +1,15 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning;
 
 import com.orientechnologies.orient.core.sql.OCommandSQL;
+import com.tinkerpop.blueprints.Direction;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
+import com.tinkerpop.blueprints.impls.orient.OrientVertex;
 import org.apache.log4j.Logger;
 import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.DaoFactorySingleton;
-import org.rapidpm.persistence.Edges;
 import org.rapidpm.persistence.EntityUtils;
 import org.rapidpm.persistence.prj.textelement.TextElement;
 import org.rapidpm.persistence.prj.textelement.TextElementDAO;
@@ -16,15 +17,14 @@ import org.rapidpm.persistence.system.security.Benutzer;
 
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
-import static org.rapidpm.persistence.Edges.CONSISTS_OF;
 import static org.rapidpm.persistence.Edges.HAS;
 import static org.rapidpm.persistence.Edges.HAS_DESCRIPTION;
 import static org.rapidpm.persistence.Edges.HAS_TESTCASE;
 import static org.rapidpm.persistence.Edges.IS_FATHER_OF;
-import static org.rapidpm.persistence.Edges.IS_RESPONSIBLE_FOR;
+import static org.rapidpm.persistence.Edges.IS_RESPONSIBLE_FOR_PLANNINGUNIT;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -72,10 +72,6 @@ public class PlanningUnitDAO extends DAO<Long, PlanningUnit> {
         addPlanningUnitElementsToPlanningUnit(persistedPlanningUnit, persistedPUEs);
         persistedPlanningUnit.setPlanningUnitElementList(persistedPUEs);
 
-        addPlanningUnitElementsToPlanningUnit(persistedPlanningUnit, persistedPUEs);
-        persistedPlanningUnit.setPlanningUnitElementList(persistedPUEs);
-
-
         final TextElementDAO textElementDAO = DaoFactorySingleton.getInstance().getTextElementDAO();
 
         if (tempDescriptions != null) {
@@ -106,8 +102,9 @@ public class PlanningUnitDAO extends DAO<Long, PlanningUnit> {
         planningUnit.setPlanningUnitElementList(new ArrayList<>());
         planningUnit.setDescriptions(new ArrayList<>());
         planningUnit.setTestcases(new ArrayList<>());
-        final Iterable<Vertex> responsiblePerson = orientDB.command(new OCommandSQL("select expand( in('"+IS_RESPONSIBLE_FOR+"') ) from PlanningUnit where @rid = " + planningUnit.getId())).execute();
+        final Iterable<Vertex> responsiblePerson = orientDB.command(new OCommandSQL("select expand( in('"+ IS_RESPONSIBLE_FOR_PLANNINGUNIT +"') ) from PlanningUnit where @rid = " + planningUnit.getId())).execute();
         final Iterable<Vertex> planningUnitElements = orientDB.command(new OCommandSQL("select expand( out('"+HAS+"') ) from PlanningUnit where @rid = " + planningUnit.getId())).execute();
+        final Iterable<Vertex> parentPlanningUnit = orientDB.command(new OCommandSQL("select expand( IN('"+IS_FATHER_OF+"') ) from PlanningUnit where @rid = " + planningUnit.getId())).execute();
         final Iterable<Vertex> childPlanningUnits = orientDB.command(new OCommandSQL("select expand( out('"+IS_FATHER_OF+"') ) from PlanningUnit where @rid = " + planningUnit.getId())).execute();
         final Iterable<Vertex> descriptions = orientDB.command(new OCommandSQL("select expand( out('"+HAS_DESCRIPTION+"') ) from PlanningUnit where @rid = " + planningUnit.getId())).execute();
         final Iterable<Vertex> testCases = orientDB.command(new OCommandSQL("select expand( out('"+HAS_TESTCASE+"') ) from PlanningUnit where @rid = " + planningUnit.getId())).execute();
@@ -119,6 +116,12 @@ public class PlanningUnitDAO extends DAO<Long, PlanningUnit> {
         for (final Vertex responsiblePersonVertex : responsiblePerson) {
             if(responsiblePersonVertex != null && responsiblePersonVertex.getId() != null && !responsiblePersonVertex.getId().toString().startsWith("-")){
                 planningUnit.setResponsiblePerson(new EntityUtils<>(Benutzer.class).convertVertexToEntity(responsiblePersonVertex));
+            }
+        }
+        // should only be one
+        for (final Vertex parentPlanningUnitVertex : parentPlanningUnit) {
+            if(parentPlanningUnitVertex != null && parentPlanningUnitVertex.getId() != null && !parentPlanningUnitVertex.getId().toString().startsWith("-")){
+                planningUnit.setParent(new EntityUtils<>(PlanningUnit.class).convertVertexToEntity(parentPlanningUnitVertex));
             }
         }
         for (final Vertex planningUnitElementVertex : planningUnitElements) {
@@ -133,6 +136,13 @@ public class PlanningUnitDAO extends DAO<Long, PlanningUnit> {
             planningUnit.getTestcases().add(new EntityUtils<>(TextElement.class).convertVertexToEntity(testCaseVertex));
         }
         return planningUnit;
+    }
+
+    @Override
+    public void updateByEntityFull(final PlanningUnit planningUnit) {
+        updateByEntityFlat(planningUnit);
+        updateResponsiblePersonForPlanningUnit(planningUnit.getResponsiblePerson(), planningUnit);
+        updatePlanningUnitElementsForPlanningUnit(planningUnit.getPlanningUnitElementList(), planningUnit);
     }
 
     public void addDescriptionToPlanningUnit(final TextElement description, final PlanningUnit planningUnit){
@@ -174,7 +184,7 @@ public class PlanningUnitDAO extends DAO<Long, PlanningUnit> {
     public void addResponsiblePersonToPlanningUnit(final Benutzer resonsiblePerson, final PlanningUnit planningUnit) {
         final Vertex responsiblePersonVertex = orientDB.getVertex(resonsiblePerson.getId());
         final Vertex planningUnitVertex = orientDB.getVertex(planningUnit.getId());
-        addEdgeFromVertexToVertex(responsiblePersonVertex, IS_RESPONSIBLE_FOR, planningUnitVertex);
+        addEdgeFromVertexToVertex(responsiblePersonVertex, IS_RESPONSIBLE_FOR_PLANNINGUNIT, planningUnitVertex);
     }
 
     public void addPlanningUnitElementsToPlanningUnit(final List<PlanningUnitElement> planningUnitElements, final PlanningUnit planningUnit) {
@@ -189,15 +199,59 @@ public class PlanningUnitDAO extends DAO<Long, PlanningUnit> {
         }
     }
 
-    public PlanningUnit loadPlanningUnitByName(final String planningUnitName) {
-//        final TypedQuery<PlanningUnit> typedQuery = orientDB.createQuery("from PlanningUnit pu "
-//                + "where pu.planningUnitName=:planningUnitName ", PlanningUnit.class).setParameter("planningUnitName", planningUnitName);
-//        final PlanningUnit singleResultOrNull = getSingleResultOrNull(typedQuery);
-//        return singleResultOrNull;
-        return null;
+    public void updateResponsiblePersonForPlanningUnit(final Benutzer benutzer, final PlanningUnit planningUnit) {
+        OrientVertex planningUnitVertex = orientDB.getVertex(planningUnit.getId());
+        final Vertex responsibleUserVertex = orientDB.getVertex(benutzer.getId());
+        planningUnitVertex = removeEdgesOfKindFromVertex(Direction.IN, IS_RESPONSIBLE_FOR_PLANNINGUNIT, planningUnitVertex);
+        addEdgeFromVertexToVertex(responsibleUserVertex, IS_RESPONSIBLE_FOR_PLANNINGUNIT, planningUnitVertex);
     }
 
-    public List<PlanningUnit> loadAllPlanningUnitsWithoutParents() {
+    public void updatePlanningUnitElementsForPlanningUnit(final List<PlanningUnitElement> planningUnitElements, final PlanningUnit planningUnit) {
+        for (PlanningUnitElement planningUnitElement : planningUnitElements) {
+            updatePlanningUnitElement(planningUnitElement, planningUnit);
+        }
+    }
+
+    public void updatePlanningUnitElement(final PlanningUnitElement planningUnitElement, final PlanningUnit planningUnit){
+        Vertex planningUnitElementVertex = orientDB.getVertex(planningUnitElement.getId());
+        final Vertex planningUnitVertex = orientDB.getVertex(planningUnit.getId());
+        planningUnitElementVertex = removeEdgesOfKindFromVertex(Direction.IN, HAS, planningUnitElementVertex);
+        addEdgeFromVertexToVertex(planningUnitVertex, HAS, planningUnitElementVertex);
+    }
+
+    public List<PlanningUnit> loadChildren(PlanningUnit planningUnit, final boolean recursive) {
+        final List<PlanningUnit> allChildren = new ArrayList<>();
+        if(planningUnit.getKindPlanningUnits() == null){
+            planningUnit = findByID(planningUnit.getId(), true);
+        }
+        for (PlanningUnit childPlanningUnit : planningUnit.getKindPlanningUnits()) {
+            allChildren.add(childPlanningUnit);
+            if(recursive){
+                allChildren.addAll(loadChildren(childPlanningUnit));
+            }
+        }
+        return allChildren;
+    }
+
+    public List<PlanningUnit> loadChildren(PlanningUnit planningUnit) {
+        final List<PlanningUnit> allChildren = new ArrayList<>();
+        if(planningUnit.getKindPlanningUnits() == null){
+            planningUnit = findByID(planningUnit.getId(), true);
+        }
+        for (PlanningUnit childPlanningUnit : planningUnit.getKindPlanningUnits()) {
+            allChildren.add(childPlanningUnit);
+            allChildren.addAll(loadChildren(childPlanningUnit));
+        }
+        return allChildren;
+    }
+
+    public PlanningUnit loadPlanningUnitByName(final String planningUnitName) {
+        final Optional<PlanningUnit> planningUnit = findAll().stream().filter(p -> p.getPlanningUnitName().equals(planningUnitName)).findFirst();
+        return planningUnit.orElse(null);
+    }
+
+
+        public List<PlanningUnit> loadAllPlanningUnitsWithoutParents() {
 //        final TypedQuery<PlanningUnit> typedQuery = orientDB.createQuery("from PlanningUnit pu "
 //                + "where pu.parent=null ", PlanningUnit.class);
 //        final List<PlanningUnit> resultList = typedQuery.getResultList();

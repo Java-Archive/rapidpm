@@ -1,5 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.ressources;
 
+import com.vaadin.event.FieldEvents;
 import com.vaadin.event.MouseEvents;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
@@ -69,6 +70,7 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
                         }
                     }
                     buttonLayout.setVisible(false);
+                    active = false;
                 }
             });
 
@@ -91,7 +93,7 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
                                     final DaysHoursMinutesItem item = new DaysHoursMinutesItem(textField.getValue(),
                                             currentProject.getHoursPerWorkingDay());
                                     planningUnitElement.setPlannedMinutes(item.getMinutesFromDaysHoursMinutes());
-//                                    daoFactory.saveOrUpdateTX(planningUnitElement);
+                                    daoFactory.getPlanningUnitElementDAO().updateByEntity(planningUnitElement, false);
                                 }
                             }
                         }
@@ -121,6 +123,14 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
         field.setValue(item.toString());
         field.setReadOnly(true);
         field.addValidator(new DaysHoursMinutesFieldValidator(screen));
+        field.addFocusListener(new FieldEvents.FocusListener() {
+            @Override
+            public void focus(FieldEvents.FocusEvent focusEvent) {
+                if(!field.isReadOnly()){
+                    ((TextField)focusEvent.getComponent()).selectAll();
+                }
+            }
+        });
         ressourceGroupFields.add(field);
     }
 

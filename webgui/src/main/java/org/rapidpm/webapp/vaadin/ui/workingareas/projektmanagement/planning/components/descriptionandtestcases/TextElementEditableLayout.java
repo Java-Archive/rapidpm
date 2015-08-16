@@ -75,6 +75,7 @@ public class TextElementEditableLayout extends EditableLayout {
                             }
                         }
                         buttonLayout.setVisible(false);
+                active = false;
             }
         });
         deleteButton.addClickListener(new Button.ClickListener() {
@@ -105,13 +106,7 @@ public class TextElementEditableLayout extends EditableLayout {
                 if(description.equals(textElement)){
                     description.setBezeichnung(bezeichnungField.getValue());
                     description.setText(textElementTextArea.getValue());
-//                    daoFactory.new Transaction() {
-//                        @Override
-//                        public void doTask() {
-//                            final EntityManager orientDB = daoFactory.getEntityManager();
-//                            orientDB.merge(textElement);
-//                        }
-//                    }.execute();
+                    daoFactory.getTextElementDAO().updateByEntity(description, false);
                 }
             }
         } else if(selectedPlanningUnit.getTestcases().contains(textElement)) {
@@ -119,25 +114,10 @@ public class TextElementEditableLayout extends EditableLayout {
                 if(testcase.equals(textElement)){
                     testcase.setBezeichnung(bezeichnungField.getValue());
                     testcase.setText(textElementTextArea.getValue());
-//                    daoFactory.new Transaction() {
-//                        @Override
-//                        public void doTask() {
-//                            final EntityManager orientDB = daoFactory.getEntityManager();
-//                            orientDB.merge(textElement);
-//                        }
-//                    }.execute();
+                    daoFactory.getTextElementDAO().updateByEntity(testcase, false);
                 }
             }
         }
-//        daoFactory.new Transaction() {
-//            @Override
-//            public void doTask() {
-//                final EntityManager orientDB = daoFactory.getEntityManager();
-//                orientDB.persist(selectedPlanningUnit);
-//                orientDB.flush();
-//                orientDB.refresh(selectedPlanningUnit);
-//            }
-//        }.execute();
         screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
     }
 

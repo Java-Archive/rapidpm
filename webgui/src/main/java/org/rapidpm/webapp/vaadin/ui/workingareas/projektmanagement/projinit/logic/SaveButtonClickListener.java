@@ -59,14 +59,17 @@ public class SaveButtonClickListener implements ClickListener {
             final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
             final PlanningUnitDAO planningUnitDAO = daoFactory.getPlanningUnitDAO();
             foundPlanningUnit = planningUnitDAO.loadPlanningUnitByName(planningUnitNameBeforeCommit);
+            foundPlanningUnit = planningUnitDAO.findByID(foundPlanningUnit.getId(), true);
 //            daoFactory.getEntityManager().refresh(foundPlanningUnit);
 
             fieldGroup.commit();
             final String planningUnitNameAfterCommit = item.getItemProperty(messages.getString("aufgabe")).getValue().toString();
             if (knotenBlattEnum.equals(KnotenBlattEnum.KNOTEN)) {
                 foundPlanningUnit.setPlanningUnitName(planningUnitNameAfterCommit);
+                daoFactory.getPlanningUnitDAO().updateByEntity(foundPlanningUnit, false);
             } else {
                 foundPlanningUnit.setPlanningUnitName(planningUnitNameAfterCommit);
+                daoFactory.getPlanningUnitDAO().updateByEntity(foundPlanningUnit, false);
                 for (final PlanningUnitElement planningUnitElement : foundPlanningUnit.getPlanningUnitElementList()) {
                     final String planningUnitElementRessourceGroupName = planningUnitElement.getRessourceGroup().getName();
                     final Property<?> planningUnitElementCellContent = item.getItemProperty(planningUnitElementRessourceGroupName);
@@ -79,10 +82,9 @@ public class SaveButtonClickListener implements ClickListener {
                     final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
                     planningUnitElement.setPlannedMinutes((plannedDays * currentProject.getHoursPerWorkingDay() *
                             Constants.MINS_HOUR) + (plannedHours * Constants.MINS_HOUR) + (plannedMinutes));
-//                    daoFactory.saveOrUpdateTX(planningUnitElement);
+                    daoFactory.getPlanningUnitElementDAO().updateByEntity(planningUnitElement, false);
                 }
             }
-//            daoFactory.saveOrUpdateTX(foundPlanningUnit);
             final MainUI ui = screen.getUi();
             ui.setWorkingArea(new AufwandProjInitScreen(ui));
         }catch (CommitException e){

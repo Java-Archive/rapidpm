@@ -21,7 +21,6 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administratio
 
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -189,10 +188,10 @@ public class AddProjectWindow extends RapidWindow{
         } catch (NotYetImplementedException | InvalidKeyException | MissingNonOptionalPropertyException e) {
             e.printStackTrace();
         }
-        if(persistedNewProject.getPlanningUnits() == null){
+        if(persistedNewProject.getTopLevelPlanningUnits() == null){
             persistedNewProject.setPlanningUnits(new ArrayList<>());
         }
-        persistedNewProject.getPlanningUnits().add(firstPlanningUnit);
+        persistedNewProject.getTopLevelPlanningUnits().add(firstPlanningUnit);
     }
 
     public void show() {

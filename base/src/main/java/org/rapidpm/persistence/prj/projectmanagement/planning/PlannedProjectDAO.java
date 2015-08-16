@@ -1,10 +1,6 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning;
 
-import com.orientechnologies.orient.core.command.traverse.OTraverse;
-import com.orientechnologies.orient.core.db.record.OIdentifiable;
-import com.orientechnologies.orient.core.id.ORecordId;
 import com.orientechnologies.orient.core.sql.OCommandSQL;
-import com.orientechnologies.orient.core.sql.filter.OSQLPredicate;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
@@ -12,18 +8,13 @@ import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.DaoFactorySingleton;
-import org.rapidpm.persistence.Edges;
 import org.rapidpm.persistence.EntityUtils;
-import org.rapidpm.persistence.OrientDBTransactionExecutor;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
 
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
 
 import static org.rapidpm.persistence.Edges.*;
 import static org.rapidpm.persistence.Edges.CONSISTS_OF;
@@ -47,7 +38,7 @@ public class PlannedProjectDAO extends DAO<Long, PlannedProject> {
 
         final PlannedProject persistedPlannedProject = createEntityFlat(tempPlannedProject);
 
-        final List<PlanningUnit> temporaryPlanningUnits = tempPlannedProject.getPlanningUnits();
+        final List<PlanningUnit> temporaryPlanningUnits = tempPlannedProject.getTopLevelPlanningUnits();
         if(temporaryPlanningUnits == null){
             throw new MissingNonOptionalPropertyException("planningUnits");
         }
@@ -111,7 +102,7 @@ public class PlannedProjectDAO extends DAO<Long, PlannedProject> {
     public void setResponsiblePersonForProject(final Benutzer responsiblePerson, final PlannedProject project){
         final Vertex plannedProjectVertex = orientDB.getVertex(project.getId());
         final Vertex responsibleUserVertex = orientDB.getVertex(responsiblePerson.getId());
-        addEdgeFromVertexToVertex(responsibleUserVertex, IS_RESPONSIBLE_FOR, plannedProjectVertex);
+        addEdgeFromVertexToVertex(responsibleUserVertex, IS_RESPONSIBLE_FOR_PROJECT, plannedProjectVertex);
     }
 
     public void addPlanningUnitToProject(final PlanningUnit planningUnit, final PlannedProject plannedProject){
@@ -134,7 +125,7 @@ public class PlannedProjectDAO extends DAO<Long, PlannedProject> {
         projekt.setPlanningUnits(new ArrayList<>());
         final Iterable<Vertex> planningUnits = orientDB.command(new OCommandSQL("select expand( out('"+CONSISTS_OF+"') ) from PlannedProject where @rid = " + projekt.getId())).execute();
         for (final Vertex planningUnitVertex : planningUnits) {
-            projekt.getPlanningUnits().add(new EntityUtils<>(PlanningUnit.class).convertVertexToEntity(planningUnitVertex));
+            projekt.getTopLevelPlanningUnits().add(new EntityUtils<>(PlanningUnit.class).convertVertexToEntity(planningUnitVertex));
         }
         return projekt;
     }

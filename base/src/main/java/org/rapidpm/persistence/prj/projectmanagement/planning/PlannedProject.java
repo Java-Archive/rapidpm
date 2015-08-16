@@ -34,7 +34,7 @@ public class PlannedProject implements Comparable<PlannedProject>{
     private boolean active;
     private boolean fakturierbar;
     private String info;
-    private Double externalDailyRate;
+    private Float externalDailyRate;
     private Integer hoursPerWorkingDay;
     private transient List<PlannedProjectName> plannedProjectName;
     private transient Mandantengruppe mandantengruppe;
@@ -148,7 +148,7 @@ public class PlannedProject implements Comparable<PlannedProject>{
         this.responsiblePerson = responsiblePerson;
     }
 
-    public List<PlanningUnit> getPlanningUnits() {
+    public List<PlanningUnit> getTopLevelPlanningUnits() {
         return planningUnits;
     }
 
@@ -172,11 +172,11 @@ public class PlannedProject implements Comparable<PlannedProject>{
         this.projektToken = projektToken;
     }
 
-    public Double getExternalDailyRate() {
+    public Float getExternalDailyRate() {
         return externalDailyRate;
     }
 
-    public void setExternalDailyRate(Double externalDailyRate) {
+    public void setExternalDailyRate(Float externalDailyRate) {
         this.externalDailyRate = externalDailyRate;
     }
 

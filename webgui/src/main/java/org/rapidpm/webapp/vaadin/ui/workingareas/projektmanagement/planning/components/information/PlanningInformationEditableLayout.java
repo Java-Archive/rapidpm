@@ -53,6 +53,7 @@ public class PlanningInformationEditableLayout extends EditableLayout {
                     }
                 }
                 buttonLayout.setVisible(false);
+                active = false;
             }
         });
 
@@ -64,7 +65,7 @@ public class PlanningInformationEditableLayout extends EditableLayout {
                     final BeanItem<PlanningUnit> beanItem = (BeanItem)fieldGroup.getItemDataSource();
                     final PlanningUnit editedPlanningUnit = beanItem.getBean();
                     final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-//                    daoFactory.saveOrUpdateTX(editedPlanningUnit);
+                    //daoFactory.getPlanningUnitDAO().updateByEntity(editedPlanningUnit);
                     final MainUI ui = screen.getUi();
                     ui.setWorkingArea(new ProjektplanungScreen(ui));
                 }catch (NullPointerException e){

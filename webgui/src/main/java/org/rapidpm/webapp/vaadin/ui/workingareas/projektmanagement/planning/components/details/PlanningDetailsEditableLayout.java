@@ -56,6 +56,7 @@ public class PlanningDetailsEditableLayout extends EditableLayout {
                     }
                 }
                 buttonLayout.setVisible(false);
+                active = false;
             }
         });
         saveButton.addClickListener(new Button.ClickListener() {
@@ -65,7 +66,7 @@ public class PlanningDetailsEditableLayout extends EditableLayout {
                     fieldGroup.commit();
                     final BeanItem<PlanningUnit> beanItem = (BeanItem)fieldGroup.getItemDataSource();
                     final PlanningUnit editedPlanningUnit = beanItem.getBean();
-                    //DaoFactorySingleton.getInstance().getPlanningUnitDAO().e
+                    DaoFactorySingleton.getInstance().getPlanningUnitDAO().updateByEntity(editedPlanningUnit, true);
                     final MainUI ui = screen.getUi();
                     ui.setWorkingArea(new ProjektplanungScreen(ui));
                 }catch (final NullPointerException e){

@@ -8,8 +8,13 @@ package org.rapidpm.persistence;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
+import com.orientechnologies.orient.core.config.OGlobalConfiguration;
+import com.orientechnologies.orient.core.db.ODatabaseRecordThreadLocal;
 import com.orientechnologies.orient.object.db.OObjectDatabaseTx;
+import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
+import com.tinkerpop.blueprints.impls.orient.OrientGraphFactory;
+import com.tinkerpop.blueprints.impls.orient.OrientVertex;
 import org.apache.log4j.Logger;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.rapidpm.persistence.prj.bewegungsdaten.RegistrationDAO;
@@ -58,72 +63,86 @@ import java.util.InputMismatchException;
 public class DaoFactory {
     private static final Logger logger = Logger.getLogger(DaoFactory.class);
     private final GraphDatabaseService graphDb = GraphDBFactory.getInstance().getGraphDBService();
-    private OrientGraph orientDB;
-
+    private OrientGraphFactory factory;
+    
     public DaoFactory(final String databaseName) {
-       orientDB = new OrientGraph("plocal:orient/"+databaseName);
-       //orientDB = new OrientGraph("remote:localhost/"+databaseName, "root", "admin");
+       factory = new OrientGraphFactory("plocal:orient/" + databaseName);
+        factory.getTx().shutdown(); // AUTO-CREATE THE GRAPH IF NOT EXISTS
+        factory.setupPool(1,10);
+//       orientDB = new OrientGraph("remote:localhost/"+databaseName, "root", "admin"){
+//           @Override
+//           public OrientVertex getVertex(Object id) {
+//               OrientVertex vertex = super.getVertex(id);
+//               vertex.reload();
+//               return vertex;
+//           }
+//
+//           @Override
+//           public Iterable<Vertex> getVerticesOfClass(String iClassName) {
+//               Iterable<Vertex> verticesOfClass = super.getVerticesOfClass(iClassName);
+//               for (Vertex vertexOfClass : verticesOfClass) {
+//                   ((OrientVertex)vertexOfClass).reload();
+//               }
+//               return verticesOfClass;
+//           }
+//       };
     }
 
     public OrientGraph getOrientDB() {
-        return orientDB;
-    }
-
-    public void setOrientDB(OrientGraph orientDB) {
-        this.orientDB = orientDB;
+        return factory.getTx();
     }
 
     // pkg logging
 
     public LoggingEventEntryDAO getLoggingEventEntryDAO() {
-        return new LoggingEventEntryDAO(orientDB);
+        return new LoggingEventEntryDAO(getOrientDB());
     }
 
     public LogginEntityEntryDAO getLogginEntityEntryDAO() {
-        return new LogginEntityEntryDAO(orientDB);
+        return new LogginEntityEntryDAO(getOrientDB());
     }
 
     public LogginEntityActionDAO getLogginEntityActionDAO() {
-        return new LogginEntityActionDAO(orientDB);
+        return new LogginEntityActionDAO(getOrientDB());
     }
 
     //pkg security
 
     public BenutzerGruppeDAO getBenutzerGruppeDAO() {
-        return new BenutzerGruppeDAO(orientDB);
+        return new BenutzerGruppeDAO(getOrientDB());
     }
 
     public BenutzerWebapplikationDAO getBenutzerWebapplikationDAO() {
-        return new BenutzerWebapplikationDAO(orientDB);
+        return new BenutzerWebapplikationDAO(getOrientDB());
     }
 
     public BenutzerDAO getBenutzerDAO() {
-        return new BenutzerDAO(orientDB);
+        return new BenutzerDAO(getOrientDB());
     }
 
     public MandantengruppeDAO getMandantengruppeDAO() {
-        return new MandantengruppeDAO(orientDB);
+        return new MandantengruppeDAO(getOrientDB());
     }
 
     public PlannedProjectDAO getPlannedProjectDAO() {
-        return new PlannedProjectDAO(orientDB);
+        return new PlannedProjectDAO(getOrientDB());
     }
 
 
     public NewPasswdRequestDAO getNewPasswdRequestDAO() {
-        return new NewPasswdRequestDAO(orientDB);
+        return new NewPasswdRequestDAO(getOrientDB());
     }
 
     public PlanningUnitElementDAO getPlanningUnitElementDAO() {
-        return new PlanningUnitElementDAO(orientDB);
+        return new PlanningUnitElementDAO(getOrientDB());
     }
 
     public RolleDAO getRolleDAO() {
-        return new RolleDAO(orientDB);
+        return new RolleDAO(getOrientDB());
     }
 
     public BerechtigungDAO getBerechtigungDAO() {
-        return new BerechtigungDAO(orientDB);
+        return new BerechtigungDAO(getOrientDB());
     }
 
     //pkg webapp
@@ -131,95 +150,95 @@ public class DaoFactory {
 
 
     public OntologieDAO getOntologieDAO() {
-        return new OntologieDAO(orientDB);
+        return new OntologieDAO(getOrientDB());
     }
 
     public OntologieConnectionDAO getOntologieConnectionDAO() {
-        return new OntologieConnectionDAO(orientDB);
+        return new OntologieConnectionDAO(getOrientDB());
     }
 
     public OntologieEntryDAO getOntologieEntryDAO() {
-        return new OntologieEntryDAO(orientDB);
+        return new OntologieEntryDAO(getOrientDB());
     }
 
     //pkg webapp
 
     public OrganisationseinheitDAO getOrganisationseinheitDAO() {
-        return new OrganisationseinheitDAO(orientDB);
+        return new OrganisationseinheitDAO(getOrientDB());
     }
 
 
     public WebDomainDAO getWebDomainDAO() {
-        return new WebDomainDAO(orientDB);
+        return new WebDomainDAO(getOrientDB());
     }
 
     // pkg address
     //    public AdressDAO getAdressDAO(){}
 
     public AddressKlassifizierungDAO getAddressKlassifizierungDAO() {
-        return new AddressKlassifizierungDAO(orientDB);
+        return new AddressKlassifizierungDAO(getOrientDB());
     }
 
     public AdresseDAO getAdresseDAO() {
-        return new AdresseDAO(orientDB);
+        return new AdresseDAO(getOrientDB());
     }
 
 
     public StateDAO getStateDAO() {
-        return new StateDAO(orientDB);
+        return new StateDAO(getOrientDB());
     }
 
     public StateKlassifizierungDAO getStateKlassifizierungDAO() {
-        return new StateKlassifizierungDAO(orientDB);
+        return new StateKlassifizierungDAO(getOrientDB());
     }
 
     public LandDAO getLandDAO() {
-        return new LandDAO(orientDB);
+        return new LandDAO(getOrientDB());
     }
 
 
     //book
     public BuchDAO getBuchDAO() {
-        return new BuchDAO(orientDB);
+        return new BuchDAO(getOrientDB());
     }
 
     public BuchKapitelDAO getBuchKapitelDAO() {
-        return new BuchKapitelDAO(orientDB);
+        return new BuchKapitelDAO(getOrientDB());
     }
 
     public BuchKommentarDAO getBuchKommentarDAO() {
-        return new BuchKommentarDAO(orientDB);
+        return new BuchKommentarDAO(getOrientDB());
     }
 
     public BuchKapitelKommentarDAO getBuchKapitelKommentarDAO() {
-        return new BuchKapitelKommentarDAO(orientDB);
+        return new BuchKapitelKommentarDAO(getOrientDB());
     }
 
     public BuchSeitenKommentarDAO getBuchSeitenKommentarDAO() {
-        return new BuchSeitenKommentarDAO(orientDB);
+        return new BuchSeitenKommentarDAO(getOrientDB());
     }
 
 
 
     public ProjectDAO getProjectDAO() {
-        return new ProjectDAO(orientDB);
+        return new ProjectDAO(getOrientDB());
     }
 
     public ProjectNameDAO getProjectNameDAO() {
-        return new ProjectNameDAO(orientDB);
+        return new ProjectNameDAO(getOrientDB());
     }
 
     //IssueTracking - Relational
     public IssueTimeUnitDAO getIssueTimeUnitDAO() {
-        return new IssueTimeUnitDAO(orientDB);
+        return new IssueTimeUnitDAO(getOrientDB());
     }
 
     public IssueCommentDAO getIssueCommentDAO() {
-        return new IssueCommentDAO(orientDB);
+        return new IssueCommentDAO(getOrientDB());
     }
 
     public IssueTestCaseDAO getIssueTestCaseDAO() {
-        return new IssueTestCaseDAO(orientDB);
+        return new IssueTestCaseDAO(getOrientDB());
     }
 
 
@@ -261,153 +280,153 @@ public class DaoFactory {
     //pkg Kommunikation
 
     public KommunikationsServiceDAO getKommunikationsServiceDAO() {
-        return new KommunikationsServiceDAO(orientDB);
+        return new KommunikationsServiceDAO(getOrientDB());
     }
 
     public KommunikationsServiceKlassifizierungDAO getKommunikationsServiceKlassifizierungDAO() {
-        return new KommunikationsServiceKlassifizierungDAO(orientDB);
+        return new KommunikationsServiceKlassifizierungDAO(getOrientDB());
     }
 
     public KommunikationsServiceUIDDAO getKommunikationServiceUIDDAO() {
-        return new KommunikationsServiceUIDDAO(orientDB);
+        return new KommunikationsServiceUIDDAO(getOrientDB());
     }
 
     public KommunikationsServiceUIDPartDAO getKommunikationServiceUIDPartDAO() {
-        return new KommunikationsServiceUIDPartDAO(orientDB);
+        return new KommunikationsServiceUIDPartDAO(getOrientDB());
     }
 
     public KommunikationsServiceUIDPartKlassifikationDAO getKommunikationsServiceUIDPartKlassifikationDAO() {
-        return new KommunikationsServiceUIDPartKlassifikationDAO(orientDB);
+        return new KommunikationsServiceUIDPartKlassifikationDAO(getOrientDB());
     }
 
 
     //pkg msgCenter
 
     public MessageDAO getMessageDAO() {
-        return new MessageDAO(orientDB);
+        return new MessageDAO(getOrientDB());
     }
 
     public PersonalMessageDAO getPersonalMessageDAO() {
-        return new PersonalMessageDAO(orientDB);
+        return new PersonalMessageDAO(getOrientDB());
     }
 
     //pkg intern
     public RessourceGroupDAO getRessourceGroupDAO(){
-        return new RessourceGroupDAO(orientDB);
+        return new RessourceGroupDAO(getOrientDB());
     }
 
     //pkg organisationseinheiten
 
     public BrancheDAO getBrancheDAO() {
-        return new BrancheDAO(orientDB);
+        return new BrancheDAO(getOrientDB());
     }
 
     public BrancheAssocDAO getBranchenAssocDAO() {
-        return new BrancheAssocDAO(orientDB);
+        return new BrancheAssocDAO(getOrientDB());
     }
 
     public BranchenKlassifizierungDAO getBranchenKlassifizierungDAO() {
-        return new BranchenKlassifizierungDAO(orientDB);
+        return new BranchenKlassifizierungDAO(getOrientDB());
     }
 
     public GesellschaftsformDAO getGesellschaftsformDAO() {
-        return new GesellschaftsformDAO(orientDB);
+        return new GesellschaftsformDAO(getOrientDB());
     }
 
     public OrganisationseinheitMetaDataDAO getOrganisationseinheitMetaDataDAO() {
-        return new OrganisationseinheitMetaDataDAO(orientDB);
+        return new OrganisationseinheitMetaDataDAO(getOrientDB());
     }
 
     public AusbildungseinheitDAO getAusbildungseinheitDAO() {
-        return new AusbildungseinheitDAO(orientDB);
+        return new AusbildungseinheitDAO(getOrientDB());
     }
 
     public VerwaltungseinheitDAO getVerwaltungseinheitDAO() {
-        return new VerwaltungseinheitDAO(orientDB);
+        return new VerwaltungseinheitDAO(getOrientDB());
     }
 
     public WirtschaftseinheitDAO getWirtschaftseinheitDAO() {
-        return new WirtschaftseinheitDAO(orientDB);
+        return new WirtschaftseinheitDAO(getOrientDB());
     }
 
 
     public TaetigkeitsfeldKlassifizierungDAO getTaetigkeitsklassifizierungDAO() {
-        return new TaetigkeitsfeldKlassifizierungDAO(orientDB);
+        return new TaetigkeitsfeldKlassifizierungDAO(getOrientDB());
     }
 
     public TaetigkeitsfeldDAO getTaetigkeitsfeldDAO() {
-        return new TaetigkeitsfeldDAO(orientDB);
+        return new TaetigkeitsfeldDAO(getOrientDB());
     }
 
     public TaetigkeitsfeldAssocDAO getTaetigkeitsfeldAssocDAO() {
-        return new TaetigkeitsfeldAssocDAO(orientDB);
+        return new TaetigkeitsfeldAssocDAO(getOrientDB());
     }
 
     public PositionDAO getPositionDAO() {
-        return new PositionDAO(orientDB);
+        return new PositionDAO(getOrientDB());
     }
 
     //pkg person
 
     public PersonDAO getPersonDAO() {
-        return new PersonDAO(orientDB);
+        return new PersonDAO(getOrientDB());
     }
 
     public PersonenNameDAO getPersonenNameDAO() {
-        return new PersonenNameDAO(orientDB);
+        return new PersonenNameDAO(getOrientDB());
     }
 
     public AnredeDAO getAnredeDAO() {
-        return new AnredeDAO(orientDB);
+        return new AnredeDAO(getOrientDB());
     }
 
     public GeschlechtDAO getGeschlechtDAO() {
-        return new GeschlechtDAO(orientDB);
+        return new GeschlechtDAO(getOrientDB());
     }
 
     public NamensKlassifizierungDAO getNamensKlassifizierungDAO() {
-        return new NamensKlassifizierungDAO(orientDB);
+        return new NamensKlassifizierungDAO(getOrientDB());
     }
 
     public TitelDAO getTitelDAO() {
-        return new TitelDAO(orientDB);
+        return new TitelDAO(getOrientDB());
     }
 
 
     //pgk web//webdomains
 
     public WebDomainKlassifizierungDAO getWebDomainKlassifizierungDAO() {
-        return new WebDomainKlassifizierungDAO(orientDB);
+        return new WebDomainKlassifizierungDAO(getOrientDB());
     }
 
     public WebDomainMetaDataDAO getWebDomainMetaDataDAO() {
-        return new WebDomainMetaDataDAO(orientDB);
+        return new WebDomainMetaDataDAO(getOrientDB());
     }
 
     public PlanningUnitDAO getPlanningUnitDAO(){
-        return new PlanningUnitDAO(orientDB);
+        return new PlanningUnitDAO(getOrientDB());
     }
 
 
     //pkg Bewegungsdaten
     public RegistrationDAO getRegistrationDAO() {
-        return new RegistrationDAO(orientDB);
+        return new RegistrationDAO(getOrientDB());
     }
 
     public RegistrationStatusDAO getRegistrationStatusDAO() {
-        return new RegistrationStatusDAO(orientDB);
+        return new RegistrationStatusDAO(getOrientDB());
     }
 
     public KontaktAnfrageDAO getKontaktAnfrageDAO() {
-        return new KontaktAnfrageDAO(orientDB);
+        return new KontaktAnfrageDAO(getOrientDB());
     }
 
     public ProjektanfrageDAO getProjektanfrageDAO() {
-        return new ProjektanfrageDAO(orientDB);
+        return new ProjektanfrageDAO(getOrientDB());
     }
 
     public TextElementDAO getTextElementDAO() {
-        return new TextElementDAO((orientDB));
+        return new TextElementDAO((getOrientDB()));
     }
 
 }

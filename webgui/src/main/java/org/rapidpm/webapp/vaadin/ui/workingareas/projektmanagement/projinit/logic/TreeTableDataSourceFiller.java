@@ -12,10 +12,13 @@ import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.*;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
+import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 
 import java.util.*;
+
+import static org.rapidpm.Constants.MINS_HOUR;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -30,109 +33,103 @@ public class TreeTableDataSourceFiller {
 
     private List<RessourceGroup> ressourceGroups;
     private final Map<RessourceGroup, Integer> ressourceGroupMinutesMap = new HashMap<>();
+    private final Map<RessourceGroup, Double> ressourceGroupCostsMap = new HashMap<>();
     private ResourceBundle messages;
     private HierarchicalContainer dataSource;
-    private AufwandProjInitScreen screen;
+    private TreeTableValue cellValue;
+    private Screen screen;
     private PlannedProject currentProject;
 
-    public TreeTableDataSourceFiller(final AufwandProjInitScreen screen, final ResourceBundle bundle,
-                                     final HierarchicalContainer dSource) {
+    public TreeTableDataSourceFiller(final Screen screen, final ResourceBundle bundle,
+                                     final HierarchicalContainer dSource, TreeTableValue cellValue) {
         this.screen = screen;
         this.messages = bundle;
         dataSource = dSource;
+        this.cellValue = cellValue;
 
         final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         final VaadinSession session = screen.getUi().getSession();
         currentProject = session.getAttribute(PlannedProject.class);
-        final RessourceGroupDAO ressourceGroupDAO = daoFactory.getRessourceGroupDAO();
+        final RessourceGroupDAO ressourceGroupDAO = DaoFactorySingleton.getInstance().getRessourceGroupDAO();
         ressourceGroups = ressourceGroupDAO.findAll();
 
         dataSource.removeAllItems();
         final String aufgabe = messages.getString("aufgabe");
         dataSource.addContainerProperty(aufgabe, String.class, null);
-        for (final RessourceGroup ressourceGroup : ressourceGroups) {
-            dataSource.addContainerProperty(ressourceGroup.getName(), String.class, "");
+        switch (cellValue){
+            case COSTS:
+                for (final RessourceGroup ressourceGroup : ressourceGroups) {
+                    dataSource.addContainerProperty(ressourceGroup.getName(), Double.class, "");
+                }
+                break;
+            case TIMES:
+                for (final RessourceGroup ressourceGroup : ressourceGroups) {
+                    dataSource.addContainerProperty(ressourceGroup.getName(), String.class, "");
+                }
+                break;
         }
+
     }
 
     public void fill() {
-        calculatePlanningUnitsAndTotalsAbsolut();
-    }
-
-    private void calculatePlanningUnitsAndTotalsAbsolut() {
         currentProject = DaoFactorySingleton.getInstance().getPlannedProjectDAO().findByID(currentProject.getId(), true);
-        final List<PlanningUnit> planningUnits = currentProject.getPlanningUnits();
+        final List<PlanningUnit> topLevelPlanningUnits = currentProject.getTopLevelPlanningUnits();
+        final List<PlanningUnit> allPlanningUnitsOfProject = new ArrayList<>();
+        allPlanningUnitsOfProject.addAll(topLevelPlanningUnits);
+        for (PlanningUnit topLevelPlanningUnit : topLevelPlanningUnits) {
+            allPlanningUnitsOfProject.addAll(DaoFactorySingleton.getInstance().getPlanningUnitDAO().loadChildren(topLevelPlanningUnit, true));
+        }
+        fillPlanningUnitBasedTreeTableWithValue(allPlanningUnitsOfProject, cellValue);
+    }
+
+    private void fillPlanningUnitBasedTreeTableWithValue(List<PlanningUnit> planningUnits, TreeTableValue cellValue) {
+        fillRows(planningUnits, cellValue);
+        buildTree(planningUnits);
+    }
+
+    private void buildTree(List<PlanningUnit> planningUnits) {
+        for (PlanningUnit planningUnit : planningUnits) {
+            calculatePlanningUnit(planningUnit);
+        }
+    }
+
+    private void fillRows(List<PlanningUnit> planningUnits, TreeTableValue cellValue) {
         for (PlanningUnit planningUnit : planningUnits) {
             planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
             final String planningUnitName = planningUnit.getPlanningUnitName();
             final Item planningUnitItem = dataSource.addItem(planningUnitName);
             final String aufgabe = messages.getString("aufgabe");
             planningUnitItem.getItemProperty(aufgabe).setValue(planningUnitName);
-            final List<PlanningUnit> planningUnitList = planningUnit.getKindPlanningUnits();
-            if (planningUnitList == null || planningUnitList.isEmpty()) {
-                for (final RessourceGroup spalte : ressourceGroups) {
-                    for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-                        planningUnitElement = DaoFactorySingleton.getInstance().getPlanningUnitElementDAO().findByID(planningUnitElement.getId(), true);
-                        if (planningUnitElement.getRessourceGroup().equals(spalte)) {
-                            planningUnitElement.setPlannedMinutes(planningUnitElement.getPlannedMinutes());
-                            final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem
-                                    (planningUnitElement, currentProject.getHoursPerWorkingDay());
-                            final Property<String> itemProperty = planningUnitItem.getItemProperty(spalte.getName());
-                            itemProperty.setValue(daysHoursMinutesItem.toString());
-                        }
-                    }
+            for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+                planningUnitElement = DaoFactorySingleton.getInstance().getPlanningUnitElementDAO().findByID(planningUnitElement.getId(), true);
+                final Property<Object> resourceGroupColumn = planningUnitItem.getItemProperty(planningUnitElement.getRessourceGroup().getName());
+                switch (cellValue) {
+                    case COSTS:
+                        final int minutes = planningUnitElement.getPlannedMinutes();
+                        final double hoursFromMinutes = (double) minutes / MINS_HOUR;
+                        final Float externalEurosPerHour = planningUnitElement.getRessourceGroup().getExternalEurosPerHour();
+                        resourceGroupColumn.setValue(hoursFromMinutes * externalEurosPerHour);
+                        break;
+                    case TIMES:
+                        final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem(planningUnitElement, currentProject.getHoursPerWorkingDay());
+                        resourceGroupColumn.setValue(daysHoursMinutesItem.toString());
+                        break;
                 }
-            } else {
-                calculatePlanningUnits(planningUnitList, planningUnitName);
             }
         }
     }
 
-
-    private void calculatePlanningUnits(final List<PlanningUnit> planningUnits, final String parent) {
-        for (PlanningUnit planningUnit : planningUnits) {
-            final String planningUnitName = planningUnit.getPlanningUnitName();
-            final Item planningUnitItem = dataSource.addItem(planningUnitName);
-            final String aufgabe = messages.getString("aufgabe");
-            planningUnitItem.getItemProperty(aufgabe).setValue(planningUnitName);
-            dataSource.setParent(planningUnitName, parent);
-            planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
-            final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
-            if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
-                for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-                    planningUnitElement = DaoFactorySingleton.getInstance().getPlanningUnitElementDAO().findByID(planningUnitElement.getId(), true);
-                    final DaysHoursMinutesItem item = new DaysHoursMinutesItem(planningUnitElement, currentProject.getHoursPerWorkingDay());
-                    planningUnitItem.getItemProperty(planningUnitElement.getRessourceGroup().getName()).setValue(item.toString());
-                }
-                addiereZeileZurRessourceMap(planningUnit);
-            } else {
-                calculatePlanningUnits(kindPlanningUnits, planningUnitName);
-            }
-        }
-        for (final RessourceGroup spalte : ressourceGroups) {
-            final Integer minutes = ressourceGroupMinutesMap.get(spalte);
-            final DaysHoursMinutesItem item = new DaysHoursMinutesItem(minutes, currentProject.getHoursPerWorkingDay());
-            dataSource.getItem(parent).getItemProperty(spalte.getName()).setValue(item.toString());
-        }
-    }
-
-    private void addiereZeileZurRessourceMap(final PlanningUnit planningUnit) {
-        for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-            planningUnitElement = DaoFactorySingleton.getInstance().getPlanningUnitElementDAO().findByID(planningUnitElement.getId(), true);
-            final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
-            final String aufgabe = messages.getString("aufgabe");
-            int newMinutes;
-            if (!ressourceGroup.getName().equals(aufgabe)) {
-                if (ressourceGroupMinutesMap.containsKey(ressourceGroup)) {
-                    final Integer oldMinutes = ressourceGroupMinutesMap.get(ressourceGroup);
-                     newMinutes = planningUnitElement.getPlannedMinutes() + oldMinutes;
-                    ressourceGroupMinutesMap.put(ressourceGroup, newMinutes);
-                } else {
-                    ressourceGroupMinutesMap.put(ressourceGroup, planningUnitElement.getPlannedMinutes());
-                }
-                final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-//                daoFactory.saveOrUpdateTX(planningUnitElement);
+    public void calculatePlanningUnit(PlanningUnit fullPlanningUnit) {
+        fullPlanningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(fullPlanningUnit.getId(), true);
+        final String aufgabe = messages.getString("aufgabe");
+        final String planningUnitItemName = dataSource.getItem(fullPlanningUnit.getPlanningUnitName()).getItemProperty(aufgabe).getValue().toString();
+        if(fullPlanningUnit.getKindPlanningUnits() != null && !fullPlanningUnit.getKindPlanningUnits().isEmpty()){
+            for (PlanningUnit childPlanningUnit : fullPlanningUnit.getKindPlanningUnits()) {
+                System.out.println("Trying to set Parent: " + planningUnitItemName + " --> " + childPlanningUnit);
+                dataSource.setParent(childPlanningUnit.getPlanningUnitName(), planningUnitItemName);
+                calculatePlanningUnit(childPlanningUnit);
             }
         }
     }
+
 }

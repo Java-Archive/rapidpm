@@ -3,7 +3,6 @@ package org.rapidpm.persistence.prj.projectmanagement;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import org.apache.log4j.Logger;
-import org.apache.tools.ant.Project;
 import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
@@ -15,12 +14,9 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitDAO;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
 
-import javax.persistence.EntityManager;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -47,7 +43,7 @@ public class ProjectDAO extends DAO<Long, PlannedProject> {
 
         final PlannedProject persistedPlannedProject = createEntityFlat(tempPlannedProject);
 
-        final List<PlanningUnit> temporaryPlanningUnits = tempPlannedProject.getPlanningUnits();
+        final List<PlanningUnit> temporaryPlanningUnits = tempPlannedProject.getTopLevelPlanningUnits();
         if(temporaryPlanningUnits == null){
             throw new MissingNonOptionalPropertyException("planningUnits");
         }
@@ -55,7 +51,7 @@ public class ProjectDAO extends DAO<Long, PlannedProject> {
         final PlanningUnitDAO planningUnitDAO = DaoFactorySingleton.getInstance().getPlanningUnitDAO();
         persistedPlannedProject.setPlanningUnits(new ArrayList<>());
         for (final PlanningUnit temporaryPlanningUnit : temporaryPlanningUnits) {
-            persistedPlannedProject.getPlanningUnits().add(planningUnitDAO.createEntityFull(temporaryPlanningUnit));
+            persistedPlannedProject.getTopLevelPlanningUnits().add(planningUnitDAO.createEntityFull(temporaryPlanningUnit));
         }
 
         final BenutzerDAO benutzerDAO = DaoFactorySingleton.getInstance().getBenutzerDAO();

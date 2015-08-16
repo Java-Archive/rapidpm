@@ -1,11 +1,13 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents;
 
 import com.vaadin.data.fieldgroup.FieldGroup;
+import com.vaadin.data.util.BeanItem;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Label;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.EditableRapidPanel;
@@ -45,6 +47,8 @@ public class ChosenProjectEditableRapidPanel extends EditableRapidPanel {
             public void buttonClick(Button.ClickEvent event) {
                 try {
                     fieldGroup.commit();
+                    final PlannedProject project = ((BeanItem<PlannedProject>)fieldGroup.getItemDataSource()).getBean();
+                    DaoFactorySingleton.getInstance().getPlannedProjectDAO().updateByEntity(project, false);
                     activate(false);
                     ui.setWorkingArea(new ProjectAdministrationScreen(ui));
                 } catch (FieldGroup.CommitException e) {
