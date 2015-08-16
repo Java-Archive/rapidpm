@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.rapidpm.persistence.Edges.*;
-import static org.rapidpm.persistence.Edges.CONSISTS_OF;
 
 /**
  * RapidPM - www.rapidpm.org

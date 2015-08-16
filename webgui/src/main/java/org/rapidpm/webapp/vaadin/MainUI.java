@@ -5,16 +5,12 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.spring.annotation.SpringUI;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.UI;
 import org.rapidpm.webapp.vaadin.ui.windows.DisclaimerWindow;
 import org.rapidpm.webapp.vaadin.ui.windows.ImpressumWindow;
 import org.rapidpm.webapp.vaadin.ui.windows.KontaktWindow;
 import org.rapidpm.webapp.vaadin.ui.windows.SupportWindow;
-import org.rapidpm.webapp.vaadin.ui.workingareas.anfragenmanagement.AnfragenmanagementWorkingArea;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issueoverview.IssueOverviewScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.issuetracking.issuesettings.IssueSettingsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.ProjectAdministrationScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.CostsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.distribution.VertriebScreen;
@@ -34,15 +30,13 @@ import java.util.ResourceBundle;
  * Date: 26.04.12
  * Time: 12:41
  */
-//@JavaScript({   "http://localhost:8080/rapidpm/javascript/highcharts/highcharts.js",
-//                "http://localhost:8080/rapidpm/javascript/jquery/jquery-1.4.4.min.js"})
 @SuppressWarnings("serial")
 @Theme("mytheme")
 @SpringUI
 @Widgetset("com.vaadin.DefaultWidgetSet")
 public class MainUI extends BaseUI {
 
-    @WebServlet(urlPatterns = "/*", name = "MainUIServlet")
+    @WebServlet(urlPatterns = "/*", name = "RapidPM" , displayName="RapidPM")
     @VaadinServletConfiguration(ui = MainUI.class, productionMode = false)
     public static class MainUIServlet extends VaadinServlet {
     }
@@ -55,7 +49,6 @@ public class MainUI extends BaseUI {
         stammdatenMenu.addItem(messages.getString("users"), menuItem -> setWorkingArea(new BenutzerScreen(MainUI.this)));
         stammdatenMenu.addItem(messages.getString("hourlyrates"), menuItem -> setWorkingArea(new StundensaetzeScreen(MainUI.this)));
 
-        menuBar.addItem(messages.getString("requestmanagement"), menuItem -> setWorkingArea(new AnfragenmanagementWorkingArea()));
 
         final MenuBar.MenuItem projektmanagement = menuBar.addItem(messages.getString("projectmanagement"), null,
                 null);
@@ -80,24 +73,6 @@ public class MainUI extends BaseUI {
             getSession().close();
             getPage().setLocation("/");
         });
-
-//        final MenuBar.MenuItem issuetracking = menuBar.addItem(messages.getString("issuetracking"), null,
-//                null);
-//
-//        issuetracking.addItem(messages.getString("issuetracking_overview"), new MenuBar.Command() {
-//            @Override
-//            public void menuSelected(MenuBar.MenuItem selectedItem) {
-//                setWorkingArea(new IssueOverviewScreen(MainUI.this));
-//            }
-//        });
-//
-//        issuetracking.addItem(messages.getString("issuetracking_settings"), new MenuBar.Command() {
-//            @Override
-//            public void menuSelected(MenuBar.MenuItem selectedItem) {
-//                setWorkingArea(new IssueSettingsScreen(MainUI.this));
-//            }
-//        });
-
 
         setWorkingArea(new ProjektplanungScreen(this));
 

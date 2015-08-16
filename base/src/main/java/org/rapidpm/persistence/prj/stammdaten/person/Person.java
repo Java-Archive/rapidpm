@@ -14,11 +14,11 @@ package org.rapidpm.persistence.prj.stammdaten.person;
  *
  */
 
+import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.stammdaten.address.Adresse;
 import org.rapidpm.persistence.prj.stammdaten.kommunikation.KommunikationsServiceUID;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomain;
 import org.rapidpm.persistence.system.security.Benutzer;
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.Date;

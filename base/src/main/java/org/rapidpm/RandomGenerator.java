@@ -108,12 +108,7 @@ public class RandomGenerator {
     }
 
     public String nextLetterString(final int minLength, final int maxLength) {
-        final CharFunctor letterCharFunctor = new CharFunctor() {
-            @Override
-            public char getChar() {
-                return nextLetter();
-            }
-        };
+        final CharFunctor letterCharFunctor = this::nextLetter;
         return nextString(minLength, maxLength, letterCharFunctor);
     }
 

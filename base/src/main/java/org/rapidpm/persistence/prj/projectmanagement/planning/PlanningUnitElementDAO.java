@@ -8,22 +8,13 @@ import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.DaoFactorySingleton;
-import org.rapidpm.persistence.Edges;
 import org.rapidpm.persistence.EntityUtils;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroupDAO;
-import org.rapidpm.persistence.prj.textelement.TextElement;
-import org.rapidpm.persistence.system.security.Benutzer;
 
-import javax.persistence.EntityManager;
 import java.security.InvalidKeyException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 
-import static org.rapidpm.persistence.Edges.*;
-import static org.rapidpm.persistence.Edges.CONSISTS_OF;
-import static org.rapidpm.persistence.Edges.IS_FATHER_OF;
+import static org.rapidpm.persistence.Edges.VALID_FOR;
 
 /**
  * RapidPM - www.rapidpm.org

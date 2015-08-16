@@ -8,11 +8,9 @@ import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.DaoFactorySingleton;
-import org.rapidpm.persistence.OrientDBTransactionExecutor;
 
 import java.security.InvalidKeyException;
 
-import static org.rapidpm.persistence.Edges.CONSISTS_OF;
 import static org.rapidpm.persistence.Edges.VALID_FOR;
 
 /**

@@ -22,7 +22,9 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomp
 
 import javax.naming.InvalidNameException;
 import java.security.InvalidKeyException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Created with IntelliJ IDEA.

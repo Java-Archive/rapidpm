@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact name="webgui:GWT">
-    <output-path>$PROJECT_DIR$/webgui/target/classes/VAADIN/widgetsets</output-path>
+    <output-path>src/main/resources/VAADIN</output-path>
     <root id="root">
       <element id="directory" name="VAADIN">
         <element id="directory" name="widgetsets">

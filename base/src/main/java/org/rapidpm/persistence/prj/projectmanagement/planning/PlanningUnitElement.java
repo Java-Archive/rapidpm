@@ -2,8 +2,6 @@ package org.rapidpm.persistence.prj.projectmanagement.planning;
 
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 
-import javax.persistence.*;
-
 /**
  *
  * User: svenruppert

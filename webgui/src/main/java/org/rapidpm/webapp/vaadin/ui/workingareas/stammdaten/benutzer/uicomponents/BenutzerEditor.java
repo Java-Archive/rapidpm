@@ -10,8 +10,10 @@ import com.vaadin.ui.*;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingleton;
-import org.rapidpm.persistence.system.security.*;
-import org.rapidpm.persistence.system.security.berechtigungen.Rolle;
+import org.rapidpm.persistence.system.security.Benutzer;
+import org.rapidpm.persistence.system.security.BenutzerGruppe;
+import org.rapidpm.persistence.system.security.BenutzerWebapplikation;
+import org.rapidpm.persistence.system.security.Mandantengruppe;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.BenutzerScreen;
@@ -20,9 +22,10 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.exceptions.
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.exceptions.UsernameAlreadyExistsException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.exceptions.WrongLoginNameException;
 
-import javax.inject.Inject;
-import javax.transaction.UserTransaction;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Created by IntelliJ IDEA.

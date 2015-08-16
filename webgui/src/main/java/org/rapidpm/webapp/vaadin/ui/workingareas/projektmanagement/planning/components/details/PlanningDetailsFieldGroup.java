@@ -3,10 +3,10 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 import com.vaadin.data.fieldgroup.FieldGroup;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
-//import com.vaadin.server.ThemeResource;
-import com.vaadin.ui.*;
-//import org.rapidpm.ejb3.EJBFactory;
-//import org.rapidpm.persistence.DaoFactoryBean;
+import com.vaadin.ui.AbstractField;
+import com.vaadin.ui.AbstractSelect;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.TextField;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
@@ -15,6 +15,10 @@ import org.rapidpm.persistence.system.security.Benutzer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+//import com.vaadin.server.ThemeResource;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
 
 /**
  * RapidPM - www.rapidpm.org

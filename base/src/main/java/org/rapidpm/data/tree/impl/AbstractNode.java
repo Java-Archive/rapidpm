@@ -6,13 +6,11 @@ package org.rapidpm.data.tree.impl;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
-import org.rapidpm.data.tree.Node;
 import org.apache.log4j.Logger;
+import org.rapidpm.data.tree.Node;
 
 import java.util.Iterator;
 import java.util.List;
-
-import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Definiert einen abstrakten Knoten innerhalb eines generischen Baums.

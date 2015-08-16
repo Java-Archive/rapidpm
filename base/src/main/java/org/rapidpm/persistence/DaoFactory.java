@@ -16,13 +16,10 @@ import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import com.tinkerpop.blueprints.impls.orient.OrientGraphFactory;
 import com.tinkerpop.blueprints.impls.orient.OrientVertex;
 import org.apache.log4j.Logger;
-import org.neo4j.graphdb.GraphDatabaseService;
 import org.rapidpm.persistence.prj.bewegungsdaten.RegistrationDAO;
 import org.rapidpm.persistence.prj.bewegungsdaten.RegistrationStatusDAO;
 import org.rapidpm.persistence.prj.bewegungsdaten.anfragen.KontaktAnfrageDAO;
 import org.rapidpm.persistence.prj.bewegungsdaten.anfragen.ProjektanfrageDAO;
-import org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.MessageDAO;
-import org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.msg.PersonalMessageDAO;
 import org.rapidpm.persistence.prj.book.BuchDAO;
 import org.rapidpm.persistence.prj.book.BuchKapitelDAO;
 import org.rapidpm.persistence.prj.book.kommentar.BuchKapitelKommentarDAO;
@@ -30,8 +27,6 @@ import org.rapidpm.persistence.prj.book.kommentar.BuchKommentarDAO;
 import org.rapidpm.persistence.prj.book.kommentar.BuchSeitenKommentarDAO;
 import org.rapidpm.persistence.prj.projectmanagement.ProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.ProjectNameDAO;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.*;
-import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBaseDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitDAO;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElementDAO;
@@ -47,12 +42,6 @@ import org.rapidpm.persistence.prj.stammdaten.web.WebDomainDAO;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomainKlassifizierungDAO;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomainMetaDataDAO;
 import org.rapidpm.persistence.prj.textelement.TextElementDAO;
-import org.rapidpm.persistence.rohdaten.OntologieConnectionDAO;
-import org.rapidpm.persistence.rohdaten.OntologieDAO;
-import org.rapidpm.persistence.rohdaten.OntologieEntryDAO;
-import org.rapidpm.persistence.system.logging.LogginEntityActionDAO;
-import org.rapidpm.persistence.system.logging.LogginEntityEntryDAO;
-import org.rapidpm.persistence.system.logging.LoggingEventEntryDAO;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.BerechtigungDAO;
 import org.rapidpm.persistence.system.security.berechtigungen.RolleDAO;
@@ -62,7 +51,7 @@ import java.util.InputMismatchException;
 
 public class DaoFactory {
     private static final Logger logger = Logger.getLogger(DaoFactory.class);
-    private final GraphDatabaseService graphDb = GraphDBFactory.getInstance().getGraphDBService();
+    //private final GraphDatabaseService graphDb = GraphDBFactory.getInstance().getGraphDBService();
     private OrientGraphFactory factory;
     
     public DaoFactory(final String databaseName) {
@@ -94,17 +83,17 @@ public class DaoFactory {
 
     // pkg logging
 
-    public LoggingEventEntryDAO getLoggingEventEntryDAO() {
-        return new LoggingEventEntryDAO(getOrientDB());
-    }
-
-    public LogginEntityEntryDAO getLogginEntityEntryDAO() {
-        return new LogginEntityEntryDAO(getOrientDB());
-    }
-
-    public LogginEntityActionDAO getLogginEntityActionDAO() {
-        return new LogginEntityActionDAO(getOrientDB());
-    }
+//    public LoggingEventEntryDAO getLoggingEventEntryDAO() {
+//        return new LoggingEventEntryDAO(getOrientDB());
+//    }
+//
+//    public LogginEntityEntryDAO getLogginEntityEntryDAO() {
+//        return new LogginEntityEntryDAO(getOrientDB());
+//    }
+//
+//    public LogginEntityActionDAO getLogginEntityActionDAO() {
+//        return new LogginEntityActionDAO(getOrientDB());
+//    }
 
     //pkg security
 
@@ -149,17 +138,17 @@ public class DaoFactory {
     //
 
 
-    public OntologieDAO getOntologieDAO() {
-        return new OntologieDAO(getOrientDB());
-    }
-
-    public OntologieConnectionDAO getOntologieConnectionDAO() {
-        return new OntologieConnectionDAO(getOrientDB());
-    }
-
-    public OntologieEntryDAO getOntologieEntryDAO() {
-        return new OntologieEntryDAO(getOrientDB());
-    }
+//    public OntologieDAO getOntologieDAO() {
+//        return new OntologieDAO(getOrientDB());
+//    }
+//
+//    public OntologieConnectionDAO getOntologieConnectionDAO() {
+//        return new OntologieConnectionDAO(getOrientDB());
+//    }
+//
+//    public OntologieEntryDAO getOntologieEntryDAO() {
+//        return new OntologieEntryDAO(getOrientDB());
+//    }
 
     //pkg webapp
 
@@ -228,53 +217,53 @@ public class DaoFactory {
         return new ProjectNameDAO(getOrientDB());
     }
 
-    //IssueTracking - Relational
-    public IssueTimeUnitDAO getIssueTimeUnitDAO() {
-        return new IssueTimeUnitDAO(getOrientDB());
-    }
-
-    public IssueCommentDAO getIssueCommentDAO() {
-        return new IssueCommentDAO(getOrientDB());
-    }
-
-    public IssueTestCaseDAO getIssueTestCaseDAO() {
-        return new IssueTestCaseDAO(getOrientDB());
-    }
-
-
-
-    //IssueTracking - Graph
-    public IssueBaseDAO getIssueBaseDAO() {
-        return new IssueBaseDAO(graphDb, this);
-    }
-
-    public IssueStatusDAO getIssueStatusDAO() {
-        return new IssueStatusDAO(graphDb, this);
-    }
-
-    public IssuePriorityDAO getIssuePriorityDAO() {
-        return new IssuePriorityDAO(graphDb, this);
-    }
-
-    public IssueTypeDAO getIssueTypeDAO() {
-        return new IssueTypeDAO(graphDb, this);
-    }
-
-    public IssueComponentDAO getIssueComponentDAO() {
-        return new IssueComponentDAO(graphDb, this);
-    }
-
-    public IssueRelationDAO getIssueRelationDAO() {
-        return new IssueRelationDAO(graphDb, this);
-    }
-
-    public IssueVersionDAO getIssueVersionDAO() {
-        return new IssueVersionDAO(graphDb, this);
-    }
-
-    public IssueStoryPointDAO getIssueStoryPointDAO() {
-        return new IssueStoryPointDAO(graphDb, this);
-    }
+//    //IssueTracking - Relational
+//    public IssueTimeUnitDAO getIssueTimeUnitDAO() {
+//        return new IssueTimeUnitDAO(getOrientDB());
+//    }
+//
+//    public IssueCommentDAO getIssueCommentDAO() {
+//        return new IssueCommentDAO(getOrientDB());
+//    }
+//
+//    public IssueTestCaseDAO getIssueTestCaseDAO() {
+//        return new IssueTestCaseDAO(getOrientDB());
+//    }
+//
+//
+//
+//    //IssueTracking - Graph
+//    public IssueBaseDAO getIssueBaseDAO() {
+//        return new IssueBaseDAO(graphDb, this);
+//    }
+//
+//    public IssueStatusDAO getIssueStatusDAO() {
+//        return new IssueStatusDAO(graphDb, this);
+//    }
+//
+//    public IssuePriorityDAO getIssuePriorityDAO() {
+//        return new IssuePriorityDAO(graphDb, this);
+//    }
+//
+//    public IssueTypeDAO getIssueTypeDAO() {
+//        return new IssueTypeDAO(graphDb, this);
+//    }
+//
+//    public IssueComponentDAO getIssueComponentDAO() {
+//        return new IssueComponentDAO(graphDb, this);
+//    }
+//
+//    public IssueRelationDAO getIssueRelationDAO() {
+//        return new IssueRelationDAO(graphDb, this);
+//    }
+//
+//    public IssueVersionDAO getIssueVersionDAO() {
+//        return new IssueVersionDAO(graphDb, this);
+//    }
+//
+//    public IssueStoryPointDAO getIssueStoryPointDAO() {
+//        return new IssueStoryPointDAO(graphDb, this);
+//    }
 
 
     //pkg Kommunikation
@@ -302,13 +291,13 @@ public class DaoFactory {
 
     //pkg msgCenter
 
-    public MessageDAO getMessageDAO() {
-        return new MessageDAO(getOrientDB());
-    }
-
-    public PersonalMessageDAO getPersonalMessageDAO() {
-        return new PersonalMessageDAO(getOrientDB());
-    }
+//    public MessageDAO getMessageDAO() {
+//        return new MessageDAO(getOrientDB());
+//    }
+//
+//    public PersonalMessageDAO getPersonalMessageDAO() {
+//        return new PersonalMessageDAO(getOrientDB());
+//    }
 
     //pkg intern
     public RessourceGroupDAO getRessourceGroupDAO(){

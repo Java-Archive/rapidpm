@@ -16,7 +16,6 @@ package org.rapidpm.persistence.system.security;
 
 import org.apache.log4j.Logger;
 
-import javax.validation.constraints.NotNull;
 
 public class BenutzerGruppe {
     private static final Logger logger = Logger.getLogger(BenutzerGruppe.class);
@@ -31,7 +30,6 @@ public class BenutzerGruppe {
         this.id = id;
     }
 
-    @NotNull
     private String gruppenname;
 
     public String getGruppenname() {

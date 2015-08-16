@@ -1,17 +1,7 @@
 package org.rapidpm.persistence.system.security.berechtigungen;
 
-import org.hibernate.envers.Audited;
 
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.TableGenerator;
+import javax.persistence.*;
 import java.util.Set;
 
 /**
@@ -20,7 +10,6 @@ import java.util.Set;
  * Time: 14:21
  */
 @Entity
-@Audited
 public class Rolle {
     @Id
     @TableGenerator(name = "PKGenRolle", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "Rolle_id", valueColumnName = "gen_value", allocationSize = 1)

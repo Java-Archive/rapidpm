@@ -2,8 +2,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit;
 
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.*;
-//import org.rapidpm.ejb3.EJBFactory;
-//import org.rapidpm.persistence.DaoFactoryBean;
 import com.vaadin.ui.themes.Reindeer;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingleton;
@@ -24,6 +22,9 @@ import java.util.Date;
 import java.util.List;
 
 import static org.rapidpm.Constants.DATE_FORMAT;
+
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
 
 public class AufwandProjInitScreen extends Screen {
 

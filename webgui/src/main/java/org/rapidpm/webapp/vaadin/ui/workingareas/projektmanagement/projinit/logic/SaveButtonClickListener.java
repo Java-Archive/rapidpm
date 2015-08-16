@@ -8,8 +8,6 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import org.apache.log4j.Logger;
-//import org.rapidpm.ejb3.EJBFactory;
-//import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingleton;
@@ -25,6 +23,9 @@ import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
+
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
 
 public class SaveButtonClickListener implements ClickListener {
     private static final Pattern SPLITT_PATTERN = Pattern.compile(":");

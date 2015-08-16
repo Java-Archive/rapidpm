@@ -21,7 +21,9 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.comp
 
 import javax.naming.InvalidNameException;
 import java.security.InvalidKeyException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Created with IntelliJ IDEA.

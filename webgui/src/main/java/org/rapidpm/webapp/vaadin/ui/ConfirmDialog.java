@@ -1,6 +1,5 @@
 package org.rapidpm.webapp.vaadin.ui;
 
-import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
@@ -36,23 +35,17 @@ public abstract class ConfirmDialog extends RapidWindow {
 
             @Override
             public void setSaveButtonListener() {
-                saveButton.addClickListener(new Button.ClickListener() {
-                    @Override
-                    public void buttonClick(Button.ClickEvent event) {
-                        close();
-                        doThisOnOK();
-                    }
+                saveButton.addClickListener(event -> {
+                    close();
+                    doThisOnOK();
                 });
             }
 
             @Override
             public void setCancelButtonListener() {
-                cancelButton.addClickListener(new Button.ClickListener() {
-                    @Override
-                    public void buttonClick(Button.ClickEvent event) {
-                        close();
-                        doThisOnCancel();
-                    }
+                cancelButton.addClickListener(event -> {
+                    close();
+                    doThisOnCancel();
                 });
             }
         };

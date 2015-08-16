@@ -17,8 +17,6 @@ package org.rapidpm.persistence.prj.stammdaten.person;
 
 import org.apache.log4j.Logger;
 
-import javax.persistence.*;
-
 public class Anrede {
     private static final Logger logger = Logger.getLogger(Anrede.class);
 

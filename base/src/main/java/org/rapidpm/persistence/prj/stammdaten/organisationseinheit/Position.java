@@ -14,8 +14,8 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
  *
  */
 
-import org.rapidpm.persistence.prj.stammdaten.person.Person;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.prj.stammdaten.person.Person;
 
 import javax.persistence.*;
 import java.util.Date;

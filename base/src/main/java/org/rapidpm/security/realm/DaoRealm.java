@@ -14,7 +14,6 @@ import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
 import org.rapidpm.persistence.system.security.berechtigungen.Rolle;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**

@@ -1,9 +1,7 @@
 package org.rapidpm.persistence;
 
 import com.tinkerpop.blueprints.Vertex;
-import com.tinkerpop.blueprints.impls.orient.OrientGraph;
 import com.tinkerpop.blueprints.impls.orient.OrientVertex;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;

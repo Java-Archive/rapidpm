@@ -12,7 +12,6 @@ import org.rapidpm.webapp.vaadin.ui.EditableLayout;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
-import javax.persistence.EntityManager;
 import java.util.Iterator;
 import java.util.ResourceBundle;
 

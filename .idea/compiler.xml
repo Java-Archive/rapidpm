@@ -22,7 +22,6 @@
         <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="webservice" />
       </profile>
       <profile default="false" name="Annotation profile for webgui" enabled="true">
         <sourceOutputDir name="target\generated-sources\annotations" />

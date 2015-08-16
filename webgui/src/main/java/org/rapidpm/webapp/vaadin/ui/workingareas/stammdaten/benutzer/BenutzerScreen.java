@@ -5,14 +5,12 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.event.ItemClickEvent;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.system.security.*;
-import org.rapidpm.persistence.system.security.berechtigungen.Rolle;
 import org.rapidpm.persistence.system.security.berechtigungen.RolleDAO;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.FormattedDateStringToDateConverter;
@@ -22,11 +20,8 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.uicomponent
 import javax.persistence.PersistenceException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.temporal.TemporalAmount;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -58,18 +53,14 @@ public class BenutzerScreen extends Screen {
         contentLayout.setSizeFull();
         contentLayout.setSpacing(true);
 
-//        final BenutzerScreenBean bean = EJBFactory.getEjbInstance(BenutzerScreenBean.class);
-//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
         final MandantengruppeDAO mandantengruppeDAO = daoFactory.getMandantengruppeDAO();
-        final RolleDAO rolleDAO = daoFactory.getRolleDAO();
         final BenutzerGruppeDAO benutzerGruppeDAO = daoFactory.getBenutzerGruppeDAO();
         final BenutzerWebapplikationDAO benutzerWebapplikationDAO = daoFactory.getBenutzerWebapplikationDAO();
         final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
         final List<Mandantengruppe> mandantengruppen = mandantengruppeDAO.findAll();
         final List<BenutzerGruppe> benutzerGruppen = benutzerGruppeDAO.findAll();
         final List<BenutzerWebapplikation> benutzerWebapplikationen = benutzerWebapplikationDAO.findAll();
-        //final List<Rolle> rollen = rolleDAO.findAll();
         final List<Benutzer> allUsers = benutzerDAO.findAll();
         final List<Benutzer> allUsersFull = new ArrayList<>();
         for (final Benutzer user : allUsers) {
@@ -94,7 +85,6 @@ public class BenutzerScreen extends Screen {
         benutzerEditor.setMandantengruppen(mandantengruppen);
         benutzerEditor.setBenutzerGruppen(benutzerGruppen);
         benutzerEditor.setBenutzerWebapplikationen(benutzerWebapplikationen);
-        //benutzerEditor.setRollen(rollen);
         contentLayout.addComponent(benutzerEditor);
         contentLayout.setExpandRatio(benutzerTableLayout, 3);
         contentLayout.setExpandRatio(benutzerEditor, 1);
@@ -115,38 +105,35 @@ public class BenutzerScreen extends Screen {
         benutzerTableLayout.addComponent(benutzerTable);
 
         removeButton = new Button();
-        removeButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(final Button.ClickEvent clickEvent) {
-                final Benutzer currentUser = (Benutzer) getSession().getAttribute(Benutzer.class);
-                final Object tableItemId = benutzerTable.getValue();
-                final BeanItem<Benutzer> beanItem = (BeanItem<Benutzer>) benutzerTable.getItem(tableItemId);
-                final Benutzer selectedBenutzer = beanItem.getBean();
+        removeButton.addClickListener(clickEvent -> {
+            final Benutzer currentUser = (Benutzer) getSession().getAttribute(Benutzer.class);
+            final Object tableItemId = benutzerTable.getValue();
+            final BeanItem<Benutzer> beanItem = (BeanItem<Benutzer>) benutzerTable.getItem(tableItemId);
+            final Benutzer selectedBenutzer = beanItem.getBean();
 
-                final boolean isUserDeletingHimself = currentUser.getLogin().equals(selectedBenutzer.getLogin());
+            final boolean isUserDeletingHimself = currentUser.getLogin().equals(selectedBenutzer.getLogin());
 
-                if(!isUserDeletingHimself){
-                    final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-                    final Benutzer benutzerFromDB = daoFactory.getBenutzerDAO().loadBenutzerForLogin(selectedBenutzer.getLogin());
-                    if(benutzerFromDB != null){
-                        try{
-                            benutzerTable.removeItem(tableItemId);
-                            daoFactory.getBenutzerDAO().deleteByEntity(benutzerFromDB, false);
-                            benutzerEditor.setVisible(false);
-                        } catch (final PersistenceException e){
-                            Notification.show(messagesBundle.getString("users_userinuse"));
-                        }
-
-                    } else {
+            if(!isUserDeletingHimself){
+                final DaoFactory daoFactory1 = DaoFactorySingleton.getInstance();
+                final Benutzer benutzerFromDB = daoFactory1.getBenutzerDAO().loadBenutzerForLogin(selectedBenutzer.getLogin());
+                if(benutzerFromDB != null){
+                    try{
                         benutzerTable.removeItem(tableItemId);
+                        daoFactory1.getBenutzerDAO().deleteByEntity(benutzerFromDB, false);
                         benutzerEditor.setVisible(false);
-                        logger.warn(selectedBenutzer.toString() + "war nur transient vorhanden");
+                    } catch (final PersistenceException e){
+                        Notification.show(messagesBundle.getString("users_userinuse"));
                     }
 
+                } else {
+                    benutzerTable.removeItem(tableItemId);
+                    benutzerEditor.setVisible(false);
+                    logger.warn(selectedBenutzer.toString() + "war nur transient vorhanden");
                 }
-                else{
-                    Notification.show(messagesBundle.getString("users_selfdelete"));
-                }
+
+            }
+            else{
+                Notification.show(messagesBundle.getString("users_selfdelete"));
             }
         });
         removeButton.setEnabled(false);
@@ -167,23 +154,20 @@ public class BenutzerScreen extends Screen {
         });
         resetButton.setEnabled(false);
 
-        benutzerTable.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(Property.ValueChangeEvent valueChangeEvent) {
-                final Benutzer user = (Benutzer) valueChangeEvent.getProperty().getValue();
-                System.out.println("-------------------------");
-                if (benutzerTable.isSelected(user)) {
-                    Integer failedLogins = user.getFailedLogins();
-                    boolean isResetable = failedLogins >= 3;
-                    benutzerEditor.reset();
-                    benutzerEditor.setBenutzerBean(new BeanItem<>(user));
-                    benutzerEditor.setVisible(true);
-                    removeButton.setEnabled(true);
-                    resetButton.setEnabled(isResetable);
-                } else {
-                    removeButton.setEnabled(false);
-                    benutzerEditor.setVisible(false);
-                }
+        benutzerTable.addValueChangeListener(valueChangeEvent -> {
+            final Benutzer user = (Benutzer) valueChangeEvent.getProperty().getValue();
+            System.out.println("-------------------------");
+            if (benutzerTable.isSelected(user)) {
+                Integer failedLogins = user.getFailedLogins();
+                boolean isResetable = failedLogins >= 3;
+                benutzerEditor.reset();
+                benutzerEditor.setBenutzerBean(new BeanItem<>(user));
+                benutzerEditor.setVisible(true);
+                removeButton.setEnabled(true);
+                resetButton.setEnabled(isResetable);
+            } else {
+                removeButton.setEnabled(false);
+                benutzerEditor.setVisible(false);
             }
         });
 
@@ -192,47 +176,41 @@ public class BenutzerScreen extends Screen {
         benutzerTableLayout.addComponent(benutzerButtonsLayout);
 
         addButton = new Button();
-        addButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(final Button.ClickEvent clickEvent) {
-                final Benutzer neuerBenutzer = new Benutzer();
-                neuerBenutzer.setLogin(messagesBundle.getString("new"));
-                neuerBenutzer.setActive(true);
-                neuerBenutzer.setBenutzerGruppe(benutzerGruppen.get(0));
-                neuerBenutzer.setBenutzerWebapplikation(benutzerWebapplikationen.get(0));
-                neuerBenutzer.setEmail(messagesBundle.getString("new")+"@rapidpm.org");
-                neuerBenutzer.setFailedLogins(0);
-                neuerBenutzer.setMandantengruppe(mandantengruppen.get(0));
-                neuerBenutzer.setValidFrom(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-                neuerBenutzer.setValidUntil(Date.from(LocalDate.now().plus(Period.ofYears(1)).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
-                benutzerDS.addBean(neuerBenutzer);
-                benutzerTable.select(neuerBenutzer);
-            }
+        addButton.addClickListener(clickEvent -> {
+            final Benutzer neuerBenutzer = new Benutzer();
+            neuerBenutzer.setLogin(messagesBundle.getString("new"));
+            neuerBenutzer.setActive(true);
+            neuerBenutzer.setBenutzerGruppe(benutzerGruppen.get(0));
+            neuerBenutzer.setBenutzerWebapplikation(benutzerWebapplikationen.get(0));
+            neuerBenutzer.setEmail(messagesBundle.getString("new")+"@rapidpm.org");
+            neuerBenutzer.setFailedLogins(0);
+            neuerBenutzer.setMandantengruppe(mandantengruppen.get(0));
+            neuerBenutzer.setValidFrom(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+            neuerBenutzer.setValidUntil(Date.from(LocalDate.now().plus(Period.ofYears(1)).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
+            benutzerDS.addBean(neuerBenutzer);
+            benutzerTable.select(neuerBenutzer);
         });
 
         benutzerButtonsLayout.addComponent(addButton);
         benutzerButtonsLayout.addComponent(removeButton);
         benutzerButtonsLayout.addComponent(resetButton);
 
-        mandantenBox.addValueChangeListener(new Property.ValueChangeListener() {
-            @Override
-            public void valueChange(final Property.ValueChangeEvent valueChangeEvent) {
-                final Mandantengruppe mandantengruppeFilter = (Mandantengruppe) valueChangeEvent.getProperty().getValue();
-                benutzerDS.removeAllContainerFilters();
-                if (mandantengruppeFilter != null) {
-                    benutzerDS.addContainerFilter(new Container.Filter() {
-                        @Override
-                        public boolean passesFilter(final Object o, final Item item) throws UnsupportedOperationException {
-                            final Benutzer b = (Benutzer) o;
-                            return mandantengruppeFilter.equals(b.getMandantengruppe());
-                        }
+        mandantenBox.addValueChangeListener(valueChangeEvent -> {
+            final Mandantengruppe mandantengruppeFilter = (Mandantengruppe) valueChangeEvent.getProperty().getValue();
+            benutzerDS.removeAllContainerFilters();
+            if (mandantengruppeFilter != null) {
+                benutzerDS.addContainerFilter(new Container.Filter() {
+                    @Override
+                    public boolean passesFilter(final Object o, final Item item) throws UnsupportedOperationException {
+                        final Benutzer b = (Benutzer) o;
+                        return mandantengruppeFilter.equals(b.getMandantengruppe());
+                    }
 
-                        @Override
-                        public boolean appliesToProperty(final Object o) {
-                            return "mandantengruppe".equals(o);
-                        }
-                    });
-                }
+                    @Override
+                    public boolean appliesToProperty(final Object o) {
+                        return "mandantengruppe".equals(o);
+                    }
+                });
             }
         });
         setComponents();
