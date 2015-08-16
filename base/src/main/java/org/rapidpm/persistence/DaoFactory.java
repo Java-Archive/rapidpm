@@ -36,9 +36,6 @@ import org.rapidpm.persistence.prj.stammdaten.web.WebDomainDAO;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomainKlassifizierungDAO;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomainMetaDataDAO;
 import org.rapidpm.persistence.prj.textelement.TextElementDAO;
-import org.rapidpm.persistence.system.logging.LogginEntityActionDAO;
-import org.rapidpm.persistence.system.logging.LogginEntityEntryDAO;
-import org.rapidpm.persistence.system.logging.LoggingEventEntryDAO;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.BerechtigungDAO;
 import org.rapidpm.persistence.system.security.berechtigungen.RolleDAO;
@@ -61,18 +58,6 @@ public class DaoFactory {
     }
 
     // pkg logging
-
-    public LoggingEventEntryDAO getLoggingEventEntryDAO() {
-        return new LoggingEventEntryDAO(orientDB);
-    }
-
-    public LogginEntityEntryDAO getLogginEntityEntryDAO() {
-        return new LogginEntityEntryDAO(orientDB);
-    }
-
-    public LogginEntityActionDAO getLogginEntityActionDAO() {
-        return new LogginEntityActionDAO(orientDB);
-    }
 
     //pkg security
 
