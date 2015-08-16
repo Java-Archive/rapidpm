@@ -2,8 +2,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.log
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
-//import org.rapidpm.ejb3.EJBFactory;
-//import org.rapidpm.persistence.DaoFactoryBean;
 import com.vaadin.server.VaadinSession;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingleton;
@@ -22,6 +20,9 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 import static org.rapidpm.Constants.DECIMAL_FORMAT;
+
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
 /**
  * RapidPM - www.rapidpm.org
  * User: Marco

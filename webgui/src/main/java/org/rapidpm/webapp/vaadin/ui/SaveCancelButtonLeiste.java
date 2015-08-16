@@ -5,8 +5,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 
-import java.util.ResourceBundle;
-
 /**
  * Created with IntelliJ IDEA.
  * User: marco

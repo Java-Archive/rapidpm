@@ -15,7 +15,9 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administratio
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.exceptions.TryToDeleteCurrentProjectException;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.logic.ProjectsListsValueChangeListener;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * RapidPM - www.rapidpm.org

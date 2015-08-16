@@ -12,13 +12,11 @@ import com.vaadin.data.Validator;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.*;
-import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 
 import java.util.Iterator;
 
 public class KontaktWindow extends RapidWindow {
-    private static final Logger logger = Logger.getLogger(KontaktWindow.class);
 
     private static final String KONTAKT_HTML_SNIPPET = "RapidPM HQ</br>Tannenstr. 9</br>82049 Pullach</br></br></br>";
 
@@ -40,29 +38,22 @@ public class KontaktWindow extends RapidWindow {
         final TextArea textTextField = new TextArea("Text");
         textTextField.setRequired(true);
         form.addComponent(textTextField);
-        form.addComponent(new Button("Absenden", new Button.ClickListener() {
-            @Override
-            public void buttonClick(final Button.ClickEvent clickEvent) {
-                try {
-                    // alle Kontaktfelder validieren
-                    final Iterator<Component> componentIterator = form.getComponentIterator();
-                    while (componentIterator.hasNext()) {
-                        final Component component = componentIterator.next();
-                        if (component instanceof Validatable) {
-                            final Validatable validatable = (Validatable) component;
-                            validatable.validate();
-                        }
+        form.addComponent(new Button("Absenden", clickEvent -> {
+            try {
+                // alle Kontaktfelder validieren
+                final Iterator<Component> componentIterator = form.getComponentIterator();
+                while (componentIterator.hasNext()) {
+                    final Component component = componentIterator.next();
+                    if (component instanceof Validatable) {
+                        final Validatable validatable = (Validatable) component;
+                        validatable.validate();
                     }
-                    // TODO Formular absenden
-//                    getApplication().getMainWindow().showNotification("Kontaktformular abgeschickt",
-//                            "Empfänger: " + emailTextField.getValue(), Notification.TYPE_HUMANIZED_MESSAGE);
-                    Notification.show("Kontaktformular abgeschickt Empfänger: " + emailTextField.getValue());
-                    close();
-                } catch (Validator.InvalidValueException e) {
-//                    getApplication().getMainWindow().showNotification("Fehler",
-//                            "Bitte überprüfen Sie Ihre Eingaben", Notification.TYPE_ERROR_MESSAGE);
-                    Notification.show("Bitte überprüfen Sie Ihre Eingaben");
                 }
+                // TODO Formular absenden
+                Notification.show("Kontaktformular abgeschickt Empfänger: " + emailTextField.getValue());
+                close();
+            } catch (Validator.InvalidValueException e) {
+                Notification.show("Bitte überprüfen Sie Ihre Eingaben");
             }
         }));
         addComponent(form);

@@ -2,7 +2,10 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.com
 
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Panel;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingleton;

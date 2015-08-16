@@ -31,9 +31,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logi
 import javax.naming.InvalidNameException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by IntelliJ IDEA.

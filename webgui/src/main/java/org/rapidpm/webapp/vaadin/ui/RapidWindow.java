@@ -1,7 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui;
 
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 

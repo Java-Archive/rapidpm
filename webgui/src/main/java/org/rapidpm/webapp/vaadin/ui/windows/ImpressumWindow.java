@@ -9,7 +9,6 @@ package org.rapidpm.webapp.vaadin.ui.windows;
 
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Window;
 import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 

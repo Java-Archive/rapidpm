@@ -2,7 +2,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
 
 import com.vaadin.data.util.HierarchicalContainer;
 import com.vaadin.ui.Tree;
-import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
@@ -11,7 +10,6 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logi
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.

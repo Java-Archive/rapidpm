@@ -5,8 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/base/base.iml" filepath="$PROJECT_DIR$/base/base.iml" />
       <module fileurl="file://$PROJECT_DIR$/rapidpm.iml" filepath="$PROJECT_DIR$/rapidpm.iml" />
       <module fileurl="file://$PROJECT_DIR$/webgui/webgui.iml" filepath="$PROJECT_DIR$/webgui/webgui.iml" />
-      <module fileurl="file://$PROJECT_DIR$/webservice/webservice.iml" filepath="$PROJECT_DIR$/webservice/webservice.iml" />
     </modules>
   </component>
 </project>
-

@@ -2,10 +2,8 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze;
 
 import com.vaadin.event.MouseEvents;
 import com.vaadin.ui.*;
-//import org.rapidpm.ejb3.EJBFactory;
 import com.vaadin.ui.themes.Reindeer;
 import org.rapidpm.persistence.DaoFactory;
-//import org.rapidpm.persistence.DaoFactoryBean;
 import org.rapidpm.persistence.DaoFactorySingleton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
@@ -32,6 +30,9 @@ import java.util.List;
 
 import static org.rapidpm.Constants.DECIMAL_FORMAT;
 import static org.rapidpm.Constants.EUR;
+
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
 
 public class StundensaetzeScreen extends Screen {
 
