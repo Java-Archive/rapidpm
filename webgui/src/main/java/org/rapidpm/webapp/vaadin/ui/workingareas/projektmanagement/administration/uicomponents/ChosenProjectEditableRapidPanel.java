@@ -14,6 +14,7 @@ import org.rapidpm.webapp.vaadin.ui.EditableRapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.ProjectAdministrationScreen;
 
 import java.util.ResourceBundle;
+
 /**
  * RapidPM - www.rapidpm.org
  * User: Marco Ebbinghaus
@@ -23,95 +24,95 @@ import java.util.ResourceBundle;
  */
 public class ChosenProjectEditableRapidPanel extends EditableRapidPanel {
 
-    private static Logger logger = Logger.getLogger(ChosenProjectEditableRapidPanel.class);
+  private static Logger logger = Logger.getLogger(ChosenProjectEditableRapidPanel.class);
 
-    private FormLayout formLayout = new FormLayout();
-    private ProjektFieldGroup fieldGroup;
+  private FormLayout formLayout = new FormLayout();
+  private ProjektFieldGroup fieldGroup;
 
-    private Label noSelectionLabel;
+  private Label noSelectionLabel;
 
-    public ChosenProjectEditableRapidPanel(final MainUI ui, final ResourceBundle messagesBundle) {
-        super(messagesBundle);
-        noSelectionLabel = new Label(messagesBundle.getString("project_noselection"));
+  public ChosenProjectEditableRapidPanel(final MainUI ui, final ResourceBundle messagesBundle) {
+    super(messagesBundle);
+    noSelectionLabel = new Label(messagesBundle.getString("project_noselection"));
 
-        cancelButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                fieldGroup.discard();
-                activate(false);
-            }
-        });
+    cancelButton.addClickListener(new Button.ClickListener() {
+      @Override
+      public void buttonClick(Button.ClickEvent event) {
+        fieldGroup.discard();
+        activate(false);
+      }
+    });
 
-        saveButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                try {
-                    fieldGroup.commit();
-                    final PlannedProject project = ((BeanItem<PlannedProject>)fieldGroup.getItemDataSource()).getBean();
-                    DaoFactorySingleton.getInstance().getPlannedProjectDAO().updateByEntity(project, false);
-                    activate(false);
-                    ui.setWorkingArea(new ProjectAdministrationScreen(ui));
-                } catch (FieldGroup.CommitException e) {
-                    logger.warn("Commit Failed", e);
-                }
-            }
-        });
-        setComponents();
-        doInternationalization();
-
-        buttonsLayout.addComponent(saveButton);
-        buttonsLayout.addComponent(cancelButton);
-        buttonsLayout.setVisible(false);
-
-    }
-
-    @Override
-    public void setComponents() {
-        addComponent(noSelectionLabel);
-        addComponent(formLayout);
-        addComponent(buttonsLayout);
-    }
-
-    @Override
-    public void doInternationalization() {
-        setCaption(messagesBundle.getString("project_editproject"));
-        saveButton.setCaption(messagesBundle.getString("save"));
-        cancelButton.setCaption(messagesBundle.getString("cancel"));
-    }
-
-    public FormLayout getFormLayout() {
-        return formLayout;
-    }
-
-    public ProjektFieldGroup getFieldGroup() {
-        return fieldGroup;
-    }
-
-    public void setFieldGroup(ProjektFieldGroup fieldGroup) {
-        this.fieldGroup = fieldGroup;
-    }
-
-    public void buildForm() {
-        noSelectionLabel.setVisible(false);
-        formLayout.removeAllComponents();
-        final Field tokenField = fieldGroup.getField(PlannedProject.TOKEN);
-        tokenField.setEnabled(false);
-        formLayout.addComponent(tokenField);
-        formLayout.addComponent(fieldGroup.getField(PlannedProject.NAME));
-        formLayout.addComponent(fieldGroup.getField(PlannedProject.EXTERNALDAILYRATE));
-        formLayout.addComponent(fieldGroup.getField(PlannedProject.HOURSPERWORKINGDAY));
-    }
-
-    @Override
-    public void activate(boolean b){
-        if(fieldGroup != null){
-            for(Object propertyId : fieldGroup.getBoundPropertyIds()){
-                if(!propertyId.equals(PlannedProject.ID)){
-                    final Field field = fieldGroup.getField(propertyId);
-                    field.setReadOnly(!b);
-                }
-            }
-            buttonsLayout.setVisible(b);
+    saveButton.addClickListener(new Button.ClickListener() {
+      @Override
+      public void buttonClick(Button.ClickEvent event) {
+        try {
+          fieldGroup.commit();
+          final PlannedProject project = ((BeanItem<PlannedProject>) fieldGroup.getItemDataSource()).getBean();
+          DaoFactorySingleton.getInstance().getPlannedProjectDAO().updateByEntity(project, false);
+          activate(false);
+          ui.setWorkingArea(new ProjectAdministrationScreen(ui));
+        } catch (FieldGroup.CommitException e) {
+          logger.warn("Commit Failed", e);
         }
+      }
+    });
+    setComponents();
+    doInternationalization();
+
+    buttonsLayout.addComponent(saveButton);
+    buttonsLayout.addComponent(cancelButton);
+    buttonsLayout.setVisible(false);
+
+  }
+
+  @Override
+  public void activate(boolean b) {
+    if (fieldGroup != null) {
+      for (Object propertyId : fieldGroup.getBoundPropertyIds()) {
+        if (!propertyId.equals(PlannedProject.ID)) {
+          final Field field = fieldGroup.getField(propertyId);
+          field.setReadOnly(!b);
+        }
+      }
+      buttonsLayout.setVisible(b);
     }
+  }
+
+  @Override
+  public void setComponents() {
+    addComponent(noSelectionLabel);
+    addComponent(formLayout);
+    addComponent(buttonsLayout);
+  }
+
+  @Override
+  public void doInternationalization() {
+    setCaption(messagesBundle.getString("project_editproject"));
+    saveButton.setCaption(messagesBundle.getString("save"));
+    cancelButton.setCaption(messagesBundle.getString("cancel"));
+  }
+
+  public FormLayout getFormLayout() {
+    return formLayout;
+  }
+
+  public ProjektFieldGroup getFieldGroup() {
+    return fieldGroup;
+  }
+
+  public void setFieldGroup(ProjektFieldGroup fieldGroup) {
+    this.fieldGroup = fieldGroup;
+  }
+
+  public void buildForm() {
+    noSelectionLabel.setVisible(false);
+    formLayout.removeAllComponents();
+    final Field tokenField = fieldGroup.getField(PlannedProject.TOKEN);
+    tokenField.setEnabled(false);
+    formLayout.addComponent(tokenField);
+    formLayout.addComponent(fieldGroup.getField(PlannedProject.NAME));
+    formLayout.addComponent(fieldGroup.getField(PlannedProject.EXTERNALDAILYRATE));
+    formLayout.addComponent(fieldGroup.getField(PlannedProject.HOURSPERWORKINGDAY));
+  }
 }

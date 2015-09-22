@@ -18,59 +18,59 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administratio
  */
 public class NoProjectsScreen extends Screen {
 
-    private final RapidPanel noProjectsPanel;
-    private final HorizontalLayout buttonLayout;
-    private final Label descriptionLabel;
-    private final Button wizardButton;
-    private final Button manualButton;
+  private final RapidPanel noProjectsPanel;
+  private final HorizontalLayout buttonLayout;
+  private final Label descriptionLabel;
+  private final Button wizardButton;
+  private final Button manualButton;
 
-    public NoProjectsScreen(final MainUI ui){
-        super(ui);
+  public NoProjectsScreen(final MainUI ui) {
+    super(ui);
 
-        noProjectsPanel = new RapidPanel();
-        descriptionLabel = new Label();
-        buttonLayout = new HorizontalLayout();
-        wizardButton = new Button();
-        manualButton = new Button();
+    noProjectsPanel = new RapidPanel();
+    descriptionLabel = new Label();
+    buttonLayout = new HorizontalLayout();
+    wizardButton = new Button();
+    manualButton = new Button();
 
-        setButtonListeners(ui);
+    setButtonListeners(ui);
 
-        buttonLayout.addComponent(wizardButton);
-        buttonLayout.addComponent(manualButton);
+    buttonLayout.addComponent(wizardButton);
+    buttonLayout.addComponent(manualButton);
 
-        noProjectsPanel.addComponent(descriptionLabel);
-        noProjectsPanel.addComponent(buttonLayout);
+    noProjectsPanel.addComponent(descriptionLabel);
+    noProjectsPanel.addComponent(buttonLayout);
 
-        doInternationalization();
-        setComponents();
-    }
+    doInternationalization();
+    setComponents();
+  }
 
-    private void setButtonListeners(final MainUI ui) {
-        wizardButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                Notification.show("TUDU");
-            }
-        });
+  private void setButtonListeners(final MainUI ui) {
+    wizardButton.addClickListener(new Button.ClickListener() {
+      @Override
+      public void buttonClick(Button.ClickEvent event) {
+        Notification.show("TUDU");
+      }
+    });
 
-        manualButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                final AddProjectWindow addProjectWindow = new AddProjectWindow(ui, messagesBundle);
-                addProjectWindow.show();
-            }
-        });
-    }
+    manualButton.addClickListener(new Button.ClickListener() {
+      @Override
+      public void buttonClick(Button.ClickEvent event) {
+        final AddProjectWindow addProjectWindow = new AddProjectWindow(ui, messagesBundle);
+        addProjectWindow.show();
+      }
+    });
+  }
 
-    @Override
-    public void setComponents() {
-        addComponent(noProjectsPanel);
-    }
+  @Override
+  public void doInternationalization() {
+    descriptionLabel.setValue(messagesBundle.getString("noprojects"));
+    wizardButton.setCaption(messagesBundle.getString("wizard"));
+    manualButton.setCaption(messagesBundle.getString("manual"));
+  }
 
-    @Override
-    public void doInternationalization() {
-        descriptionLabel.setValue(messagesBundle.getString("noprojects"));
-        wizardButton.setCaption(messagesBundle.getString("wizard"));
-        manualButton.setCaption(messagesBundle.getString("manual"));
-    }
+  @Override
+  public void setComponents() {
+    addComponent(noProjectsPanel);
+  }
 }

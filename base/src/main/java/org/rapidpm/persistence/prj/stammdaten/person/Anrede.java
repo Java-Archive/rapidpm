@@ -11,57 +11,53 @@ package org.rapidpm.persistence.prj.stammdaten.person;
  * Time: 15:33:37
  * This Source Code is part of the RapidPM - www.rapidpm.org project.
  * please contact sven.ruppert@web.de
- *
  */
 
 
 import org.apache.log4j.Logger;
 
 public class Anrede {
-    private static final Logger logger = Logger.getLogger(Anrede.class);
+  private static final Logger logger = Logger.getLogger(Anrede.class);
 
-    private String id;
+  private String id;
+  private String anrede;
 
-    public String getId() {
-        return id;
+  public String getAnrede() {
+    return anrede;
+  }
+
+  public void setAnrede(final String anrede) {
+    this.anrede = anrede;
+  }
+
+  @Override
+  public int hashCode() {
+    return getId() != null ? getId().hashCode() : 0;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
 
-    public void setId(final String id) {
-        this.id = id;
+    final Anrede anrede = (Anrede) o;
+
+    if (getId() != null ? !getId().equals(anrede.getId()) : anrede.getId() != null) {
+      return false;
     }
 
+    return true;
+  }
 
-    private String anrede;
+  public String getId() {
+    return id;
+  }
 
-
-    public String getAnrede() {
-        return anrede;
-    }
-
-    public void setAnrede(final String anrede) {
-        this.anrede = anrede;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        final Anrede anrede = (Anrede) o;
-
-        if (getId() != null ? !getId().equals(anrede.getId()) : anrede.getId() != null) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return getId() != null ? getId().hashCode() : 0;
-    }
+  public void setId(final String id) {
+    this.id = id;
+  }
 }

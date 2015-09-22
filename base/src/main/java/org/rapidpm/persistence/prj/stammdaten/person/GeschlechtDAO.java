@@ -21,36 +21,36 @@ import java.security.InvalidKeyException;
  */
 public class GeschlechtDAO extends DAO<Long, Geschlecht> {
 
-    public GeschlechtDAO(final OrientGraph orientDB) {
-        super(orientDB, org.rapidpm.persistence.prj.stammdaten.person.Geschlecht.class);
-    }
+  public GeschlechtDAO(final OrientGraph orientDB) {
+    super(orientDB, org.rapidpm.persistence.prj.stammdaten.person.Geschlecht.class);
+  }
 
-    public Geschlecht load(final String geschlechtTxt) {
+  public Geschlecht loadGeschlechtMaennlich() {
+    return load(Constants.GESCHLECHT_M);
+  }
+
+  public Geschlecht load(final String geschlechtTxt) {
 //        final TypedQuery<Geschlecht> typedQuery = orientDB.createQuery("from Geschlecht g where g.geschlecht=:geschlechtTxt",
 //                Geschlecht.class).setParameter("geschlechtTxt", geschlechtTxt);
 //        return getSingleResultOrNull(typedQuery);
-        return null;
-    }
+    return null;
+  }
 
-    public Geschlecht loadGeschlechtMaennlich() {
-        return load(Constants.GESCHLECHT_M);
-    }
+  public Geschlecht loadGeschlechtWeiblich() {
+    return load(Constants.GESCHLECHT_W);
+  }
 
-    public Geschlecht loadGeschlechtWeiblich() {
-        return load(Constants.GESCHLECHT_W);
-    }
+  public Geschlecht loadGeschlechtNothing() {
+    return load("Nothing");
+  }
 
-    public Geschlecht loadGeschlechtNothing() {
-        return load("Nothing");
-    }
+  @Override
+  public Geschlecht loadFull(Geschlecht entity) throws InvalidKeyException, NotYetImplementedException {
+    throw new NotYetImplementedException();
+  }
 
-    @Override
-    public Geschlecht loadFull(Geschlecht entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
-    }
-
-    @Override
-    public Geschlecht createEntityFull(Geschlecht entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public Geschlecht createEntityFull(Geschlecht entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    throw new NotYetImplementedException();
+  }
 }

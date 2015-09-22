@@ -17,25 +17,25 @@ import static org.rapidpm.Constants.DAYSHOURSMINUTES_VALIDATOR_REGEX_EXCEPTION_M
  */
 public class DaysHoursMinutesFieldValidator implements Validator {
 
-    private static final Pattern COMPILE = Pattern.compile(DAYSHOURSMINUTES_REGEX);
-    private final Screen screen;
+  private static final Pattern COMPILE = Pattern.compile(DAYSHOURSMINUTES_REGEX);
+  private final Screen screen;
 
-    public DaysHoursMinutesFieldValidator(final Screen screen) {
-        this.screen = screen;
-    }
+  public DaysHoursMinutesFieldValidator(final Screen screen) {
+    this.screen = screen;
+  }
 
-    public boolean isValid(final Object value) {
-        if (value == null || !(value instanceof String)) {
-            return false;
-        }
-        return COMPILE.matcher(((String) value)).matches();
+  @Override
+  public void validate(final Object value) throws InvalidValueException {
+    if (!isValid(value)) {
+      throw new InvalidValueException(
+          DAYSHOURSMINUTES_VALIDATOR_REGEX_EXCEPTION_MESSAGE);
     }
+  }
 
-    @Override
-    public void validate(final Object value) throws InvalidValueException {
-        if (!isValid(value)) {
-            throw new InvalidValueException(
-                    DAYSHOURSMINUTES_VALIDATOR_REGEX_EXCEPTION_MESSAGE);
-        }
+  public boolean isValid(final Object value) {
+    if (value == null || !(value instanceof String)) {
+      return false;
     }
+    return COMPILE.matcher(((String) value)).matches();
+  }
 }

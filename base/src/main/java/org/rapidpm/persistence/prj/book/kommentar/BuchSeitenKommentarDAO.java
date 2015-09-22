@@ -17,20 +17,20 @@ import org.rapidpm.persistence.DAO;
 import java.security.InvalidKeyException;
 
 public class BuchSeitenKommentarDAO extends DAO<Long, BuchSeitenKommentar> {
-    private static final Logger logger = Logger.getLogger(BuchSeitenKommentarDAO.class);
+  private static final Logger logger = Logger.getLogger(BuchSeitenKommentarDAO.class);
 
 
-    public BuchSeitenKommentarDAO(final OrientGraph orientDB) {
-        super(orientDB, BuchSeitenKommentar.class);
-    }
+  public BuchSeitenKommentarDAO(final OrientGraph orientDB) {
+    super(orientDB, BuchSeitenKommentar.class);
+  }
 
-    @Override
-    public BuchSeitenKommentar loadFull(BuchSeitenKommentar entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public BuchSeitenKommentar loadFull(BuchSeitenKommentar entity) throws InvalidKeyException, NotYetImplementedException {
+    throw new NotYetImplementedException();
+  }
 
-    @Override
-    public BuchSeitenKommentar createEntityFull(BuchSeitenKommentar entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public BuchSeitenKommentar createEntityFull(BuchSeitenKommentar entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    throw new NotYetImplementedException();
+  }
 }

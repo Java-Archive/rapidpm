@@ -21,38 +21,38 @@ import static org.rapidpm.persistence.Edges.VALID_FOR;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 public class RessourceGroupDAO extends DAO<Long, RessourceGroup> {
-    private static final Logger logger = Logger.getLogger(RessourceGroupDAO.class);
+  private static final Logger logger = Logger.getLogger(RessourceGroupDAO.class);
 
-    public RessourceGroupDAO(final OrientGraph orientDB) {
-        super(orientDB, RessourceGroup.class);
-    }
+  public RessourceGroupDAO(final OrientGraph orientDB) {
+    super(orientDB, RessourceGroup.class);
+  }
 
-    @Override
-    public RessourceGroup createEntityFull(RessourceGroup tempRessourceGroup) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        return createEntityFlat(tempRessourceGroup);
-    }
-
-    public RessourceGroup loadRessourceGroupByName(final String name) {
+  public RessourceGroup loadRessourceGroupByName(final String name) {
 //        final TypedQuery<RessourceGroup> typedQuery = orientDB.createQuery("from RessourceGroup rg "
 //                + "where rg.name=:name ", RessourceGroup.class).setParameter("name", name);
 //        final RessourceGroup singleResultOrNull = getSingleResultOrNull(typedQuery);
 //        return singleResultOrNull;
-        return null;
-    }
+    return null;
+  }
 
-    @Override
-    public RessourceGroup loadFull(RessourceGroup entity) throws InvalidKeyException, NotYetImplementedException {
-        return findByID(entity.getId(), false);
-    }
+  @Override
+  public RessourceGroup loadFull(RessourceGroup entity) throws InvalidKeyException, NotYetImplementedException {
+    return findByID(entity.getId(), false);
+  }
 
-    @Override
-    public void deleteByIDFull(final String id) {
-        final Iterable<Vertex> planningUnitElements = orientDB.command(new OCommandSQL("select expand( IN('"+VALID_FOR+"') ) from RessourceGroup where @rid = " + id)).execute();
-        for (final Vertex pueVertex : planningUnitElements) {
-            DaoFactorySingleton.getInstance().getPlanningUnitElementDAO().deleteByIDFull(pueVertex.getId().toString());
-        }
-        deleteByIDFlat(id);
+  @Override
+  public RessourceGroup createEntityFull(RessourceGroup tempRessourceGroup) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    return createEntityFlat(tempRessourceGroup);
+  }
+
+  @Override
+  public void deleteByIDFull(final String id) {
+    final Iterable<Vertex> planningUnitElements = orientDB.command(new OCommandSQL("select expand( IN('" + VALID_FOR + "') ) from RessourceGroup where @rid = " + id)).execute();
+    for (final Vertex pueVertex : planningUnitElements) {
+      DaoFactorySingleton.getInstance().getPlanningUnitElementDAO().deleteByIDFull(pueVertex.getId().toString());
     }
+    deleteByIDFlat(id);
+  }
 
 //    private void deletePlanningUnitElementsWithRessourceGroup(RessourceGroup entity) {
 //        final String deletePUEsQuery = "DELETE VERTEX PlanningUnitElement WHERE @rid IN (Select in('validFor') From RessourceGroup where @rid = "+entity.getId()+")";

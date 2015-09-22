@@ -28,121 +28,119 @@ import java.util.ResourceBundle;
  */
 public class ProjectsPanel extends RapidPanel implements Internationalizationable, Componentssetable {
 
-    private ResourceBundle messagesBundle;
-    private ChosenProjectEditableRapidPanel formPanel;
-    private final MainUI ui;
+  private final MainUI ui;
+  private ResourceBundle messagesBundle;
+  private ChosenProjectEditableRapidPanel formPanel;
 //    private ProjectsPanelBean bean;
+  private ListSelect projectSelect;
+  private Button addProjectButton = new Button();
+  private Button deleteProjectButton = new Button();
 
+  private HorizontalLayout buttonLayout = new HorizontalLayout();
+  private ProjectAdministrationScreen screen;
 
-    private ListSelect projectSelect;
-    private Button addProjectButton = new Button();
-    private Button deleteProjectButton = new Button();
-
-    private HorizontalLayout buttonLayout = new HorizontalLayout();
-    private ProjectAdministrationScreen screen;
-
-    public ProjectsPanel(ProjectAdministrationScreen screen, final MainUI theUi, final ResourceBundle messages, final ChosenProjectEditableRapidPanel chosenProjectEditablePanel){
-        this.screen = screen;
-        setCaption(messages.getString("project_projects"));
-        this.messagesBundle = messages;
-        this.formPanel = chosenProjectEditablePanel;
-        this.ui = theUi;
+  public ProjectsPanel(ProjectAdministrationScreen screen, final MainUI theUi, final ResourceBundle messages, final ChosenProjectEditableRapidPanel chosenProjectEditablePanel) {
+    this.screen = screen;
+    setCaption(messages.getString("project_projects"));
+    this.messagesBundle = messages;
+    this.formPanel = chosenProjectEditablePanel;
+    this.ui = theUi;
 
 //        bean = EJBFactory.getEjbInstance(ProjectsPanelBean.class);
 //        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+    final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
 
-        final List<PlannedProject> projects = daoFactory.getPlannedProjectDAO().findAll();
-        Collections.sort(projects);
+    final List<PlannedProject> projects = daoFactory.getPlannedProjectDAO().findAll();
+    Collections.sort(projects);
 
-        deleteProjectButton.setVisible(false);
-        setSizeFull();
-        fillListSelect(projects);
+    deleteProjectButton.setVisible(false);
+    setSizeFull();
+    fillListSelect(projects);
 
-        buttonLayout.addComponent(addProjectButton);
-        buttonLayout.addComponent(deleteProjectButton);
+    buttonLayout.addComponent(addProjectButton);
+    buttonLayout.addComponent(deleteProjectButton);
 
-        deleteProjectButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                try {
-                    final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
-                    final PlannedProject projekt = (PlannedProject)projectSelect.getValue();
-                    final PlannedProject projektAusDB = daoFactory.getPlannedProjectDAO().findByID(projekt.getId(), true);
-                    if(projectFromSession.equals(projektAusDB) && daoFactory.getPlannedProjectDAO().findAll()
-                            .size() > 1){
-                        throw new TryToDeleteCurrentProjectException();
-                    }
-                    final List<PlanningUnit> parentPlanningUnits = projektAusDB.getTopLevelPlanningUnits();
-                    if(parentPlanningUnits != null && !parentPlanningUnits.isEmpty()){
-                        ConfirmDialog confirmDialog = new ConfirmDialog(messagesBundle.getString("project_confirmdelete"), screen) {
-                            @Override
-                            public void doThisOnOK() {
-                                tryToDeleteProject(projektAusDB);
-                            }
+    deleteProjectButton.addClickListener(new Button.ClickListener() {
+      @Override
+      public void buttonClick(Button.ClickEvent event) {
+        try {
+          final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
+          final PlannedProject projekt = (PlannedProject) projectSelect.getValue();
+          final PlannedProject projektAusDB = daoFactory.getPlannedProjectDAO().findByID(projekt.getId(), true);
+          if (projectFromSession.equals(projektAusDB) && daoFactory.getPlannedProjectDAO().findAll()
+              .size() > 1) {
+            throw new TryToDeleteCurrentProjectException();
+          }
+          final List<PlanningUnit> parentPlanningUnits = projektAusDB.getTopLevelPlanningUnits();
+          if (parentPlanningUnits != null && !parentPlanningUnits.isEmpty()) {
+            ConfirmDialog confirmDialog = new ConfirmDialog(messagesBundle.getString("project_confirmdelete"), screen) {
+              @Override
+              public void doThisOnOK() {
+                tryToDeleteProject(projektAusDB);
+              }
 
-                            @Override
-                            public void doThisOnCancel() {
-                                //do nothing but closing the window, Screen is reloaded in tryToDeleteProject
-                            }
-                        };
-                        confirmDialog.show();
-                    }  else {
-                        tryToDeleteProject(projektAusDB);
-                    }
-                } catch (final TryToDeleteCurrentProjectException e){
-                    Notification.show(messages.getString("project_deletecurrent"));
-                }
+              @Override
+              public void doThisOnCancel() {
+                //do nothing but closing the window, Screen is reloaded in tryToDeleteProject
+              }
+            };
+            confirmDialog.show();
+          } else {
+            tryToDeleteProject(projektAusDB);
+          }
+        } catch (final TryToDeleteCurrentProjectException e) {
+          Notification.show(messages.getString("project_deletecurrent"));
+        }
 
-            }
-        });
+      }
+    });
 
-        addProjectButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                final AddProjectWindow addWindow = new AddProjectWindow(ui, messagesBundle);
-                addWindow.show();
-            }
-        });
+    addProjectButton.addClickListener(new Button.ClickListener() {
+      @Override
+      public void buttonClick(Button.ClickEvent event) {
+        final AddProjectWindow addWindow = new AddProjectWindow(ui, messagesBundle);
+        addWindow.show();
+      }
+    });
 
-        doInternationalization();
-        setComponents();
-    }
+    doInternationalization();
+    setComponents();
+  }
 
-    private void tryToDeleteProject(final PlannedProject projektAusDB) {
-        DaoFactorySingleton.getInstance().getPlannedProjectDAO().deleteByEntity(projektAusDB, true);
-        ui.setWorkingArea(new ProjectAdministrationScreen(ui));
-    }
+  private void fillListSelect(final List<PlannedProject> projects) {
+    projectSelect = new ListSelect("Projekte", new BeanItemContainer<>(PlannedProject.class,
+        projects));
+    projectSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
+    projectSelect.setItemCaptionPropertyId(PlannedProject.NAME);
+    projectSelect.setImmediate(true);
+    projectSelect.setMultiSelect(false);
+    projectSelect.setNullSelectionAllowed(false);
+    projectSelect.addValueChangeListener(new ProjectsListsValueChangeListener(this, formPanel));
+    projectSelect.setSizeFull();
+  }
 
-    private void fillListSelect(final List<PlannedProject> projects) {
-        projectSelect = new ListSelect("Projekte", new BeanItemContainer<>(PlannedProject.class,
-                projects));
-        projectSelect.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
-        projectSelect.setItemCaptionPropertyId(PlannedProject.NAME);
-        projectSelect.setImmediate(true);
-        projectSelect.setMultiSelect(false);
-        projectSelect.setNullSelectionAllowed(false);
-        projectSelect.addValueChangeListener(new ProjectsListsValueChangeListener(this, formPanel));
-        projectSelect.setSizeFull();
-    }
+  private void tryToDeleteProject(final PlannedProject projektAusDB) {
+    DaoFactorySingleton.getInstance().getPlannedProjectDAO().deleteByEntity(projektAusDB, true);
+    ui.setWorkingArea(new ProjectAdministrationScreen(ui));
+  }
 
-    @Override
-    public void doInternationalization() {
-       addProjectButton.setCaption(messagesBundle.getString("add"));
-       deleteProjectButton.setCaption(messagesBundle.getString("delete"));
-    }
+  @Override
+  public void doInternationalization() {
+    addProjectButton.setCaption(messagesBundle.getString("add"));
+    deleteProjectButton.setCaption(messagesBundle.getString("delete"));
+  }
 
-    @Override
-    public void setComponents() {
-        addComponent(projectSelect);
-        addComponent(buttonLayout);
-    }
+  @Override
+  public void setComponents() {
+    addComponent(projectSelect);
+    addComponent(buttonLayout);
+  }
 
-    public Button getDeleteProjectButton() {
-        return deleteProjectButton;
-    }
+  public Button getDeleteProjectButton() {
+    return deleteProjectButton;
+  }
 
-    public ResourceBundle getMessagesBundle() {
-        return messagesBundle;
-    }
+  public ResourceBundle getMessagesBundle() {
+    return messagesBundle;
+  }
 }

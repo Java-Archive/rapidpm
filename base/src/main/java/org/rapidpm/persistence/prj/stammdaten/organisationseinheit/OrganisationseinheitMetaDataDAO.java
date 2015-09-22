@@ -15,20 +15,20 @@ import org.rapidpm.persistence.DAO;
 import java.security.InvalidKeyException;
 
 public class OrganisationseinheitMetaDataDAO extends DAO<Long, OrganisationseinheitMetaData> {
-    private static final Logger logger = Logger.getLogger(OrganisationseinheitMetaDataDAO.class);
+  private static final Logger logger = Logger.getLogger(OrganisationseinheitMetaDataDAO.class);
 
 
-    public OrganisationseinheitMetaDataDAO(final OrientGraph orientDB) {
-        super(orientDB, OrganisationseinheitMetaData.class);
-    }
+  public OrganisationseinheitMetaDataDAO(final OrientGraph orientDB) {
+    super(orientDB, OrganisationseinheitMetaData.class);
+  }
 
-    @Override
-    public OrganisationseinheitMetaData loadFull(OrganisationseinheitMetaData entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public OrganisationseinheitMetaData loadFull(OrganisationseinheitMetaData entity) throws InvalidKeyException, NotYetImplementedException {
+    throw new NotYetImplementedException();
+  }
 
-    @Override
-    public OrganisationseinheitMetaData createEntityFull(OrganisationseinheitMetaData entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public OrganisationseinheitMetaData createEntityFull(OrganisationseinheitMetaData entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    throw new NotYetImplementedException();
+  }
 }

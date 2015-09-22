@@ -16,106 +16,106 @@ import java.util.List;
 
 @Entity
 public class Buch {
-    private static final Logger logger = Logger.getLogger(Buch.class);
+  private static final Logger logger = Logger.getLogger(Buch.class);
 
-    @TableGenerator(name = "PKGenBuch", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "Buch_id",
-            valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE,
-            generator = "PKGenBuch")
-    @Id
-    private Long id;
-
-
-    @Basic
-    private String titel;
-    @Basic
-    private String untertitel;
-    @Basic
-    private String summary;
-    @Basic
-    private String version;
+  @TableGenerator(name = "PKGenBuch", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "Buch_id",
+      valueColumnName = "gen_value", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE,
+      generator = "PKGenBuch")
+  @Id
+  private Long id;
 
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private List<BuchKapitel> buchKapitelListe;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private List<Benutzer> autorenliste;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private List<Benutzer> leserliste;
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private List<BuchKommentar> kommentarliste;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    public List<BuchKapitel> getBuchKapitelListe() {
-        return buchKapitelListe;
-    }
-
-    public void setBuchKapitelListe(final List<BuchKapitel> buchKapitelListe) {
-        this.buchKapitelListe = buchKapitelListe;
-    }
+  @Basic
+  private String titel;
+  @Basic
+  private String untertitel;
+  @Basic
+  private String summary;
+  @Basic
+  private String version;
 
 
-    public String getTitel() {
-        return titel;
-    }
+  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+  private List<BuchKapitel> buchKapitelListe;
+  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+  private List<Benutzer> autorenliste;
+  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+  private List<Benutzer> leserliste;
+  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+  private List<BuchKommentar> kommentarliste;
 
-    public void setTitel(final String titel) {
-        this.titel = titel;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public String getUntertitel() {
-        return untertitel;
-    }
+  public void setId(final Long id) {
+    this.id = id;
+  }
 
-    public void setUntertitel(final String untertitel) {
-        this.untertitel = untertitel;
-    }
+  public List<BuchKapitel> getBuchKapitelListe() {
+    return buchKapitelListe;
+  }
 
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(final String summary) {
-        this.summary = summary;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(final String version) {
-        this.version = version;
-    }
-
-    public List<Benutzer> getLeserliste() {
-        return leserliste;
-    }
-
-    public void setLeserliste(final List<Benutzer> leserliste) {
-        this.leserliste = leserliste;
-    }
-
-    public List<Benutzer> getAutorenliste() {
-        return autorenliste;
-    }
-
-    public void setAutorenliste(final List<Benutzer> autorenliste) {
-        this.autorenliste = autorenliste;
-    }
+  public void setBuchKapitelListe(final List<BuchKapitel> buchKapitelListe) {
+    this.buchKapitelListe = buchKapitelListe;
+  }
 
 
-    public List<BuchKommentar> getKommentarliste() {
-        return kommentarliste;
-    }
+  public String getTitel() {
+    return titel;
+  }
 
-    public void setKommentarliste(final List<BuchKommentar> kommentarliste) {
-        this.kommentarliste = kommentarliste;
-    }
+  public void setTitel(final String titel) {
+    this.titel = titel;
+  }
+
+  public String getUntertitel() {
+    return untertitel;
+  }
+
+  public void setUntertitel(final String untertitel) {
+    this.untertitel = untertitel;
+  }
+
+  public String getSummary() {
+    return summary;
+  }
+
+  public void setSummary(final String summary) {
+    this.summary = summary;
+  }
+
+  public String getVersion() {
+    return version;
+  }
+
+  public void setVersion(final String version) {
+    this.version = version;
+  }
+
+  public List<Benutzer> getLeserliste() {
+    return leserliste;
+  }
+
+  public void setLeserliste(final List<Benutzer> leserliste) {
+    this.leserliste = leserliste;
+  }
+
+  public List<Benutzer> getAutorenliste() {
+    return autorenliste;
+  }
+
+  public void setAutorenliste(final List<Benutzer> autorenliste) {
+    this.autorenliste = autorenliste;
+  }
+
+
+  public List<BuchKommentar> getKommentarliste() {
+    return kommentarliste;
+  }
+
+  public void setKommentarliste(final List<BuchKommentar> kommentarliste) {
+    this.kommentarliste = kommentarliste;
+  }
 }

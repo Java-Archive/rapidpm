@@ -18,47 +18,46 @@ import java.util.List;
  * Time: 12:50
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class PlanningUnitsTree extends Tree{
-    
-    private HierarchicalContainer container;
-    private TreeValueChangeListener listener;
+public class PlanningUnitsTree extends Tree {
+
+  private HierarchicalContainer container;
+  private TreeValueChangeListener listener;
 
 
-
-    public PlanningUnitsTree(final ProjektplanungScreen screen, final PlanningUnit selectedPlanningUnit){
-        container = new HierarchicalContainer();
-        if (selectedPlanningUnit != null) {
-            setItemCaptionMode(ItemCaptionMode.ID);
-            //setItemCaptionPropertyId(PlanningUnit.NAME);
-            setImmediate(true);
-            container.addItem(selectedPlanningUnit);
-            buildTree(selectedPlanningUnit.getKindPlanningUnits(), selectedPlanningUnit);
-            expandItemsRecursively(selectedPlanningUnit);
-            listener = new TreeValueChangeListener(screen);
-            addValueChangeListener(listener);
-            setContainerDataSource(container);
-            final Iterator iterator = rootItemIds().iterator();
-            while (iterator.hasNext()){
-                expandItemsRecursively(iterator.next());
-            }
-            setDragMode(TreeDragMode.NODE);
-            setDropHandler(new TreeSortDropHandler(this, screen));
-        }
+  public PlanningUnitsTree(final ProjektplanungScreen screen, final PlanningUnit selectedPlanningUnit) {
+    container = new HierarchicalContainer();
+    if (selectedPlanningUnit != null) {
+      setItemCaptionMode(ItemCaptionMode.ID);
+      //setItemCaptionPropertyId(PlanningUnit.NAME);
+      setImmediate(true);
+      container.addItem(selectedPlanningUnit);
+      buildTree(selectedPlanningUnit.getKindPlanningUnits(), selectedPlanningUnit);
+      expandItemsRecursively(selectedPlanningUnit);
+      listener = new TreeValueChangeListener(screen);
+      addValueChangeListener(listener);
+      setContainerDataSource(container);
+      final Iterator iterator = rootItemIds().iterator();
+      while (iterator.hasNext()) {
+        expandItemsRecursively(iterator.next());
+      }
+      setDragMode(TreeDragMode.NODE);
+      setDropHandler(new TreeSortDropHandler(this, screen));
     }
+  }
 
-    private void buildTree(final List<PlanningUnit> planningUnits, PlanningUnit parentUnit) {
-        for (PlanningUnit planningUnit : planningUnits) {
-            planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
-            container.addItem(planningUnit);
-            container.setParent(planningUnit, parentUnit);
-            if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
-            } else {
-                buildTree(planningUnit.getKindPlanningUnits(), planningUnit);
-            }
-        }
+  private void buildTree(final List<PlanningUnit> planningUnits, PlanningUnit parentUnit) {
+    for (PlanningUnit planningUnit : planningUnits) {
+      planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
+      container.addItem(planningUnit);
+      container.setParent(planningUnit, parentUnit);
+      if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
+      } else {
+        buildTree(planningUnit.getKindPlanningUnits(), planningUnit);
+      }
     }
+  }
 
-    public TreeValueChangeListener getListener() {
-        return listener;
-    }
+  public TreeValueChangeListener getListener() {
+    return listener;
+  }
 }

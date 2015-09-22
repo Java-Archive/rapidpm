@@ -14,21 +14,23 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
  */
 public abstract class SaveCancelButtonLeiste extends HorizontalLayout implements Internationalizationable {
 
-    protected Button saveButton = new Button();
-    protected Button cancelButton = new Button();
+  protected Button saveButton = new Button();
+  protected Button cancelButton = new Button();
 
-    public SaveCancelButtonLeiste(){
-        saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-        cancelButton.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
-        addComponents(saveButton, cancelButton);
-        setSizeUndefined();
-        setSaveButtonListener();
-        setCancelButtonListener();
-        doInternationalization();
-    }
+  public SaveCancelButtonLeiste() {
+    saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+    cancelButton.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
+    addComponents(saveButton, cancelButton);
+    setSizeUndefined();
+    setSaveButtonListener();
+    setCancelButtonListener();
+    doInternationalization();
+  }
 
-    @Override
-    public abstract void doInternationalization();
-    public abstract void setSaveButtonListener();
-    public abstract void setCancelButtonListener();
+  public abstract void setSaveButtonListener();
+
+  public abstract void setCancelButtonListener();
+
+  @Override
+  public abstract void doInternationalization();
 }

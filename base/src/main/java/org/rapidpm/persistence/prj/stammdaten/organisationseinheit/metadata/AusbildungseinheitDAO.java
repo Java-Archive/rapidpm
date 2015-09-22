@@ -15,20 +15,20 @@ import org.rapidpm.persistence.DAO;
 import java.security.InvalidKeyException;
 
 public class AusbildungseinheitDAO extends DAO<Long, Ausbildungseinheit> {
-    private static final Logger logger = Logger.getLogger(AusbildungseinheitDAO.class);
+  private static final Logger logger = Logger.getLogger(AusbildungseinheitDAO.class);
 
 
-    public AusbildungseinheitDAO(final OrientGraph orientDB) {
-        super(orientDB, Ausbildungseinheit.class);
-    }
+  public AusbildungseinheitDAO(final OrientGraph orientDB) {
+    super(orientDB, Ausbildungseinheit.class);
+  }
 
-    @Override
-    public Ausbildungseinheit loadFull(Ausbildungseinheit entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public Ausbildungseinheit loadFull(Ausbildungseinheit entity) throws InvalidKeyException, NotYetImplementedException {
+    throw new NotYetImplementedException();
+  }
 
-    @Override
-    public Ausbildungseinheit createEntityFull(Ausbildungseinheit entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public Ausbildungseinheit createEntityFull(Ausbildungseinheit entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    throw new NotYetImplementedException();
+  }
 }

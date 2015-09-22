@@ -16,20 +16,20 @@ import org.rapidpm.persistence.DAO;
 import java.security.InvalidKeyException;
 
 public class TextElementKommentarDAO extends DAO<Long, TextElementKommentar> {
-    private static final Logger logger = Logger.getLogger(TextElementKommentarDAO.class);
+  private static final Logger logger = Logger.getLogger(TextElementKommentarDAO.class);
 
 
-    public TextElementKommentarDAO(final OrientGraph orientDB) {
-        super(orientDB, TextElementKommentar.class);
-    }
+  public TextElementKommentarDAO(final OrientGraph orientDB) {
+    super(orientDB, TextElementKommentar.class);
+  }
 
-    @Override
-    public TextElementKommentar loadFull(TextElementKommentar entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public TextElementKommentar loadFull(TextElementKommentar entity) throws InvalidKeyException, NotYetImplementedException {
+    throw new NotYetImplementedException();
+  }
 
-    @Override
-    public TextElementKommentar createEntityFull(TextElementKommentar entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public TextElementKommentar createEntityFull(TextElementKommentar entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    throw new NotYetImplementedException();
+  }
 }

@@ -15,54 +15,54 @@ import java.util.List;
 
 public class StundensaetzeItemClickListener implements ItemClickListener {
 
-    private final Logger logger = Logger.getLogger(StundensaetzeItemClickListener.class);
+  private final Logger logger = Logger.getLogger(StundensaetzeItemClickListener.class);
 
-    private List<ItemClickDependentComponent> components = new ArrayList<ItemClickDependentComponent>();
+  private List<ItemClickDependentComponent> components = new ArrayList<ItemClickDependentComponent>();
 
-    private boolean state = false;
-    private Layout saveButtonLayout;
-    private Button deleteButton;
-    private Table tabelle;
+  private boolean state = false;
+  private Layout saveButtonLayout;
+  private Button deleteButton;
+  private Table tabelle;
 
-    public StundensaetzeItemClickListener(final List<ItemClickDependentComponent> components,
-                                          final Button deleteButton, final Layout saveButtonLayout,
-                                          final Table tabelle) {
-        this.components = components;
-        this.deleteButton = deleteButton;
-        this.saveButtonLayout = saveButtonLayout;
-        this.tabelle = tabelle;
-        informComponents(state);
+  public StundensaetzeItemClickListener(final List<ItemClickDependentComponent> components,
+                                        final Button deleteButton, final Layout saveButtonLayout,
+                                        final Table tabelle) {
+    this.components = components;
+    this.deleteButton = deleteButton;
+    this.saveButtonLayout = saveButtonLayout;
+    this.tabelle = tabelle;
+    informComponents(state);
+  }
+
+  private void informComponents(final boolean state) {
+    for (final ItemClickDependentComponent component : components) {
+      component.getTheState(state);
     }
+  }
 
-    @Override
-    public void itemClick(final ItemClickEvent event) {
-        tabelle.setEditable(true);
-        final RessourceGroup selectedRessourceGroup = (RessourceGroup) event.getItemId();
-            saveButtonLayout.setVisible(true);
-            final RowEditFieldFactory fieldFactory = new RowEditFieldFactory(event.getItem());
-            deleteButton.setEnabled(true);
-            tabelle.setTableFieldFactory(fieldFactory);
-            if (selectedRessourceGroup == null)
-                state = false;
-            else {
-                final Object itemId = selectedRessourceGroup;
-                informComponents(itemId);
-                state = true;
-            }
-            informComponents(state);
-
+  @Override
+  public void itemClick(final ItemClickEvent event) {
+    tabelle.setEditable(true);
+    final RessourceGroup selectedRessourceGroup = (RessourceGroup) event.getItemId();
+    saveButtonLayout.setVisible(true);
+    final RowEditFieldFactory fieldFactory = new RowEditFieldFactory(event.getItem());
+    deleteButton.setEnabled(true);
+    tabelle.setTableFieldFactory(fieldFactory);
+    if (selectedRessourceGroup == null)
+      state = false;
+    else {
+      final Object itemId = selectedRessourceGroup;
+      informComponents(itemId);
+      state = true;
     }
+    informComponents(state);
 
-    private void informComponents(final boolean state) {
-        for (final ItemClickDependentComponent component : components) {
-            component.getTheState(state);
-        }
-    }
+  }
 
-    private void informComponents(final Object itemId) {
-        for (final ItemClickDependentComponent component : components) {
-            component.setItemId(itemId);
-        }
+  private void informComponents(final Object itemId) {
+    for (final ItemClickDependentComponent component : components) {
+      component.setItemId(itemId);
     }
+  }
 
 }

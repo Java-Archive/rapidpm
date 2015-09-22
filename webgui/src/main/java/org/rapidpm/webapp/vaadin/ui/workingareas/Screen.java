@@ -13,38 +13,38 @@ import java.util.ResourceBundle;
  * Time: 11:07
  * To change this template use File | Settings | File Templates.
  */
-public abstract class Screen extends RapidPanel implements Internationalizationable,Componentssetable {
+public abstract class Screen extends RapidPanel implements Internationalizationable, Componentssetable {
 
-    protected ResourceBundle messagesBundle;
-    protected MainUI ui;
+  protected ResourceBundle messagesBundle;
+  protected MainUI ui;
 
-    public Screen(final MainUI ui){
-        this.messagesBundle = ui.getResourceBundle();
-        this.ui = ui;
-        this.setStyleName(Reindeer.PANEL_LIGHT);
-        //this.addStyleName("medsizemargin");
-        this.setSizeFull();
+  public Screen(final MainUI ui) {
+    this.messagesBundle = ui.getResourceBundle();
+    this.ui = ui;
+    this.setStyleName(Reindeer.PANEL_LIGHT);
+    //this.addStyleName("medsizemargin");
+    this.setSizeFull();
+  }
+
+  public void activeVerticalFullScreenSize(final boolean b) {
+    if (b) {
+      getContentLayout().setSizeFull();
+    } else {
+      getContentLayout().setSizeUndefined();
+      getContentLayout().setWidth("100%");
     }
 
-    public void activeVerticalFullScreenSize(final boolean b) {
-        if(b){
-            getContentLayout().setSizeFull();
-        } else {
-            getContentLayout().setSizeUndefined();
-            getContentLayout().setWidth("100%");
-        }
+  }
 
-    }
+  public Screen getScreen() {
+    return this;
+  }
 
-    public Screen getScreen() {
-        return this;
-    }
+  public ResourceBundle getMessagesBundle() {
+    return messagesBundle;
+  }
 
-    public ResourceBundle getMessagesBundle() {
-        return messagesBundle;
-    }
-
-    public MainUI getUi() {
-        return ui;
-    }
+  public MainUI getUi() {
+    return ui;
+  }
 }

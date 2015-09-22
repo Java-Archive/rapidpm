@@ -27,76 +27,75 @@ import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
 
 public class PlanningDetailsEditableLayout extends EditableLayout {
 
-    private static final Logger logger = Logger.getLogger(PlanningDetailsEditableLayout.class);
+  private static final Logger logger = Logger.getLogger(PlanningDetailsEditableLayout.class);
 
-    private List<AbstractField> fieldList;
-    private PlanningDetailsFieldGroup fieldGroup;
-    private ResourceBundle messages;
+  private List<AbstractField> fieldList;
+  private PlanningDetailsFieldGroup fieldGroup;
+  private ResourceBundle messages;
 
-    public PlanningDetailsEditableLayout(final PlanningUnit planningUnit, final ProjektplanungScreen screen,
-                                         final Panel screenPanel) {
-        super(screen, screenPanel);
-        messages = screen.getMessagesBundle();
+  public PlanningDetailsEditableLayout(final PlanningUnit planningUnit, final ProjektplanungScreen screen,
+                                       final Panel screenPanel) {
+    super(screen, screenPanel);
+    messages = screen.getMessagesBundle();
 
-        fieldGroup = new PlanningDetailsFieldGroup(messages, planningUnit);
-        fieldList = fieldGroup.getFieldList();
+    fieldGroup = new PlanningDetailsFieldGroup(messages, planningUnit);
+    fieldList = fieldGroup.getFieldList();
 
-        buildForm();
+    buildForm();
 
-        cancelButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                final Iterator<Component> componentIterator = componentsLayout.iterator();
-                fieldGroup.discard();
-                while (componentIterator.hasNext()) {
-                    final Component component = componentIterator.next();
-                    if (component instanceof Field) {
-                        component.setReadOnly(true);
-                    }
-                }
-                buttonLayout.setVisible(false);
-                active = false;
-            }
-        });
-        saveButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                try{
-                    fieldGroup.commit();
-                    final BeanItem<PlanningUnit> beanItem = (BeanItem)fieldGroup.getItemDataSource();
-                    final PlanningUnit editedPlanningUnit = beanItem.getBean();
-                    DaoFactorySingleton.getInstance().getPlanningUnitDAO().updateByEntity(editedPlanningUnit, true);
-                    final MainUI ui = screen.getUi();
-                    ui.setWorkingArea(new ProjektplanungScreen(ui));
-                }catch (final NullPointerException e){
-                    logger.info(COMMIT_EXCEPTION_MESSAGE);
-                }catch(final Exception e){
-                    logger.warn("Exception", e);
-                }
-            }
-        });
-    }
-
-
-    @Override
-    protected void buildForm() {
-        for(final AbstractField field : fieldList){
-            field.setReadOnly(true);
-            if(field instanceof AbstractSelect){
-                ((ComboBox)field).setNullSelectionAllowed(false);
-                ((ComboBox)field).setTextInputAllowed(false);
-            }
+    cancelButton.addClickListener(new Button.ClickListener() {
+      @Override
+      public void buttonClick(Button.ClickEvent event) {
+        final Iterator<Component> componentIterator = componentsLayout.iterator();
+        fieldGroup.discard();
+        while (componentIterator.hasNext()) {
+          final Component component = componentIterator.next();
+          if (component instanceof Field) {
+            component.setReadOnly(true);
+          }
         }
-        componentsLayout.addComponent(fieldGroup.getField(PlanningUnit.RESPONSIBLE));
-        componentsLayout.addComponent(fieldGroup.getField(PlanningUnit.COMPLEXITY));
-        componentsLayout.addComponent(fieldGroup.getField(PlanningUnit.ORDERNUMBER));
-        componentsLayout.addComponent(fieldGroup.getField(PlanningUnit.STORYPTS));
-    }
+        buttonLayout.setVisible(false);
+        active = false;
+      }
+    });
+    saveButton.addClickListener(new Button.ClickListener() {
+      @Override
+      public void buttonClick(Button.ClickEvent event) {
+        try {
+          fieldGroup.commit();
+          final BeanItem<PlanningUnit> beanItem = (BeanItem) fieldGroup.getItemDataSource();
+          final PlanningUnit editedPlanningUnit = beanItem.getBean();
+          DaoFactorySingleton.getInstance().getPlanningUnitDAO().updateByEntity(editedPlanningUnit, true);
+          final MainUI ui = screen.getUi();
+          ui.setWorkingArea(new ProjektplanungScreen(ui));
+        } catch (final NullPointerException e) {
+          logger.info(COMMIT_EXCEPTION_MESSAGE);
+        } catch (final Exception e) {
+          logger.warn("Exception", e);
+        }
+      }
+    });
+  }
 
-    @Override
-    protected void setLayout() {
-        componentsLayout = new FormLayout();
+  @Override
+  protected void setLayout() {
+    componentsLayout = new FormLayout();
+  }
+
+  @Override
+  protected void buildForm() {
+    for (final AbstractField field : fieldList) {
+      field.setReadOnly(true);
+      if (field instanceof AbstractSelect) {
+        ((ComboBox) field).setNullSelectionAllowed(false);
+        ((ComboBox) field).setTextInputAllowed(false);
+      }
     }
+    componentsLayout.addComponent(fieldGroup.getField(PlanningUnit.RESPONSIBLE));
+    componentsLayout.addComponent(fieldGroup.getField(PlanningUnit.COMPLEXITY));
+    componentsLayout.addComponent(fieldGroup.getField(PlanningUnit.ORDERNUMBER));
+    componentsLayout.addComponent(fieldGroup.getField(PlanningUnit.STORYPTS));
+  }
 
 
 }

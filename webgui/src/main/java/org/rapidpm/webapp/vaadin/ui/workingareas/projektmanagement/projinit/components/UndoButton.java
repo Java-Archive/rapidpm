@@ -15,26 +15,26 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logi
  */
 public class UndoButton extends Button implements Button.ClickListener {
 
-    private MyTreeTable treeTable;
-    private HierarchicalContainer dataSource;
-    private AufwandProjInitScreen screen;
+  private MyTreeTable treeTable;
+  private HierarchicalContainer dataSource;
+  private AufwandProjInitScreen screen;
 
-    public UndoButton(final AufwandProjInitScreen screen, final MyTreeTable treeTable, final HierarchicalContainer dataSource) {
-        this.screen = screen;
-        this.treeTable = treeTable;
-        this.dataSource = dataSource;
-        this.addClickListener(this);
-        this.setCaption("remove sortorder");
-        this.setStyleName("link");
-    }
+  public UndoButton(final AufwandProjInitScreen screen, final MyTreeTable treeTable, final HierarchicalContainer dataSource) {
+    this.screen = screen;
+    this.treeTable = treeTable;
+    this.dataSource = dataSource;
+    this.addClickListener(this);
+    this.setCaption("remove sortorder");
+    this.setStyleName("link");
+  }
 
-    @Override
-    public void buttonClick(Button.ClickEvent event) {
-        final TreeTableFiller treeTableFiller = new TreeTableFiller(screen.getMessagesBundle(), screen, treeTable,
-                dataSource, TreeTableValue.TIMES);
-        treeTableFiller.fill();
-        treeTable.markAsDirty();
+  @Override
+  public void buttonClick(Button.ClickEvent event) {
+    final TreeTableFiller treeTableFiller = new TreeTableFiller(screen.getMessagesBundle(), screen, treeTable,
+        dataSource, TreeTableValue.TIMES);
+    treeTableFiller.fill();
+    treeTable.markAsDirty();
 
-        this.setVisible(false);
-    }
+    this.setVisible(false);
+  }
 }

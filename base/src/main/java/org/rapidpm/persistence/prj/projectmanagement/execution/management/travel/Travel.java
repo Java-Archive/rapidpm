@@ -11,17 +11,17 @@ import javax.persistence.*;
  */
 @Entity
 public class Travel {
-    @Id
-    @TableGenerator(name = "PKGenTravel", table = "pk_gen", pkColumnName = "gen_key",
-            pkColumnValue = "Travel_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenTravel")
-    private Long id;
+  @Id
+  @TableGenerator(name = "PKGenTravel", table = "pk_gen", pkColumnName = "gen_key",
+      pkColumnValue = "Travel_id", valueColumnName = "gen_value", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenTravel")
+  private Long id;
 
-    public Long getId() {
-        return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 }

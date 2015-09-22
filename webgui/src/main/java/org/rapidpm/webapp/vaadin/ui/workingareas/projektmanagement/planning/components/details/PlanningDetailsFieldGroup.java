@@ -29,64 +29,64 @@ import java.util.ResourceBundle;
  */
 public class PlanningDetailsFieldGroup extends FieldGroup {
 
-    private List<AbstractField> fieldList = new ArrayList<>();
-    private ResourceBundle messages;
+  private List<AbstractField> fieldList = new ArrayList<>();
+  private ResourceBundle messages;
 
-    public PlanningDetailsFieldGroup(final ResourceBundle messages, final PlanningUnit unmanagedPlanningUnit) {
-        this.messages = messages;
-        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-        final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().findByID(unmanagedPlanningUnit.getId(), true);
-        if(planningUnit == null){
-            setItemDataSource(new BeanItem<>(unmanagedPlanningUnit));
-        } else {
-            setItemDataSource(new BeanItem<>(planningUnit));
-        }
-
-        buildForm();
+  public PlanningDetailsFieldGroup(final ResourceBundle messages, final PlanningUnit unmanagedPlanningUnit) {
+    this.messages = messages;
+    final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+    final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().findByID(unmanagedPlanningUnit.getId(), true);
+    if (planningUnit == null) {
+      setItemDataSource(new BeanItem<>(unmanagedPlanningUnit));
+    } else {
+      setItemDataSource(new BeanItem<>(planningUnit));
     }
 
-    private void buildForm() {
-        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-        final List<Benutzer> users = daoFactory.getBenutzerDAO().findAll();
-        for (final Object propertyId : getUnboundPropertyIds()) {
-            final String spaltenName = propertyId.toString();
-            switch(spaltenName){
-                case(PlanningUnit.RESPONSIBLE):
-                    final ComboBox responsiblePersonBox = generateBox(messages.getString("planning_responsible"),
-                            new BeanItemContainer<>(Benutzer.class, users),Benutzer.LOGIN);
-                    bind(responsiblePersonBox, propertyId);
-                    fieldList.add(responsiblePersonBox);
-                    break;
-                case(PlanningUnit.ORDERNUMBER):
-                    final TextField orderNumberField = new TextField(messages.getString("planning_ordernumber"));
-                    bind(orderNumberField, propertyId);
-                    fieldList.add(orderNumberField);
-                    break;
-                case(PlanningUnit.COMPLEXITY):
-                    final TextField complexityField = new TextField(messages.getString("planning_complexity"));
-                    bind(complexityField, propertyId);
-                    fieldList.add(complexityField);
-                    break;
-                case(PlanningUnit.STORYPTS):
-                    final TextField storyPointsField = new TextField(messages.getString("planning_storypoints"));
-                    bind(storyPointsField, propertyId);
-                    fieldList.add(storyPointsField);
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
+    buildForm();
+  }
 
-    public ComboBox generateBox(final String caption, final BeanItemContainer container,
-                                final String itemCaptionPropertyId){
-        final ComboBox box = new ComboBox(caption,container);
-        box.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
-        box.setItemCaptionPropertyId(itemCaptionPropertyId);
-        return box;
+  private void buildForm() {
+    final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+    final List<Benutzer> users = daoFactory.getBenutzerDAO().findAll();
+    for (final Object propertyId : getUnboundPropertyIds()) {
+      final String spaltenName = propertyId.toString();
+      switch (spaltenName) {
+        case (PlanningUnit.RESPONSIBLE):
+          final ComboBox responsiblePersonBox = generateBox(messages.getString("planning_responsible"),
+              new BeanItemContainer<>(Benutzer.class, users), Benutzer.LOGIN);
+          bind(responsiblePersonBox, propertyId);
+          fieldList.add(responsiblePersonBox);
+          break;
+        case (PlanningUnit.ORDERNUMBER):
+          final TextField orderNumberField = new TextField(messages.getString("planning_ordernumber"));
+          bind(orderNumberField, propertyId);
+          fieldList.add(orderNumberField);
+          break;
+        case (PlanningUnit.COMPLEXITY):
+          final TextField complexityField = new TextField(messages.getString("planning_complexity"));
+          bind(complexityField, propertyId);
+          fieldList.add(complexityField);
+          break;
+        case (PlanningUnit.STORYPTS):
+          final TextField storyPointsField = new TextField(messages.getString("planning_storypoints"));
+          bind(storyPointsField, propertyId);
+          fieldList.add(storyPointsField);
+          break;
+        default:
+          break;
+      }
     }
+  }
 
-    public List<AbstractField> getFieldList() {
-        return fieldList;
-    }
+  public ComboBox generateBox(final String caption, final BeanItemContainer container,
+                              final String itemCaptionPropertyId) {
+    final ComboBox box = new ComboBox(caption, container);
+    box.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
+    box.setItemCaptionPropertyId(itemCaptionPropertyId);
+    return box;
+  }
+
+  public List<AbstractField> getFieldList() {
+    return fieldList;
+  }
 }

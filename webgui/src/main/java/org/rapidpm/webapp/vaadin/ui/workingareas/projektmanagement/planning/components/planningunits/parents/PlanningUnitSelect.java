@@ -26,59 +26,59 @@ import java.util.List;
  */
 public class PlanningUnitSelect extends ListSelect implements Property.ValueChangeListener {
 
-    private List<Component> listenerComponents = new ArrayList<>();
-    private DaoFactory baseDaoFactoryBean;
-    private PlannedProject projectFromDB;
+  private List<Component> listenerComponents = new ArrayList<>();
+  private DaoFactory baseDaoFactoryBean;
+  private PlannedProject projectFromDB;
 
-    public PlanningUnitSelect(final MainUI ui){
-        baseDaoFactoryBean = DaoFactorySingleton.getInstance();
-        final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
-        projectFromDB = baseDaoFactoryBean.getPlannedProjectDAO().findByID(projectFromSession.getId(), true);
+  public PlanningUnitSelect(final MainUI ui) {
+    baseDaoFactoryBean = DaoFactorySingleton.getInstance();
+    final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
+    projectFromDB = baseDaoFactoryBean.getPlannedProjectDAO().findByID(projectFromSession.getId(), true);
 //        baseDaoFactoryBean.getEntityManager().refresh(projectFromDB);
-        final List<PlanningUnit> allPlanningUnitsOfProject = projectFromDB.getTopLevelPlanningUnits();
-        final List<PlanningUnit> planningUnitsWithoutParent = new ArrayList<>();
-        for (PlanningUnit planningUnit : allPlanningUnitsOfProject) {
-            if(planningUnit.getParent() == null){
-                planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().findByID(planningUnit.getId(), true);
-                planningUnitsWithoutParent.add(planningUnit);
-            }
-        }
-        Collections.sort(planningUnitsWithoutParent, (o1, o2) -> o1.getId().compareTo(o2.getId()));
-        setContainerDataSource(new BeanItemContainer<>(PlanningUnit.class, planningUnitsWithoutParent));
-        setNullSelectionAllowed(false);
-        setImmediate(true);
-        setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
-        setItemCaptionPropertyId(PlanningUnit.NAME);
-        addValueChangeListener(this);
+    final List<PlanningUnit> allPlanningUnitsOfProject = projectFromDB.getTopLevelPlanningUnits();
+    final List<PlanningUnit> planningUnitsWithoutParent = new ArrayList<>();
+    for (PlanningUnit planningUnit : allPlanningUnitsOfProject) {
+      if (planningUnit.getParent() == null) {
+        planningUnit = baseDaoFactoryBean.getPlanningUnitDAO().findByID(planningUnit.getId(), true);
+        planningUnitsWithoutParent.add(planningUnit);
+      }
     }
+    Collections.sort(planningUnitsWithoutParent, (o1, o2) -> o1.getId().compareTo(o2.getId()));
+    setContainerDataSource(new BeanItemContainer<>(PlanningUnit.class, planningUnitsWithoutParent));
+    setNullSelectionAllowed(false);
+    setImmediate(true);
+    setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
+    setItemCaptionPropertyId(PlanningUnit.NAME);
+    addValueChangeListener(this);
+  }
 
-    @Override
-    public void valueChange(Property.ValueChangeEvent event){
-        final boolean placeholderOnly = isContentOnlyPlaceholder();
-        for (Component listenerComponent : listenerComponents) {
-            if(placeholderOnly){
-                listenerComponent.setEnabled(false);
-            }
-        }
+  @Override
+  public void valueChange(Property.ValueChangeEvent event) {
+    final boolean placeholderOnly = isContentOnlyPlaceholder();
+    for (Component listenerComponent : listenerComponents) {
+      if (placeholderOnly) {
+        listenerComponent.setEnabled(false);
+      }
     }
+  }
 
-    public PlannedProject getProjectFromDB() {
-        return projectFromDB;
+  public boolean isContentOnlyPlaceholder() {
+    final Collection<?> itemIds = getItemIds();
+    final ArrayList<PlanningUnit> planningUnits = new ArrayList(itemIds);
+    if (itemIds == null || itemIds.isEmpty()) {
+      return false;
+    } else if (itemIds.size() == 1 && planningUnits.get(0).getId().equals(ProjektplanungScreen.PLATZHALTER_ID)) {
+      return true;
+    } else {
+      return false;
     }
+  }
 
-    public void addListenerComponent(Component component) {
-        listenerComponents.add(component);
-    }
+  public PlannedProject getProjectFromDB() {
+    return projectFromDB;
+  }
 
-    public boolean isContentOnlyPlaceholder() {
-        final Collection<?> itemIds = getItemIds();
-        final ArrayList<PlanningUnit> planningUnits = new ArrayList(itemIds);
-        if(itemIds == null || itemIds.isEmpty()){
-            return false;
-        } else if(itemIds.size() == 1 && planningUnits.get(0).getId().equals(ProjektplanungScreen.PLATZHALTER_ID)){
-            return true;
-        } else {
-            return false;
-        }
-    }
+  public void addListenerComponent(Component component) {
+    listenerComponents.add(component);
+  }
 }

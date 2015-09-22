@@ -11,7 +11,6 @@ package org.rapidpm.persistence.prj.bewegungsdaten;
  * Time: 15:33:55
  * This Source Code is part of the RapidPM - www.rapidpm.org project.
  * please contact sven.ruppert@web.de
- *
  */
 
 import javax.persistence.*;
@@ -20,52 +19,49 @@ import javax.persistence.*;
 @Entity
 public class RegistrationStatus {
 
-    @Id
-    @TableGenerator(name = "PKGenRegistrationStatus", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "RegistrationStatus_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenRegistrationStatus")
-    private Long id;
+  @Id
+  @TableGenerator(name = "PKGenRegistrationStatus", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "RegistrationStatus_id", valueColumnName = "gen_value", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenRegistrationStatus")
+  private Long id;
+  @Basic
+  private String status;
 
-    public Long getId() {
-        return id;
+  public String getStatus() {
+    return status;
+  }
+
+  public void setStatus(final String status) {
+    this.status = status;
+  }
+
+  @Override
+  public int hashCode() {
+    return getId() != null ? getId().hashCode() : 0;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
 
-    public void setId(final Long id) {
-        this.id = id;
+    final RegistrationStatus that = (RegistrationStatus) o;
+
+    if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) {
+      return false;
     }
 
+    return true;
+  }
 
-    @Basic
-    private String status;
+  public Long getId() {
+    return id;
+  }
 
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(final String status) {
-        this.status = status;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        final RegistrationStatus that = (RegistrationStatus) o;
-
-        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return getId() != null ? getId().hashCode() : 0;
-    }
+  public void setId(final Long id) {
+    this.id = id;
+  }
 }

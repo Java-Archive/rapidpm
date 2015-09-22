@@ -12,46 +12,46 @@ import javax.persistence.*;
 @Entity
 public class TrainTicket {
 
-    @Id
-    @TableGenerator(name = "PKGenTrainTicket", table = "pk_gen", pkColumnName = "gen_key",
-            pkColumnValue = "TrainTicket_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenTrainTicket")
-    private Long id;
+  @Id
+  @TableGenerator(name = "PKGenTrainTicket", table = "pk_gen", pkColumnName = "gen_key",
+      pkColumnValue = "TrainTicket_id", valueColumnName = "gen_value", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenTrainTicket")
+  private Long id;
 
-    @Basic private String currency; // USD / EUR / ..
-    @Basic private float costs;
+  @Basic private String currency; // USD / EUR / ..
+  @Basic private float costs;
 
-    @Basic private int travelDurationMinutes;
+  @Basic private int travelDurationMinutes;
 
-    public Long getId() {
-        return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public String getCurrency() {
-        return currency;
-    }
+  public String getCurrency() {
+    return currency;
+  }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
+  public void setCurrency(String currency) {
+    this.currency = currency;
+  }
 
-    public float getCosts() {
-        return costs;
-    }
+  public float getCosts() {
+    return costs;
+  }
 
-    public void setCosts(float costs) {
-        this.costs = costs;
-    }
+  public void setCosts(float costs) {
+    this.costs = costs;
+  }
 
-    public int getTravelDurationMinutes() {
-        return travelDurationMinutes;
-    }
+  public int getTravelDurationMinutes() {
+    return travelDurationMinutes;
+  }
 
-    public void setTravelDurationMinutes(int travelDurationMinutes) {
-        this.travelDurationMinutes = travelDurationMinutes;
-    }
+  public void setTravelDurationMinutes(int travelDurationMinutes) {
+    this.travelDurationMinutes = travelDurationMinutes;
+  }
 }

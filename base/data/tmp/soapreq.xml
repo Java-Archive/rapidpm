@@ -6,44 +6,44 @@
 
 <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
                    xmlns:ns1="http://query.analyzer.neoscio.de/">
-    <SOAP-ENV:Body>
-        <ns1:getResultOverview>
-            <sessionID>2nds304rveet3bnlo4tum64tc0</sessionID>
-            <UID>44</UID>
-            <suchmodulname>meotec</suchmodulname>
-            <mimeType></mimeType>
-            <domainPattern></domainPattern>
-            <keywords>at amaturen</keywords>
-            <sortingOrder></sortingOrder>
-            <filter>Maschinenbau / Anlagenbau / Maschinenelemente</filter>
-            <filter>GerÃ¤te Mess- und Regelungstechnik / Prozessleittechnik</filter>
-            <filter>GebÃ¤ude- / Infrastruktur- / Automatisierungstechnik</filter>
-            <filter>verarbeitete Rohstoffe / Materialien / OberflÃ¤chen</filter>
-            <filter>Informationstechnik / Softwareentwicklung</filter>
-            <filter>Gutachten / PrÃ¼fung / Labore</filter>
-            <filter>Projektentwicklung / Contracting</filter>
-            <filter>Verfahrensentwicklung / Engeneering / Produktentwicklung</filter>
-            <filter>Abfall (Entsorgung / Recycling)</filter>
-            <filter>Reinigung / Wartung / Industrieservice</filter>
-            <filter>GroÃ�handel von Technik und Dienstleistung</filter>
-            <filter>Consulting</filter>
-            <filter>Marketing / PR</filter>
-            <filter>Fachinformationen / Fachportale / Messen</filter>
-            <filter>Weiterbildung / Qualifizierung</filter>
-            <filter>UniversitÃ¤ten / Fachhochschulen</filter>
-            <filter>Forschungsinstitute / Forschungsunternehmen</filter>
-            <filter>Cluster</filter>
-            <filter>Fachinformationen / Fachportale / Messen (Ã¼berregional)</filter>
-            <filter>Forschungsinstitute / Forschungsunternehmen (Ã¼berregional)</filter>
-            <filter>Maschinenbau / Anlagenbau / Maschinenelemente (Ã¼berregional)</filter>
-            <filter>Projektentwicklung / Contracting (Ã¼berregional)</filter>
-            <filter>UniversitÃ¤ten / Fachhochschulen (Ã¼berregional)</filter>
-            <filter>VerbÃ¤nde / BehÃ¶rden / Organisationen (Ã¼berregional)</filter>
-            <filter>Verfahrensentwicklung / Engeneering / Produktentwicklung (Ã¼berregional)</filter>
-            <quellenOIDs>61</quellenOIDs>
-            <quellenOIDs>62</quellenOIDs>
-            <quellenOIDs>63</quellenOIDs>
-            <quellenOIDs>65</quellenOIDs>
-        </ns1:getResultOverview>
-    </SOAP-ENV:Body>
+  <SOAP-ENV:Body>
+    <ns1:getResultOverview>
+      <sessionID>2nds304rveet3bnlo4tum64tc0</sessionID>
+      <UID>44</UID>
+      <suchmodulname>meotec</suchmodulname>
+      <mimeType></mimeType>
+      <domainPattern></domainPattern>
+      <keywords>at amaturen</keywords>
+      <sortingOrder></sortingOrder>
+      <filter>Maschinenbau / Anlagenbau / Maschinenelemente</filter>
+      <filter>GerÃ¤te Mess- und Regelungstechnik / Prozessleittechnik</filter>
+      <filter>GebÃ¤ude- / Infrastruktur- / Automatisierungstechnik</filter>
+      <filter>verarbeitete Rohstoffe / Materialien / OberflÃ¤chen</filter>
+      <filter>Informationstechnik / Softwareentwicklung</filter>
+      <filter>Gutachten / PrÃ¼fung / Labore</filter>
+      <filter>Projektentwicklung / Contracting</filter>
+      <filter>Verfahrensentwicklung / Engeneering / Produktentwicklung</filter>
+      <filter>Abfall (Entsorgung / Recycling)</filter>
+      <filter>Reinigung / Wartung / Industrieservice</filter>
+      <filter>GroÃ�handel von Technik und Dienstleistung</filter>
+      <filter>Consulting</filter>
+      <filter>Marketing / PR</filter>
+      <filter>Fachinformationen / Fachportale / Messen</filter>
+      <filter>Weiterbildung / Qualifizierung</filter>
+      <filter>UniversitÃ¤ten / Fachhochschulen</filter>
+      <filter>Forschungsinstitute / Forschungsunternehmen</filter>
+      <filter>Cluster</filter>
+      <filter>Fachinformationen / Fachportale / Messen (Ã¼berregional)</filter>
+      <filter>Forschungsinstitute / Forschungsunternehmen (Ã¼berregional)</filter>
+      <filter>Maschinenbau / Anlagenbau / Maschinenelemente (Ã¼berregional)</filter>
+      <filter>Projektentwicklung / Contracting (Ã¼berregional)</filter>
+      <filter>UniversitÃ¤ten / Fachhochschulen (Ã¼berregional)</filter>
+      <filter>VerbÃ¤nde / BehÃ¶rden / Organisationen (Ã¼berregional)</filter>
+      <filter>Verfahrensentwicklung / Engeneering / Produktentwicklung (Ã¼berregional)</filter>
+      <quellenOIDs>61</quellenOIDs>
+      <quellenOIDs>62</quellenOIDs>
+      <quellenOIDs>63</quellenOIDs>
+      <quellenOIDs>65</quellenOIDs>
+    </ns1:getResultOverview>
+  </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>

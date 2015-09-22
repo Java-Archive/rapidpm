@@ -3,25 +3,25 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicom
 import com.vaadin.ui.Button;
 
 public class ButtonComponent extends Button implements
-        ItemClickDependentComponent {
-    private Object itemId;
+    ItemClickDependentComponent {
+  private Object itemId;
 
-    public ButtonComponent(String s) {
-        super(s);
-    }
+  public ButtonComponent(String s) {
+    super(s);
+  }
 
-    @Override
-    public void getTheState(boolean state) {
-        setEnabled(state);
-    }
+  @Override
+  public void getTheState(boolean state) {
+    setEnabled(state);
+  }
 
-    @Override
-    public void setItemId(Object itemId) {
-        this.itemId = itemId;
-    }
+  public Object getItemId() {
+    return itemId;
+  }
 
-    public Object getItemId() {
-        return itemId;
-    }
+  @Override
+  public void setItemId(Object itemId) {
+    this.itemId = itemId;
+  }
 
 }

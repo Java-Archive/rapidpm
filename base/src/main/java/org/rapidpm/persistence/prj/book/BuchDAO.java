@@ -17,21 +17,21 @@ import org.rapidpm.persistence.DAO;
 import java.security.InvalidKeyException;
 
 public class BuchDAO extends DAO<Long, Buch> {
-    private static final Logger logger = Logger.getLogger(BuchDAO.class);
+  private static final Logger logger = Logger.getLogger(BuchDAO.class);
 
 
-    public BuchDAO(final OrientGraph orientDB) {
-        super(orientDB, Buch.class);
-    }
+  public BuchDAO(final OrientGraph orientDB) {
+    super(orientDB, Buch.class);
+  }
 
 
-    @Override
-    public Buch loadFull(Buch entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public Buch loadFull(Buch entity) throws InvalidKeyException, NotYetImplementedException {
+    throw new NotYetImplementedException();
+  }
 
-    @Override
-    public Buch createEntityFull(Buch entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public Buch createEntityFull(Buch entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    throw new NotYetImplementedException();
+  }
 }

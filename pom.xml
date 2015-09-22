@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>org.rapidpm</groupId>
+    <artifactId>rapidpm-dependencies</artifactId>
+    <version>3.0.0-SNAPSHOT</version>
+  </parent>
 
-  <groupId>org.rapidpm</groupId>
   <artifactId>rapidpm</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -18,10 +22,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <vaadin.version>7.5.0</vaadin.version>
-    <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
     <orientdb-core.version>2.1.0</orientdb-core.version>
-    <spring-boot.version>1.2.5.RELEASE</spring-boot.version>
   </properties>
 
 
@@ -50,36 +51,6 @@
         <version>2.7</version>
         <scope>compile</scope>
       </dependency>
-      <dependency>
-        <groupId>com.orientechnologies</groupId>
-        <artifactId>orientdb-core</artifactId>
-        <version>${orientdb-core.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.orientechnologies</groupId>
-        <artifactId>orientdb-client</artifactId>
-        <version>${orientdb-core.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.orientechnologies</groupId>
-        <artifactId>orientdb-tools</artifactId>
-        <version>${orientdb-core.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.orientechnologies</groupId>
-        <artifactId>orientdb-enterprise</artifactId>
-        <version>${orientdb-core.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.orientechnologies</groupId>
-        <artifactId>orientdb-graphdb</artifactId>
-        <version>${orientdb-core.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.tinkerpop.blueprints</groupId>
-        <artifactId>blueprints-core</artifactId>
-        <version>2.6.0</version>
-      </dependency>
 
       <dependency>
         <groupId>org.stagemonitor</groupId>
@@ -87,112 +58,49 @@
         <version>0.16.2</version>
       </dependency>
       <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter</artifactId>
-        <version>${spring-boot.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-undertow</artifactId>
-        <version>${spring-boot.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.vaadin</groupId>
-        <artifactId>vaadin-spring-boot-starter</artifactId>
-        <version>1.0.0.beta3</version>
-      </dependency>
-      <dependency>
         <groupId>org.rapidpm</groupId>
         <artifactId>rapidpm-base</artifactId>
         <version>${project.version}</version>
       </dependency>
-
-      <dependency>
-        <groupId>org.apache.axis</groupId>
-        <artifactId>axis</artifactId>
-        <version>1.4</version>
-      </dependency>
-
-
     </dependencies>
   </dependencyManagement>
 
 
-
-
   <dependencies>
+
+    <dependency>
+      <groupId>org.rapidpm.dynamic-cdi</groupId>
+      <artifactId>rapidpm-dynamic-cdi</artifactId>
+
+    </dependency>
+    <!--using Annotation Processing-->
+    <dependency>
+      <groupId>org.rapidpm.proxybuilder</groupId>
+      <artifactId>rapidpm-proxybuilder-modules-dynamicobjectadapter-generator-processors</artifactId>
+
+    </dependency>
+    <dependency>
+      <groupId>org.rapidpm.proxybuilder</groupId>
+      <artifactId>rapidpm-proxybuilder-modules-dynamicobjectadapter-generator-annotations</artifactId>
+      <!--<optional>true</optional>-->
+    </dependency>
+    <!--using Annotation Processing-->
+
+
     <dependency>
       <groupId>log4j</groupId>
       <artifactId>log4j</artifactId>
       <version>1.2.17</version>
     </dependency>
-    <!--<dependency>-->
-      <!--<groupId>javax.validation</groupId>-->
-      <!--<artifactId>validation-api</artifactId>-->
-      <!--<version>1.1.0.Final</version>-->
-    <!--</dependency>-->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
-    </dependency>
+
   </dependencies>
 
 
-
-
   <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.3</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-source-plugin</artifactId>
-          <version>2.4</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>2.7</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>2.6.1</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>2.18.1</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-war-plugin</artifactId>
-          <version>2.3</version>
-        </plugin>
-        <plugin>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>spring-boot-maven-plugin</artifactId>
-          <version>${spring-boot.version}</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-
-
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-          <showDeprecation>true</showDeprecation>
-          <showWarnings>true</showWarnings>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -216,9 +124,31 @@
           <skipTests>true</skipTests>
         </configuration>
       </plugin>
+
+      <!--added by Sven-->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-source</goal>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>${project.build.directory}/generated-sources/annotations</source>
+                <source>${project.build.directory}/generated-sources/vwscdn</source>
+              </sources>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+
     </plugins>
   </build>
-
 
 
   <repositories>
@@ -238,4 +168,24 @@
     </repository>
   </repositories>
 
+
+  <profiles>
+    <profile>
+      <id>sys-nexus-deploy</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <!--for development of features/develop branch-->
+      <distributionManagement>
+        <repository>
+          <id>sonatype-nexus-snapshots</id>
+          <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+        <snapshotRepository>
+          <id>sonatype-nexus-snapshots</id>
+          <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+      </distributionManagement>
+    </profile>
+  </profiles>
 </project>

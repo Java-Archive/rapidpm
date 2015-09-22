@@ -12,14 +12,14 @@ import com.vaadin.ui.Table;
  */
 public class TreeTableHeaderClickListener implements Table.HeaderClickListener {
 
-    private Button undoButton;
+  private Button undoButton;
 
-    public TreeTableHeaderClickListener(Button undoButton) {
-        this.undoButton = undoButton;
-    }
+  public TreeTableHeaderClickListener(Button undoButton) {
+    this.undoButton = undoButton;
+  }
 
-    @Override
-    public void headerClick(Table.HeaderClickEvent event) {
-         undoButton.setVisible(true);
-    }
+  @Override
+  public void headerClick(Table.HeaderClickEvent event) {
+    undoButton.setVisible(true);
+  }
 }

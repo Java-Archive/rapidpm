@@ -15,72 +15,72 @@ import java.util.List;
 
 @Entity
 public class BuchKapitel {
-    private static final Logger logger = Logger.getLogger(BuchKapitel.class);
+  private static final Logger logger = Logger.getLogger(BuchKapitel.class);
 
-    @TableGenerator(name = "PKGenBuchKapitel", table = "pk_gen", pkColumnName = "gen_key",
-            pkColumnValue = "BuchKapitel_id",
-            valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenBuchKapitel")
-    @Id
-    private Long id;
-    @Basic
-    private Boolean freigeschaltet;
-    @Basic
-    private Integer kapitelnummer;
-    @Basic
-    private String ueberschrift;
-    @Basic
-    private String untertitel;
-    @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
-    private List<BuchKapitelKommentar> kommentarliste;
+  @TableGenerator(name = "PKGenBuchKapitel", table = "pk_gen", pkColumnName = "gen_key",
+      pkColumnValue = "BuchKapitel_id",
+      valueColumnName = "gen_value", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenBuchKapitel")
+  @Id
+  private Long id;
+  @Basic
+  private Boolean freigeschaltet;
+  @Basic
+  private Integer kapitelnummer;
+  @Basic
+  private String ueberschrift;
+  @Basic
+  private String untertitel;
+  @OneToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+  private List<BuchKapitelKommentar> kommentarliste;
 
-    public Long getId() {
-        return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-
-    public Integer getKapitelnummer() {
-        return kapitelnummer;
-    }
-
-    public void setKapitelnummer(final Integer kapitelnummer) {
-        this.kapitelnummer = kapitelnummer;
-    }
+  public void setId(final Long id) {
+    this.id = id;
+  }
 
 
-    public String getUeberschrift() {
-        return ueberschrift;
-    }
+  public Integer getKapitelnummer() {
+    return kapitelnummer;
+  }
 
-    public void setUeberschrift(final String ueberschrift) {
-        this.ueberschrift = ueberschrift;
-    }
+  public void setKapitelnummer(final Integer kapitelnummer) {
+    this.kapitelnummer = kapitelnummer;
+  }
 
-    public String getUntertitel() {
-        return untertitel;
-    }
 
-    public void setUntertitel(final String untertitel) {
-        this.untertitel = untertitel;
-    }
+  public String getUeberschrift() {
+    return ueberschrift;
+  }
 
-    public Boolean getFreigeschaltet() {
-        return freigeschaltet;
-    }
+  public void setUeberschrift(final String ueberschrift) {
+    this.ueberschrift = ueberschrift;
+  }
 
-    public void setFreigeschaltet(final Boolean freigeschaltet) {
-        this.freigeschaltet = freigeschaltet;
-    }
+  public String getUntertitel() {
+    return untertitel;
+  }
 
-    public List<BuchKapitelKommentar> getKapitelkommentarliste() {
-        return kommentarliste;
-    }
+  public void setUntertitel(final String untertitel) {
+    this.untertitel = untertitel;
+  }
 
-    public void setKapitelkommentarliste(final List<BuchKapitelKommentar> kapitelkommentarliste) {
-        this.kommentarliste = kapitelkommentarliste;
-    }
+  public Boolean getFreigeschaltet() {
+    return freigeschaltet;
+  }
+
+  public void setFreigeschaltet(final Boolean freigeschaltet) {
+    this.freigeschaltet = freigeschaltet;
+  }
+
+  public List<BuchKapitelKommentar> getKapitelkommentarliste() {
+    return kommentarliste;
+  }
+
+  public void setKapitelkommentarliste(final List<BuchKapitelKommentar> kapitelkommentarliste) {
+    this.kommentarliste = kapitelkommentarliste;
+  }
 }

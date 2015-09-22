@@ -27,59 +27,59 @@ import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
  */
 public class HoursPerWorkingDayEditableLayout extends EditableLayout {
 
-    private ProjektFieldGroup fieldGroup;
-    private ComboBox hoursBox;
-    private PlannedProject project;
+  private static final Logger logger = Logger.getLogger(HoursPerWorkingDayEditableLayout.class);
+  private ProjektFieldGroup fieldGroup;
+  private ComboBox hoursBox;
+  private PlannedProject project;
 
-    private static final Logger logger = Logger.getLogger(HoursPerWorkingDayEditableLayout.class);
-    public HoursPerWorkingDayEditableLayout(final Screen screen, final Panel screenPanel) {
-        super(screen, screenPanel);
-        final VaadinSession session = screen.getUi().getSession();
-        project = session.getAttribute(PlannedProject.class);
-        fieldGroup = new ProjektFieldGroup(project, messages);
-        saveButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                try{
-                    final BeanItem<PlannedProject> beanItem = (BeanItem)fieldGroup.getItemDataSource();
-                    final PlannedProject editedPlannedProject = beanItem.getBean();
-                    final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-                    fieldGroup.commit();
+  public HoursPerWorkingDayEditableLayout(final Screen screen, final Panel screenPanel) {
+    super(screen, screenPanel);
+    final VaadinSession session = screen.getUi().getSession();
+    project = session.getAttribute(PlannedProject.class);
+    fieldGroup = new ProjektFieldGroup(project, messages);
+    saveButton.addClickListener(new Button.ClickListener() {
+      @Override
+      public void buttonClick(Button.ClickEvent event) {
+        try {
+          final BeanItem<PlannedProject> beanItem = (BeanItem) fieldGroup.getItemDataSource();
+          final PlannedProject editedPlannedProject = beanItem.getBean();
+          final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+          fieldGroup.commit();
 //                    daoFactory.saveOrUpdateTX(editedPlannedProject);
-                    final MainUI ui = screen.getUi();
-                    ui.setWorkingArea(new AufwandProjInitScreen(ui));
-                }catch (final NullPointerException e){
-                    logger.info(COMMIT_EXCEPTION_MESSAGE);
-                }catch(final Exception e){
-                    logger.warn("Exception", e);
-                }
+          final MainUI ui = screen.getUi();
+          ui.setWorkingArea(new AufwandProjInitScreen(ui));
+        } catch (final NullPointerException e) {
+          logger.info(COMMIT_EXCEPTION_MESSAGE);
+        } catch (final Exception e) {
+          logger.warn("Exception", e);
+        }
 
-            }
-        });
-        cancelButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                fieldGroup.discard();
-                hoursBox = (ComboBox) fieldGroup.getField(PlannedProject.HOURSPERWORKINGDAY);
-                hoursBox.setReadOnly(true);
-                componentsLayout.addComponent(hoursBox);
-                hoursBox.setReadOnly(true);
-                buttonLayout.setVisible(false);
-                active = false;
-            }
-        });
-        buildForm();
-    }
-
-    @Override
-    protected void buildForm() {
+      }
+    });
+    cancelButton.addClickListener(new Button.ClickListener() {
+      @Override
+      public void buttonClick(Button.ClickEvent event) {
+        fieldGroup.discard();
         hoursBox = (ComboBox) fieldGroup.getField(PlannedProject.HOURSPERWORKINGDAY);
         hoursBox.setReadOnly(true);
         componentsLayout.addComponent(hoursBox);
-    }
+        hoursBox.setReadOnly(true);
+        buttonLayout.setVisible(false);
+        active = false;
+      }
+    });
+    buildForm();
+  }
 
-    @Override
-    protected void setLayout() {
-        componentsLayout = new FormLayout();
-    }
+  @Override
+  protected void setLayout() {
+    componentsLayout = new FormLayout();
+  }
+
+  @Override
+  protected void buildForm() {
+    hoursBox = (ComboBox) fieldGroup.getField(PlannedProject.HOURSPERWORKINGDAY);
+    hoursBox.setReadOnly(true);
+    componentsLayout.addComponent(hoursBox);
+  }
 }

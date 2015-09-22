@@ -15,20 +15,20 @@ import org.rapidpm.persistence.DAO;
 import java.security.InvalidKeyException;
 
 public class VerwaltungseinheitDAO extends DAO<Long, Verwaltungseinheit> {
-    private static final Logger logger = Logger.getLogger(VerwaltungseinheitDAO.class);
+  private static final Logger logger = Logger.getLogger(VerwaltungseinheitDAO.class);
 
 
-    public VerwaltungseinheitDAO(final OrientGraph orientDB) {
-        super(orientDB, Verwaltungseinheit.class);
-    }
+  public VerwaltungseinheitDAO(final OrientGraph orientDB) {
+    super(orientDB, Verwaltungseinheit.class);
+  }
 
-    @Override
-    public Verwaltungseinheit loadFull(Verwaltungseinheit entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public Verwaltungseinheit loadFull(Verwaltungseinheit entity) throws InvalidKeyException, NotYetImplementedException {
+    throw new NotYetImplementedException();
+  }
 
-    @Override
-    public Verwaltungseinheit createEntityFull(Verwaltungseinheit entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public Verwaltungseinheit createEntityFull(Verwaltungseinheit entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    throw new NotYetImplementedException();
+  }
 }

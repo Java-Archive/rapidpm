@@ -8,6 +8,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.com
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 public enum DescriptionTestcaseEnum {
-    DESCRIPTION,
-    TESTCASE;
+  DESCRIPTION,
+  TESTCASE;
 }

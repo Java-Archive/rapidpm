@@ -9,11 +9,11 @@ import javax.persistence.*;
  *
  * @author Sven Ruppert
  * @version 0.1
- *          <p/>
+ *          <p>
  *          This Source Code is part of the RapidPM - www.rapidpm.org project.
  *          please contact sven.ruppert@me.com
  * @since 03.03.2010
- *        Time: 09:24:59
+ * Time: 09:24:59
  */
 
 
@@ -21,41 +21,38 @@ import javax.persistence.*;
 @Entity
 //@Table(name = "wirtschaftseinheit")
 public class Wirtschaftseinheit {
-    private static final Logger logger = Logger.getLogger(Wirtschaftseinheit.class);
+  private static final Logger logger = Logger.getLogger(Wirtschaftseinheit.class);
 
-    @Id
-    @TableGenerator(name = "PKGenWirtschaftseinheit", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "Wirtschaftseinheit_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenWirtschaftseinheit")
-    private Long id;
+  @Id
+  @TableGenerator(name = "PKGenWirtschaftseinheit", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "Wirtschaftseinheit_id", valueColumnName = "gen_value", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenWirtschaftseinheit")
+  private Long id;
+  @Basic
+  private String anzahlTochterunternehmen;
+  @Basic
+  private String umsatzInTausendEuro;
 
-    public Long getId() {
-        return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setId(final Long id) {
-        this.id = id;
-    }
+  public void setId(final Long id) {
+    this.id = id;
+  }
 
+  public String getAnzahlTochterunternehmen() {
+    return anzahlTochterunternehmen;
+  }
 
-    @Basic
-    private String anzahlTochterunternehmen;
+  public void setAnzahlTochterunternehmen(final String anzahlTochterunternehmen) {
+    this.anzahlTochterunternehmen = anzahlTochterunternehmen;
+  }
 
-    public String getAnzahlTochterunternehmen() {
-        return anzahlTochterunternehmen;
-    }
+  public String getUmsatzInTausendEuro() {
+    return umsatzInTausendEuro;
+  }
 
-    public void setAnzahlTochterunternehmen(final String anzahlTochterunternehmen) {
-        this.anzahlTochterunternehmen = anzahlTochterunternehmen;
-    }
-
-    @Basic
-    private String umsatzInTausendEuro;
-
-    public String getUmsatzInTausendEuro() {
-        return umsatzInTausendEuro;
-    }
-
-    public void setUmsatzInTausendEuro(final String umsatzInTausendEuro) {
-        this.umsatzInTausendEuro = umsatzInTausendEuro;
-    }
+  public void setUmsatzInTausendEuro(final String umsatzInTausendEuro) {
+    this.umsatzInTausendEuro = umsatzInTausendEuro;
+  }
 }

@@ -15,20 +15,20 @@ import org.rapidpm.persistence.DAO;
 import java.security.InvalidKeyException;
 
 public class StateKlassifizierungDAO extends DAO<Long, StateKlassifizierung> {
-    private static final Logger logger = Logger.getLogger(StateKlassifizierungDAO.class);
+  private static final Logger logger = Logger.getLogger(StateKlassifizierungDAO.class);
 
 
-    public StateKlassifizierungDAO(final OrientGraph orientDB) {
-        super(orientDB, StateKlassifizierung.class);
-    }
+  public StateKlassifizierungDAO(final OrientGraph orientDB) {
+    super(orientDB, StateKlassifizierung.class);
+  }
 
-    @Override
-    public StateKlassifizierung loadFull(StateKlassifizierung entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public StateKlassifizierung loadFull(StateKlassifizierung entity) throws InvalidKeyException, NotYetImplementedException {
+    throw new NotYetImplementedException();
+  }
 
-    @Override
-    public StateKlassifizierung createEntityFull(StateKlassifizierung entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public StateKlassifizierung createEntityFull(StateKlassifizierung entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    throw new NotYetImplementedException();
+  }
 }

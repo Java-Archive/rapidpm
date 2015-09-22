@@ -17,28 +17,22 @@ import java.util.ResourceBundle;
  */
 public abstract class EditableRapidPanel extends RapidPanel implements Internationalizationable, Componentssetable {
 
-    protected Button saveButton = new Button();
-    protected Button cancelButton = new Button();
-    protected HorizontalLayout buttonsLayout = new HorizontalLayout();
-    protected ResourceBundle messagesBundle;
+  protected Button saveButton = new Button();
+  protected Button cancelButton = new Button();
+  protected HorizontalLayout buttonsLayout = new HorizontalLayout();
+  protected ResourceBundle messagesBundle;
 
-    public EditableRapidPanel(final ResourceBundle messagesBundle){
-        this.messagesBundle = messagesBundle;
-        turnEditableDesignOn(true);
+  public EditableRapidPanel(final ResourceBundle messagesBundle) {
+    this.messagesBundle = messagesBundle;
+    turnEditableDesignOn(true);
+    addClickListener((MouseEvents.ClickListener) event -> activate(true));
+  }
 
-        addClickListener(new MouseEvents.ClickListener() {
-            @Override
-            public void click(MouseEvents.ClickEvent event) {
-                activate(true);
-            }
-        });
-    }
+  public abstract void activate(boolean b);
 
-    public abstract void activate(boolean b);
+  @Override
+  public abstract void setComponents();
 
-    @Override
-    public abstract void setComponents();
-
-    @Override
-    public abstract void doInternationalization();
+  @Override
+  public abstract void doInternationalization();
 }

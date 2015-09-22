@@ -8,173 +8,171 @@ import org.rapidpm.persistence.system.security.Benutzer;
 import java.util.List;
 
 /**
- *
  * User: svenruppert
  * Date: 30.07.12
  * Time: 06:50
- *
+ * <p>
  * Verbindung der PlanungsEinheit mit den AufwÃ¤nden der PlanungsRessourcen.
- *
  */
 
 public class PlanningUnit {
 
-    public static final String NAME = "planningUnitName";
-    public static final String STORYPTS = "estimatedStoryPoints";
-    public static final String COMPLEXITY = "komplexitaet";
-    public static final String RESPONSIBLE = "responsiblePerson";
-    public static final String TESTCASES = "testcases";
-    public static final String DESCRIPTIONS = "descriptions";
-    public static final String ORDERNUMBER = "orderNumber";
-    public static final String PARENT = "parent";
+  public static final String NAME = "planningUnitName";
+  public static final String STORYPTS = "estimatedStoryPoints";
+  public static final String COMPLEXITY = "komplexitaet";
+  public static final String RESPONSIBLE = "responsiblePerson";
+  public static final String TESTCASES = "testcases";
+  public static final String DESCRIPTIONS = "descriptions";
+  public static final String ORDERNUMBER = "orderNumber";
+  public static final String PARENT = "parent";
 
-    private String id;
-    private int orderNumber;
-    private String planningUnitName;
-    private int komplexitaet;
-    private int estimatedStoryPoints;
+  private String id;
+  private int orderNumber;
+  private String planningUnitName;
+  private int komplexitaet;
+  private int estimatedStoryPoints;
 
-    private transient List<PlannedTravel> plannedTravelList;
-    private transient PlanningStatus planningStatus;
-    private transient Benutzer responsiblePerson;
-    private transient List<PlannedMeeting> plannedMeetingList;
-    private transient List<PlanningUnit> kindPlanningUnits;
-    private transient PlanningUnit parent;
-    private transient List<PlanningUnitElement> planningUnitElementList;
-    private transient List<TextElement> testcases;
-    private transient List<TextElement> descriptions;
+  private transient List<PlannedTravel> plannedTravelList;
+  private transient PlanningStatus planningStatus;
+  private transient Benutzer responsiblePerson;
+  private transient List<PlannedMeeting> plannedMeetingList;
+  private transient List<PlanningUnit> kindPlanningUnits;
+  private transient PlanningUnit parent;
+  private transient List<PlanningUnitElement> planningUnitElementList;
+  private transient List<TextElement> testcases;
+  private transient List<TextElement> descriptions;
 
-    public int getEstimatedStoryPoints() {
-        return estimatedStoryPoints;
-    }
+  public int getEstimatedStoryPoints() {
+    return estimatedStoryPoints;
+  }
 
-    public void setEstimatedStoryPoints(int storypoints) {
-        this.estimatedStoryPoints = storypoints;
-    }
+  public void setEstimatedStoryPoints(int storypoints) {
+    this.estimatedStoryPoints = storypoints;
+  }
 
-    public int getKomplexitaet() {
-        return komplexitaet;
-    }
+  public int getKomplexitaet() {
+    return komplexitaet;
+  }
 
-    public void setKomplexitaet(int komplexitaet) {
-        this.komplexitaet = komplexitaet;
-    }
+  public void setKomplexitaet(int komplexitaet) {
+    this.komplexitaet = komplexitaet;
+  }
 
-    public String getId() {
-        return id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public int getOrderNumber() {
-        return orderNumber;
-    }
+  public int getOrderNumber() {
+    return orderNumber;
+  }
 
-    public void setOrderNumber(int orderNumber) {
-        this.orderNumber = orderNumber;
-    }
+  public void setOrderNumber(int orderNumber) {
+    this.orderNumber = orderNumber;
+  }
 
-    public String getPlanningUnitName() {
-        return planningUnitName;
-    }
+  public String getPlanningUnitName() {
+    return planningUnitName;
+  }
 
-    public void setPlanningUnitName(String planningUnitName) {
-        this.planningUnitName = planningUnitName;
-    }
+  public void setPlanningUnitName(String planningUnitName) {
+    this.planningUnitName = planningUnitName;
+  }
 
-    public List<PlanningUnitElement> getPlanningUnitElementList() {
-        return planningUnitElementList;
-    }
+  public List<PlanningUnitElement> getPlanningUnitElementList() {
+    return planningUnitElementList;
+  }
 
-    public void setPlanningUnitElementList(List<PlanningUnitElement> planningUnitElementList) {
-        this.planningUnitElementList = planningUnitElementList;
-    }
+  public void setPlanningUnitElementList(List<PlanningUnitElement> planningUnitElementList) {
+    this.planningUnitElementList = planningUnitElementList;
+  }
 
-    public List<PlanningUnit> getKindPlanningUnits() {
-        return kindPlanningUnits;
-    }
+  public List<PlanningUnit> getKindPlanningUnits() {
+    return kindPlanningUnits;
+  }
 
-    public void setKindPlanningUnits(List<PlanningUnit> kindPlanningUnits) {
-        this.kindPlanningUnits = kindPlanningUnits;
-    }
+  public void setKindPlanningUnits(List<PlanningUnit> kindPlanningUnits) {
+    this.kindPlanningUnits = kindPlanningUnits;
+  }
 
-    public List<PlannedTravel> getPlannedTravelList() {
-        return plannedTravelList;
-    }
+  public List<PlannedTravel> getPlannedTravelList() {
+    return plannedTravelList;
+  }
 
-    public void setPlannedTravelList(List<PlannedTravel> plannedTravelList) {
-        this.plannedTravelList = plannedTravelList;
-    }
+  public void setPlannedTravelList(List<PlannedTravel> plannedTravelList) {
+    this.plannedTravelList = plannedTravelList;
+  }
 
-    public PlanningStatus getPlanningStatus() {
-        return planningStatus;
-    }
+  public PlanningStatus getPlanningStatus() {
+    return planningStatus;
+  }
 
-    public void setPlanningStatus(PlanningStatus planningStatus) {
-        this.planningStatus = planningStatus;
-    }
+  public void setPlanningStatus(PlanningStatus planningStatus) {
+    this.planningStatus = planningStatus;
+  }
 
-    public Benutzer getResponsiblePerson() {
-        return responsiblePerson;
-    }
+  public Benutzer getResponsiblePerson() {
+    return responsiblePerson;
+  }
 
-    public void setResponsiblePerson(Benutzer responsiblePerson) {
-        this.responsiblePerson = responsiblePerson;
-    }
+  public void setResponsiblePerson(Benutzer responsiblePerson) {
+    this.responsiblePerson = responsiblePerson;
+  }
 
-    public List<PlannedMeeting> getPlannedMeetingList() {
-        return plannedMeetingList;
-    }
+  public List<PlannedMeeting> getPlannedMeetingList() {
+    return plannedMeetingList;
+  }
 
-    public void setPlannedMeetingList(List<PlannedMeeting> plannedMeetingList) {
-        this.plannedMeetingList = plannedMeetingList;
-    }
+  public void setPlannedMeetingList(List<PlannedMeeting> plannedMeetingList) {
+    this.plannedMeetingList = plannedMeetingList;
+  }
 
-    public List<TextElement> getTestcases() {
-        return testcases;
-    }
+  public List<TextElement> getTestcases() {
+    return testcases;
+  }
 
-    public void setTestcases(List<TextElement> testcases) {
-        this.testcases = testcases;
-    }
+  public void setTestcases(List<TextElement> testcases) {
+    this.testcases = testcases;
+  }
 
-    public List<TextElement> getDescriptions() {
-        return descriptions;
-    }
+  public List<TextElement> getDescriptions() {
+    return descriptions;
+  }
 
-    public void setDescriptions(List<TextElement> descriptions) {
-        this.descriptions = descriptions;
-    }
+  public void setDescriptions(List<TextElement> descriptions) {
+    this.descriptions = descriptions;
+  }
 
-    public PlanningUnit getParent() {
-        return parent;
-    }
+  public PlanningUnit getParent() {
+    return parent;
+  }
 
-    public void setParent(PlanningUnit parent) {
-        this.parent = parent;
-    }
+  public void setParent(PlanningUnit parent) {
+    this.parent = parent;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PlanningUnit)) return false;
+  @Override
+  public int hashCode() {
+    return id != null ? id.hashCode() : 0;
+  }
 
-        PlanningUnit that = (PlanningUnit) o;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof PlanningUnit)) return false;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+    PlanningUnit that = (PlanningUnit) o;
 
-        return true;
-    }
+    if (id != null ? !id.equals(that.id) : that.id != null) return false;
 
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
+    return true;
+  }
 
-    @Override
-    public String toString() {
-        return planningUnitName;
-    }
+  @Override
+  public String toString() {
+    return planningUnitName;
+  }
 }

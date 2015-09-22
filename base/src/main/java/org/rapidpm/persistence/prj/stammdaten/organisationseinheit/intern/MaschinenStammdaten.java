@@ -13,93 +13,93 @@ import java.util.Date;
 @Entity
 public class MaschinenStammdaten {
 
-    @Id
-    @TableGenerator(name = "PKGenMaschinenStammdaten", table = "pk_gen", pkColumnName = "gen_key",
-            pkColumnValue = "MaschinenStammdaten_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE,
-            generator = "PKGenMaschinenStammdaten")
-    private Long id;
+  @Id
+  @TableGenerator(name = "PKGenMaschinenStammdaten", table = "pk_gen", pkColumnName = "gen_key",
+      pkColumnValue = "MaschinenStammdaten_id", valueColumnName = "gen_value", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE,
+      generator = "PKGenMaschinenStammdaten")
+  private Long id;
 
-    private String name;
-    //private String kontenName;
-    private String maschinennummer;
-    private Float euroMaschinenStunde;
-    private Date inbetriebnahme;
-    private Date ausmusterung;
-    private Integer anschlussLeistung;
-    private Integer druckluftVerbrauch;
+  private String name;
+  //private String kontenName;
+  private String maschinennummer;
+  private Float euroMaschinenStunde;
+  private Date inbetriebnahme;
+  private Date ausmusterung;
+  private Integer anschlussLeistung;
+  private Integer druckluftVerbrauch;
 
-    private Integer standflaeche; //qm
+  private Integer standflaeche; //qm
 
-    public Long getId() {
-        return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public String getMaschinennummer() {
-        return maschinennummer;
-    }
+  public String getMaschinennummer() {
+    return maschinennummer;
+  }
 
-    public void setMaschinennummer(String maschinennummer) {
-        this.maschinennummer = maschinennummer;
-    }
+  public void setMaschinennummer(String maschinennummer) {
+    this.maschinennummer = maschinennummer;
+  }
 
-    public Float getEuroMaschinenStunde() {
-        return euroMaschinenStunde;
-    }
+  public Float getEuroMaschinenStunde() {
+    return euroMaschinenStunde;
+  }
 
-    public void setEuroMaschinenStunde(Float euroMaschinenStunde) {
-        this.euroMaschinenStunde = euroMaschinenStunde;
-    }
+  public void setEuroMaschinenStunde(Float euroMaschinenStunde) {
+    this.euroMaschinenStunde = euroMaschinenStunde;
+  }
 
-    public Date getInbetriebnahme() {
-        return inbetriebnahme;
-    }
+  public Date getInbetriebnahme() {
+    return inbetriebnahme;
+  }
 
-    public void setInbetriebnahme(Date inbetriebnahme) {
-        this.inbetriebnahme = inbetriebnahme;
-    }
+  public void setInbetriebnahme(Date inbetriebnahme) {
+    this.inbetriebnahme = inbetriebnahme;
+  }
 
-    public Date getAusmusterung() {
-        return ausmusterung;
-    }
+  public Date getAusmusterung() {
+    return ausmusterung;
+  }
 
-    public void setAusmusterung(Date ausmusterung) {
-        this.ausmusterung = ausmusterung;
-    }
+  public void setAusmusterung(Date ausmusterung) {
+    this.ausmusterung = ausmusterung;
+  }
 
-    public Integer getAnschlussLeistung() {
-        return anschlussLeistung;
-    }
+  public Integer getAnschlussLeistung() {
+    return anschlussLeistung;
+  }
 
-    public void setAnschlussLeistung(Integer anschlussLeistung) {
-        this.anschlussLeistung = anschlussLeistung;
-    }
+  public void setAnschlussLeistung(Integer anschlussLeistung) {
+    this.anschlussLeistung = anschlussLeistung;
+  }
 
-    public Integer getDruckluftVerbrauch() {
-        return druckluftVerbrauch;
-    }
+  public Integer getDruckluftVerbrauch() {
+    return druckluftVerbrauch;
+  }
 
-    public void setDruckluftVerbrauch(Integer druckluftVerbrauch) {
-        this.druckluftVerbrauch = druckluftVerbrauch;
-    }
+  public void setDruckluftVerbrauch(Integer druckluftVerbrauch) {
+    this.druckluftVerbrauch = druckluftVerbrauch;
+  }
 
-    public Integer getStandflaeche() {
-        return standflaeche;
-    }
+  public Integer getStandflaeche() {
+    return standflaeche;
+  }
 
-    public void setStandflaeche(Integer standflaeche) {
-        this.standflaeche = standflaeche;
-    }
+  public void setStandflaeche(Integer standflaeche) {
+    this.standflaeche = standflaeche;
+  }
 }

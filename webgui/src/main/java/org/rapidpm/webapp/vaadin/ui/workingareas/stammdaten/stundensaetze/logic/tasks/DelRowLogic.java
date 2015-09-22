@@ -12,27 +12,27 @@ import javax.persistence.PersistenceException;
 import java.util.ResourceBundle;
 
 public class DelRowLogic {
-    private ButtonComponent button;
-    private StundensaetzeScreen screen;
-    //    private DelRowLogicBean bean;
-    private ResourceBundle messages;
+  private ButtonComponent button;
+  private StundensaetzeScreen screen;
+  //    private DelRowLogicBean bean;
+  private ResourceBundle messages;
 
-    public DelRowLogic(final StundensaetzeScreen screen, final ButtonComponent button, final ResourceBundle messages) {
-        this.screen = screen;
-        this.button = button;
-        this.messages = messages;
+  public DelRowLogic(final StundensaetzeScreen screen, final ButtonComponent button, final ResourceBundle messages) {
+    this.screen = screen;
+    this.button = button;
+    this.messages = messages;
+  }
+
+  public void execute() {
+    final RessourceGroup ressourceGroup = (RessourceGroup) button.getItemId();
+    try {
+      final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+      daoFactory.getRessourceGroupDAO().deleteByEntity(ressourceGroup, true);
+      screen.generateTableAndCalculate();
+      screen.getSaveButtonLayout().setVisible(false);
+    } catch (final PersistenceException e) {
+      Notification.show(messages.getString("stdsatz_nodelete"));
     }
 
-    public void execute() {
-        final RessourceGroup ressourceGroup = (RessourceGroup) button.getItemId();
-        try{
-            final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-            daoFactory.getRessourceGroupDAO().deleteByEntity(ressourceGroup, true);
-            screen.generateTableAndCalculate();
-            screen.getSaveButtonLayout().setVisible(false);
-        } catch (final PersistenceException e){
-            Notification.show(messages.getString("stdsatz_nodelete"));
-        }
-
-    }
+  }
 }

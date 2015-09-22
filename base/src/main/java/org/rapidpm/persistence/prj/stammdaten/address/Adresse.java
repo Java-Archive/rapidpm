@@ -11,7 +11,6 @@ package org.rapidpm.persistence.prj.stammdaten.address;
  * Time: 15:33:18
  * This Source Code is part of the RapidPM - www.rapidpm.org project.
  * please contact sven.ruppert@web.de
- *
  */
 
 import org.apache.log4j.Logger;
@@ -23,192 +22,183 @@ import java.util.List;
 @Entity
 //@Table(name = "adresse")
 public class Adresse {
-    private static final Logger logger = Logger.getLogger(Adresse.class);
+  private static final Logger logger = Logger.getLogger(Adresse.class);
+  @Basic boolean grosskundenPLZ;
+  @Id
+  @TableGenerator(name = "PKGenAdresse", table = "pk_gen", pkColumnName = "gen_key",
+      pkColumnValue = "Adresse_id", valueColumnName = "gen_value", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenAdresse")
+  private Long id;
+  @Basic
+  private String strasse;
+  @Basic
+  private String hausnummer;
+  @Basic
+  private String notiz;
+  @Basic
+  private String ortsname;
+  @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.REFRESH)
+  private AdressKlassifizierung klassifizierung;
+  @Basic private String plz;
+  @ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.REFRESH)
+  private State state;
 
-    @Id
-    @TableGenerator(name = "PKGenAdresse", table = "pk_gen", pkColumnName = "gen_key",
-            pkColumnValue = "Adresse_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenAdresse")
-    private Long id;
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  private List<Postfach> postfachListe;
 
-    @Basic
-    private String strasse;
-    @Basic
-    private String hausnummer;
-    @Basic
-    private String notiz;
+  @Override
+  public int hashCode() {
+    int result = id != null ? id.hashCode() : 0;
+    result = 31 * result + (strasse != null ? strasse.hashCode() : 0);
+    result = 31 * result + (hausnummer != null ? hausnummer.hashCode() : 0);
+    result = 31 * result + (notiz != null ? notiz.hashCode() : 0);
+    result = 31 * result + (ortsname != null ? ortsname.hashCode() : 0);
+    result = 31 * result + (klassifizierung != null ? klassifizierung.hashCode() : 0);
+    result = 31 * result + (plz != null ? plz.hashCode() : 0);
+    result = 31 * result + (grosskundenPLZ ? 1 : 0);
+    result = 31 * result + (state != null ? state.hashCode() : 0);
+    result = 31 * result + (postfachListe != null ? postfachListe.hashCode() : 0);
+    return result;
+  }
 
-    @Basic
-    private String ortsname;
-
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.REFRESH)
-    private AdressKlassifizierung klassifizierung;
-
-    @Basic private String plz;
-
-    @Basic boolean grosskundenPLZ;
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = true, cascade = CascadeType.REFRESH)
-    private State state;
-
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Postfach> postfachListe;
-
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Adresse)) {
-            return false;
-        }
-
-        final Adresse adresse = (Adresse) o;
-
-        if (grosskundenPLZ != adresse.grosskundenPLZ) {
-            return false;
-        }
-        if (hausnummer != null ? !hausnummer.equals(adresse.hausnummer) : adresse.hausnummer != null) {
-            return false;
-        }
-        if (id != null ? !id.equals(adresse.id) : adresse.id != null) {
-            return false;
-        }
-        if (klassifizierung != null ? !klassifizierung.equals(adresse.klassifizierung) : adresse.klassifizierung != null) {
-            return false;
-        }
-        if (notiz != null ? !notiz.equals(adresse.notiz) : adresse.notiz != null) {
-            return false;
-        }
-        if (ortsname != null ? !ortsname.equals(adresse.ortsname) : adresse.ortsname != null) {
-            return false;
-        }
-        if (plz != null ? !plz.equals(adresse.plz) : adresse.plz != null) {
-            return false;
-        }
-        if (postfachListe != null ? !postfachListe.equals(adresse.postfachListe) : adresse.postfachListe != null) {
-            return false;
-        }
-        if (state != null ? !state.equals(adresse.state) : adresse.state != null) {
-            return false;
-        }
-        if (strasse != null ? !strasse.equals(adresse.strasse) : adresse.strasse != null) {
-            return false;
-        }
-
-        return true;
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Adresse)) {
+      return false;
     }
 
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (strasse != null ? strasse.hashCode() : 0);
-        result = 31 * result + (hausnummer != null ? hausnummer.hashCode() : 0);
-        result = 31 * result + (notiz != null ? notiz.hashCode() : 0);
-        result = 31 * result + (ortsname != null ? ortsname.hashCode() : 0);
-        result = 31 * result + (klassifizierung != null ? klassifizierung.hashCode() : 0);
-        result = 31 * result + (plz != null ? plz.hashCode() : 0);
-        result = 31 * result + (grosskundenPLZ ? 1 : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
-        result = 31 * result + (postfachListe != null ? postfachListe.hashCode() : 0);
-        return result;
+    final Adresse adresse = (Adresse) o;
+
+    if (grosskundenPLZ != adresse.grosskundenPLZ) {
+      return false;
+    }
+    if (hausnummer != null ? !hausnummer.equals(adresse.hausnummer) : adresse.hausnummer != null) {
+      return false;
+    }
+    if (id != null ? !id.equals(adresse.id) : adresse.id != null) {
+      return false;
+    }
+    if (klassifizierung != null ? !klassifizierung.equals(adresse.klassifizierung) : adresse.klassifizierung != null) {
+      return false;
+    }
+    if (notiz != null ? !notiz.equals(adresse.notiz) : adresse.notiz != null) {
+      return false;
+    }
+    if (ortsname != null ? !ortsname.equals(adresse.ortsname) : adresse.ortsname != null) {
+      return false;
+    }
+    if (plz != null ? !plz.equals(adresse.plz) : adresse.plz != null) {
+      return false;
+    }
+    if (postfachListe != null ? !postfachListe.equals(adresse.postfachListe) : adresse.postfachListe != null) {
+      return false;
+    }
+    if (state != null ? !state.equals(adresse.state) : adresse.state != null) {
+      return false;
+    }
+    if (strasse != null ? !strasse.equals(adresse.strasse) : adresse.strasse != null) {
+      return false;
     }
 
-    public boolean getGrosskundenPLZ() {
-        return grosskundenPLZ;
-    }
+    return true;
+  }
 
-    public void setGrosskundenPLZ(final boolean grosskundenPLZ) {
-        this.grosskundenPLZ = grosskundenPLZ;
-    }
+  @Override
+  public String toString() {
+    return "Adresse{" +
+        "id=" + id +
+        ", strasse='" + strasse + '\'' +
+        ", hausnummer='" + hausnummer + '\'' +
+        ", notiz='" + notiz + '\'' +
+        ", ortsname='" + ortsname + '\'' +
+        ", klassifizierung=" + klassifizierung +
+        ", plz='" + plz + '\'' +
+        ", grosskundenPLZ=" + grosskundenPLZ +
+        ", state=" + state +
+        ", postfachListe=" + postfachListe +
+        '}';
+  }
 
-    public List<Postfach> getPostfachListe() {
-        return postfachListe;
-    }
+  public boolean getGrosskundenPLZ() {
+    return grosskundenPLZ;
+  }
 
-    public void setPostfachListe(final List<Postfach> postfachListe) {
-        this.postfachListe = postfachListe;
-    }
+  public void setGrosskundenPLZ(final boolean grosskundenPLZ) {
+    this.grosskundenPLZ = grosskundenPLZ;
+  }
 
-    public String getHausnummer() {
-        return hausnummer;
-    }
+  public List<Postfach> getPostfachListe() {
+    return postfachListe;
+  }
 
-    public void setHausnummer(final String hausnummer) {
-        this.hausnummer = hausnummer;
-    }
+  public void setPostfachListe(final List<Postfach> postfachListe) {
+    this.postfachListe = postfachListe;
+  }
 
-    public AdressKlassifizierung getKlassifizierung() {
-        return klassifizierung;
-    }
+  public String getHausnummer() {
+    return hausnummer;
+  }
 
-    public void setKlassifizierung(final AdressKlassifizierung klassifizierung) {
-        this.klassifizierung = klassifizierung;
-    }
+  public void setHausnummer(final String hausnummer) {
+    this.hausnummer = hausnummer;
+  }
 
-    public String getNotiz() {
-        return notiz;
-    }
+  public AdressKlassifizierung getKlassifizierung() {
+    return klassifizierung;
+  }
 
-    public void setNotiz(final String notiz) {
-        this.notiz = notiz;
-    }
+  public void setKlassifizierung(final AdressKlassifizierung klassifizierung) {
+    this.klassifizierung = klassifizierung;
+  }
 
-    public String getOrtsname() {
-        return ortsname;
-    }
+  public String getNotiz() {
+    return notiz;
+  }
 
-    public void setOrtsname(final String ortsname) {
-        this.ortsname = ortsname;
-    }
+  public void setNotiz(final String notiz) {
+    this.notiz = notiz;
+  }
 
-    public String getPlz() {
-        return plz;
-    }
+  public String getOrtsname() {
+    return ortsname;
+  }
 
-    public void setPlz(final String plz) {
-        this.plz = plz;
-    }
+  public void setOrtsname(final String ortsname) {
+    this.ortsname = ortsname;
+  }
 
-    public State getState() {
-        return state;
-    }
+  public String getPlz() {
+    return plz;
+  }
 
-    public void setState(final State state) {
-        this.state = state;
-    }
+  public void setPlz(final String plz) {
+    this.plz = plz;
+  }
 
-    public String getStrasse() {
-        return strasse;
-    }
+  public State getState() {
+    return state;
+  }
 
-    public void setStrasse(final String strasse) {
-        this.strasse = strasse;
-    }
+  public void setState(final State state) {
+    this.state = state;
+  }
 
-    public Long getId() {
-        return id;
-    }
+  public String getStrasse() {
+    return strasse;
+  }
 
-    public void setId(final Long id) {
-        this.id = id;
-    }
+  public void setStrasse(final String strasse) {
+    this.strasse = strasse;
+  }
 
+  public Long getId() {
+    return id;
+  }
 
-    @Override
-    public String toString() {
-        return "Adresse{" +
-                "id=" + id +
-                ", strasse='" + strasse + '\'' +
-                ", hausnummer='" + hausnummer + '\'' +
-                ", notiz='" + notiz + '\'' +
-                ", ortsname='" + ortsname + '\'' +
-                ", klassifizierung=" + klassifizierung +
-                ", plz='" + plz + '\'' +
-                ", grosskundenPLZ=" + grosskundenPLZ +
-                ", state=" + state +
-                ", postfachListe=" + postfachListe +
-                '}';
-    }
+  public void setId(final Long id) {
+    this.id = id;
+  }
 }

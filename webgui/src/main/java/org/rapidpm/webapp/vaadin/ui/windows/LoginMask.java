@@ -17,60 +17,60 @@ import java.util.Arrays;
 
 public class LoginMask extends VerticalLayout {
 
-//    private BaseUI ui;
-    private TextField usernameField;
-    private PasswordField passwordField;
-    private ComboBox languageBox;
-    private RapidPanel frame;
+  //    private BaseUI ui;
+  private TextField usernameField;
+  private PasswordField passwordField;
+  private ComboBox languageBox;
+  private RapidPanel frame;
 
-    private FormLayout loginLayout;
-    private Button loginButton;
+  private FormLayout loginLayout;
+  private Button loginButton;
 
-    public LoginMask(final BaseUI ui) {
+  public LoginMask(final BaseUI ui) {
 //        this.ui = ui;
-        setSizeFull();
+    setSizeFull();
 //        initUI();
-        frame = new RapidPanel();
-        frame.setSizeUndefined();
-        loginLayout = new FormLayout();
-        usernameField = new TextField("username");
-        usernameField.focus();
-        usernameField.setValue("marco.ebbinghaus");
-        passwordField = new PasswordField("password");
-        passwordField.setValue("geheim");
-        loginButton = new Button("Login");
-        loginButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-        languageBox = new ComboBox("Language", Arrays.asList(Languages.values()));
-        loginLayout.setCaption("Please enter your username and password");
-        loginButton.addClickListener(clickEvent -> {
-            try {
-                final String username = usernameField.getValue();
-                final String password = passwordField.getValue();
-                ui.localization(languageBox.getValue());
-                ui.authentication(username, password);
-            } catch (Exception e) {
-                Notification.show("Login failed...");
-                e.printStackTrace();
-            }
-        });
-        languageBox.setImmediate(true);
-        languageBox.setValue(Languages.GERMAN);
-        languageBox.setNullSelectionAllowed(false);
-        languageBox.setTextInputAllowed(false);
+    frame = new RapidPanel();
+    frame.setSizeUndefined();
+    loginLayout = new FormLayout();
+    usernameField = new TextField("username");
+    usernameField.focus();
+    usernameField.setValue("marco.ebbinghaus");
+    passwordField = new PasswordField("password");
+    passwordField.setValue("geheim");
+    loginButton = new Button("Login");
+    loginButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+    languageBox = new ComboBox("Language", Arrays.asList(Languages.values()));
+    loginLayout.setCaption("Please enter your username and password");
+    loginButton.addClickListener(clickEvent -> {
+      try {
+        final String username = usernameField.getValue();
+        final String password = passwordField.getValue();
+        ui.localization(languageBox.getValue());
+        ui.authentication(username, password);
+      } catch (Exception e) {
+        Notification.show("Login failed...");
+        e.printStackTrace();
+      }
+    });
+    languageBox.setImmediate(true);
+    languageBox.setValue(Languages.GERMAN);
+    languageBox.setNullSelectionAllowed(false);
+    languageBox.setTextInputAllowed(false);
 
-        loginLayout.addComponent(usernameField);
-        loginLayout.addComponent(passwordField);
+    loginLayout.addComponent(usernameField);
+    loginLayout.addComponent(passwordField);
 
-        frame.addComponent(loginLayout);
-        frame.addComponent(loginButton);
-        frame.addComponent(languageBox);
+    frame.addComponent(loginLayout);
+    frame.addComponent(loginButton);
+    frame.addComponent(languageBox);
 
-        setComponents();
-    }
+    setComponents();
+  }
 
-    public void setComponents() {
-        addComponent(frame);
-        setComponentAlignment(frame, Alignment.MIDDLE_CENTER);
-    }
+  public void setComponents() {
+    addComponent(frame);
+    setComponentAlignment(frame, Alignment.MIDDLE_CENTER);
+  }
 
 }

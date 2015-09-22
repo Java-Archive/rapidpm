@@ -15,17 +15,17 @@ import java.security.InvalidKeyException;
  */
 public class ProjektanfrageDAO extends DAO<Long, Projektanfrage> {
 
-    public ProjektanfrageDAO(final OrientGraph orientDB) {
-        super(orientDB, Projektanfrage.class);
-    }
+  public ProjektanfrageDAO(final OrientGraph orientDB) {
+    super(orientDB, Projektanfrage.class);
+  }
 
-    @Override
-    public Projektanfrage loadFull(Projektanfrage entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public Projektanfrage loadFull(Projektanfrage entity) throws InvalidKeyException, NotYetImplementedException {
+    throw new NotYetImplementedException();
+  }
 
-    @Override
-    public Projektanfrage createEntityFull(Projektanfrage entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        return null;
-    }
+  @Override
+  public Projektanfrage createEntityFull(Projektanfrage entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    return null;
+  }
 }

@@ -18,24 +18,24 @@ import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.person
  */
 public class RowEditFieldFactory implements TableFieldFactory {
 
-    private Item item;
+  private Item item;
 
-    public RowEditFieldFactory(final Item item){
-        this.item = item;
-    }
+  public RowEditFieldFactory(final Item item) {
+    this.item = item;
+  }
 
-    @Override
-    public Field<?> createField(final Container container, final Object itemId, final Object propertyId,
-                                final Component uiContext) {
-        if((((RessourceGroup)itemId)).equals(((BeanItem<RessourceGroup>)item).getBean())){
-            final String spaltenName = propertyId.toString();
-            if(!spaltenName.startsWith("transient")){
-                final TextField field = new TextField();
-                final String cellValue = container.getItem(itemId).getItemProperty(propertyId).getValue().toString();
-                field.setValue(cellValue);
-                return field;
-            }
-        }
-        return null;
+  @Override
+  public Field<?> createField(final Container container, final Object itemId, final Object propertyId,
+                              final Component uiContext) {
+    if ((((RessourceGroup) itemId)).equals(((BeanItem<RessourceGroup>) item).getBean())) {
+      final String spaltenName = propertyId.toString();
+      if (!spaltenName.startsWith("transient")) {
+        final TextField field = new TextField();
+        final String cellValue = container.getItem(itemId).getItemProperty(propertyId).getValue().toString();
+        field.setValue(cellValue);
+        return field;
+      }
     }
+    return null;
+  }
 }

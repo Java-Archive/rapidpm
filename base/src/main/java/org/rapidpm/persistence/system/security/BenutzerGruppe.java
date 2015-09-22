@@ -11,65 +11,63 @@ package org.rapidpm.persistence.system.security;
  * Time: 15:33:50
  * This Source Code is part of the RapidPM - www.rapidpm.org project.
  * please contact sven.ruppert@web.de
- *
  */
 
 import org.apache.log4j.Logger;
 
 
 public class BenutzerGruppe {
-    private static final Logger logger = Logger.getLogger(BenutzerGruppe.class);
+  private static final Logger logger = Logger.getLogger(BenutzerGruppe.class);
 
-    private String id;
+  private String id;
+  private String gruppenname;
 
-    public String getId() {
-        return id;
+  public String getId() {
+    return id;
+  }
+
+  public void setId(final String id) {
+    this.id = id;
+  }
+
+  public String getGruppenname() {
+    return gruppenname;
+  }
+
+  public void setGruppenname(final String gruppenname) {
+    this.gruppenname = gruppenname;
+  }
+
+  @Override
+  public int hashCode() {
+    return id != null ? id.hashCode() : 0;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
 
-    public void setId(final String id) {
-        this.id = id;
+    final BenutzerGruppe that = (BenutzerGruppe) o;
+
+    if (id != null ? !id.equals(that.id) : that.id != null) {
+      return false;
     }
 
-    private String gruppenname;
+    return true;
+  }
 
-    public String getGruppenname() {
-        return gruppenname;
-    }
-
-    public void setGruppenname(final String gruppenname) {
-        this.gruppenname = gruppenname;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        final BenutzerGruppe that = (BenutzerGruppe) o;
-
-        if (id != null ? !id.equals(that.id) : that.id != null) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("BenutzerGruppe");
-        sb.append("{id=").append(id);
-        sb.append(", gruppenName='").append(gruppenname).append('\'');
-        sb.append('}');
-        return sb.toString();
-    }
+  @Override
+  public String toString() {
+    final StringBuilder sb = new StringBuilder();
+    sb.append("BenutzerGruppe");
+    sb.append("{id=").append(id);
+    sb.append(", gruppenName='").append(gruppenname).append('\'');
+    sb.append('}');
+    return sb.toString();
+  }
 }

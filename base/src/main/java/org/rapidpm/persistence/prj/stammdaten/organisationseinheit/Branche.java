@@ -11,7 +11,6 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
  * Time: 15:33:27
  * This Source Code is part of the RapidPM - www.rapidpm.org project.
  * please contact sven.ruppert@web.de
- *
  */
 
 import org.apache.log4j.Logger;
@@ -21,87 +20,83 @@ import javax.persistence.*;
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
 public class Branche {
-    private static final Logger logger = Logger.getLogger(Branche.class);
+  private static final Logger logger = Logger.getLogger(Branche.class);
 
-    @Id
-    @TableGenerator(name = "PKGenBranche", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "Branche_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenBranche")
-    private Long id;
+  @Id
+  @TableGenerator(name = "PKGenBranche", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "Branche_id", valueColumnName = "gen_value", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenBranche")
+  private Long id;
+  @Basic
+  private String branchenSchluessel;
+  @Basic
+  private String WZVersion;
+  @Basic
+  private String beschreibung;
+  @Basic
+  private String ISIC;
 
-    public Long getId() {
-        return id;
+  public String getBranchenSchluessel() {
+    return branchenSchluessel;
+  }
+
+  public void setBranchenSchluessel(final String branchenSchluessel) {
+    this.branchenSchluessel = branchenSchluessel;
+  }
+
+  @Override
+  public int hashCode() {
+    return getId() != null ? getId().hashCode() : 0;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
 
-    public void setId(final Long id) {
-        this.id = id;
+    final Branche branche = (Branche) o;
+
+    if (getId() != null ? !getId().equals(branche.getId()) : branche.getId() != null) {
+      return false;
     }
 
+    return true;
+  }
 
-    @Basic
-    private String branchenSchluessel;
-    @Basic
-    private String WZVersion;
-    @Basic
-    private String beschreibung;
-    @Basic
-    private String ISIC;
+  public Long getId() {
+    return id;
+  }
 
+  public void setId(final Long id) {
+    this.id = id;
+  }
 
-    public String getBranchenSchluessel() {
-        return branchenSchluessel;
-    }
+  public String getWZVersion() {
+    return WZVersion;
+  }
 
-    public void setBranchenSchluessel(final String branchenSchluessel) {
-        this.branchenSchluessel = branchenSchluessel;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        final Branche branche = (Branche) o;
-
-        if (getId() != null ? !getId().equals(branche.getId()) : branche.getId() != null) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return getId() != null ? getId().hashCode() : 0;
-    }
+  public void setWZVersion(final String WZVersion) {
+    this.WZVersion = WZVersion;
+  }
 
 
-    public String getWZVersion() {
-        return WZVersion;
-    }
+  public String getBeschreibung() {
+    return beschreibung;
+  }
 
-    public void setWZVersion(final String WZVersion) {
-        this.WZVersion = WZVersion;
-    }
-
-
-    public String getBeschreibung() {
-        return beschreibung;
-    }
-
-    public void setBeschreibung(final String beschreibung) {
-        this.beschreibung = beschreibung;
-    }
+  public void setBeschreibung(final String beschreibung) {
+    this.beschreibung = beschreibung;
+  }
 
 
-    public String getISIC() {
-        return ISIC;
-    }
+  public String getISIC() {
+    return ISIC;
+  }
 
-    public void setISIC(final String ISIC) {
-        this.ISIC = ISIC;
-    }
+  public void setISIC(final String ISIC) {
+    this.ISIC = ISIC;
+  }
 }

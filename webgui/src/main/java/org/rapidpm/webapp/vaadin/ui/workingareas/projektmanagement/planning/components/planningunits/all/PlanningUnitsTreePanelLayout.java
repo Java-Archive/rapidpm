@@ -26,118 +26,118 @@ import java.util.ResourceBundle;
 
 public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements Internationalizationable {
 
-    private static final Logger logger = Logger.getLogger(PlanningUnitsTreePanelLayout.class);
-    private VerticalLayout leftLayout = new VerticalLayout();
+  private static final Logger logger = Logger.getLogger(PlanningUnitsTreePanelLayout.class);
+  private VerticalLayout leftLayout = new VerticalLayout();
 
-    private HorizontalLayout buttonLayout = new HorizontalLayout();
-    private PlannedProject projekt;
+  private HorizontalLayout buttonLayout = new HorizontalLayout();
+  private PlannedProject projekt;
 
-    private Button addButton;
-    private Button deleteButton;
-    private Button renameButton = new Button();
-    private ResourceBundle messages;
-    private DaoFactory daoFactory;
+  private Button addButton;
+  private Button deleteButton;
+  private Button renameButton = new Button();
+  private ResourceBundle messages;
+  private DaoFactory daoFactory;
 
-    private ProjektplanungScreen screen;
+  private ProjektplanungScreen screen;
 
-    public PlanningUnitsTreePanelLayout(final PlannedProject projekt, final ProjektplanungScreen screen) {
-        this.screen = screen;
-        this.projekt = projekt;
-        daoFactory = DaoFactorySingleton.getInstance();
+  public PlanningUnitsTreePanelLayout(final PlannedProject projekt, final ProjektplanungScreen screen) {
+    this.screen = screen;
+    this.projekt = projekt;
+    daoFactory = DaoFactorySingleton.getInstance();
 
-        messages = screen.getMessagesBundle();
-        createDeleteButton();
-        createAddButton();
-        createRenameButton();
-        buildForm();
-        doInternationalization();
-    }
+    messages = screen.getMessagesBundle();
+    createDeleteButton();
+    createAddButton();
+    createRenameButton();
+    buildForm();
+    doInternationalization();
+  }
 
-    private void createRenameButton() {
-        renameButton.addClickListener(new Button.ClickListener() {
+  private void createDeleteButton() {
+    deleteButton = screen.getDeleteButton();
+    deleteButton.addClickListener(new Button.ClickListener() {
+      @Override
+      public void buttonClick(Button.ClickEvent event) {
+        try {
+          final PlanningUnit planningUnit = (PlanningUnit) screen.getPlanningUnitsTree().getValue();
+          final PlanningUnit persistedFullPlanningUnit = daoFactory.getPlanningUnitDAO().findByID(planningUnit.getId(), true);
+          if (persistedFullPlanningUnit == null) {
+            throw new PlatzhalterException();
+          }
+          String message;
+          if (persistedFullPlanningUnit.getKindPlanningUnits() != null && !persistedFullPlanningUnit.getKindPlanningUnits().isEmpty()) {
+            message = messages.getString("planning_confirmdelete");
+          } else {
+            message = messages.getString("issuetracking_issue_deletequestion");
+          }
+          ConfirmDialog confirmDialog = new ConfirmDialog(message, screen) {
             @Override
-            public void buttonClick(Button.ClickEvent event) {
-                screen.getUi().addWindow(new RenamePlanningUnitWindow(screen));
+            public void doThisOnOK() {
+              daoFactory.getPlanningUnitDAO().deleteByEntity(persistedFullPlanningUnit, true);
+              projekt = daoFactory.getPlannedProjectDAO().findByID(projekt.getId(), true);
+              final MainUI ui = screen.getUi();
+              ui.setWorkingArea(new ProjektplanungScreen(ui));
             }
-        });
-    }
 
-    private void createAddButton() {
-        addButton = screen.getAddButton();
-        if(addButton.getListeners(Button.ClickEvent.class).size() <= 0){
-            addButton.addClickListener(new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    final AddWindow window = new AddWindow(screen.getUi(),screen);
-                    window.show();
-                }
-            });
+            @Override
+            public void doThisOnCancel() {
+              // do nothing else than closing the window. Screen will be reloaded anyways.
+            }
+          };
+          confirmDialog.show();
+        } catch (final PlatzhalterException e) {
+          Notification.show(messages.getString("planning_placeholder_delete"));
+        } catch (final Exception e) {
+          e.printStackTrace();
+          Notification.show(messages.getString("planning_nodelete"));
         }
-    }
+      }
+    });
+  }
 
-    private void createDeleteButton() {
-        deleteButton = screen.getDeleteButton();
-        deleteButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                try {
-                    final PlanningUnit planningUnit = (PlanningUnit) screen.getPlanningUnitsTree().getValue();
-                    final PlanningUnit persistedFullPlanningUnit = daoFactory.getPlanningUnitDAO().findByID(planningUnit.getId(), true);
-                    if(persistedFullPlanningUnit == null){
-                        throw new PlatzhalterException();
-                    }
-                    String message;
-                    if(persistedFullPlanningUnit.getKindPlanningUnits() != null && !persistedFullPlanningUnit.getKindPlanningUnits().isEmpty()){
-                        message = messages.getString("planning_confirmdelete");
-                    } else {
-                        message = messages.getString("issuetracking_issue_deletequestion");
-                    }
-                    ConfirmDialog confirmDialog = new ConfirmDialog(message, screen) {
-                        @Override
-                        public void doThisOnOK() {
-                            daoFactory.getPlanningUnitDAO().deleteByEntity(persistedFullPlanningUnit, true);
-                            projekt = daoFactory.getPlannedProjectDAO().findByID(projekt.getId(), true);
-                            final MainUI ui = screen.getUi();
-                            ui.setWorkingArea(new ProjektplanungScreen(ui));
-                        }
-
-                        @Override
-                        public void doThisOnCancel() {
-                            // do nothing else than closing the window. Screen will be reloaded anyways.
-                        }
-                    };
-                    confirmDialog.show();
-                }catch (final PlatzhalterException e){
-                    Notification.show(messages.getString("planning_placeholder_delete"));
-                } catch (final Exception e) {
-                    e.printStackTrace();
-                    Notification.show(messages.getString("planning_nodelete"));
-                }
-            }
-        });
+  private void createAddButton() {
+    addButton = screen.getAddButton();
+    if (addButton.getListeners(Button.ClickEvent.class).size() <= 0) {
+      addButton.addClickListener(new Button.ClickListener() {
+        @Override
+        public void buttonClick(Button.ClickEvent event) {
+          final AddWindow window = new AddWindow(screen.getUi(), screen);
+          window.show();
+        }
+      });
     }
+  }
 
-    protected void buildForm() {
-        buttonLayout.addComponents(addButton, deleteButton, renameButton);
-        leftLayout.addComponent(buttonLayout);
-        leftLayout.addComponent(screen.getPlanningUnitsTree());
-        addComponent(leftLayout);
-    }
+  private void createRenameButton() {
+    renameButton.addClickListener(new Button.ClickListener() {
+      @Override
+      public void buttonClick(Button.ClickEvent event) {
+        screen.getUi().addWindow(new RenamePlanningUnitWindow(screen));
+      }
+    });
+  }
 
-    public Button getDeleteButton() {
-        return deleteButton;
-    }
+  protected void buildForm() {
+    buttonLayout.addComponents(addButton, deleteButton, renameButton);
+    leftLayout.addComponent(buttonLayout);
+    leftLayout.addComponent(screen.getPlanningUnitsTree());
+    addComponent(leftLayout);
+  }
 
-    public Button getRenameButton() {
-        return renameButton;
-    }
+  @Override
+  public void doInternationalization() {
+    renameButton.setCaption(messages.getString("rename"));
+  }
 
-    @Override
-    public void doInternationalization() {
-        renameButton.setCaption(messages.getString("rename"));
-    }
+  public Button getDeleteButton() {
+    return deleteButton;
+  }
 
-    public Button getAddButton() {
-        return addButton;
-    }
+  public Button getRenameButton() {
+    return renameButton;
+  }
+
+  public Button getAddButton() {
+    return addButton;
+  }
 }

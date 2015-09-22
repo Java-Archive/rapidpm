@@ -13,36 +13,35 @@ import java.util.Collection;
  * Time: 14:46
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class ExpandTableCheckBox extends CheckBox implements Property.ValueChangeListener{
+public class ExpandTableCheckBox extends CheckBox implements Property.ValueChangeListener {
 
-    private MyTreeTable treeTable;
-    private HierarchicalContainer dataSource;
+  private MyTreeTable treeTable;
+  private HierarchicalContainer dataSource;
 
-    public ExpandTableCheckBox(final MyTreeTable treeTable, final HierarchicalContainer dataSource){
-        this.treeTable = treeTable;
-        this.dataSource = dataSource;
-        addValueChangeListener(this);
-    }
+  public ExpandTableCheckBox(final MyTreeTable treeTable, final HierarchicalContainer dataSource) {
+    this.treeTable = treeTable;
+    this.dataSource = dataSource;
+    addValueChangeListener(this);
+  }
 
-    @Override
-    public void valueChange(final Property.ValueChangeEvent valueClickEvent) {
-        if((Boolean)valueClickEvent.getProperty().getValue()){
-           for(final Object itemId : dataSource.getItemIds()){
-               final Collection<?> children = dataSource.getChildren(itemId);
-               if(children == null || children.isEmpty()){
-                   treeTable.setCollapsed(itemId, true);
-               } else {
-                   treeTable.setCollapsed(itemId, false);
-               }
-           }
+  @Override
+  public void valueChange(final Property.ValueChangeEvent valueClickEvent) {
+    if ((Boolean) valueClickEvent.getProperty().getValue()) {
+      for (final Object itemId : dataSource.getItemIds()) {
+        final Collection<?> children = dataSource.getChildren(itemId);
+        if (children == null || children.isEmpty()) {
+          treeTable.setCollapsed(itemId, true);
         } else {
-            for(final Object itemId : treeTable.getItemIds()){
-                treeTable.setCollapsed(itemId, true);
-            }
+          treeTable.setCollapsed(itemId, false);
         }
-        treeTable.markAsDirty();
+      }
+    } else {
+      for (final Object itemId : treeTable.getItemIds()) {
+        treeTable.setCollapsed(itemId, true);
+      }
     }
-
+    treeTable.markAsDirty();
+  }
 
 
 }

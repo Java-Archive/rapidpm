@@ -16,19 +16,19 @@ import java.security.InvalidKeyException;
  */
 public class TitelDAO extends DAO<Long, Titel> {
 
-    public TitelDAO(final OrientGraph orientDB) {
-        super(orientDB, Titel.class);
-    }
+  public TitelDAO(final OrientGraph orientDB) {
+    super(orientDB, Titel.class);
+  }
 
-    @Override
-    public Titel loadFull(Titel entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public Titel loadFull(Titel entity) throws InvalidKeyException, NotYetImplementedException {
+    throw new NotYetImplementedException();
+  }
 
-    @Override
-    public Titel createEntityFull(Titel entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public Titel createEntityFull(Titel entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    throw new NotYetImplementedException();
+  }
 
-    //   public List<Titel> loadTitelFor
+  //   public List<Titel> loadTitelFor
 }

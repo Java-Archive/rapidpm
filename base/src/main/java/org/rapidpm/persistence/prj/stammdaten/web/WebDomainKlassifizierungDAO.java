@@ -13,76 +13,76 @@ import java.security.InvalidKeyException;
  *
  * @author Sven Ruppert
  * @version 0.1
- *          <p/>
+ *          <p>
  *          This Source Code is part of the RapidPM - www.rapidpm.org project.
  *          please contact sven.ruppert@me.com
  * @since 02.03.2010
- *        Time: 15:09:34
+ * Time: 15:09:34
  */
 
 public class WebDomainKlassifizierungDAO extends DAO<Long, WebDomainKlassifizierung> {
-    private static final Logger logger = Logger.getLogger(WebDomainKlassifizierungDAO.class);
+  private static final Logger logger = Logger.getLogger(WebDomainKlassifizierungDAO.class);
 
 
-    public WebDomainKlassifizierungDAO(final OrientGraph orientDB) {
-        super(orientDB, WebDomainKlassifizierung.class);
-    }
+  public WebDomainKlassifizierungDAO(final OrientGraph orientDB) {
+    super(orientDB, WebDomainKlassifizierung.class);
+  }
 
-    public WebDomainKlassifizierung loadGeschaeftlich() {
+  public WebDomainKlassifizierung loadGeschaeftlich() {
 //        final
 //        TypedQuery<WebDomainKlassifizierung>
 //                typedQuery =
 //                orientDB.createQuery("from WebDomainKlassifizierung wdk " + "where wdk.klassifizierung='geschäftlich'",
 //                        WebDomainKlassifizierung.class);
 //        return getSingleResultOrNull(typedQuery);
-        return null;
-        //        return createWhereClause().eq("kategorie", "geschäftlich").findUnique();
-        //        final ObjectSet<WebDomainKlassifizierung> objSet = orientDB.query(new Predicate<WebDomainKlassifizierung>() {
-        //            @Override
-        //            public boolean match(final WebDomainKlassifizierung webDomainKlassifizierung) {
-        //                return webDomainKlassifizierung.getWebDomainKlassifizierung().equals("geschäftlich");
-        //            }
-        //        });
-        //        final int size = objSet.size();
-        //        final WebDomainKlassifizierung result;
-        //        if(size == 1){
-        //            result = objSet.get(0);
-        //        }else{
-        //            result = null;
-        //        }
-        //        return result;
-        //        return (WebDomainKlassifizierung) orientDB.createNamedQuery("LoadWebDomainKlassifizierungGeschaeftlich").getSingleResult();
-    }
+    return null;
+    //        return createWhereClause().eq("kategorie", "geschäftlich").findUnique();
+    //        final ObjectSet<WebDomainKlassifizierung> objSet = orientDB.query(new Predicate<WebDomainKlassifizierung>() {
+    //            @Override
+    //            public boolean match(final WebDomainKlassifizierung webDomainKlassifizierung) {
+    //                return webDomainKlassifizierung.getWebDomainKlassifizierung().equals("geschäftlich");
+    //            }
+    //        });
+    //        final int size = objSet.size();
+    //        final WebDomainKlassifizierung result;
+    //        if(size == 1){
+    //            result = objSet.get(0);
+    //        }else{
+    //            result = null;
+    //        }
+    //        return result;
+    //        return (WebDomainKlassifizierung) orientDB.createNamedQuery("LoadWebDomainKlassifizierungGeschaeftlich").getSingleResult();
+  }
 
-    public WebDomainKlassifizierung loadPrivat() {
+  public WebDomainKlassifizierung loadPrivat() {
 //        final
 //        TypedQuery<WebDomainKlassifizierung>
 //                typedQuery =
 //                orientDB.createQuery("from WebDomainKlassifizierung wdk " + "where wdk.klassifizierung='privat'", WebDomainKlassifizierung.class);
 //        return getSingleResultOrNull(typedQuery);
-        return null;
+    return null;
 
-        //        return createWhereClause().eq("kategorie", "privat").findUnique();
-        //        final ObjectSet<WebDomainKlassifizierung> objSet = orientDB.query(new Predicate<WebDomainKlassifizierung>() {
-        //            @Override
-        //            public boolean match(final WebDomainKlassifizierung webDomainKlassifizierung) {
-        //                return webDomainKlassifizierung.getWebDomainKlassifizierung().equals("privat");
-        //            }
-        //        });
-        //        final int size = objSet.size();
-        //        final WebDomainKlassifizierung result;
-        //        if(size == 1){
-        //            result = objSet.get(0);
-        //        }else{
-        //            result = null;
-        //        }
-        //        return result;
+    //        return createWhereClause().eq("kategorie", "privat").findUnique();
+    //        final ObjectSet<WebDomainKlassifizierung> objSet = orientDB.query(new Predicate<WebDomainKlassifizierung>() {
+    //            @Override
+    //            public boolean match(final WebDomainKlassifizierung webDomainKlassifizierung) {
+    //                return webDomainKlassifizierung.getWebDomainKlassifizierung().equals("privat");
+    //            }
+    //        });
+    //        final int size = objSet.size();
+    //        final WebDomainKlassifizierung result;
+    //        if(size == 1){
+    //            result = objSet.get(0);
+    //        }else{
+    //            result = null;
+    //        }
+    //        return result;
 
 
-        //        return (WebDomainKlassifizierung) orientDB.createNamedQuery("LoadWebDomainKlassifizierungPrivat").getSingleResult();
-    }
+    //        return (WebDomainKlassifizierung) orientDB.createNamedQuery("LoadWebDomainKlassifizierungPrivat").getSingleResult();
+  }
 
-    public WebDomainKlassifizierung load(final String name) {
+  public WebDomainKlassifizierung load(final String name) {
 //        final
 //        TypedQuery<WebDomainKlassifizierung>
 //                typedQuery =
@@ -90,17 +90,17 @@ public class WebDomainKlassifizierungDAO extends DAO<Long, WebDomainKlassifizier
 //                        WebDomainKlassifizierung.class).setParameter("name", name);
 //        return getSingleResultOrNull(typedQuery);
 
-        return null;
-    }
+    return null;
+  }
 
 
-    @Override
-    public WebDomainKlassifizierung loadFull(WebDomainKlassifizierung entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public WebDomainKlassifizierung loadFull(WebDomainKlassifizierung entity) throws InvalidKeyException, NotYetImplementedException {
+    throw new NotYetImplementedException();
+  }
 
-    @Override
-    public WebDomainKlassifizierung createEntityFull(WebDomainKlassifizierung entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public WebDomainKlassifizierung createEntityFull(WebDomainKlassifizierung entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    throw new NotYetImplementedException();
+  }
 }

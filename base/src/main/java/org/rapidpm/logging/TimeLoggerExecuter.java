@@ -9,43 +9,39 @@ package org.rapidpm.logging; /**
 import org.apache.log4j.Logger;
 
 public abstract class TimeLoggerExecuter {
-    private static final Logger logger = Logger.getLogger(TimeLoggerExecuter.class);
+  private static final Logger logger = Logger.getLogger(TimeLoggerExecuter.class);
+  private long deltaTime = -1;
+  private String loggingTimeMsgPrefix;
+  private boolean printSOUT;
+  public TimeLoggerExecuter(final String loggingTimeMsgPrefix, final Boolean printSOUT) {
+    this.loggingTimeMsgPrefix = loggingTimeMsgPrefix;
+    this.printSOUT = printSOUT;
+  }
 
+  public void execute() {
+    final long start = System.nanoTime();
 
-    public abstract void loggingTimeFrom();
+    loggingTimeFrom();
 
-    private long deltaTime = -1;
+    final long stop = System.nanoTime();
+    deltaTime = (stop - start);
 
-    private String loggingTimeMsgPrefix;
-    private boolean printSOUT;
-
-    public TimeLoggerExecuter(final String loggingTimeMsgPrefix, final Boolean printSOUT) {
-        this.loggingTimeMsgPrefix = loggingTimeMsgPrefix;
-        this.printSOUT = printSOUT;
+    final String message = loggingTimeMsgPrefix + " logged DeltaTime [ns]= " + deltaTime;
+    if (logger.isDebugEnabled()) {
+      logger.debug(message);
     }
 
-    public void execute() {
-        final long start = System.nanoTime();
-
-        loggingTimeFrom();
-
-        final long stop = System.nanoTime();
-        deltaTime = (stop - start);
-
-        final String message = loggingTimeMsgPrefix + " logged DeltaTime [ns]= " + deltaTime;
-        if (logger.isDebugEnabled()) {
-            logger.debug(message);
-        }
-
-        if (printSOUT) {
-            System.out.println(message);
-        } else {
-            //
-        }
-
+    if (printSOUT) {
+      System.out.println(message);
+    } else {
+      //
     }
 
-    public long getDeltaTime() {
-        return deltaTime;
-    }
+  }
+
+  public abstract void loggingTimeFrom();
+
+  public long getDeltaTime() {
+    return deltaTime;
+  }
 }

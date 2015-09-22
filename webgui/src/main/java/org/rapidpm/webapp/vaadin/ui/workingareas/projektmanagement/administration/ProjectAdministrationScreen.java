@@ -24,57 +24,56 @@ import java.util.List;
  */
 public class ProjectAdministrationScreen extends Screen {
 
-    private HorizontalLayout projectsPanelLayout = new HorizontalLayout();
+  private HorizontalLayout projectsPanelLayout = new HorizontalLayout();
 
-    private ChosenProjectEditableRapidPanel chosenProjectEditablePanel;
-    private ProjectsPanel projectsPanel;
-    private CurrentProjectEditableRapidPanel currentProjectEditablePanel;
+  private ChosenProjectEditableRapidPanel chosenProjectEditablePanel;
+  private ProjectsPanel projectsPanel;
+  private CurrentProjectEditableRapidPanel currentProjectEditablePanel;
 
-    public ProjectAdministrationScreen(final MainUI ui){
-        super(ui);
-        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-        try{
-            final List<PlannedProject> plannedProjects = daoFactory.getPlannedProjectDAO().findAll();
-            if(plannedProjects == null || plannedProjects.isEmpty()){
-                throw new NoProjectsException();
-            }
-            Collections.sort(plannedProjects);
-            chosenProjectEditablePanel = new ChosenProjectEditableRapidPanel(ui, messagesBundle);
-            projectsPanel = new ProjectsPanel(this, ui, messagesBundle, chosenProjectEditablePanel);
-            currentProjectEditablePanel = new CurrentProjectEditableRapidPanel(messagesBundle, this);
+  public ProjectAdministrationScreen(final MainUI ui) {
+    super(ui);
+    final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+    try {
+      final List<PlannedProject> plannedProjects = daoFactory.getPlannedProjectDAO().findAll();
+      if (plannedProjects == null || plannedProjects.isEmpty()) {
+        throw new NoProjectsException();
+      }
+      Collections.sort(plannedProjects);
+      chosenProjectEditablePanel = new ChosenProjectEditableRapidPanel(ui, messagesBundle);
+      projectsPanel = new ProjectsPanel(this, ui, messagesBundle, chosenProjectEditablePanel);
+      currentProjectEditablePanel = new CurrentProjectEditableRapidPanel(messagesBundle, this);
 
-            buildScreen();
-            doInternationalization();
-            setComponents();
-        } catch (final NoProjectsException e){
-            removeAllComponents();
-            final NoProjectsScreen noProjectsScreen = new NoProjectsScreen(ui);
-            addComponent(noProjectsScreen);
-        }
+      buildScreen();
+      doInternationalization();
+      setComponents();
+    } catch (final NoProjectsException e) {
+      removeAllComponents();
+      final NoProjectsScreen noProjectsScreen = new NoProjectsScreen(ui);
+      addComponent(noProjectsScreen);
     }
+  }
 
-    private void buildScreen() {
-        chosenProjectEditablePanel.setSizeUndefined();
-        chosenProjectEditablePanel.setWidth("100%");
-        currentProjectEditablePanel.setSizeUndefined();
-        currentProjectEditablePanel.setWidth("100%");
-        projectsPanelLayout.setHeight("100%");
-        projectsPanelLayout.setWidth("100%");
-        projectsPanelLayout.addComponent(projectsPanel);
-        projectsPanelLayout.addComponent(chosenProjectEditablePanel);
-    }
+  private void buildScreen() {
+    chosenProjectEditablePanel.setSizeUndefined();
+    chosenProjectEditablePanel.setWidth("100%");
+    currentProjectEditablePanel.setSizeUndefined();
+    currentProjectEditablePanel.setWidth("100%");
+    projectsPanelLayout.setHeight("100%");
+    projectsPanelLayout.setWidth("100%");
+    projectsPanelLayout.addComponent(projectsPanel);
+    projectsPanelLayout.addComponent(chosenProjectEditablePanel);
+  }
 
-    @Override
-    public void setComponents() {
-        activeVerticalFullScreenSize(false);
-        addComponent(currentProjectEditablePanel);
-        addComponent(projectsPanelLayout);
-    }
+  @Override
+  public void doInternationalization() {
+    projectsPanel.doInternationalization();
+    currentProjectEditablePanel.doInternationalization();
+  }
 
-
-    @Override
-    public void doInternationalization() {
-        projectsPanel.doInternationalization();
-        currentProjectEditablePanel.doInternationalization();
-    }
+  @Override
+  public void setComponents() {
+    activeVerticalFullScreenSize(false);
+    addComponent(currentProjectEditablePanel);
+    addComponent(projectsPanelLayout);
+  }
 }

@@ -11,7 +11,6 @@ package org.rapidpm.persistence.prj.stammdaten.person;
  * Time: 15:33:39
  * This Source Code is part of the RapidPM - www.rapidpm.org project.
  * please contact sven.ruppert@web.de
- *
  */
 
 import org.apache.log4j.Logger;
@@ -28,160 +27,149 @@ import java.util.List;
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
 public class Person {
-    private static final Logger logger = Logger.getLogger(Person.class);
+  private static final Logger logger = Logger.getLogger(Person.class);
 
-    @Id
-    @TableGenerator(name = "PKGenPerson",
-            table = "pk_gen",
-            pkColumnName = "gen_key",
-            pkColumnValue = "Person_id",
-            valueColumnName = "gen_value",
-            allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenPerson")
-    private Long id;
+  @Id
+  @TableGenerator(name = "PKGenPerson",
+      table = "pk_gen",
+      pkColumnName = "gen_key",
+      pkColumnValue = "Person_id",
+      valueColumnName = "gen_value",
+      allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenPerson")
+  private Long id;
+  @Basic
+  private Date geburtsdatum;
+  @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.REFRESH)
+  private Geschlecht geschlecht;
+  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  private Anrede anrede;
+  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
+  private List<PersonenName> namen;
+  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
+  private List<Benutzer> benutzer;
+  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
+  private List<KommunikationsServiceUID> kommunikationsServiceUIDs;
+  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
+  private List<Adresse> adressen;
+  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
+  private List<WebDomain> webdomains;
+  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
+  private List<Titel> titel;
 
-    public Long getId() {
-        return id;
+  @Override
+  public int hashCode() {
+    return getId() != null ? getId().hashCode() : 0;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Person)) {
+      return false;
     }
 
-    public void setId(final Long id) {
-        this.id = id;
+    final Person person = (Person) o;
+
+    if (getId() != null ? !getId().equals(person.getId()) : person.getId() != null) {
+      return false;
     }
 
+    return true;
+  }
 
-    @Basic
-    private Date geburtsdatum;
+  public Long getId() {
+    return id;
+  }
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.REFRESH)
-    private Geschlecht geschlecht;
+  public void setId(final Long id) {
+    this.id = id;
+  }
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    private Anrede anrede;
+  @Override
+  public String toString() {
+    return "Person{" + "id=" + getId() + ", geburtsdatum='" + geburtsdatum + '\'' + '}';
+  }
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private List<PersonenName> namen;
+  public List<Adresse> getAdressen() {
+    return adressen;
+  }
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private List<Benutzer> benutzer;
+  public void setAdressen(final List<Adresse> adressen) {
+    this.adressen = adressen;
+  }
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private List<KommunikationsServiceUID> kommunikationsServiceUIDs;
+  public Anrede getAnrede() {
+    return anrede;
+  }
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private List<Adresse> adressen;
+  public void setAnrede(final Anrede anrede) {
+    this.anrede = anrede;
+  }
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private List<WebDomain> webdomains;
+  public List<Benutzer> getBenutzer() {
+    return benutzer;
+  }
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private List<Titel> titel;
+  public void setBenutzer(final List<Benutzer> benutzer) {
+    this.benutzer = benutzer;
+  }
 
+  public Date getGeburtsdatum() {
+    return geburtsdatum;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Person)) {
-            return false;
-        }
+  public void setGeburtsdatum(final Date geburtsdatum) {
+    this.geburtsdatum = geburtsdatum;
+  }
 
-        final Person person = (Person) o;
+  public Geschlecht getGeschlecht() {
+    return geschlecht;
+  }
 
-        if (getId() != null ? !getId().equals(person.getId()) : person.getId() != null) {
-            return false;
-        }
+  public void setGeschlecht(final Geschlecht geschlecht) {
+    this.geschlecht = geschlecht;
+  }
 
-        return true;
-    }
+  public List<KommunikationsServiceUID> getKommunikationsServiceUIDs() {
+    return kommunikationsServiceUIDs;
+  }
 
-    @Override
-    public int hashCode() {
-        return getId() != null ? getId().hashCode() : 0;
-    }
+  public void setKommunikationsServiceUIDs(final List<KommunikationsServiceUID> kommunikationsServiceUIDs) {
+    this.kommunikationsServiceUIDs = kommunikationsServiceUIDs;
+  }
 
-    @Override
-    public String toString() {
-        return "Person{" + "id=" + getId() + ", geburtsdatum='" + geburtsdatum + '\'' + '}';
-    }
+  public List<PersonenName> getNamen() {
+    return namen;
+  }
 
-    public List<Adresse> getAdressen() {
-        return adressen;
-    }
+  public void setNamen(final List<PersonenName> namen) {
+    this.namen = namen;
+  }
 
-    public void setAdressen(final List<Adresse> adressen) {
-        this.adressen = adressen;
-    }
+  //    public List<Position> getPositionen(){
+  //        return positionen;
+  //    }
+  //
+  //    public void setPositionen(final List<Position> positionen){
+  //        this.positionen = positionen;
+  //    }
 
-    public Anrede getAnrede() {
-        return anrede;
-    }
+  public List<Titel> getTitel() {
+    return titel;
+  }
 
-    public void setAnrede(final Anrede anrede) {
-        this.anrede = anrede;
-    }
+  public void setTitel(final List<Titel> titel) {
+    this.titel = titel;
+  }
 
-    public List<Benutzer> getBenutzer() {
-        return benutzer;
-    }
+  public List<WebDomain> getWebdomains() {
+    return webdomains;
+  }
 
-    public void setBenutzer(final List<Benutzer> benutzer) {
-        this.benutzer = benutzer;
-    }
-
-    public Date getGeburtsdatum() {
-        return geburtsdatum;
-    }
-
-    public void setGeburtsdatum(final Date geburtsdatum) {
-        this.geburtsdatum = geburtsdatum;
-    }
-
-    public Geschlecht getGeschlecht() {
-        return geschlecht;
-    }
-
-    public void setGeschlecht(final Geschlecht geschlecht) {
-        this.geschlecht = geschlecht;
-    }
-
-    public List<KommunikationsServiceUID> getKommunikationsServiceUIDs() {
-        return kommunikationsServiceUIDs;
-    }
-
-    public void setKommunikationsServiceUIDs(final List<KommunikationsServiceUID> kommunikationsServiceUIDs) {
-        this.kommunikationsServiceUIDs = kommunikationsServiceUIDs;
-    }
-
-    public List<PersonenName> getNamen() {
-        return namen;
-    }
-
-    public void setNamen(final List<PersonenName> namen) {
-        this.namen = namen;
-    }
-
-    //    public List<Position> getPositionen(){
-    //        return positionen;
-    //    }
-    //
-    //    public void setPositionen(final List<Position> positionen){
-    //        this.positionen = positionen;
-    //    }
-
-    public List<Titel> getTitel() {
-        return titel;
-    }
-
-    public void setTitel(final List<Titel> titel) {
-        this.titel = titel;
-    }
-
-    public List<WebDomain> getWebdomains() {
-        return webdomains;
-    }
-
-    public void setWebdomains(final List<WebDomain> webdomains) {
-        this.webdomains = webdomains;
-    }
+  public void setWebdomains(final List<WebDomain> webdomains) {
+    this.webdomains = webdomains;
+  }
 }

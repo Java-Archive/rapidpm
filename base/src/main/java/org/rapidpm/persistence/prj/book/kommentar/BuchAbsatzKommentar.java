@@ -15,63 +15,61 @@ import java.util.Date;
 
 @Entity
 public class BuchAbsatzKommentar {
-    private static final Logger logger = Logger.getLogger(BuchAbsatzKommentar.class);
+  private static final Logger logger = Logger.getLogger(BuchAbsatzKommentar.class);
+  @Basic
+  String kommentar;
+  @Basic
+  Date datum;
+  @TableGenerator(name = "PKGenBuchAbsatzKommentar", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "BuchAbsatzKommentar_id",
+      valueColumnName = "gen_value", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE,
+      generator = "PKGenBuchAbsatzKommentar")
+  @Id
+  private Long id;
+  @OneToOne
+  private Benutzer kommentator;
 
+  public Long getId() {
+    return id;
+  }
 
-    @TableGenerator(name = "PKGenBuchAbsatzKommentar", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "BuchAbsatzKommentar_id",
-            valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE,
-            generator = "PKGenBuchAbsatzKommentar")
-    @Id
-    private Long id;
-    @Basic
-    String kommentar;
-    @Basic
-    Date datum;
-    @OneToOne
-    private Benutzer kommentator;
+  public void setId(final Long id) {
+    this.id = id;
+  }
 
-    public Long getId() {
-        return id;
-    }
+  public String getKommentar() {
+    return kommentar;
+  }
 
-    public void setId(final Long id) {
-        this.id = id;
-    }
+  public void setKommentar(final String kommentar) {
+    this.kommentar = kommentar;
+  }
 
-    public String getKommentar() {
-        return kommentar;
-    }
+  public Date getDatum() {
+    return datum;
+  }
 
-    public void setKommentar(final String kommentar) {
-        this.kommentar = kommentar;
-    }
+  public void setDatum(final Date datum) {
+    this.datum = datum;
+  }
 
-    public Date getDatum() {
-        return datum;
-    }
+  public Benutzer getKommentator() {
+    return kommentator;
+  }
 
-    public void setDatum(final Date datum) {
-        this.datum = datum;
-    }
+  public void setKommentator(final Benutzer kommentator) {
+    this.kommentator = kommentator;
+  }
 
-    public Benutzer getKommentator() {
-        return kommentator;
-    }
-
-    public void setKommentator(final Benutzer kommentator) {
-        this.kommentator = kommentator;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("BuchAbsatzKommentar");
-        sb.append("{id=").append(id);
-        sb.append(", kommentar='").append(kommentar).append('\'');
-        sb.append(", datum=").append(datum);
-        //        sb.append(", kommentator=").append(kommentator);
-        sb.append('}');
-        return sb.toString();
-    }
+  @Override
+  public String toString() {
+    final StringBuilder sb = new StringBuilder();
+    sb.append("BuchAbsatzKommentar");
+    sb.append("{id=").append(id);
+    sb.append(", kommentar='").append(kommentar).append('\'');
+    sb.append(", datum=").append(datum);
+    //        sb.append(", kommentator=").append(kommentator);
+    sb.append('}');
+    return sb.toString();
+  }
 }

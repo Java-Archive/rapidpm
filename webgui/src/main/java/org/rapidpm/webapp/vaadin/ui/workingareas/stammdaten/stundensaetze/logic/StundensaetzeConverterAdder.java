@@ -11,66 +11,66 @@ import static org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern
 
 public class StundensaetzeConverterAdder implements ConverterAdder {
 
-    @Override
-    public void addConvertersTo(final Table tabelle) {
+  @Override
+  public void addConvertersTo(final Table tabelle) {
 
-        tabelle.setConverter(BRUTTOGEHALT, new StringToFloatConverter() {
-            @Override
-            protected NumberFormat getFormat(final Locale locale) {
-                return NumberFormat.getCurrencyInstance(locale);
-            }
+    tabelle.setConverter(BRUTTOGEHALT, new StringToFloatConverter() {
+      @Override
+      protected NumberFormat getFormat(final Locale locale) {
+        return NumberFormat.getCurrencyInstance(locale);
+      }
+    });
+
+    tabelle.setConverter(FACTURIZABLE, new StringToFloatConverter() {
+      @Override
+      protected NumberFormat getFormat(Locale locale) {
+        return NumberFormat.getPercentInstance(locale);
+      }
+    });
+
+    tabelle.setConverter(EUROS_PER_HOUR, new StringToFloatConverter() {
+      @Override
+      protected NumberFormat getFormat(Locale locale) {
+        return NumberFormat.getCurrencyInstance(locale);
+      }
+    });
+
+    tabelle.setConverter(EXTERNAL_EUROS_PER_HOUR,
+        new StringToFloatConverter() {
+          @Override
+          protected NumberFormat getFormat(Locale locale) {
+            return NumberFormat.getCurrencyInstance(locale);
+          }
         });
 
-        tabelle.setConverter(FACTURIZABLE, new StringToFloatConverter() {
-            @Override
-            protected NumberFormat getFormat(Locale locale) {
-                return NumberFormat.getPercentInstance(locale);
-            }
+    tabelle.setConverter(OPERATIVE_EUROS_PER_HOUR,
+        new StringToFloatConverter() {
+          @Override
+          protected NumberFormat getFormat(Locale locale) {
+            return NumberFormat.getCurrencyInstance(locale);
+          }
         });
 
-        tabelle.setConverter(EUROS_PER_HOUR, new StringToFloatConverter() {
-            @Override
-            protected NumberFormat getFormat(Locale locale) {
-                return NumberFormat.getCurrencyInstance(locale);
-            }
-        });
+    tabelle.setConverter(BRUTTO_PER_MONTH, new StringToFloatConverter() {
+      @Override
+      protected NumberFormat getFormat(Locale locale) {
+        return NumberFormat.getCurrencyInstance(locale);
+      }
+    });
 
-        tabelle.setConverter(EXTERNAL_EUROS_PER_HOUR,
-                new StringToFloatConverter() {
-                    @Override
-                    protected NumberFormat getFormat(Locale locale) {
-                        return NumberFormat.getCurrencyInstance(locale);
-                    }
-                });
+    tabelle.setConverter(SUM_PER_MONTH, new StringToFloatConverter() {
+      @Override
+      protected NumberFormat getFormat(Locale locale) {
+        return NumberFormat.getCurrencyInstance(locale);
+      }
+    });
 
-        tabelle.setConverter(OPERATIVE_EUROS_PER_HOUR,
-                new StringToFloatConverter() {
-                    @Override
-                    protected NumberFormat getFormat(Locale locale) {
-                        return NumberFormat.getCurrencyInstance(locale);
-                    }
-                });
-
-        tabelle.setConverter(BRUTTO_PER_MONTH, new StringToFloatConverter() {
-            @Override
-            protected NumberFormat getFormat(Locale locale) {
-                return NumberFormat.getCurrencyInstance(locale);
-            }
-        });
-
-        tabelle.setConverter(SUM_PER_MONTH, new StringToFloatConverter() {
-            @Override
-            protected NumberFormat getFormat(Locale locale) {
-                return NumberFormat.getCurrencyInstance(locale);
-            }
-        });
-
-        tabelle.setConverter(SUM_PER_DAY, new StringToFloatConverter() {
-            @Override
-            protected NumberFormat getFormat(Locale locale) {
-                return NumberFormat.getCurrencyInstance(locale);
-            }
-        });
-    }
+    tabelle.setConverter(SUM_PER_DAY, new StringToFloatConverter() {
+      @Override
+      protected NumberFormat getFormat(Locale locale) {
+        return NumberFormat.getCurrencyInstance(locale);
+      }
+    });
+  }
 
 }

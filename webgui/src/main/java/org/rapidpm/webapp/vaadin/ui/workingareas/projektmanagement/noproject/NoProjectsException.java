@@ -7,5 +7,5 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject;
  * Time: 12:41
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class NoProjectsException extends Exception{
+public class NoProjectsException extends Exception {
 }

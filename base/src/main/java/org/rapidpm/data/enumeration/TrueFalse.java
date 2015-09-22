@@ -10,9 +10,9 @@ package org.rapidpm.data.enumeration;
  *
  * @author Manfred Lindenberg
  * @since 06.08.2009
- *        Time: 09:19:15
- *        To change this template use File | Settings | File Templates.
+ * Time: 09:19:15
+ * To change this template use File | Settings | File Templates.
  */
 public enum TrueFalse {
-    TRUE, FALSE
+  TRUE, FALSE
 }

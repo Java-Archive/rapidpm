@@ -11,7 +11,6 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
  * Time: 15:33:29
  * This Source Code is part of the RapidPM - www.rapidpm.org project.
  * please contact sven.ruppert@web.de
- *
  */
 
 import org.apache.log4j.Logger;
@@ -31,256 +30,240 @@ import java.util.List;
 //@Cacheable(value = true)
 @Entity
 public class Organisationseinheit {
-    private static final Logger logger = Logger.getLogger(Organisationseinheit.class);
+  private static final Logger logger = Logger.getLogger(Organisationseinheit.class);
 
-    @Id
-    @TableGenerator(name = "PKGenOrganisationseinheit",
-            table = "pk_gen",
-            pkColumnName = "gen_key",
-            pkColumnValue = "Organisationseinheit_id",
-            valueColumnName = "gen_value",
-            allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenOrganisationseinheit")
-    private Long id;
+  @Id
+  @TableGenerator(name = "PKGenOrganisationseinheit",
+      table = "pk_gen",
+      pkColumnName = "gen_key",
+      pkColumnValue = "Organisationseinheit_id",
+      valueColumnName = "gen_value",
+      allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenOrganisationseinheit")
+  private Long id;
+  @Basic
+  private String organisationsName;
+  @Basic
+  private String gruendungsdatum;
+  @Basic(optional = true)
+  private String bvdepId;
+  @Basic
+  private boolean active;
+  @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+  private List<TaetigkeitsfeldAssoc> taetigkeitsfeldAssocs;
 
-    public Long getId() {
-        return id;
+  //    @Basic
+  //    private Date created;
+  //
+  //    @Basic
+  //    private Date modified;
+  @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
+  private Mandantengruppe mandantengruppe;
+  //    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<BrancheAssoc> brancheAssocs;
+  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
+  private List<KommunikationsServiceUID> kommunikationsServiceUIDs;
+  //    @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
+  //    private List<Mandantengruppe> mandantengruppen;
+  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+  private List<OrganisationseinheitMetaData> metadata;
+  @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+  private Gesellschaftsform gesellschaftsform;
+  @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+  private List<Adresse> adressen;
+  @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
+  private List<WebDomain> webDomains;
+  @OneToOne(cascade = CascadeType.PERSIST, optional = true, fetch = FetchType.LAZY)
+  private Ausbildungseinheit ausbildungseinheit;
+  @OneToOne(cascade = CascadeType.PERSIST, optional = true, fetch = FetchType.LAZY)
+  private Verwaltungseinheit verwaltungseinheit;
+  @OneToOne(cascade = CascadeType.PERSIST, optional = true, fetch = FetchType.LAZY)
+  private Wirtschaftseinheit wirtschaftseinheit;
+
+  @Override
+  public int hashCode() {
+    return getId() != null ? getId().hashCode() : 0;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Organisationseinheit)) {
+      return false;
     }
 
-    public void setId(final Long id) {
-        this.id = id;
+    final Organisationseinheit that = (Organisationseinheit) o;
+
+    if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) {
+      return false;
     }
 
+    return true;
+  }
 
-    @Basic
-    private String organisationsName;
-    @Basic
-    private String gruendungsdatum;
+  public Long getId() {
+    return id;
+  }
 
-    @Basic(optional = true)
-    private String bvdepId;
+  public void setId(final Long id) {
+    this.id = id;
+  }
 
-    //    @Basic
-    //    private Date created;
-    //
-    //    @Basic
-    //    private Date modified;
+  @Override
+  public String toString() {
+    final StringBuilder sb = new StringBuilder();
+    sb.append("Organisationseinheit");
+    sb.append("{id=").append(getId());
+    sb.append(", organisationsName='").append(organisationsName).append('\'');
+    //        sb.append(", mandantengruppen=").append(mandantengruppen);
+    sb.append('}');
+    return sb.toString();
+  }
 
-    @Basic
-    private boolean active;
+  public String getOrganisationsName() {
+    return organisationsName;
+  }
 
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    private List<TaetigkeitsfeldAssoc> taetigkeitsfeldAssocs;
+  public void setOrganisationsName(final String organisationsName) {
+    this.organisationsName = organisationsName;
+  }
 
-    @ManyToOne(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    private Mandantengruppe mandantengruppe;
-    //    @ManyToMany(cascade = {CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    //    private List<Mandantengruppe> mandantengruppen;
+  public String getGruendungsdatum() {
+    return gruendungsdatum;
+  }
 
-    //    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<BrancheAssoc> brancheAssocs;
+  public void setGruendungsdatum(final String gruendungsdatum) {
+    this.gruendungsdatum = gruendungsdatum;
+  }
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
-    private List<KommunikationsServiceUID> kommunikationsServiceUIDs;
+  public String getBvdepId() {
+    return bvdepId;
+  }
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY)
-    private List<OrganisationseinheitMetaData> metadata;
+  public void setBvdepId(final String bvdepId) {
+    this.bvdepId = bvdepId;
+  }
 
-    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    private Gesellschaftsform gesellschaftsform;
+  //    public Date getCreated(){
+  //        return created;
+  //    }
+  //
+  //    public void setCreated(final Date created){
+  //        this.created = created;
+  //    }
+  //
+  //    public Date getModified(){
+  //        return modified;
+  //    }
+  //
+  //    public void setModified(final Date modified){
+  //        this.modified = modified;
+  //    }
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    private List<Adresse> adressen;
+  public boolean isActive() {
+    return active;
+  }
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
-    private List<WebDomain> webDomains;
+  public void setActive(final boolean active) {
+    this.active = active;
+  }
 
-    @OneToOne(cascade = CascadeType.PERSIST, optional = true, fetch = FetchType.LAZY)
-    private Ausbildungseinheit ausbildungseinheit;
+  public List<TaetigkeitsfeldAssoc> getTaetigkeitsfeldAssocs() {
+    return taetigkeitsfeldAssocs;
+  }
 
-    @OneToOne(cascade = CascadeType.PERSIST, optional = true, fetch = FetchType.LAZY)
-    private Verwaltungseinheit verwaltungseinheit;
+  public void setTaetigkeitsfeldAssocs(final List<TaetigkeitsfeldAssoc> taetigkeitsfeldAssocs) {
+    this.taetigkeitsfeldAssocs = taetigkeitsfeldAssocs;
+  }
 
-    @OneToOne(cascade = CascadeType.PERSIST, optional = true, fetch = FetchType.LAZY)
-    private Wirtschaftseinheit wirtschaftseinheit;
+  //    public List<Mandantengruppe> getMandantengruppen(){
+  //        return mandantengruppen;
+  //    }
+  //
+  //    public void setMandantengruppen(final List<Mandantengruppe> mandantengruppe){
+  //        this.mandantengruppen = mandantengruppe;
+  //    }
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Organisationseinheit)) {
-            return false;
-        }
+  public Mandantengruppe getMandantengruppe() {
+    return mandantengruppe;
+  }
 
-        final Organisationseinheit that = (Organisationseinheit) o;
+  public void setMandantengruppe(final Mandantengruppe mandantengruppe) {
+    this.mandantengruppe = mandantengruppe;
+  }
 
-        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) {
-            return false;
-        }
+  public List<BrancheAssoc> getBrancheAssocs() {
+    return brancheAssocs;
+  }
 
-        return true;
-    }
+  public void setBrancheAssocs(final List<BrancheAssoc> brancheAssocs) {
+    this.brancheAssocs = brancheAssocs;
+  }
 
-    @Override
-    public int hashCode() {
-        return getId() != null ? getId().hashCode() : 0;
-    }
+  public List<KommunikationsServiceUID> getKommunikationsServiceUIDs() {
+    return kommunikationsServiceUIDs;
+  }
 
+  public void setKommunikationsServiceUIDs(final List<KommunikationsServiceUID> kommunikationsServiceUIDs) {
+    this.kommunikationsServiceUIDs = kommunikationsServiceUIDs;
+  }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Organisationseinheit");
-        sb.append("{id=").append(getId());
-        sb.append(", organisationsName='").append(organisationsName).append('\'');
-        //        sb.append(", mandantengruppen=").append(mandantengruppen);
-        sb.append('}');
-        return sb.toString();
-    }
+  public List<OrganisationseinheitMetaData> getMetadata() {
+    return metadata;
+  }
 
-    public String getOrganisationsName() {
-        return organisationsName;
-    }
+  public void setMetadata(final List<OrganisationseinheitMetaData> metadata) {
+    this.metadata = metadata;
+  }
 
-    public void setOrganisationsName(final String organisationsName) {
-        this.organisationsName = organisationsName;
-    }
+  public Gesellschaftsform getGesellschaftsform() {
+    return gesellschaftsform;
+  }
 
-    public String getGruendungsdatum() {
-        return gruendungsdatum;
-    }
+  public void setGesellschaftsform(final Gesellschaftsform gesellschaftsform) {
+    this.gesellschaftsform = gesellschaftsform;
+  }
 
-    public void setGruendungsdatum(final String gruendungsdatum) {
-        this.gruendungsdatum = gruendungsdatum;
-    }
+  public List<Adresse> getAdressen() {
+    return adressen;
+  }
 
-    public String getBvdepId() {
-        return bvdepId;
-    }
+  public void setAdressen(final List<Adresse> adressen) {
+    this.adressen = adressen;
+  }
 
-    public void setBvdepId(final String bvdepId) {
-        this.bvdepId = bvdepId;
-    }
+  public List<WebDomain> getWebdomains() {
+    return webDomains;
+  }
 
-    //    public Date getCreated(){
-    //        return created;
-    //    }
-    //
-    //    public void setCreated(final Date created){
-    //        this.created = created;
-    //    }
-    //
-    //    public Date getModified(){
-    //        return modified;
-    //    }
-    //
-    //    public void setModified(final Date modified){
-    //        this.modified = modified;
-    //    }
+  public void setWebdomains(final List<WebDomain> webdomains) {
+    this.webDomains = webdomains;
+  }
 
-    public boolean isActive() {
-        return active;
-    }
+  public Ausbildungseinheit getAusbildungseinheit() {
+    return ausbildungseinheit;
+  }
 
-    public void setActive(final boolean active) {
-        this.active = active;
-    }
+  public void setAusbildungseinheit(final Ausbildungseinheit ausbildungseinheit) {
+    this.ausbildungseinheit = ausbildungseinheit;
+  }
 
-    public List<TaetigkeitsfeldAssoc> getTaetigkeitsfeldAssocs() {
-        return taetigkeitsfeldAssocs;
-    }
+  public Verwaltungseinheit getVerwaltungseinheit() {
+    return verwaltungseinheit;
+  }
 
-    public void setTaetigkeitsfeldAssocs(final List<TaetigkeitsfeldAssoc> taetigkeitsfeldAssocs) {
-        this.taetigkeitsfeldAssocs = taetigkeitsfeldAssocs;
-    }
+  public void setVerwaltungseinheit(final Verwaltungseinheit verwaltungseinheit) {
+    this.verwaltungseinheit = verwaltungseinheit;
+  }
 
-    //    public List<Mandantengruppe> getMandantengruppen(){
-    //        return mandantengruppen;
-    //    }
-    //
-    //    public void setMandantengruppen(final List<Mandantengruppe> mandantengruppe){
-    //        this.mandantengruppen = mandantengruppe;
-    //    }
+  public Wirtschaftseinheit getWirtschaftseinheit() {
+    return wirtschaftseinheit;
+  }
 
-    public Mandantengruppe getMandantengruppe() {
-        return mandantengruppe;
-    }
-
-    public void setMandantengruppe(final Mandantengruppe mandantengruppe) {
-        this.mandantengruppe = mandantengruppe;
-    }
-
-    public List<BrancheAssoc> getBrancheAssocs() {
-        return brancheAssocs;
-    }
-
-    public void setBrancheAssocs(final List<BrancheAssoc> brancheAssocs) {
-        this.brancheAssocs = brancheAssocs;
-    }
-
-    public List<KommunikationsServiceUID> getKommunikationsServiceUIDs() {
-        return kommunikationsServiceUIDs;
-    }
-
-    public void setKommunikationsServiceUIDs(final List<KommunikationsServiceUID> kommunikationsServiceUIDs) {
-        this.kommunikationsServiceUIDs = kommunikationsServiceUIDs;
-    }
-
-    public List<OrganisationseinheitMetaData> getMetadata() {
-        return metadata;
-    }
-
-    public void setMetadata(final List<OrganisationseinheitMetaData> metadata) {
-        this.metadata = metadata;
-    }
-
-    public Gesellschaftsform getGesellschaftsform() {
-        return gesellschaftsform;
-    }
-
-    public void setGesellschaftsform(final Gesellschaftsform gesellschaftsform) {
-        this.gesellschaftsform = gesellschaftsform;
-    }
-
-    public List<Adresse> getAdressen() {
-        return adressen;
-    }
-
-    public void setAdressen(final List<Adresse> adressen) {
-        this.adressen = adressen;
-    }
-
-    public List<WebDomain> getWebdomains() {
-        return webDomains;
-    }
-
-    public void setWebdomains(final List<WebDomain> webdomains) {
-        this.webDomains = webdomains;
-    }
-
-    public Ausbildungseinheit getAusbildungseinheit() {
-        return ausbildungseinheit;
-    }
-
-    public void setAusbildungseinheit(final Ausbildungseinheit ausbildungseinheit) {
-        this.ausbildungseinheit = ausbildungseinheit;
-    }
-
-    public Verwaltungseinheit getVerwaltungseinheit() {
-        return verwaltungseinheit;
-    }
-
-    public void setVerwaltungseinheit(final Verwaltungseinheit verwaltungseinheit) {
-        this.verwaltungseinheit = verwaltungseinheit;
-    }
-
-    public Wirtschaftseinheit getWirtschaftseinheit() {
-        return wirtschaftseinheit;
-    }
-
-    public void setWirtschaftseinheit(final Wirtschaftseinheit wirtschaftseinheit) {
-        this.wirtschaftseinheit = wirtschaftseinheit;
-    }
+  public void setWirtschaftseinheit(final Wirtschaftseinheit wirtschaftseinheit) {
+    this.wirtschaftseinheit = wirtschaftseinheit;
+  }
 }

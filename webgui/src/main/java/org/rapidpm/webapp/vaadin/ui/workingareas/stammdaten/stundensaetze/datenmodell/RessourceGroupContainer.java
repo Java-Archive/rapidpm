@@ -15,15 +15,15 @@ import java.util.List;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 public class RessourceGroupContainer extends BeanItemContainer<RessourceGroup> implements
-        Serializable {
+    Serializable {
 
-    public RessourceGroupContainer() throws IllegalArgumentException {
-        super(RessourceGroup.class);
-    }
+  public RessourceGroupContainer() throws IllegalArgumentException {
+    super(RessourceGroup.class);
+  }
 
-    public void fill(final List<RessourceGroup> ressourceGroupBeans){
-        for(final RessourceGroup ressourceGroupBean : ressourceGroupBeans){
-            addBean(ressourceGroupBean);
-        }
+  public void fill(final List<RessourceGroup> ressourceGroupBeans) {
+    for (final RessourceGroup ressourceGroupBean : ressourceGroupBeans) {
+      addBean(ressourceGroupBean);
     }
+  }
 }

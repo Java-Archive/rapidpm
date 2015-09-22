@@ -15,20 +15,20 @@ import org.rapidpm.persistence.DAO;
 import java.security.InvalidKeyException;
 
 public class TaetigkeitsfeldAssocDAO extends DAO<Long, TaetigkeitsfeldAssoc> {
-    private static final Logger logger = Logger.getLogger(TaetigkeitsfeldAssocDAO.class);
+  private static final Logger logger = Logger.getLogger(TaetigkeitsfeldAssocDAO.class);
 
 
-    public TaetigkeitsfeldAssocDAO(final OrientGraph orientDB) {
-        super(orientDB, TaetigkeitsfeldAssoc.class);
-    }
+  public TaetigkeitsfeldAssocDAO(final OrientGraph orientDB) {
+    super(orientDB, TaetigkeitsfeldAssoc.class);
+  }
 
-    @Override
-    public TaetigkeitsfeldAssoc loadFull(TaetigkeitsfeldAssoc entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public TaetigkeitsfeldAssoc loadFull(TaetigkeitsfeldAssoc entity) throws InvalidKeyException, NotYetImplementedException {
+    throw new NotYetImplementedException();
+  }
 
-    @Override
-    public TaetigkeitsfeldAssoc createEntityFull(TaetigkeitsfeldAssoc entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public TaetigkeitsfeldAssoc createEntityFull(TaetigkeitsfeldAssoc entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    throw new NotYetImplementedException();
+  }
 }

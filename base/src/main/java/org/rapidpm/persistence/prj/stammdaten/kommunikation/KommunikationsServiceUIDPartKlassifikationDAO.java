@@ -17,51 +17,49 @@ import org.rapidpm.persistence.DAO;
 import java.security.InvalidKeyException;
 
 public class KommunikationsServiceUIDPartKlassifikationDAO extends DAO<Long, KommunikationsServiceUIDPartKlassifikation> {
-    private static final Logger logger = Logger.getLogger(KommunikationsServiceUIDPartKlassifikationDAO.class);
+  private static final Logger logger = Logger.getLogger(KommunikationsServiceUIDPartKlassifikationDAO.class);
 
 
-    public KommunikationsServiceUIDPartKlassifikationDAO(final OrientGraph orientDB) {
-        super(orientDB, KommunikationsServiceUIDPartKlassifikation.class);
-    }
+  public KommunikationsServiceUIDPartKlassifikationDAO(final OrientGraph orientDB) {
+    super(orientDB, KommunikationsServiceUIDPartKlassifikation.class);
+  }
 
-    public KommunikationsServiceUIDPartKlassifikation loadComplete() {
-        return load("UID");
+  public KommunikationsServiceUIDPartKlassifikation loadComplete() {
+    return load("UID");
 
-    }
+  }
 
-    public KommunikationsServiceUIDPartKlassifikation loadLandeskennziffer() {
-        return load("Landeskennziffer");
-    }
-
-    public KommunikationsServiceUIDPartKlassifikation loadVorwahl() {
-        return load("Vorwahl");
-    }
-
-    public KommunikationsServiceUIDPartKlassifikation loadNummer() {
-        return load("Nummer");
-    }
-
-    public KommunikationsServiceUIDPartKlassifikation loadDurchwahl() {
-        return load("Durchwahl");
-    }
-
-
-    public KommunikationsServiceUIDPartKlassifikation load(final String klassifizierung) {
+  public KommunikationsServiceUIDPartKlassifikation load(final String klassifizierung) {
 //        final TypedQuery<KommunikationsServiceUIDPartKlassifikation> typedQuery = orientDB.createQuery(
 //                "from KommunikationsServiceUIDPartKlassifikation k where k.bezeichnung=:bezeichnung",
 //                KommunikationsServiceUIDPartKlassifikation.class).setParameter("bezeichnung", klassifizierung);
 //        return getSingleResultOrNull(typedQuery);
-        return null;
-    }
+    return null;
+  }
 
+  public KommunikationsServiceUIDPartKlassifikation loadLandeskennziffer() {
+    return load("Landeskennziffer");
+  }
 
-    @Override
-    public KommunikationsServiceUIDPartKlassifikation loadFull(KommunikationsServiceUIDPartKlassifikation entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
-    }
+  public KommunikationsServiceUIDPartKlassifikation loadVorwahl() {
+    return load("Vorwahl");
+  }
 
-    @Override
-    public KommunikationsServiceUIDPartKlassifikation createEntityFull(KommunikationsServiceUIDPartKlassifikation entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        throw new NotYetImplementedException();
-    }
+  public KommunikationsServiceUIDPartKlassifikation loadNummer() {
+    return load("Nummer");
+  }
+
+  public KommunikationsServiceUIDPartKlassifikation loadDurchwahl() {
+    return load("Durchwahl");
+  }
+
+  @Override
+  public KommunikationsServiceUIDPartKlassifikation loadFull(KommunikationsServiceUIDPartKlassifikation entity) throws InvalidKeyException, NotYetImplementedException {
+    throw new NotYetImplementedException();
+  }
+
+  @Override
+  public KommunikationsServiceUIDPartKlassifikation createEntityFull(KommunikationsServiceUIDPartKlassifikation entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    throw new NotYetImplementedException();
+  }
 }

@@ -15,62 +15,61 @@ import java.util.Date;
 
 @Entity
 public class BuchKommentar {
-    private static final Logger logger = Logger.getLogger(BuchKommentar.class);
+  private static final Logger logger = Logger.getLogger(BuchKommentar.class);
+  @Basic
+  String kommentar;
+  @Basic
+  Date datum;
+  @TableGenerator(name = "PKGenBuchKommentar", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "BuchKommentar_id",
+      valueColumnName = "gen_value", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE,
+      generator = "PKGenBuchKommentar")
+  @Id
+  private Long id;
+  @OneToOne
+  private Benutzer kommentator;
 
-    @TableGenerator(name = "PKGenBuchKommentar", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "BuchKommentar_id",
-            valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE,
-            generator = "PKGenBuchKommentar")
-    @Id
-    private Long id;
-    @Basic
-    String kommentar;
-    @Basic
-    Date datum;
-    @OneToOne
-    private Benutzer kommentator;
+  public Benutzer getKommentator() {
+    return kommentator;
+  }
 
-    public Benutzer getKommentator() {
-        return kommentator;
-    }
+  public void setKommentator(final Benutzer kommentator) {
+    this.kommentator = kommentator;
+  }
 
-    public void setKommentator(final Benutzer kommentator) {
-        this.kommentator = kommentator;
-    }
+  public String getKommentar() {
+    return kommentar;
+  }
 
-    public String getKommentar() {
-        return kommentar;
-    }
+  public void setKommentar(final String kommentar) {
+    this.kommentar = kommentar;
+  }
 
-    public void setKommentar(final String kommentar) {
-        this.kommentar = kommentar;
-    }
+  public Date getDatum() {
+    return datum;
+  }
 
-    public Date getDatum() {
-        return datum;
-    }
+  public void setDatum(final Date datum) {
+    this.datum = datum;
+  }
 
-    public void setDatum(final Date datum) {
-        this.datum = datum;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public Long getId() {
-        return id;
-    }
+  public void setId(final Long id) {
+    this.id = id;
+  }
 
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("BuchKommentar");
-        sb.append("{id=").append(id);
-        sb.append(", kommentar='").append(kommentar).append('\'');
-        sb.append(", datum=").append(datum);
-        //        sb.append(", kommentator=").append(kommentator);
-        sb.append('}');
-        return sb.toString();
-    }
+  @Override
+  public String toString() {
+    final StringBuilder sb = new StringBuilder();
+    sb.append("BuchKommentar");
+    sb.append("{id=").append(id);
+    sb.append(", kommentar='").append(kommentar).append('\'');
+    sb.append(", datum=").append(datum);
+    //        sb.append(", kommentator=").append(kommentator);
+    sb.append('}');
+    return sb.toString();
+  }
 }

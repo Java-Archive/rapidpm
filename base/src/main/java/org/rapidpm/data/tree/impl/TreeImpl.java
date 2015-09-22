@@ -28,105 +28,105 @@ import java.util.List;
  */
 public class TreeImpl implements Tree {
 
-    /**
-     * Wurzelknoten.
-     */
-    protected Node root;
+  /**
+   * Wurzelknoten.
+   */
+  protected Node root;
 
-    /**
-     * Erstellt einen generischen Baum.
-     *
-     * @param rootNode Wurzelknooten.
-     */
-    public TreeImpl(final Node rootNode) {
-        rootNode.setParent(null);
-        root = rootNode;
+  /**
+   * Erstellt einen generischen Baum.
+   *
+   * @param rootNode Wurzelknooten.
+   */
+  public TreeImpl(final Node rootNode) {
+    rootNode.setParent(null);
+    root = rootNode;
+  }
+
+  /**
+   * Erstellt einen generischen Baum.
+   */
+  public TreeImpl() {
+    root = null;
+  }
+
+  private static void recursiveTreeWalker(final List<Node> nodeList, final Node node) {
+    nodeList.add(node);
+    for (final Node childNode : node) {
+      recursiveTreeWalker(nodeList, childNode);
     }
+  }
 
-    /**
-     * Erstellt einen generischen Baum.
-     */
-    public TreeImpl() {
-        root = null;
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Node getRoot() {
+    return root;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void setRoot(final Node root) {
+    root.setParent(null);
+    this.root = root;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean isEmpty() {
+    return root == null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public Iterator<Node> iterator() {
+    final List<Node> nodeList = Lists.newLinkedList();
+    if (root != null) {
+      recursiveTreeWalker(nodeList, root);
     }
+    return nodeList.iterator();
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Node getRoot() {
-        return root;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public int hashCode() {
+    int result = super.hashCode();
+    result = 31 * result + (root != null ? root.hashCode() : 0);
+    return result;
+  }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setRoot(final Node root) {
-        root.setParent(null);
-        this.root = root;
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    if (!super.equals(o)) return false;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isEmpty() {
-        return root == null;
-    }
+    final TreeImpl tree = (TreeImpl) o;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
+    if (root != null ? !root.equals(tree.root) : tree.root != null) return false;
 
-        final TreeImpl tree = (TreeImpl) o;
+    return true;
+  }
 
-        if (root != null ? !root.equals(tree.root) : tree.root != null) return false;
-
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (root != null ? root.hashCode() : 0);
-        return result;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return "TreeImpl{" +
-                "root=" + root +
-                '}';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Iterator<Node> iterator() {
-        final List<Node> nodeList = Lists.newLinkedList();
-        if (root != null) {
-            recursiveTreeWalker(nodeList, root);
-        }
-        return nodeList.iterator();
-    }
-
-    private static void recursiveTreeWalker(final List<Node> nodeList, final Node node) {
-        nodeList.add(node);
-        for (final Node childNode : node) {
-            recursiveTreeWalker(nodeList, childNode);
-        }
-    }
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String toString() {
+    return "TreeImpl{" +
+        "root=" + root +
+        '}';
+  }
 }

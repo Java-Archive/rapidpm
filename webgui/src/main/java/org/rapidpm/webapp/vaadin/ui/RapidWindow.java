@@ -13,24 +13,24 @@ import com.vaadin.ui.Window;
  */
 public class RapidWindow extends Window {
 
-    private final VerticalLayout contentLayout = new VerticalLayout();
+  private final VerticalLayout contentLayout = new VerticalLayout();
 
-    public RapidWindow(){
-        contentLayout.setSpacing(true);
-        contentLayout.setMargin(true);
-        setContent(contentLayout);
-        setModal(true);
-    }
+  public RapidWindow() {
+    contentLayout.setSpacing(true);
+    contentLayout.setMargin(true);
+    setContent(contentLayout);
+    setModal(true);
+  }
 
-    public void addComponent(final Component component){
-        contentLayout.addComponent(component);
-    }
+  public void addComponent(final Component component) {
+    contentLayout.addComponent(component);
+  }
 
-    public void removeAllComponents(){
-        setContent(null);
-    }
+  public void removeAllComponents() {
+    setContent(null);
+  }
 
-    public VerticalLayout getContentLayout() {
-        return contentLayout;
-    }
+  public VerticalLayout getContentLayout() {
+    return contentLayout;
+  }
 }

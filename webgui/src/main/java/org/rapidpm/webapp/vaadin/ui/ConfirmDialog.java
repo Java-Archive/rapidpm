@@ -15,54 +15,55 @@ import java.util.ResourceBundle;
  */
 public abstract class ConfirmDialog extends RapidWindow {
 
-    private final MainUI ui;
-    private final ResourceBundle messages;
-    private SaveCancelButtonLeiste buttonLeiste;
-    private Label textLabel;
+  private final MainUI ui;
+  private final ResourceBundle messages;
+  private SaveCancelButtonLeiste buttonLeiste;
+  private Label textLabel;
 
-    public ConfirmDialog(final String dialogtext, final Screen screen){
-        this.ui = screen.getUi();
-        this.messages = screen.getMessagesBundle();
-        setCaption(messages.getString("confirm"));
-        textLabel = new Label(dialogtext);
-        setModal(true);
-        buttonLeiste = new SaveCancelButtonLeiste() {
-            @Override
-            public void doInternationalization() {
-                saveButton.setCaption(messages.getString("ok"));
-                cancelButton.setCaption(messages.getString("cancel"));
-            }
+  public ConfirmDialog(final String dialogtext, final Screen screen) {
+    this.ui = screen.getUi();
+    this.messages = screen.getMessagesBundle();
+    setCaption(messages.getString("confirm"));
+    textLabel = new Label(dialogtext);
+    setModal(true);
+    buttonLeiste = new SaveCancelButtonLeiste() {
+      @Override
+      public void doInternationalization() {
+        saveButton.setCaption(messages.getString("ok"));
+        cancelButton.setCaption(messages.getString("cancel"));
+      }
 
-            @Override
-            public void setSaveButtonListener() {
-                saveButton.addClickListener(event -> {
-                    close();
-                    doThisOnOK();
-                });
-            }
+      @Override
+      public void setSaveButtonListener() {
+        saveButton.addClickListener(event -> {
+          close();
+          doThisOnOK();
+        });
+      }
 
-            @Override
-            public void setCancelButtonListener() {
-                cancelButton.addClickListener(event -> {
-                    close();
-                    doThisOnCancel();
-                });
-            }
-        };
-        addComponent(textLabel);
-        addComponent(buttonLeiste);
-    }
+      @Override
+      public void setCancelButtonListener() {
+        cancelButton.addClickListener(event -> {
+          close();
+          doThisOnCancel();
+        });
+      }
+    };
+    addComponent(textLabel);
+    addComponent(buttonLeiste);
+  }
 
-    public void show() {
-        ui.addWindow(this);
-    }
+  public void setModal(boolean b) {
+    super.setModal(b);
+  }
 
-    public void setModal(boolean b){
-        super.setModal(b);
-    }
+  public abstract void doThisOnOK();
 
-    public abstract void doThisOnOK();
-    public abstract void doThisOnCancel();
+  public abstract void doThisOnCancel();
+
+  public void show() {
+    ui.addWindow(this);
+  }
 
 
 }

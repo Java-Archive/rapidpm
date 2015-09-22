@@ -22,20 +22,20 @@ import org.rapidpm.persistence.DAO;
 import java.security.InvalidKeyException;
 
 public class KommunikationsServiceUIDPartDAO extends DAO<Long, KommunikationsServiceUIDPart> {
-    private static final Logger logger = Logger.getLogger(KommunikationsServiceUIDPartDAO.class);
+  private static final Logger logger = Logger.getLogger(KommunikationsServiceUIDPartDAO.class);
 
 
-    public KommunikationsServiceUIDPartDAO(final OrientGraph orientDB) {
-        super(orientDB, KommunikationsServiceUIDPart.class);
-    }
+  public KommunikationsServiceUIDPartDAO(final OrientGraph orientDB) {
+    super(orientDB, KommunikationsServiceUIDPart.class);
+  }
 
-    @Override
-    public KommunikationsServiceUIDPart loadFull(KommunikationsServiceUIDPart entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public KommunikationsServiceUIDPart loadFull(KommunikationsServiceUIDPart entity) throws InvalidKeyException, NotYetImplementedException {
+    throw new NotYetImplementedException();
+  }
 
-    @Override
-    public KommunikationsServiceUIDPart createEntityFull(KommunikationsServiceUIDPart entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public KommunikationsServiceUIDPart createEntityFull(KommunikationsServiceUIDPart entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    throw new NotYetImplementedException();
+  }
 }

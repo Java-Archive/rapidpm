@@ -7,21 +7,20 @@ import java.util.Date;
  * User: sven.ruppert
  * Date: 02.12.11
  * Time: 10:08
- * <p/>
+ * <p>
  * zeitliche Planung der Kommunikation, email, phone, ..
  * Alles was kein Meeting ist.
  */
 public class Communication {
 
 
+  private String subject;
+  private Date date;
 
-    private String subject;
-    private Date date;
-
-    /**
-     * Anzahl der Kommunikationen
-     */
-    private Integer count;
+  /**
+   * Anzahl der Kommunikationen
+   */
+  private Integer count;
 
 
 }

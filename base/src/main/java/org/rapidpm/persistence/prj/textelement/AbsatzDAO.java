@@ -17,20 +17,20 @@ import java.security.InvalidKeyException;
  */
 
 public class AbsatzDAO extends DAO<Long, Absatz> {
-    private static final Logger logger = Logger.getLogger(AbsatzDAO.class);
+  private static final Logger logger = Logger.getLogger(AbsatzDAO.class);
 
 
-    public AbsatzDAO(final OrientGraph orientDB) {
-        super(orientDB, Absatz.class);
-    }
+  public AbsatzDAO(final OrientGraph orientDB) {
+    super(orientDB, Absatz.class);
+  }
 
-    @Override
-    public Absatz loadFull(Absatz entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public Absatz loadFull(Absatz entity) throws InvalidKeyException, NotYetImplementedException {
+    throw new NotYetImplementedException();
+  }
 
-    @Override
-    public Absatz createEntityFull(Absatz entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public Absatz createEntityFull(Absatz entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    throw new NotYetImplementedException();
+  }
 }

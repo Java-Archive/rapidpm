@@ -14,51 +14,50 @@ package org.rapidpm.persistence.prj.stammdaten.person;
 
 public class Geschlecht {
 
-    private String id;
+  private String id;
+  private String geschlecht;
 
-    public String getId() {
-        return id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public void setId(final String id) {
-        this.id = id;
-    }
+  public void setId(final String id) {
+    this.id = id;
+  }
 
-    private String geschlecht;
+  public String getGeschlecht() {
+    return geschlecht;
+  }
 
-    public String getGeschlecht() {
-        return geschlecht;
-    }
+  public void setGeschlecht(final String geschlecht) {
+    this.geschlecht = geschlecht;
+  }
 
-    public void setGeschlecht(final String geschlecht) {
-        this.geschlecht = geschlecht;
-    }
+  @Override
+  public int hashCode() {
+    return id != null ? id.hashCode() : 0;
+  }
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
 
-        final Geschlecht that = (Geschlecht) o;
+    final Geschlecht that = (Geschlecht) o;
 
-        if (geschlecht != null ? !geschlecht.equals(that.geschlecht) : that.geschlecht != null) return false;
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+    if (geschlecht != null ? !geschlecht.equals(that.geschlecht) : that.geschlecht != null) return false;
+    if (id != null ? !id.equals(that.id) : that.id != null) return false;
 
-        return true;
-    }
+    return true;
+  }
 
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Geschlecht");
-        sb.append("{id=").append(id);
-        sb.append(", geschlecht='").append(geschlecht).append('\'');
-        sb.append('}');
-        return sb.toString();
-    }
+  @Override
+  public String toString() {
+    final StringBuilder sb = new StringBuilder();
+    sb.append("Geschlecht");
+    sb.append("{id=").append(id);
+    sb.append(", geschlecht='").append(geschlecht).append('\'');
+    sb.append('}');
+    return sb.toString();
+  }
 }

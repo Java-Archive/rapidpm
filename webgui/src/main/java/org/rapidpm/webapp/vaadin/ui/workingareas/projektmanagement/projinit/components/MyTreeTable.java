@@ -11,34 +11,34 @@ import com.vaadin.ui.TreeTable;
  */
 public class MyTreeTable extends TreeTable implements ColumnCollapseHandable {
 
-    private MyTable connectedTable;
+  private MyTable connectedTable;
 
-    public MyTreeTable() {
-        setColumnReorderingAllowed(true);
-        setColumnCollapsingAllowed(true);
-        setNullSelectionAllowed(false);
-        setSelectable(true);
-    }
+  public MyTreeTable() {
+    setColumnReorderingAllowed(true);
+    setColumnCollapsingAllowed(true);
+    setNullSelectionAllowed(false);
+    setSelectable(true);
+  }
 
-    public void setConnectedTable(MyTable table) {
-        connectedTable = table;
-    }
+  public void setConnectedTable(MyTable table) {
+    connectedTable = table;
+  }
 
-    @Override
-    public void setColumnCollapsed(final Object propertyId, final boolean collapsed) {
-        super.setColumnCollapsed(propertyId, collapsed);
-        try {
-            connectedTable.setColumnCollapsedEnd(propertyId, collapsed);
-        } catch (Exception e) {
-            //do nothing
-        }
+  @Override
+  public void setColumnCollapsed(final Object propertyId, final boolean collapsed) {
+    super.setColumnCollapsed(propertyId, collapsed);
+    try {
+      connectedTable.setColumnCollapsedEnd(propertyId, collapsed);
+    } catch (Exception e) {
+      //do nothing
     }
+  }
 
-    public void setColumnCollapsedEnd(final Object propertyId, final boolean collapsed) {
-        try {
-            super.setColumnCollapsed(propertyId, collapsed);
-        } catch (Exception e) {
-            //do nothing
-        }
+  public void setColumnCollapsedEnd(final Object propertyId, final boolean collapsed) {
+    try {
+      super.setColumnCollapsed(propertyId, collapsed);
+    } catch (Exception e) {
+      //do nothing
     }
+  }
 }

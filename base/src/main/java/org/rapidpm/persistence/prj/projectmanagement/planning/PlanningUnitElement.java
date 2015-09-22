@@ -3,69 +3,67 @@ package org.rapidpm.persistence.prj.projectmanagement.planning;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 
 /**
- *
  * User: svenruppert
  * Date: 30.07.12
  * Time: 07:34
- *
+ * <p>
  * PlanungsUnitElement, die verbindung zwischen dem
  * Planungseintrag in der Planungsgruppe und den PlanRessourcen.
- *
  */
 public class PlanningUnitElement {
 
-    private String id;
-    private int plannedMinutes;
+  private String id;
+  private int plannedMinutes;
 
-    private transient RessourceGroup ressourceGroup;
+  private transient RessourceGroup ressourceGroup;
 
-    public String getId() {
-        return id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public int getPlannedMinutes() {
-        return plannedMinutes;
-    }
+  public int getPlannedMinutes() {
+    return plannedMinutes;
+  }
 
-    public void setPlannedMinutes(int plannedMinutes) {
-        this.plannedMinutes = plannedMinutes;
-    }
+  public void setPlannedMinutes(int plannedMinutes) {
+    this.plannedMinutes = plannedMinutes;
+  }
 
-    public RessourceGroup getRessourceGroup() {
-        return ressourceGroup;
-    }
+  public RessourceGroup getRessourceGroup() {
+    return ressourceGroup;
+  }
 
-    public void setRessourceGroup(RessourceGroup ressourceGroup) {
-        this.ressourceGroup = ressourceGroup;
-    }
+  public void setRessourceGroup(RessourceGroup ressourceGroup) {
+    this.ressourceGroup = ressourceGroup;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+  @Override
+  public int hashCode() {
+    return id != null ? id.hashCode() : 0;
+  }
 
-        PlanningUnitElement that = (PlanningUnitElement) o;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+    PlanningUnitElement that = (PlanningUnitElement) o;
 
-        return true;
-    }
+    if (id != null ? !id.equals(that.id) : that.id != null) return false;
 
-    @Override
-    public String toString() {
-        return "PlanningUnitElement{" +
-                "id=" + id +
-                ", plannedMinutes=" + plannedMinutes +
-                ", ressourceGroup=" + ressourceGroup +
-                '}';
-    }
+    return true;
+  }
 
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
+  @Override
+  public String toString() {
+    return "PlanningUnitElement{" +
+        "id=" + id +
+        ", plannedMinutes=" + plannedMinutes +
+        ", ressourceGroup=" + ressourceGroup +
+        '}';
+  }
 }

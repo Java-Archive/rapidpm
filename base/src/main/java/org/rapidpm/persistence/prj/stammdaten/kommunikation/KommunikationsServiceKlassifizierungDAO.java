@@ -13,48 +13,47 @@ import java.security.InvalidKeyException;
  *
  * @author Sven Ruppert
  * @version 0.1
- *          <p/>
+ *          <p>
  *          This Source Code is part of the RapidPM - www.rapidpm.org project.
  *          please contact sven.ruppert@me.com
  * @since 02.03.2010
- *        Time: 14:21:56
+ * Time: 14:21:56
  */
 
 public class KommunikationsServiceKlassifizierungDAO extends DAO<Long, KommunikationsServiceKlassifizierung> {
-    private static final Logger logger = Logger.getLogger(KommunikationsServiceKlassifizierungDAO.class);
+  private static final Logger logger = Logger.getLogger(KommunikationsServiceKlassifizierungDAO.class);
 
-    public KommunikationsServiceKlassifizierungDAO(final OrientGraph orientDB) {
-        super(orientDB, KommunikationsServiceKlassifizierung.class);
-    }
+  public KommunikationsServiceKlassifizierungDAO(final OrientGraph orientDB) {
+    super(orientDB, KommunikationsServiceKlassifizierung.class);
+  }
 
+  public KommunikationsServiceKlassifizierung loadKlassifizierungPrivat() {
+    return load("privat");
+    //        return createWhereClause().eq("klassifizierung", "private").findUnique();
 
-    public KommunikationsServiceKlassifizierung load(final String klassifizierung) {
+  }
+
+  public KommunikationsServiceKlassifizierung load(final String klassifizierung) {
 //        final TypedQuery<KommunikationsServiceKlassifizierung> typedQuery = orientDB.createQuery(
 //                "from KommunikationsServiceKlassifizierung ksk where ksk.klassifizierung=:klassifizierung",
 //                KommunikationsServiceKlassifizierung.class).setParameter("klassifizierung", klassifizierung);
 //        return getSingleResultOrNull(typedQuery);
-        return null;
-    }
+    return null;
+  }
 
-    public KommunikationsServiceKlassifizierung loadKlassifizierungPrivat() {
-        return load("privat");
-        //        return createWhereClause().eq("klassifizierung", "private").findUnique();
-
-    }
-
-    public KommunikationsServiceKlassifizierung loadKlassifizierungBeruflich() {
-        return load("beruflich");
-        //        return createWhereClause().eq("klassifizierung", "beruflich").findUnique();
-    }
+  public KommunikationsServiceKlassifizierung loadKlassifizierungBeruflich() {
+    return load("beruflich");
+    //        return createWhereClause().eq("klassifizierung", "beruflich").findUnique();
+  }
 
 
-    @Override
-    public KommunikationsServiceKlassifizierung loadFull(KommunikationsServiceKlassifizierung entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public KommunikationsServiceKlassifizierung loadFull(KommunikationsServiceKlassifizierung entity) throws InvalidKeyException, NotYetImplementedException {
+    throw new NotYetImplementedException();
+  }
 
-    @Override
-    public KommunikationsServiceKlassifizierung createEntityFull(KommunikationsServiceKlassifizierung entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public KommunikationsServiceKlassifizierung createEntityFull(KommunikationsServiceKlassifizierung entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    throw new NotYetImplementedException();
+  }
 }

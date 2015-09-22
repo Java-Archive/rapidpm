@@ -14,59 +14,59 @@ import java.util.Date;
 public class MitarbeiterRessourceGroupAssoc {
 
 
-    @Id
-    @TableGenerator(name = "PKGenMitarbeiterRessourceGroupAssoc", table = "pk_gen", pkColumnName = "gen_key",
-            pkColumnValue = "MitarbeiterRessourceGroupAssoc_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE,
-            generator = "PKGenMitarbeiterRessourceGroupAssoc")
-    private Long id;
+  @Id
+  @TableGenerator(name = "PKGenMitarbeiterRessourceGroupAssoc", table = "pk_gen", pkColumnName = "gen_key",
+      pkColumnValue = "MitarbeiterRessourceGroupAssoc_id", valueColumnName = "gen_value", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE,
+      generator = "PKGenMitarbeiterRessourceGroupAssoc")
+  private Long id;
 
-    @Basic private Date startDate;
-    @Basic private Date stopDate;
+  @Basic private Date startDate;
+  @Basic private Date stopDate;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    private RessourceGroup ressourceGroup;
+  @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+  private RessourceGroup ressourceGroup;
 
-    @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    private Mitarbeiter mitarbeiter;
+  @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+  private Mitarbeiter mitarbeiter;
 
-    public Long getId() {
-        return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public Date getStartDate() {
-        return startDate;
-    }
+  public Date getStartDate() {
+    return startDate;
+  }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
+  public void setStartDate(Date startDate) {
+    this.startDate = startDate;
+  }
 
-    public Date getStopDate() {
-        return stopDate;
-    }
+  public Date getStopDate() {
+    return stopDate;
+  }
 
-    public void setStopDate(Date stopDate) {
-        this.stopDate = stopDate;
-    }
+  public void setStopDate(Date stopDate) {
+    this.stopDate = stopDate;
+  }
 
-    public RessourceGroup getRessourceGroup() {
-        return ressourceGroup;
-    }
+  public RessourceGroup getRessourceGroup() {
+    return ressourceGroup;
+  }
 
-    public void setRessourceGroup(RessourceGroup ressourceGroup) {
-        this.ressourceGroup = ressourceGroup;
-    }
+  public void setRessourceGroup(RessourceGroup ressourceGroup) {
+    this.ressourceGroup = ressourceGroup;
+  }
 
-    public Mitarbeiter getMitarbeiter() {
-        return mitarbeiter;
-    }
+  public Mitarbeiter getMitarbeiter() {
+    return mitarbeiter;
+  }
 
-    public void setMitarbeiter(Mitarbeiter mitarbeiter) {
-        this.mitarbeiter = mitarbeiter;
-    }
+  public void setMitarbeiter(Mitarbeiter mitarbeiter) {
+    this.mitarbeiter = mitarbeiter;
+  }
 }

@@ -27,164 +27,164 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class AddRowWindow extends RapidWindow {
-    public static final String HEIGHT = "600px";
-    public static final String WIDTH = "500px";
-    public static final int POSITION_X = 50;
-    public static final int POSITION_Y = 100;
+  public static final String HEIGHT = "600px";
+  public static final String WIDTH = "500px";
+  public static final int POSITION_X = 50;
+  public static final int POSITION_Y = 100;
 
-    private static final Logger logger = Logger.getLogger(AddRowWindow.class);
+  private static final Logger logger = Logger.getLogger(AddRowWindow.class);
 
-    private MainUI ui;
+  private MainUI ui;
 
-    private FormLayout formLayout = new FormLayout();
-    private HorizontalLayout horizontalButtonLayout = new HorizontalLayout();
-    private Button saveButton = new Button();
-    private Button cancelButton = new Button();
-    private RowFieldGroup fieldGroup;
-    private ResourceBundle messages;
+  private FormLayout formLayout = new FormLayout();
+  private HorizontalLayout horizontalButtonLayout = new HorizontalLayout();
+  private Button saveButton = new Button();
+  private Button cancelButton = new Button();
+  private RowFieldGroup fieldGroup;
+  private ResourceBundle messages;
 //    private AddRowWindowBean addRowWindowBean;
 
-    public AddRowWindow(final MainUI ui, final StundensaetzeScreen screen) {
-        this.ui = ui;
-        messages = screen.getMessagesBundle();
-        setHeight(HEIGHT);
-        setWidth(WIDTH);
-        setPositionX(POSITION_X);
-        setPositionY(POSITION_Y);
+  public AddRowWindow(final MainUI ui, final StundensaetzeScreen screen) {
+    this.ui = ui;
+    messages = screen.getMessagesBundle();
+    setHeight(HEIGHT);
+    setWidth(WIDTH);
+    setPositionX(POSITION_X);
+    setPositionY(POSITION_Y);
 
 //        addRowWindowBean = EJBFactory.getEjbInstance(AddRowWindowBean.class);
 //        final DaoFactoryBean baseDaoFactoryBean = addRowWindowBean.getDaoFactoryBean();
 
-        fieldGroup = new RowFieldGroup();
+    fieldGroup = new RowFieldGroup();
 
-        fillFormLayout();
-        addComponent(formLayout);
+    fillFormLayout();
+    addComponent(formLayout);
 
-        horizontalButtonLayout.addComponent(saveButton);
-        horizontalButtonLayout.addComponent(cancelButton);
+    horizontalButtonLayout.addComponent(saveButton);
+    horizontalButtonLayout.addComponent(cancelButton);
 
-        addComponent(horizontalButtonLayout);
+    addComponent(horizontalButtonLayout);
 
-        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-        addListeners(daoFactory, ui, screen);
-        doInternationalization();
+    final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+    addListeners(daoFactory, ui, screen);
+    doInternationalization();
 
+  }
+
+  private void fillFormLayout() {
+    final AbstractTextField nameField = fieldGroup.getNameField();
+    formLayout.addComponent(buildFieldWithValue(nameField));
+    formLayout.addComponent(new Label("-----------"));
+    for (AbstractTextField abstractTextField : fieldGroup.getFieldList()) {
+      formLayout.addComponent(buildFieldWithValue(abstractTextField));
     }
+  }
 
-    private void fillFormLayout() {
-        final AbstractTextField nameField = fieldGroup.getNameField();
-        formLayout.addComponent(buildFieldWithValue(nameField));
-        formLayout.addComponent(new Label("-----------"));
-        for (AbstractTextField abstractTextField : fieldGroup.getFieldList()) {
-            formLayout.addComponent(buildFieldWithValue(abstractTextField));
+  private void addListeners(final DaoFactory baseDaoFactoryBean, final MainUI ui,
+                            final StundensaetzeScreen screen) {
+    saveButton.addClickListener(new ClickListener() {
+
+      @Override
+      public void buttonClick(ClickEvent event) {
+        boolean allFilled = true;
+        final Iterator<Component> it = AddRowWindow.this.formLayout
+            .getComponentIterator();
+        while (it.hasNext()) {
+          final Component component = it.next();
+          if (component instanceof AbstractField) {
+            if (((TextField) component).getValue() == null
+                || ((TextField) component).getValue().equals(""))
+              allFilled = false;
+          }
         }
-    }
-
-    private TextField buildFieldWithValue(final AbstractTextField abstractTextField) {
-        final TextField field = (TextField) abstractTextField;
-        final String typeNameOfFieldProperty = field.getPropertyDataSource().getType().getSimpleName();
-        field.setValue(DefaultValues.valueOf(typeNameOfFieldProperty).getDefaultValue());
-        return field;
-    }
-
-    private void doInternationalization() {
-        this.setCaption(messages.getString("stdsatz_addRessource"));
-        saveButton.setCaption(messages.getString("save"));
-        cancelButton.setCaption(messages.getString("cancel"));
-    }
-
-    private void addListeners(final DaoFactory baseDaoFactoryBean, final MainUI ui,
-                              final StundensaetzeScreen screen) {
-        saveButton.addClickListener(new ClickListener() {
-
-            @Override
-            public void buttonClick(ClickEvent event) {
-                boolean allFilled = true;
-                final Iterator<Component> it = AddRowWindow.this.formLayout
-                        .getComponentIterator();
-                while (it.hasNext()) {
-                    final Component component = it.next();
-                    if (component instanceof AbstractField) {
-                        if (((TextField) component).getValue() == null
-                                || ((TextField) component).getValue().equals(""))
-                            allFilled = false;
-                    }
-                }
-                if (allFilled) {
-                    try {
-                        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-                        final List<String> ressourceGroupNames = new ArrayList<>();
-                        final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO()
-                                .findAll();
-                        for(final RessourceGroup ressourceGroup : ressourceGroups){
+        if (allFilled) {
+          try {
+            final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+            final List<String> ressourceGroupNames = new ArrayList<>();
+            final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO()
+                .findAll();
+            for (final RessourceGroup ressourceGroup : ressourceGroups) {
 //                            daoFactory.getEntityManager().refresh(ressourceGroup);
-                            ressourceGroupNames.add(ressourceGroup.getName());
-                        }
-                        //final Table tabelle = screen.getTabelle();
-                        fieldGroup.commit();
-                        //RessourceGroupBeanItem mit der neuen (transienten) RessourceGroup
-                        final BeanItem<RessourceGroup> beanItem = (BeanItem)fieldGroup.getItemDataSource();
-                        //Bean aus dem BeanItem
-                        final RessourceGroup temporaryRessourceGroup = beanItem.getBean();
+              ressourceGroupNames.add(ressourceGroup.getName());
+            }
+            //final Table tabelle = screen.getTabelle();
+            fieldGroup.commit();
+            //RessourceGroupBeanItem mit der neuen (transienten) RessourceGroup
+            final BeanItem<RessourceGroup> beanItem = (BeanItem) fieldGroup.getItemDataSource();
+            //Bean aus dem BeanItem
+            final RessourceGroup temporaryRessourceGroup = beanItem.getBean();
 
-                        final String ressourceGroupName = temporaryRessourceGroup.getName();
-                        if(ressourceGroupNames.contains(ressourceGroupName)){
-                            throw new NameExistsException();
-                        }
-                        if(ressourceGroupName.matches(Constants.EMPTY_OR_SPACES_ONLY_PATTERN)){
-                            throw new InvalidNameException();
-                        }
-
-                        final List<PlanningUnit> planningUnits = baseDaoFactoryBean.getPlanningUnitDAO()
-                                .findAll();
-                        final RessourceGroup persistedRessourceGroup = daoFactory.getRessourceGroupDAO().createEntityFull(temporaryRessourceGroup);
-                        for(final PlanningUnit planningUnit : planningUnits){
-                            final PlanningUnitElement temporaryPlanningUnitElement = new PlanningUnitElement();
-                            temporaryPlanningUnitElement.setPlannedMinutes(0);
-                            temporaryPlanningUnitElement.setRessourceGroup(persistedRessourceGroup);
-                            if(planningUnit.getPlanningUnitElementList() == null){
-                                planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
-                            }
-                            final PlanningUnitElement persistedPUE = daoFactory.getPlanningUnitElementDAO().createEntityFull(temporaryPlanningUnitElement);
-                            daoFactory.getPlanningUnitDAO().addPlanningUnitElementToPlanningUnit(persistedPUE, planningUnit);
-
-                        }
-                        screen.generateTableAndCalculate();
-
-                        AddRowWindow.this.close();
-                    }catch(final FieldGroup.CommitException e){
-                          Notification.show(messages.getString("stdsatz_addfail"));
-                    } catch (final NameExistsException e) {
-                        Notification.show(messages.getString("stdsatz_nameexists"));
-                    } catch (InvalidNameException e) {
-                        Notification.show(messages.getString("stdsatz_invalidname"));
-                    } catch (MissingNonOptionalPropertyException e) {
-                        e.printStackTrace();
-                    } catch (InvalidKeyException e) {
-                        e.printStackTrace();
-                    } catch (NotYetImplementedException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    final Label lbl = new Label();
-                    lbl.setValue(messages.getString("stdsatz_fillInAllFields"));
-                    AddRowWindow.this.addComponent(lbl);
-                }
+            final String ressourceGroupName = temporaryRessourceGroup.getName();
+            if (ressourceGroupNames.contains(ressourceGroupName)) {
+              throw new NameExistsException();
+            }
+            if (ressourceGroupName.matches(Constants.EMPTY_OR_SPACES_ONLY_PATTERN)) {
+              throw new InvalidNameException();
             }
 
-        });
+            final List<PlanningUnit> planningUnits = baseDaoFactoryBean.getPlanningUnitDAO()
+                .findAll();
+            final RessourceGroup persistedRessourceGroup = daoFactory.getRessourceGroupDAO().createEntityFull(temporaryRessourceGroup);
+            for (final PlanningUnit planningUnit : planningUnits) {
+              final PlanningUnitElement temporaryPlanningUnitElement = new PlanningUnitElement();
+              temporaryPlanningUnitElement.setPlannedMinutes(0);
+              temporaryPlanningUnitElement.setRessourceGroup(persistedRessourceGroup);
+              if (planningUnit.getPlanningUnitElementList() == null) {
+                planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
+              }
+              final PlanningUnitElement persistedPUE = daoFactory.getPlanningUnitElementDAO().createEntityFull(temporaryPlanningUnitElement);
+              daoFactory.getPlanningUnitDAO().addPlanningUnitElementToPlanningUnit(persistedPUE, planningUnit);
 
-        cancelButton.addClickListener(new ClickListener() {
-
-            @Override
-            public void buttonClick(ClickEvent event) {
-                AddRowWindow.this.close();
             }
-        });
+            screen.generateTableAndCalculate();
 
-    }
+            AddRowWindow.this.close();
+          } catch (final FieldGroup.CommitException e) {
+            Notification.show(messages.getString("stdsatz_addfail"));
+          } catch (final NameExistsException e) {
+            Notification.show(messages.getString("stdsatz_nameexists"));
+          } catch (InvalidNameException e) {
+            Notification.show(messages.getString("stdsatz_invalidname"));
+          } catch (MissingNonOptionalPropertyException e) {
+            e.printStackTrace();
+          } catch (InvalidKeyException e) {
+            e.printStackTrace();
+          } catch (NotYetImplementedException e) {
+            e.printStackTrace();
+          }
+        } else {
+          final Label lbl = new Label();
+          lbl.setValue(messages.getString("stdsatz_fillInAllFields"));
+          AddRowWindow.this.addComponent(lbl);
+        }
+      }
 
-    public void show() {
-        ui.addWindow(this);
-    }
+    });
+
+    cancelButton.addClickListener(new ClickListener() {
+
+      @Override
+      public void buttonClick(ClickEvent event) {
+        AddRowWindow.this.close();
+      }
+    });
+
+  }
+
+  private void doInternationalization() {
+    this.setCaption(messages.getString("stdsatz_addRessource"));
+    saveButton.setCaption(messages.getString("save"));
+    cancelButton.setCaption(messages.getString("cancel"));
+  }
+
+  private TextField buildFieldWithValue(final AbstractTextField abstractTextField) {
+    final TextField field = (TextField) abstractTextField;
+    final String typeNameOfFieldProperty = field.getPropertyDataSource().getType().getSimpleName();
+    field.setValue(DefaultValues.valueOf(typeNameOfFieldProperty).getDefaultValue());
+    return field;
+  }
+
+  public void show() {
+    ui.addWindow(this);
+  }
 }

@@ -6,9 +6,9 @@ import java.util.ResourceBundle;
 
 
 public class EditOptionButtonGroup extends OptionGroup {
-    public EditOptionButtonGroup(final ResourceBundle bundle) {
-        addItem(bundle.getString("stdsatz_tablemode"));
-        addItem(bundle.getString("stdsatz_rowmode"));
-    }
+  public EditOptionButtonGroup(final ResourceBundle bundle) {
+    addItem(bundle.getString("stdsatz_tablemode"));
+    addItem(bundle.getString("stdsatz_rowmode"));
+  }
 
 }

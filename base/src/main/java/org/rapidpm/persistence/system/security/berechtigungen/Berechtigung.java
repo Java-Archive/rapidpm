@@ -14,71 +14,68 @@ import javax.persistence.*;
 @Entity
 public class Berechtigung {
 
-    @Id
-    @TableGenerator(name = "PKGenBerechtigung", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "Berechtigung_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenBerechtigung")
-    private Long id;
+  @Id
+  @TableGenerator(name = "PKGenBerechtigung", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "Berechtigung_id", valueColumnName = "gen_value", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenBerechtigung")
+  private Long id;
+  @Column(unique = true, nullable = false)
+  @Basic(optional = false)
+  private String name;
 
-    public Long getId() {
-        return id;
+  public Berechtigung() {
+  }
+
+
+  public Berechtigung(final String name) {
+    this.name = name;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(final Long id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(final String name) {
+    this.name = name;
+  }
+
+  @Override
+  public int hashCode() {
+    return name.hashCode();
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Berechtigung)) {
+      return false;
     }
 
-    public void setId(final Long id) {
-        this.id = id;
+    final Berechtigung that = (Berechtigung) o;
+
+    if (!name.equals(that.name)) {
+      return false;
     }
 
+    return true;
+  }
 
-    @Column(unique = true, nullable = false)
-    @Basic(optional = false)
-    private String name;
-
-    public Berechtigung() {
-    }
-
-
-    public Berechtigung(final String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Berechtigung)) {
-            return false;
-        }
-
-        final Berechtigung that = (Berechtigung) o;
-
-        if (!name.equals(that.name)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return name.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Berechtigung");
-        sb.append("{id=").append(id);
-        sb.append(", name='").append(name).append('\'');
-        sb.append('}');
-        return sb.toString();
-    }
+  @Override
+  public String toString() {
+    final StringBuilder sb = new StringBuilder();
+    sb.append("Berechtigung");
+    sb.append("{id=").append(id);
+    sb.append(", name='").append(name).append('\'');
+    sb.append('}');
+    return sb.toString();
+  }
 }

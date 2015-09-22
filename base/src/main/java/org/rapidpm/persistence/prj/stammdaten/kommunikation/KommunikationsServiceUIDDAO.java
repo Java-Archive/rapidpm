@@ -18,14 +18,14 @@ import java.security.InvalidKeyException;
 import java.util.List;
 
 public class KommunikationsServiceUIDDAO extends DAO<Long, KommunikationsServiceUID> {
-    private static final Logger logger = Logger.getLogger(KommunikationsServiceUIDDAO.class);
+  private static final Logger logger = Logger.getLogger(KommunikationsServiceUIDDAO.class);
 
 
-    public KommunikationsServiceUIDDAO(final OrientGraph orientDB) {
-        super(orientDB, KommunikationsServiceUID.class);
-    }
+  public KommunikationsServiceUIDDAO(final OrientGraph orientDB) {
+    super(orientDB, KommunikationsServiceUID.class);
+  }
 
-    public List<KommunikationsServiceUID> loadServiceUIDsForOrganisationseinheit(final Long organisationseinheitOID) {
+  public List<KommunikationsServiceUID> loadServiceUIDsForOrganisationseinheit(final Long organisationseinheitOID) {
 //        return orientDB.createQuery("select suid" +
 //                " from Organisationseinheit org" +
 //                " inner join org.kommunikationsServiceUIDs suid" +
@@ -33,10 +33,10 @@ public class KommunikationsServiceUIDDAO extends DAO<Long, KommunikationsService
 //                KommunikationsServiceUID.class)
 //                .setParameter("organisationseinheitOID", organisationseinheitOID)
 //                .getResultList();
-        return null;
-    }
+    return null;
+  }
 
-    public boolean isEmailRegistered(final String email) {
+  public boolean isEmailRegistered(final String email) {
 //        final TypedQuery<KommunikationsServiceUID> typedQuery = orientDB.createQuery(
 //                "select ksuid" +
 //                        " from KommunikationsServiceUID ksuid" +
@@ -45,10 +45,10 @@ public class KommunikationsServiceUIDDAO extends DAO<Long, KommunikationsService
 //                KommunikationsServiceUID.class)
 //                .setParameter("email", email);
 //        return getSingleResultOrNull(typedQuery) != null;
-        return true;
-    }
+    return true;
+  }
 
-    public boolean isEmailRegistered(final String email, final Long mandantengruppeOID) {
+  public boolean isEmailRegistered(final String email, final Long mandantengruppeOID) {
 //        final TypedQuery<KommunikationsServiceUID> typedQuery = orientDB.createQuery(
 //                "select ksuid" +
 //                        " from Person p" +
@@ -60,10 +60,10 @@ public class KommunikationsServiceUIDDAO extends DAO<Long, KommunikationsService
 //                .setParameter("mandantengruppeOID", mandantengruppeOID)
 //                .setParameter("email", email);
 //        return getSingleResultOrNull(typedQuery) != null;
-        return true;
-    }
+    return true;
+  }
 
-    public boolean isEmailRegistered(final String email, final String mandantengruppe) {
+  public boolean isEmailRegistered(final String email, final String mandantengruppe) {
 //        final TypedQuery<KommunikationsServiceUID> typedQuery = orientDB.createQuery(
 //                "select ksuid" +
 //                        " from Person p" +
@@ -75,16 +75,16 @@ public class KommunikationsServiceUIDDAO extends DAO<Long, KommunikationsService
 //                .setParameter("mandantengruppe", mandantengruppe)
 //                .setParameter("email", email);
 //        return getSingleResultOrNull(typedQuery) != null;
-        return true;
-    }
+    return true;
+  }
 
-    @Override
-    public KommunikationsServiceUID loadFull(KommunikationsServiceUID entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public KommunikationsServiceUID loadFull(KommunikationsServiceUID entity) throws InvalidKeyException, NotYetImplementedException {
+    throw new NotYetImplementedException();
+  }
 
-    @Override
-    public KommunikationsServiceUID createEntityFull(KommunikationsServiceUID entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public KommunikationsServiceUID createEntityFull(KommunikationsServiceUID entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    throw new NotYetImplementedException();
+  }
 }

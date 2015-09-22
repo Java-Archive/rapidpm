@@ -5,7 +5,7 @@ package org.rapidpm.exception;
  */
 public class MissingNonOptionalPropertyException extends Exception {
 
-    public MissingNonOptionalPropertyException(String propertyName) {
-        super("Missing non-optional property: "+propertyName);
-    }
+  public MissingNonOptionalPropertyException(String propertyName) {
+    super("Missing non-optional property: " + propertyName);
+  }
 }

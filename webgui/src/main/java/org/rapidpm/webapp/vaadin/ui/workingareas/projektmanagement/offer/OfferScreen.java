@@ -12,17 +12,17 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
  */
 public class OfferScreen extends Screen {
 
-    public OfferScreen(MainUI ui) {
-        super(ui);
-    }
+  public OfferScreen(MainUI ui) {
+    super(ui);
+  }
 
-    @Override
-    public void doInternationalization() {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+  @Override
+  public void doInternationalization() {
+    //To change body of implemented methods use File | Settings | File Templates.
+  }
 
-    @Override
-    public void setComponents() {
-        //To change body of implemented methods use File | Settings | File Templates.
-    }
+  @Override
+  public void setComponents() {
+    //To change body of implemented methods use File | Settings | File Templates.
+  }
 }

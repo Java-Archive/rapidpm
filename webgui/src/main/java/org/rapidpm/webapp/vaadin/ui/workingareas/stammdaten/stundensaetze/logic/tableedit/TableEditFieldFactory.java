@@ -15,16 +15,16 @@ import com.vaadin.ui.TextField;
  */
 public class TableEditFieldFactory implements TableFieldFactory {
 
-    @Override
-    public Field<?> createField(final Container container, final Object itemId, final Object propertyId,
-                                final Component uiContext) {
-        final String spaltenName = propertyId.toString();
-        if(!spaltenName.startsWith("transient")){
-                final TextField field = new TextField();
-                final String cellValue = container.getItem(itemId).getItemProperty(propertyId).getValue().toString();
-                field.setValue(cellValue);
-                return field;
-            }
-        return null;
+  @Override
+  public Field<?> createField(final Container container, final Object itemId, final Object propertyId,
+                              final Component uiContext) {
+    final String spaltenName = propertyId.toString();
+    if (!spaltenName.startsWith("transient")) {
+      final TextField field = new TextField();
+      final String cellValue = container.getItem(itemId).getItemProperty(propertyId).getValue().toString();
+      field.setValue(cellValue);
+      return field;
     }
+    return null;
+  }
 }

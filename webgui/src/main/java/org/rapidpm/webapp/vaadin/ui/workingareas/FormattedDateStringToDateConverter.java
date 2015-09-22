@@ -15,40 +15,40 @@ import java.util.Locale;
  * To change this template use File | Settings | File Templates.
  */
 public final class FormattedDateStringToDateConverter implements Converter<String, Date> {
-    private final SimpleDateFormat dateFormat;
+  private final SimpleDateFormat dateFormat;
 
-    public FormattedDateStringToDateConverter(SimpleDateFormat dateFormat) {
-        this.dateFormat = dateFormat;
+  public FormattedDateStringToDateConverter(SimpleDateFormat dateFormat) {
+    this.dateFormat = dateFormat;
+  }
+
+
+  @Override
+  public Date convertToModel(final String s, final Class<? extends Date> aClass, final Locale locale) throws ConversionException {
+    Date parsedDate = new Date();
+
+    try {
+      parsedDate = dateFormat.parse(s);
+    } catch (ParseException e) {
+      e.printStackTrace();  //TODO Logger verwenden
     }
+    return parsedDate;
+  }
 
+  @Override
+  public String convertToPresentation(final Date date, final Class<? extends String> aClass, final Locale locale) throws ConversionException {
+    String formattedDate = dateFormat.toPattern();
+    if (date != null)
+      formattedDate = dateFormat.format(date);
+    return formattedDate;
+  }
 
-    @Override
-    public Date convertToModel(final String s, final Class<? extends Date> aClass, final Locale locale) throws ConversionException {
-        Date parsedDate = new Date();
+  @Override
+  public Class<Date> getModelType() {
+    return Date.class;
+  }
 
-        try {
-            parsedDate = dateFormat.parse(s);
-        } catch (ParseException e) {
-            e.printStackTrace();  //TODO Logger verwenden
-        }
-        return parsedDate;
-    }
-
-    @Override
-    public String convertToPresentation(final Date date, final Class<? extends String> aClass, final Locale locale) throws ConversionException {
-        String formattedDate = dateFormat.toPattern();
-        if(date != null)
-            formattedDate = dateFormat.format(date);
-        return formattedDate;
-    }
-
-    @Override
-    public Class<Date> getModelType() {
-        return Date.class;
-    }
-
-    @Override
-    public Class<String> getPresentationType() {
-        return String.class;
-    }
+  @Override
+  public Class<String> getPresentationType() {
+    return String.class;
+  }
 }

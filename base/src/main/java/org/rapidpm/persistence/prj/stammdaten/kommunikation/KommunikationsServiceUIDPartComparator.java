@@ -18,11 +18,11 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 public class KommunikationsServiceUIDPartComparator implements Comparator<KommunikationsServiceUIDPart>, Serializable {
-    private static final Logger logger = Logger.getLogger(KommunikationsServiceUIDPartComparator.class);
+  private static final Logger logger = Logger.getLogger(KommunikationsServiceUIDPartComparator.class);
 
 
-    @Override
-    public int compare(final KommunikationsServiceUIDPart o1, final KommunikationsServiceUIDPart o2) {
-        return ((Integer) o1.getOrderNr()).compareTo(o2.getOrderNr());
-    }
+  @Override
+  public int compare(final KommunikationsServiceUIDPart o1, final KommunikationsServiceUIDPart o2) {
+    return ((Integer) o1.getOrderNr()).compareTo(o2.getOrderNr());
+  }
 }

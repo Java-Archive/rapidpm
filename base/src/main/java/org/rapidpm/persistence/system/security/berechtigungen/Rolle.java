@@ -11,74 +11,74 @@ import java.util.Set;
  */
 @Entity
 public class Rolle {
-    @Id
-    @TableGenerator(name = "PKGenRolle", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "Rolle_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenRolle")
-    private Long id;
+  @Id
+  @TableGenerator(name = "PKGenRolle", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "Rolle_id", valueColumnName = "gen_value", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenRolle")
+  private Long id;
 
-    @Column(unique = true, nullable = false)
-    @Basic(optional = false)
-    private String name;
+  @Column(unique = true, nullable = false)
+  @Basic(optional = false)
+  private String name;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Berechtigung> berechtigungen;
+  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  private Set<Berechtigung> berechtigungen;
 
-    public Rolle() {
-    }
+  public Rolle() {
+  }
 
-    public Rolle(final String name) {
-        this.name = name;
-    }
+  public Rolle(final String name) {
+    this.name = name;
+  }
 
-    public Long getId() {
-        return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setId(final Long id) {
-        this.id = id;
-    }
+  public void setId(final Long id) {
+    this.id = id;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setName(final String name) {
-        this.name = name;
-    }
+  public void setName(final String name) {
+    this.name = name;
+  }
 
-    public Set<Berechtigung> getBerechtigungen() {
-        return berechtigungen;
-    }
+  public Set<Berechtigung> getBerechtigungen() {
+    return berechtigungen;
+  }
 
-    public void setBerechtigungen(final Set<Berechtigung> berechtigungen) {
-        this.berechtigungen = berechtigungen;
-    }
+  public void setBerechtigungen(final Set<Berechtigung> berechtigungen) {
+    this.berechtigungen = berechtigungen;
+  }
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+  @Override
+  public int hashCode() {
+    return name.hashCode();
+  }
 
-        final Rolle rolle = (Rolle) o;
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
 
-        if (!name.equals(rolle.name)) return false;
+    final Rolle rolle = (Rolle) o;
 
-        return true;
-    }
+    if (!name.equals(rolle.name)) return false;
 
-    @Override
-    public int hashCode() {
-        return name.hashCode();
-    }
+    return true;
+  }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Rolle");
-        sb.append("{id=").append(id);
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", berechtigungen=").append(berechtigungen);
-        sb.append('}');
-        return sb.toString();
-    }
+  @Override
+  public String toString() {
+    final StringBuilder sb = new StringBuilder();
+    sb.append("Rolle");
+    sb.append("{id=").append(id);
+    sb.append(", name='").append(name).append('\'');
+    sb.append(", berechtigungen=").append(berechtigungen);
+    sb.append('}');
+    return sb.toString();
+  }
 }

@@ -9,16 +9,12 @@ package org.rapidpm.persistence;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 public class DaoFactorySingleton {
-    private static DaoFactory daoFactory;
+  private static DaoFactory daoFactory = new DaoFactory("RapidPM");
 
-    public static DaoFactory getInstance() {
+  private DaoFactorySingleton() {
+  }
 
-         if(daoFactory == null){
-            daoFactory = new DaoFactory("RapidPM");
-        }
-        return daoFactory;
-    }
-
-    private DaoFactorySingleton() {
-    }
+  public static DaoFactory getInstance() {
+    return daoFactory;
+  }
 }

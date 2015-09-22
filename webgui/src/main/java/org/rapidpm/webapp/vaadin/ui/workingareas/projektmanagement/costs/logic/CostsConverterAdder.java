@@ -16,28 +16,28 @@ public class CostsConverterAdder implements ConverterAdder {
 //    @Inject @LoggerQualifier
 //    private transient Logger logger;
 
-    private ResourceBundle messages;
+  private ResourceBundle messages;
 
-    public CostsConverterAdder(final ResourceBundle bundle) {
-        this.messages = bundle;
+  public CostsConverterAdder(final ResourceBundle bundle) {
+    this.messages = bundle;
+  }
+
+  @Override
+  public void addConvertersTo(final Table tabelle) {
+    for (final Object spaltenId : tabelle.getContainerPropertyIds()) {
+      final String aufgabe = messages.getString("aufgabe");
+      if (!spaltenId.equals(aufgabe)) {
+        tabelle.setConverter(spaltenId,
+            new StringToFloatConverter() {
+              @Override
+              protected NumberFormat getFormat(final Locale locale) {
+                return NumberFormat.getCurrencyInstance(new Locale("de", "DE"));
+              }
+            });
+      }
     }
 
-    @Override
-    public void addConvertersTo(final Table tabelle) {
-        for (final Object spaltenId : tabelle.getContainerPropertyIds()) {
-            final String aufgabe = messages.getString("aufgabe");
-            if (!spaltenId.equals(aufgabe)) {
-                tabelle.setConverter(spaltenId,
-                        new StringToFloatConverter() {
-                            @Override
-                            protected NumberFormat getFormat(final Locale locale) {
-                                return NumberFormat.getCurrencyInstance(new Locale("de","DE"));
-                            }
-                        });
-            }
-        }
 
-
-    }
+  }
 
 }

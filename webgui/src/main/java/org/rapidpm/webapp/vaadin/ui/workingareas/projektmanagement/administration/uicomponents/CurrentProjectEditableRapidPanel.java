@@ -28,70 +28,70 @@ import java.util.ResourceBundle;
 public class CurrentProjectEditableRapidPanel extends EditableRapidPanel {
 
 
-    private ComboBox currentProjectBox;
-    private ProjectAdministrationScreen screen;
+  private ComboBox currentProjectBox;
+  private ProjectAdministrationScreen screen;
 //    private CurrentProjectPanelBean bean;
 
 
-    public CurrentProjectEditableRapidPanel(final ResourceBundle messagesBundle, final ProjectAdministrationScreen theScreen){
-        super(messagesBundle);
-        this.screen = theScreen;
+  public CurrentProjectEditableRapidPanel(final ResourceBundle messagesBundle, final ProjectAdministrationScreen theScreen) {
+    super(messagesBundle);
+    this.screen = theScreen;
 //        bean = EJBFactory.getEjbInstance(CurrentProjectPanelBean.class);
 //        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
-        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+    final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
 
-        setCaption(messagesBundle.getString("project_currentproject"));
-        final List<PlannedProject> projects = daoFactory.getPlannedProjectDAO().findAll();
-        if(projects.isEmpty()){
-            addComponent(new Label(messagesBundle.getString("project_noprojects")));
-        } else {
-            currentProjectBox = new ComboBox("", new BeanItemContainer<>(PlannedProject.class, projects));
-            currentProjectBox.setNullSelectionAllowed(false);
-            currentProjectBox.setTextInputAllowed(false);
-            currentProjectBox.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
-            currentProjectBox.setItemCaptionPropertyId(PlannedProject.NAME);
-            final VaadinSession session = screen.getUi().getSession();
-            final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
-            if(currentProject != null){
-                currentProjectBox.select(currentProject);
-            }
-            buttonsLayout.addComponent(saveButton);
-            buttonsLayout.addComponent(cancelButton);
-            activate(false);
+    setCaption(messagesBundle.getString("project_currentproject"));
+    final List<PlannedProject> projects = daoFactory.getPlannedProjectDAO().findAll();
+    if (projects.isEmpty()) {
+      addComponent(new Label(messagesBundle.getString("project_noprojects")));
+    } else {
+      currentProjectBox = new ComboBox("", new BeanItemContainer<>(PlannedProject.class, projects));
+      currentProjectBox.setNullSelectionAllowed(false);
+      currentProjectBox.setTextInputAllowed(false);
+      currentProjectBox.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
+      currentProjectBox.setItemCaptionPropertyId(PlannedProject.NAME);
+      final VaadinSession session = screen.getUi().getSession();
+      final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
+      if (currentProject != null) {
+        currentProjectBox.select(currentProject);
+      }
+      buttonsLayout.addComponent(saveButton);
+      buttonsLayout.addComponent(cancelButton);
+      activate(false);
 
-            cancelButton.addClickListener(new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    activate(false);
-                }
-            });
-            saveButton.addClickListener(new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    session.setAttribute(PlannedProject.class, (PlannedProject)currentProjectBox.getValue());
-                    activate(false);
-                }
-            });
-            setComponents();
+      cancelButton.addClickListener(new Button.ClickListener() {
+        @Override
+        public void buttonClick(Button.ClickEvent event) {
+          activate(false);
         }
-
+      });
+      saveButton.addClickListener(new Button.ClickListener() {
+        @Override
+        public void buttonClick(Button.ClickEvent event) {
+          session.setAttribute(PlannedProject.class, (PlannedProject) currentProjectBox.getValue());
+          activate(false);
+        }
+      });
+      setComponents();
     }
 
-    @Override
-    public void activate(boolean b) {
-        buttonsLayout.setVisible(b);
-        currentProjectBox.setReadOnly(!b);
-    }
+  }
 
-    @Override
-    public void doInternationalization() {
-        cancelButton.setCaption(messagesBundle.getString("cancel"));
-        saveButton.setCaption(messagesBundle.getString("save"));
-    }
+  @Override
+  public void activate(boolean b) {
+    buttonsLayout.setVisible(b);
+    currentProjectBox.setReadOnly(!b);
+  }
 
-    @Override
-    public void setComponents() {
-        addComponent(currentProjectBox);
-        addComponent(buttonsLayout);
-    }
+  @Override
+  public void setComponents() {
+    addComponent(currentProjectBox);
+    addComponent(buttonsLayout);
+  }
+
+  @Override
+  public void doInternationalization() {
+    cancelButton.setCaption(messagesBundle.getString("cancel"));
+    saveButton.setCaption(messagesBundle.getString("save"));
+  }
 }

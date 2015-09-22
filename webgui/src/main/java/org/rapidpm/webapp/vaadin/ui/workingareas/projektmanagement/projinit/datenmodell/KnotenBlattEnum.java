@@ -8,6 +8,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.dat
  * To change this template use File | Settings | File Templates.
  */
 public enum KnotenBlattEnum {
-    KNOTEN,
-    BLATT;
+  KNOTEN,
+  BLATT;
 }

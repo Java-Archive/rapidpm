@@ -13,28 +13,28 @@ import java.security.InvalidKeyException;
  *
  * @author Sven Ruppert
  * @version 0.1
- *          <p/>
+ *          <p>
  *          This Source Code is part of the RapidPM - www.rapidpm.org project.
  *          please contact sven.ruppert@me.com
  * @since 14.03.2010
- *        Time: 17:27:05
+ * Time: 17:27:05
  */
 
 public class NewPasswdRequestDAO extends DAO<Long, NewPasswdRequest> {
-    private static final Logger logger = Logger.getLogger(NewPasswdRequestDAO.class);
+  private static final Logger logger = Logger.getLogger(NewPasswdRequestDAO.class);
 
-    public NewPasswdRequestDAO(final OrientGraph orientDB) {
-        super(orientDB, NewPasswdRequest.class);
-    }
+  public NewPasswdRequestDAO(final OrientGraph orientDB) {
+    super(orientDB, NewPasswdRequest.class);
+  }
 
 
-    @Override
-    public NewPasswdRequest loadFull(NewPasswdRequest entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public NewPasswdRequest loadFull(NewPasswdRequest entity) throws InvalidKeyException, NotYetImplementedException {
+    throw new NotYetImplementedException();
+  }
 
-    @Override
-    public NewPasswdRequest createEntityFull(NewPasswdRequest entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public NewPasswdRequest createEntityFull(NewPasswdRequest entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    throw new NotYetImplementedException();
+  }
 }

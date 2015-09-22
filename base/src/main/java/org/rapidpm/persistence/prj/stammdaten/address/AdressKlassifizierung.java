@@ -11,7 +11,6 @@ package org.rapidpm.persistence.prj.stammdaten.address;
  * Time: 15:33:15
  * This Source Code is part of the RapidPM - www.rapidpm.org project.
  * please contact sven.ruppert@web.de
- *
  */
 
 import org.apache.log4j.Logger;
@@ -21,61 +20,59 @@ import javax.persistence.*;
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
 public class AdressKlassifizierung {
-    private static final Logger logger = Logger.getLogger(AdressKlassifizierung.class);
+  private static final Logger logger = Logger.getLogger(AdressKlassifizierung.class);
 
-    @Id
-    @TableGenerator(name = "PKGenAdressKlassifizierung", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "AdressKlassifizierung_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenAdressKlassifizierung")
-    private Long id;
+  @Id
+  @TableGenerator(name = "PKGenAdressKlassifizierung", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "AdressKlassifizierung_id", valueColumnName = "gen_value", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenAdressKlassifizierung")
+  private Long id;
+  @Basic
+  private String klassifizierung;
 
-    public Long getId() {
-        return id;
+  public String getKlassifizierung() {
+    return klassifizierung;
+  }
+
+  public void setKlassifizierung(final String klassifizierung) {
+    this.klassifizierung = klassifizierung;
+  }
+
+  @Override
+  public int hashCode() {
+    return getId() != null ? getId().hashCode() : 0;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
 
-    public void setId(final Long id) {
-        this.id = id;
+    final AdressKlassifizierung that = (AdressKlassifizierung) o;
+
+    if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) {
+      return false;
     }
 
-    @Basic
-    private String klassifizierung;
+    return true;
+  }
 
-    public String getKlassifizierung() {
-        return klassifizierung;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setKlassifizierung(final String klassifizierung) {
-        this.klassifizierung = klassifizierung;
-    }
+  public void setId(final Long id) {
+    this.id = id;
+  }
 
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        final AdressKlassifizierung that = (AdressKlassifizierung) o;
-
-        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return getId() != null ? getId().hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        return "AdressKlassifizierung{" +
-                "id=" + id +
-                ", klassifizierung='" + klassifizierung + '\'' +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "AdressKlassifizierung{" +
+        "id=" + id +
+        ", klassifizierung='" + klassifizierung + '\'' +
+        '}';
+  }
 }

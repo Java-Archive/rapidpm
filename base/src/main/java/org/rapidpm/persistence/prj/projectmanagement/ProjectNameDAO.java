@@ -16,21 +16,21 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectName
 import java.security.InvalidKeyException;
 
 public class ProjectNameDAO extends DAO<Long, PlannedProjectName> {
-    private static final Logger logger = Logger.getLogger(ProjectNameDAO.class);
+  private static final Logger logger = Logger.getLogger(ProjectNameDAO.class);
 
 
-    public ProjectNameDAO(final OrientGraph orientDB) {
-        super(orientDB, PlannedProjectName.class);
-    }
+  public ProjectNameDAO(final OrientGraph orientDB) {
+    super(orientDB, PlannedProjectName.class);
+  }
 
 
-    @Override
-    public PlannedProjectName loadFull(PlannedProjectName entity) throws InvalidKeyException, NotYetImplementedException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public PlannedProjectName loadFull(PlannedProjectName entity) throws InvalidKeyException, NotYetImplementedException {
+    throw new NotYetImplementedException();
+  }
 
-    @Override
-    public PlannedProjectName createEntityFull(PlannedProjectName entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        throw new NotYetImplementedException();
-    }
+  @Override
+  public PlannedProjectName createEntityFull(PlannedProjectName entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    throw new NotYetImplementedException();
+  }
 }

@@ -7,14 +7,14 @@ import org.apache.log4j.Logger;
  *
  * @author Sven Ruppert
  * @version 0.1
- *          <p/>
+ *          <p>
  *          This Source Code is part of the RapidPM - www.rapidpm.org project.
  *          please contact sven.ruppert@me.com
  * @since 03.03.2010
- *        Time: 11:04:51
+ * Time: 11:04:51
  */
 
 public class Einzelunternehmung {
-    private static final Logger logger = Logger.getLogger(Einzelunternehmung.class);
+  private static final Logger logger = Logger.getLogger(Einzelunternehmung.class);
 
 }

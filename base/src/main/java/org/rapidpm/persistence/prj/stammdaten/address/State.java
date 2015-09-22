@@ -11,7 +11,6 @@ package org.rapidpm.persistence.prj.stammdaten.address;
  * Time: 15:33:23
  * This Source Code is part of the RapidPM - www.rapidpm.org project.
  * please contact sven.ruppert@web.de
- *
  */
 
 import org.apache.log4j.Logger;
@@ -22,115 +21,109 @@ import javax.persistence.*;
 @Entity
 
 public class State {
-    private static final Logger logger = Logger.getLogger(State.class);
-    @Id
-    @TableGenerator(name = "PKGenState",
-            table = "pk_gen",
-            pkColumnName = "gen_key",
-            pkColumnValue = "State_id",
-            valueColumnName = "gen_value",
-            allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenState")
-    private Long id;
+  private static final Logger logger = Logger.getLogger(State.class);
+  @Id
+  @TableGenerator(name = "PKGenState",
+      table = "pk_gen",
+      pkColumnName = "gen_key",
+      pkColumnValue = "State_id",
+      valueColumnName = "gen_value",
+      allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenState")
+  private Long id;
+  @Basic
+  private String name;
+  @Basic
+  private String kurzName;
+  @ManyToOne(cascade = CascadeType.REFRESH)
+  private Land land;
+  @ManyToOne
+  private StateKlassifizierung stateklassifizierung;
 
-    public Long getId() {
-        return id;
+  public String getName() {
+    return name;
+  }
+
+  //    @OneToMany(mappedBy = "state")
+  //    private List<Ort> orte;
+
+  public void setName(final String name) {
+    this.name = name;
+  }
+
+  public String getKurzName() {
+    return kurzName;
+  }
+
+  public void setKurzName(final String kurzName) {
+    this.kurzName = kurzName;
+  }
+
+  public Land getLand() {
+    return land;
+  }
+
+  public void setLand(final Land land) {
+    this.land = land;
+  }
+
+  @Override
+  public int hashCode() {
+    return getId() != null ? getId().hashCode() : 0;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
 
-    public void setId(final Long id) {
-        this.id = id;
+    final State that = (State) o;
+
+    if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) {
+      return false;
     }
 
-    @Basic
-    private String name;
-
-    @Basic
-    private String kurzName;
-
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    private Land land;
-
-    //    @OneToMany(mappedBy = "state")
-    //    private List<Ort> orte;
-
-    @ManyToOne
-    private StateKlassifizierung stateklassifizierung;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    public String getKurzName() {
-        return kurzName;
-    }
-
-    public void setKurzName(final String kurzName) {
-        this.kurzName = kurzName;
-    }
+    return true;
+  }
 
 
-    public Land getLand() {
-        return land;
-    }
+  //    public List<Ort> getOrte(){
+  //        return orte;
+  //    }
+  //
+  //
+  //    public void setOrte(final List<Ort> orte){
+  //        this.orte = orte;
+  //    }
 
-    public void setLand(final Land land) {
-        this.land = land;
-    }
+  public Long getId() {
+    return id;
+  }
 
+  public void setId(final Long id) {
+    this.id = id;
+  }
 
-    //    public List<Ort> getOrte(){
-    //        return orte;
-    //    }
-    //
-    //
-    //    public void setOrte(final List<Ort> orte){
-    //        this.orte = orte;
-    //    }
+  @Override
+  public String toString() {
+    return "State{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", kurzName='" + kurzName + '\'' +
+        ", land=" + land +
+        ", stateklassifizierung=" + stateklassifizierung +
+        '}';
+  }
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+  public StateKlassifizierung getStateklassifizierung() {
+    return stateklassifizierung;
+  }
 
-        final State that = (State) o;
-
-        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return getId() != null ? getId().hashCode() : 0;
-    }
-
-
-    public StateKlassifizierung getStateklassifizierung() {
-        return stateklassifizierung;
-    }
-
-    public void setStateklassifizierung(final StateKlassifizierung stateklassifizierung) {
-        this.stateklassifizierung = stateklassifizierung;
-    }
-
-    @Override
-    public String toString() {
-        return "State{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", kurzName='" + kurzName + '\'' +
-                ", land=" + land +
-                ", stateklassifizierung=" + stateklassifizierung +
-                '}';
-    }
+  public void setStateklassifizierung(final StateKlassifizierung stateklassifizierung) {
+    this.stateklassifizierung = stateklassifizierung;
+  }
 }

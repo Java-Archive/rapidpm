@@ -24,55 +24,55 @@ import static org.rapidpm.persistence.Edges.VALID_FOR;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 public class PlanningUnitElementDAO extends DAO<Long, PlanningUnitElement> {
-    private static final Logger logger = Logger.getLogger(PlanningUnitElementDAO.class);
+  private static final Logger logger = Logger.getLogger(PlanningUnitElementDAO.class);
 
-    public PlanningUnitElementDAO(final OrientGraph orientDB) {
-        super(orientDB, PlanningUnitElement.class);
+  public PlanningUnitElementDAO(final OrientGraph orientDB) {
+    super(orientDB, PlanningUnitElement.class);
+  }
+
+  @Override
+  public PlanningUnitElement loadFull(PlanningUnitElement planningUnitElement) throws InvalidKeyException, NotYetImplementedException {
+    if (planningUnitElement.getId() == null) {
+      throw new InvalidKeyException("Can't load details for PlanningUnit without ID");
     }
-
-    @Override
-    public PlanningUnitElement createEntityFull(PlanningUnitElement tempPUE) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-
-        final PlanningUnitElement persistedPUE = createEntityFlat(tempPUE);
-
-        final RessourceGroup ressourceGroup = tempPUE.getRessourceGroup();
-
-        final RessourceGroupDAO ressourceGroupDAO = DaoFactorySingleton.getInstance().getRessourceGroupDAO();
-        if(ressourceGroup == null){
-            throw new MissingNonOptionalPropertyException("ressourceGroup");
-        }
-        RessourceGroup persistedRessourceGroup = null;
-        if(ressourceGroup.getId() == null || ressourceGroup.getId().equals("")){
-            persistedRessourceGroup = ressourceGroupDAO.createEntityFull(ressourceGroup);
-        } else {
-            persistedRessourceGroup = ressourceGroup;
-        }
-        addRessourceGroupToPlanningUnitElement(persistedRessourceGroup, persistedPUE);
-        persistedPUE.setRessourceGroup(persistedRessourceGroup);
-
-        return persistedPUE;
+    final Iterable<Vertex> ressourceGroup = orientDB.command(new OCommandSQL("select expand( out('" + VALID_FOR + "') ) from PlanningUnitElement where @rid = " + planningUnitElement.getId())).execute();
+    for (final Vertex ressourceGroupVertex : ressourceGroup) {
+      planningUnitElement.setRessourceGroup(new EntityUtils<>(RessourceGroup.class).convertVertexToEntity(ressourceGroupVertex));
     }
+    return planningUnitElement;
+  }
 
-    private void addRessourceGroupToPlanningUnitElement(final RessourceGroup ressourceGroup, final PlanningUnitElement planningUnitElement){
-        final Vertex planningUnitElementVertex = orientDB.getVertex(planningUnitElement.getId());
-        final Vertex ressourceGroupVertex = orientDB.getVertex(ressourceGroup.getId());
-        addEdgeFromVertexToVertex(planningUnitElementVertex, VALID_FOR, ressourceGroupVertex);
-    }
+  @Override
+  public PlanningUnitElement createEntityFull(PlanningUnitElement tempPUE) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
 
-    @Override
-    public PlanningUnitElement loadFull(PlanningUnitElement planningUnitElement) throws InvalidKeyException, NotYetImplementedException {
-        if(planningUnitElement.getId() == null){
-            throw new InvalidKeyException("Can't load details for PlanningUnit without ID");
-        }
-        final Iterable<Vertex> ressourceGroup = orientDB.command(new OCommandSQL("select expand( out('"+VALID_FOR+"') ) from PlanningUnitElement where @rid = " + planningUnitElement.getId())).execute();
-        for (final Vertex ressourceGroupVertex : ressourceGroup) {
-            planningUnitElement.setRessourceGroup(new EntityUtils<>(RessourceGroup.class).convertVertexToEntity(ressourceGroupVertex));
-        }
-        return planningUnitElement;
-    }
+    final PlanningUnitElement persistedPUE = createEntityFlat(tempPUE);
 
-    @Override
-    public void deleteByIDFull(final String id) {
-        deleteByIDFlat(id);
+    final RessourceGroup ressourceGroup = tempPUE.getRessourceGroup();
+
+    final RessourceGroupDAO ressourceGroupDAO = DaoFactorySingleton.getInstance().getRessourceGroupDAO();
+    if (ressourceGroup == null) {
+      throw new MissingNonOptionalPropertyException("ressourceGroup");
     }
+    RessourceGroup persistedRessourceGroup = null;
+    if (ressourceGroup.getId() == null || ressourceGroup.getId().equals("")) {
+      persistedRessourceGroup = ressourceGroupDAO.createEntityFull(ressourceGroup);
+    } else {
+      persistedRessourceGroup = ressourceGroup;
+    }
+    addRessourceGroupToPlanningUnitElement(persistedRessourceGroup, persistedPUE);
+    persistedPUE.setRessourceGroup(persistedRessourceGroup);
+
+    return persistedPUE;
+  }
+
+  private void addRessourceGroupToPlanningUnitElement(final RessourceGroup ressourceGroup, final PlanningUnitElement planningUnitElement) {
+    final Vertex planningUnitElementVertex = orientDB.getVertex(planningUnitElement.getId());
+    final Vertex ressourceGroupVertex = orientDB.getVertex(ressourceGroup.getId());
+    addEdgeFromVertexToVertex(planningUnitElementVertex, VALID_FOR, ressourceGroupVertex);
+  }
+
+  @Override
+  public void deleteByIDFull(final String id) {
+    deleteByIDFlat(id);
+  }
 }

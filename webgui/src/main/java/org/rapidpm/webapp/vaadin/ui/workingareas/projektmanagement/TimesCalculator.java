@@ -24,126 +24,124 @@ import static org.rapidpm.Constants.DECIMAL_FORMAT;
 import static org.rapidpm.Constants.MINS_HOUR;
 
 /**
-* RapidPM - www.rapidpm.org
-* User: Marco
-* Date: 31.08.12
-* Time: 14:34
-* This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
-*/
+ * RapidPM - www.rapidpm.org
+ * User: Marco
+ * Date: 31.08.12
+ * Time: 14:34
+ * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
+ */
 public class TimesCalculator {
 
-    private final Screen screen;
-    private List<RessourceGroup> ressourceGroups;
-    private ResourceBundle messages;
-    private MainUI ui;
+  private final Screen screen;
+  private final Map<RessourceGroup, Integer> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
+  private List<RessourceGroup> ressourceGroups;
+  private ResourceBundle messages;
+  private MainUI ui;
+  private PlannedProject currentProject;
+  private Map<RessourceGroup, Double> percentPerResourceGroup = new HashMap<>();
+  private Integer gesamtSummeInMin;
+  private Double mannTageExakt;
 
-    private PlannedProject currentProject;
+  public TimesCalculator(final Screen screen) {
+    this.screen = screen;
+    this.messages = screen.getMessagesBundle();
+    this.ui = screen.getUi();
+    final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+    final RessourceGroupDAO ressourceGroupDAO = daoFactory.getRessourceGroupDAO();
+    ressourceGroups = ressourceGroupDAO.findAll();
+  }
 
-    private Map<RessourceGroup, Double> percentPerResourceGroup = new HashMap<>();
-    private final Map<RessourceGroup, Integer> ressourceGroupDaysHoursMinutesItemMap = new HashMap<>();
-    private Integer gesamtSummeInMin;
-    private Double mannTageExakt;
-
-    public TimesCalculator(final Screen screen) {
-        this.screen = screen;
-        this.messages = screen.getMessagesBundle();
-        this.ui = screen.getUi();
-        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-        final RessourceGroupDAO ressourceGroupDAO = daoFactory.getRessourceGroupDAO();
-        ressourceGroups = ressourceGroupDAO.findAll();
+  public void calculate() {
+    final VaadinSession session = screen.getUi().getSession();
+    currentProject = session.getAttribute(PlannedProject.class);
+    for (final RessourceGroup spalte : this.ressourceGroups) {
+      percentPerResourceGroup.put(spalte, 0.0);
     }
 
-    public void calculate() {
-        final VaadinSession session = screen.getUi().getSession();
-        currentProject = session.getAttribute(PlannedProject.class);
-        for (final RessourceGroup spalte : this.ressourceGroups) {
-            percentPerResourceGroup.put(spalte, 0.0);
-        }
+    calculatePlanningUnitsAndTotalsAbsolut();
+    calculateTotalsRelative();
+    calculateMannTage();
+  }
 
-        calculatePlanningUnitsAndTotalsAbsolut();
-        calculateTotalsRelative();
-        calculateMannTage();
+  private void calculateMannTage() {
+    mannTageExakt = gesamtSummeInMin / MINS_HOUR.doubleValue() / currentProject.getHoursPerWorkingDay().doubleValue();
+  }
+
+  private void calculatePlanningUnitsAndTotalsAbsolut() {
+    final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+    currentProject = daoFactory.getPlannedProjectDAO().findByID(currentProject.getId(), true);
+    for (PlanningUnit planningUnit : currentProject.getTopLevelPlanningUnits()) {
+      planningUnit = daoFactory.getPlanningUnitDAO().findByID(planningUnit.getId(), true);
+      calculatePlanningUnits(planningUnit, planningUnit.getKindPlanningUnits());
     }
-
-    private void calculateMannTage() {
-        mannTageExakt = gesamtSummeInMin / MINS_HOUR.doubleValue() / currentProject.getHoursPerWorkingDay().doubleValue();
-    }
-
-    private void calculatePlanningUnitsAndTotalsAbsolut() {
-        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-        currentProject = daoFactory.getPlannedProjectDAO().findByID(currentProject.getId(), true);
-        for (PlanningUnit planningUnit : currentProject.getTopLevelPlanningUnits()) {
-            planningUnit = daoFactory.getPlanningUnitDAO().findByID(planningUnit.getId(), true);
-            calculatePlanningUnits(planningUnit, planningUnit.getKindPlanningUnits());
-        }
-    }
+  }
 
 
-    private void calculatePlanningUnits(final PlanningUnit parentPlanningUnit, final List<PlanningUnit> planningUnits) {
-        if(planningUnits == null || planningUnits.isEmpty()){
-            addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, parentPlanningUnit);
+  private void calculatePlanningUnits(final PlanningUnit parentPlanningUnit, final List<PlanningUnit> planningUnits) {
+    if (planningUnits == null || planningUnits.isEmpty()) {
+      addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, parentPlanningUnit);
+    } else {
+      for (PlanningUnit planningUnit : planningUnits) {
+        planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
+        final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
+        if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
+          addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, planningUnit);
         } else {
-            for (PlanningUnit planningUnit : planningUnits) {
-                planningUnit = DaoFactorySingleton.getInstance().getPlanningUnitDAO().findByID(planningUnit.getId(), true);
-                final List<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
-                if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
-                    addiereZeileZurRessourceMap(ressourceGroupDaysHoursMinutesItemMap, planningUnit);
-                } else {
-                    calculatePlanningUnits(planningUnit, kindPlanningUnits);
-                }
-            }
+          calculatePlanningUnits(planningUnit, kindPlanningUnits);
         }
+      }
     }
+  }
 
-    private void addiereZeileZurRessourceMap(final Map<RessourceGroup, Integer> ressourceGroupDaysHoursMinutesItemMap,
-                                             final PlanningUnit planningUnit) {
-        for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-            planningUnitElement = DaoFactorySingleton.getInstance().getPlanningUnitElementDAO().findByID(planningUnitElement.getId(), true);
-            final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
-            final String aufgabe = messages.getString("aufgabe");
-            if (!ressourceGroup.getName().equals(aufgabe)) {
-                if (ressourceGroupDaysHoursMinutesItemMap.containsKey(ressourceGroup)) {
-                    final Integer oldMinutes = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup);
-                    ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup,
-                            planningUnitElement.getPlannedMinutes() + oldMinutes);
-                } else {
-                    ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup, planningUnitElement.getPlannedMinutes());
-                }
-            }
+  private void addiereZeileZurRessourceMap(final Map<RessourceGroup, Integer> ressourceGroupDaysHoursMinutesItemMap,
+                                           final PlanningUnit planningUnit) {
+    for (PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+      planningUnitElement = DaoFactorySingleton.getInstance().getPlanningUnitElementDAO().findByID(planningUnitElement.getId(), true);
+      final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
+      final String aufgabe = messages.getString("aufgabe");
+      if (!ressourceGroup.getName().equals(aufgabe)) {
+        if (ressourceGroupDaysHoursMinutesItemMap.containsKey(ressourceGroup)) {
+          final Integer oldMinutes = ressourceGroupDaysHoursMinutesItemMap.get(ressourceGroup);
+          ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup,
+              planningUnitElement.getPlannedMinutes() + oldMinutes);
+        } else {
+          ressourceGroupDaysHoursMinutesItemMap.put(ressourceGroup, planningUnitElement.getPlannedMinutes());
         }
+      }
     }
+  }
 
-    private void calculateTotalsRelative() {
-        gesamtSummeInMin = 0;
-        for (final Map.Entry<RessourceGroup, Integer> absoluteWerteEntry : ressourceGroupDaysHoursMinutesItemMap
-                .entrySet()) {
-            gesamtSummeInMin += absoluteWerteEntry.getValue();
-        }
-        for (final Map.Entry<RessourceGroup, Integer> absoluteWerteEntry : ressourceGroupDaysHoursMinutesItemMap
-                .entrySet()) {
-            final RessourceGroup absoluterWertRessourceGroup = absoluteWerteEntry.getKey();
-            final Integer absoluterWertWert = absoluteWerteEntry.getValue();
-            percentPerResourceGroup.put(absoluterWertRessourceGroup, absoluterWertWert.doubleValue() / gesamtSummeInMin.doubleValue() * 100.0);
-        }
+  private void calculateTotalsRelative() {
+    gesamtSummeInMin = 0;
+    for (final Map.Entry<RessourceGroup, Integer> absoluteWerteEntry : ressourceGroupDaysHoursMinutesItemMap
+        .entrySet()) {
+      gesamtSummeInMin += absoluteWerteEntry.getValue();
     }
+    for (final Map.Entry<RessourceGroup, Integer> absoluteWerteEntry : ressourceGroupDaysHoursMinutesItemMap
+        .entrySet()) {
+      final RessourceGroup absoluterWertRessourceGroup = absoluteWerteEntry.getKey();
+      final Integer absoluterWertWert = absoluteWerteEntry.getValue();
+      percentPerResourceGroup.put(absoluterWertRessourceGroup, absoluterWertWert.doubleValue() / gesamtSummeInMin.doubleValue() * 100.0);
+    }
+  }
 
-    public Map<RessourceGroup, Double> getPercentPerResourceGroup() {
-        return percentPerResourceGroup;
-    }
+  public Map<RessourceGroup, Double> getPercentPerResourceGroup() {
+    return percentPerResourceGroup;
+  }
 
-    public Map<RessourceGroup, Integer> getAbsoluteWerte() {
-        return ressourceGroupDaysHoursMinutesItemMap;
-    }
+  public Map<RessourceGroup, Integer> getAbsoluteWerte() {
+    return ressourceGroupDaysHoursMinutesItemMap;
+  }
 
-    public DaysHoursMinutesItem getGesamtSummeItem() {
-        final VaadinSession session = screen.getUi().getSession();
-        final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
-        final DaysHoursMinutesItem item = new DaysHoursMinutesItem(gesamtSummeInMin, currentProject.getHoursPerWorkingDay());
-        return item;
-    }
+  public DaysHoursMinutesItem getGesamtSummeItem() {
+    final VaadinSession session = screen.getUi().getSession();
+    final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
+    final DaysHoursMinutesItem item = new DaysHoursMinutesItem(gesamtSummeInMin, currentProject.getHoursPerWorkingDay());
+    return item;
+  }
 
-    public String getMannTageGerundet() {
-        final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
-        return format.format(mannTageExakt);
-    }
+  public String getMannTageGerundet() {
+    final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
+    return format.format(mannTageExakt);
+  }
 }

@@ -18,47 +18,47 @@ import java.net.URL;
  */
 public class ResourceUtil {
 
-    public static URL getURL(final String resourceName, final Class clazz) {
-        URL result = null;
+  public static URL getURL(final String resourceName, final Class clazz) {
+    URL result = null;
 
-        result = ResourceUtil.class.getResource(resourceName);
-        if (result == null) {
-            result = clazz.getClassLoader().getResource(resourceName);
-            if (result == null) {
-                result = ClassLoader.getSystemResource(resourceName);
-            }
-        }
-
-        return result;
+    result = ResourceUtil.class.getResource(resourceName);
+    if (result == null) {
+      result = clazz.getClassLoader().getResource(resourceName);
+      if (result == null) {
+        result = ClassLoader.getSystemResource(resourceName);
+      }
     }
 
-    public static InputStream getInputStream(final String resourceName, final Class clazz) {
-        InputStream result = null;
+    return result;
+  }
 
-        result = ResourceUtil.class.getResourceAsStream(resourceName);
-        if (result == null) {
-            result = clazz.getClassLoader().getResourceAsStream(resourceName);
-            if (result == null) {
-                result = ClassLoader.getSystemResourceAsStream(resourceName);
-            }
-        }
+  public static String getString(final String resourceName, final Class clazz) throws IOException {
+    String result = null;
 
-        return result;
+    final InputStream in = ResourceUtil.getInputStream(resourceName, clazz);
+
+    if (in != null) {
+      try {
+        result = IOUtil.readString(in);
+      } finally {
+        in.close();
+      }
     }
 
-    public static String getString(final String resourceName, final Class clazz) throws IOException {
-        String result = null;
+    return result;
+  }
 
-        final InputStream in = ResourceUtil.getInputStream(resourceName, clazz);
+  public static InputStream getInputStream(final String resourceName, final Class clazz) {
+    InputStream result = null;
 
-        if (in != null) {
-            try {
-                result = IOUtil.readString(in);
-            } finally {
-                in.close();
-            }
-        }
-
-        return result;
+    result = ResourceUtil.class.getResourceAsStream(resourceName);
+    if (result == null) {
+      result = clazz.getClassLoader().getResourceAsStream(resourceName);
+      if (result == null) {
+        result = ClassLoader.getSystemResourceAsStream(resourceName);
+      }
     }
+
+    return result;
+  }
 }

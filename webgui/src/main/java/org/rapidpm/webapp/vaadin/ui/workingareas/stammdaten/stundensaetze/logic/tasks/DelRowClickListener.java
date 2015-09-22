@@ -8,21 +8,21 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomp
 import java.util.ResourceBundle;
 
 public class DelRowClickListener implements ClickListener {
-    private ButtonComponent button;
-    private StundensaetzeScreen screen;
-    private ResourceBundle messages;
+  private ButtonComponent button;
+  private StundensaetzeScreen screen;
+  private ResourceBundle messages;
 
-    public DelRowClickListener(final StundensaetzeScreen screen, final ButtonComponent button,
-                               final ResourceBundle messages) {
-        this.screen = screen;
-        this.button = button;
-        this.messages = messages;
-    }
+  public DelRowClickListener(final StundensaetzeScreen screen, final ButtonComponent button,
+                             final ResourceBundle messages) {
+    this.screen = screen;
+    this.button = button;
+    this.messages = messages;
+  }
 
-    @Override
-    public void buttonClick(final ClickEvent event) {
-        final DelRowLogic logic = new DelRowLogic(screen, button, messages);
-        logic.execute();
-    }
+  @Override
+  public void buttonClick(final ClickEvent event) {
+    final DelRowLogic logic = new DelRowLogic(screen, button, messages);
+    logic.execute();
+  }
 
 }

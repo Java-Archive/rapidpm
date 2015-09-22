@@ -15,49 +15,49 @@ import static org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern
 public class RowFieldGroup extends FieldGroup {
 
 
-    private List<AbstractTextField> fieldList = new ArrayList<>();
-    private AbstractTextField nameField;
+  private List<AbstractTextField> fieldList = new ArrayList<>();
+  private AbstractTextField nameField;
 
-    public RowFieldGroup() {
-        setItemDataSource(new BeanItem<>(new RessourceGroup()));
-        buildForm();
-    }
+  public RowFieldGroup() {
+    setItemDataSource(new BeanItem<>(new RessourceGroup()));
+    buildForm();
+  }
 
-    private void buildForm() {
-        for (final Object propertyId : getUnboundPropertyIds()) {
-            final String spaltenName = propertyId.toString();
-            if (spaltenName.equals(NAME)
-                    || spaltenName.equals(BRUTTOGEHALT)
-                    || spaltenName.equals(HOURS_PER_WEEK)
-                    || spaltenName.equals(WEEKS_PER_YEAR)
-                    || spaltenName.equals(FACTURIZABLE)
-                    || spaltenName.equals(EXTERNAL_EUROS_PER_HOUR)
-                    || spaltenName.equals(PLAN_ANZAHL)){
-                final AbstractTextField field = (AbstractTextField) buildAndBind(propertyId);
-                field.setNullRepresentation("");
-                field.setRequired(true);
-                if(spaltenName.equals(NAME)){
-                    nameField = field;
-                } else if( spaltenName.equals(FACTURIZABLE)
-                        || spaltenName.equals(BRUTTOGEHALT)
-                        || spaltenName.equals(EXTERNAL_EUROS_PER_HOUR)){
-                    field.addValidator(new DoubleRangeValidator("Double-Value!",null,null));
-                    fieldList.add(field);
-                } else {
-                    field.addValidator(new IntegerRangeValidator("Integer-Value!",null,null));
-                    fieldList.add(field);
-                }
-
-            }
+  private void buildForm() {
+    for (final Object propertyId : getUnboundPropertyIds()) {
+      final String spaltenName = propertyId.toString();
+      if (spaltenName.equals(NAME)
+          || spaltenName.equals(BRUTTOGEHALT)
+          || spaltenName.equals(HOURS_PER_WEEK)
+          || spaltenName.equals(WEEKS_PER_YEAR)
+          || spaltenName.equals(FACTURIZABLE)
+          || spaltenName.equals(EXTERNAL_EUROS_PER_HOUR)
+          || spaltenName.equals(PLAN_ANZAHL)) {
+        final AbstractTextField field = (AbstractTextField) buildAndBind(propertyId);
+        field.setNullRepresentation("");
+        field.setRequired(true);
+        if (spaltenName.equals(NAME)) {
+          nameField = field;
+        } else if (spaltenName.equals(FACTURIZABLE)
+            || spaltenName.equals(BRUTTOGEHALT)
+            || spaltenName.equals(EXTERNAL_EUROS_PER_HOUR)) {
+          field.addValidator(new DoubleRangeValidator("Double-Value!", null, null));
+          fieldList.add(field);
+        } else {
+          field.addValidator(new IntegerRangeValidator("Integer-Value!", null, null));
+          fieldList.add(field);
         }
-    }
 
-    public AbstractTextField getNameField(){
-        return nameField;
+      }
     }
+  }
 
-    public List<AbstractTextField> getFieldList() {
-        return fieldList;
-    }
+  public AbstractTextField getNameField() {
+    return nameField;
+  }
+
+  public List<AbstractTextField> getFieldList() {
+    return fieldList;
+  }
 
 }

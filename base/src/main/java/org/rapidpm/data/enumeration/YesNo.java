@@ -10,10 +10,10 @@ package org.rapidpm.data.enumeration;
  *
  * @author RapidPM
  * @since 07.05.2009
- *        Time: 22:42:05
- *        This Source Code is part of the RapidPM - www.rapidpm.org project.
- *        please contact sven.ruppert@web.de
+ * Time: 22:42:05
+ * This Source Code is part of the RapidPM - www.rapidpm.org project.
+ * please contact sven.ruppert@web.de
  */
 public enum YesNo {
-    YES, NO
+  YES, NO
 }

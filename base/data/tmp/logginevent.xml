@@ -1,189 +1,189 @@
 <loggingevents>
-    <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
-                   login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
-                   session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-34">
-        <param_element paramName="requestedURL"
-                       paramValue="http://localhost:8080/Kio_Oberberg/messages/veranstalltungen"/>
-        <param_element paramName="accept"
-                       paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
-        <param_element paramName="user-agent"
-                       paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
-        <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
-        <param_element paramName="host" paramValue="localhost:8080"/>
-        <param_element paramName="localAddr" paramValue="127.0.0.1"/>
-        <param_element paramName="referer" paramValue="http://localhost:8080/Kio_Oberberg/messages/termine"/>
-        <param_element paramName="cookie"
-                       paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
-        <param_element paramName="connection" paramValue="keep-alive"/>
-        <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
-        <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
-    </logging_event>
-    <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
-                   login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
-                   session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-44">
-        <param_element paramName="accept"
-                       paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
-        <param_element paramName="user-agent"
-                       paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
-        <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
-        <param_element paramName="host" paramValue="localhost:8080"/>
-        <param_element paramName="localAddr" paramValue="127.0.0.1"/>
-        <param_element paramName="referer" paramValue="http://localhost:8080/Kio_Oberberg/messages/veranstalltungen"/>
-        <param_element paramName="cookie"
-                       paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
-        <param_element paramName="connection" paramValue="keep-alive"/>
-        <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
-        <param_element paramName="requestedURL"
-                       paramValue="http://localhost:8080/Kio_Oberberg/info/hinweisemitgliederbereich"/>
-        <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
-    </logging_event>
-    <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
-                   login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
-                   session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-45">
-        <param_element paramName="accept"
-                       paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
-        <param_element paramName="user-agent"
-                       paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
-        <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
-        <param_element paramName="host" paramValue="localhost:8080"/>
-        <param_element paramName="localAddr" paramValue="127.0.0.1"/>
-        <param_element paramName="cookie"
-                       paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
-        <param_element paramName="referer"
-                       paramValue="http://localhost:8080/Kio_Oberberg/info/hinweisemitgliederbereich"/>
-        <param_element paramName="connection" paramValue="keep-alive"/>
-        <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
-        <param_element paramName="requestedURL" paramValue="http://localhost:8080/Kio_Oberberg/home/disclaimer"/>
-        <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
-    </logging_event>
-    <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
-                   login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
-                   session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-48">
-        <param_element paramName="accept"
-                       paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
-        <param_element paramName="user-agent"
-                       paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
-        <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
-        <param_element paramName="host" paramValue="localhost:8080"/>
-        <param_element paramName="localAddr" paramValue="127.0.0.1"/>
-        <param_element paramName="cookie"
-                       paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
-        <param_element paramName="connection" paramValue="keep-alive"/>
-        <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
-        <param_element paramName="requestedURL" paramValue="http://localhost:8080/Kio_Oberberg/home/disclaimer"/>
-        <param_element paramName="referer" paramValue="http://localhost:8080/Kio_Oberberg/home/disclaimer"/>
-        <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
-    </logging_event>
-    <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
-                   login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
-                   session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-49">
-        <param_element paramName="accept"
-                       paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
-        <param_element paramName="user-agent"
-                       paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
-        <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
-        <param_element paramName="host" paramValue="localhost:8080"/>
-        <param_element paramName="localAddr" paramValue="127.0.0.1"/>
-        <param_element paramName="cookie"
-                       paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
-        <param_element paramName="connection" paramValue="keep-alive"/>
-        <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
-        <param_element paramName="requestedURL" paramValue="http://localhost:8080/Kio_Oberberg/home/sitemap"/>
-        <param_element paramName="referer" paramValue="http://localhost:8080/Kio_Oberberg/home/disclaimer"/>
-        <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
-    </logging_event>
-    <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
-                   login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
-                   session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-50">
-        <param_element paramName="accept"
-                       paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
-        <param_element paramName="user-agent"
-                       paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
-        <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
-        <param_element paramName="host" paramValue="localhost:8080"/>
-        <param_element paramName="localAddr" paramValue="127.0.0.1"/>
-        <param_element paramName="referer" paramValue="http://localhost:8080/Kio_Oberberg/home/sitemap"/>
-        <param_element paramName="cookie"
-                       paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
-        <param_element paramName="connection" paramValue="keep-alive"/>
-        <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
-        <param_element paramName="requestedURL" paramValue="http://localhost:8080/Kio_Oberberg/home/impressum"/>
-        <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
-    </logging_event>
-    <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
-                   login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
-                   session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-51">
-        <param_element paramName="accept"
-                       paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
-        <param_element paramName="user-agent"
-                       paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
-        <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
-        <param_element paramName="host" paramValue="localhost:8080"/>
-        <param_element paramName="localAddr" paramValue="127.0.0.1"/>
-        <param_element paramName="cookie"
-                       paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
-        <param_element paramName="referer" paramValue="http://localhost:8080/Kio_Oberberg/home/impressum"/>
-        <param_element paramName="requestedURL"
-                       paramValue="http://localhost:8080/Kio_Oberberg/home/security/baseregistration"/>
-        <param_element paramName="connection" paramValue="keep-alive"/>
-        <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
-        <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
-    </logging_event>
-    <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
-                   login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
-                   session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-52">
-        <param_element paramName="accept"
-                       paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
-        <param_element paramName="user-agent"
-                       paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
-        <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
-        <param_element paramName="host" paramValue="localhost:8080"/>
-        <param_element paramName="localAddr" paramValue="127.0.0.1"/>
-        <param_element paramName="cookie"
-                       paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
-        <param_element paramName="requestedURL"
-                       paramValue="http://localhost:8080/Kio_Oberberg/home/security/baseanmelden"/>
-        <param_element paramName="connection" paramValue="keep-alive"/>
-        <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
-        <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
-        <param_element paramName="referer"
-                       paramValue="http://localhost:8080/Kio_Oberberg/home/security/baseregistration"/>
-    </logging_event>
-    <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
-                   login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
-                   session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-54">
-        <param_element paramName="accept"
-                       paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
-        <param_element paramName="user-agent"
-                       paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
-        <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
-        <param_element paramName="host" paramValue="localhost:8080"/>
-        <param_element paramName="localAddr" paramValue="127.0.0.1"/>
-        <param_element paramName="referer" paramValue="http://localhost:8080/Kio_Oberberg/home/security/baseanmelden"/>
-        <param_element paramName="cookie"
-                       paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
-        <param_element paramName="requestedURL" paramValue="http://localhost:8080/Kio_Oberberg/search/search"/>
-        <param_element paramName="connection" paramValue="keep-alive"/>
-        <param_element paramName="cache-control" paramValue="max-age=0"/>
-        <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
-        <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
-    </logging_event>
-    <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
-                   login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
-                   session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-55">
-        <param_element paramName="accept"
-                       paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
-        <param_element paramName="user-agent"
-                       paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
-        <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
-        <param_element paramName="host" paramValue="localhost:8080"/>
-        <param_element paramName="localAddr" paramValue="127.0.0.1"/>
-        <param_element paramName="cookie"
-                       paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
-        <param_element paramName="requestedURL" paramValue="http://localhost:8080/Kio_Oberberg/search/search"/>
-        <param_element paramName="connection" paramValue="keep-alive"/>
-        <param_element paramName="referer" paramValue="http://localhost:8080/Kio_Oberberg/search/search"/>
-        <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
-        <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
-    </logging_event>
+  <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
+                 login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
+                 session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-34">
+    <param_element paramName="requestedURL"
+                   paramValue="http://localhost:8080/Kio_Oberberg/messages/veranstalltungen"/>
+    <param_element paramName="accept"
+                   paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
+    <param_element paramName="user-agent"
+                   paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
+    <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
+    <param_element paramName="host" paramValue="localhost:8080"/>
+    <param_element paramName="localAddr" paramValue="127.0.0.1"/>
+    <param_element paramName="referer" paramValue="http://localhost:8080/Kio_Oberberg/messages/termine"/>
+    <param_element paramName="cookie"
+                   paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
+    <param_element paramName="connection" paramValue="keep-alive"/>
+    <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
+    <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
+  </logging_event>
+  <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
+                 login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
+                 session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-44">
+    <param_element paramName="accept"
+                   paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
+    <param_element paramName="user-agent"
+                   paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
+    <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
+    <param_element paramName="host" paramValue="localhost:8080"/>
+    <param_element paramName="localAddr" paramValue="127.0.0.1"/>
+    <param_element paramName="referer" paramValue="http://localhost:8080/Kio_Oberberg/messages/veranstalltungen"/>
+    <param_element paramName="cookie"
+                   paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
+    <param_element paramName="connection" paramValue="keep-alive"/>
+    <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
+    <param_element paramName="requestedURL"
+                   paramValue="http://localhost:8080/Kio_Oberberg/info/hinweisemitgliederbereich"/>
+    <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
+  </logging_event>
+  <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
+                 login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
+                 session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-45">
+    <param_element paramName="accept"
+                   paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
+    <param_element paramName="user-agent"
+                   paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
+    <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
+    <param_element paramName="host" paramValue="localhost:8080"/>
+    <param_element paramName="localAddr" paramValue="127.0.0.1"/>
+    <param_element paramName="cookie"
+                   paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
+    <param_element paramName="referer"
+                   paramValue="http://localhost:8080/Kio_Oberberg/info/hinweisemitgliederbereich"/>
+    <param_element paramName="connection" paramValue="keep-alive"/>
+    <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
+    <param_element paramName="requestedURL" paramValue="http://localhost:8080/Kio_Oberberg/home/disclaimer"/>
+    <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
+  </logging_event>
+  <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
+                 login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
+                 session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-48">
+    <param_element paramName="accept"
+                   paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
+    <param_element paramName="user-agent"
+                   paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
+    <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
+    <param_element paramName="host" paramValue="localhost:8080"/>
+    <param_element paramName="localAddr" paramValue="127.0.0.1"/>
+    <param_element paramName="cookie"
+                   paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
+    <param_element paramName="connection" paramValue="keep-alive"/>
+    <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
+    <param_element paramName="requestedURL" paramValue="http://localhost:8080/Kio_Oberberg/home/disclaimer"/>
+    <param_element paramName="referer" paramValue="http://localhost:8080/Kio_Oberberg/home/disclaimer"/>
+    <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
+  </logging_event>
+  <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
+                 login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
+                 session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-49">
+    <param_element paramName="accept"
+                   paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
+    <param_element paramName="user-agent"
+                   paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
+    <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
+    <param_element paramName="host" paramValue="localhost:8080"/>
+    <param_element paramName="localAddr" paramValue="127.0.0.1"/>
+    <param_element paramName="cookie"
+                   paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
+    <param_element paramName="connection" paramValue="keep-alive"/>
+    <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
+    <param_element paramName="requestedURL" paramValue="http://localhost:8080/Kio_Oberberg/home/sitemap"/>
+    <param_element paramName="referer" paramValue="http://localhost:8080/Kio_Oberberg/home/disclaimer"/>
+    <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
+  </logging_event>
+  <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
+                 login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
+                 session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-50">
+    <param_element paramName="accept"
+                   paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
+    <param_element paramName="user-agent"
+                   paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
+    <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
+    <param_element paramName="host" paramValue="localhost:8080"/>
+    <param_element paramName="localAddr" paramValue="127.0.0.1"/>
+    <param_element paramName="referer" paramValue="http://localhost:8080/Kio_Oberberg/home/sitemap"/>
+    <param_element paramName="cookie"
+                   paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
+    <param_element paramName="connection" paramValue="keep-alive"/>
+    <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
+    <param_element paramName="requestedURL" paramValue="http://localhost:8080/Kio_Oberberg/home/impressum"/>
+    <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
+  </logging_event>
+  <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
+                 login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
+                 session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-51">
+    <param_element paramName="accept"
+                   paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
+    <param_element paramName="user-agent"
+                   paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
+    <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
+    <param_element paramName="host" paramValue="localhost:8080"/>
+    <param_element paramName="localAddr" paramValue="127.0.0.1"/>
+    <param_element paramName="cookie"
+                   paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
+    <param_element paramName="referer" paramValue="http://localhost:8080/Kio_Oberberg/home/impressum"/>
+    <param_element paramName="requestedURL"
+                   paramValue="http://localhost:8080/Kio_Oberberg/home/security/baseregistration"/>
+    <param_element paramName="connection" paramValue="keep-alive"/>
+    <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
+    <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
+  </logging_event>
+  <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
+                 login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
+                 session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-52">
+    <param_element paramName="accept"
+                   paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
+    <param_element paramName="user-agent"
+                   paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
+    <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
+    <param_element paramName="host" paramValue="localhost:8080"/>
+    <param_element paramName="localAddr" paramValue="127.0.0.1"/>
+    <param_element paramName="cookie"
+                   paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
+    <param_element paramName="requestedURL"
+                   paramValue="http://localhost:8080/Kio_Oberberg/home/security/baseanmelden"/>
+    <param_element paramName="connection" paramValue="keep-alive"/>
+    <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
+    <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
+    <param_element paramName="referer"
+                   paramValue="http://localhost:8080/Kio_Oberberg/home/security/baseregistration"/>
+  </logging_event>
+  <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
+                 login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
+                 session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-54">
+    <param_element paramName="accept"
+                   paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
+    <param_element paramName="user-agent"
+                   paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
+    <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
+    <param_element paramName="host" paramValue="localhost:8080"/>
+    <param_element paramName="localAddr" paramValue="127.0.0.1"/>
+    <param_element paramName="referer" paramValue="http://localhost:8080/Kio_Oberberg/home/security/baseanmelden"/>
+    <param_element paramName="cookie"
+                   paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
+    <param_element paramName="requestedURL" paramValue="http://localhost:8080/Kio_Oberberg/search/search"/>
+    <param_element paramName="connection" paramValue="keep-alive"/>
+    <param_element paramName="cache-control" paramValue="max-age=0"/>
+    <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
+    <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
+  </logging_event>
+  <logging_event mandantengruppe="KIO Oberberg" webAppName="KIO Oberberg_App" grpName="user"
+                 login="Anonymous_KIO Oberberg" methodname="GET" loglevel="DEBUG"
+                 session_id="7475D6CD1DEC65EA002E84DBED73B06C" timestamp="2010-06-11-01-22-55">
+    <param_element paramName="accept"
+                   paramValue="application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"/>
+    <param_element paramName="user-agent"
+                   paramValue="Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.70 Safari/533.4"/>
+    <param_element paramName="accept-language" paramValue="de-DE,de;q=0.8,en-US;q=0.6,en;q=0.4"/>
+    <param_element paramName="host" paramValue="localhost:8080"/>
+    <param_element paramName="localAddr" paramValue="127.0.0.1"/>
+    <param_element paramName="cookie"
+                   paramValue="blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; JSESSIONID=7475D6CD1DEC65EA002E84DBED73B06C; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}; blackbird={&quot;pos&quot;: 1, &quot;size&quot;: 0, &quot;load&quot;: null}"/>
+    <param_element paramName="requestedURL" paramValue="http://localhost:8080/Kio_Oberberg/search/search"/>
+    <param_element paramName="connection" paramValue="keep-alive"/>
+    <param_element paramName="referer" paramValue="http://localhost:8080/Kio_Oberberg/search/search"/>
+    <param_element paramName="accept-charset" paramValue="ISO-8859-1,utf-8;q=0.7,*;q=0.3"/>
+    <param_element paramName="accept-encoding" paramValue="gzip,deflate,sdch"/>
+  </logging_event>
 </loggingevents>

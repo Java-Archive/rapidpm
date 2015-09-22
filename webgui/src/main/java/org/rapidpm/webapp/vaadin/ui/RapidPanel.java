@@ -13,32 +13,32 @@ import com.vaadin.ui.VerticalLayout;
  */
 public class RapidPanel extends Panel {
 
-    private final VerticalLayout contentLayout = new VerticalLayout();
+  private final VerticalLayout contentLayout = new VerticalLayout();
 
-    public RapidPanel(){
-        contentLayout.setSpacing(true);
-        contentLayout.setMargin(true);
-        setContent(contentLayout);
-        contentLayout.removeAllComponents();
-    }
+  public RapidPanel() {
+    contentLayout.setSpacing(true);
+    contentLayout.setMargin(true);
+    setContent(contentLayout);
+    contentLayout.removeAllComponents();
+  }
 
-    protected void turnEditableDesignOn(boolean b) {
-        if(b){
-            contentLayout.setStyleName("abc");
-        } else {
-            contentLayout.setStyleName(null);
-        }
+  protected void turnEditableDesignOn(boolean b) {
+    if (b) {
+      contentLayout.setStyleName("abc");
+    } else {
+      contentLayout.setStyleName(null);
     }
+  }
 
-    public void addComponent(final Component component){
-        contentLayout.addComponent(component);
-    }
+  public void addComponent(final Component component) {
+    contentLayout.addComponent(component);
+  }
 
-    public void removeAllComponents(){
-        contentLayout.removeAllComponents();
-    }
+  public void removeAllComponents() {
+    contentLayout.removeAllComponents();
+  }
 
-    public VerticalLayout getContentLayout() {
-        return contentLayout;
-    }
+  public VerticalLayout getContentLayout() {
+    return contentLayout;
+  }
 }

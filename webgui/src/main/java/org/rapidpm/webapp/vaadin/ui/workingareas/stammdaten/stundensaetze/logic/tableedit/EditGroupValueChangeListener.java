@@ -19,120 +19,119 @@ import java.util.ResourceBundle;
 
 public class EditGroupValueChangeListener implements ValueChangeListener {
 
-    private OptionGroup editGroup;
-    private Button saveButton;
-    private Table tabelle;
-    private Layout saveButtonLayout;
-    private ResourceBundle messages;
-    private StundensaetzeScreen screen;
-    private List<ItemClickDependentComponent> components;
-    private Button deleteButton;
+  private static final Logger logger = Logger.getLogger(EditGroupValueChangeListener.class);
+  private OptionGroup editGroup;
+  private Button saveButton;
+  private Table tabelle;
+  private Layout saveButtonLayout;
+  private ResourceBundle messages;
+  private StundensaetzeScreen screen;
+  private List<ItemClickDependentComponent> components;
+  private Button deleteButton;
 
-    private static final Logger logger = Logger.getLogger(EditGroupValueChangeListener.class);
+  public EditGroupValueChangeListener(final StundensaetzeScreen screen, List<ItemClickDependentComponent>
+      components, final Button deleteButton, final ResourceBundle bundle,
+                                      final Layout saveButtonLayout, final OptionGroup group,
+                                      final Button saveButton, final Table tabelle) {
+    this.screen = screen;
+    this.components = components;
+    this.deleteButton = deleteButton;
+    this.messages = bundle;
+    this.editGroup = group;
+    this.saveButton = saveButton;
+    this.tabelle = tabelle;
+    this.saveButtonLayout = saveButtonLayout;
+  }
 
-    public EditGroupValueChangeListener(final StundensaetzeScreen screen, List<ItemClickDependentComponent>
-            components, final Button deleteButton, final ResourceBundle bundle,
-                                        final Layout saveButtonLayout, final OptionGroup group,
-                                        final Button saveButton, final Table tabelle) {
-        this.screen = screen;
-        this.components = components;
-        this.deleteButton = deleteButton;
-        this.messages = bundle;
-        this.editGroup = group;
-        this.saveButton = saveButton;
-        this.tabelle = tabelle;
-        this.saveButtonLayout = saveButtonLayout;
+  @Override
+  public void valueChange(final ValueChangeEvent event) {
+    final String TABLEMODE = messages.getString("stdsatz_tablemode");
+    final Property property = event.getProperty();
+    final Object value = property.getValue();
+    if (value != null) {
+      if (value.equals(TABLEMODE)) {
+        EditModeGetter.setMode(EditModes.TABLEEDIT);
+      } else {
+        EditModeGetter.setMode(EditModes.ROWEDIT);
+      }
+      editMethod(EditModeGetter.getMode());
     }
 
-    @Override
-    public void valueChange(final ValueChangeEvent event) {
-        final String TABLEMODE = messages.getString("stdsatz_tablemode");
-        final Property property = event.getProperty();
-        final Object value = property.getValue();
-        if (value != null) {
-            if (value.equals(TABLEMODE)) {
-                EditModeGetter.setMode(EditModes.TABLEEDIT);
-            } else {
-                EditModeGetter.setMode(EditModes.ROWEDIT);
-            }
-            editMethod(EditModeGetter.getMode());
-        }
+  }
 
-    }
-
-    private void editMethod(final EditModes mode) {
+  private void editMethod(final EditModes mode) {
 //        final EditGroupValueChangeListenerBean editGroupValueChangeListenerBean = EJBFactory
 //                .getEjbInstance(EditGroupValueChangeListenerBean.class);
 //        final DaoFactoryBean baseDaoFactoryBean = editGroupValueChangeListenerBean.getDaoFactoryBean();
 
-        final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
-        for (final Object listener : saveButton.getListeners(Component.Event.class)) {
-            if (listener instanceof Button.ClickListener) {
-                saveButton.removeClickListener((Button.ClickListener) listener);
-            }
-        }
-        for(final Object listener : tabelle.getListeners(Component.Event.class)){
-            if (listener instanceof ItemClickEvent.ItemClickListener) {
-                tabelle.removeItemClickListener((ItemClickEvent.ItemClickListener) listener);
-            }
-        }
-
-        if(mode.equals(EditModes.TABLEEDIT)){
-            tabelle.setValue(null);
-            saveButtonLayout.setVisible(true);
-            tabelle.setReadOnly(true);
-            tabelle.setTableFieldFactory(new TableEditFieldFactory());
-            tabelle.setEditable(true);
-            tabelle.setSelectable(false);
-
-
-            saveButton.addClickListener(new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    try {
-                        tabelle.commit();
-                        for(RessourceGroup ressourceGroup : (Collection<RessourceGroup>) tabelle.getItemIds()){
-                            DaoFactorySingleton.getInstance().getRessourceGroupDAO().updateByEntity(ressourceGroup, false);
-                        }
-                        screen.generateTableAndCalculate();
-                        saveButtonLayout.setVisible(false);
-                        tabelle.setEditable(false);
-                        editGroup.setValue(messages.getString("stdsatz_rowmode"));
-                    } catch (Exception e) {
-                        logger.warn("Exception", e);
-                    }
-                }
-            });
-        } else {
-            tabelle.setReadOnly(false);
-            tabelle.setSelectable(true);
-            tabelle.setEditable(false);
-            saveButtonLayout.setVisible(false);
-            tabelle.addItemClickListener(new StundensaetzeItemClickListener(components, deleteButton,
-                    saveButtonLayout, tabelle));
-
-            saveButton.addClickListener(new Button.ClickListener() {
-
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    try {
-
-                        //RessourceGroup in DB updaten
-                        tabelle.commit();
-                        final RessourceGroup ressourceGroup = (RessourceGroup)tabelle.getValue();
-                        daoFactory.getRessourceGroupDAO().updateByEntity(ressourceGroup, false);
-                        screen.generateTableAndCalculate();
-
-                        saveButtonLayout.setVisible(false);
-                        tabelle.setEditable(false);
-                        editGroup.setValue(messages.getString("stdsatz_rowmode"));
-
-                    } catch (final Exception e) {
-                        logger.warn("Exception", e);
-                    }
-                }
-            });
-        }
+    final DaoFactory daoFactory = DaoFactorySingleton.getInstance();
+    for (final Object listener : saveButton.getListeners(Component.Event.class)) {
+      if (listener instanceof Button.ClickListener) {
+        saveButton.removeClickListener((Button.ClickListener) listener);
+      }
     }
+    for (final Object listener : tabelle.getListeners(Component.Event.class)) {
+      if (listener instanceof ItemClickEvent.ItemClickListener) {
+        tabelle.removeItemClickListener((ItemClickEvent.ItemClickListener) listener);
+      }
+    }
+
+    if (mode.equals(EditModes.TABLEEDIT)) {
+      tabelle.setValue(null);
+      saveButtonLayout.setVisible(true);
+      tabelle.setReadOnly(true);
+      tabelle.setTableFieldFactory(new TableEditFieldFactory());
+      tabelle.setEditable(true);
+      tabelle.setSelectable(false);
+
+
+      saveButton.addClickListener(new Button.ClickListener() {
+        @Override
+        public void buttonClick(Button.ClickEvent event) {
+          try {
+            tabelle.commit();
+            for (RessourceGroup ressourceGroup : (Collection<RessourceGroup>) tabelle.getItemIds()) {
+              DaoFactorySingleton.getInstance().getRessourceGroupDAO().updateByEntity(ressourceGroup, false);
+            }
+            screen.generateTableAndCalculate();
+            saveButtonLayout.setVisible(false);
+            tabelle.setEditable(false);
+            editGroup.setValue(messages.getString("stdsatz_rowmode"));
+          } catch (Exception e) {
+            logger.warn("Exception", e);
+          }
+        }
+      });
+    } else {
+      tabelle.setReadOnly(false);
+      tabelle.setSelectable(true);
+      tabelle.setEditable(false);
+      saveButtonLayout.setVisible(false);
+      tabelle.addItemClickListener(new StundensaetzeItemClickListener(components, deleteButton,
+          saveButtonLayout, tabelle));
+
+      saveButton.addClickListener(new Button.ClickListener() {
+
+        @Override
+        public void buttonClick(Button.ClickEvent event) {
+          try {
+
+            //RessourceGroup in DB updaten
+            tabelle.commit();
+            final RessourceGroup ressourceGroup = (RessourceGroup) tabelle.getValue();
+            daoFactory.getRessourceGroupDAO().updateByEntity(ressourceGroup, false);
+            screen.generateTableAndCalculate();
+
+            saveButtonLayout.setVisible(false);
+            tabelle.setEditable(false);
+            editGroup.setValue(messages.getString("stdsatz_rowmode"));
+
+          } catch (final Exception e) {
+            logger.warn("Exception", e);
+          }
+        }
+      });
+    }
+  }
 
 }

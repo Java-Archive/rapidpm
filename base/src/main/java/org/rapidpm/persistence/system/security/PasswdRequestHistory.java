@@ -11,7 +11,6 @@ package org.rapidpm.persistence.system.security;
  * Time: 15:33:53
  * This Source Code is part of the RapidPM - www.rapidpm.org project.
  * please contact sven.ruppert@web.de
- *
  */
 
 import org.apache.log4j.Logger;
@@ -23,77 +22,73 @@ import java.util.Date;
 //@Entity
 @Deprecated
 public class PasswdRequestHistory {
-    private static final Logger logger = Logger.getLogger(PasswdRequestHistory.class);
+  private static final Logger logger = Logger.getLogger(PasswdRequestHistory.class);
 
 
-    @Id
-    @TableGenerator(name = "PKGenPasswdRequestHistory", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "PasswdRequestHistory_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE,
-            generator = "PKGenPasswdRequestHistory")
-    private Long id;
+  @Id
+  @TableGenerator(name = "PKGenPasswdRequestHistory", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "PasswdRequestHistory_id", valueColumnName = "gen_value", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE,
+      generator = "PKGenPasswdRequestHistory")
+  private Long id;
+  @Basic
+  private Date created;
+  @Basic
+  private String kommentar;
+  @ManyToOne(fetch = FetchType.EAGER)
+  private PasswdRequestStatus passwdRequestStatus;
 
-    public Long getId() {
-        return id;
+  public Date getCreated() {
+    return created;
+  }
+
+  public void setCreated(final Date created) {
+    this.created = created;
+  }
+
+  public String getKommentar() {
+    return kommentar;
+  }
+
+  public void setKommentar(final String kommentar) {
+    this.kommentar = kommentar;
+  }
+
+  public PasswdRequestStatus getPasswdRequestStatus() {
+    return passwdRequestStatus;
+  }
+
+  public void setPasswdRequestStatus(final PasswdRequestStatus passwdRequestStatus) {
+    this.passwdRequestStatus = passwdRequestStatus;
+  }
+
+  @Override
+  public int hashCode() {
+    return getId() != null ? getId().hashCode() : 0;
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
     }
 
-    public void setId(final Long id) {
-        this.id = id;
+    final PasswdRequestHistory that = (PasswdRequestHistory) o;
+
+    if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) {
+      return false;
     }
 
-    @Basic
-    private Date created;
-    @Basic
-    private String kommentar;
+    return true;
+  }
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private PasswdRequestStatus passwdRequestStatus;
+  public Long getId() {
+    return id;
+  }
 
-
-    public Date getCreated() {
-        return created;
-    }
-
-    public void setCreated(final Date created) {
-        this.created = created;
-    }
-
-    public String getKommentar() {
-        return kommentar;
-    }
-
-    public void setKommentar(final String kommentar) {
-        this.kommentar = kommentar;
-    }
-
-
-    public PasswdRequestStatus getPasswdRequestStatus() {
-        return passwdRequestStatus;
-    }
-
-    public void setPasswdRequestStatus(final PasswdRequestStatus passwdRequestStatus) {
-        this.passwdRequestStatus = passwdRequestStatus;
-    }
-
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        final PasswdRequestHistory that = (PasswdRequestHistory) o;
-
-        if (getId() != null ? !getId().equals(that.getId()) : that.getId() != null) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return getId() != null ? getId().hashCode() : 0;
-    }
+  public void setId(final Long id) {
+    this.id = id;
+  }
 }

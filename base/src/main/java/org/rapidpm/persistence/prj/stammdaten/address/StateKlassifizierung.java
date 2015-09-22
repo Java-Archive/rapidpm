@@ -13,37 +13,36 @@ import javax.persistence.*;
 
 @Entity
 public class StateKlassifizierung {
-    private static final Logger logger = Logger.getLogger(StateKlassifizierung.class);
+  private static final Logger logger = Logger.getLogger(StateKlassifizierung.class);
 
-    @Id
-    @TableGenerator(name = "PKGenStateKlassifizierung", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "StateKlassifizierung_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenStateKlassifizierung")
-    private Long id;
+  @Id
+  @TableGenerator(name = "PKGenStateKlassifizierung", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "StateKlassifizierung_id", valueColumnName = "gen_value", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "PKGenStateKlassifizierung")
+  private Long id;
+  @Basic
+  private String bezeichnung;
 
-    public Long getId() {
-        return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setId(final Long id) {
-        this.id = id;
-    }
+  public void setId(final Long id) {
+    this.id = id;
+  }
 
-    @Basic
-    private String bezeichnung;
+  public String getBezeichnung() {
+    return bezeichnung;
+  }
 
-    public String getBezeichnung() {
-        return bezeichnung;
-    }
+  public void setBezeichnung(final String bezeichnung) {
+    this.bezeichnung = bezeichnung;
+  }
 
-    public void setBezeichnung(final String bezeichnung) {
-        this.bezeichnung = bezeichnung;
-    }
-
-    @Override
-    public String toString() {
-        return "StateKlassifizierung{" +
-                "id=" + id +
-                ", bezeichnung='" + bezeichnung + '\'' +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "StateKlassifizierung{" +
+        "id=" + id +
+        ", bezeichnung='" + bezeichnung + '\'' +
+        '}';
+  }
 }

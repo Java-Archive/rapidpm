@@ -14,14 +14,15 @@ import com.tinkerpop.blueprints.impls.orient.OrientVertex;
 import org.apache.log4j.Logger;
 import org.rapidpm.exception.MissingNonOptionalPropertyException;
 import org.rapidpm.exception.NotYetImplementedException;
-import org.rapidpm.persistence.prj.textelement.TextElement;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.security.InvalidKeyException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -36,197 +37,194 @@ import java.util.*;
  */
 
 public abstract class DAO<K extends Number, E> implements Serializable {
-    private static final Logger logger = Logger.getLogger(DAO.class);
+  private static final Logger logger = Logger.getLogger(DAO.class);
+  protected Class<E> entityClass;
+  protected OrientGraph orientDB = null;
+  protected EntityUtils<E> entityUtils;
+  protected DAO(final OrientGraph orientDB, final Class<E> entityClass) {
+    this.orientDB = orientDB;
+    this.entityClass = entityClass;
+    this.entityUtils = new EntityUtils<>(entityClass);
+  }
 
-    protected DAO(final OrientGraph orientDB, final Class<E> entityClass) {
-        this.orientDB = orientDB;
-        this.entityClass = entityClass;
-        this.entityUtils = new EntityUtils<>(entityClass);
-    }
+  public void setOrientDB(final OrientGraph orientDB) {
+    this.orientDB = orientDB;
+  }
 
-    protected Class<E> entityClass;
-    protected OrientGraph orientDB = null;
-    protected EntityUtils<E> entityUtils;
-
-
-    public void setOrientDB(final OrientGraph orientDB) {
-        this.orientDB = orientDB;
-    }
-
-    public OrientGraph getEntityManager() {
-        return orientDB;
-    }
+  public OrientGraph getEntityManager() {
+    return orientDB;
+  }
 
 
-    /**
-     * Liefert die Entität passend zum PKey
-     *
-     * @param rid PKey der Entität
-     * @return Die Entität oder null falls nichts gefunden wurde.
-     */
-    public E findByID(final String rid, boolean loadFull) {
-        final Vertex vertex = orientDB.getVertex(rid);
-        final E entity = entityUtils.convertVertexToEntity(vertex);
-        if (loadFull) {
-            try {
-                loadFull(entity);
-            } catch (InvalidKeyException e) {
-                logger.error(e.getMessage());
-            } catch (NotYetImplementedException e) {
-                logger.error(e.getCause());
-            }
-
-        }
-        return entity;
-    }
-
-    protected abstract E loadFull(final E entity) throws InvalidKeyException, NotYetImplementedException;
-
-    public List<E> findAll() {
-        try {
-            final Iterable<Vertex> entityVertices = orientDB.getVerticesOfClass(entityClass.getSimpleName());
-            return entityUtils.convertVerticesToEntities(entityVertices);
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
-            e.printStackTrace();
-        }
-        return new ArrayList<>();
-    }
-
-    public E createEntityFlat(final E entity) {
-        final OrientVertex[] v = new OrientVertex[1];
-        new OrientDBTransactionExecutor(orientDB) {
-            @Override
-            public void doSpecificDBWork() {
-                v[0] = orientDB.addVertex("class:" + entityClass.getSimpleName(), entityUtils.convertEntityToKeyValueMap(entity));
-            }
-        }.execute();
-        return entityUtils.convertVertexToEntity(v[0]);
-    }
-
-    public abstract E createEntityFull(final E entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException;
-
-    public void addEdgeFromVertexToVertex(final Vertex fromVertex, final String edgeLabel, final Vertex toVertex) {
-        new OrientDBTransactionExecutor(orientDB) {
-            @Override
-            public void doSpecificDBWork() {
-                fromVertex.addEdge(edgeLabel, toVertex);
-            }
-        }.execute();
-    }
-
-    private Map<String, Object> checkAndConvertEntityBeforeDeletion(E entity) {
-        final Map<String, Object> entityFieldMap = entityUtils.convertEntityToKeyValueMap(entity);
-        if(!entityFieldMap.containsKey("id") || entityFieldMap.get("id").toString().equals("") ){
-            logger.error("couldn't delete transient entity of class "+entity.getClass().getSimpleName());
-            return null;
-        }
-        return entityFieldMap;
-    }
-
-
-    public void deleteByEntity(final E entity, final boolean deleteFull){
-        final Map<String, Object> entityFieldMap = checkAndConvertEntityBeforeDeletion(entity);
-        if(entityFieldMap == null) {
-            return;
-        }
-        deleteByID(entityFieldMap.get("id").toString(), deleteFull);
-    }
-
-    public void deleteByID(final String id, final boolean deleteFull) {
-        if(id == null || id.equals("")){
-            logger.error("tried to delete entity without id");
-            return;
-        }
-        new OrientDBTransactionExecutor(orientDB) {
-            @Override
-            public void doSpecificDBWork() {
-                if (deleteFull) {
-                    deleteByIDFull(id);
-                } else {
-                    deleteByIDFlat(id);
-                }
-            }
-        }.execute();
-    }
-
-    /*
-    *   DON'T USE THIS FROM OUTSIDE
-    */
-    protected void deleteByIDFlat(final String id){
-        final String deleteCommand = "DELETE VERTEX " + id;
-        orientDB.getRawGraph().command(new OCommandSQL(deleteCommand)).execute();
+  /**
+   * Liefert die Entität passend zum PKey
+   *
+   * @param rid PKey der Entität
+   *
+   * @return Die Entität oder null falls nichts gefunden wurde.
+   */
+  public E findByID(final String rid, boolean loadFull) {
+    final Vertex vertex = orientDB.getVertex(rid);
+    final E entity = entityUtils.convertVertexToEntity(vertex);
+    if (loadFull) {
+      try {
+        loadFull(entity);
+      } catch (InvalidKeyException e) {
+        logger.error(e.getMessage());
+      } catch (NotYetImplementedException e) {
+        logger.error(e.getCause());
+      }
 
     }
+    return entity;
+  }
 
-    public void deleteByIDFull(final String id){
+  protected abstract E loadFull(final E entity) throws InvalidKeyException, NotYetImplementedException;
 
+  public List<E> findAll() {
+    try {
+      final Iterable<Vertex> entityVertices = orientDB.getVerticesOfClass(entityClass.getSimpleName());
+      return entityUtils.convertVerticesToEntities(entityVertices);
+    } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+      e.printStackTrace();
     }
+    return new ArrayList<>();
+  }
 
-    public void updateByEntity(final E entity, final boolean full){
-        if(full){
-           updateByEntityFull(entity);
+  public E createEntityFlat(final E entity) {
+    final OrientVertex[] v = new OrientVertex[1];
+    new OrientDBTransactionExecutor(orientDB) {
+      @Override
+      public void doSpecificDBWork() {
+        v[0] = orientDB.addVertex("class:" + entityClass.getSimpleName(), entityUtils.convertEntityToKeyValueMap(entity));
+      }
+    }.execute();
+    return entityUtils.convertVertexToEntity(v[0]);
+  }
+
+  public abstract E createEntityFull(final E entity) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException;
+
+  public void addEdgeFromVertexToVertex(final Vertex fromVertex, final String edgeLabel, final Vertex toVertex) {
+    new OrientDBTransactionExecutor(orientDB) {
+      @Override
+      public void doSpecificDBWork() {
+        fromVertex.addEdge(edgeLabel, toVertex);
+      }
+    }.execute();
+  }
+
+  public void deleteByEntity(final E entity, final boolean deleteFull) {
+    final Map<String, Object> entityFieldMap = checkAndConvertEntityBeforeDeletion(entity);
+    if (entityFieldMap == null) {
+      return;
+    }
+    deleteByID(entityFieldMap.get("id").toString(), deleteFull);
+  }
+
+  private Map<String, Object> checkAndConvertEntityBeforeDeletion(E entity) {
+    final Map<String, Object> entityFieldMap = entityUtils.convertEntityToKeyValueMap(entity);
+    if (!entityFieldMap.containsKey("id") || entityFieldMap.get("id").toString().equals("")) {
+      logger.error("couldn't delete transient entity of class " + entity.getClass().getSimpleName());
+      return null;
+    }
+    return entityFieldMap;
+  }
+
+  public void deleteByID(final String id, final boolean deleteFull) {
+    if (id == null || id.equals("")) {
+      logger.error("tried to delete entity without id");
+      return;
+    }
+    new OrientDBTransactionExecutor(orientDB) {
+      @Override
+      public void doSpecificDBWork() {
+        if (deleteFull) {
+          deleteByIDFull(id);
         } else {
-            updateByEntityFlat(entity);
+          deleteByIDFlat(id);
         }
+      }
+    }.execute();
+  }
+
+  public void deleteByIDFull(final String id) {
+
+  }
+
+  /*
+  *   DON'T USE THIS FROM OUTSIDE
+  */
+  protected void deleteByIDFlat(final String id) {
+    final String deleteCommand = "DELETE VERTEX " + id;
+    orientDB.getRawGraph().command(new OCommandSQL(deleteCommand)).execute();
+
+  }
+
+  public void updateByEntity(final E entity, final boolean full) {
+    if (full) {
+      updateByEntityFull(entity);
+    } else {
+      updateByEntityFlat(entity);
     }
+  }
 
-    protected void updateByEntityFull(final E entity){
+  protected void updateByEntityFull(final E entity) {
 
+  }
+
+
+  protected void updateByEntityFlat(final E entity) {
+    new OrientDBTransactionExecutor(orientDB) {
+      @Override
+      public void doSpecificDBWork() {
+        final Map<String, Object> fieldValueMap = entityUtils.convertEntityToKeyValueMap(entity);
+        final String id = fieldValueMap.get("id").toString();
+        fieldValueMap.remove("id");
+        String updateCommand = "UPDATE " + entity.getClass().getSimpleName() + " SET ? WHERE @rid = '" + id + "'";
+        updateCommand = updateCommand.replace("?", createFieldUpdateString(fieldValueMap));
+        orientDB.getRawGraph().command(new OCommandSQL(updateCommand)).execute();
+      }
+    }.execute();
+  }
+
+  private String createFieldUpdateString(Map<String, Object> fieldValueMap) {
+    final StringBuilder sb = new StringBuilder();
+    for (final String fieldName : fieldValueMap.keySet()) {
+      String value;
+      final Object valueObject = fieldValueMap.get(fieldName);
+      if (valueObject instanceof String) {
+        value = "'" + valueObject.toString() + "'";
+      } else if (valueObject instanceof Date) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        value = formatter.format(valueObject);
+      } else {
+        value = valueObject.toString();
+      }
+      sb.append(fieldName + " = " + value);
+      sb.append(", ");
     }
+    return sb.substring(0, sb.length() - 2);
+  }
 
-
-    protected void updateByEntityFlat(final E entity) {
-        new OrientDBTransactionExecutor(orientDB) {
-            @Override
-            public void doSpecificDBWork() {
-                final Map<String, Object> fieldValueMap = entityUtils.convertEntityToKeyValueMap(entity);
-                final String id = fieldValueMap.get("id").toString();
-                fieldValueMap.remove("id");
-                String updateCommand = "UPDATE " + entity.getClass().getSimpleName()+ " SET ? WHERE @rid = '" + id + "'";
-                updateCommand = updateCommand.replace("?", createFieldUpdateString(fieldValueMap));
-                orientDB.getRawGraph().command(new OCommandSQL(updateCommand)).execute();
-            }
-        }.execute();
-    }
-
-    protected OrientVertex removeEdgesOfKindFromVertex(final Direction direction, final String edgeLabel,final Vertex vertex) {
-        new OrientDBTransactionExecutor(orientDB) {
-            @Override
-            public void doSpecificDBWork() {
-                Iterable<Edge> edges = vertex.getEdges(direction, edgeLabel);
-                for (final Edge oneEdge : edges) {
-                    OrientVertex vertex1 = (OrientVertex) oneEdge.getVertex(Direction.IN);
-                    OrientVertex vertex2 = (OrientVertex) oneEdge.getVertex(Direction.OUT);
-                    vertex1.reload();
-                    vertex2.reload();
-                    oneEdge.remove();
-                }
-            }
-        }.execute();
-        final OrientVertex updatedVertex = orientDB.getVertex(vertex.getId());
-        updatedVertex.reload();
-        return updatedVertex;
-
-    }
-
-    private String createFieldUpdateString(Map<String, Object> fieldValueMap) {
-        final StringBuilder sb = new StringBuilder();
-        for (final String fieldName : fieldValueMap.keySet()) {
-            String value;
-            final Object valueObject = fieldValueMap.get(fieldName);
-            if(valueObject instanceof String) {
-                value = "'" + valueObject.toString() + "'";
-            } else if (valueObject instanceof Date) {
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                value = formatter.format(valueObject);
-            } else {
-                value = valueObject.toString();
-            }
-            sb.append(fieldName + " = " + value);
-            sb.append(", ");
+  protected OrientVertex removeEdgesOfKindFromVertex(final Direction direction, final String edgeLabel, final Vertex vertex) {
+    new OrientDBTransactionExecutor(orientDB) {
+      @Override
+      public void doSpecificDBWork() {
+        Iterable<Edge> edges = vertex.getEdges(direction, edgeLabel);
+        for (final Edge oneEdge : edges) {
+          OrientVertex vertex1 = (OrientVertex) oneEdge.getVertex(Direction.IN);
+          OrientVertex vertex2 = (OrientVertex) oneEdge.getVertex(Direction.OUT);
+          vertex1.reload();
+          vertex2.reload();
+          oneEdge.remove();
         }
-        return sb.substring(0, sb.length() - 2);
-    }
+      }
+    }.execute();
+    final OrientVertex updatedVertex = orientDB.getVertex(vertex.getId());
+    updatedVertex.reload();
+    return updatedVertex;
+
+  }
 
 
 //    //TODO die Abfrage fehlt noch..
@@ -336,11 +334,10 @@ public abstract class DAO<K extends Number, E> implements Serializable {
 //        return true;
 //    }
 
-
-    public Iterable<Vertex> loadAllEntities() {
-        final Iterable<Vertex> entityList = orientDB.getVerticesOfClass(entityClass.getSimpleName());
-        return entityList;
-    }
+  public Iterable<Vertex> loadAllEntities() {
+    final Iterable<Vertex> entityList = orientDB.getVerticesOfClass(entityClass.getSimpleName());
+    return entityList;
+  }
 
 //    public E getSingleResultOrNull(final TypedQuery<E> typedQuery) {
 //        try {

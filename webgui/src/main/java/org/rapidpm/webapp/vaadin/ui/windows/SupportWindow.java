@@ -13,12 +13,12 @@ import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 
 public class SupportWindow extends RapidWindow {
 
-    private static final String SUPPORT_HTML_SNIPPET = "Support </br> stellen Sie Ihre Anfrage.... hier kommt dann och ein Ticket Fenster..";
+  private static final String SUPPORT_HTML_SNIPPET = "Support </br> stellen Sie Ihre Anfrage.... hier kommt dann och ein Ticket Fenster..";
 
-    public SupportWindow() {
-        setCaption("Support");
-        addComponent(new Label(SUPPORT_HTML_SNIPPET, ContentMode.HTML));
-    }
+  public SupportWindow() {
+    setCaption("Support");
+    addComponent(new Label(SUPPORT_HTML_SNIPPET, ContentMode.HTML));
+  }
 
 
 }

@@ -10,209 +10,208 @@ import org.rapidpm.persistence.system.security.Mandantengruppe;
 import java.util.List;
 
 
-public class PlannedProject implements Comparable<PlannedProject>{
-    private static final Logger logger = Logger.getLogger(PlannedProject.class);
-
-    public static final String ID = "id";
-    public static final String ACTIVE = "active";
-    public static final String NAME = "projektName";
-    public static final String TOKEN = "projektToken";
-    public static final String INFO = "info";
-    public static final String FACT = "fakturierbar";
-    public static final String EXTERNALDAILYRATE = "externalDailyRate";
-    public static final String HOURSPERWORKINGDAY = "hoursPerWorkingDay";
-
-    private String id;
+public class PlannedProject implements Comparable<PlannedProject> {
+  public static final String ID = "id";
+  public static final String ACTIVE = "active";
+  public static final String NAME = "projektName";
+  public static final String TOKEN = "projektToken";
+  public static final String INFO = "info";
+  public static final String FACT = "fakturierbar";
+  public static final String EXTERNALDAILYRATE = "externalDailyRate";
+  public static final String HOURSPERWORKINGDAY = "hoursPerWorkingDay";
+  private static final Logger logger = Logger.getLogger(PlannedProject.class);
+  private String id;
 
 
-    private String projektToken;
-    private String projektName;
-    private boolean active;
-    private boolean fakturierbar;
-    private String info;
-    private Float externalDailyRate;
-    private Integer hoursPerWorkingDay;
-    private transient List<PlannedProjectName> plannedProjectName;
-    private transient Mandantengruppe mandantengruppe;
-    private transient List<PlanningUnit> planningUnits;
-    private transient Benutzer creator;
-    private transient Benutzer responsiblePerson;
-    private transient List<PlannedTravel> plannedTravelList;
-    private transient List<PlannedOffer> plannedOfferList;
-    private transient Buch specification;
-    private transient Buch testCases;
+  private String projektToken;
+  private String projektName;
+  private boolean active;
+  private boolean fakturierbar;
+  private String info;
+  private Double externalDailyRate;
+  private Integer hoursPerWorkingDay;
+  private transient List<PlannedProjectName> plannedProjectName;
+  private transient Mandantengruppe mandantengruppe;
+  private transient List<PlanningUnit> planningUnits;
+  private transient Benutzer creator;
+  private transient Benutzer responsiblePerson;
+  private transient List<PlannedTravel> plannedTravelList;
+  private transient List<PlannedOffer> plannedOfferList;
+  private transient Buch specification;
+  private transient Buch testCases;
 
-    public PlannedProject(){}
+  public PlannedProject() {
+  }
 
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
+  public int hashCode() {
+    return id != null ? id.hashCode() : 0;
+  }
 
-    public Buch getTestCases() {
-        return testCases;
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof PlannedProject)) return false;
 
-    public void setTestCases(Buch testCases) {
-        this.testCases = testCases;
-    }
+    PlannedProject that = (PlannedProject) o;
 
-    public List<PlannedTravel> getPlannedTravelList() {
-        return plannedTravelList;
-    }
+    if (id != null ? !id.equals(that.id) : that.id != null) return false;
 
-    public void setPlannedTravelList(List<PlannedTravel> plannedTravelList) {
-        this.plannedTravelList = plannedTravelList;
-    }
+    return true;
+  }
 
-    public List<PlannedOffer> getPlannedOfferList() {
-        return plannedOfferList;
-    }
+  @Override
+  public String toString() {
+    return "PlannedProject{" +
+        "id='" + id + '\'' +
+        ", projektName='" + projektName + '\'' +
+        ", projektToken='" + projektToken + '\'' +
+        ", info='" + info + '\'' +
+        ", active=" + active +
+        ", fakturierbar=" + fakturierbar +
+        ", externalDailyRate=" + externalDailyRate +
+        ", hoursPerWorkingDay=" + hoursPerWorkingDay +
+        '}';
+  }
 
-    public void setPlannedOfferList(List<PlannedOffer> plannedOfferList) {
-        this.plannedOfferList = plannedOfferList;
-    }
+  public Buch getTestCases() {
+    return testCases;
+  }
 
-    public Buch getSpecification() {
-        return specification;
-    }
+  public void setTestCases(Buch testCases) {
+    this.testCases = testCases;
+  }
 
-    public void setSpecification(Buch specification) {
-        this.specification = specification;
-    }
+  public List<PlannedTravel> getPlannedTravelList() {
+    return plannedTravelList;
+  }
 
-    public boolean isActive() {
-        return active;
-    }
+  public void setPlannedTravelList(List<PlannedTravel> plannedTravelList) {
+    this.plannedTravelList = plannedTravelList;
+  }
 
-    public void setActive(final boolean active) {
-        this.active = active;
-    }
+  public List<PlannedOffer> getPlannedOfferList() {
+    return plannedOfferList;
+  }
 
-    public Benutzer getCreator() {
-        return creator;
-    }
+  public void setPlannedOfferList(List<PlannedOffer> plannedOfferList) {
+    this.plannedOfferList = plannedOfferList;
+  }
 
-    public void setCreator(final Benutzer creator) {
-        this.creator = creator;
-    }
+  public Buch getSpecification() {
+    return specification;
+  }
 
-    public boolean isFakturierbar() {
-        return fakturierbar;
-    }
+  public void setSpecification(Buch specification) {
+    this.specification = specification;
+  }
 
-    public void setFakturierbar(final boolean fakturierbar) {
-        this.fakturierbar = fakturierbar;
-    }
+  public boolean isActive() {
+    return active;
+  }
 
-    public String getId() {
-        return id;
-    }
+  public void setActive(final boolean active) {
+    this.active = active;
+  }
 
-    public void setId(final String id) {
-        this.id = id;
-    }
+  public Benutzer getCreator() {
+    return creator;
+  }
 
-    public String getInfo() {
-        return info;
-    }
+  public void setCreator(final Benutzer creator) {
+    this.creator = creator;
+  }
 
-    public void setInfo(final String info) {
-        this.info = info;
-    }
+  public boolean isFakturierbar() {
+    return fakturierbar;
+  }
 
-    public Mandantengruppe getMandantengruppe() {
-        return mandantengruppe;
-    }
+  public void setFakturierbar(final boolean fakturierbar) {
+    this.fakturierbar = fakturierbar;
+  }
 
-    public void setMandantengruppe(final Mandantengruppe mandantengruppe) {
-        this.mandantengruppe = mandantengruppe;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public List<PlannedProjectName> getPlannedProjectName() {
-        return plannedProjectName;
-    }
+  public void setId(final String id) {
+    this.id = id;
+  }
 
-    public void setPlannedProjectName(final List<PlannedProjectName> plannedProjectName) {
-        this.plannedProjectName = plannedProjectName;
-    }
+  public String getInfo() {
+    return info;
+  }
 
-    public Benutzer getResponsiblePerson() {
-        return responsiblePerson;
-    }
+  public void setInfo(final String info) {
+    this.info = info;
+  }
 
-    public void setResponsiblePerson(final Benutzer responsiblePerson) {
-        this.responsiblePerson = responsiblePerson;
-    }
+  public Mandantengruppe getMandantengruppe() {
+    return mandantengruppe;
+  }
 
-    public List<PlanningUnit> getTopLevelPlanningUnits() {
-        return planningUnits;
-    }
+  public void setMandantengruppe(final Mandantengruppe mandantengruppe) {
+    this.mandantengruppe = mandantengruppe;
+  }
 
-    public void setPlanningUnits(List<PlanningUnit> planningUnits) {
-        this.planningUnits = planningUnits;
-    }
+  public List<PlannedProjectName> getPlannedProjectName() {
+    return plannedProjectName;
+  }
 
-    public String getProjektName() {
-        return projektName;
-    }
+  public void setPlannedProjectName(final List<PlannedProjectName> plannedProjectName) {
+    this.plannedProjectName = plannedProjectName;
+  }
 
-    public void setProjektName(String projektName) {
-        this.projektName = projektName;
-    }
+  public Benutzer getResponsiblePerson() {
+    return responsiblePerson;
+  }
 
-    public String getProjektToken() {
-        return projektToken;
-    }
+  public void setResponsiblePerson(final Benutzer responsiblePerson) {
+    this.responsiblePerson = responsiblePerson;
+  }
 
-    public void setProjektToken(String projektToken) {
-        this.projektToken = projektToken;
-    }
+  public List<PlanningUnit> getTopLevelPlanningUnits() {
+    return planningUnits;
+  }
 
-    public Float getExternalDailyRate() {
-        return externalDailyRate;
-    }
+  public void setPlanningUnits(List<PlanningUnit> planningUnits) {
+    this.planningUnits = planningUnits;
+  }
 
-    public void setExternalDailyRate(Float externalDailyRate) {
-        this.externalDailyRate = externalDailyRate;
-    }
+  public String getProjektName() {
+    return projektName;
+  }
 
-    public Integer getHoursPerWorkingDay() {
-        return hoursPerWorkingDay;
-    }
+  public void setProjektName(String projektName) {
+    this.projektName = projektName;
+  }
 
-    public void setHoursPerWorkingDay(Integer hoursPerWorkingDay) {
-        this.hoursPerWorkingDay = hoursPerWorkingDay;
-    }
+  public String getProjektToken() {
+    return projektToken;
+  }
 
-    @Override
-    public int compareTo(PlannedProject o) {
-        return 1;
-    }
+  public void setProjektToken(String projektToken) {
+    this.projektToken = projektToken;
+  }
 
-    @Override
-    public String toString() {
-        return "PlannedProject{" +
-                "id='" + id + '\'' +
-                ", projektName='" + projektName + '\'' +
-                ", projektToken='" + projektToken + '\'' +
-                ", info='" + info + '\'' +
-                ", active=" + active +
-                ", fakturierbar=" + fakturierbar +
-                ", externalDailyRate=" + externalDailyRate +
-                ", hoursPerWorkingDay=" + hoursPerWorkingDay +
-                '}';
-    }
+  public Double getExternalDailyRate() {
+    return externalDailyRate;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PlannedProject)) return false;
+  public void setExternalDailyRate(Double externalDailyRate) {
+    this.externalDailyRate = externalDailyRate;
+  }
 
-        PlannedProject that = (PlannedProject) o;
+  public Integer getHoursPerWorkingDay() {
+    return hoursPerWorkingDay;
+  }
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+  public void setHoursPerWorkingDay(Integer hoursPerWorkingDay) {
+    this.hoursPerWorkingDay = hoursPerWorkingDay;
+  }
 
-        return true;
-    }
+  @Override
+  public int compareTo(PlannedProject o) {
+    return 1;
+  }
 
 }

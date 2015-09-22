@@ -13,65 +13,64 @@ import java.security.InvalidKeyException;
  *
  * @author Sven Ruppert
  * @version 0.1
- *          <p/>
+ *          <p>
  *          This Source Code is part of the RapidPM - www.rapidpm.org project.
  *          please contact sven.ruppert@me.com
  * @since 29.03.2010
- *        Time: 16:15:23
+ * Time: 16:15:23
  */
 
 public class BenutzerGruppeDAO extends DAO<Long, BenutzerGruppe> {
-    private static final Logger logger = Logger.getLogger(BenutzerGruppeDAO.class);
+  private static final Logger logger = Logger.getLogger(BenutzerGruppeDAO.class);
 
-    @Override
-    public BenutzerGruppe createEntityFull(BenutzerGruppe tempUserGroup) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
-        return createEntityFlat(tempUserGroup);
-    }
+  public BenutzerGruppeDAO(final OrientGraph orientDB) {
+    super(orientDB, BenutzerGruppe.class);
+  }
 
-    public BenutzerGruppeDAO(final OrientGraph orientDB) {
-        super(orientDB, BenutzerGruppe.class);
-    }
-
-    //    public List<BenutzerGruppe> loadAllEntities() {
-    //        return super.loadAllEntities(BenutzerGruppe.class);
-    //    }
-
-
-    public BenutzerGruppe loadBenutzerGruppeByName(final String benutzerGruppenName) {
+  public BenutzerGruppe loadBenutzerGruppeByName(final String benutzerGruppenName) {
 //        final TypedQuery<BenutzerGruppe> typedQuery = orientDB.createQuery("from BenutzerGruppe bg where bg.gruppenname=:benutzerGruppenName", BenutzerGruppe.class).setParameter("benutzerGruppenName", benutzerGruppenName);
 //        return getSingleResultOrNull(typedQuery);
-        return null;
-        //        return createWhereClause().eq("gruppenname", benutzerGruppenName).findUnique();
+    return null;
+    //        return createWhereClause().eq("gruppenname", benutzerGruppenName).findUnique();
 
-        //        final ObjectSet<BenutzerGruppe> objSet = orientDB.query(new Predicate<BenutzerGruppe>() {
-        //            @Override
-        //            public boolean match(final BenutzerGruppe benutzerGruppe) {
-        //                return benutzerGruppe.getGruppenName().equals(benutzerGruppenName);
-        //            }
-        //        });
-        //        final int size = objSet.size();
-        //        final BenutzerGruppe result;
-        //        if(size==1){
-        //            result = objSet.get(0);
-        //        }else{
-        //            result = null;
-        //        }
+    //        final ObjectSet<BenutzerGruppe> objSet = orientDB.query(new Predicate<BenutzerGruppe>() {
+    //            @Override
+    //            public boolean match(final BenutzerGruppe benutzerGruppe) {
+    //                return benutzerGruppe.getGruppenName().equals(benutzerGruppenName);
+    //            }
+    //        });
+    //        final int size = objSet.size();
+    //        final BenutzerGruppe result;
+    //        if(size==1){
+    //            result = objSet.get(0);
+    //        }else{
+    //            result = null;
+    //        }
 
-        //        BenutzerGruppe result;
-        //        try {
-        //            result = (BenutzerGruppe) orientDB.createNamedQuery("LoadBenutzerGruppeByName")
-        //                    .setParameter("gruppenname", benutzerGruppenName)
-        //                    .getSingleResult();
-        //        } catch (Exception e) {
-        //            logger.error(e);
-        //            result = null;
-        //        }
-        //        return result;
-        //        return result;
-    }
+    //        BenutzerGruppe result;
+    //        try {
+    //            result = (BenutzerGruppe) orientDB.createNamedQuery("LoadBenutzerGruppeByName")
+    //                    .setParameter("gruppenname", benutzerGruppenName)
+    //                    .getSingleResult();
+    //        } catch (Exception e) {
+    //            logger.error(e);
+    //            result = null;
+    //        }
+    //        return result;
+    //        return result;
+  }
 
-    @Override
-    public BenutzerGruppe loadFull(BenutzerGruppe entity) throws InvalidKeyException, NotYetImplementedException {
-        return findByID(entity.getId(), false);
-    }
+  //    public List<BenutzerGruppe> loadAllEntities() {
+  //        return super.loadAllEntities(BenutzerGruppe.class);
+  //    }
+
+  @Override
+  public BenutzerGruppe loadFull(BenutzerGruppe entity) throws InvalidKeyException, NotYetImplementedException {
+    return findByID(entity.getId(), false);
+  }
+
+  @Override
+  public BenutzerGruppe createEntityFull(BenutzerGruppe tempUserGroup) throws InvalidKeyException, NotYetImplementedException, MissingNonOptionalPropertyException {
+    return createEntityFlat(tempUserGroup);
+  }
 }

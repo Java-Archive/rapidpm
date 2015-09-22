@@ -5,17 +5,17 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.Stunde
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.AddRowWindow;
 
 public class AddRowLogic {
-    private MainUI ui;
-    private StundensaetzeScreen screen;
+  private MainUI ui;
+  private StundensaetzeScreen screen;
 
-    public AddRowLogic(final MainUI ui, final StundensaetzeScreen screen) {
-        this.ui = ui;
-        this.screen = screen;
+  public AddRowLogic(final MainUI ui, final StundensaetzeScreen screen) {
+    this.ui = ui;
+    this.screen = screen;
 
-    }
+  }
 
-    public void execute() {
-        final AddRowWindow window = new AddRowWindow(ui, screen);
-        window.show();
-    }
+  public void execute() {
+    final AddRowWindow window = new AddRowWindow(ui, screen);
+    window.show();
+  }
 }

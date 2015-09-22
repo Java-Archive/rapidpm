@@ -8,5 +8,5 @@ package org.rapidpm.webapp.vaadin.ui.workingareas;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 public interface Componentssetable {
-    public void setComponents();
+  public void setComponents();
 }

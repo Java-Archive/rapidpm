@@ -13,13 +13,13 @@ import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 
 public class DisclaimerWindow extends RapidWindow {
-    private static final Logger logger = Logger.getLogger(DisclaimerWindow.class);
+  private static final Logger logger = Logger.getLogger(DisclaimerWindow.class);
 
-    public DisclaimerWindow() {
-        final Embedded e = new Embedded("Disclaimer", new ThemeResource("data/static/disclaimer.html"));
-        e.setType(Embedded.TYPE_BROWSER);
-        e.setWidth("400px");
-        e.setHeight("600px");
-        super.addComponent(e);
-    }
+  public DisclaimerWindow() {
+    final Embedded e = new Embedded("Disclaimer", new ThemeResource("data/static/disclaimer.html"));
+    e.setType(Embedded.TYPE_BROWSER);
+    e.setWidth("400px");
+    e.setHeight("600px");
+    super.addComponent(e);
+  }
 }

@@ -8,6 +8,6 @@ package org.rapidpm.webapp.vaadin.ui;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 public enum Languages {
-    GERMAN,
-    ENGLISH;
+  GERMAN,
+  ENGLISH;
 }

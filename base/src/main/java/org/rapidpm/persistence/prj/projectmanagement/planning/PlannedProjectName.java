@@ -14,53 +14,53 @@ import javax.persistence.*;
 
 @Entity
 public class PlannedProjectName {
-    private static final Logger logger = Logger.getLogger(PlannedProjectName.class);
+  private static final Logger logger = Logger.getLogger(PlannedProjectName.class);
 
-    @Id
-    @TableGenerator(name = "PKGenPlannedProjectName", table = "pk_gen", pkColumnName = "gen_key",
-            pkColumnValue = "PlannedProjectName_id", valueColumnName = "gen_value", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE,
-            generator = "PKGenPlannedProjectName")
-    private Long id;
+  @Id
+  @TableGenerator(name = "PKGenPlannedProjectName", table = "pk_gen", pkColumnName = "gen_key",
+      pkColumnValue = "PlannedProjectName_id", valueColumnName = "gen_value", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.TABLE,
+      generator = "PKGenPlannedProjectName")
+  private Long id;
 
-    @Basic
-    private String namepart;
+  @Basic
+  private String namepart;
 
-    @Basic
-    private int ordernr;
+  @Basic
+  private int ordernr;
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("PlannedProjectName");
-        sb.append("{id=").append(id);
-        sb.append(", namepart='").append(namepart).append('\'');
-        sb.append(", ordernr=").append(ordernr);
-        sb.append('}');
-        return sb.toString();
-    }
+  @Override
+  public String toString() {
+    final StringBuilder sb = new StringBuilder();
+    sb.append("PlannedProjectName");
+    sb.append("{id=").append(id);
+    sb.append(", namepart='").append(namepart).append('\'');
+    sb.append(", ordernr=").append(ordernr);
+    sb.append('}');
+    return sb.toString();
+  }
 
-    public Long getId() {
-        return id;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setId(final Long id) {
-        this.id = id;
-    }
+  public void setId(final Long id) {
+    this.id = id;
+  }
 
-    public String getNamepart() {
-        return namepart;
-    }
+  public String getNamepart() {
+    return namepart;
+  }
 
-    public void setNamepart(final String namepart) {
-        this.namepart = namepart;
-    }
+  public void setNamepart(final String namepart) {
+    this.namepart = namepart;
+  }
 
-    public int getOrdernr() {
-        return ordernr;
-    }
+  public int getOrdernr() {
+    return ordernr;
+  }
 
-    public void setOrdernr(final int ordernr) {
-        this.ordernr = ordernr;
-    }
+  public void setOrdernr(final int ordernr) {
+    this.ordernr = ordernr;
+  }
 }
