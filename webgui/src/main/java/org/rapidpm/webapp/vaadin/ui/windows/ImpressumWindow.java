@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 
 public class ImpressumWindow extends RapidWindow {
-  private static final Logger logger = Logger.getLogger(ImpressumWindow.class);
 
   private static final String IMPRESSUM_HTML_SNIPPET = "Impressum </br> RapidPM HQ Tannenstr. 9 82049 Pullach";
 

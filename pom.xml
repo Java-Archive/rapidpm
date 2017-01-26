@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.rapidpm</groupId>
     <artifactId>rapidpm-dependencies</artifactId>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>3.3.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>rapidpm</artifactId>
@@ -23,6 +23,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <orientdb-core.version>2.1.0</orientdb-core.version>
+    <vwscdn.version>1.3.6</vwscdn.version>
   </properties>
 
 
@@ -52,16 +53,31 @@
         <scope>compile</scope>
       </dependency>
 
-      <dependency>
-        <groupId>org.stagemonitor</groupId>
-        <artifactId>stagemonitor-web</artifactId>
-        <version>0.16.2</version>
-      </dependency>
+
       <dependency>
         <groupId>org.rapidpm</groupId>
         <artifactId>rapidpm-base</artifactId>
         <version>${project.version}</version>
       </dependency>
+
+
+      <dependency>
+        <groupId>com.orientechnologies</groupId>
+        <artifactId>orientdb-core</artifactId>
+        <version>2.2.13</version>
+      </dependency>
+      <dependency>
+        <groupId>com.orientechnologies</groupId>
+        <artifactId>orientdb-graphdb</artifactId>
+        <version>2.2.13</version>
+      </dependency>
+      <dependency>
+        <groupId>com.tinkerpop.blueprints</groupId>
+        <artifactId>blueprints-core</artifactId>
+        <version>2.6.0</version>
+      </dependency>
+
+
     </dependencies>
   </dependencyManagement>
 
@@ -76,16 +92,21 @@
     <!--using Annotation Processing-->
     <dependency>
       <groupId>org.rapidpm.proxybuilder</groupId>
-      <artifactId>rapidpm-proxybuilder-modules-dynamicobjectadapter-generator-processors</artifactId>
+      <artifactId>rapidpm-proxybuilder-modules-objectadapter-generator-processors</artifactId>
 
     </dependency>
     <dependency>
       <groupId>org.rapidpm.proxybuilder</groupId>
-      <artifactId>rapidpm-proxybuilder-modules-dynamicobjectadapter-generator-annotations</artifactId>
+      <artifactId>rapidpm-proxybuilder-modules-objectadapter-generator-annotations</artifactId>
       <!--<optional>true</optional>-->
     </dependency>
     <!--using Annotation Processing-->
-
+    <!-- https://mvnrepository.com/artifact/javax.persistence/persistence-api -->
+    <dependency>
+      <groupId>javax.persistence</groupId>
+      <artifactId>persistence-api</artifactId>
+      <version>1.0.2</version>
+    </dependency>
 
     <dependency>
       <groupId>log4j</groupId>
