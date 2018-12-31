@@ -1,10 +1,10 @@
 package org.rapidpm.lang;
 
-import org.junit.Test;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * StringUtils Tester.
@@ -20,12 +20,12 @@ public class StringUtilsTest {
         //super(name); JUnit3
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         //super.setUp(); JUnit3
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         //super.tearDown(); JUnit3
     }
@@ -33,7 +33,7 @@ public class StringUtilsTest {
     /**
      * Method: cleanString(final String content)
      */
-    @org.junit.Test
+    @Test
     public void testCleanString() throws Exception {
         final
         String

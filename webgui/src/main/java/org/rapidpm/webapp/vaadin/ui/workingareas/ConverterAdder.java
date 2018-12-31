@@ -1,7 +1,8 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas;
 
-import com.vaadin.ui.Table;
+
+import com.vaadin.flow.component.grid.Grid;
 
 public interface ConverterAdder {
-    public void addConvertersTo(Table tabelle);
+    public void addConvertersTo(Grid tabelle);
 }

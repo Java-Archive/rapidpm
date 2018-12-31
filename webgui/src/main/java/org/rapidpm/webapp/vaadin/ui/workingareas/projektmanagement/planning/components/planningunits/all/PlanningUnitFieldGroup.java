@@ -1,9 +1,10 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all;
 
-import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.util.BeanItem;
-import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.ui.*;
+import com.vaadin.flow.component.AbstractField;
+import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.server.VaadinSession;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
@@ -23,7 +24,7 @@ import java.util.*;
  * Time: 12:51
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class PlanningUnitFieldGroup extends FieldGroup {
+public class PlanningUnitFieldGroup /*extends FieldGroup*/ {
 
     private List<AbstractField> fieldList = new ArrayList<>();
     private TextField nameField;
@@ -41,96 +42,96 @@ public class PlanningUnitFieldGroup extends FieldGroup {
 
     public PlanningUnitFieldGroup(final ProjektplanungScreen screen){
         this.screen = screen;
-        this.messages = screen.getMessagesBundle();
+        this.messages = VaadinSession.getCurrent().getAttribute(ResourceBundle.class);
         daoFactory = DaoFactorySingelton.getInstance();
         final PlanningUnit planningUnit = new PlanningUnit();
         planningUnit.setTestcases(new ArrayList<TextElement>());
         planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
-        setItemDataSource(new BeanItem<>(planningUnit));
+//        setItemDataSource(new BeanItem<>(planningUnit));
         selectedPlanningUnit = (PlanningUnit) screen.getPlanningUnitSelect().getValue();
         buildForm();
     }
 
     public PlanningUnitFieldGroup(final ProjektplanungScreen screen, final PlanningUnit thePlanningUnit) {
         this.screen = screen;
-        this.messages = screen.getMessagesBundle();
+        this.messages = VaadinSession.getCurrent().getAttribute(ResourceBundle.class);
         daoFactory = DaoFactorySingelton.getInstance();
         selectedPlanningUnit = daoFactory.getPlanningUnitDAO().findByID(thePlanningUnit.getId());
         if(selectedPlanningUnit == null){
             selectedPlanningUnit = thePlanningUnit;
         }
-        setItemDataSource(new BeanItem<>(selectedPlanningUnit));
+//        setItemDataSource(new BeanItem<>(selectedPlanningUnit));
         buildForm();
     }
 
     private void buildForm() {
         final List<Benutzer> users = daoFactory.getBenutzerDAO().loadAllEntities();
-        final PlannedProject project = daoFactory.getProjectDAO().findByID(screen.getUi().getCurrentProject().getId());
+        final PlannedProject project = daoFactory.getProjectDAO().findByID(VaadinSession.getCurrent().getAttribute(PlannedProject.class).getId());
         daoFactory.getEntityManager().refresh(project);
         final Set<PlanningUnit> managedPlanningUnits = getAllPlanningUnits((PlanningUnit)screen.getPlanningUnitSelect()
                 .getValue());
 
         fieldList = new ArrayList<>();
-        for (final Object propertyId : getUnboundPropertyIds()) {
-            final String spaltenName = propertyId.toString();
-            switch (spaltenName) {
-                case (PlanningUnit.NAME):
-                    nameField = new TextField(messages.getString("planning_name"));
-                    nameField.setRequired(true);
-                    nameField.setMaxLength(Constants.FIELDLENGTH_LONG_NAME);
-                    bind(nameField, propertyId);
-                    nameField.setNullRepresentation("");
-                    fieldList.add(nameField);
-                    break;
-                case (PlanningUnit.STORYPTS):
-                    storyPointsField = new TextField(messages.getString("planning_storypoints"));
-                    storyPointsField.setRequired(true);
-                    storyPointsField.setMaxLength(Constants.FIELDLENGTH_SMALL_NUMBER);
-                    bind(storyPointsField, propertyId);
-                    fieldList.add(storyPointsField);
-                    break;
-                case (PlanningUnit.COMPLEXITY):
-                    complexityField = new TextField(messages.getString("planning_complexity"));
-                    complexityField.setRequired(true);
-                    bind(complexityField, propertyId);
-                    fieldList.add(complexityField);
-                    break;
-                case (PlanningUnit.ORDERNUMBER):
-                    orderNumberField = new TextField(messages.getString("planning_ordernumber"));
-                    orderNumberField.setRequired(true);
-                    bind(orderNumberField, propertyId);
-                    fieldList.add(orderNumberField);
-                    break;
-                case (PlanningUnit.PARENT):
-                    final PlanningUnit nullPlanningUnit = new PlanningUnit();
-                    nullPlanningUnit.setPlanningUnitName(messages.getString("planning_noparent"));
-                    parentBox = new ComboBox(messages.getString("planning_parent"),
-                            new BeanItemContainer<>(PlanningUnit.class, managedPlanningUnits));
-                    parentBox.setNullSelectionAllowed(false);
-                    parentBox.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
-                    parentBox.setItemCaptionPropertyId(PlanningUnit.NAME);
-                    parentBox.setTextInputAllowed(false);
-                    bind(parentBox, propertyId);
-                    final PlanningUnit selectedPlanningUnit = ((BeanItem<PlanningUnit>) getItemDataSource()).getBean();
-                    parentBox.select(selectedPlanningUnit.getParent());
-                    parentBox.setRequired(true);
-                    fieldList.add(parentBox);
-                    break;
-                case (PlanningUnit.RESPONSIBLE):
-                    responsibleBox = new ComboBox(messages.getString("planning_responsible"),
-                            new BeanItemContainer<>(Benutzer.class, users));
-                    responsibleBox.setNullSelectionAllowed(false);
-                    responsibleBox.setTextInputAllowed(false);
-                    responsibleBox.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
-                    responsibleBox.setItemCaptionPropertyId(Benutzer.LOGIN);
-                    responsibleBox.setRequired(true);
-                    bind(responsibleBox, propertyId);
-                    fieldList.add(responsibleBox);
-                    break;
-                default:
-                    break;
-            }
-        }
+//        for (final Object propertyId : getUnboundPropertyIds()) {
+//            final String spaltenName = propertyId.toString();
+//            switch (spaltenName) {
+//                case (PlanningUnit.NAME):
+//                    nameField = new TextField(messages.getString("planning_name"));
+//                    nameField.setRequired(true);
+//                    nameField.setMaxLength(Constants.FIELDLENGTH_LONG_NAME);
+//                    bind(nameField, propertyId);
+//                    nameField.setNullRepresentation("");
+//                    fieldList.add(nameField);
+//                    break;
+//                case (PlanningUnit.STORYPTS):
+//                    storyPointsField = new TextField(messages.getString("planning_storypoints"));
+//                    storyPointsField.setRequired(true);
+//                    storyPointsField.setMaxLength(Constants.FIELDLENGTH_SMALL_NUMBER);
+//                    bind(storyPointsField, propertyId);
+//                    fieldList.add(storyPointsField);
+//                    break;
+//                case (PlanningUnit.COMPLEXITY):
+//                    complexityField = new TextField(messages.getString("planning_complexity"));
+//                    complexityField.setRequired(true);
+//                    bind(complexityField, propertyId);
+//                    fieldList.add(complexityField);
+//                    break;
+//                case (PlanningUnit.ORDERNUMBER):
+//                    orderNumberField = new TextField(messages.getString("planning_ordernumber"));
+//                    orderNumberField.setRequired(true);
+//                    bind(orderNumberField, propertyId);
+//                    fieldList.add(orderNumberField);
+//                    break;
+//                case (PlanningUnit.PARENT):
+//                    final PlanningUnit nullPlanningUnit = new PlanningUnit();
+//                    nullPlanningUnit.setPlanningUnitName(messages.getString("planning_noparent"));
+//                    parentBox = new ComboBox(messages.getString("planning_parent"),
+//                            new BeanItemContainer<>(PlanningUnit.class, managedPlanningUnits));
+//                    parentBox.setNullSelectionAllowed(false);
+//                    parentBox.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
+//                    parentBox.setItemCaptionPropertyId(PlanningUnit.NAME);
+//                    parentBox.setTextInputAllowed(false);
+//                    bind(parentBox, propertyId);
+//                    final PlanningUnit selectedPlanningUnit = ((BeanItem<PlanningUnit>) getItemDataSource()).getBean();
+//                    parentBox.select(selectedPlanningUnit.getParent());
+//                    parentBox.setRequired(true);
+//                    fieldList.add(parentBox);
+//                    break;
+//                case (PlanningUnit.RESPONSIBLE):
+//                    responsibleBox = new ComboBox(messages.getString("planning_responsible"),
+//                            new BeanItemContainer<>(Benutzer.class, users));
+//                    responsibleBox.setNullSelectionAllowed(false);
+//                    responsibleBox.setTextInputAllowed(false);
+//                    responsibleBox.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
+//                    responsibleBox.setItemCaptionPropertyId(Benutzer.LOGIN);
+//                    responsibleBox.setRequired(true);
+//                    bind(responsibleBox, propertyId);
+//                    fieldList.add(responsibleBox);
+//                    break;
+//                default:
+//                    break;
+//            }
+//        }
     }
 
     private Set<PlanningUnit> getAllPlanningUnits(final PlanningUnit parentPlanningUnit) {

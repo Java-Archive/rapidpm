@@ -10,10 +10,10 @@ package org.rapidpm.persistence.security;
 import org.rapidpm.persistence.DAOTest;
 import org.rapidpm.persistence.system.security.BenutzerGruppe;
 import org.rapidpm.persistence.system.security.BenutzerGruppeDAO;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class BenutzerGruppeDAOTest extends DAOTest {
 

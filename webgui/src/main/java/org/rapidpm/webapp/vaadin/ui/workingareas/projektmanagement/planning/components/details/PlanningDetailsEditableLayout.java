@@ -1,7 +1,9 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details;
 
-import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.*;
+import com.vaadin.flow.component.AbstractField;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.server.VaadinSession;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
@@ -35,63 +37,63 @@ public class PlanningDetailsEditableLayout extends EditableLayout {
     private ResourceBundle messages;
 
     public PlanningDetailsEditableLayout(final PlanningUnit planningUnit, final ProjektplanungScreen screen,
-                                         final Panel screenPanel) {
-        super(screen, screenPanel);
-        messages = screen.getMessagesBundle();
+                                         final Component screenPanel) {
+        super(null, screenPanel);
+        messages = VaadinSession.getCurrent().getAttribute(ResourceBundle.class);
 
         fieldGroup = new PlanningDetailsFieldGroup(messages, planningUnit);
-        fieldList = fieldGroup.getFieldList();
+//        fieldList = fieldGroup.getFieldList();
 
         buildForm();
 
-        cancelButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                final Iterator<Component> componentIterator = componentsLayout.iterator();
-                fieldGroup.discard();
-                while (componentIterator.hasNext()) {
-                    final Component component = componentIterator.next();
-                    if (component instanceof Field) {
-                        component.setReadOnly(true);
-                    }
-                }
-                buttonLayout.setVisible(false);
-            }
-        });
-        saveButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                try{
-                    fieldGroup.commit();
-                    final BeanItem<PlanningUnit> beanItem = (BeanItem)fieldGroup.getItemDataSource();
-                    final PlanningUnit editedPlanningUnit = beanItem.getBean();
-                    final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-                    daoFactory.saveOrUpdateTX(editedPlanningUnit);
-                    final MainUI ui = screen.getUi();
-                    ui.setWorkingArea(new ProjektplanungScreen(ui));
-                }catch (final NullPointerException e){
-                    logger.info(COMMIT_EXCEPTION_MESSAGE);
-                }catch(final Exception e){
-                    logger.warn("Exception", e);
-                }
-            }
-        });
+//        cancelButton.addClickListener(new Button.ClickListener() {
+//            @Override
+//            public void buttonClick(Button.ClickEvent event) {
+//                final Iterator<Component> componentIterator = componentsLayout.iterator();
+//                fieldGroup.discard();
+//                while (componentIterator.hasNext()) {
+//                    final Component component = componentIterator.next();
+//                    if (component instanceof Field) {
+//                        component.setReadOnly(true);
+//                    }
+//                }
+//                buttonLayout.setVisible(false);
+//            }
+//        });
+//        saveButton.addClickListener(new Button.ClickListener() {
+//            @Override
+//            public void buttonClick(Button.ClickEvent event) {
+//                try{
+//                    fieldGroup.commit();
+//                    final BeanItem<PlanningUnit> beanItem = (BeanItem)fieldGroup.getItemDataSource();
+//                    final PlanningUnit editedPlanningUnit = beanItem.getBean();
+//                    final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+//                    daoFactory.saveOrUpdateTX(editedPlanningUnit);
+//                    final MainUI ui = screen.getUi();
+//                    ui.setWorkingArea(new ProjektplanungScreen(ui));
+//                }catch (final NullPointerException e){
+//                    logger.info(COMMIT_EXCEPTION_MESSAGE);
+//                }catch(final Exception e){
+//                    logger.warn("Exception", e);
+//                }
+//            }
+//        });
     }
 
 
     @Override
     protected void buildForm() {
-        for(final AbstractField field : fieldList){
-            field.setReadOnly(true);
-            if(field instanceof AbstractSelect){
-                ((ComboBox)field).setNullSelectionAllowed(false);
-                ((ComboBox)field).setTextInputAllowed(false);
-            }
-        }
-        componentsLayout.addComponent(fieldGroup.getField(PlanningUnit.RESPONSIBLE));
-        componentsLayout.addComponent(fieldGroup.getField(PlanningUnit.COMPLEXITY));
-        componentsLayout.addComponent(fieldGroup.getField(PlanningUnit.ORDERNUMBER));
-        componentsLayout.addComponent(fieldGroup.getField(PlanningUnit.STORYPTS));
+//        for(final AbstractField field : fieldList){
+//            field.setReadOnly(true);
+//            if(field instanceof AbstractSelect){
+//                ((ComboBox)field).setNullSelectionAllowed(false);
+//                ((ComboBox)field).setTextInputAllowed(false);
+//            }
+//        }
+//        componentsLayout.add(fieldGroup.getField(PlanningUnit.RESPONSIBLE));
+//        componentsLayout.add(fieldGroup.getField(PlanningUnit.COMPLEXITY));
+//        componentsLayout.add(fieldGroup.getField(PlanningUnit.ORDERNUMBER));
+//        componentsLayout.add(fieldGroup.getField(PlanningUnit.STORYPTS));
     }
 
     @Override

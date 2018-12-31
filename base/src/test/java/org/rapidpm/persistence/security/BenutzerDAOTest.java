@@ -11,11 +11,11 @@ import org.rapidpm.persistence.DAOTest;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BenutzerDAOTest extends DAOTest {
 

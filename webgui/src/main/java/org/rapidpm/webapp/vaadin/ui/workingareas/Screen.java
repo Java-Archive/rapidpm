@@ -1,8 +1,8 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas;
 
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.Reindeer;
+import com.vaadin.flow.server.VaadinSession;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.AbstractView;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 
 import java.util.ResourceBundle;
@@ -17,24 +17,12 @@ import java.util.ResourceBundle;
 public abstract class Screen extends RapidPanel implements Internationalizationable,Componentssetable {
 
     protected ResourceBundle messagesBundle;
-    protected MainUI ui;
 
-    public Screen(final MainUI ui){
-        this.messagesBundle = ui.getResourceBundle();
-        this.ui = ui;
-        this.setStyleName(Reindeer.PANEL_LIGHT);
-        //this.addStyleName("medsizemargin");
-        this.setSizeFull();
-    }
-
-    public void activeVerticalFullScreenSize(final boolean b) {
-        if(b){
-            getContentLayout().setSizeFull();
-        } else {
-            getContentLayout().setSizeUndefined();
-            getContentLayout().setWidth("100%");
-        }
-
+    public Screen(){
+        this.messagesBundle = VaadinSession.getCurrent().getAttribute(ResourceBundle.class);
+//        this.setStyleName(Reindeer.PANEL_LIGHT);
+//        //this.addStyleName("medsizemargin");
+//        this.setSizeFull();
     }
 
     public Screen getScreen() {
@@ -45,7 +33,4 @@ public abstract class Screen extends RapidPanel implements Internationalizationa
         return messagesBundle;
     }
 
-    public MainUI getUi() {
-        return ui;
-    }
 }

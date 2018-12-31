@@ -1,13 +1,13 @@
 package org.rapidpm.persistence.prj.stammdaten.person;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.persistence.prj.BaseDAOTest;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * PersonDAO Tester.

@@ -1,7 +1,8 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 
-import com.vaadin.data.Validator;
-import com.vaadin.server.VaadinSession;
+import com.vaadin.flow.data.binder.ValidationResult;
+import com.vaadin.flow.data.binder.Validator;
+import com.vaadin.flow.data.binder.ValueContext;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
@@ -34,11 +35,21 @@ public class DaysHoursMinutesFieldValidator implements Validator {
         return COMPILE.matcher(((String) value)).matches();
     }
 
+//    @Override
+//    public void validate(final Object value) throws InvalidValueException {
+//        if (!isValid(value)) {
+//            throw new InvalidValueException(
+//                    DAYSHOURSMINUTES_VALIDATOR_REGEX_EXCEPTION_MESSAGE);
+//        }
+//    }
+
     @Override
-    public void validate(final Object value) throws InvalidValueException {
-        if (!isValid(value)) {
-            throw new InvalidValueException(
-                    DAYSHOURSMINUTES_VALIDATOR_REGEX_EXCEPTION_MESSAGE);
-        }
+    public ValidationResult apply(Object o, ValueContext valueContext) {
+        return null;
+    }
+
+    @Override
+    public Object apply(Object o, Object o2) {
+        return null;
     }
 }

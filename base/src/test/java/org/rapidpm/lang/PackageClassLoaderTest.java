@@ -1,12 +1,11 @@
 package org.rapidpm.lang;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.Annotation;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -30,11 +29,11 @@ public class PackageClassLoaderTest {
     public void testGetClasses() throws Exception {
         final PackageClassLoader classLoader = new PackageClassLoader();
         final List<Class> classes = classLoader.getClasses("org.rapidpm");
-        Assert.assertNotNull(classes);
-        Assert.assertFalse(classes.isEmpty());
+        assertNotNull(classes);
+        assertFalse(classes.isEmpty());
         for (final Class aClass : classes) {
             final String name = aClass.getName();
-            Assert.assertTrue(name.startsWith("org.rapidpm"));
+            assertTrue(name.startsWith("org.rapidpm"));
             if(!name.endsWith("Test") && !name.endsWith("Factory") && !name.contains("$") && !name.contains("DAO")&& !name.contains("annotations") ){
 
                 if (name.startsWith("org.rapidpm.persistence")) System.out.println("<class>"+name+"</class>");

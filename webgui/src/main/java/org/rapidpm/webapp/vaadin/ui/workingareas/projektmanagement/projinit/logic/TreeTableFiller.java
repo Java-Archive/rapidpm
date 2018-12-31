@@ -1,8 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic;
 
-import com.vaadin.data.util.HierarchicalContainer;
-import com.vaadin.event.ItemClickEvent;
-import com.vaadin.server.VaadinSession;
+import com.vaadin.flow.server.VaadinSession;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
@@ -23,7 +21,7 @@ import java.util.ResourceBundle;
 public class TreeTableFiller {
 
     private static final int WIDTH = 200;
-    private HierarchicalContainer dataSource;
+//    private HierarchicalContainer dataSource;
     private MyTreeTable treeTable;
     private AufwandProjInitScreen screen;
     private ResourceBundle messages;
@@ -31,42 +29,41 @@ public class TreeTableFiller {
 
 
     public TreeTableFiller(final ResourceBundle bundle, final AufwandProjInitScreen screen,
-                           final MyTreeTable treeTable, final HierarchicalContainer dataSource) {
+                           final MyTreeTable treeTable) {
         this.messages = bundle;
-        this.dataSource = dataSource;
+//        this.dataSource = dataSource;
         this.treeTable = treeTable;
         this.screen = screen;
     }
 
     public void fill() {
-        final VaadinSession session = screen.getUi().getSession();
+        final VaadinSession session = VaadinSession.getCurrent();
         currentProject = session.getAttribute(PlannedProject.class);
-        final TimesCalculator timesCalculator = new TimesCalculator(screen);
-        final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(screen, messages,
-                dataSource);
+        final TimesCalculator timesCalculator = new TimesCalculator();
+        final TreeTableDataSourceFiller treeTableDataSourceFiller = new TreeTableDataSourceFiller(screen, messages);
         timesCalculator.calculate();
         treeTableDataSourceFiller.fill();
-        for(final Object listener : treeTable.getListeners(ItemClickEvent.ItemClickListener.class)){
-            treeTable.removeItemClickListener((ItemClickEvent.ItemClickListener)listener);
-        }
-        treeTable.addItemClickListener(new TableItemClickListener(messages, screen));
-        treeTable.setContainerDataSource(this.dataSource);
-        final String aufgabeColumn = messages.getString("aufgabe");
-        for(final Object propertyId : treeTable.getContainerPropertyIds()){
-            if(propertyId.equals(aufgabeColumn)){
-                treeTable.setColumnCollapsible(aufgabeColumn, false);
-                treeTable.setColumnWidth(aufgabeColumn, WIDTH);
-            } else {
-                treeTable.setColumnExpandRatio(propertyId, 1);
-            }
-        }
-        treeTable.setFooterVisible(true);
-        final Map<RessourceGroup, Integer> werteMap = timesCalculator.getAbsoluteWerte();
-        for(final RessourceGroup ressourceGroup : werteMap.keySet()){
-            final DaysHoursMinutesItem item = new DaysHoursMinutesItem(werteMap.get(ressourceGroup),
-                    currentProject.getHoursPerWorkingDay());
-            treeTable.setColumnFooter(ressourceGroup.getName(), item.toString());
-        }
-        treeTable.setValue(null);
+//        for(final Object listener : treeTable.getListeners(ItemClickEvent.ItemClickListener.class)){
+//            treeTable.removeItemClickListener((ItemClickEvent.ItemClickListener)listener);
+//        }
+//        treeTable.addItemClickListener(new TableItemClickListener(messages, screen));
+//        treeTable.setContainerDataSource(this.dataSource);
+//        final String aufgabeColumn = messages.getString("aufgabe");
+//        for(final Object propertyId : treeTable.getContainerPropertyIds()){
+//            if(propertyId.equals(aufgabeColumn)){
+//                treeTable.setColumnCollapsible(aufgabeColumn, false);
+//                treeTable.setColumnWidth(aufgabeColumn, WIDTH);
+//            } else {
+//                treeTable.setColumnExpandRatio(propertyId, 1);
+//            }
+//        }
+//        treeTable.setFooterVisible(true);
+//        final Map<RessourceGroup, Integer> werteMap = timesCalculator.getAbsoluteWerte();
+//        for(final RessourceGroup ressourceGroup : werteMap.keySet()){
+//            final DaysHoursMinutesItem item = new DaysHoursMinutesItem(werteMap.get(ressourceGroup),
+//                    currentProject.getHoursPerWorkingDay());
+//            treeTable.setColumnFooter(ressourceGroup.getName(), item.toString());
+//        }
+//        treeTable.setValue(null);
     }
 }

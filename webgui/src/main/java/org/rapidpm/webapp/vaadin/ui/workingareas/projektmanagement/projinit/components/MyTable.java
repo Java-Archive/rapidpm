@@ -1,6 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components;
 
-import com.vaadin.ui.Table;
+import com.vaadin.flow.component.grid.Grid;
 import org.apache.log4j.Logger;
 
 /**
@@ -10,14 +10,14 @@ import org.apache.log4j.Logger;
  * Time: 10:42
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class MyTable extends Table implements ColumnCollapseHandable {
+public class MyTable extends Grid implements ColumnCollapseHandable {
 
     private static final Logger logger = Logger.getLogger(MyTable.class);
     private MyTreeTable connectedTreeTable;
 
     public MyTable() {
         setColumnReorderingAllowed(true);
-        setColumnCollapsingAllowed(true);
+//        setColumnCollapsingAllowed(true);
     }
 
     public void setConnectedTable(final MyTreeTable table) {
@@ -26,7 +26,7 @@ public class MyTable extends Table implements ColumnCollapseHandable {
 
     public void setColumnCollapsedEnd(final Object propertyId, final boolean collapsed) {
         try {
-            super.setColumnCollapsed(propertyId, collapsed);
+//            super.setColumnCollapsed(propertyId, collapsed);
         } catch (Exception e) {
             logger.warn("Exception in MyTable");
         }
@@ -34,7 +34,7 @@ public class MyTable extends Table implements ColumnCollapseHandable {
 
     @Override
     public void setColumnCollapsed(final Object propertyId, final boolean collapsed) {
-        super.setColumnCollapsed(propertyId, collapsed);
+//        super.setColumnCollapsed(propertyId, collapsed);
         try {
             connectedTreeTable.setColumnCollapsedEnd(propertyId, collapsed);
         } catch (Exception e) {

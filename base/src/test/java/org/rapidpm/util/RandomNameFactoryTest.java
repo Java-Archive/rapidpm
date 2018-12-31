@@ -1,6 +1,6 @@
 package org.rapidpm.util;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Created by IntelliJ IDEA.

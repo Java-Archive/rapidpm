@@ -7,8 +7,13 @@ package org.rapidpm.webapp.vaadin.ui.windows;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
-import com.vaadin.event.ShortcutAction;
-import com.vaadin.ui.*;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.component.textfield.TextField;
 import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.BaseUI;
 import org.rapidpm.webapp.vaadin.MainUI;
@@ -35,48 +40,43 @@ public class LoginMask extends VerticalLayout {
         setSizeFull();
 //        initUI();
         frame = new RapidPanel();
-        frame.setSizeUndefined();
+//        frame.setSizeUndefined();
         loginLayout = new FormLayout();
         usernameField = new TextField("username");
         usernameField.focus();
         passwordField = new PasswordField("password");
         loginButton = new Button("Login");
-        loginButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+//        loginButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         languageBox = new ComboBox("Language", Arrays.asList(Languages.values()));
-        loginLayout.setCaption("Please enter your username and password");
-        loginButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(final Button.ClickEvent clickEvent) {
-                //final BaseUI app = (BaseUI) getRoot();
-                try {
-                    final String username = usernameField.getValue();
-                    final String password = passwordField.getValue();
-                    ui.localization(languageBox.getValue());
-                    ui.authentication(username, password);
-                } catch (Exception e) {
-                    Notification.show("Login failed...");
-                    e.printStackTrace();
-                }
+//        loginLayout.setText("Please enter your username and password");
+        loginButton.addClickListener(buttonClickEvent -> {
+            try {
+                final String username = usernameField.getValue();
+                final String password = passwordField.getValue();
+//                ui.localization(languageBox.getValue());
+//                ui.authentication(username, password);
+            } catch (Exception e) {
+                Notification.show("Login failed...");
+                e.printStackTrace();
             }
         });
-        languageBox.setImmediate(true);
+//        languageBox.setImmediate(true);
         languageBox.setValue(Languages.GERMAN);
-        languageBox.setNullSelectionAllowed(false);
-        languageBox.setTextInputAllowed(false);
+//        languageBox.setNullSelectionAllowed(false);
+//        languageBox.setTextInputAllowed(false);
 
-        loginLayout.addComponent(usernameField);
-        loginLayout.addComponent(passwordField);
+        loginLayout.add(usernameField);
+        loginLayout.add(passwordField);
 
-        frame.addComponent(loginLayout);
-        frame.addComponent(loginButton);
-        frame.addComponent(languageBox);
-
+        frame.add(loginLayout);
+        frame.add(loginButton);
+        frame.add(languageBox);
         setComponents();
     }
 
     public void setComponents() {
-        addComponent(frame);
-        setComponentAlignment(frame, Alignment.MIDDLE_CENTER);
+        add(frame);
+        setAlignItems(Alignment.CENTER);
     }
 
 }

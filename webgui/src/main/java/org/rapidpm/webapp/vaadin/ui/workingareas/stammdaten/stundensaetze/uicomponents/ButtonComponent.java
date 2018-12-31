@@ -1,6 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents;
 
-import com.vaadin.ui.Button;
+import com.vaadin.flow.component.button.Button;
 
 public class ButtonComponent extends Button implements
         ItemClickDependentComponent {

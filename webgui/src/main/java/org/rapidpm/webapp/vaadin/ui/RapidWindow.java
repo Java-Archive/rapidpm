@@ -1,9 +1,8 @@
 package org.rapidpm.webapp.vaadin.ui;
 
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
+
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,23 +11,19 @@ import com.vaadin.ui.Window;
  * Time: 13:04
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class RapidWindow extends Window {
+public class RapidWindow {
 
     private final VerticalLayout contentLayout = new VerticalLayout();
 
     public RapidWindow(){
         contentLayout.setSpacing(true);
         contentLayout.setMargin(true);
-        setContent(contentLayout);
-        setModal(true);
+        add(contentLayout);
+//        setModal(true);
     }
 
-    public void addComponent(final Component component){
-        contentLayout.addComponent(component);
-    }
-
-    public void removeAllComponents(){
-        setContent(null);
+    public void add(final Component component){
+        contentLayout.add(component);
     }
 
     public VerticalLayout getContentLayout() {

@@ -1,11 +1,20 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs;
 
-import com.vaadin.data.util.HierarchicalContainer;
-import com.vaadin.ui.*;
+import com.github.appreciated.app.layout.annotations.Caption;
+import com.github.appreciated.app.layout.annotations.Icon;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.Route;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.MainAppLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TreeTableHeaderClickListener;
@@ -19,6 +28,7 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.comp
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
 
+import java.awt.*;
 import java.util.Date;
 import java.util.List;
 
@@ -27,14 +37,16 @@ import static org.rapidpm.Constants.EUR;
 
 //import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.TimesCalculator;
 
-
+@Route(value = "kosten", layout = MainAppLayout.class)
+@Caption("Kosten")
+@Icon(VaadinIcon.MONEY_DEPOSIT)
 public class CostsScreen extends Screen {
 
     private Button saveButton = new Button();
     private Button undoButton;
-    private CheckBox expandCheckBox;
+    private Checkbox expandCheckBox;
     private TextField vertrieblerField;
-    private DateField datumField;
+    private DatePicker datumField;
     private TextField manntageField;
     private TextField summeField;
     private TextField kostenField;
@@ -45,7 +57,7 @@ public class CostsScreen extends Screen {
     private FormLayout unterschriftLayout = new FormLayout();
     private FormLayout felderLayout = new FormLayout();
 
-    private HierarchicalContainer dataSource = new HierarchicalContainer();
+//    private HierarchicalContainer dataSource = new HierarchicalContainer();
     private MyTreeTable treeTable = new MyTreeTable();
     private MyTable uebersichtTable = new MyTable();
 
@@ -55,8 +67,7 @@ public class CostsScreen extends Screen {
     private GridLayout upperFormLayout = new GridLayout(2, 10);
     private VerticalLayout lowerFormLayout = new VerticalLayout();
 
-    public CostsScreen(MainUI ui) {
-        super(ui);
+    public CostsScreen() {
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         try{
             final List<PlannedProject> plannedProjects = daoFactory.getPlannedProjectDAO().loadAllEntities();
@@ -66,46 +77,46 @@ public class CostsScreen extends Screen {
             erstelleUnterschriftLayout();
             erstelleFelderLayout();
 
-            undoButton = new UndoButton(this, treeTable, dataSource);
+            undoButton = new UndoButton(this, treeTable, null);
             undoButton.setVisible(false);
 
-            expandCheckBox = new ExpandTableCheckBox(treeTable, dataSource);
+            expandCheckBox = new ExpandTableCheckBox(treeTable, null);
 
-            final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, treeTable, dataSource);
-            treeTableFiller.fill();
+//            final TreeTableFiller treeTableFiller = new TreeTableFiller(messagesBundle, this, treeTable, dataSource);
+//            treeTableFiller.fill();
+//
+//            final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(this, uebersichtTable);
+//            overviewTableFiller.fill();
 
-            final OverviewTableFiller overviewTableFiller = new OverviewTableFiller(this, uebersichtTable);
-            overviewTableFiller.fill();
-
-            uebersichtTable.setPageLength(4);
+//            uebersichtTable.setPageLength(4);
             uebersichtTable.setConnectedTable(treeTable);
-            uebersichtTable.setSizeFull();
+//            uebersichtTable.setSizeFull();
             treeTable.setConnectedTable(uebersichtTable);
-            treeTable.addHeaderClickListener(new TreeTableHeaderClickListener(undoButton));
-            treeTable.setSizeFull();
+//            treeTable.addHeaderClickListener(new TreeTableHeaderClickListener(undoButton));
+//            treeTable.setSizeFull();
 
             table1layout.setMargin(true);
-            table1layout.addComponent(uebersichtTable);
+            table1layout.add(uebersichtTable);
             table1layout.setSizeFull();
 
             table2layout.setMargin(true);
-            table2layout.addComponent(expandCheckBox);
-            table2layout.addComponent(undoButton);
-            table2layout.addComponent(treeTable);
+            table2layout.add(expandCheckBox);
+            table2layout.add(undoButton);
+//            table2layout.add(treeTable);
             table2layout.setSizeFull();
 
-            lowerFormLayout.addComponent(saveButton);
+            lowerFormLayout.add(saveButton);
 
-            formLayout.addComponent(upperFormLayout);
-            formLayout.addComponent(lowerFormLayout);
+//            formLayout.add(upperFormLayout);
+            formLayout.add(lowerFormLayout);
             formLayout.setVisible(false);
 
             doInternationalization();
             setComponents();
         } catch (final NoProjectsException e){
             removeAllComponents();
-            final NoProjectsScreen noProjectsScreen = new NoProjectsScreen(ui);
-            addComponent(noProjectsScreen);
+            final NoProjectsScreen noProjectsScreen = new NoProjectsScreen();
+            add(noProjectsScreen);
         }
 
     }
@@ -114,24 +125,24 @@ public class CostsScreen extends Screen {
         // Textfelder
         fillFields();
         felderLayout.setWidth("350px");
-        felderLayout.addComponent(manntageField);
-        felderLayout.addComponent(summeField);
-        felderLayout.addComponent(kostenField);
+        felderLayout.add(manntageField);
+        felderLayout.add(summeField);
+        felderLayout.add(kostenField);
     }
 
     private void erstelleUnterschriftLayout() {
         // Unterschrift
         vertrieblerField = new TextField();
-        datumField = new DateField("Datum:", new Date());
-        datumField.setDateFormat(DATE_FORMAT.toPattern());
+        datumField = new DatePicker("Datum:");
+//        datumField.setDateFormat(DATE_FORMAT.toPattern());
         unterschriftLayout.setWidth("560px");
-        unterschriftLayout.addComponent(vertrieblerField);
-        unterschriftLayout.addComponent(datumField);
+        unterschriftLayout.add(vertrieblerField);
+        unterschriftLayout.add(datumField);
     }
 
     private void fillFields() {
-        final TimesCalculator timesCalculator = new TimesCalculator(this);
-        final CostsCalculator costsCalculator = new CostsCalculator(ui, messagesBundle);
+        final TimesCalculator timesCalculator = new TimesCalculator();
+        final CostsCalculator costsCalculator = new CostsCalculator(messagesBundle);
         costsCalculator.calculate();
         timesCalculator.calculate();
         summeField = new TextField();
@@ -147,22 +158,22 @@ public class CostsScreen extends Screen {
 
     @Override
     public void setComponents() {
-        addComponent(felderLayout);
-        addComponent(unterschriftLayout);
-        addComponent(table1layout);
-        addComponent(table2layout);
-        addComponent(formLayout);
+        add(felderLayout);
+        add(unterschriftLayout);
+        add(table1layout);
+        add(table2layout);
+        add(formLayout);
     }
 
     @Override
     public void doInternationalization() {
-        expandCheckBox.setCaption(messagesBundle.getString("costsinit_expand"));
-        saveButton.setCaption(messagesBundle.getString("save"));
-        undoButton.setCaption(messagesBundle.getString("costsinit_removesortorder"));
-        datumField.setCaption(messagesBundle.getString("costsinit_date"));
-        manntageField.setCaption(messagesBundle.getString("costsinit_manday"));
-        vertrieblerField.setCaption(messagesBundle.getString("costsscreen_responsible"));
-        kostenField.setCaption(messagesBundle.getString("costsscreen_costs"));
-        summeField.setCaption(messagesBundle.getString("costsinit_sumInDDHHMM"));
+        expandCheckBox.setLabel(messagesBundle.getString("costsinit_expand"));
+        saveButton.setText(messagesBundle.getString("save"));
+        undoButton.setText(messagesBundle.getString("costsinit_removesortorder"));
+        datumField.setLabel(messagesBundle.getString("costsinit_date"));
+        manntageField.setValue(messagesBundle.getString("costsinit_manday"));
+        vertrieblerField.setValue(messagesBundle.getString("costsscreen_responsible"));
+        kostenField.setValue(messagesBundle.getString("costsscreen_costs"));
+        summeField.setValue(messagesBundle.getString("costsinit_sumInDDHHMM"));
     }
 }

@@ -2,6 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic;
 
 //import org.rapidpm.ejb3.EJBFactory;
 //import org.rapidpm.persistence.DaoFactoryBean;
+import com.vaadin.flow.server.VaadinSession;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -33,11 +34,11 @@ public class CostsCalculator {
 
     private Double totalCostsExakt = 0.0;
 
-    public CostsCalculator(MainUI ui, final ResourceBundle bundle) {
+    public CostsCalculator(final ResourceBundle bundle) {
 //        bean = EJBFactory.getEjbInstance(CostsCalcutorBean.class);
 //        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
+        final PlannedProject projectFromSession = VaadinSession.getCurrent().getAttribute(PlannedProject.class);
         projekt = daoFactory.getPlannedProjectDAO().findByID(projectFromSession.getId());
         daoFactory.getEntityManager().refresh(projekt);
         messages = bundle;

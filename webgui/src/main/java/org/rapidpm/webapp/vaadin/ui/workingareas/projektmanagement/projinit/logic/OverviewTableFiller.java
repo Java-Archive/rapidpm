@@ -1,10 +1,9 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic;
 
-import com.vaadin.data.Item;
-import com.vaadin.data.Property;
+
 //import org.rapidpm.ejb3.EJBFactory;
 //import org.rapidpm.persistence.DaoFactoryBean;
-import com.vaadin.server.VaadinSession;
+import com.vaadin.flow.server.VaadinSession;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -40,16 +39,14 @@ public class OverviewTableFiller {
 
 
     private MyTable table;
-    private MainUI ui;
     private List<RessourceGroup> ressourceGroups;
     private ResourceBundle messages;
 //    private OverviewTableFillerBean bean;
 
     public OverviewTableFiller(final Screen screen, final MyTable table) {
         this.screen = screen;
-        messages = screen.getMessagesBundle();
+        messages = VaadinSession.getCurrent().getAttribute(ResourceBundle.class);
         this.table = table;
-        this.ui = screen.getUi();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final RessourceGroupDAO ressourceGroupDAO = daoFactory.getRessourceGroupDAO();
         ressourceGroups = ressourceGroupDAO.loadAllEntities();
@@ -57,61 +54,61 @@ public class OverviewTableFiller {
 }
 
     public void fill() {
-        final VaadinSession session = screen.getUi().getSession();
+        final VaadinSession session = VaadinSession.getCurrent();
         currentProject = session.getAttribute(PlannedProject.class);
-        table.removeAllItems();
+//        table.removeAllItems();
         final String angabe = messages.getString("angabe");
-        table.addContainerProperty(angabe, String.class, null);
-        table.setColumnCollapsible(angabe, false);
-        table.setColumnWidth(angabe, WIDTH);
-        for (final RessourceGroup ressourceGroup : ressourceGroups) {
-            final String spaltenName = ressourceGroup.getName();
-            table.addContainerProperty(spaltenName, String.class, null);
-            table.setColumnExpandRatio(spaltenName,1);
-        }
-        final TimesCalculator calculator = new TimesCalculator(screen);
+//        table.addContainerProperty(angabe, String.class, null);
+//        table.setColumnCollapsible(angabe, false);
+//        table.setColumnWidth(angabe, WIDTH);
+//        for (final RessourceGroup ressourceGroup : ressourceGroups) {
+//            final String spaltenName = ressourceGroup.getName();
+//            table.addContainerProperty(spaltenName, String.class, null);
+//            table.setColumnExpandRatio(spaltenName,1);
+//        }
+        final TimesCalculator calculator = new TimesCalculator();
         calculator.calculate();
 
 
-        table.addItem(ABSOLUT);
-        table.addItem(RELATIV);
-        final Property<String> absolutItemAngabeProperty = table.getItem(ABSOLUT).getItemProperty(angabe);
+//        table.addItem(ABSOLUT);
+//        table.addItem(RELATIV);
+//        final Property<String> absolutItemAngabeProperty = table.getItem(ABSOLUT).getItemProperty(angabe);
         final String costsinit_sumInDDHHMM = messages.getString("costsinit_sumInDDHHMM");
-        absolutItemAngabeProperty.setValue(costsinit_sumInDDHHMM);
-        for (final Object spalte : table.getItem(ABSOLUT).getItemPropertyIds()) {
-            if (!spalte.equals(angabe)) {
-                final Map<RessourceGroup, Integer> absoluteWerte = calculator.getAbsoluteWerte();
-                for (final Map.Entry<RessourceGroup, Integer> absoluteWerteEntry : absoluteWerte
-                        .entrySet()) {
-                    final String spaltenNameAusMap = absoluteWerteEntry.getKey().getName();
-                    final String spaltenName = spalte.toString();
-                    if (spaltenNameAusMap.equals(spaltenName)) {
-                        final Property<String> absolutItemSpalteProperty = table.getItem(ABSOLUT).getItemProperty(spalte);
-                        final Integer minutesFromMap = absoluteWerte.get(absoluteWerteEntry.getKey());
-                        final DaysHoursMinutesItem itemForMinutesFromMap = new DaysHoursMinutesItem(minutesFromMap,
-                                currentProject.getHoursPerWorkingDay());
-                        absolutItemSpalteProperty.setValue(itemForMinutesFromMap.toString());
-                    }
-                }
-            }
-        }
+//        absolutItemAngabeProperty.setValue(costsinit_sumInDDHHMM);
+//        for (final Object spalte : table.getItem(ABSOLUT).getItemPropertyIds()) {
+//            if (!spalte.equals(angabe)) {
+//                final Map<RessourceGroup, Integer> absoluteWerte = calculator.getAbsoluteWerte();
+//                for (final Map.Entry<RessourceGroup, Integer> absoluteWerteEntry : absoluteWerte
+//                        .entrySet()) {
+//                    final String spaltenNameAusMap = absoluteWerteEntry.getKey().getName();
+//                    final String spaltenName = spalte.toString();
+//                    if (spaltenNameAusMap.equals(spaltenName)) {
+//                        final Property<String> absolutItemSpalteProperty = table.getItem(ABSOLUT).getItemProperty(spalte);
+//                        final Integer minutesFromMap = absoluteWerte.get(absoluteWerteEntry.getKey());
+//                        final DaysHoursMinutesItem itemForMinutesFromMap = new DaysHoursMinutesItem(minutesFromMap,
+//                                currentProject.getHoursPerWorkingDay());
+//                        absolutItemSpalteProperty.setValue(itemForMinutesFromMap.toString());
+//                    }
+//                }
+//            }
+//        }
         final DecimalFormat format = new DecimalFormat(DECIMAL_FORMAT);
-        final Item relativZeile = table.getItem(RELATIV);
-        final Property<String> relativItemAngabeProperty = relativZeile.getItemProperty(angabe);
+//        final Item relativZeile = table.getItem(RELATIV);
+//        final Property<String> relativItemAngabeProperty = relativZeile.getItemProperty(angabe);
         final String costsinit_sumInPercent = messages.getString("costsinit_sumInPercent");
-        relativItemAngabeProperty.setValue(costsinit_sumInPercent);
-        for (final Object spalte : relativZeile.getItemPropertyIds()) {
-            if (!spalte.equals(angabe)) {
-                final Map<RessourceGroup, Double> relativeWerte = calculator.getRelativeWerte();
-                for (final Map.Entry<RessourceGroup, Double> relativeWerteEntry : relativeWerte.entrySet()) {
-                    final String spaltenNameAusMap = relativeWerteEntry.getKey().getName();
-                    final String spaltenName = spalte.toString();
-                    if (spaltenNameAusMap.equals(spaltenName)) {
-                        final String relativeWerteMapValue = format.format(relativeWerte.get(relativeWerteEntry.getKey()));
-                        relativZeile.getItemProperty(spalte).setValue(relativeWerteMapValue);
-                    }
-                }
-            }
-        }
+//        relativItemAngabeProperty.setValue(costsinit_sumInPercent);
+//        for (final Object spalte : relativZeile.getItemPropertyIds()) {
+//            if (!spalte.equals(angabe)) {
+//                final Map<RessourceGroup, Double> relativeWerte = calculator.getRelativeWerte();
+//                for (final Map.Entry<RessourceGroup, Double> relativeWerteEntry : relativeWerte.entrySet()) {
+//                    final String spaltenNameAusMap = relativeWerteEntry.getKey().getName();
+//                    final String spaltenName = spalte.toString();
+//                    if (spaltenNameAusMap.equals(spaltenName)) {
+//                        final String relativeWerteMapValue = format.format(relativeWerte.get(relativeWerteEntry.getKey()));
+//                        relativZeile.getItemProperty(spalte).setValue(relativeWerteMapValue);
+//                    }
+//                }
+//            }
+//        }
     }
 }

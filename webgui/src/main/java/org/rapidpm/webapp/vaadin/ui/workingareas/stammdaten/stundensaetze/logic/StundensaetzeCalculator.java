@@ -1,10 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic;
 
-import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.Table;
-import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.server.VaadinSession;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
@@ -25,18 +22,18 @@ public class StundensaetzeCalculator {
 
     private PlannedProject currentProject;
 
-    public StundensaetzeCalculator(final StundensaetzeScreen screen, final Table tabelle) {
+    public StundensaetzeCalculator(final StundensaetzeScreen screen, final Grid tabelle) {
         this.screen = screen;
         containerBeans = new ArrayList<>();
-        final BeanItemContainer<RessourceGroup> beanItemContainer = (BeanItemContainer<RessourceGroup>)tabelle
-                .getContainerDataSource();
-        for(final RessourceGroup ressourceGroup : beanItemContainer.getItemIds()){
-            containerBeans.add(ressourceGroup);
-        }
+//        final BeanItemContainer<RessourceGroup> beanItemContainer = (BeanItemContainer<RessourceGroup>)tabelle
+//                .getContainerDataSource();
+//        for(final RessourceGroup ressourceGroup : beanItemContainer.getItemIds()){
+//            containerBeans.add(ressourceGroup);
+//        }
     }
 
     public void calculate() {
-        final VaadinSession session = screen.getUi().getSession();
+        final VaadinSession session = VaadinSession.getCurrent();
         final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
         for (final RessourceGroup ressourceGroupBean : containerBeans) {
             sumPerMonthTotal += ressourceGroupBean.getTransientSumPerMonth();

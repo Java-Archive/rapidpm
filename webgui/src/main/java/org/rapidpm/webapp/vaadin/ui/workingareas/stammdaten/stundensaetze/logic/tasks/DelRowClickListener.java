@@ -1,13 +1,11 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tasks;
 
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.ButtonComponent;
 
 import java.util.ResourceBundle;
 
-public class DelRowClickListener implements ClickListener {
+public class DelRowClickListener  {
     private ButtonComponent button;
     private StundensaetzeScreen screen;
     private ResourceBundle messages;
@@ -19,10 +17,10 @@ public class DelRowClickListener implements ClickListener {
         this.messages = messages;
     }
 
-    @Override
-    public void buttonClick(final ClickEvent event) {
-        final DelRowLogic logic = new DelRowLogic(screen, button, messages);
-        logic.execute();
-    }
+//    @Override
+//    public void buttonClick(final ClickEvent event) {
+//        final DelRowLogic logic = new DelRowLogic(screen, button, messages);
+//        logic.execute();
+//    }
 
 }

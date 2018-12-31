@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.prj.stammdaten.address;
 
 import org.rapidpm.persistence.DataSetEntityFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Created by IntelliJ IDEA.

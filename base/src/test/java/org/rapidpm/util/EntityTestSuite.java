@@ -9,8 +9,8 @@ import org.rapidpm.TestConfig;
 import org.rapidpm.lang.PackageClassLoader;
 import org.rapidpm.persistence.EntityFactory;
 import org.apache.log4j.Logger;
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import javax.persistence.*;
 import java.lang.reflect.Field;
@@ -192,7 +192,7 @@ public class EntityTestSuite {
         }
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         if (TestConfig.isAutoCleanUp()) {
             cleanUp();

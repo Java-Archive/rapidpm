@@ -7,18 +7,18 @@ package org.rapidpm.persistence.prj.bewegungsdaten;
  * To change this template use File | Settings | File Templates.
  */
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.persistence.prj.BaseDAOTest;
 
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RegistrationDAOTest extends BaseDAOTest {
 
 
-    @Before
+    @BeforeEach
     public void prepareData(){
         //TODO Daten erzeugen f die Tests
 //        final EntityTransaction transaction = entityManager.getTransaction();

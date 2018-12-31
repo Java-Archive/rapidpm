@@ -1,18 +1,17 @@
 package org.rapidpm.lang;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.Constants;
 import org.apache.log4j.BasicConfigurator;
 import org.joda.time.DateTime;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * DateUtil Tester.
@@ -28,12 +27,12 @@ public class DateUtilTest {
         //super(name); JUnit3
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         //super.setUp(); JUnit3
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         //super.tearDown(); JUnit3
     }
@@ -63,10 +62,10 @@ public class DateUtilTest {
         final DateTime startDate = new DateTime(2010, 8, 31, 0, 0, 0, 0);
         final DateTime stopDate = new DateTime(2010, 9, 30, 0, 0, 0, 0);
         final List<String> versions = DateUtil.createVersions(startDate, stopDate);
-        Assert.assertEquals("2010-09-10",versions.get(0));
-        Assert.assertEquals("2010-09-17",versions.get(1));
-        Assert.assertEquals("2010-09-24",versions.get(2));
-        Assert.assertEquals("2010-10-01",versions.get(3));
+        assertEquals("2010-09-10",versions.get(0));
+        assertEquals("2010-09-17",versions.get(1));
+        assertEquals("2010-09-24",versions.get(2));
+        assertEquals("2010-10-01",versions.get(3));
     }
 
     /**
@@ -96,7 +95,7 @@ public class DateUtilTest {
     /**
      * Method: string2Date(String string)
      */
-    @org.junit.Test
+    @Test
     public void testString2Date() throws Exception {
         //TODO: Test goes here...
     }
@@ -104,7 +103,7 @@ public class DateUtilTest {
     /**
      * Method: getISO8601DateFormat()
      */
-    @org.junit.Test
+    @Test
     public void testGetISO8601DateFormat() throws Exception {
         //TODO: Test goes here...
     }
@@ -112,14 +111,14 @@ public class DateUtilTest {
     /**
      * Method: getPlainDateFormat()
      */
-    @org.junit.Test
+    @Test
     public void testGetPlainDateFormat() throws Exception {
         //TODO: Test goes here...
     }
 
 
 
-    @org.junit.Test
+    @Test
     public void testUpdateTimestamp() throws Exception {
         BasicConfigurator.configure();
         final SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.YYYY_MM_DD_HH_MM_SS);

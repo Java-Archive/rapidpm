@@ -7,7 +7,7 @@ package org.rapidpm.persistence.prj.stammdaten.web; /**
  */
 
 import org.apache.log4j.Logger;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.persistence.prj.BaseDAOTest;
 import org.rapidpm.persistence.system.security.berechtigungen.Berechtigung;
 
@@ -15,8 +15,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class WebDomainDAOTest extends BaseDAOTest {
     private static final Logger logger = Logger.getLogger(WebDomainDAOTest.class);

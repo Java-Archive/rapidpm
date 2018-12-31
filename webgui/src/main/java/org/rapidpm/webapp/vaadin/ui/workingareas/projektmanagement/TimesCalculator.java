@@ -2,7 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 
 //import org.rapidpm.ejb3.EJBFactory;
 //import org.rapidpm.persistence.DaoFactoryBean;
-import com.vaadin.server.VaadinSession;
+import com.vaadin.flow.server.VaadinSession;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -28,7 +28,6 @@ import static org.rapidpm.Constants.*;
 */
 public class TimesCalculator {
 
-    private final Screen screen;
     private List<RessourceGroup> ressourceGroups;
     private ResourceBundle messages;
     private MainUI ui;
@@ -40,21 +39,20 @@ public class TimesCalculator {
     private Integer gesamtSummeInMin;
     private Double mannTageExakt;
 
-    public TimesCalculator(final Screen screen) {
-        this.screen = screen;
-        this.messages = screen.getMessagesBundle();
-        this.ui = screen.getUi();
+    public TimesCalculator() {
+        this.currentProject = VaadinSession.getCurrent().getAttribute(PlannedProject.class);
+        this.messages = VaadinSession.getCurrent().getAttribute(ResourceBundle.class);
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final RessourceGroupDAO ressourceGroupDAO = daoFactory.getRessourceGroupDAO();
         ressourceGroups = ressourceGroupDAO.loadAllEntities();
     }
 
     public void calculate() {
-        final VaadinSession session = screen.getUi().getSession();
-        currentProject = session.getAttribute(PlannedProject.class);
-        for (final RessourceGroup spalte : this.ressourceGroups) {
-            relativeWerte.put(spalte, 0.0);
-        }
+//        final VaadinSession session = screen.getUi().get();
+//        currentProject = session.getAttribute(PlannedProject.class);
+//        for (final RessourceGroup spalte : this.ressourceGroups) {
+//            relativeWerte.put(spalte, 0.0);
+//        }
 
         calculatePlanningUnitsAndTotalsAbsolut();
         calculateTotalsRelative();
@@ -129,7 +127,7 @@ public class TimesCalculator {
     }
 
     public DaysHoursMinutesItem getGesamtSummeItem() {
-        final VaadinSession session = screen.getUi().getSession();
+        final VaadinSession session = VaadinSession.getCurrent();
         final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
         final DaysHoursMinutesItem item = new DaysHoursMinutesItem(gesamtSummeInMin, currentProject.getHoursPerWorkingDay());
         return item;

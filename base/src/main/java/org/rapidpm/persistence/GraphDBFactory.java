@@ -16,7 +16,7 @@ public class GraphDBFactory {
     private static final Logger logger = Logger.getLogger(GraphDBFactory.class);
 
     public static final String DB_PATH = Constants.GRAPHDB_PATH;
-    private final GraphDatabaseService graphDb;
+//    private final GraphDatabaseService graphDb;
     private static GraphDBFactory instance;
 
     public static GraphDBFactory getInstance() {
@@ -31,8 +31,8 @@ public class GraphDBFactory {
     }
 
     private GraphDBFactory() {
-        graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(DB_PATH);
-        registerShutdownHook(graphDb);
+//        graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(DB_PATH);
+//        registerShutdownHook(graphDb);
     }
 
     public boolean initDb() {
@@ -69,7 +69,7 @@ public class GraphDBFactory {
     }
 
     public GraphDatabaseService getGraphDBService() {
-        return graphDb;
+        return null;
     }
 
     private static void registerShutdownHook( final GraphDatabaseService graphDb )

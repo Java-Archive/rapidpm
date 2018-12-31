@@ -3,12 +3,12 @@ package org.rapidpm.persistence.prj.book;
 import org.rapidpm.persistence.EntityFactory;
 import org.rapidpm.persistence.prj.book.kommentar.BuchKommentarEntityFactory;
 import org.rapidpm.persistence.security.BenutzerEntityFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Created by IntelliJ IDEA.

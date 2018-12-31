@@ -1,6 +1,9 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all;
 
-import com.vaadin.ui.*;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.server.VaadinSession;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
@@ -41,7 +44,7 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements In
         this.projekt = projekt;
         daoFactory = DaoFactorySingelton.getInstance();
 
-        messages = screen.getMessagesBundle();
+        messages = VaadinSession.getCurrent().getAttribute(ResourceBundle.class);
         createDeleteButton();
         createAddButton();
         createRenameButton();
@@ -50,77 +53,77 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements In
     }
 
     private void createRenameButton() {
-        renameButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                screen.getUi().addWindow(new RenamePlanningUnitWindow(screen));
-            }
-        });
+//        renameButton.addClickListener(new Button.ClickListener() {
+//            @Override
+//            public void buttonClick(Button.ClickEvent event) {
+//                screen.getUi().addWindow(new RenamePlanningUnitWindow(screen));
+//            }
+//        });
     }
 
     private void createAddButton() {
         addButton = screen.getAddButton();
-        addButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                final AddWindow window = new AddWindow(screen.getUi(),screen);
-                window.show();
-            }
-        });
+//        addButton.addClickListener(new Button.ClickListener() {
+//            @Override
+//            public void buttonClick(Button.ClickEvent event) {
+//                final AddWindow window = new AddWindow(screen.getUi(),screen);
+//                window.show();
+//            }
+//        });
     }
 
     private void createDeleteButton() {
         deleteButton = screen.getDeleteButton();
-        deleteButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                try {
-                    final PlanningUnit planningUnit = (PlanningUnit) screen.getPlanningUnitsTree().getValue();
-                    final PlanningUnit managedPlanningUnit = daoFactory.getPlanningUnitDAO().findByID
-                            (planningUnit.getId());
-                    if(managedPlanningUnit == null){
-                        throw new PlatzhalterException();
-                    }
-                    if(managedPlanningUnit.getKindPlanningUnits() != null && !managedPlanningUnit.getKindPlanningUnits
-                            ().isEmpty()){
-                        throw new Exception();
-                    }
-                    final PlanningUnit parentPlanningUnit = managedPlanningUnit.getParent();
-                    projekt = daoFactory.getPlannedProjectDAO().findByID(projekt.getId());
-
-                    if(parentPlanningUnit == null){
-                        projekt.getPlanningUnits().remove(managedPlanningUnit);
-                        daoFactory.saveOrUpdateTX(projekt);
-                    }
-                    else{
-                        parentPlanningUnit.getKindPlanningUnits().remove(managedPlanningUnit);
-                        daoFactory.saveOrUpdateTX(parentPlanningUnit);
-                    }
-                    daoFactory.removeTX(managedPlanningUnit);
-                    for(final PlanningUnit pu : projekt.getPlanningUnits()){
-                        logger.info(pu.getPlanningUnitName()+": "+pu.getKindPlanningUnits());
-                        for(final PlanningUnit pu1 : pu.getKindPlanningUnits()){
-                            logger.info("\t"+pu1.getPlanningUnitName()+": "+pu1.getKindPlanningUnits());
-                        }
-                    }
-
-                    final MainUI ui = screen.getUi();
-                    ui.setWorkingArea(new ProjektplanungScreen(ui));
-                }catch (final PlatzhalterException e){
-                    Notification.show(messages.getString("planning_placeholder_delete"));
-                } catch (final Exception e) {
-                    e.printStackTrace();
-                    Notification.show(messages.getString("planning_nodelete"));
-                }
-            }
-        });
+//        deleteButton.addClickListener(new Button.ClickListener() {
+//            @Override
+//            public void buttonClick(Button.ClickEvent event) {
+//                try {
+//                    final PlanningUnit planningUnit = (PlanningUnit) screen.getPlanningUnitsTree().getValue();
+//                    final PlanningUnit managedPlanningUnit = daoFactory.getPlanningUnitDAO().findByID
+//                            (planningUnit.getId());
+//                    if(managedPlanningUnit == null){
+//                        throw new PlatzhalterException();
+//                    }
+//                    if(managedPlanningUnit.getKindPlanningUnits() != null && !managedPlanningUnit.getKindPlanningUnits
+//                            ().isEmpty()){
+//                        throw new Exception();
+//                    }
+//                    final PlanningUnit parentPlanningUnit = managedPlanningUnit.getParent();
+//                    projekt = daoFactory.getPlannedProjectDAO().findByID(projekt.getId());
+//
+//                    if(parentPlanningUnit == null){
+//                        projekt.getPlanningUnits().remove(managedPlanningUnit);
+//                        daoFactory.saveOrUpdateTX(projekt);
+//                    }
+//                    else{
+//                        parentPlanningUnit.getKindPlanningUnits().remove(managedPlanningUnit);
+//                        daoFactory.saveOrUpdateTX(parentPlanningUnit);
+//                    }
+//                    daoFactory.removeTX(managedPlanningUnit);
+//                    for(final PlanningUnit pu : projekt.getPlanningUnits()){
+//                        logger.info(pu.getPlanningUnitName()+": "+pu.getKindPlanningUnits());
+//                        for(final PlanningUnit pu1 : pu.getKindPlanningUnits()){
+//                            logger.info("\t"+pu1.getPlanningUnitName()+": "+pu1.getKindPlanningUnits());
+//                        }
+//                    }
+//
+//                    final MainUI ui = screen.getUi();
+//                    ui.setWorkingArea(new ProjektplanungScreen(ui));
+//                }catch (final PlatzhalterException e){
+//                    Notification.show(messages.getString("planning_placeholder_delete"));
+//                } catch (final Exception e) {
+//                    e.printStackTrace();
+//                    Notification.show(messages.getString("planning_nodelete"));
+//                }
+//            }
+//        });
     }
 
     protected void buildForm() {
-        buttonLayout.addComponents(addButton, deleteButton, renameButton);
-        leftLayout.addComponent(buttonLayout);
-        leftLayout.addComponent(screen.getPlanningUnitsTree());
-        addComponent(leftLayout);
+        buttonLayout.add(addButton, deleteButton, renameButton);
+        leftLayout.add(buttonLayout);
+//        leftLayout.add(screen.getPlanningUnitsTree());
+        add(leftLayout);
     }
 
     public Button getDeleteButton() {
@@ -133,7 +136,7 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements In
 
     @Override
     public void doInternationalization() {
-        renameButton.setCaption(messages.getString("rename"));
+        renameButton.setText(messages.getString("rename"));
     }
 
     public Button getAddButton() {

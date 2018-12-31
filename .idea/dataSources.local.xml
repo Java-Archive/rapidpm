@@ -2,10 +2,15 @@
 <project version="4">
   <component name="dataSourceStorageLocal">
     <data-source name="PostgreSQL - rapidpm@localhost" uuid="238d4823-1542-43b1-835d-25bf068bc69a">
+      <database-info product="PostgreSQL" version="9.1.4" jdbc-version="4.0" driver-name="PostgreSQL Native Driver" driver-version="PostgreSQL 9.3 JDBC4 (build 1100)" dbms="POSTGRES" exact-version="9.1.4">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
       <secret-storage>master_key</secret-storage>
       <user-name>postgres</user-name>
-      <schema-pattern>rapidpm.pg_catalog rapidpm.public</schema-pattern>
-      <default-schemas>rapidpm.pg_catalog rapidpm.public</default-schemas>
+      <introspection-schemas>rapidpm:pg_catalog,public</introspection-schemas>
+      <resolve-scope>rapidpm:pg_catalog,public</resolve-scope>
+      <unqualified-resolve-schemas>rapidpm:pg_catalog,public</unqualified-resolve-schemas>
     </data-source>
   </component>
 </project>

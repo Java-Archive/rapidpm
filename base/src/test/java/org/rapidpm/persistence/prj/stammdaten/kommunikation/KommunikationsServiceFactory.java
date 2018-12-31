@@ -1,7 +1,7 @@
 package org.rapidpm.persistence.prj.stammdaten.kommunikation;
 
 import org.rapidpm.persistence.EntityFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Created by IntelliJ IDEA.

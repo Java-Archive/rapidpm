@@ -1,7 +1,5 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components;
 
-import com.vaadin.ui.TreeTable;
-
 /**
  * RapidPM - www.rapidpm.org
  * User: Marco Ebbinghaus
@@ -9,15 +7,15 @@ import com.vaadin.ui.TreeTable;
  * Time: 10:46
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class MyTreeTable extends TreeTable implements ColumnCollapseHandable {
+public class MyTreeTable implements ColumnCollapseHandable {
 
     private MyTable connectedTable;
 
     public MyTreeTable() {
-        setColumnReorderingAllowed(true);
-        setColumnCollapsingAllowed(true);
-        setNullSelectionAllowed(false);
-        setSelectable(true);
+//        setColumnReorderingAllowed(true);
+//        setColumnCollapsingAllowed(true);
+//        setNullSelectionAllowed(false);
+//        setSelectable(true);
     }
 
     public void setConnectedTable(MyTable table) {
@@ -26,7 +24,7 @@ public class MyTreeTable extends TreeTable implements ColumnCollapseHandable {
 
     @Override
     public void setColumnCollapsed(final Object propertyId, final boolean collapsed) {
-        super.setColumnCollapsed(propertyId, collapsed);
+//        super.setColumnCollapsed(propertyId, collapsed);
         try {
             connectedTable.setColumnCollapsedEnd(propertyId, collapsed);
         } catch (Exception e) {
@@ -36,7 +34,7 @@ public class MyTreeTable extends TreeTable implements ColumnCollapseHandable {
 
     public void setColumnCollapsedEnd(final Object propertyId, final boolean collapsed) {
         try {
-            super.setColumnCollapsed(propertyId, collapsed);
+//            super.setColumnCollapsed(propertyId, collapsed);
         } catch (Exception e) {
             //do nothing
         }

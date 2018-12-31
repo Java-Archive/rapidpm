@@ -7,11 +7,11 @@ package org.rapidpm.persistence.prj.stammdaten.address;
  * To change this template use File | Settings | File Templates.
  */
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.persistence.prj.BaseDAOTest;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AddressKlassifizierungDAOTest extends BaseDAOTest {
 

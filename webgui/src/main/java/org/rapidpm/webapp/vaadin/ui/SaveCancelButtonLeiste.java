@@ -1,8 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui;
 
-import com.vaadin.event.ShortcutAction;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 
 import java.util.ResourceBundle;
@@ -20,9 +19,9 @@ public abstract class SaveCancelButtonLeiste extends HorizontalLayout implements
     protected Button cancelButton = new Button();
 
     public SaveCancelButtonLeiste(){
-        saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-        cancelButton.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
-        addComponents(saveButton, cancelButton);
+//        saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+//        cancelButton.setClickShortcut(ShortcutAction.KeyCode.ESCAPE);
+        add(saveButton, cancelButton);
         setSizeUndefined();
         setSaveButtonListener();
         setCancelButtonListener();

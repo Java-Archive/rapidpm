@@ -1,6 +1,16 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.offer;
 
+import com.github.appreciated.app.layout.annotations.Caption;
+import com.github.appreciated.app.layout.annotations.Icon;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.Route;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.AbstractView;
+import org.rapidpm.webapp.vaadin.ui.MainAppLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 
 /**
@@ -10,19 +20,25 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
  * Time: 11:45
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class OfferScreen extends Screen {
+@Route(value = "angebot", layout = MainAppLayout.class)
+@Caption("Angebot")
+@Icon(VaadinIcon.OFFICE)
+public class OfferScreen extends VerticalLayout {
 
-    public OfferScreen(MainUI ui) {
-        super(ui);
+    public OfferScreen() {
+        setComponents();
     }
 
-    @Override
     public void doInternationalization() {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    @Override
+
     public void setComponents() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        add(new Paragraph("Ich bin ein Test"));
+        add(new Label("Ich bin ein Test"));
+        add(new Label("Ich bin ein Test"));
+        add(new Button("Ich bin ein Test"));
     }
+
 }

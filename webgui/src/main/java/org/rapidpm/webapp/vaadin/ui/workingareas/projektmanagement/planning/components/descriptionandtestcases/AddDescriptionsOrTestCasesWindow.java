@@ -1,7 +1,9 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.descriptionandtestcases;
 
-import com.vaadin.event.ShortcutAction;
-import com.vaadin.ui.*;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
@@ -48,19 +50,19 @@ public class AddDescriptionsOrTestCasesWindow extends RapidWindow {
         quantityField.setWidth("40px");
         quantityField.setValue("1");
         comboBox = new ComboBox(messages.getString("planning_kind"), Arrays.asList(DescriptionTestcaseEnum.values()));
-        comboBox.setNullSelectionAllowed(false);
-        comboBox.setTextInputAllowed(false);
+//        comboBox.setNullSelectionAllowed(false);
+//        comboBox.setTextInputAllowed(false);
         comboBox.setValue(DescriptionTestcaseEnum.DESCRIPTION);
         okButton = new Button(messages.getString("ok"));
-        okButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+//        okButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         cancelButton = new Button(messages.getString("cancel"));
-        buttonLayout.addComponents(okButton, cancelButton);
+//        buttonLayout.addComponents(okButton, cancelButton);
 
         setButtonClickListeners();
 
-        addComponent(quantityField);
-        addComponent(comboBox);
-        addComponent(buttonLayout);
+        add(quantityField);
+        add(comboBox);
+        add(buttonLayout);
 
         doInternationalization();
 
@@ -68,30 +70,30 @@ public class AddDescriptionsOrTestCasesWindow extends RapidWindow {
     }
 
     private void setButtonClickListeners() {
-        cancelButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                close();
-            }
-        });
-        okButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                quantityField.commit();
-                //if(quantityField.isValid()){
-                try{
-                    createNewTextElements();
-                    close();
-                    ui.setWorkingArea(new ProjektplanungScreen(ui));
-                } catch(final NumberFormatException e){
-                    Notification.show("1-99!");
-                }
-                //} else {
-                //    System.out.println("."+quantityField.getValue()+".");
-                //}
-
-            }
-        });
+//        cancelButton.addClickListener(new Button.ClickListener() {
+//            @Override
+//            public void buttonClick(Button.ClickEvent event) {
+//                close();
+//            }
+//        });
+//        okButton.addClickListener(new Button.ClickListener() {
+//            @Override
+//            public void buttonClick(Button.ClickEvent event) {
+//                quantityField.commit();
+//                //if(quantityField.isValid()){
+//                try{
+//                    createNewTextElements();
+//                    close();
+//                    ui.setWorkingArea(new ProjektplanungScreen(ui));
+//                } catch(final NumberFormatException e){
+//                    Notification.show("1-99!");
+//                }
+//                //} else {
+//                //    System.out.println("."+quantityField.getValue()+".");
+//                //}
+//
+//            }
+//        });
     }
 
     private void createNewTextElements() {
@@ -134,6 +136,6 @@ public class AddDescriptionsOrTestCasesWindow extends RapidWindow {
     }
 
     private void doInternationalization() {
-        setCaption(messages.getString("add"));
+//        setText(messages.getString("add"));
     }
 }

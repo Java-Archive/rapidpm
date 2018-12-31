@@ -1,12 +1,12 @@
 package org.rapidpm;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,7 +18,7 @@ public class RandomGeneratorTest {
 
     private RandomGenerator rnd;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         rnd = RandomGenerator.getInstance();
     }

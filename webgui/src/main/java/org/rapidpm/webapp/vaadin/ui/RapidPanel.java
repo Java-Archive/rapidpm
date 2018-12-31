@@ -1,9 +1,9 @@
 package org.rapidpm.webapp.vaadin.ui;
 
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,31 +12,32 @@ import com.vaadin.ui.VerticalLayout;
  * Time: 13:04
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class RapidPanel extends Panel {
+@Tag("RapidPanel")
+public class RapidPanel extends Div {
 
     private final VerticalLayout contentLayout = new VerticalLayout();
 
     public RapidPanel(){
         contentLayout.setSpacing(true);
         contentLayout.setMargin(true);
-        setContent(contentLayout);
-        contentLayout.removeAllComponents();
+        add(contentLayout);
+        contentLayout.removeAll();
     }
 
     protected void turnEditableDesignOn(boolean b) {
-        if(b){
-            contentLayout.setStyleName("abc");
-        } else {
-            contentLayout.setStyleName(null);
-        }
+//        if(b){
+//            contentLayout.setStyleName("abc");
+//        } else {
+//            contentLayout.setStyleName(null);
+//        }
     }
 
     public void addComponent(final Component component){
-        contentLayout.addComponent(component);
+        contentLayout.add(component);
     }
 
     public void removeAllComponents(){
-        contentLayout.removeAllComponents();
+        contentLayout.removeAll();
     }
 
     public VerticalLayout getContentLayout() {

@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Sun Dec 16 14:22:02 CET 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.1 - (1616546): instance a816c00e-0167-b72e-46ac-00000e38c6f8 
+on database directory /home/marco/rapidpm/base/data/derby/rapidpm with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@799f7e29 
+Loaded from file:/home/marco/.m2/repository/org/apache/derby/derby/10.11.1.1/derby-10.11.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=11.0.1+13
+user.dir=/home/marco/rapidpm/base
+os.name=Linux
+os.arch=amd64
+os.version=4.17.19-1-MANJARO
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

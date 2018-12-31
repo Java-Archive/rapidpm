@@ -182,7 +182,7 @@ public class IssueBase implements PersistInGraph {
     }
 
 
-    public boolean addComponent(final IssueComponent component) {
+    public boolean add(final IssueComponent component) {
 //        return DaoFactorySingelton.getIssueBaseDAO(projectid).addComponentToTx(this, component);
         return addToMap("addComponentToTx", new Object[]{this, component});
     }

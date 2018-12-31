@@ -1,9 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic;
 
-import com.vaadin.data.Item;
-import com.vaadin.data.Property;
-import com.vaadin.data.util.HierarchicalContainer;
-import com.vaadin.server.VaadinSession;
+import com.vaadin.flow.server.VaadinSession;
 import org.apache.log4j.Logger;
 //import org.rapidpm.ejb3.EJBFactory;
 //import org.rapidpm.persistence.DaoFactoryBean;
@@ -33,28 +30,28 @@ public class TreeTableDataSourceFiller {
     private List<RessourceGroup> ressourceGroups;
     private final Map<RessourceGroup, Integer> ressourceGroupMinutesMap = new HashMap<>();
     private ResourceBundle messages;
-    private HierarchicalContainer dataSource;
+//    private HierarchicalContainer dataSource;
     private AufwandProjInitScreen screen;
     private PlannedProject currentProject;
 
-    public TreeTableDataSourceFiller(final AufwandProjInitScreen screen, final ResourceBundle bundle,
-                                     final HierarchicalContainer dSource) {
+    public TreeTableDataSourceFiller(final AufwandProjInitScreen screen, final ResourceBundle bundle
+                                     ) {
         this.screen = screen;
         this.messages = bundle;
-        dataSource = dSource;
+//        dataSource = dSource;
 
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final VaadinSession session = screen.getUi().getSession();
+        final VaadinSession session = VaadinSession.getCurrent();
         currentProject = session.getAttribute(PlannedProject.class);
         final RessourceGroupDAO ressourceGroupDAO = daoFactory.getRessourceGroupDAO();
         ressourceGroups = ressourceGroupDAO.loadAllEntities();
 
-        dataSource.removeAllItems();
-        final String aufgabe = messages.getString("aufgabe");
-        dataSource.addContainerProperty(aufgabe, String.class, null);
-        for (final RessourceGroup ressourceGroup : ressourceGroups) {
-            dataSource.addContainerProperty(ressourceGroup.getName(), String.class, "");
-        }
+//        dataSource.removeAllItems();
+//        final String aufgabe = messages.getString("aufgabe");
+//        dataSource.addContainerProperty(aufgabe, String.class, null);
+//        for (final RessourceGroup ressourceGroup : ressourceGroups) {
+//            dataSource.addContainerProperty(ressourceGroup.getName(), String.class, "");
+//        }
     }
 
     public void fill() {
@@ -65,25 +62,25 @@ public class TreeTableDataSourceFiller {
         final Set<PlanningUnit> planningUnits = currentProject.getPlanningUnits();
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
-            final Item planningUnitItem = dataSource.addItem(planningUnitName);
-            final String aufgabe = messages.getString("aufgabe");
-            planningUnitItem.getItemProperty(aufgabe).setValue(planningUnitName);
-            final Set<PlanningUnit> planningUnitList = planningUnit.getKindPlanningUnits();
-            if (planningUnitList == null || planningUnitList.isEmpty()) {
-                for (final RessourceGroup spalte : ressourceGroups) {
-                    for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-                        if (planningUnitElement.getRessourceGroup().equals(spalte)) {
-                            planningUnitElement.setPlannedMinutes(planningUnitElement.getPlannedMinutes());
-                            final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem
-                                    (planningUnitElement, currentProject.getHoursPerWorkingDay());
-                            final Property<String> itemProperty = planningUnitItem.getItemProperty(spalte.getName());
-                            itemProperty.setValue(daysHoursMinutesItem.toString());
-                        }
-                    }
-                }
-            } else {
-                calculatePlanningUnits(planningUnitList, planningUnitName);
-            }
+//            final Item planningUnitItem = dataSource.addItem(planningUnitName);
+//            final String aufgabe = messages.getString("aufgabe");
+//            planningUnitItem.getItemProperty(aufgabe).setValue(planningUnitName);
+//            final Set<PlanningUnit> planningUnitList = planningUnit.getKindPlanningUnits();
+//            if (planningUnitList == null || planningUnitList.isEmpty()) {
+//                for (final RessourceGroup spalte : ressourceGroups) {
+//                    for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+//                        if (planningUnitElement.getRessourceGroup().equals(spalte)) {
+//                            planningUnitElement.setPlannedMinutes(planningUnitElement.getPlannedMinutes());
+//                            final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem
+//                                    (planningUnitElement, currentProject.getHoursPerWorkingDay());
+//                            final Property<String> itemProperty = planningUnitItem.getItemProperty(spalte.getName());
+//                            itemProperty.setValue(daysHoursMinutesItem.toString());
+//                        }
+//                    }
+//                }
+//            } else {
+//                calculatePlanningUnits(planningUnitList, planningUnitName);
+//            }
         }
     }
 
@@ -91,25 +88,25 @@ public class TreeTableDataSourceFiller {
     private void calculatePlanningUnits(final Set<PlanningUnit> planningUnits, final String parent) {
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
-            final Item planningUnitItem = dataSource.addItem(planningUnitName);
-            final String aufgabe = messages.getString("aufgabe");
-            planningUnitItem.getItemProperty(aufgabe).setValue(planningUnitName);
-            dataSource.setParent(planningUnitName, parent);
-            final Set<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
-            if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
-                for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-                    final DaysHoursMinutesItem item = new DaysHoursMinutesItem(planningUnitElement, currentProject.getHoursPerWorkingDay());
-                    planningUnitItem.getItemProperty(planningUnitElement.getRessourceGroup().getName()).setValue(item.toString());
-                }
-                addiereZeileZurRessourceMap(planningUnit);
-            } else {
-                calculatePlanningUnits(kindPlanningUnits, planningUnitName);
-            }
+//            final Item planningUnitItem = dataSource.addItem(planningUnitName);
+//            final String aufgabe = messages.getString("aufgabe");
+//            planningUnitItem.getItemProperty(aufgabe).setValue(planningUnitName);
+//            dataSource.setParent(planningUnitName, parent);
+//            final Set<PlanningUnit> kindPlanningUnits = planningUnit.getKindPlanningUnits();
+//            if (kindPlanningUnits == null || kindPlanningUnits.isEmpty()) {
+//                for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+//                    final DaysHoursMinutesItem item = new DaysHoursMinutesItem(planningUnitElement, currentProject.getHoursPerWorkingDay());
+//                    planningUnitItem.getItemProperty(planningUnitElement.getRessourceGroup().getName()).setValue(item.toString());
+//                }
+//                addiereZeileZurRessourceMap(planningUnit);
+//            } else {
+//                calculatePlanningUnits(kindPlanningUnits, planningUnitName);
+//            }
         }
         for (final RessourceGroup spalte : ressourceGroups) {
             final Integer minutes = ressourceGroupMinutesMap.get(spalte);
             final DaysHoursMinutesItem item = new DaysHoursMinutesItem(minutes, currentProject.getHoursPerWorkingDay());
-            dataSource.getItem(parent).getItemProperty(spalte.getName()).setValue(item.toString());
+//            dataSource.getItem(parent).getItemProperty(spalte.getName()).setValue(item.toString());
         }
     }
 

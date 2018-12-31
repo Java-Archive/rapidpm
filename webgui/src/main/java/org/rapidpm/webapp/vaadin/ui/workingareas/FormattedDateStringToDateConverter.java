@@ -1,6 +1,8 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas;
 
-import com.vaadin.data.util.converter.Converter;
+import com.vaadin.flow.data.binder.Result;
+import com.vaadin.flow.data.binder.ValueContext;
+import com.vaadin.flow.data.converter.Converter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,9 +23,8 @@ public final class FormattedDateStringToDateConverter implements Converter<Strin
         this.dateFormat = dateFormat;
     }
 
-
     @Override
-    public Date convertToModel(final String s, final Class<? extends Date> aClass, final Locale locale) throws ConversionException {
+    public Result<Date> convertToModel(String s, ValueContext valueContext) {
         Date parsedDate = new Date();
 
         try {
@@ -31,24 +32,14 @@ public final class FormattedDateStringToDateConverter implements Converter<Strin
         } catch (ParseException e) {
             e.printStackTrace();  //TODO Logger verwenden
         }
-        return parsedDate;
+        return Result.ok(parsedDate);
     }
 
     @Override
-    public String convertToPresentation(final Date date, final Class<? extends String> aClass, final Locale locale) throws ConversionException {
+    public String convertToPresentation(Date date, ValueContext valueContext) {
         String formattedDate = dateFormat.toPattern();
         if(date != null)
             formattedDate = dateFormat.format(date);
         return formattedDate;
-    }
-
-    @Override
-    public Class<Date> getModelType() {
-        return Date.class;
-    }
-
-    @Override
-    public Class<String> getPresentationType() {
-        return String.class;
     }
 }

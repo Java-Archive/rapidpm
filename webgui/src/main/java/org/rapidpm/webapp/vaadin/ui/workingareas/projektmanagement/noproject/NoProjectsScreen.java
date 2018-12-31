@@ -1,9 +1,10 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.noproject;
 
-import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
@@ -24,8 +25,7 @@ public class NoProjectsScreen extends Screen {
     private final Button wizardButton;
     private final Button manualButton;
 
-    public NoProjectsScreen(final MainUI ui){
-        super(ui);
+    public NoProjectsScreen() {
 
         noProjectsPanel = new RapidPanel();
         descriptionLabel = new Label();
@@ -33,44 +33,43 @@ public class NoProjectsScreen extends Screen {
         wizardButton = new Button();
         manualButton = new Button();
 
-        setButtonListeners(ui);
+//        setButtonListeners(ui);
 
-        buttonLayout.addComponent(wizardButton);
-        buttonLayout.addComponent(manualButton);
+        buttonLayout.add(wizardButton);
+        buttonLayout.add(manualButton);
 
-        noProjectsPanel.addComponent(descriptionLabel);
-        noProjectsPanel.addComponent(buttonLayout);
+        noProjectsPanel.add(descriptionLabel);
+        noProjectsPanel.add(buttonLayout);
 
         doInternationalization();
         setComponents();
     }
 
-    private void setButtonListeners(final MainUI ui) {
-        wizardButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                Notification.show("TUDU");
-            }
-        });
+//    private void setButtonListeners(final MainUI ui) {
+//        wizardButton.addClickListener(new Button.ClickListener() {
+//            @Override
+//            public void buttonClick(Button.ClickEvent event) {
+//                Notification.show("TUDU");
+//            }
+//        });
+//
+//        manualButton.addClickListener(new Button.ClickListener() {
+//            @Override
+//            public void buttonClick(Button.ClickEvent event) {
+//                final AddProjectWindow addProjectWindow = new AddProjectWindow(ui, messagesBundle);
+//                addProjectWindow.show();
+//            }
+//        });
+//    }
 
-        manualButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                final AddProjectWindow addProjectWindow = new AddProjectWindow(ui, messagesBundle);
-                addProjectWindow.show();
-            }
-        });
-    }
 
-    @Override
     public void setComponents() {
-        addComponent(noProjectsPanel);
+        add(noProjectsPanel);
     }
 
-    @Override
     public void doInternationalization() {
-        descriptionLabel.setValue(messagesBundle.getString("noprojects"));
-        wizardButton.setCaption(messagesBundle.getString("wizard"));
-        manualButton.setCaption(messagesBundle.getString("manual"));
+        descriptionLabel.setText(messagesBundle.getString("noprojects"));
+        wizardButton.setText(messagesBundle.getString("wizard"));
+        manualButton.setText(messagesBundle.getString("manual"));
     }
 }

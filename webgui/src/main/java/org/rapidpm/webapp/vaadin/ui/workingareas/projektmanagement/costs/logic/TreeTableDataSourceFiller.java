@@ -1,10 +1,8 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic;
 
-import com.vaadin.data.Item;
-import com.vaadin.data.Property;
-import com.vaadin.data.util.HierarchicalContainer;
 //import org.rapidpm.ejb3.EJBFactory;
 //import org.rapidpm.persistence.DaoFactoryBean;
+import com.vaadin.flow.server.VaadinSession;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -33,23 +31,22 @@ public class TreeTableDataSourceFiller {
     private ResourceBundle messages;
     private CostsScreen screen;
 
-    private HierarchicalContainer dataSource;
+//    private HierarchicalContainer dataSource;
 
-    public TreeTableDataSourceFiller(final CostsScreen screen, final ResourceBundle bundle,
-                                     final HierarchicalContainer dSource) {
+    public TreeTableDataSourceFiller(final CostsScreen screen, final ResourceBundle bundle) {
         this.screen = screen;
         messages = bundle;
-        dataSource = dSource;
+//        dataSource = dSource;
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         ressourceGroups = daoFactory.getRessourceGroupDAO().loadAllEntities();
         for(final RessourceGroup ressourceGroup : ressourceGroups){
             daoFactory.getEntityManager().refresh(ressourceGroup);
         }
-        dataSource.removeAllItems();
-        dataSource.addContainerProperty(messages.getString("aufgabe"), String.class, null);
-        for (final RessourceGroup ressourceGroup : ressourceGroups) {
-            dataSource.addContainerProperty(ressourceGroup.getName(), Double.class, "");
-        }
+//        dataSource.removeAllItems();
+//        dataSource.addContainerProperty(messages.getString("aufgabe"), String.class, null);
+//        for (final RessourceGroup ressourceGroup : ressourceGroups) {
+//            dataSource.addContainerProperty(ressourceGroup.getName(), Double.class, "");
+//        }
 
     }
 
@@ -58,15 +55,15 @@ public class TreeTableDataSourceFiller {
     }
 
     private void computePlanningUnitsAndTotalsAbsolut() {
-        final PlannedProject projectFromSession = screen.getUi().getSession().getAttribute(PlannedProject.class);
+        final PlannedProject projectFromSession = VaadinSession.getCurrent().getAttribute(PlannedProject.class);
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
         final PlannedProject projectFromDB = plannedProjectDAO.findByID(projectFromSession.getId());
         final Set<PlanningUnit> planningUnits = projectFromDB.getPlanningUnits();
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
-            final Item planningUnitItem = dataSource.addItem(planningUnitName);
-            planningUnitItem.getItemProperty(messages.getString("aufgabe")).setValue(planningUnitName);
+//            final Item planningUnitItem = dataSource.addItem(planningUnitName);
+//            planningUnitItem.getItemProperty(messages.getString("aufgabe")).setValue(planningUnitName);
             final Set<PlanningUnit> planningUnitList = planningUnit.getKindPlanningUnits();
             if (planningUnitList == null || planningUnitList.isEmpty()) {
                 for (final RessourceGroup spalte : ressourceGroups) {
@@ -74,7 +71,7 @@ public class TreeTableDataSourceFiller {
                     for (final PlanningUnitElement planningUnitElement : planningUnitElementList) {
                         final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
                         if (ressourceGroup.equals(spalte)) {
-                            planningUnitItem.getItemProperty(spalte.getName()).setValue(getCosts(planningUnitElement));
+//                            planningUnitItem.getItemProperty(spalte.getName()).setValue(getCosts(planningUnitElement));
                         }
                     }
                 }
@@ -88,14 +85,14 @@ public class TreeTableDataSourceFiller {
     private void computePlanningUnits(final Set<PlanningUnit> planningUnits, final String parent) {
         for (final PlanningUnit planningUnit : planningUnits) {
             final String planningUnitName = planningUnit.getPlanningUnitName();
-            final Item planningUnitItem = dataSource.addItem(planningUnitName);
-            planningUnitItem.getItemProperty(messages.getString("aufgabe")).setValue(planningUnitName);
-            dataSource.setParent(planningUnitName, parent);
+//            final Item planningUnitItem = dataSource.addItem(planningUnitName);
+//            planningUnitItem.getItemProperty(messages.getString("aufgabe")).setValue(planningUnitName);
+//            dataSource.setParent(planningUnitName, parent);
             if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
                 for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
                     final Double costs = getCosts(planningUnitElement);
                     final RessourceGroup ressourceGroup = planningUnitElement.getRessourceGroup();
-                    planningUnitItem.getItemProperty(ressourceGroup.getName()).setValue(costs);
+//                    planningUnitItem.getItemProperty(ressourceGroup.getName()).setValue(costs);
                 }
                 addiereZeileZurRessourceMap(planningUnit);
             } else {
@@ -103,10 +100,10 @@ public class TreeTableDataSourceFiller {
             }
         }
         for (final RessourceGroup spalte : ressourceGroups) {
-            final Item dataSourceItem = dataSource.getItem(parent);
+//            final Item dataSourceItem = dataSource.getItem(parent);
             final Double newValue = ressourceGroupsCostsMap.get(spalte);
-            final Property<Double> itemProperty = dataSourceItem.getItemProperty(spalte.getName());
-            itemProperty.setValue(newValue);
+//            final Property<Double> itemProperty = dataSourceItem.getItemProperty(spalte.getName());
+//            itemProperty.setValue(newValue);
         }
     }
 

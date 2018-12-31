@@ -1,7 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tasks;
 
 
-import com.vaadin.ui.Notification;
+import com.vaadin.flow.component.notification.Notification;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
@@ -35,7 +35,7 @@ public class DelRowLogic {
             daoFactory.removeTX(ressourceGroup);
 
             screen.generateTableAndCalculate();
-            screen.getSaveButtonLayout().setVisible(false);
+//            screen.getSaveButtonLayout().setVisible(false);
         } catch (final PersistenceException e){
             Notification.show(messages.getString("stdsatz_nodelete"));
         }

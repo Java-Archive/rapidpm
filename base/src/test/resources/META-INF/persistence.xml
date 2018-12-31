@@ -144,12 +144,13 @@
             <!--<property name="hibernate.connection.username" value="rapidpm"/>-->
             <!--<property name="hibernate.connection.password" value="rapidpm"/>-->
             <!--<property status="hibernate.default_schema" value="public" />-->
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyTenSevenDialect"/>
             <property name="hibernate.cache.use_second_level_cache" value="true"/>
             <property name="hibernate.id.new_generator_mappings" value="false"/>
             <property name="hibernate.connection.release_mode" value="on_close"/>
-
+            <property name="javax.persistence.sql-load-script-source" value="/basiswerte_001.001.sql" />
+            <property name="hibernate.show_sql" value="true" />
         </properties>
     </persistence-unit>
 

@@ -1,8 +1,10 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents;
 
-import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.*;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import org.apache.log4j.Logger;
 //import org.rapidpm.ejb3.EJBFactory;
 //import org.rapidpm.persistence.DaoFactoryBean;
@@ -46,16 +48,16 @@ public class AddProjectWindow extends RapidWindow{
     private Button cancelButton = new Button();
     private ProjektFieldGroup fieldGroup;
     private ResourceBundle messages;
-    private CheckBox makeCurrentProjectCheckBox;
+    private Checkbox makeCurrentProjectCheckBox;
 //    private AddProjectWindowBean bean;
 
     public AddProjectWindow(final MainUI ui, final ResourceBundle messages) {
         this.ui = ui;
         this.messages = messages;
-        setHeight(HEIGHT);
-        setWidth(WIDTH);
-        setPositionX(POSITION_X);
-        setPositionY(POSITION_Y);
+//        setHeight(HEIGHT);
+//        setWidth(WIDTH);
+//        setPositionX(POSITION_X);
+//        setPositionY(POSITION_Y);
 
 //        bean = EJBFactory.getEjbInstance(AddProjectWindowBean.class);
 //        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
@@ -63,7 +65,7 @@ public class AddProjectWindow extends RapidWindow{
 
         final PlannedProject projekt = new PlannedProject();
         fieldGroup = new ProjektFieldGroup(projekt, messages);
-        makeCurrentProjectCheckBox = new CheckBox(messages.getString("makeCurrentProject"));
+//        makeCurrentProjectCheckBox = new CheckBox(messages.getString("makeCurrentProject"));
         final List<PlannedProject> projectList = daoFactory.getPlannedProjectDAO().loadAllEntities();
         if(projectList == null || projectList.isEmpty()){
             makeCurrentProjectCheckBox.setValue(true);
@@ -71,12 +73,12 @@ public class AddProjectWindow extends RapidWindow{
         }
 
         fillFormLayout();
-        addComponent(formLayout);
+        add(formLayout);
 
-        horizontalButtonLayout.addComponent(saveButton);
-        horizontalButtonLayout.addComponent(cancelButton);
+        horizontalButtonLayout.add(saveButton);
+        horizontalButtonLayout.add(cancelButton);
 
-        addComponent(horizontalButtonLayout);
+        add(horizontalButtonLayout);
         addListeners(daoFactory, ui);
         doInternationalization();
 
@@ -87,82 +89,82 @@ public class AddProjectWindow extends RapidWindow{
         idField.setValue("autom.");
         idField.setRequired(true);
         idField.setEnabled(false);
-        formLayout.addComponent(idField);
-        for (final Object propertyId : fieldGroup.getBoundPropertyIds()) {
-            final Field field = fieldGroup.getField(propertyId);
-            field.setReadOnly(false);
-            if(propertyId.toString().equals(PlannedProject.HOURSPERWORKINGDAY)){
-                field.setValue(Constants.DEFAULT_HOURS_PER_WORKINGDAY);
-                //als Standard 8 auswählen
-                final Iterator iterator = ((ComboBox)field).getItemIds().iterator();
-                for(int i=0; i<7; i++){
-                   iterator.next();
-                }
-                ((ComboBox)field).setValue(iterator.next());
-                //--
-            }
-            formLayout.addComponent(field);
-        }
-        formLayout.addComponent(makeCurrentProjectCheckBox);
+        formLayout.add(idField);
+//        for (final Object propertyId : fieldGroup.getBoundPropertyIds()) {
+//            final Field field = fieldGroup.getField(propertyId);
+//            field.setReadOnly(false);
+//            if(propertyId.toString().equals(PlannedProject.HOURSPERWORKINGDAY)){
+//                field.setValue(Constants.DEFAULT_HOURS_PER_WORKINGDAY);
+//                //als Standard 8 auswählen
+//                final Iterator iterator = ((ComboBox)field).getItemIds().iterator();
+//                for(int i=0; i<7; i++){
+//                   iterator.next();
+//                }
+//                ((ComboBox)field).setValue(iterator.next());
+//                //--
+//            }
+//            formLayout.add(field);
+//        }
+        formLayout.add(makeCurrentProjectCheckBox);
     }
 
     private void doInternationalization() {
-        this.setCaption(messages.getString("project_addproject"));
-        saveButton.setCaption(messages.getString("save"));
-        cancelButton.setCaption(messages.getString("cancel"));
+//        this.setText(messages.getString("project_addproject"));
+        saveButton.setText(messages.getString("save"));
+        cancelButton.setText(messages.getString("cancel"));
     }
 
     private void addListeners(final DaoFactory baseDaoFactoryBean,final MainUI ui) {
-        saveButton.addClickListener(new Button.ClickListener() {
-
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                boolean allFilled = true;
-                final Iterator<Component> it = AddProjectWindow.this.formLayout.getComponentIterator();
-                while (it.hasNext()) {
-                    final Component component = it.next();
-                    if (component instanceof AbstractField) {
-                        if (((AbstractField) component).getValue() == null
-                                || ((AbstractField) component).getValue().equals(""))
-                            allFilled = false;
-                    }
-                }
-                if (allFilled) {
-                    try {
-                        fieldGroup.commit();
-                        final BeanItem<PlannedProject> newProjectBeanItem = (BeanItem<PlannedProject>) fieldGroup
-                                .getItemDataSource();
-                        baseDaoFactoryBean.saveOrUpdateTX(newProjectBeanItem.getBean());
-                        if(makeCurrentProjectCheckBox.getValue() == true){
-                            ui.getSession().setAttribute(PlannedProject.class, newProjectBeanItem.getBean());
-                        }
-                        AddProjectWindow.this.close();
-                        ui.setWorkingArea(new ProjectAdministrationScreen(ui));
-                    } catch (final FieldGroup.CommitException e) {
-                        logger.warn(e);
-                    }
-
-                } else {
-                    final Label lbl = new Label();
-                    lbl.setValue(messages.getString("stdsatz_fillInAllFields"));
-                    addComponent(lbl);
-                }
-
-            }
-
-        });
-
-        cancelButton.addClickListener(new Button.ClickListener() {
-
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                AddProjectWindow.this.close();
-            }
-        });
+//        saveButton.addClickListener(new Button.ClickListener() {
+//
+//            @Override
+//            public void buttonClick(Button.ClickEvent event) {
+//                boolean allFilled = true;
+//                final Iterator<Component> it = AddProjectWindow.this.formLayout.getComponentIterator();
+//                while (it.hasNext()) {
+//                    final Component component = it.next();
+//                    if (component instanceof AbstractField) {
+//                        if (((AbstractField) component).getValue() == null
+//                                || ((AbstractField) component).getValue().equals(""))
+//                            allFilled = false;
+//                    }
+//                }
+//                if (allFilled) {
+//                    try {
+//                        fieldGroup.commit();
+//                        final BeanItem<PlannedProject> newProjectBeanItem = (BeanItem<PlannedProject>) fieldGroup
+//                                .getItemDataSource();
+//                        baseDaoFactoryBean.saveOrUpdateTX(newProjectBeanItem.getBean());
+//                        if(makeCurrentProjectCheckBox.getValue() == true){
+//                            ui.getSession().setAttribute(PlannedProject.class, newProjectBeanItem.getBean());
+//                        }
+//                        AddProjectWindow.this.close();
+//                        ui.setWorkingArea(new ProjectAdministrationScreen(ui));
+//                    } catch (final FieldGroup.CommitException e) {
+//                        logger.warn(e);
+//                    }
+//
+//                } else {
+//                    final Label lbl = new Label();
+//                    lbl.setValue(messages.getString("stdsatz_fillInAllFields"));
+//                    add(lbl);
+//                }
+//
+//            }
+//
+//        });
+//
+//        cancelButton.addClickListener(new Button.ClickListener() {
+//
+//            @Override
+//            public void buttonClick(Button.ClickEvent event) {
+//                AddProjectWindow.this.close();
+//            }
+//        });
 
     }
 
     public void show() {
-        ui.addWindow(this);
+//        ui.addWindow(this);
     }
 }

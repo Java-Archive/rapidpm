@@ -9,7 +9,7 @@ package org.rapidpm.persistence.prj.book;
  */
 
 import org.apache.log4j.Logger;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.persistence.prj.BaseDAOTest;
 import org.rapidpm.persistence.prj.book.kommentar.BuchKapitelKommentar;
 import org.rapidpm.persistence.prj.book.kommentar.BuchKommentar;

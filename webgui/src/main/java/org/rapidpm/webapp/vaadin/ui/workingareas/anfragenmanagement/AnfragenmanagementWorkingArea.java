@@ -1,8 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.anfragenmanagement;
 
-import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.ui.Table;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import org.rapidpm.persistence.prj.bewegungsdaten.anfragen.Projektanfrage;
 
 /**
@@ -18,18 +17,18 @@ public class AnfragenmanagementWorkingArea extends VerticalLayout {
         //final DaoFactoryBean daoFactoryBean = null; // TODO AnfragenmanagementWorkingAreaBean
         //final ProjektanfrageDAO projektanfrageDAO = daoFactoryBean.getProjektanfrageDAO();
 
-        final BeanItemContainer<Projektanfrage> dataSource = new BeanItemContainer<>(Projektanfrage.class);
+//        final BeanItemContainer<Projektanfrage> dataSource = new BeanItemContainer<>(Projektanfrage.class);
         //final List<Projektanfrage> projektanfrageList = projektanfrageDAO.loadAllEntities();
         //dataSource.addAll(projektanfrageList);
 
-        final Table table = new Table("Projektanfragen", dataSource);
-        table.setVisibleColumns(ProjektanfrageUI.VISIBLE_COLUMNS);
-        table.setColumnHeaders(ProjektanfrageUI.COLUMN_NAMES);
-        table.setSelectable(true);
-        table.setColumnCollapsingAllowed(true);
+        final Grid table = new Grid();
+//        table.setVisibleColumns(ProjektanfrageUI.VISIBLE_COLUMNS);
+//        table.setColumnHeaders(ProjektanfrageUI.COLUMN_NAMES);
+//        table.setSelectable(true);
+//        table.setColumnCollapsingAllowed(true);
         table.setColumnReorderingAllowed(true);
         table.setSizeFull();
-        addComponent(table);
+        add(table);
     }
 
 }

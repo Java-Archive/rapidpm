@@ -1,6 +1,6 @@
 package org.rapidpm.webservice.persistence.system.security.benutzerws;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Created with IntelliJ IDEA.

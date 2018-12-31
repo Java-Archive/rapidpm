@@ -33,7 +33,6 @@
 
     <persistence-unit name="baseormJDBC" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <non-jta-data-source>java:jboss/datasources/baseormJDBC</non-jta-data-source>
         <class>org.rapidpm.persistence.prj.bewegungsdaten.anfragen.KontaktAnfrage</class>
         <class>org.rapidpm.persistence.prj.bewegungsdaten.anfragen.Projektanfrage</class>
         <class>org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.Message</class>
@@ -170,9 +169,13 @@
         <class>org.rapidpm.persistence.system.security.PasswdRequestStatus</class>
 
         <properties>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL9Dialect"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL94Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true" />
+            <property name="javax.persistence.jdbc.url" value=""/>
+            <property name="javax.persistence.jdbc.user" value=""/>
+            <property name="javax.persistence.jdbc.password" value=""/>
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
         </properties>
     </persistence-unit>
 

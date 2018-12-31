@@ -1,5 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic;
 
+import com.vaadin.flow.server.VaadinSession;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
@@ -31,11 +32,11 @@ public class PlanningCalculator {
     private Map<PlanningUnitElement, Integer> planningUnitElements1 = new HashMap<>();
 
 
-    public PlanningCalculator(final ResourceBundle bundle, MainUI ui) {
+    public PlanningCalculator(final ResourceBundle bundle) {
         this.messages = bundle;
         daoFactory = DaoFactorySingelton.getInstance();
         final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
-        final PlannedProject projectFromSession = ui.getSession().getAttribute(PlannedProject.class);
+        final PlannedProject projectFromSession = VaadinSession.getCurrent().getAttribute(PlannedProject.class);
         projekt = plannedProjectDAO.findByID(projectFromSession.getId());
         daoFactory.getEntityManager().refresh(projekt);
     }

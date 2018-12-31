@@ -7,13 +7,13 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit; /**
  */
 
 import org.apache.log4j.Logger;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.rapidpm.persistence.prj.BaseDAOTest;
 
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PositionDAOTest extends BaseDAOTest {
     private static final Logger logger = Logger.getLogger(PositionDAOTest.class);

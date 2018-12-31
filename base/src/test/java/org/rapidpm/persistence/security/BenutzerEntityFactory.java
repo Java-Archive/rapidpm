@@ -4,11 +4,11 @@ import org.rapidpm.RandomGenerator;
 import org.rapidpm.persistence.EntityFactory;
 import org.rapidpm.persistence.security.berechtigungen.BerechtigungEntityFactory;
 import org.rapidpm.persistence.system.security.Benutzer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Created by IntelliJ IDEA.

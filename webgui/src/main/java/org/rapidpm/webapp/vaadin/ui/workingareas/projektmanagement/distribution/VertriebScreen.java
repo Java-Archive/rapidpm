@@ -1,9 +1,26 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.distribution;
 
-import com.vaadin.ui.*;
+import com.github.appreciated.app.layout.annotations.Caption;
+import com.github.appreciated.app.layout.annotations.Icon;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextArea;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinSession;
 import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.webapp.vaadin.ui.AbstractView;
+import org.rapidpm.webapp.vaadin.ui.MainAppLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 
+import java.util.ResourceBundle;
+
+@Route(value = "vertrieb", layout = MainAppLayout.class)
+@Caption("Vertrieb")
+@Icon(VaadinIcon.SAFE_LOCK)
 public class VertriebScreen extends Screen {
     private TextField vertrieblerField;
     private TextField datumField;
@@ -12,14 +29,13 @@ public class VertriebScreen extends Screen {
     private TextField verhandelterPreisField;
     private TextArea bemerkungenArea;
 
-    private Table vertriebsTable;
+    private Grid vertriebsTable;
 
     private FormLayout vertrieblerLayout = new FormLayout();
     private VerticalLayout tableLayout = new VerticalLayout();
     private FormLayout bottomLayout;
 
-    public VertriebScreen(MainUI ui) {
-        super(ui);
+    public VertriebScreen() {
         erstelleVertrieblerLayout();
         erstelleStandardTableLayout(new Label("Uebersicht"));
         erstelleBottomLayout();
@@ -27,14 +43,14 @@ public class VertriebScreen extends Screen {
         doInternationalization();
     }
 
-    @Override
     public void doInternationalization() {
-        vertrieblerField.setCaption(messagesBundle.getString("distri_responsible"));
-        datumField.setCaption(messagesBundle.getString("distri_date"));
-        summeMitAufschlagField.setCaption(messagesBundle.getString("distri_sumWithAddition"));
-        summeOhneAufschlagField.setCaption(messagesBundle.getString("distri_sumWithoutAddition"));
-        verhandelterPreisField.setCaption(messagesBundle.getString("distri_negotiatedPrice"));
-        bemerkungenArea.setCaption(messagesBundle.getString("distri_comments"));
+        ResourceBundle messagesBundle = VaadinSession.getCurrent().getAttribute(ResourceBundle.class);
+        vertrieblerField.setValue(messagesBundle.getString("distri_responsible"));
+        datumField.setValue(messagesBundle.getString("distri_date"));
+        summeMitAufschlagField.setValue(messagesBundle.getString("distri_sumWithAddition"));
+        summeOhneAufschlagField.setValue(messagesBundle.getString("distri_sumWithoutAddition"));
+        verhandelterPreisField.setValue(messagesBundle.getString("distri_negotiatedPrice"));
+        bemerkungenArea.setValue(messagesBundle.getString("distri_comments"));
     }
 
     private void erstelleBottomLayout() {
@@ -48,32 +64,31 @@ public class VertriebScreen extends Screen {
         bemerkungenArea.setWidth("500px");
         bemerkungenArea.setHeight("300px");
 
-        bottomLayout.addComponent(summeMitAufschlagField);
-        bottomLayout.addComponent(summeOhneAufschlagField);
-        bottomLayout.addComponent(verhandelterPreisField);
+        bottomLayout.add(summeMitAufschlagField);
+        bottomLayout.add(summeOhneAufschlagField);
+        bottomLayout.add(verhandelterPreisField);
 
-        bottomLayout.addComponent(bemerkungenArea);
+        bottomLayout.add(bemerkungenArea);
     }
 
     private void erstelleStandardTableLayout(Label ueberschrift) {
-        vertriebsTable = new Table();
-        tableLayout.addComponent(ueberschrift);
-        tableLayout.addComponent(vertriebsTable);
+        vertriebsTable = new Grid();
+        tableLayout.add(ueberschrift);
+        tableLayout.add(vertriebsTable);
     }
 
     private void erstelleVertrieblerLayout() {
         vertrieblerLayout.setWidth("600px");
         vertrieblerField = new TextField();
         datumField = new TextField();
-        vertrieblerLayout.addComponent(vertrieblerField);
-        vertrieblerLayout.addComponent(datumField);
+        vertrieblerLayout.add(vertrieblerField);
+        vertrieblerLayout.add(datumField);
     }
 
-    @Override
     public void setComponents() {
-        addComponent(vertrieblerLayout);
-        addComponent(tableLayout);
-        addComponent(bottomLayout);
+        add(vertrieblerLayout);
+        add(tableLayout);
+        add(bottomLayout);
     }
 
 
@@ -125,11 +140,11 @@ public class VertriebScreen extends Screen {
         this.bemerkungenArea = bemerkungenArea;
     }
 
-    public Table getVertriebsTable() {
+    public Grid getVertriebsTable() {
         return vertriebsTable;
     }
 
-    public void setVertriebsTable(Table vertriebsTable) {
+    public void setVertriebsTable(Grid vertriebsTable) {
         this.vertriebsTable = vertriebsTable;
     }
 

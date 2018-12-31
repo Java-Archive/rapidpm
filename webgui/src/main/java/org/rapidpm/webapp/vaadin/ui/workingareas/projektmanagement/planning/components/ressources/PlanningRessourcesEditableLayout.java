@@ -1,8 +1,9 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.ressources;
 
-import com.vaadin.event.MouseEvents;
-import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.*;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.server.VaadinSession;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
@@ -32,8 +33,8 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
     private List<TextField> ressourceGroupFields = new ArrayList<>();
 
     public PlanningRessourcesEditableLayout(final PlanningUnit planningUnit, final ProjektplanungScreen screen,
-                                          final Panel screenPanel, boolean hasChildren) {
-        super(screen, screenPanel);
+                                            final Component screenPanel, boolean hasChildren) {
+        super(null, screenPanel);
         this.screen = screen;
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO().loadAllEntities();
@@ -41,64 +42,64 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
             buildField(ressourceGroup, planningUnit);
         }
         buildForm();
-        if (hasChildren) {
-            for (final Object listener : screenPanel.getListeners(MouseEvents.ClickEvent.class)) {
-                screenPanel.removeClickListener((MouseEvents.ClickListener) listener);
-            }
-        } else {
-            cancelButton.addClickListener(new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    for (final TextField textField : ressourceGroupFields) {
-                        for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-                            if (planningUnitElement.getRessourceGroup().getName().equals(textField.getCaption())) {
-                                final VaadinSession session = screen.getUi().getSession();
-                                final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
-                                final DaysHoursMinutesItem item = new DaysHoursMinutesItem(planningUnitElement,
-                                        currentProject.getHoursPerWorkingDay());
-                                textField.setValue(item.toString());
-                            }
-                        }
-                    }
-                    final Iterator<Component> componentIterator = componentsLayout.iterator();
-                    while (componentIterator.hasNext()) {
-                        final Component component = componentIterator.next();
-                        if (component instanceof Field) {
-                            component.setReadOnly(true);
-                        }
-                    }
-                    buttonLayout.setVisible(false);
-                }
-            });
-
-            saveButton.addClickListener(new Button.ClickListener() {
-                @Override
-                public void buttonClick(Button.ClickEvent event) {
-                    boolean allValid = true;
-                    for (final TextField textField : ressourceGroupFields) {
-                        if (!textField.isValid()){
-                            allValid = false;
-                        }
-                    }
-                    if(allValid){
-                        for (final TextField textField : ressourceGroupFields) {
-                            for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()
-                                    ) {
-                                if (planningUnitElement.getRessourceGroup().getName().equals(textField.getCaption())) {
-                                    final VaadinSession session = screen.getUi().getSession();
-                                    final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
-                                    final DaysHoursMinutesItem item = new DaysHoursMinutesItem(textField.getValue(),
-                                            currentProject.getHoursPerWorkingDay());
-                                    planningUnitElement.setPlannedMinutes(item.getMinutesFromDaysHoursMinutes());
-                                    daoFactory.saveOrUpdateTX(planningUnitElement);
-                                }
-                            }
-                        }
-                        screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
-                    }
-                }
-            });
-        }
+//        if (hasChildren) {
+//            for (final Object listener : screenPanel.getListeners(MouseEvents.ClickEvent.class)) {
+//                screenPanel.removeClickListener((MouseEvents.ClickListener) listener);
+//            }
+//        } else {
+//            cancelButton.addClickListener(new Button.ClickListener() {
+//                @Override
+//                public void buttonClick(Button.ClickEvent event) {
+//                    for (final TextField textField : ressourceGroupFields) {
+//                        for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+//                            if (planningUnitElement.getRessourceGroup().getName().equals(textField.getCaption())) {
+//                                final VaadinSession session = screen.getUi().getSession();
+//                                final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
+//                                final DaysHoursMinutesItem item = new DaysHoursMinutesItem(planningUnitElement,
+//                                        currentProject.getHoursPerWorkingDay());
+//                                textField.setValue(item.toString());
+//                            }
+//                        }
+//                    }
+//                    final Iterator<Component> componentIterator = componentsLayout.iterator();
+//                    while (componentIterator.hasNext()) {
+//                        final Component component = componentIterator.next();
+//                        if (component instanceof Field) {
+//                            component.setReadOnly(true);
+//                        }
+//                    }
+//                    buttonLayout.setVisible(false);
+//                }
+//            });
+//
+//            saveButton.addClickListener(new Button.ClickListener() {
+//                @Override
+//                public void buttonClick(Button.ClickEvent event) {
+//                    boolean allValid = true;
+//                    for (final TextField textField : ressourceGroupFields) {
+//                        if (!textField.isValid()){
+//                            allValid = false;
+//                        }
+//                    }
+//                    if(allValid){
+//                        for (final TextField textField : ressourceGroupFields) {
+//                            for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()
+//                                    ) {
+//                                if (planningUnitElement.getRessourceGroup().getName().equals(textField.getCaption())) {
+//                                    final VaadinSession session = screen.getUi().getSession();
+//                                    final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
+//                                    final DaysHoursMinutesItem item = new DaysHoursMinutesItem(textField.getValue(),
+//                                            currentProject.getHoursPerWorkingDay());
+//                                    planningUnitElement.setPlannedMinutes(item.getMinutesFromDaysHoursMinutes());
+//                                    daoFactory.saveOrUpdateTX(planningUnitElement);
+//                                }
+//                            }
+//                        }
+//                        screen.getUi().setWorkingArea(new ProjektplanungScreen(screen.getUi()));
+//                    }
+//                }
+//            });
+//        }
     }
 
     private void buildField(final RessourceGroup ressourceGroup, final PlanningUnit planningUnit) {
@@ -112,25 +113,25 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
         }
         final int index = planningUnit.getPlanningUnitElementList().indexOf(element);
         final PlanningUnitElement planningUnitElement = planningUnit.getPlanningUnitElementList().get(index);
-        final VaadinSession session = screen.getUi().getSession();
+        final VaadinSession session = VaadinSession.getCurrent();
         final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
         final DaysHoursMinutesItem item = new DaysHoursMinutesItem(planningUnitElement,
                 currentProject.getHoursPerWorkingDay());
         field.setValue(item.toString());
         field.setReadOnly(true);
-        field.addValidator(new DaysHoursMinutesFieldValidator(screen));
+//        field.addValidator(new DaysHoursMinutesFieldValidator(screen));
         ressourceGroupFields.add(field);
     }
 
     @Override
     protected void buildForm() {
         for (final TextField field : ressourceGroupFields) {
-            componentsLayout.addComponent(field);
+            componentsLayout.add(field);
         }
     }
 
     @Override
     protected void setLayout() {
-        componentsLayout = new FormLayout();
+//        componentsLayout = new VerticalLayout();
     }
 }

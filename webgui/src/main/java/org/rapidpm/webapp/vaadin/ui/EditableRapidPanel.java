@@ -1,8 +1,7 @@
 package org.rapidpm.webapp.vaadin.ui;
 
-import com.vaadin.event.MouseEvents;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Componentssetable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 
@@ -26,12 +25,12 @@ public abstract class EditableRapidPanel extends RapidPanel implements Internati
         this.messagesBundle = messagesBundle;
         turnEditableDesignOn(true);
 
-        addClickListener(new MouseEvents.ClickListener() {
-            @Override
-            public void click(MouseEvents.ClickEvent event) {
-                activate(true);
-            }
-        });
+//        addClickListener(new MouseEvents.ClickListener() {
+//            @Override
+//            public void click(MouseEvents.ClickEvent event) {
+//                activate(true);
+//            }
+//        });
     }
 
     public abstract void activate(boolean b);

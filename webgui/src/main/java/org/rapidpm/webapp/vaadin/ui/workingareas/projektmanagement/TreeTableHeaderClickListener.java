@@ -1,7 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Table;
+import com.vaadin.flow.component.grid.Grid;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -10,16 +9,16 @@ import com.vaadin.ui.Table;
  * Time: 08:42
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class TreeTableHeaderClickListener implements Table.HeaderClickListener {
+public class TreeTableHeaderClickListener {
 
-    private Button undoButton;
-
-    public TreeTableHeaderClickListener(Button undoButton) {
-        this.undoButton = undoButton;
-    }
-
-    @Override
-    public void headerClick(Table.HeaderClickEvent event) {
-         undoButton.setVisible(true);
-    }
+//    private Button undoButton;
+//
+//    public TreeTableHeaderClickListener(Button undoButton) {
+//        this.undoButton = undoButton;
+//    }
+//
+//    @Override
+//    public void headerClick(Table.HeaderClickEvent event) {
+//         undoButton.setVisible(true);
+//    }
 }

@@ -1,8 +1,11 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all;
 
-import com.vaadin.data.fieldgroup.FieldGroup;
-import com.vaadin.data.util.BeanItem;
-import com.vaadin.ui.*;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.server.VaadinSession;
 import org.apache.log4j.Logger;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
@@ -48,137 +51,137 @@ public class AddWindow extends RapidWindow {
 
     public AddWindow(final MainUI ui, final ProjektplanungScreen screen) {
         this.ui = ui;
-        messages = screen.getMessagesBundle();
-        setHeight(HEIGHT);
-        setWidth(WIDTH);
-        setPositionX(POSITION_X);
-        setPositionY(POSITION_Y);
+        messages = VaadinSession.getCurrent().getAttribute(ResourceBundle.class);
+//        setHeight(HEIGHT);
+//        setWidth(WIDTH);
+//        setPositionX(POSITION_X);
+//        setPositionY(POSITION_Y);
 
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
         fieldGroup = new PlanningUnitFieldGroup(screen);
 
         fillFormLayout();
-        singleLayout.addComponent(formLayout);
-        horizontalButtonLayout.addComponent(saveButton);
-        horizontalButtonLayout.addComponent(cancelButton);
+        singleLayout.add(formLayout);
+        horizontalButtonLayout.add(saveButton);
+        horizontalButtonLayout.add(cancelButton);
 
-        singleLayout.addComponent(horizontalButtonLayout);
+        singleLayout.add(horizontalButtonLayout);
         singleLayout.setSpacing(true);
-        setContent(singleLayout);
+        add(singleLayout);
         addListeners(daoFactory, ui, screen);
         doInternationalization();
 
     }
 
     private void fillFormLayout() {
-        formLayout.addComponent(fieldGroup.getNameField());
-        formLayout.addComponent(fieldGroup.getParentBox());
-        formLayout.addComponent(fieldGroup.getResponsibleBox());
-        formLayout.addComponent(fieldGroup.getStoryPointsField());
-        formLayout.addComponent(fieldGroup.getComplexityField());
-        formLayout.addComponent(fieldGroup.getOrderNumberField());
+        formLayout.add(fieldGroup.getNameField());
+        formLayout.add(fieldGroup.getParentBox());
+        formLayout.add(fieldGroup.getResponsibleBox());
+        formLayout.add(fieldGroup.getStoryPointsField());
+        formLayout.add(fieldGroup.getComplexityField());
+        formLayout.add(fieldGroup.getOrderNumberField());
     }
 
-    private TextField buildFieldWithValue(final AbstractTextField abstractTextField) {
-        final TextField field = (TextField) abstractTextField;
-        final String typeNameOfFieldProperty = field.getPropertyDataSource().getType().getSimpleName();
-        field.setValue(DefaultValues.valueOf(typeNameOfFieldProperty).getDefaultValue());
-        return field;
-    }
+//    private TextField buildFieldWithValue(final AbstractTextField abstractTextField) {
+//        final TextField field = (TextField) abstractTextField;
+//        final String typeNameOfFieldProperty = field.getPropertyDataSource().getType().getSimpleName();
+//        field.setValue(DefaultValues.valueOf(typeNameOfFieldProperty).getDefaultValue());
+//        return field;
+//    }
 
     private void doInternationalization() {
-        this.setCaption(messages.getString("planning_addPlanningUnit"));
-        saveButton.setCaption(messages.getString("save"));
-        cancelButton.setCaption(messages.getString("cancel"));
+//        this.setText(messages.getString("planning_addPlanningUnit"));
+        saveButton.setText(messages.getString("save"));
+        cancelButton.setText(messages.getString("cancel"));
     }
 
     private void addListeners(final DaoFactory daoFactory, final MainUI ui,
                               final ProjektplanungScreen screen) {
-        saveButton.addClickListener(new Button.ClickListener() {
-
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                    try {
-                        final PlannedProject projekt = daoFactory.getPlannedProjectDAO().findByID(ui
-                                .getCurrentProject().getId());
-                        fieldGroup.commit();
-                        //PlanningUnitBeanItem mit der neuen (transienten) PlanningUnit
-                        final BeanItem<PlanningUnit> beanItem = (BeanItem)fieldGroup.getItemDataSource();
-                        //Bean aus dem BeanItem
-                        final PlanningUnit newPlanningUnit = beanItem.getBean();
-                        final String newPlanningUnitName = newPlanningUnit.getPlanningUnitName();
-                        if(newPlanningUnitName.matches(Constants.EMPTY_OR_SPACES_ONLY_PATTERN))
-                            throw new InvalidNameException();
-                        if(newPlanningUnit.getParent() != null ){
-                            final String parentsPlanningUnitName = newPlanningUnit.getParent().getPlanningUnitName();
-                            if(newPlanningUnitName.equals(parentsPlanningUnitName)){
-                                throw new SameNameException();
-                            }
-                            if(newPlanningUnit.getParent().getId() == ProjektplanungScreen.PLATZHALTER_ID){
-                                newPlanningUnit.setParent(null);
-                            }
-                        }
-                        newPlanningUnit.setPlanningUnitElementList(null);
-                        daoFactory.saveOrUpdateTX(newPlanningUnit);
-                        newPlanningUnit.setKindPlanningUnits(new HashSet<PlanningUnit>());
-                        if(newPlanningUnit.getParent() != null ){
-                            final PlanningUnit parentPlanningUnit = daoFactory.getPlanningUnitDAO().findByID
-                                    (newPlanningUnit.getParent().getId());
-                            parentPlanningUnit.getKindPlanningUnits().add(newPlanningUnit);
-                            daoFactory.saveOrUpdateTX(parentPlanningUnit);
-                        }
-
-                        final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO()
-                                .loadAllEntities();
-                        if(newPlanningUnit.getParent() != null){
-                            final Set<PlanningUnit> geschwisterPlanningUnits = newPlanningUnit.getParent().getKindPlanningUnits();
-                            if(geschwisterPlanningUnits == null || geschwisterPlanningUnits.size() <= 1){
-                                newPlanningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
-                                for(final PlanningUnitElement planningUnitElementFromParent : newPlanningUnit.getParent()
-                                        .getPlanningUnitElementList()){
-                                    final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
-                                    planningUnitElement.setRessourceGroup(planningUnitElementFromParent.getRessourceGroup());
-                                    planningUnitElement.setPlannedMinutes(planningUnitElementFromParent.getPlannedMinutes());
-                                    daoFactory.saveOrUpdateTX(planningUnitElement);
-                                    newPlanningUnit.getPlanningUnitElementList().add(planningUnitElement);
-                                }
-                            } else {
-                                createNewPlanningUnitElements(newPlanningUnit, ressourceGroups, daoFactory);
-                            }
-                        } else {
-                            createNewPlanningUnitElements(newPlanningUnit, ressourceGroups, daoFactory);
-                        }
-
-
-
-                        daoFactory.saveOrUpdateTX(newPlanningUnit);
-                        if(newPlanningUnit.getParent() == null ){
-                            projekt.getPlanningUnits().add(newPlanningUnit);
-                        }
-                        daoFactory.saveOrUpdateTX(projekt);
-                        daoFactory.getEntityManager().refresh(projekt);
-                        AddWindow.this.close();
-                        final MainUI ui = screen.getUi();
-                        ui.setWorkingArea(new ProjektplanungScreen(ui));
-                    } catch (final FieldGroup.CommitException e) {
-                        logger.warn(e);
-                        Notification.show(messages.getString("incompletedata"));
-                    } catch (final InvalidNameException e) {
-                        Notification.show(messages.getString("planning_invalidname"));
-                    } catch (final SameNameException e) {
-                        Notification.show(messages.getString("planning_samename"));
-                    }
-            }
-        });
-
-        cancelButton.addClickListener(new Button.ClickListener() {
-
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                AddWindow.this.close();
-            }
-        });
+//        saveButton.addClickListener(new Button.ClickListener() {
+//
+//            @Override
+//            public void buttonClick(Button.ClickEvent event) {
+//                    try {
+//                        final PlannedProject projekt = daoFactory.getPlannedProjectDAO().findByID(ui
+//                                .getCurrentProject().getId());
+//                        fieldGroup.commit();
+//                        //PlanningUnitBeanItem mit der neuen (transienten) PlanningUnit
+//                        final BeanItem<PlanningUnit> beanItem = (BeanItem)fieldGroup.getItemDataSource();
+//                        //Bean aus dem BeanItem
+//                        final PlanningUnit newPlanningUnit = beanItem.getBean();
+//                        final String newPlanningUnitName = newPlanningUnit.getPlanningUnitName();
+//                        if(newPlanningUnitName.matches(Constants.EMPTY_OR_SPACES_ONLY_PATTERN))
+//                            throw new InvalidNameException();
+//                        if(newPlanningUnit.getParent() != null ){
+//                            final String parentsPlanningUnitName = newPlanningUnit.getParent().getPlanningUnitName();
+//                            if(newPlanningUnitName.equals(parentsPlanningUnitName)){
+//                                throw new SameNameException();
+//                            }
+//                            if(newPlanningUnit.getParent().getId() == ProjektplanungScreen.PLATZHALTER_ID){
+//                                newPlanningUnit.setParent(null);
+//                            }
+//                        }
+//                        newPlanningUnit.setPlanningUnitElementList(null);
+//                        daoFactory.saveOrUpdateTX(newPlanningUnit);
+//                        newPlanningUnit.setKindPlanningUnits(new HashSet<PlanningUnit>());
+//                        if(newPlanningUnit.getParent() != null ){
+//                            final PlanningUnit parentPlanningUnit = daoFactory.getPlanningUnitDAO().findByID
+//                                    (newPlanningUnit.getParent().getId());
+//                            parentPlanningUnit.getKindPlanningUnits().add(newPlanningUnit);
+//                            daoFactory.saveOrUpdateTX(parentPlanningUnit);
+//                        }
+//
+//                        final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO()
+//                                .loadAllEntities();
+//                        if(newPlanningUnit.getParent() != null){
+//                            final Set<PlanningUnit> geschwisterPlanningUnits = newPlanningUnit.getParent().getKindPlanningUnits();
+//                            if(geschwisterPlanningUnits == null || geschwisterPlanningUnits.size() <= 1){
+//                                newPlanningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
+//                                for(final PlanningUnitElement planningUnitElementFromParent : newPlanningUnit.getParent()
+//                                        .getPlanningUnitElementList()){
+//                                    final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
+//                                    planningUnitElement.setRessourceGroup(planningUnitElementFromParent.getRessourceGroup());
+//                                    planningUnitElement.setPlannedMinutes(planningUnitElementFromParent.getPlannedMinutes());
+//                                    daoFactory.saveOrUpdateTX(planningUnitElement);
+//                                    newPlanningUnit.getPlanningUnitElementList().add(planningUnitElement);
+//                                }
+//                            } else {
+//                                createNewPlanningUnitElements(newPlanningUnit, ressourceGroups, daoFactory);
+//                            }
+//                        } else {
+//                            createNewPlanningUnitElements(newPlanningUnit, ressourceGroups, daoFactory);
+//                        }
+//
+//
+//
+//                        daoFactory.saveOrUpdateTX(newPlanningUnit);
+//                        if(newPlanningUnit.getParent() == null ){
+//                            projekt.getPlanningUnits().add(newPlanningUnit);
+//                        }
+//                        daoFactory.saveOrUpdateTX(projekt);
+//                        daoFactory.getEntityManager().refresh(projekt);
+//                        AddWindow.this.close();
+//                        final MainUI ui = screen.getUi();
+//                        ui.setWorkingArea(new ProjektplanungScreen(ui));
+//                    } catch (final FieldGroup.CommitException e) {
+//                        logger.warn(e);
+//                        Notification.show(messages.getString("incompletedata"));
+//                    } catch (final InvalidNameException e) {
+//                        Notification.show(messages.getString("planning_invalidname"));
+//                    } catch (final SameNameException e) {
+//                        Notification.show(messages.getString("planning_samename"));
+//                    }
+//            }
+//        });
+//
+//        cancelButton.addClickListener(new Button.ClickListener() {
+//
+//            @Override
+//            public void buttonClick(Button.ClickEvent event) {
+//                AddWindow.this.close();
+//            }
+//        });
 
     }
 
@@ -197,6 +200,6 @@ public class AddWindow extends RapidWindow {
     }
 
     public void show() {
-        ui.addWindow(this);
+//        ui.addWindow(this);
     }
 }
