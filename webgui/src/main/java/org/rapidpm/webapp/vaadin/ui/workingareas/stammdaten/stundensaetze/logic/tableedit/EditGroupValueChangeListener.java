@@ -1,8 +1,10 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit;
 
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.grid.ItemClickEvent;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
@@ -15,12 +17,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class EditGroupValueChangeListener  {
+import static com.vaadin.flow.component.HasValue.ValueChangeEvent;
+import static com.vaadin.flow.component.HasValue.ValueChangeListener;
 
-//    private OptionGroup editGroup;
+public class EditGroupValueChangeListener implements ValueChangeListener {
+
     private Button saveButton;
     private Grid tabelle;
-    private HorizontalLayout saveButtonLayout;
+    private VerticalLayout saveButtonLayout;
     private ResourceBundle messages;
     private StundensaetzeScreen screen;
     private List<ItemClickDependentComponent> components;
@@ -30,45 +34,20 @@ public class EditGroupValueChangeListener  {
 
     public EditGroupValueChangeListener(final StundensaetzeScreen screen, List<ItemClickDependentComponent>
             components, final Button deleteButton, final ResourceBundle bundle,
-                                        final HorizontalLayout saveButtonLayout,
+                                        final VerticalLayout saveButtonLayout,
                                         final Button saveButton, final Grid tabelle) {
         this.screen = screen;
         this.components = components;
         this.deleteButton = deleteButton;
         this.messages = bundle;
-//        this.editGroup = group;
         this.saveButton = saveButton;
         this.tabelle = tabelle;
         this.saveButtonLayout = saveButtonLayout;
     }
 
-//    @Override
-//    public void valueChange(final ValueChangeEvent event) {
-//        final String TABLEMODE = messages.getString("stdsatz_tablemode");
-//        final Property property = event.getProperty();
-//        final Object value = property.getValue();
-//        if (value != null) {
-//            if (value.equals(TABLEMODE)) {
-//                EditModeGetter.setMode(EditModes.TABLEEDIT);
-//            } else {
-//                EditModeGetter.setMode(EditModes.ROWEDIT);
-//            }
-//            editMethod(EditModeGetter.getMode());
-//        }
-//
-//    }
-
     private void editMethod(final EditModes mode) {
-//        final EditGroupValueChangeListenerBean editGroupValueChangeListenerBean = EJBFactory
-//                .getEjbInstance(EditGroupValueChangeListenerBean.class);
-//        final DaoFactoryBean baseDaoFactoryBean = editGroupValueChangeListenerBean.getDaoFactoryBean();
-
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-//        for (final Object listener : saveButton.getListeners(Component.Event.class)) {
-//            if (listener instanceof Button.ClickListener) {
-//                saveButton.removeClickListener((Button.ClickListener) listener);
-//            }
-//        }
+//        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+//        saveButton.
 //        for(final Object listener : tabelle.getListeners(Component.Event.class)){
 //            if (listener instanceof ItemClickEvent.ItemClickListener) {
 //                tabelle.removeItemClickListener((ItemClickEvent.ItemClickListener) listener);
@@ -91,7 +70,7 @@ public class EditGroupValueChangeListener  {
 //                        for(RessourceGroup ressourceGroup : (Collection<RessourceGroup>) tabelle.getItemIds()){
 //                            daoFactory.saveOrUpdate(ressourceGroup);
 //                        }
-//                        screen.generateTableAndCalculate();
+//                        screen.refreshGridAndRelatedContent();
 //                        saveButtonLayout.setVisible(false);
 //                        tabelle.setEditable(false);
 //                        editGroup.setValue(messages.getString("stdsatz_rowmode"));
@@ -113,18 +92,14 @@ public class EditGroupValueChangeListener  {
 //                @Override
 //                public void buttonClick(Button.ClickEvent event) {
 //                    try {
-//
 //                        //RessourceGroup in DB updaten
-//                        final RessourceGroup ressouregroupFromTable = (RessourceGroup)tabelle.getValue();
-//                        final RessourceGroup ressourceGroupFromDB = daoFactory.getRessourceGroupDAO().findByID
-//                                (ressouregroupFromTable.getId());
-//                        tabelle.commit();
+//                        final RessourceGroup ressouregroupFromTable = (RessourceGroup)tabelle.getSelectedItems().iterator().next();
 //                        daoFactory.saveOrUpdateTX(ressouregroupFromTable);
-//                        screen.generateTableAndCalculate();
+//                        screen.refreshGridAndRelatedContent();
 //
 //                        saveButtonLayout.setVisible(false);
-//                        tabelle.setEditable(false);
-//                        editGroup.setValue(messages.getString("stdsatz_rowmode"));
+//                        tabelle.setEnabled(false);
+//                        op.setValue(messages.getString("stdsatz_rowmode"));
 //
 //                    } catch (final Exception e) {
 //                        logger.warn("Exception", e);
@@ -134,4 +109,17 @@ public class EditGroupValueChangeListener  {
 //        }
     }
 
+    @Override
+    public void valueChanged(ValueChangeEvent valueChangeEvent) {
+        final String TABLEMODE = messages.getString("stdsatz_tablemode");
+        final Object value = valueChangeEvent.getValue();
+        if (value != null) {
+            if (value.toString().equals(TABLEMODE)) {
+                EditModeGetter.setMode(EditModes.TABLEEDIT);
+            } else {
+                EditModeGetter.setMode(EditModes.ROWEDIT);
+            }
+            editMethod(EditModeGetter.getMode());
+        }
+    }
 }

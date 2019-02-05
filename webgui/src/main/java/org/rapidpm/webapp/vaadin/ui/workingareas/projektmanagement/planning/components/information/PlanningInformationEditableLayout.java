@@ -34,9 +34,7 @@ public class PlanningInformationEditableLayout extends EditableLayout {
     private List<AbstractField> fieldList;
     private PlanningUnitFieldGroup fieldGroup;
 
-    public PlanningInformationEditableLayout(final PlanningUnit planningUnit, final ProjektplanungScreen screen,
-                                           final Component screenPanel) {
-        super(null, screenPanel);
+    public PlanningInformationEditableLayout(final PlanningUnit planningUnit, final ProjektplanungScreen screen) {
         this.messages = VaadinSession.getCurrent().getAttribute(ResourceBundle.class);
 
         fieldGroup = new PlanningUnitFieldGroup(screen, planningUnit);

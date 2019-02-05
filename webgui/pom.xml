@@ -17,7 +17,7 @@
     <properties>
         <spring.boot.version>2.1.0.RELEASE</spring.boot.version>
         <junit.jupiter.version>5.3.1</junit.jupiter.version>
-        <vaadin.spring.boot.starter.version>12.0.0</vaadin.spring.boot.starter.version>
+        <vaadin.spring.boot.starter.version>12.0.3</vaadin.spring.boot.starter.version>
         <vaadin.version>7.4.3</vaadin.version>
         <vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
         <jetty.plugin.version>9.2.3.v20140905</jetty.plugin.version>

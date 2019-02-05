@@ -15,13 +15,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 @Tag("RapidPanel")
 public class RapidPanel extends Div {
 
-    private final VerticalLayout contentLayout = new VerticalLayout();
+//    private final VerticalLayout contentLayout = new VerticalLayout();
 
     public RapidPanel(){
-        contentLayout.setSpacing(true);
-        contentLayout.setMargin(true);
-        add(contentLayout);
-        contentLayout.removeAll();
+//        contentLayout.setSpacing(true);
+//        contentLayout.setMargin(true);
+//        add(contentLayout);
+//        contentLayout.removeAll();
     }
 
     protected void turnEditableDesignOn(boolean b) {
@@ -32,15 +32,8 @@ public class RapidPanel extends Div {
 //        }
     }
 
-    public void addComponent(final Component component){
-        contentLayout.add(component);
-    }
-
     public void removeAllComponents(){
-        contentLayout.removeAll();
+        removeAll();
     }
 
-    public VerticalLayout getContentLayout() {
-        return contentLayout;
-    }
 }

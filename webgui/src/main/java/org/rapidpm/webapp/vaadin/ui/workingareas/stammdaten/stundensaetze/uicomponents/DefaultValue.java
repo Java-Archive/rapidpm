@@ -7,14 +7,14 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicom
  * Time: 12:03
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public enum DefaultValues {
+public enum DefaultValue {
     Double("1,0"),
     Integer("1"),
     String("neu");
 
     private final String defaultValue;
 
-    private DefaultValues(final String value) {
+    private DefaultValue(final String value) {
         this.defaultValue = value;
     }
 

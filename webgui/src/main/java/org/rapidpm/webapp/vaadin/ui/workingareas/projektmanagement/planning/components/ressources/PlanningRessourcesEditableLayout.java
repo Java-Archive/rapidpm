@@ -34,7 +34,7 @@ public class PlanningRessourcesEditableLayout extends EditableLayout {
 
     public PlanningRessourcesEditableLayout(final PlanningUnit planningUnit, final ProjektplanungScreen screen,
                                             final Component screenPanel, boolean hasChildren) {
-        super(null, screenPanel);
+        super();
         this.screen = screen;
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO().loadAllEntities();

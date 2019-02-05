@@ -33,8 +33,7 @@ public class HoursPerWorkingDayEditableLayout extends EditableLayout {
     private PlannedProject project;
 
     private static final Logger logger = Logger.getLogger(HoursPerWorkingDayEditableLayout.class);
-    public HoursPerWorkingDayEditableLayout(final Screen screen, final Component screenPanel) {
-        super(screen, screenPanel);
+    public HoursPerWorkingDayEditableLayout() {
         final VaadinSession session = VaadinSession.getCurrent();
         project = session.getAttribute(PlannedProject.class);
         fieldGroup = new ProjektFieldGroup(project, messages);

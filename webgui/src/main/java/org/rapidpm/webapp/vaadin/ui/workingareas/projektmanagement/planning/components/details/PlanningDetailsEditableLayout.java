@@ -38,7 +38,7 @@ public class PlanningDetailsEditableLayout extends EditableLayout {
 
     public PlanningDetailsEditableLayout(final PlanningUnit planningUnit, final ProjektplanungScreen screen,
                                          final Component screenPanel) {
-        super(null, screenPanel);
+        super();
         messages = VaadinSession.getCurrent().getAttribute(ResourceBundle.class);
 
         fieldGroup = new PlanningDetailsFieldGroup(messages, planningUnit);

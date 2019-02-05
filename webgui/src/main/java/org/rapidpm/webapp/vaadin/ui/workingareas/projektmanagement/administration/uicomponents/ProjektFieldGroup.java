@@ -1,8 +1,17 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents;
 
+import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.converter.StringToDoubleConverter;
+import com.vaadin.flow.data.converter.StringToFloatConverter;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
+import java.text.NumberFormat;
 import java.util.Arrays;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -12,49 +21,62 @@ import java.util.ResourceBundle;
  * Time: 11:24
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class ProjektFieldGroup  {
+public class ProjektFieldGroup extends Binder<PlannedProject> {
 
     private static final Integer[] HOURS_PER_DAY_ARRAY = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23};
     private ResourceBundle messages;
 
+    private TextField externalDailyRateField;
+    private TextField nameField;
+    private TextField tokenField;
+    private ComboBox<Integer> hoursBox;
+
     public ProjektFieldGroup(final PlannedProject projekt, final ResourceBundle messages) {
+        super(PlannedProject.class);
         this.messages = messages;
-//        setItemDataSource(new BeanItem<>(projekt));
+        externalDailyRateField = new TextField();
+        nameField = new TextField();
+        tokenField = new TextField();
+        hoursBox = new ComboBox<>(messages.getString("project_hoursPerWorkingDay"));
+        setBean(projekt);
         buildForm();
     }
 
     private void buildForm() {
-//        for (final Object propertyId : getUnboundPropertyIds()) {
-//            final String spaltenName = propertyId.toString();
-//            switch (spaltenName) {
-//                case PlannedProject.ID:
-//                    break;
-//                case PlannedProject.EXTERNALDAILYRATE:
-//                    final AbstractTextField externalDailyRateField = (AbstractTextField) buildAndBind(propertyId);
-//                    externalDailyRateField.setNullRepresentation("");
-//                    externalDailyRateField.setRequired(true);
-//                    break;
-//                case PlannedProject.NAME:
-//                    final AbstractTextField nameField = (AbstractTextField) buildAndBind(propertyId);
-//                    nameField.setNullRepresentation("");
-//                    nameField.setRequired(true);
-//                    break;
-//                case PlannedProject.TOKEN:
-//                    final AbstractTextField tokenField = (AbstractTextField) buildAndBind(propertyId);
-//                    tokenField.setNullRepresentation("");
-//                    tokenField.setRequired(true);
-//                    break;
-//                case PlannedProject.HOURSPERWORKINGDAY:
-//                    final ComboBox hoursBox = new ComboBox(messages.getString("project_hoursPerWorkingDay"),
-//                            Arrays.asList(HOURS_PER_DAY_ARRAY));
-//                    bind(hoursBox, propertyId);
-//                    hoursBox.setRequired(true);
-//                    hoursBox.setNullSelectionAllowed(false);
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
+        externalDailyRateField = new TextField();
+        forField(externalDailyRateField)
+                .withNullRepresentation("")
+                .withConverter(new StringToDoubleConverter(""))
+                .asRequired()
+                .bind(PlannedProject.EXTERNALDAILYRATE);
+        nameField = new TextField();
+        forField(nameField)
+                .withNullRepresentation("")
+                .asRequired();
+        tokenField = new TextField();
+        forField(tokenField)
+                .withNullRepresentation("")
+                .asRequired()
+                .bind(PlannedProject.TOKEN);
+        hoursBox = new ComboBox<>(messages.getString("project_hoursPerWorkingDay"), Arrays.asList(HOURS_PER_DAY_ARRAY));
+        forMemberField(hoursBox)
+                .asRequired()
+                .bind(PlannedProject.HOURSPERWORKINGDAY);
+    }
+
+    public Optional<HasValue> getFieldForProperty(String property) {
+        switch (property) {
+            case PlannedProject.EXTERNALDAILYRATE:
+                return Optional.ofNullable(externalDailyRateField);
+            case PlannedProject.NAME:
+                return Optional.ofNullable(nameField);
+            case PlannedProject.TOKEN:
+                return Optional.ofNullable(tokenField);
+            case PlannedProject.HOURSPERWORKINGDAY:
+                return Optional.ofNullable(hoursBox);
+            default:
+                return Optional.empty();
+        }
     }
 }
 

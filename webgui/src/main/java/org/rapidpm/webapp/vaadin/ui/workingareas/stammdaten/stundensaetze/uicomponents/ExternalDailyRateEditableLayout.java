@@ -1,8 +1,12 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents;
 
-import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.converter.StringToFloatConverter;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
@@ -33,81 +37,54 @@ public class ExternalDailyRateEditableLayout extends EditableLayout {
     private TextField externalDailyRateField;
     private PlannedProject currentProject;
 
-    public ExternalDailyRateEditableLayout(final Screen screen, final Component screenPanel) {
-        super(screen, screenPanel);
+    public ExternalDailyRateEditableLayout() {
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final PlannedProject plannedProjectFromSessionAttribute = VaadinSession.getCurrent().getAttribute(PlannedProject.class);
         currentProject = daoFactory.getPlannedProjectDAO().findByID(plannedProjectFromSessionAttribute.getId());
         fieldGroup = new ProjektFieldGroup(currentProject, messages);
-//        saveButton.addClickListener(new Button.ClickListener() {
-//            @Override
-//            public void buttonClick(Button.ClickEvent event) {
-//                try{
-//                    fieldGroup.commit();
-//                    final BeanItem<PlannedProject> beanItem = (BeanItem)fieldGroup.getItemDataSource();
-//                    final PlannedProject editedPlannedProject = beanItem.getBean();
-//                    final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-//                    daoFactory.saveOrUpdateTX(editedPlannedProject);
-//                    final MainUI ui = screen.getUi();
-//                    ui.setWorkingArea(new StundensaetzeScreen(ui));
-//                }catch (final NullPointerException e){
-//                    logger.info(COMMIT_EXCEPTION_MESSAGE);
-//                }catch(final Exception e){
-//                    logger.warn("Exception", e);
-//                }
-//
-//            }
-//        });
-//        cancelButton.addClickListener(new Button.ClickListener() {
-//            @Override
-//            public void buttonClick(Button.ClickEvent event) {
-//                fieldGroup.discard();
-//                externalDailyRateField = (TextField) fieldGroup.getField(PlannedProject.EXTERNALDAILYRATE);
-//                externalDailyRateField.setReadOnly(true);
-//                addConverterToField();
-//                componentsLayout.add(externalDailyRateField);
-//                externalDailyRateField.setReadOnly(true);
-//                externalDailyRateField.setConversionError(messages.getString("stdsatz_currencyOnly"));
-//                buttonLayout.setVisible(false);
-//            }
-//        });
+        externalDailyRateField = (TextField) fieldGroup.getFieldForProperty(PlannedProject.EXTERNALDAILYRATE).orElse(new TextField());
+        saveButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> {
+            try{
+                fieldGroup.writeBean(currentProject);
+                daoFactory.saveOrUpdateTX(currentProject);
+                UI.getCurrent().navigate(StundensaetzeScreen.class.getAnnotation(Route.class).value());
+            }catch (final NullPointerException e){
+                logger.info(COMMIT_EXCEPTION_MESSAGE);
+            }catch(final Exception e){
+                logger.warn("Exception", e);
+            }
+        });
+        cancelButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> {
+            fieldGroup.readBean(currentProject);
+            fieldGroup.getFieldForProperty(PlannedProject.EXTERNALDAILYRATE).ifPresent(field -> {
+                componentsLayout.add(externalDailyRateField);
+                externalDailyRateField.setReadOnly(true);
+                externalDailyRateField.setErrorMessage(messages.getString("stdsatz_currencyOnly"));
+                buttonLayout.setVisible(false);
+            });
+        });
         buildForm();
     }
 
 
     @Override
     protected void buildForm() {
-//        for(final Field field : fieldGroup.getFields()){
-//            field.setReadOnly(false);
-//            if(field instanceof AbstractSelect){
-//                ((ComboBox)field).setNullSelectionAllowed(false);
-//                ((ComboBox)field).setTextInputAllowed(false);
-//            }
-//        }
-//        externalDailyRateField = (TextField) fieldGroup.getField(PlannedProject.EXTERNALDAILYRATE);
-//        externalDailyRateField.setReadOnly(true);
-//        addConverterToField();
-//        componentsLayout.add(externalDailyRateField);
+        fieldGroup.getFields().forEach(field -> {
+            field.setReadOnly(false);
+            if(field instanceof ComboBox){
+                ((ComboBox)field).setAllowCustomValue(false);
+            }
+        });
+        fieldGroup.getFieldForProperty(PlannedProject.EXTERNALDAILYRATE).ifPresent(field -> field.setReadOnly(true));
+        externalDailyRateField.setReadOnly(true);
+        componentsLayout.add(externalDailyRateField);
     }
+
 
     @Override
     protected void setLayout() {
-
+        componentsLayout = new FormLayout();
     }
-
-    public void addConverterToField() {
-//        externalDailyRateField.setConverter(new StringToFloatConverter() {
-//            @Override
-//            protected NumberFormat getFormat(final Locale locale) {
-//                return NumberFormat.getCurrencyInstance(locale);
-//            }
-//        });
-    }
-
-//    @Override
-//    protected void setLayout() {
-//        componentsLayout = new FormLayout();
-//    }
 
     public PlannedProject getCurrentProject() {
         return currentProject;

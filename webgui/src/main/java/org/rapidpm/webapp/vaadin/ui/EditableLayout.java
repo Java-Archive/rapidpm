@@ -28,7 +28,7 @@ public abstract class EditableLayout extends VerticalLayout {
     protected FormLayout componentsLayout;
     protected HorizontalLayout buttonLayout = new HorizontalLayout();
 
-    public EditableLayout(final Screen screen, final Component screenPanel){
+    public EditableLayout(){
         setLayout();
 //        this.setStyleName("abc");
         this.setMargin(false);

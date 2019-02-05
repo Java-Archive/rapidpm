@@ -34,7 +34,7 @@ public class DelRowLogic {
             final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
             daoFactory.removeTX(ressourceGroup);
 
-            screen.generateTableAndCalculate();
+            screen.refreshGridAndRelatedContent();
 //            screen.getSaveButtonLayout().setVisible(false);
         } catch (final PersistenceException e){
             Notification.show(messages.getString("stdsatz_nodelete"));

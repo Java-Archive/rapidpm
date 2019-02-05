@@ -63,8 +63,7 @@ public class DescriptionAndTestCasesFieldGroup {
         Collections.sort(sortedTextElementList);
         for (final TextElement textElement : sortedTextElementList) {
             final RapidPanel framePanel = new RapidPanel();
-            final TextElementEditableLayout panel = new TextElementEditableLayout(selectedPlanningUnit,
-                    screen, framePanel, textElement);
+            final TextElementEditableLayout panel = new TextElementEditableLayout(selectedPlanningUnit, screen, textElement);
             framePanel.add(panel);
             fieldGroupList.add(framePanel);
         }

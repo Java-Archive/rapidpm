@@ -41,6 +41,10 @@ public class RessourceGroup {
     public static final String SUM_PER_MONTH = "transientSumPerMonth";
     public static final String SUM_PER_DAY = "transientSumPerDay";
 
+    // abgeleitete/berechnete Werte
+    public static final String OPERATIVE_HOURS = "operativeHours";
+    public static final String MIN_WORKDAYS = "minWorkdays";
+
     @Id
     @TableGenerator(name = "PKGenRessourceGroup", table = "pk_gen", pkColumnName = "gen_key",
             pkColumnValue = "RessourceGroup_id", valueColumnName = "gen_value", allocationSize = 1)

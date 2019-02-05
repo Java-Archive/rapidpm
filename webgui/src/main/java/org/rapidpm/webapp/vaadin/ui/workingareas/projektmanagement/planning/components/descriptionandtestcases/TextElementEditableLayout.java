@@ -32,9 +32,8 @@ public class TextElementEditableLayout extends EditableLayout {
     private final PlanningUnit selectedPlanningUnit;
     private ProjektplanungScreen screen;
 
-    public TextElementEditableLayout(final PlanningUnit selectedPlanningUnit, final ProjektplanungScreen screen, 
-                                     final RapidPanel textElementsPanel, final TextElement textElement){
-        super(null, textElementsPanel);
+    public TextElementEditableLayout(final PlanningUnit selectedPlanningUnit, final ProjektplanungScreen screen, final TextElement textElement){
+        super();
         this.selectedPlanningUnit = selectedPlanningUnit;
         this.screen = screen;
         bezeichnungField = new TextField();

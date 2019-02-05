@@ -11,8 +11,8 @@ public class ButtonComponent extends Button implements
     }
 
     @Override
-    public void getTheState(boolean state) {
-        setEnabled(state);
+    public void setEnabled(boolean state) {
+        super.setEnabled(state);
     }
 
     @Override

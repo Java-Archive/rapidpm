@@ -4,23 +4,17 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.server.VaadinSession;
 import org.apache.log4j.Logger;
-import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.RapidWindow;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.exceptions.SameNameException;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.DefaultValues;
 
-import javax.naming.InvalidNameException;
 import java.util.*;
 
 /**
@@ -86,7 +80,7 @@ public class AddWindow extends RapidWindow {
 //    private TextField buildFieldWithValue(final AbstractTextField abstractTextField) {
 //        final TextField field = (TextField) abstractTextField;
 //        final String typeNameOfFieldProperty = field.getPropertyDataSource().getType().getSimpleName();
-//        field.setValue(DefaultValues.valueOf(typeNameOfFieldProperty).getDefaultValue());
+//        field.setValue(DefaultValue.valueOf(typeNameOfFieldProperty).getDefaultValue());
 //        return field;
 //    }
 

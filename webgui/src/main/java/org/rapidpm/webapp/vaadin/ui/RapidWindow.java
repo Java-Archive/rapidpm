@@ -2,6 +2,7 @@ package org.rapidpm.webapp.vaadin.ui;
 
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 /**
@@ -11,19 +12,12 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
  * Time: 13:04
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class RapidWindow {
+public class RapidWindow extends Dialog {
 
     private final VerticalLayout contentLayout = new VerticalLayout();
 
     public RapidWindow(){
-        contentLayout.setSpacing(true);
-        contentLayout.setMargin(true);
-        add(contentLayout);
 //        setModal(true);
-    }
-
-    public void add(final Component component){
-        contentLayout.add(component);
     }
 
     public VerticalLayout getContentLayout() {
