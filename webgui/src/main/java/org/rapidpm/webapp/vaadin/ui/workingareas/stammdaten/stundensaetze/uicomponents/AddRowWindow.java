@@ -8,6 +8,7 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
 import org.apache.log4j.Logger;
 import org.rapidpm.Constants;
@@ -16,13 +17,16 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.webapp.vaadin.ui.RapidWindow;
+import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.exceptions.NameExistsException;
 
 import javax.naming.InvalidNameException;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
@@ -123,7 +127,7 @@ public class AddRowWindow extends Dialog {
                         planningUnit.getPlanningUnitElementList().add(persistedPlanningUnitElement);
                         baseDaoFactoryBean.saveOrUpdateTX(planningUnit);
                     }
-//                        screen.refreshGridAndRelatedContent();
+                    getUI().ifPresent(ui -> navigateTo(ui, StundensaetzeScreen.class));
 
                     AddRowWindow.this.close();
                 } catch (final NameExistsException e) {
@@ -140,6 +144,27 @@ public class AddRowWindow extends Dialog {
 
         cancelButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> AddRowWindow.this.close());
 
+    }
+
+    private void navigateTo(UI ui, Class<? extends Screen> screenClass) {
+        for (Annotation annotation : screenClass.getAnnotations()) {
+            Class<? extends Annotation> type = annotation.annotationType();
+            if (type == Route.class) {
+                for (Method method : type.getDeclaredMethods()) {
+                    Object value = null;
+                    try {
+                        value = method.invoke(annotation, (Object[])null);
+                    } catch (IllegalAccessException e) {
+
+                    } catch (InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                    if (value != null) {
+                        ui.navigate(value.toString());
+                    }
+                }
+            }
+        }
     }
 
     public void show() {

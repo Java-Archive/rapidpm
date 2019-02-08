@@ -12,7 +12,7 @@ public class EditOptionButtonGroup extends RadioButtonGroup<EditModes> {
 
     public EditOptionButtonGroup(final ResourceBundle bundle) {
         setLabel(bundle.getString("stdsatz_editMode"));
-        setItems(EditModes.TABLEEDIT, EditModes.ROWEDIT, EditModes.NOEDIT);
+        setItems(EditModes.ROWEDIT, EditModes.NOEDIT);
         setRenderer(new TextRenderer<>(editModes -> editModes.getReadableString(getValue())));
     }
 

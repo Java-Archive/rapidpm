@@ -1,16 +1,12 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents;
 
-import com.vaadin.flow.component.HasValue;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.binder.ValidationException;
-import com.vaadin.flow.data.converter.StringToDoubleConverter;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.data.validator.DoubleRangeValidator;
 import com.vaadin.flow.server.VaadinSession;
-import org.neo4j.cypher.internal.compiler.v2_0.functions.Str;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 
 import java.util.*;
@@ -67,14 +63,15 @@ public class RowFieldGroup extends Binder<RessourceGroup> {
         defaultValueByField.put(planAnzahl, DefaultValue.Integer);
         forField(facturizable)
                 .withNullRepresentation("")
-                .withConverter(new StringToDoubleConverter(""))
+                .withConverter(Double::parseDouble, value -> value == null ? "0.0" : value.toString())
                 .withValidator(new DoubleRangeValidator("Double-Value!", 0.0d, 100.0d))
-                .asRequired();
+                .asRequired()
+                .bind(RessourceGroup.FACTURIZABLE);
         labelByField.put(facturizable, messages.getString(RessourceGroup.FACTURIZABLE));
         defaultValueByField.put(facturizable, DefaultValue.Double);
         forField(externalEurosPerHour)
                 .withNullRepresentation("")
-                .withConverter(new StringToDoubleConverter(""))
+                .withConverter(Double::parseDouble, value -> value == null ? "0.0" : value.toString())
                 .withValidator(new DoubleRangeValidator("Double-Value!", 0.0d, 100.0d))
                 .asRequired()
                 .bind(RessourceGroup.EXTERNAL_EUROS_PER_HOUR);
@@ -82,7 +79,7 @@ public class RowFieldGroup extends Binder<RessourceGroup> {
         defaultValueByField.put(externalEurosPerHour, DefaultValue.Double);
         forField(bruttoGehalt)
                 .withNullRepresentation("")
-                .withConverter(new StringToDoubleConverter(""))
+                .withConverter(Double::parseDouble, value -> value == null ? "0.0" : value.toString())
                 .withValidator(new DoubleRangeValidator("Double-Value!", 0.0d, 100.0d))
                 .asRequired()
                 .bind(RessourceGroup.BRUTTOGEHALT);

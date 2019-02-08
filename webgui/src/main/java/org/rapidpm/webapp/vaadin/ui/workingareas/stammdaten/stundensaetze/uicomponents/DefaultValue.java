@@ -8,7 +8,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicom
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 public enum DefaultValue {
-    Double("1,0"),
+    Double("1.0"),
     Integer("1"),
     String("neu");
 

@@ -1,7 +1,7 @@
 ﻿INSERT INTO
         mandantengruppe(id, mandantengruppe) VALUES (1, 'RapidPM');
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('Mandantengruppe_id', 1);
+UPDATE pk_gen SET gen_value = 2 WHERE gen_key = 'Mandantengruppe_id';
 
 
 INSERT INTO
@@ -11,7 +11,7 @@ INSERT INTO
 INSERT INTO
         benutzergruppe(id, gruppenname)VALUES (3, 'Admin');
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('BenutzerGruppe_id', 3);
+UPDATE pk_gen SET gen_value = 3 WHERE gen_key = 'BenutzerGruppe_id';
 
 
 INSERT INTO
@@ -19,7 +19,7 @@ INSERT INTO
 INSERT INTO
         benutzerwebapplikation(id, webappname)VALUES (2, 'RapidPMBeta');
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('BenutzerWebapplikation_id', 2);
+UPDATE pk_gen SET gen_value = 2 WHERE gen_key = 'BenutzerWebapplikation_id';
 
 
 INSERT INTO
@@ -68,7 +68,7 @@ INSERT INTO
                 '2012-09-11',
                 '2013-09-11', 1, 1,1);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('Benutzer_id', 6);
+UPDATE pk_gen SET gen_value = 6 WHERE gen_key = 'Benutzer_id';
 
 
 INSERT INTO
@@ -103,7 +103,7 @@ INSERT INTO
         ressourcegroup(id, name, hoursPerWeek, weeksPerYear, planAnzahl, facturizable, externalEurosPerHour, bruttoGehalt)
         VALUES (8, 'Backoffice', 20, 46, 1, 0.01, 0.0,62000.0);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('RessourceGroup_id', 9);
+UPDATE pk_gen SET gen_value = 9 WHERE gen_key = 'RessourceGroup_id';
 
 
 INSERT INTO
@@ -126,14 +126,14 @@ INSERT INTO
         responsibleperson_id, externaldailyrate, hoursperworkingday)
         VALUES (4, true, true, 'viertes testprojekt', 'Projekt Nr 4','PRO4', 1, 1,1,750.0, 9);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlannedProject_id', 5);
+UPDATE pk_gen SET gen_value = 5 WHERE gen_key = 'PlannedProject_id';
 
 
 INSERT INTO
         planningstatus(id, name, ordernumber)
         VALUES (1, 'planningstatus 1',1);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningStatus_id', 1);
+UPDATE pk_gen SET gen_value = 1 WHERE gen_key = 'PlanningStatus_id';
 
 
 INSERT INTO anrede(id,anrede)
@@ -142,7 +142,7 @@ VALUES (1,'Herr');
 INSERT INTO anrede(id,anrede)
 VALUES (2,'Frau');
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('Anrede_id', 2);
+UPDATE pk_gen SET gen_value = 2 WHERE gen_key = 'Anrede_id';
 
 
 INSERT INTO geschlecht(id,geschlecht)
@@ -151,7 +151,7 @@ VALUES (1,'männlich');
 INSERT INTO geschlecht(id,geschlecht)
 VALUES (2,'weiblich');
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('Geschlecht_id', 2);
+UPDATE pk_gen SET gen_value = 2 WHERE gen_key = 'Geschlecht_id';
 
 
 INSERT INTO person(id,anrede_id,geschlecht_id)
@@ -160,7 +160,7 @@ VALUES (1,1,1);
 INSERT INTO person(id,anrede_id,geschlecht_id)
 VALUES (2,1,1);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('Person_id', 2);
+UPDATE pk_gen SET gen_value = 2 WHERE gen_key = 'Person_id';
 
 
 INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
@@ -205,7 +205,7 @@ VALUES (13,13,'Durchführung',13,1,null,1,1);
 INSERT INTO planningunit(id,ordernumber,planningunitname,estimatedStoryPoints,komplexitaet,parent_id,planningstatus_id,responsibleperson_id)
 VALUES (14,14,'Beendigung',14,1,null,1,1);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_id', 15);
+UPDATE pk_gen SET gen_value = 15 WHERE gen_key = 'PlanningUnit_id';
 
 INSERT INTO textelement(id, bezeichnung, text) VALUES (1,'erste beschreibung',
                                                        'Dies hier stellt die erste beschreibung dar.');
@@ -225,7 +225,7 @@ INSERT INTO textelement(id, bezeichnung, text) VALUES (5,'der 1. testcase',
 INSERT INTO textelement(id, bezeichnung, text) VALUES (6,'der 2. tolle testcase',
                                                        'Dies hier stellt den zweiten tollen Testcase dar.');
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('TextElement_id', 7);
+UPDATE pk_gen SET gen_value = 7 WHERE gen_key = 'TextElement_id';
 
 INSERT INTO planningunit_description (planningunit_id, descriptions_id) VALUES (1,1);
 
@@ -255,7 +255,7 @@ VALUES (2, 13);
 INSERT INTO plannedproject_planningunit(plannedproject_id,planningunits_id)
 VALUES (2, 14);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlannedProject_PlanningUnit_id', 5);
+UPDATE pk_gen SET gen_value = 5 WHERE gen_key = 'PlannedProject_PlanningUnit_id';
 
 
 
@@ -289,7 +289,7 @@ VALUES (9, 10);
 INSERT INTO planningunit_planningunit(planningunit_id,kindplanningunits_id)
 VALUES (9, 11);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_PlanningUnit_id', 11);
+UPDATE pk_gen SET gen_value = 11 WHERE gen_key = 'PlanningUnit_PlanningUnit_id';
 
 
 INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
@@ -628,7 +628,7 @@ VALUES (111, 190, 7);
 INSERT INTO planningunitelement(id,plannedminutes,ressourcegroup_id)
 VALUES (112, 200, 8);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnitElement_id', 113);
+UPDATE pk_gen SET gen_value = 113 WHERE gen_key = 'PlanningUnitElement_id';
 
 
 INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
@@ -967,5 +967,5 @@ VALUES (14, 111);
 INSERT INTO planningunit_planningunitelement (planningunit_id, planningunitelementlist_id)
 VALUES (14, 112);
 
-INSERT INTO pk_gen(gen_key, gen_value) VALUES ('PlanningUnit_PlanningUnitElement_id', 113);
+UPDATE pk_gen SET gen_value = 113 WHERE gen_key = 'PlanningUnit_PlanningUnitElement_id';
 

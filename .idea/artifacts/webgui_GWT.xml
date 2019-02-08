@@ -2,11 +2,7 @@
   <artifact name="webgui:GWT">
     <output-path>$PROJECT_DIR$/webgui/target/classes/VAADIN/widgetsets</output-path>
     <root id="root">
-      <element id="directory" name="VAADIN">
-        <element id="directory" name="widgetsets">
-          <element id="gwt-compiler-output" facet="webgui/gwt/GWT" />
-        </element>
-      </element>
+      <element id="gwt-compiler-output" facet="webgui/gwt/GWT" />
     </root>
   </artifact>
 </component>
