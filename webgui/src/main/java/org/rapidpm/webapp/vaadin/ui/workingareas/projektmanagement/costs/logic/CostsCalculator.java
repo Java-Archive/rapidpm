@@ -2,6 +2,7 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic;
 
 //import org.rapidpm.ejb3.EJBFactory;
 //import org.rapidpm.persistence.DaoFactoryBean;
+
 import com.vaadin.flow.server.VaadinSession;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
@@ -9,13 +10,15 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.webapp.vaadin.MainUI;
 
-import javax.persistence.EntityManager;
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Set;
 
-import static org.rapidpm.Constants.*;
+import static org.rapidpm.Constants.DECIMAL_FORMAT;
+import static org.rapidpm.Constants.MINS_HOUR;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -95,7 +98,7 @@ public class CostsCalculator {
 
     private Double getCosts(final PlanningUnitElement planningUnitElement) {
         final int minutes = planningUnitElement.getPlannedMinutes();
-        final double hoursFromMinutes = minutes / MINS_HOUR;
+        final double hoursFromMinutes = (double) minutes / MINS_HOUR;
         final Double externalEurosPerHour = planningUnitElement.getRessourceGroup().getExternalEurosPerHour();
         return hoursFromMinutes * externalEurosPerHour;
     }

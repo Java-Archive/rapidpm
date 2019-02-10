@@ -2,7 +2,6 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.compon
 
 import com.vaadin.flow.component.button.Button;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.CostsScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.logic.TreeTableFiller;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components.MyTreeTable;
 
 /**
