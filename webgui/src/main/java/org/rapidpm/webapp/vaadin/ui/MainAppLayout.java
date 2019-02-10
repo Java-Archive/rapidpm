@@ -71,7 +71,7 @@ public class MainAppLayout extends AppLayoutRouterLayout {
         });
         return AppLayoutBuilder
                 .get(Behaviour.LEFT_RESPONSIVE)
-                .withTitle("RapidPM 2019 - Vaadin 12")
+                .withTitle("RapidPM 2019 - Vaadin 13")
                 .withAppBar(AppBarBuilder
                         .get()
                         .add(new AppBarNotificationButton(VaadinIcon.BELL, notifications))
