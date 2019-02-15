@@ -42,11 +42,6 @@ import static org.rapidpm.Constants.EUR;
 @Icon(VaadinIcon.MONEY_DEPOSIT)
 public class CostsScreen extends Screen {
 
-
-    private static final String EXTERN = "extern";
-    private static final String RELATIV = "relativ";
-    private static final String ABSOLUT = "absolut";
-    private static final String KOSTEN = "kosten";
     private static final String WIDTH = "200px";
 
     private Button saveButton = new Button();
