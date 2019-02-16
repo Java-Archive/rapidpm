@@ -14,8 +14,6 @@ import com.github.appreciated.app.layout.notification.component.AppBarNotificati
 import com.github.appreciated.app.layout.router.AppLayoutRouterLayout;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.page.Viewport;
 import com.vaadin.flow.server.VaadinSession;
@@ -25,14 +23,13 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
-import org.rapidpm.webapp.vaadin.BaseUI;
-import org.rapidpm.webapp.vaadin.ui.windows.LoginMask;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.ProjectAdministrationScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.CostsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.distribution.VertriebScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.offer.OfferScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
+import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.BenutzerScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
 
 import java.util.Collections;
@@ -87,6 +84,7 @@ public class MainAppLayout extends AppLayoutRouterLayout {
 //                                        .add(new LeftNavigationComponent(View4.class))
 //                                        .build())
                                 .add(new LeftNavigationComponent(StundensaetzeScreen.class))
+                                .add(new LeftNavigationComponent(BenutzerScreen.class))
                                 .build())
                         .add(LeftSubMenuBuilder.get(messages.getString("projectmanagement"), VaadinIcon.PLUS.create())
                                 .add(new LeftNavigationComponent(ProjektplanungScreen.class))

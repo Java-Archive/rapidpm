@@ -1,13 +1,17 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer;
 
+import com.github.appreciated.app.layout.annotations.Caption;
+import com.github.appreciated.app.layout.annotations.Icon;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.ItemClickEvent;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
@@ -15,8 +19,7 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.system.security.*;
 import org.rapidpm.persistence.system.security.berechtigungen.Rolle;
 import org.rapidpm.persistence.system.security.berechtigungen.RolleDAO;
-import org.rapidpm.webapp.vaadin.MainUI;
-import org.rapidpm.webapp.vaadin.ui.workingareas.FormattedDateStringToDateConverter;
+import org.rapidpm.webapp.vaadin.ui.MainAppLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.benutzer.uicomponents.BenutzerEditor;
 
@@ -24,8 +27,11 @@ import javax.persistence.PersistenceException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
-
+@Route(value = "users", layout = MainAppLayout.class)
+@Caption("Benutzer")
+@Icon(VaadinIcon.USER)
 public class BenutzerScreen extends Screen {
 
     private Logger logger = Logger.getLogger(BenutzerScreen.class);
@@ -38,7 +44,7 @@ public class BenutzerScreen extends Screen {
     private Button removeButton;
     private Button addButton;
     private Button resetButton;
-    private Grid<Benutzer> benutzerTable;
+    private Grid<Benutzer> benutzerGrid;
 
     public BenutzerScreen() {
 //        setSizeFull();
@@ -80,23 +86,23 @@ public class BenutzerScreen extends Screen {
 //        contentLayout.setExpandRatio(benutzerEditor, 1);
 
 //        final BeanItemContainer<Benutzer> benutzerDS = new BeanItemContainer<>(Benutzer.class, benutzer);
-        benutzerTable = new Grid();
-//        benutzerTable.setImmediate(true);
-        benutzerTable.setItems(benutzer);
-        benutzerTable.setWidth("100%");
-        benutzerTable.setColumns("id", "login", "email", "validFrom", "validUntil", "failedLogins");
-//        benutzerTable.setColumnHeaders(new String[]{"ID", "Loginname", "E-Mail", "Gültig von", "Gültig bis",
+        benutzerGrid = new Grid<>(Benutzer.class);
+//        benutzerGrid.setImmediate(true);
+        benutzerGrid.setItems(benutzer);
+        benutzerGrid.setWidth("100%");
+        benutzerGrid.setColumns("id", "login", "email", "validFrom", "validUntil", "failedLogins");
+//        benutzerGrid.setColumnHeaders(new String[]{"ID", "Loginname", "E-Mail", "Gültig von", "Gültig bis",
 //                "Fehlgeschlagene Logins"});
-        benutzerTable.setSelectionMode(Grid.SelectionMode.SINGLE);
-//        benutzerTable.setConverter("validFrom", new FormattedDateStringToDateConverter(DATE_FORMAT));
-//        benutzerTable.setConverter("validUntil", new FormattedDateStringToDateConverter(DATE_FORMAT));
+        benutzerGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
+//        benutzerGrid.setConverter("validFrom", new FormattedDateStringToDateConverter(DATE_FORMAT));
+//        benutzerGrid.setConverter("validUntil", new FormattedDateStringToDateConverter(DATE_FORMAT));
         benutzerTableLayout.add(mandantenBox);
-        benutzerTableLayout.add(benutzerTable);
+        benutzerTableLayout.add(benutzerGrid);
 
         removeButton = new Button();
         removeButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> {
             final Benutzer currentUser = VaadinSession.getCurrent().getAttribute(Benutzer.class);
-            final Benutzer selectedBenutzer = benutzerTable.getSelectedItems().iterator().next();
+            final Benutzer selectedBenutzer = benutzerGrid.getSelectedItems().iterator().next();
 
             final boolean isUserDeletingHimself = currentUser.getLogin().equals(selectedBenutzer.getLogin());
 
@@ -107,14 +113,14 @@ public class BenutzerScreen extends Screen {
                 if(benutzerFromDB != null && !benutzerFromDB.isEmpty()){
                     try{
                         daoFactory12.removeTX(selectedBenutzer);
-                        benutzerTable.setItems(benutzer.stream().filter(einBenutzer -> einBenutzer.getId().equals(selectedBenutzer.getId())));
+                        benutzerGrid.setItems(benutzer.stream().filter(einBenutzer -> einBenutzer.getId().equals(selectedBenutzer.getId())));
                         benutzerEditor.setVisible(false);
                     } catch (final PersistenceException e){
                         Notification.show(messagesBundle.getString("users_userinuse"));
                     }
 
                 } else {
-//                        benutzerTable.removeItem(tableItemId);
+//                        benutzerGrid.removeItem(tableItemId);
                     benutzerEditor.setVisible(false);
                     logger.warn(selectedBenutzer.toString() + "war nur transient vorhanden");
                 }
@@ -128,27 +134,25 @@ public class BenutzerScreen extends Screen {
 
         resetButton = new Button();
         resetButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> {
-            final Benutzer selectedBenutzer = benutzerTable.getSelectedItems().iterator().next();
+            final Benutzer selectedBenutzer = benutzerGrid.getSelectedItems().iterator().next();
             final DaoFactory daoFactory1 = DaoFactorySingelton.getInstance();
             daoFactory1.saveOrUpdate(selectedBenutzer);
         });
         resetButton.setEnabled(false);
 
-        benutzerTable.addItemClickListener(new ComponentEventListener<ItemClickEvent<Benutzer>>() {
-            @Override
-            public void onComponentEvent(ItemClickEvent<Benutzer> benutzerItemClickEvent) {
-                final Benutzer selectedBenutzer = benutzerTable.getSelectedItems().iterator().next();
-                if (!benutzerTable.getSelectedItems().contains(selectedBenutzer)) {
-                    Integer failedLogins = selectedBenutzer.getFailedLogins();
-                    boolean isResetable =  failedLogins >= 3;
-//                    benutzerEditor.setBenutzerBean(selectedBenutzer);
-                    benutzerEditor.setVisible(true);
-                    removeButton.setEnabled(true);
-                    resetButton.setEnabled(isResetable);
-                } else {
-                    removeButton.setEnabled(false);
-                    benutzerEditor.setVisible(false);
-                }
+        benutzerGrid.addItemClickListener((ComponentEventListener<ItemClickEvent<Benutzer>>) benutzerItemClickEvent -> {
+            Benutzer selectedBenutzer = benutzerItemClickEvent.getItem();
+            Set<Benutzer> selectedItems = benutzerGrid.getSelectedItems();
+            if (selectedItems.size() > 0) {
+                Integer failedLogins = selectedBenutzer.getFailedLogins();
+                boolean isResetable =  failedLogins >= 3;
+                benutzerEditor.setBenutzer(selectedBenutzer);
+                benutzerEditor.setVisible(true);
+                removeButton.setEnabled(true);
+                resetButton.setEnabled(isResetable);
+            } else {
+                removeButton.setEnabled(false);
+                benutzerEditor.setVisible(false);
             }
         });
 
@@ -167,7 +171,7 @@ public class BenutzerScreen extends Screen {
             neuerBenutzer.setFailedLogins(0);
             neuerBenutzer.setMandantengruppe(mandantengruppen.get(0));
             neuerBenutzer.setValidFrom(new Date());
-            benutzerTable.select(null);
+            benutzerGrid.select(null);
             benutzerEditor.setVisible(false);
         });
 
@@ -206,7 +210,11 @@ public class BenutzerScreen extends Screen {
         resetButton.setText(messagesBundle.getString("users_reset"));
         removeButton.setText(messagesBundle.getString("users_remove"));
         addButton.setText(messagesBundle.getString("users_add"));
-//        benutzerTable.setText(messagesBundle.getString("users_users"));
+//        benutzerGrid.setText(messagesBundle.getString("users_users"));
         benutzerEditor.doInternationalization();
+    }
+
+    public Grid<Benutzer> getBenutzerGrid() {
+        return benutzerGrid;
     }
 }
