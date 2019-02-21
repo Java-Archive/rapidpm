@@ -30,7 +30,7 @@ import java.util.Set;
 //@XmlType(name = "Benutzer")
 @Entity
 @Audited
-public class Benutzer {
+public class Benutzer implements Nameable {
 
     public static final String ID ="id";
     public static final String HIDDEN = "hidden";
@@ -91,6 +91,8 @@ public class Benutzer {
     @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
     private Set<Rolle> rollen;
 
+    public Benutzer() {
+    }
 
     public Long getId() {
         return id;
@@ -254,5 +256,10 @@ public class Benutzer {
 
     public void setHidden(final Boolean hidden) {
         this.hidden = hidden;
+    }
+
+    @Override
+    public String name() {
+        return getLogin();
     }
 }

@@ -1,6 +1,9 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all;
 
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.VaadinSession;
@@ -53,76 +56,60 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements In
     }
 
     private void createRenameButton() {
-//        renameButton.addClickListener(new Button.ClickListener() {
-//            @Override
-//            public void buttonClick(Button.ClickEvent event) {
-//                screen.getUi().addWindow(new RenamePlanningUnitWindow(screen));
-//            }
-//        });
+        renameButton.addClickListener(
+                (ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> new RenamePlanningUnitWindow(screen).open());
     }
 
     private void createAddButton() {
         addButton = screen.getAddButton();
-//        addButton.addClickListener(new Button.ClickListener() {
-//            @Override
-//            public void buttonClick(Button.ClickEvent event) {
-//                final AddWindow window = new AddWindow(screen.getUi(),screen);
-//                window.show();
-//            }
-//        });
+        addButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> new AddWindow(screen).open());
     }
 
     private void createDeleteButton() {
         deleteButton = screen.getDeleteButton();
-//        deleteButton.addClickListener(new Button.ClickListener() {
-//            @Override
-//            public void buttonClick(Button.ClickEvent event) {
-//                try {
-//                    final PlanningUnit planningUnit = (PlanningUnit) screen.getPlanningUnitsTree().getValue();
-//                    final PlanningUnit managedPlanningUnit = daoFactory.getPlanningUnitDAO().findByID
-//                            (planningUnit.getId());
-//                    if(managedPlanningUnit == null){
-//                        throw new PlatzhalterException();
-//                    }
-//                    if(managedPlanningUnit.getKindPlanningUnits() != null && !managedPlanningUnit.getKindPlanningUnits
-//                            ().isEmpty()){
-//                        throw new Exception();
-//                    }
-//                    final PlanningUnit parentPlanningUnit = managedPlanningUnit.getParent();
-//                    projekt = daoFactory.getPlannedProjectDAO().findByID(projekt.getId());
-//
-//                    if(parentPlanningUnit == null){
-//                        projekt.getPlanningUnits().remove(managedPlanningUnit);
-//                        daoFactory.saveOrUpdateTX(projekt);
-//                    }
-//                    else{
-//                        parentPlanningUnit.getKindPlanningUnits().remove(managedPlanningUnit);
-//                        daoFactory.saveOrUpdateTX(parentPlanningUnit);
-//                    }
-//                    daoFactory.removeTX(managedPlanningUnit);
-//                    for(final PlanningUnit pu : projekt.getPlanningUnits()){
-//                        logger.info(pu.getPlanningUnitName()+": "+pu.getKindPlanningUnits());
-//                        for(final PlanningUnit pu1 : pu.getKindPlanningUnits()){
-//                            logger.info("\t"+pu1.getPlanningUnitName()+": "+pu1.getKindPlanningUnits());
-//                        }
-//                    }
-//
-//                    final MainUI ui = screen.getUi();
-//                    ui.setWorkingArea(new ProjektplanungScreen(ui));
-//                }catch (final PlatzhalterException e){
-//                    Notification.show(messages.getString("planning_placeholder_delete"));
-//                } catch (final Exception e) {
-//                    e.printStackTrace();
-//                    Notification.show(messages.getString("planning_nodelete"));
-//                }
-//            }
-//        });
+        deleteButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> {
+            try {
+                final PlanningUnit planningUnit = screen.getPlanningUnitsTree().getSelectedItems().iterator().next();
+                final PlanningUnit managedPlanningUnit = daoFactory.getPlanningUnitDAO().findByID
+                        (planningUnit.getId());
+                if(managedPlanningUnit == null){
+                    throw new PlatzhalterException();
+                }
+                if(managedPlanningUnit.getKindPlanningUnits() != null && !managedPlanningUnit.getKindPlanningUnits
+                        ().isEmpty()){
+                    throw new Exception();
+                }
+                final PlanningUnit parentPlanningUnit = managedPlanningUnit.getParent();
+                projekt = daoFactory.getPlannedProjectDAO().findByID(projekt.getId());
+
+                if(parentPlanningUnit == null){
+                    projekt.getPlanningUnits().remove(managedPlanningUnit);
+                    daoFactory.saveOrUpdateTX(projekt);
+                }
+                else{
+                    parentPlanningUnit.getKindPlanningUnits().remove(managedPlanningUnit);
+                    daoFactory.saveOrUpdateTX(parentPlanningUnit);
+                }
+                daoFactory.removeTX(managedPlanningUnit);
+                for(final PlanningUnit pu : projekt.getPlanningUnits()){
+                    logger.info(pu.getPlanningUnitName()+": "+pu.getKindPlanningUnits());
+                    for(final PlanningUnit pu1 : pu.getKindPlanningUnits()){
+                        logger.info("\t"+pu1.getPlanningUnitName()+": "+pu1.getKindPlanningUnits());
+                    }
+                }
+            }catch (final PlatzhalterException e){
+                Notification.show(messages.getString("planning_placeholder_delete"));
+            } catch (final Exception e) {
+                e.printStackTrace();
+                Notification.show(messages.getString("planning_nodelete"));
+            }
+        });
     }
 
     protected void buildForm() {
         buttonLayout.add(addButton, deleteButton, renameButton);
         leftLayout.add(buttonLayout);
-//        leftLayout.add(screen.getPlanningUnitsTree());
+        leftLayout.add(screen.getPlanningUnitsTree());
         add(leftLayout);
     }
 

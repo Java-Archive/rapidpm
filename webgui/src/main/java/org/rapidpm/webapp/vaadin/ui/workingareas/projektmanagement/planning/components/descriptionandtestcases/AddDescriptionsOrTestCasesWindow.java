@@ -33,13 +33,10 @@ public class AddDescriptionsOrTestCasesWindow extends RapidWindow {
     private Button cancelButton;
     private HorizontalLayout buttonLayout;
     private final PlanningUnit selectedPlanningUnitInTree;
-    private final MainUI ui;
     private ResourceBundle messages;
 
-    public AddDescriptionsOrTestCasesWindow(final PlanningUnit selectedPlanningUnitInTree, final MainUI ui,
-                                            final ResourceBundle messages) {
+    public AddDescriptionsOrTestCasesWindow(final PlanningUnit selectedPlanningUnitInTree, final ResourceBundle messages) {
         this.selectedPlanningUnitInTree = selectedPlanningUnitInTree;
-        this.ui = ui;
         this.messages = messages;
         buttonLayout = new HorizontalLayout();
         quantityField = new TextField(messages.getString("planning_quantity"));

@@ -1,20 +1,23 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.information;
 
 import com.vaadin.flow.component.AbstractField;
+import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.server.VaadinSession;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.webapp.vaadin.MainUI;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.EditableLayout;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitFieldGroup;
 
-import java.util.*;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
 
@@ -41,40 +44,30 @@ public class PlanningInformationEditableLayout extends EditableLayout {
         fieldList = fieldGroup.getFieldList();
 
         buildForm();
+        cancelButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> {
+            final Iterator<Component> componentIterator = componentsLayout.getChildren().iterator();
+                fieldGroup.readBean(fieldGroup.getBean());
+            while (componentIterator.hasNext()) {
+                final Component component = componentIterator.next();
+                if (component instanceof AbstractField) {
+                    ((AbstractField)component).setReadOnly(true);
+                }
+            }
+            buttonLayout.setVisible(false);
+        });
 
-//        cancelButton.addClickListener(new Button.ClickListener() {
-//            @Override
-//            public void buttonClick(Button.ClickEvent event) {
-//                final Iterator<Component> componentIterator = componentsLayout.getComponentIterator();
-//                fieldGroup.discard();
-//                while (componentIterator.hasNext()) {
-//                    final Component component = componentIterator.next();
-//                    if (component instanceof Field) {
-//                        component.setReadOnly(true);
-//                    }
-//                }
-//                buttonLayout.setVisible(false);
-//            }
-//        });
-
-//        saveButton.addClickListener(new Button.ClickListener() {
-//            @Override
-//            public void buttonClick(Button.ClickEvent event) {
-//                try{
-//                    fieldGroup.commit();
-//                    final BeanItem<PlanningUnit> beanItem = (BeanItem)fieldGroup.getItemDataSource();
-//                    final PlanningUnit editedPlanningUnit = beanItem.getBean();
-//                    final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-//                    daoFactory.saveOrUpdateTX(editedPlanningUnit);
-//                    final MainUI ui = screen.getUi();
-//                    ui.setWorkingArea(new ProjektplanungScreen(ui));
-//                }catch (NullPointerException e){
-//                    logger.info(COMMIT_EXCEPTION_MESSAGE);
-//                }catch(Exception e){
-//                    logger.warn("Exception", e);
-//                }
-//            }
-//        });
+        saveButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> {
+            try{
+                final PlanningUnit editedPlanningUnit = fieldGroup.getBean();
+                fieldGroup.writeBean(editedPlanningUnit);
+                final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+                daoFactory.saveOrUpdateTX(editedPlanningUnit);
+            }catch (NullPointerException e){
+                logger.info(COMMIT_EXCEPTION_MESSAGE);
+            }catch(Exception e){
+                logger.warn("Exception", e);
+            }
+        });
     }
 
     @Override

@@ -1,7 +1,12 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.parents;
 
+import com.vaadin.flow.component.AbstractField;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasValue;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.listbox.ListBox;
+import com.vaadin.flow.data.provider.Query;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.server.VaadinSession;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
@@ -11,6 +16,7 @@ import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,13 +25,13 @@ import java.util.*;
  * Time: 08:37
  * To change this template use File | Settings | File Templates.
  */
-public class PlanningUnitSelect extends ListBox {
+public class PlanningUnitSelect extends ListBox<PlanningUnit> implements HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<ListBox<PlanningUnit>, PlanningUnit>> {
 
     private List<Component> listenerComponents = new ArrayList<>();
     private DaoFactory baseDaoFactoryBean;
     private PlannedProject projectFromDB;
 
-    public PlanningUnitSelect(final MainUI ui){
+    public PlanningUnitSelect(){
         baseDaoFactoryBean = DaoFactorySingelton.getInstance();
         final PlannedProject projectFromSession = VaadinSession.getCurrent().getAttribute(PlannedProject.class);
         projectFromDB = baseDaoFactoryBean.getPlannedProjectDAO().findByID
@@ -38,23 +44,14 @@ public class PlanningUnitSelect extends ListBox {
                 planningUnitsWithoutParent.add(planningUnit);
             }
         }
-//        setContainerDataSource(new BeanItemContainer<>(PlanningUnit.class, planningUnitsWithoutParent));
+        setItems(planningUnitsWithoutParent);
+        setRenderer(new ComponentRenderer<>(planningUnit -> new Label(planningUnit.getPlanningUnitName())));
 //        setNullSelectionAllowed(false);
 //        setImmediate(true);
 //        setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
 //        setItemCaptionPropertyId(PlanningUnit.NAME);
-//        addValueChangeListener(this);
+        addValueChangeListener(this);
     }
-
-//    @Override
-//    public void valueChange(Property.ValueChangeEvent event){
-//        final boolean placeholderOnly = isContentOnlyPlaceholder();
-//        for (Component listenerComponent : listenerComponents) {
-//            if(placeholderOnly){
-//                listenerComponent.setEnabled(false);
-//            }
-//        }
-//    }
 
     public PlannedProject getProjectFromDB() {
         return projectFromDB;
@@ -65,15 +62,25 @@ public class PlanningUnitSelect extends ListBox {
     }
 
     public boolean isContentOnlyPlaceholder() {
-//        final Collection<?> itemIds = getItemIds();
-//        final ArrayList<PlanningUnit> planningUnits = new ArrayList(itemIds);
-//        if(itemIds == null || itemIds.isEmpty()){
-//            return false;
-//        } else if(itemIds.size() == 1 && planningUnits.get(0).getId().equals(ProjektplanungScreen.PLATZHALTER_ID)){
-//            return true;
-//        } else {
-//            return false;
-//        }
-        return false;
+        final List<PlanningUnit> planningUnits = getDataProvider().fetch(new Query<>()).collect(Collectors.toList());
+        if(planningUnits.isEmpty()){
+            return false;
+        } else if(planningUnits.size() == 1 && planningUnits.get(0).getId().equals(ProjektplanungScreen.PLATZHALTER_ID)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void valueChanged(ComponentValueChangeEvent listBoxComponentValueChangeEvent) {
+        final boolean placeholderOnly = isContentOnlyPlaceholder();
+        for (Component listenerComponent : listenerComponents) {
+            if(placeholderOnly){
+                if (listenerComponent instanceof AbstractField) {
+                    ((AbstractField) listenerComponent).setEnabled(false);
+                }
+            }
+        }
     }
 }

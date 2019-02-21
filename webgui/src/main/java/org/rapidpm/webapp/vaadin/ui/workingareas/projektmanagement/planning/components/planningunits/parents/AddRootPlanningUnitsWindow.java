@@ -41,12 +41,10 @@ public class AddRootPlanningUnitsWindow extends RapidWindow {
     private Button cancelButton;
 //    private BeanItemContainer<PlanningUnit> container;
     private long transientIdCounter;
-    private MainUI ui;
     private ResourceBundle messages;
     private PlannedProject project;
 
-    public AddRootPlanningUnitsWindow(final MainUI ui, final ResourceBundle messages){
-        this.ui = ui;
+    public AddRootPlanningUnitsWindow(final ResourceBundle messages){
         this.messages = messages;
 //        setModal(true);
 //        setText(messages.getString("planning_addPlanningUnit"));

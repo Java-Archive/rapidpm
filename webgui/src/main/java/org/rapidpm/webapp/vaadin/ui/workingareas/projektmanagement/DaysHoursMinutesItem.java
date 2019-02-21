@@ -2,6 +2,8 @@ package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement;
 
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 
+import java.util.Objects;
+
 import static org.rapidpm.Constants.MINS_HOUR;
 
 /**
@@ -108,5 +110,22 @@ public class DaysHoursMinutesItem {
             minutesString = "0" + minutes;
         }
         return (daysString + ":" + hoursString + ":" + minutesString);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DaysHoursMinutesItem that = (DaysHoursMinutesItem) o;
+        return Objects.equals(days, that.days) &&
+                Objects.equals(hours, that.hours) &&
+                Objects.equals(minutes, that.minutes) &&
+                Objects.equals(minutesTotal, that.minutesTotal) &&
+                Objects.equals(hoursPerWorkingDay, that.hoursPerWorkingDay);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(days, hours, minutes, minutesTotal, hoursPerWorkingDay);
     }
 }

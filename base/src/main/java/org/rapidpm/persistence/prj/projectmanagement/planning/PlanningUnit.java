@@ -4,6 +4,7 @@ import org.rapidpm.persistence.prj.projectmanagement.planning.management.Planned
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedTravel;
 import org.rapidpm.persistence.prj.textelement.TextElement;
 import org.rapidpm.persistence.system.security.Benutzer;
+import org.rapidpm.persistence.system.security.Nameable;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.Set;
  */
 
 @Entity
-public class PlanningUnit {
+public class PlanningUnit implements Nameable {
 
     public static final String NAME = "planningUnitName";
     public static final String STORYPTS = "estimatedStoryPoints";
@@ -225,6 +226,11 @@ public class PlanningUnit {
 
     @Override
     public String toString() {
+        return planningUnitName;
+    }
+
+    @Override
+    public String name() {
         return planningUnitName;
     }
 }
