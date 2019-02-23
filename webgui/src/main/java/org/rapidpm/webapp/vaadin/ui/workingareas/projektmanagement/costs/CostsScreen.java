@@ -233,7 +233,7 @@ public class CostsScreen extends Screen {
                             .filter(planningUnitElement -> planningUnitElement.getRessourceGroup().getName().equals(spalte.getName())).findFirst();
                     matchingPlanningUnitElement.ifPresent(planningUnitElement -> {
                         treeGridRowBean.put(spalte.getName(), decimalFormat.format(getCosts(planningUnitElement)) + EUR);
-                        treeGrid.getTreeData().addItem(null, treeGridRowBean);
+//                        treeGrid.getTreeData().addItem(null, treeGridRowBean);
                     });
                 }
             } else {

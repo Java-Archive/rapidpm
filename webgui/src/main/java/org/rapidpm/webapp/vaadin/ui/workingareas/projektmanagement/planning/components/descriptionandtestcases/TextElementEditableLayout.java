@@ -1,6 +1,11 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.descriptionandtestcases;
 
+import com.vaadin.flow.component.AbstractField;
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
@@ -56,27 +61,31 @@ public class TextElementEditableLayout extends EditableLayout {
 //                }
 //            }
 //        });
+        saveButton.addClickListener(new ComponentEventListener<ClickEvent<Button>>() {
+            @Override
+            public void onComponentEvent(ClickEvent<Button> event) {
+                Notification.show("TO BE DONE!");
+            }
+        });
 //        saveButton.addClickListener(new Button.ClickListener() {
 //            @Override
 //            public void buttonClick(Button.ClickEvent event) {
 //                updateTextElement(textElement);
 //            }
 //        });
-//        cancelButton.addClickListener(new Button.ClickListener() {
-//            @Override
-//            public void buttonClick(Button.ClickEvent event) {
-//                        final Iterator<Component> componentIterator = componentsLayout.iterator();
-//                        textElementTextArea.setValue(textElement.getText());
-//                        bezeichnungField.setValue(textElement.getBezeichnung());
-//                        while (componentIterator.hasNext()) {
-//                            final Component component = componentIterator.next();
-//                            if (component instanceof AbstractField) {
-//                                component.setReadOnly(true);
-//                            }
-//                        }
-//                        buttonLayout.setVisible(false);
-//            }
-//        });
+        cancelButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) event -> {
+            final Iterator<Component> componentIterator = componentsLayout.getChildren().iterator();
+                    textElementTextArea.setValue(textElement.getText());
+                    bezeichnungField.setValue(textElement.getBezeichnung());
+                    while (componentIterator.hasNext()) {
+                        final Component component = componentIterator.next();
+                        if (component instanceof AbstractField) {
+                            ((AbstractField) component).setReadOnly(true);
+                        }
+                    }
+                    buttonLayout.setVisible(false);
+        });
+        deleteButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) event -> Notification.show("TO BE DONE!"));
 //        deleteButton.addClickListener(new Button.ClickListener() {
 //            @Override
 //            public void buttonClick(Button.ClickEvent event) {

@@ -1,5 +1,6 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic;
 
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.ItemClickEvent;
@@ -17,10 +18,11 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.Proj
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.descriptionandtestcases.DescriptionAndTestCasesFieldGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details.PlanningDetailsEditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.information.PlanningInformationEditableLayout;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.planningunits.all.PlanningUnitsTree;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.ressources.PlanningRessourcesEditableLayout;
 
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,6 +41,8 @@ public class TreeValueChangeListener implements ComponentEventListener<ItemClick
     private Button deleteButton;
     private Button renameButton;
 
+    private Map<Tab, Component> tabsToPages = new HashMap<>();
+
     public TreeValueChangeListener(final ProjektplanungScreen screen) {
         this.screen = screen;
         this.daoFactory = DaoFactorySingelton.getInstance();
@@ -54,10 +58,13 @@ public class TreeValueChangeListener implements ComponentEventListener<ItemClick
 
     @Override
     public void onComponentEvent(ItemClickEvent<PlanningUnit> planningUnitItemClickEvent) {
-        final PlanningUnit selectedParentPlanningUnit = planningUnitItemClickEvent.getItem();
-        if (selectedParentPlanningUnit != null) {
-            System.out.println(selectedParentPlanningUnit.toString());
-            final boolean hasChildren = selectedParentPlanningUnit.getKindPlanningUnits() != null && !selectedParentPlanningUnit.getKindPlanningUnits().isEmpty();
+        refreshTestCasesAndDescriptionsFor(planningUnitItemClickEvent.getItem());
+    }
+
+    public void refreshTestCasesAndDescriptionsFor(PlanningUnit planningUnit) {
+        if (planningUnit != null) {
+            System.out.println(planningUnit.toString());
+            final boolean hasChildren = planningUnit.getKindPlanningUnits() != null && !planningUnit.getKindPlanningUnits().isEmpty();
                 if(deleteButton != null){
                     deleteButton.setEnabled(true);
                 }
@@ -75,14 +82,14 @@ public class TreeValueChangeListener implements ComponentEventListener<ItemClick
                 descriptionsAndTestCasesPanel.add(screen.getAddDescriptionOrTestCaseButton());
 
 
-                detailPanel.add(new Label(selectedParentPlanningUnit.getPlanningUnitName()));
-                mainPanel.setText(selectedParentPlanningUnit.getPlanningUnitName());
+                detailPanel.add(new Label(planningUnit.getPlanningUnitName()));
+                mainPanel.setText(planningUnit.getPlanningUnitName());
                 ressourcesPanel.setText(RESSOURCE_GROUPS);
                 final VerticalLayout detailsPanelComponentsLayout = new PlanningDetailsEditableLayout
-                        (selectedParentPlanningUnit, screen, detailPanel);
-                final VerticalLayout mainPanelLayout = new PlanningInformationEditableLayout(selectedParentPlanningUnit, screen);
-                if(daoFactory.getPlanningUnitDAO().findByID(selectedParentPlanningUnit.getId()) != null){
-                    final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesEditableLayout(selectedParentPlanningUnit,
+                        (planningUnit, screen, detailPanel);
+                final VerticalLayout mainPanelLayout = new PlanningInformationEditableLayout(planningUnit, screen);
+                if(daoFactory.getPlanningUnitDAO().findByID(planningUnit.getId()) != null){
+                    final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesEditableLayout(planningUnit,
                             screen, ressourcesPanel, hasChildren);
                     ressourcesPanel.add(ressourcesPanelLayout);
                     final DescriptionAndTestCasesFieldGroup descriptionAndTestCasesFieldGroup = new
@@ -103,10 +110,26 @@ public class TreeValueChangeListener implements ComponentEventListener<ItemClick
                         testCaseTabFramePanel.add(testCaseEditableLayout);
                     }
                     final Tabs tabSheet = new Tabs();
-                    tabSheet.add(new Tab(VaadinSession.getCurrent().getAttribute(ResourceBundle.class).getString("planning_descriptions")));
-                    tabSheet.add(new Tab(VaadinSession.getCurrent().getAttribute(ResourceBundle.class).getString("planning_testcases")));
+                    final Tab descriptionTabContent = new Tab(VaadinSession.getCurrent().getAttribute(ResourceBundle.class).getString("planning_descriptions"));
+                    tabSheet.add(descriptionTabContent);
+                    final Tab testcaseTabContent = new Tab(VaadinSession.getCurrent().getAttribute(ResourceBundle.class).getString("planning_testcases"));;
+                    testCaseTabFramePanel.setVisible(false);
+                    tabSheet.add(testcaseTabContent);
+                    tabsToPages.clear();
+                    tabsToPages.put(descriptionTabContent, descriptionTabFramePanel);
+                    tabsToPages.put(testcaseTabContent, testCaseTabFramePanel);
+                    tabSheet.setFlexGrowForEnclosedTabs(1);
+                    tabSheet.addSelectedChangeListener(event -> {
+                        Set<Component> pagesShown = Stream.of(descriptionTabFramePanel, testCaseTabFramePanel).collect(Collectors.toSet());
+                        pagesShown.forEach(tabContent -> tabContent.setVisible(false));
+                        pagesShown.clear();
+                        Component selectedPage = tabsToPages.get(tabSheet.getSelectedTab());
+                        selectedPage.setVisible(true);
+                        pagesShown.add(selectedPage);
+                    });
+
                     screen.setTabs(tabSheet);
-                    descriptionsAndTestCasesPanel.add(screen.getTabs());
+                    descriptionsAndTestCasesPanel.add(screen.getTabs(), descriptionTabFramePanel, testCaseTabFramePanel);
                 }
                 detailPanel.removeAllComponents();
                 detailPanel.add(detailsPanelComponentsLayout);

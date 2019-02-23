@@ -243,6 +243,12 @@ public class ProjektplanungScreen extends Screen {
                 }
                 daoFactory.saveOrUpdateTX(projekt);
                 daoFactory.getEntityManager().refresh(projekt);
+                addParentPlanningUnitField.clear();
+                List<PlanningUnit> items = planningUnitSelect.getDataProvider().fetch(new Query<>()).collect(Collectors.toList());
+                if (!items.isEmpty()) {
+                    items.add(newPlanningUnit);
+                }
+                planningUnitSelect.setItems(items);
             } catch (final InvalidNameException e) {
                 Notification.show(messagesBundle.getString("planning_invalidname"));
             } catch (final SameNameException e) {
@@ -264,7 +270,12 @@ public class ProjektplanungScreen extends Screen {
 
     public void fillTreePanel(final PlanningUnit selectedPlanningUnit, final PlannedProject projekt) {
         planningUnitsTree = new PlanningUnitsTree(this, selectedPlanningUnit);
+        planningUnitsTree.setId("planningUnitsTree");
         planningUnitsTree.select(selectedPlanningUnit);
+        planningUnitsTree.getListener().refreshTestCasesAndDescriptionsFor(selectedPlanningUnit);
+        if (planningUnitsTreePanelLayout != null) {
+            planningUnitsTreePanelLayout.removeListeners();
+        }
         planningUnitsTreePanelLayout = new PlanningUnitsTreePanelLayout(projekt, ProjektplanungScreen.this);
         treePanel.removeAllComponents();
         treePanel.add(planningUnitsTreePanelLayout);

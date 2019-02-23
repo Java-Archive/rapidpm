@@ -35,10 +35,7 @@ public class OfferScreen extends VerticalLayout {
 
 
     public void setComponents() {
-        add(new Paragraph("Ich bin ein Test"));
-        add(new Label("Ich bin ein Test"));
-        add(new Label("Ich bin ein Test"));
-        add(new Button("Ich bin ein Test"));
+        add(new Paragraph("Bisher leer..."));
     }
 
 }

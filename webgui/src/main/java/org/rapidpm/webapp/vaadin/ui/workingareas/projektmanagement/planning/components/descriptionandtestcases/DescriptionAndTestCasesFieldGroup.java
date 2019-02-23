@@ -13,7 +13,7 @@ import java.util.*;
 public class DescriptionAndTestCasesFieldGroup {
     private final List<RapidPanel> descriptionRapidPanels = new LinkedList<>();
     private final List<RapidPanel> testcaseRapidPanels = new LinkedList<>();
-//    private BeanItem<PlanningUnit> beanItemPlanningUnit;
+    private PlanningUnit beanItemPlanningUnit;
     private ProjektplanungScreen screen;
     private ResourceBundle messages;
     private final PlanningUnit selectedPlanningUnit;
@@ -25,41 +25,26 @@ public class DescriptionAndTestCasesFieldGroup {
         this.selectedPlanningUnit = selectedPlanningUnit;
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
         final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().findByID(selectedPlanningUnit.getId());
-//        if(planningUnit == null){
-//            beanItemPlanningUnit = new BeanItem<>(selectedPlanningUnit);
-//        } else {
-//            beanItemPlanningUnit = new BeanItem<>(planningUnit);
-//        }
-//        setItemDataSource(beanItemPlanningUnit);
+        if(planningUnit == null){
+            beanItemPlanningUnit = selectedPlanningUnit;
+        } else {
+            beanItemPlanningUnit = planningUnit;
+        }
 
         buildForm();
     }
 
     private void buildForm() {
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final List<Benutzer> users = daoFactory.getBenutzerDAO().loadAllEntities();
-//        for (final Object propertyId : getUnboundPropertyIds()) {
-//            final String spaltenName = propertyId.toString();
-//            final PlanningUnit dataSource = beanItemPlanningUnit.getBean();
-//            final LinkedList<TextElement> textElements = new LinkedList<>();
-//            switch(spaltenName){
-//                case(PlanningUnit.DESCRIPTIONS):
-//                    fillList(dataSource.getDescriptions(), textElements, descriptionRapidPanels);
-//                    break;
-//                case(PlanningUnit.TESTCASES):
-//                    fillList(dataSource.getTestcases(), textElements, testcaseRapidPanels);
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
+            final PlanningUnit dataSource = beanItemPlanningUnit;
+            final LinkedList<TextElement> descriptions = new LinkedList<>();
+            final LinkedList<TextElement> testCases = new LinkedList<>();
+            fillList(dataSource.getDescriptions(), descriptions, descriptionRapidPanels);
+            fillList(dataSource.getTestcases(), testCases, testcaseRapidPanels);
     }
 
     private void fillList(final List<TextElement> textElementList, final LinkedList<TextElement>
                           sortedTextElementList, final List<RapidPanel> fieldGroupList) {
-        for(final TextElement textElement : textElementList){
-            sortedTextElementList.add(textElement);
-        }
+        sortedTextElementList.addAll(textElementList);
         Collections.sort(sortedTextElementList);
         for (final TextElement textElement : sortedTextElementList) {
             final RapidPanel framePanel = new RapidPanel();

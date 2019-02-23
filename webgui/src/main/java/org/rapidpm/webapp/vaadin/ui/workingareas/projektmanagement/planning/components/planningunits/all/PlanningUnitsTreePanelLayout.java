@@ -7,6 +7,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.shared.Registration;
 import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
@@ -40,6 +41,7 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements In
     private ResourceBundle messages;
     private DaoFactory daoFactory;
 
+    private Registration addButtonListener;
     private ProjektplanungScreen screen;
 
     public PlanningUnitsTreePanelLayout(final PlannedProject projekt, final ProjektplanungScreen screen) {
@@ -62,7 +64,11 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements In
 
     private void createAddButton() {
         addButton = screen.getAddButton();
-        addButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> new AddWindow(screen).open());
+        if (addButtonListener != null) {
+            addButtonListener.remove();
+        }
+        addButtonListener = addButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> new AddWindow(screen).open());
+
     }
 
     private void createDeleteButton() {
@@ -128,5 +134,11 @@ public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements In
 
     public Button getAddButton() {
         return addButton;
+    }
+
+    public void removeListeners() {
+        if (addButtonListener != null) {
+            addButtonListener.remove();
+        }
     }
 }

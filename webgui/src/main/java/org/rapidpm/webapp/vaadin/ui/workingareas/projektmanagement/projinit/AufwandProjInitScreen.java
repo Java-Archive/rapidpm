@@ -313,7 +313,7 @@ public class AufwandProjInitScreen extends Screen {
 //                        planningUnitElement.setPlannedMinutes(planningUnitElement.getPlannedMinutes()); ???
                         final DaysHoursMinutesItem daysHoursMinutesItem = new DaysHoursMinutesItem(planningUnitElement, projectFromSession.getHoursPerWorkingDay());
                         treeGridRowBean.put(spalte.getName(), daysHoursMinutesItem.toString());
-                        treeGrid.getTreeData().addItem(null, treeGridRowBean);
+//                        treeGrid.getTreeData().addItem(null, treeGridRowBean);
                     });
                 }
             } else {
