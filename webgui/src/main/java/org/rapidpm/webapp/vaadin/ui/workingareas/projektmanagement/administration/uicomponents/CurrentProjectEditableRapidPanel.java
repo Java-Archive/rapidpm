@@ -1,8 +1,10 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents;
 
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.data.renderer.Renderer;
 import com.vaadin.flow.server.VaadinSession;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
@@ -24,14 +26,11 @@ public class CurrentProjectEditableRapidPanel extends EditableRapidPanel {
 
 
     private ComboBox<PlannedProject> currentProjectBox;
-    private ProjectAdministrationScreen screen;
 //    private CurrentProjectPanelBean bean;
 
 
     public CurrentProjectEditableRapidPanel(final ResourceBundle messagesBundle){
         super(messagesBundle);
-//        bean = EJBFactory.getEjbInstance(CurrentProjectPanelBean.class);
-//        final DaoFactoryBean baseDaoFactoryBean = bean.getDaoFactoryBean();
         final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 
 //        setText(messagesBundle.getString("project_currentproject"));
@@ -39,12 +38,9 @@ public class CurrentProjectEditableRapidPanel extends EditableRapidPanel {
         if(projects.isEmpty()){
             add(new Label(messagesBundle.getString("project_noprojects")));
         } else {
-            currentProjectBox = new ComboBox<>("", projects);
-//            currentProjectBox.setNullSelectionAllowed(false);
-//            currentProjectBox.setTextInputAllowed(false);
-//            currentProjectBox.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
-//            currentProjectBox.setItemCaptionPropertyId(PlannedProject.NAME);
+            currentProjectBox = new ComboBox<>(messagesBundle.getString("project_currentproject"), projects);
             currentProjectBox.setItemLabelGenerator(PlannedProject::getProjektName);
+            formLayout.add(currentProjectBox);
             final VaadinSession session = VaadinSession.getCurrent();
             final PlannedProject currentProject = session.getAttribute(PlannedProject.class);
             if(currentProject != null){
@@ -54,19 +50,11 @@ public class CurrentProjectEditableRapidPanel extends EditableRapidPanel {
             buttonsLayout.add(cancelButton);
             activate(false);
 
-//            cancelButton.addClickListener(new Button.ClickListener() {
-//                @Override
-//                public void buttonClick(Button.ClickEvent event) {
-//                    activate(false);
-//                }
-//            });
-//            saveButton.addClickListener(new Button.ClickListener() {
-//                @Override
-//                public void buttonClick(Button.ClickEvent event) {
-//                    session.setAttribute(PlannedProject.class, (PlannedProject)currentProjectBox.getValue());
-//                    activate(false);
-//                }
-//            });
+            cancelButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) event -> activate(false));
+            saveButton.addClickListener(event -> {
+                session.setAttribute(PlannedProject.class, currentProjectBox.getValue());
+                activate(false);
+            });
             setComponents();
         }
 
@@ -86,7 +74,7 @@ public class CurrentProjectEditableRapidPanel extends EditableRapidPanel {
 
     @Override
     public void setComponents() {
-        add(currentProjectBox);
+        add(formLayout);
         add(buttonsLayout);
     }
 }

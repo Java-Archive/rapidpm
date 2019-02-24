@@ -26,4 +26,11 @@ public class PlannedProjectDAO extends DAO<Long, PlannedProject> {
                 .setMaxResults(1);
         return getSingleResultOrNull(typedQuery);
     }
+
+    public PlannedProject findByToken(final String token) {
+        final TypedQuery<PlannedProject> typedQuery = entityManager.createQuery("from PlannedProject p "
+                + "where p.projektToken=:token ", PlannedProject.class).setParameter("token", token);
+        final PlannedProject singleResultOrNull = getSingleResultOrNull(typedQuery);
+        return singleResultOrNull;
+    }
 }

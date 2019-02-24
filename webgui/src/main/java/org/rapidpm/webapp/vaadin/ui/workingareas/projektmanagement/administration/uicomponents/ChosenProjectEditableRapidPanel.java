@@ -1,15 +1,20 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents;
 
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.listbox.ListBox;
 import org.apache.log4j.Logger;
+import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
-import org.rapidpm.webapp.vaadin.MainUI;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.webapp.vaadin.ui.EditableRapidPanel;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.ProjectAdministrationScreen;
 
+import java.util.Iterator;
+import java.util.Optional;
 import java.util.ResourceBundle;
+
 /**
  * RapidPM - www.rapidpm.org
  * User: Marco Ebbinghaus
@@ -21,35 +26,40 @@ public class ChosenProjectEditableRapidPanel extends EditableRapidPanel {
 
     private static Logger logger = Logger.getLogger(ChosenProjectEditableRapidPanel.class);
 
-    private FormLayout formLayout = new FormLayout();
     private ProjektFieldGroup fieldGroup;
 
     private Label noSelectionLabel;
+    private ListBox<PlannedProject> listboxComponent;
 
     public ChosenProjectEditableRapidPanel(final ResourceBundle messagesBundle) {
         super(messagesBundle);
         noSelectionLabel = new Label(messagesBundle.getString("project_noselection"));
 
-//        cancelButton.addClickListener(new Button.ClickListener() {
-//            @Override
-//            public void buttonClick(Button.ClickEvent event) {
-//                fieldGroup.discard();
-//                activate(false);
-//            }
-//        });
-//
-//        saveButton.addClickListener(new Button.ClickListener() {
-//            @Override
-//            public void buttonClick(Button.ClickEvent event) {
-//                try {
-//                    fieldGroup.commit();
-//                    activate(false);
-//                    ui.setWorkingArea(new ProjectAdministrationScreen(ui));
-//                } catch (FieldGroup.CommitException e) {
-//                    logger.warn("Commit Failed", e);
-//                }
-//            }
-//        });
+        cancelButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) event -> {
+            final Iterator<Component> componentIterator = formLayout.getChildren().iterator();
+            while (componentIterator.hasNext()) {
+                final Component component = componentIterator.next();
+                if (component instanceof AbstractField) {
+                    ((AbstractField) component).setReadOnly(true);
+                }
+            }
+            buttonsLayout.setVisible(false);
+            activate(false);
+        });
+        saveButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) event -> {
+            fieldGroup.getFieldForProperty(PlannedProject.TOKEN).ifPresent(tokenField -> {
+                try {
+                    PlannedProjectDAO plannedProjectDAO = DaoFactorySingelton.getInstance().getPlannedProjectDAO();
+                    final PlannedProject plannedProject = plannedProjectDAO.findByToken((String) tokenField.getValue());
+                    fieldGroup.writeBean(plannedProject);
+                    DaoFactorySingelton.getInstance().saveOrUpdateTX(plannedProject);
+                    listboxComponent.setItems(plannedProjectDAO.loadAllEntities());
+                    activate(false);
+                } catch (Exception e) {
+                    logger.warn("Commit Failed", e);
+                }
+            });
+        });
         setComponents();
         doInternationalization();
 
@@ -86,26 +96,49 @@ public class ChosenProjectEditableRapidPanel extends EditableRapidPanel {
     }
 
     public void buildForm() {
-        noSelectionLabel.setVisible(false);
-//        formLayout.removeAllComponents();
-//        final Field tokenField = fieldGroup.getField(PlannedProject.TOKEN);
-//        tokenField.setEnabled(false);
-//        formLayout.add(tokenField);
-//        formLayout.add(fieldGroup.getField(PlannedProject.NAME));
-//        formLayout.add(fieldGroup.getField(PlannedProject.EXTERNALDAILYRATE));
-//        formLayout.add(fieldGroup.getField(PlannedProject.HOURSPERWORKINGDAY));
+        buildForm(false);
+    }
+
+    public void buildForm(boolean deselect) {
+        if (deselect) {
+            noSelectionLabel.setVisible(true);
+            formLayout.removeAll();
+            formLayout.setWidthFull();
+        } else {
+            noSelectionLabel.setVisible(false);
+            formLayout.removeAll();
+            formLayout.setWidthFull();
+            final Optional<HasValue> tokenField = fieldGroup.getFieldForProperty(PlannedProject.TOKEN);
+            tokenField.ifPresent(field -> {
+                AbstractField abstractField = (AbstractField) field;
+                abstractField.setReadOnly(true);
+                formLayout.add(abstractField);
+            });
+            fieldGroup.getFieldForProperty(PlannedProject.NAME).ifPresent(field -> formLayout.add((AbstractField) field));
+            fieldGroup.getFieldForProperty(PlannedProject.EXTERNALDAILYRATE).ifPresent(field -> formLayout.add((AbstractField) field));
+            fieldGroup.getFieldForProperty(PlannedProject.HOURSPERWORKINGDAY).ifPresent(field -> formLayout.add((AbstractField) field));
+        }
     }
 
     @Override
-    public void activate(boolean b){
-        if(fieldGroup != null){
-//            for(Object propertyId : fieldGroup.getBoundPropertyIds()){
-//                if(!propertyId.equals(PlannedProject.ID)){
-//                    final Field field = fieldGroup.getField(propertyId);
-//                    field.setReadOnly(!b);
-//                }
-//            }
+    public void activate(boolean b) {
+        if (fieldGroup != null) {
+            fieldGroup.getFields().forEach(field -> {
+                fieldGroup.getFieldForProperty(PlannedProject.TOKEN).ifPresent(tokenField -> {
+                    if (tokenField == field) {
+                        field.setReadOnly(true);
+                    } else {
+                        field.setReadOnly(!b);
+                    }
+                });
+
+            });
             buttonsLayout.setVisible(b);
         }
     }
+
+    void setListboxComponent(ListBox<PlannedProject> listboxComponent) {
+        this.listboxComponent = listboxComponent;
+    }
+
 }

@@ -103,79 +103,10 @@ public class MainAppLayout extends AppLayoutRouterLayout {
     }
 
     private void prepare() {
-        locale = new Locale("de","DE");
-        messages = ResourceBundle.getBundle("MessagesBundle", locale);
-        loadFirstProject();
-        final VaadinSession session = VaadinSession.getCurrent();
-        session.setAttribute(ResourceBundle.class, getResourceBundle());
-        String username = "sven.ruppert";
-        String password = "geheim";
-        Benutzer user = session.getAttribute(Benutzer.class);
-//        if (user != null) {
-//            if (DEBUG_MODE) {
-//                buildMainLayout();
-//            } else {
-//                buildLoginScreen();
-//            }
-//        } else {
-        if (user != null) {
-            username = "sven.ruppert";
-            password = "geheim";
-        }
-        try {
-            authentication(username, password);
-        } catch (Exception e) {
-            logger.error("Erneute Authentifizierung fehlgeschlagen", e.fillInStackTrace());
-        }
-    }
-    private void loadFirstProject() {
-        final VaadinSession session = VaadinSession.getCurrent();
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        List<PlannedProject> projects = null;
-        if (daoFactory != null) {
-            projects = daoFactory.getPlannedProjectDAO().loadAllEntities();
-        }
-
-        if(projects == null || projects.isEmpty()){
-            session.setAttribute(PlannedProject.class, null);
-        } else {
-            session.setAttribute(PlannedProject.class, projects.get(0));
-            Collections.sort(projects);
-        }
-        currentProject = session.getAttribute(PlannedProject.class);
-    }
-
-    public void authentication(final String enteredLogin, final String enteredPasswd) {
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final BenutzerDAO benutzerDAO = daoFactory.getBenutzerDAO();
-        final List<Benutzer> benutzer = benutzerDAO.loadBenutzerForLogin(enteredLogin);
-        final String enteredPasswdHashed = hash(enteredPasswd);
-        for (final Benutzer user : benutzer) {
-            final String userLogin = user.getLogin();
-            final String userPasswd = user.getPasswd();
-            if (userLogin.equals(enteredLogin) && userPasswd.equals(enteredPasswdHashed)) {
-                currentUser = user;
-                VaadinSession.getCurrent().setAttribute(Benutzer.class, currentUser);
-                return;
-            }
-        }
-        Notification.show("Login failed..");
-    }
-
-    private String hash(final String enteredPasswd) {
-        return enteredPasswd;        //TODO spÃ¤ter gehashtes PW zurÃ¼ckgeben
-    }
-
-    public void localization(final Object value) {
-        switch (value.toString()) {
-            case "GERMAN":
-                locale = new Locale("de", "DE");
-                break;
-            case "ENGLISH":
-                locale = new Locale("en", "US");
-                break;
-        }
-        messages = ResourceBundle.getBundle(MESSAGESBUNDLE, locale);
+        locale = VaadinSession.getCurrent().getAttribute(Locale.class);
+        messages = VaadinSession.getCurrent().getAttribute(ResourceBundle.class);
+        currentUser = VaadinSession.getCurrent().getAttribute(Benutzer.class);
+        currentProject = VaadinSession.getCurrent().getAttribute(PlannedProject.class);
     }
 
     public Locale getLocale(){

@@ -5,12 +5,9 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.converter.StringToDoubleConverter;
-import com.vaadin.flow.data.converter.StringToFloatConverter;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 
-import java.text.NumberFormat;
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -38,27 +35,32 @@ public class ProjektFieldGroup extends Binder<PlannedProject> {
         nameField = new TextField();
         tokenField = new TextField();
         hoursBox = new ComboBox<>(messages.getString("project_hoursPerWorkingDay"));
-        setBean(projekt);
         buildForm();
+        readBean(projekt);
     }
 
     private void buildForm() {
-        externalDailyRateField = new TextField();
+        externalDailyRateField = new TextField(messages.getString("externalEurosPerHour"));
+        externalDailyRateField.setReadOnly(true);
         forField(externalDailyRateField)
                 .withNullRepresentation("")
                 .withConverter(new StringToDoubleConverter(""))
                 .asRequired()
                 .bind(PlannedProject.EXTERNALDAILYRATE);
-        nameField = new TextField();
+        nameField = new TextField(messages.getString("planning_name"));
+        nameField.setReadOnly(true);
         forField(nameField)
                 .withNullRepresentation("")
-                .asRequired();
-        tokenField = new TextField();
+                .asRequired()
+                .bind(PlannedProject.NAME);
+        tokenField = new TextField("Token");
+        tokenField.setReadOnly(true);
         forField(tokenField)
                 .withNullRepresentation("")
                 .asRequired()
                 .bind(PlannedProject.TOKEN);
         hoursBox = new ComboBox<>(messages.getString("project_hoursPerWorkingDay"), Arrays.asList(HOURS_PER_DAY_ARRAY));
+        hoursBox.setReadOnly(true);
         forMemberField(hoursBox)
                 .asRequired()
                 .bind(PlannedProject.HOURSPERWORKINGDAY);

@@ -34,7 +34,7 @@ import java.util.ResourceBundle;
 @Route(value = "admin", layout = MainAppLayout.class)
 @Caption("Projekte verwalten...")
 @Icon(VaadinIcon.DATABASE)
-public class ProjectAdministrationScreen extends VerticalLayout {
+public class ProjectAdministrationScreen extends Screen {
 
     private HorizontalLayout projectsPanelLayout = new HorizontalLayout();
 
@@ -52,7 +52,7 @@ public class ProjectAdministrationScreen extends VerticalLayout {
             Collections.sort(plannedProjects);
             ResourceBundle messagesBundle = VaadinSession.getCurrent().getAttribute(ResourceBundle.class);
             chosenProjectEditablePanel = new ChosenProjectEditableRapidPanel(messagesBundle);
-            projectsPanel = new ProjectsPanel(null, messagesBundle, chosenProjectEditablePanel);
+            projectsPanel = new ProjectsPanel(messagesBundle, chosenProjectEditablePanel);
             currentProjectEditablePanel = new CurrentProjectEditableRapidPanel(messagesBundle);
 
             buildScreen();
@@ -67,10 +67,10 @@ public class ProjectAdministrationScreen extends VerticalLayout {
 
     private void buildScreen() {
 //        chosenProjectEditablePanel.setSizeUndefined();
-//        chosenProjectEditablePanel.setWidth("100%");
+        chosenProjectEditablePanel.setWidth("100%");
 //        currentProjectEditablePanel.setSizeUndefined();
-//        currentProjectEditablePanel.setWidth("100%");
-        projectsPanelLayout.setHeight("100%");
+        currentProjectEditablePanel.setWidth("100%");
+        projectsPanelLayout.setSizeUndefined();
         projectsPanelLayout.setWidth("100%");
         projectsPanelLayout.add(projectsPanel);
         projectsPanelLayout.add(chosenProjectEditablePanel);

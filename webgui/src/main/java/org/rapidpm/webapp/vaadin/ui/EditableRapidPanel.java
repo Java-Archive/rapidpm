@@ -1,7 +1,10 @@
 package org.rapidpm.webapp.vaadin.ui;
 
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.dom.Element;
+import elemental.json.JsonObject;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Componentssetable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 
@@ -18,19 +21,19 @@ public abstract class EditableRapidPanel extends RapidPanel implements Internati
 
     protected Button saveButton = new Button();
     protected Button cancelButton = new Button();
+
+    protected FormLayout formLayout = new FormLayout();
     protected HorizontalLayout buttonsLayout = new HorizontalLayout();
     protected ResourceBundle messagesBundle;
 
     public EditableRapidPanel(final ResourceBundle messagesBundle){
+        setSizeFull();
         this.messagesBundle = messagesBundle;
         turnEditableDesignOn(true);
-
-//        addClickListener(new MouseEvents.ClickListener() {
-//            @Override
-//            public void click(MouseEvents.ClickEvent event) {
-//                activate(true);
-//            }
-//        });
+        formLayout.setWidthFull();
+        formLayout.getElement().addEventListener("click", event -> {
+            activate(true);
+        });
     }
 
     public abstract void activate(boolean b);
