@@ -12,6 +12,7 @@ import com.github.appreciated.app.layout.component.appmenu.left.builder.LeftSubM
 import com.github.appreciated.app.layout.notification.DefaultNotificationHolder;
 import com.github.appreciated.app.layout.notification.component.AppBarNotificationButton;
 import com.github.appreciated.app.layout.router.AppLayoutRouterLayout;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.page.Push;
@@ -23,6 +24,8 @@ import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
+import org.rapidpm.webapp.vaadin.ui.windows.ImpressumWindow;
+import org.rapidpm.webapp.vaadin.ui.workingareas.legal.ImprintScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.ProjectAdministrationScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.costs.CostsScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.distribution.VertriebScreen;
@@ -66,16 +69,18 @@ public class MainAppLayout extends AppLayoutRouterLayout {
         prepare();
         notifications = new DefaultNotificationHolder(newStatus -> {
         });
+        MenuHeaderComponent iconElement = new MenuHeaderComponent(null, null, "/frontend/images/rpm.jpg");
+        iconElement.getElement().addEventListener("click", event -> UI.getCurrent().navigate(""));
         return AppLayoutBuilder
                 .get(Behaviour.LEFT_RESPONSIVE)
-                .withTitle("RapidPM 2019 - Vaadin 13")
+                .withTitle("RapidPM 2019 - Vaadin 13 (" + VERSION + ")")
                 .withAppBar(AppBarBuilder
                         .get()
                         .add(new AppBarNotificationButton(VaadinIcon.BELL, notifications))
                         .build())
                 .withAppMenu(LeftAppMenuBuilder
                         .get()
-                        .addToSection(new MenuHeaderComponent(null, null, "/frontend/images/rpm.jpg"), HEADER)
+                        .addToSection(iconElement, HEADER)
                         .add(LeftSubMenuBuilder.get(messages.getString("masterdata"), VaadinIcon.PLUS.create())
 //                                .add(LeftSubMenuBuilder
 //                                        .get("My Submenu", VaadinIcon.PLUS.create())
@@ -94,10 +99,8 @@ public class MainAppLayout extends AppLayoutRouterLayout {
                                 .add(new LeftNavigationComponent(OfferScreen.class))
                                 .add(new LeftNavigationComponent(ProjectAdministrationScreen.class))
                                 .build())
-                        .addToSection(new LeftClickableComponent("Impressum",
-                                VaadinIcon.COG.create(),
-                                clickEvent -> Notification.show("onClick ...")
-                        ), FOOTER)
+                        .addToSection(
+                                new LeftNavigationComponent(ImprintScreen.class), FOOTER)
                         .build())
                 .build();
     }

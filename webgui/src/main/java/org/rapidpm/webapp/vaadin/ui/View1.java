@@ -6,6 +6,11 @@ import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinSession;
+import org.rapidpm.persistence.system.security.Benutzer;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Route(value = "", layout = MainAppLayout.class)
 @Caption("Home")
@@ -13,18 +18,17 @@ import com.vaadin.flow.router.Route;
 public class View1 extends VerticalLayout {
 
     public View1() {
-        add(getLabel());
-        add(getLabel());
-        add(getLabel());
-        add(getLabel());
-        add(getLabel());
-        add(getLabel());
+        List<Paragraph> labels = getLabels();
+        for (Paragraph label : labels) {
+            add(label);
+        }
     }
 
-    Paragraph getLabel() {
-        Paragraph label = new Paragraph("........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ........................................ ");
+    List<Paragraph> getLabels() {
+        Paragraph label = new Paragraph("Herzlich willkommen bei RapidPM.");
+        Paragraph label2 = new Paragraph("Sie sind angemeldet als '" + VaadinSession.getCurrent().getAttribute(Benutzer.class).getLogin() + "'");
 //        label.setWidth("100%");
-        return label;
+        return Arrays.asList(label, label2);
     }
 
 }
