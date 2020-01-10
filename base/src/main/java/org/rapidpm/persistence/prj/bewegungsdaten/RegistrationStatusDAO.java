@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.bewegungsdaten;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -15,7 +14,6 @@ import javax.persistence.TypedQuery;
  * please contact sven.ruppert@me.com
  */
 public class RegistrationStatusDAO extends DAO<Long, RegistrationStatus> {
-    private static final Logger logger = Logger.getLogger(RegistrationStatusDAO.class);
 
     //    public List<RegistrationStatus> loadAllEntities() {
     //        return super.loadAllEntities(RegistrationStatus.class);

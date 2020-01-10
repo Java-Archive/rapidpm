@@ -14,7 +14,6 @@ package org.rapidpm.persistence.prj.bewegungsdaten.msgcenter;
  *
  */
 
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,7 +21,6 @@ import java.util.List;
 
 @Entity
 public class MessageKlassifizierung {
-    private static final Logger logger = Logger.getLogger(MessageKlassifizierung.class);
 
     @Id
     @TableGenerator(name = "PKGenMessageKlassifizierung", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "MessageKlassifizierung_id", valueColumnName = "gen_value", allocationSize = 1)

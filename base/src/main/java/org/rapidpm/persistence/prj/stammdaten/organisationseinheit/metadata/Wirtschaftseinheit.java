@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit.metadata;
 
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 
@@ -21,7 +20,6 @@ import javax.persistence.*;
 @Entity
 //@Table(name = "wirtschaftseinheit")
 public class Wirtschaftseinheit {
-    private static final Logger logger = Logger.getLogger(Wirtschaftseinheit.class);
 
     @Id
     @TableGenerator(name = "PKGenWirtschaftseinheit", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "Wirtschaftseinheit_id", valueColumnName = "gen_value", allocationSize = 1)

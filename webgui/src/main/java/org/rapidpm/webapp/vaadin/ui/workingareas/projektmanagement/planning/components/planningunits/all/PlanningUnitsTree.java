@@ -16,43 +16,44 @@ import java.util.Set;
  * Time: 12:50
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class PlanningUnitsTree extends TreeGrid<PlanningUnit> {
-    
-//    private HierarchicalContainer container;
-    private TreeValueChangeListener listener;
+public class PlanningUnitsTree
+    extends TreeGrid<PlanningUnit> {
+
+  //    private HierarchicalContainer container;
+  private TreeValueChangeListener listener;
 
 
-
-    public PlanningUnitsTree(final ProjektplanungScreen screen, final PlanningUnit selectedPlanningUnit){
-        super(PlanningUnit.class);
-        if (selectedPlanningUnit != null) {
-            setItems(selectedPlanningUnit);
-            setColumns(PlanningUnit.NAME);
-            setHierarchyColumn(PlanningUnit.NAME);
-            setSelectionMode(SelectionMode.SINGLE);
-            buildTree(selectedPlanningUnit.getKindPlanningUnits(), selectedPlanningUnit);
-            expand(selectedPlanningUnit);
-            listener = new TreeValueChangeListener(screen);
-            addItemClickListener(listener);
-            for (PlanningUnit planningUnit : getTreeData().getRootItems()) {
-                expand(planningUnit);
-            }
+  public PlanningUnitsTree(final ProjektplanungScreen screen, final PlanningUnit selectedPlanningUnit) {
+    super(PlanningUnit.class);
+    if (selectedPlanningUnit != null) {
+      setItems(selectedPlanningUnit);
+      setColumns(PlanningUnit.NAME);
+      setHierarchyColumn(PlanningUnit.NAME);
+      setSelectionMode(SelectionMode.SINGLE);
+      buildTree(selectedPlanningUnit.getKindPlanningUnits(), selectedPlanningUnit);
+      expand(selectedPlanningUnit);
+      listener = new TreeValueChangeListener(screen);
+      addItemClickListener(listener);
+      for (PlanningUnit planningUnit : getTreeData().getRootItems()) {
+        expand(planningUnit);
+      }
 //            setDragMode(TreeDragMode.NODE);
 //            setDropHandler(new TreeSortDropHandler(this, screen));
-        }
     }
+  }
 
-    private void buildTree(final Set<PlanningUnit> planningUnits, final PlanningUnit parentUnit) {
-        for (final PlanningUnit planningUnit : planningUnits) {
-            getTreeData().addItem(parentUnit, planningUnit);
-            if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits().isEmpty()) {
-            } else {
-                buildTree(planningUnit.getKindPlanningUnits(), planningUnit);
-            }
-        }
+  private void buildTree(final Set<PlanningUnit> planningUnits, final PlanningUnit parentUnit) {
+    for (final PlanningUnit planningUnit : planningUnits) {
+      getTreeData().addItem(parentUnit, planningUnit);
+      if (planningUnit.getKindPlanningUnits() == null || planningUnit.getKindPlanningUnits()
+                                                                     .isEmpty()) {
+      } else {
+        buildTree(planningUnit.getKindPlanningUnits(), planningUnit);
+      }
     }
+  }
 
-    public TreeValueChangeListener getListener() {
-        return listener;
-    }
+  public TreeValueChangeListener getListener() {
+    return listener;
+  }
 }

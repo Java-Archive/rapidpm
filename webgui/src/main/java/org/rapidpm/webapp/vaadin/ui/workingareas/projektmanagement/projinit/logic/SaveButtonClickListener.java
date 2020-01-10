@@ -1,50 +1,42 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.logic;
 
-import org.apache.log4j.Logger;
-//import org.rapidpm.ejb3.EJBFactory;
-//import org.rapidpm.persistence.DaoFactoryBean;
-import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitDAO;
-import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.datenmodell.KnotenBlattEnum;
 
-import javax.persistence.EntityManager;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
-import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
+//import org.rapidpm.ejb3.EJBFactory;
+//import org.rapidpm.persistence.DaoFactoryBean;
 
 public class SaveButtonClickListener {
-    private static final Pattern SPLITT_PATTERN = Pattern.compile(":");
-    private static final Logger logger = Logger.getLogger(SaveButtonClickListener.class);
-//    private FieldGroup fieldGroup;
-    private AufwandProjInitScreen screen;
-    private KnotenBlattEnum knotenBlattEnum;
-    private Object itemId;
-    private PlanningUnit foundPlanningUnit = null;
-    private ResourceBundle messages;
+  private static final Pattern               SPLITT_PATTERN    = Pattern.compile(":");
+  //    private FieldGroup fieldGroup;
+  private              AufwandProjInitScreen screen;
+  private              KnotenBlattEnum       knotenBlattEnum;
+  private              Object                itemId;
+  private              PlanningUnit          foundPlanningUnit = null;
+  private              ResourceBundle        messages;
 //    private SaveButtonClickListenerBean bean;
 //    private DaoFactoryBean baseDaoFactoryBean;
 
-    public SaveButtonClickListener(final ResourceBundle bundle,
-                                   final AufwandProjInitScreen screen, final KnotenBlattEnum knotenBlattEnum, final Object itemId) {
-        this.messages = bundle;
+  public SaveButtonClickListener(final ResourceBundle bundle,
+                                 final AufwandProjInitScreen screen,
+                                 final KnotenBlattEnum knotenBlattEnum,
+                                 final Object itemId) {
+    this.messages = bundle;
 //        this.fieldGroup = fieldGroup;
-        this.screen = screen;
-        this.knotenBlattEnum = knotenBlattEnum;
-        this.itemId = itemId;
+    this.screen          = screen;
+    this.knotenBlattEnum = knotenBlattEnum;
+    this.itemId          = itemId;
 
 //        bean = EJBFactory.getEjbInstance(SaveButtonClickListenerBean.class);
 //        baseDaoFactoryBean = bean.getDaoFactoryBean();
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-    }
+    final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+  }
 
 //    @Override
 //    public void buttonClick(ClickEvent event) {

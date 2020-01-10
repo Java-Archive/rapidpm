@@ -22,7 +22,6 @@ import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.metadata.Verw
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.metadata.Wirtschaftseinheit;
 import org.rapidpm.persistence.prj.stammdaten.web.WebDomain;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.List;
@@ -31,7 +30,6 @@ import java.util.List;
 //@Cacheable(value = true)
 @Entity
 public class Organisationseinheit {
-    private static final Logger logger = Logger.getLogger(Organisationseinheit.class);
 
     @Id
     @TableGenerator(name = "PKGenOrganisationseinheit",

@@ -4,7 +4,6 @@
 
 package org.rapidpm.validate;
 
-import org.apache.log4j.Logger;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -15,7 +14,6 @@ import java.lang.reflect.Field;
  * @author Christain Ernst
  */
 public class Validator {
-    private static final Logger logger = Logger.getLogger(Validator.class);
 
     /**
      * Validation mit Meldung über Exception.
@@ -55,17 +53,11 @@ public class Validator {
                         field.setAccessible(true);
                         // Prüfen, ob die Variable den Anforderungen der Annotation entspricht
                         if (!comparator.compare(field.get(validate), annotation)) {
-                            logger.error('@' + aClass.getSimpleName() +
-                                    ": The Field '" + field.getName() + "' of '" + name + "' is not Valid!");
                             return false;
                         }
                     } else {
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("No Comparator found for: @" + aClass.getSimpleName());
-                        }
                     }
                 } catch (IllegalAccessException e) {
-                    logger.error(e);
                 }
             }
         }

@@ -6,7 +6,6 @@
 package org.rapidpm.persistence.rohdaten;
 
 import org.rapidpm.persistence.system.security.Mandantengruppe;
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.List;
@@ -25,7 +24,6 @@ import java.util.List;
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
 public class Ontologie {
-    private static final Logger logger = Logger.getLogger(Ontologie.class);
 
     @Id
     @TableGenerator(name = "PKGenOntologie", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "Ontologie_id", valueColumnName = "gen_value", allocationSize = 1)

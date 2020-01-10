@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.stammdaten.kommunikation;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -19,7 +18,6 @@ import javax.persistence.TypedQuery;
  */
 
 public class KommunikationsServiceKlassifizierungDAO extends DAO<Long, KommunikationsServiceKlassifizierung> {
-    private static final Logger logger = Logger.getLogger(KommunikationsServiceKlassifizierungDAO.class);
 
     public KommunikationsServiceKlassifizierungDAO(final EntityManager entityManager) {
         super(entityManager, KommunikationsServiceKlassifizierung.class);

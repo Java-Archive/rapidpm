@@ -6,10 +6,8 @@ package org.rapidpm.ormviews; /**
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
-import org.apache.log4j.Logger;
 
 public class ViewOrgEinheitHptTaetigkeitsfeld {
-    private static final Logger logger = Logger.getLogger(ViewOrgEinheitHptTaetigkeitsfeld.class);
 
     private Long orgeinheitOID;
     private Long taetigkeitsfeldOID;

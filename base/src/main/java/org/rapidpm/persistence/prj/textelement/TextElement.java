@@ -7,7 +7,6 @@ package org.rapidpm.persistence.prj.textelement;
  * Time: 10:10
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.textelement.kommentar.TextElementKommentar;
 
 import javax.persistence.*;
@@ -23,7 +22,6 @@ public class TextElement implements Comparable<TextElement> {
     public static final String KOMMENTARE = "kommentarliste";
     public static final String TEXT = "text";
 
-    private static final Logger logger = Logger.getLogger(TextElement.class);
 
     @TableGenerator(name = "PKGenTextElement", table = "pk_gen", pkColumnName = "gen_key",
             pkColumnValue = "TextElement_id",

@@ -1,6 +1,5 @@
 package org.rapidpm.persistence;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.Constants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -26,7 +25,6 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class DatabaseInitXMLLoader {
-    private static final Logger logger = Logger.getLogger(DatabaseInitXMLLoader.class);
 
     public DatabaseInitXMLLoader() {
     }
@@ -34,8 +32,6 @@ public class DatabaseInitXMLLoader {
     public <T> void initDatatype(final Class typeClass, final GraphBaseDAO<T> dao, final Long projectId) {
         final List<T> list = dao.loadAllEntities(projectId);
         if (list.isEmpty()) {
-            if (logger.isDebugEnabled())
-                logger.debug("Create entity for: "+ typeClass.getSimpleName());
             try {
                 final InputStream inputStream;
                 inputStream = this.getClass().getClassLoader().getResourceAsStream(Constants.ISSUE_SETTINGS_XML_PATH);
@@ -72,11 +68,8 @@ public class DatabaseInitXMLLoader {
                 }
             } catch (InstantiationException | IllegalAccessException | NoSuchFieldException | IOException
                     | SAXException | ParserConfigurationException | NoSuchMethodException | InvocationTargetException e) {
-                logger.error(e);
             }
         }  else {
-            if (logger.isDebugEnabled())
-                logger.debug(typeClass.getSimpleName() + " has at least one entry");
         }
     }
 

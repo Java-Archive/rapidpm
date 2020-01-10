@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.system.security;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -16,7 +15,6 @@ import java.util.List;
  * please contact sven.ruppert@me.com
  */
 public class BenutzerDAO extends DAO<Long, Benutzer> {
-    private static final Logger logger = Logger.getLogger(BenutzerDAO.class);
 
     public BenutzerDAO(final EntityManager entityManager) {
         super(entityManager, Benutzer.class);
@@ -195,7 +193,6 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
     public Benutzer loadBenutzer(final String login, final String passwd, final String webappName) {
         Benutzer benutzer = null;
         if (login == null || login.isEmpty() || passwd == null || passwd.isEmpty()) {
-            logger.warn("Login oder Passwd ist null, lade anonymen Benutzer");
             benutzer = loadAnonymousBenutzer(webappName);
         } else {
             final TypedQuery<Benutzer> typedQuery1 = entityManager.createQuery("from Benutzer b where b.login=:login and b.hidden=false and b.active=true and b.passwd=:passwd and b.benutzerWebapplikation.webappName=:webappName", Benutzer.class);
@@ -253,7 +250,6 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
     public Benutzer loadBenutzer(final String login, final String passwd, final Long webappOID) {
         Benutzer benutzer = null;
         if (login == null || login.isEmpty() || passwd == null || passwd.isEmpty()) {
-            logger.warn("Login oder Passwd ist null, lade anonymen Benutzer");
             benutzer = loadAnonymousBenutzer(webappOID);
         } else {
             final TypedQuery<Benutzer> typedQuery1 = entityManager.createQuery("from Benutzer b where b.login=:login and b.hidden=false and b.active=true and b.passwd=:passwd " + "and b.benutzerWebapplikation.id=:webappOID", Benutzer.class);
@@ -276,7 +272,6 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
     public Benutzer loadBenutzerInclSystemBenutzer(final String login, final String passwd, final String webappName) {
         Benutzer benutzer = null;
         if (login == null || login.isEmpty() || passwd == null || passwd.isEmpty()) {
-            logger.warn("Login oder Passwd ist null, lade anonymen Benutzer");
             benutzer = loadAnonymousBenutzer(webappName);
         } else {
             final TypedQuery<Benutzer> typedQuery = entityManager.createQuery("from Benutzer b " + "where b.login=:login " + "and b.active=true " + "and b.passwd=:passwd " + "and b.benutzerWebapplikation.webappName=:webappName",
@@ -326,7 +321,6 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
     public Benutzer loadBenutzerInclSystemBenutzer(final String login, final String passwd, final Long webappOID) {
         Benutzer benutzer = null;
         if (login == null || login.isEmpty() || passwd == null || passwd.isEmpty()) {
-            logger.warn("Login oder Passwd ist null, lade anonymen Benutzer");
             benutzer = loadAnonymousBenutzer(webappOID);
         } else {
             final TypedQuery<Benutzer> typedQuery = entityManager.createQuery("from Benutzer b where b.login=:login and b.active=true and b.passwd=:passwd " + "and b.benutzerWebapplikation.id=:webappOID", Benutzer.class).setParameter("login",
@@ -344,12 +338,12 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
 
     public Benutzer loadAnonymousBenutzer(final String webappName) {
         final String login = "Anonymous_" + webappName.replace("_App", "");
-        if (logger.isDebugEnabled()) {
-            logger.debug("loadAnonymousUser: login:=" + login);
-        }
-        if (logger.isDebugEnabled()) {
-            logger.debug("loadAnonymousUser: webApp:=" + webappName);
-        }
+//        if (logger.isDebugEnabled()) {
+//            logger.debug("loadAnonymousUser: login:=" + login);
+//        }
+//        if (logger.isDebugEnabled()) {
+//            logger.debug("loadAnonymousUser: webApp:=" + webappName);
+//        }
         final TypedQuery<Benutzer> benutzerTypedQuery = entityManager.createQuery("from Benutzer b  where b.login=:login  " +
                 "and b.benutzerWebapplikation.webappName=:webappName", Benutzer.class)
                 .setParameter("login", login)
@@ -361,9 +355,9 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
     public Benutzer loadAnonymousBenutzer(final Long webappOID) {
         //        final String login = "Anonymous_" + webappName.replace("_App", "");
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("loadAnonymousUser: webappOID:=" + webappOID);
-        }
+//        if (logger.isDebugEnabled()) {
+//            logger.debug("loadAnonymousUser: webappOID:=" + webappOID);
+//        }
         final TypedQuery<Benutzer> benutzerTypedQuery = entityManager.createQuery("from Benutzer b  where b.login like 'Anonymous_%' and b.benutzerWebapplikation.id=:webappOID", Benutzer.class)
                 //                        .setParameter("login", login)
                 .setParameter("webappOID", webappOID);
@@ -385,7 +379,7 @@ public class BenutzerDAO extends DAO<Long, Benutzer> {
 //            return registrationDAO.checkIfLoginIsAvailable(wishedLogin, mandantengruppe);
             return true;
         } else {
-            logger.info("Login wird schon aktiv verwendet : " + wishedLogin + " / " + mandantengruppe);
+//            logger.info("Login wird schon aktiv verwendet : " + wishedLogin + " / " + mandantengruppe);
             return false;
         }
 

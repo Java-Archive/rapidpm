@@ -14,7 +14,6 @@ package org.rapidpm.persistence.prj.bewegungsdaten;
  *
  */
 
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 

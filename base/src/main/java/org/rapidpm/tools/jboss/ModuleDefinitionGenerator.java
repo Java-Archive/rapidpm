@@ -8,7 +8,6 @@ package org.rapidpm.tools.jboss;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
 
 import java.io.*;
 
@@ -19,7 +18,6 @@ import java.io.*;
  * Time: 09:04
  */
 public class ModuleDefinitionGenerator {
-    private static final Logger logger = Logger.getLogger(ModuleDefinitionGenerator.class);
 
     private static final String LIB_DIR_PREFIX = "lib-";
     private static final String LIB_NAME_PREFIX = "org.rapidpm.";
@@ -89,7 +87,6 @@ public class ModuleDefinitionGenerator {
                         outputStream.write("</module>\n");
                         outputStream.close();
                     } else {
-                        logger.error("Verzeichnis '" + moduleDir.getAbsolutePath() + "' konnte nicht erstellt werden.");
                     }
                 } else {
                     // keine Libs gefunden

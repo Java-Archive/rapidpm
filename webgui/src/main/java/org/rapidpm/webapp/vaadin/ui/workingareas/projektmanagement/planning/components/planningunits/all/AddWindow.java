@@ -8,7 +8,6 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.VaadinSession;
-import org.apache.log4j.Logger;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
@@ -36,8 +35,6 @@ public class AddWindow extends RapidWindow {
     public static final String WIDTH = "750px";
     public static final int POSITION_X = 80;
     public static final int POSITION_Y = 20;
-
-    private static final Logger logger = Logger.getLogger(AddWindow.class);
 
     private VerticalLayout singleLayout = new VerticalLayout();
     private FormLayout formLayout = new FormLayout();
@@ -148,7 +145,7 @@ public class AddWindow extends RapidWindow {
             } catch (final SameNameException e) {
                 Notification.show(messages.getString("planning_samename"));
             } catch (final Exception e) {
-                logger.warn(e);
+//                logger.warn(e);
                 Notification.show(messages.getString("incompletedata"));
             }
         });

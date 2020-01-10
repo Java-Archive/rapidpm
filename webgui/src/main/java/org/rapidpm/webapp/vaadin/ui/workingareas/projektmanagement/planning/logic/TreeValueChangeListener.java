@@ -9,7 +9,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.server.VaadinSession;
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
@@ -20,7 +19,10 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.comp
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.information.PlanningInformationEditableLayout;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.ressources.PlanningRessourcesEditableLayout;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -31,116 +33,125 @@ import java.util.stream.Stream;
  * Time: 13:35
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class TreeValueChangeListener implements ComponentEventListener<ItemClickEvent<PlanningUnit>> {
+public class TreeValueChangeListener
+    implements ComponentEventListener<ItemClickEvent<PlanningUnit>> {
 
-    private static final String RESSOURCE_GROUPS = "RessourceGroups";
-    private static final Logger logger = Logger.getLogger(TreeValueChangeListener.class);
+  private static final String RESSOURCE_GROUPS = "RessourceGroups";
 
-    private ProjektplanungScreen screen;
-    private DaoFactory daoFactory;
-    private Button deleteButton;
-    private Button renameButton;
+  private ProjektplanungScreen screen;
+  private DaoFactory           daoFactory;
+  private Button               deleteButton;
+  private Button               renameButton;
 
-    private Map<Tab, Component> tabsToPages = new HashMap<>();
+  private Map<Tab, Component> tabsToPages = new HashMap<>();
 
-    public TreeValueChangeListener(final ProjektplanungScreen screen) {
-        this.screen = screen;
-        this.daoFactory = DaoFactorySingelton.getInstance();
-    }
+  public TreeValueChangeListener(final ProjektplanungScreen screen) {
+    this.screen     = screen;
+    this.daoFactory = DaoFactorySingelton.getInstance();
+  }
 
-    public void setDeleteButton(final Button deleteButton) {
-        this.deleteButton = deleteButton;
-    }
+  public void setDeleteButton(final Button deleteButton) {
+    this.deleteButton = deleteButton;
+  }
 
-    public void setRenameButton(final Button renameButton){
-        this.renameButton = renameButton;
-    }
+  public void setRenameButton(final Button renameButton) {
+    this.renameButton = renameButton;
+  }
 
-    @Override
-    public void onComponentEvent(ItemClickEvent<PlanningUnit> planningUnitItemClickEvent) {
-        refreshTestCasesAndDescriptionsFor(planningUnitItemClickEvent.getItem());
-    }
+  @Override
+  public void onComponentEvent(ItemClickEvent<PlanningUnit> planningUnitItemClickEvent) {
+    refreshTestCasesAndDescriptionsFor(planningUnitItemClickEvent.getItem());
+  }
 
-    public void refreshTestCasesAndDescriptionsFor(PlanningUnit planningUnit) {
-        if (planningUnit != null) {
-            System.out.println(planningUnit.toString());
-            final boolean hasChildren = planningUnit.getKindPlanningUnits() != null && !planningUnit.getKindPlanningUnits().isEmpty();
-                if(deleteButton != null){
-                    deleteButton.setEnabled(true);
-                }
-                if(renameButton != null){
-                    renameButton.setEnabled(true);
-                }
-                final RapidPanel detailPanel = screen.getDetailsPanel();
-                final RapidPanel mainPanel = screen.getMainPanel();
-                final RapidPanel ressourcesPanel = screen.getRessourcesPanel();
-                final RapidPanel descriptionsAndTestCasesPanel = screen.getRightColumn();
-                detailPanel.removeAllComponents();
-                mainPanel.removeAllComponents();
-                ressourcesPanel.removeAllComponents();
-                descriptionsAndTestCasesPanel.removeAllComponents();
-                descriptionsAndTestCasesPanel.add(screen.getAddDescriptionOrTestCaseButton());
+  public void refreshTestCasesAndDescriptionsFor(PlanningUnit planningUnit) {
+    if (planningUnit != null) {
+      System.out.println(planningUnit.toString());
+      final boolean hasChildren = planningUnit.getKindPlanningUnits() != null && !planningUnit.getKindPlanningUnits()
+                                                                                              .isEmpty();
+      if (deleteButton != null) {
+        deleteButton.setEnabled(true);
+      }
+      if (renameButton != null) {
+        renameButton.setEnabled(true);
+      }
+      final RapidPanel detailPanel                   = screen.getDetailsPanel();
+      final RapidPanel mainPanel                     = screen.getMainPanel();
+      final RapidPanel ressourcesPanel               = screen.getRessourcesPanel();
+      final RapidPanel descriptionsAndTestCasesPanel = screen.getRightColumn();
+      detailPanel.removeAllComponents();
+      mainPanel.removeAllComponents();
+      ressourcesPanel.removeAllComponents();
+      descriptionsAndTestCasesPanel.removeAllComponents();
+      descriptionsAndTestCasesPanel.add(screen.getAddDescriptionOrTestCaseButton());
 
 
-                detailPanel.add(new Label(planningUnit.getPlanningUnitName()));
-                mainPanel.setText(planningUnit.getPlanningUnitName());
-                ressourcesPanel.setText(RESSOURCE_GROUPS);
-                final VerticalLayout detailsPanelComponentsLayout = new PlanningDetailsEditableLayout
-                        (planningUnit, screen, detailPanel);
-                final VerticalLayout mainPanelLayout = new PlanningInformationEditableLayout(planningUnit, screen);
-                if(daoFactory.getPlanningUnitDAO().findByID(planningUnit.getId()) != null){
-                    final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesEditableLayout(planningUnit,
-                            screen, ressourcesPanel, hasChildren);
-                    ressourcesPanel.add(ressourcesPanelLayout);
-                    final DescriptionAndTestCasesFieldGroup descriptionAndTestCasesFieldGroup = new
-                            DescriptionAndTestCasesFieldGroup(screen, VaadinSession.getCurrent().getAttribute(ResourceBundle.class),
-                            screen.getPlanningUnitsTree().getSelectedItems().iterator().next());
-                    final RapidPanel descriptionTabFramePanel = new RapidPanel();
-                    final RapidPanel testCaseTabFramePanel = new RapidPanel();
+      detailPanel.add(new Label(planningUnit.getPlanningUnitName()));
+      mainPanel.setText(planningUnit.getPlanningUnitName());
+      ressourcesPanel.setText(RESSOURCE_GROUPS);
+      final VerticalLayout detailsPanelComponentsLayout = new PlanningDetailsEditableLayout(planningUnit, screen,
+                                                                                            detailPanel);
+      final VerticalLayout mainPanelLayout = new PlanningInformationEditableLayout(planningUnit, screen);
+      if (daoFactory.getPlanningUnitDAO()
+                    .findByID(planningUnit.getId()) != null) {
+        final VerticalLayout ressourcesPanelLayout = new PlanningRessourcesEditableLayout(planningUnit, screen,
+                                                                                          ressourcesPanel, hasChildren);
+        ressourcesPanel.add(ressourcesPanelLayout);
+        final DescriptionAndTestCasesFieldGroup descriptionAndTestCasesFieldGroup = new DescriptionAndTestCasesFieldGroup(
+            screen, VaadinSession.getCurrent()
+                                 .getAttribute(ResourceBundle.class), screen.getPlanningUnitsTree()
+                                                                            .getSelectedItems()
+                                                                            .iterator()
+                                                                            .next());
+        final RapidPanel descriptionTabFramePanel = new RapidPanel();
+        final RapidPanel testCaseTabFramePanel    = new RapidPanel();
 //                    descriptionTabFramePanel.setStyleName(Reindeer.PANEL_LIGHT);
 //                    descriptionTabFramePanel.getContentLayout().setMargin(false);
 //                    testCaseTabFramePanel.setStyleName(Reindeer.PANEL_LIGHT);
 //                    testCaseTabFramePanel.getContentLayout().setMargin(false);
-                    for (final RapidPanel descriptionEditableLayout : descriptionAndTestCasesFieldGroup
-                            .getDescriptionRapidPanels()) {
-                        descriptionTabFramePanel.add(descriptionEditableLayout);
-                    }
-                    for (final RapidPanel testCaseEditableLayout : descriptionAndTestCasesFieldGroup
-                            .getTestcaseRapidPanels()) {
-                        testCaseTabFramePanel.add(testCaseEditableLayout);
-                    }
-                    final Tabs tabSheet = new Tabs();
-                    final Tab descriptionTabContent = new Tab(VaadinSession.getCurrent().getAttribute(ResourceBundle.class).getString("planning_descriptions"));
-                    tabSheet.add(descriptionTabContent);
-                    final Tab testcaseTabContent = new Tab(VaadinSession.getCurrent().getAttribute(ResourceBundle.class).getString("planning_testcases"));;
-                    testCaseTabFramePanel.setVisible(false);
-                    tabSheet.add(testcaseTabContent);
-                    tabsToPages.clear();
-                    tabsToPages.put(descriptionTabContent, descriptionTabFramePanel);
-                    tabsToPages.put(testcaseTabContent, testCaseTabFramePanel);
-                    tabSheet.setFlexGrowForEnclosedTabs(1);
-                    tabSheet.addSelectedChangeListener(event -> {
-                        Set<Component> pagesShown = Stream.of(descriptionTabFramePanel, testCaseTabFramePanel).collect(Collectors.toSet());
-                        pagesShown.forEach(tabContent -> tabContent.setVisible(false));
-                        pagesShown.clear();
-                        Component selectedPage = tabsToPages.get(tabSheet.getSelectedTab());
-                        selectedPage.setVisible(true);
-                        pagesShown.add(selectedPage);
-                    });
-
-                    screen.setTabs(tabSheet);
-                    descriptionsAndTestCasesPanel.add(screen.getTabs(), descriptionTabFramePanel, testCaseTabFramePanel);
-                }
-                detailPanel.removeAllComponents();
-                detailPanel.add(detailsPanelComponentsLayout);
-                mainPanel.add(mainPanelLayout);
-        } else {
-            if(deleteButton != null){
-                deleteButton.setEnabled(false);
-            }
-            if(renameButton != null){
-                renameButton.setEnabled(false);
-            }
+        for (final RapidPanel descriptionEditableLayout : descriptionAndTestCasesFieldGroup.getDescriptionRapidPanels()) {
+          descriptionTabFramePanel.add(descriptionEditableLayout);
         }
+        for (final RapidPanel testCaseEditableLayout : descriptionAndTestCasesFieldGroup.getTestcaseRapidPanels()) {
+          testCaseTabFramePanel.add(testCaseEditableLayout);
+        }
+        final Tabs tabSheet              = new Tabs();
+        final Tab  descriptionTabContent = new Tab(VaadinSession.getCurrent()
+                                                                .getAttribute(ResourceBundle.class)
+                                                                .getString("planning_descriptions"));
+        tabSheet.add(descriptionTabContent);
+        final Tab testcaseTabContent = new Tab(VaadinSession.getCurrent()
+                                                            .getAttribute(ResourceBundle.class)
+                                                            .getString("planning_testcases"));
+        ;
+        testCaseTabFramePanel.setVisible(false);
+        tabSheet.add(testcaseTabContent);
+        tabsToPages.clear();
+        tabsToPages.put(descriptionTabContent, descriptionTabFramePanel);
+        tabsToPages.put(testcaseTabContent, testCaseTabFramePanel);
+        tabSheet.setFlexGrowForEnclosedTabs(1);
+        tabSheet.addSelectedChangeListener(event -> {
+          Set<Component> pagesShown = Stream.of(descriptionTabFramePanel, testCaseTabFramePanel)
+                                            .collect(Collectors.toSet());
+          pagesShown.forEach(tabContent -> tabContent.setVisible(false));
+          pagesShown.clear();
+          Component selectedPage = tabsToPages.get(tabSheet.getSelectedTab());
+          selectedPage.setVisible(true);
+          pagesShown.add(selectedPage);
+        });
+
+        screen.setTabs(tabSheet);
+        descriptionsAndTestCasesPanel.add(screen.getTabs(), descriptionTabFramePanel, testCaseTabFramePanel);
+      }
+      detailPanel.removeAllComponents();
+      detailPanel.add(detailsPanelComponentsLayout);
+      mainPanel.add(mainPanelLayout);
+    } else {
+      if (deleteButton != null) {
+        deleteButton.setEnabled(false);
+      }
+      if (renameButton != null) {
+        renameButton.setEnabled(false);
+      }
     }
+  }
 }

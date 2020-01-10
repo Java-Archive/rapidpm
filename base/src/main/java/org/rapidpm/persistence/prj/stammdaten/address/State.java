@@ -14,15 +14,12 @@ package org.rapidpm.persistence.prj.stammdaten.address;
  *
  */
 
-import org.apache.log4j.Logger;
-
 import javax.persistence.*;
 
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
 
 public class State {
-    private static final Logger logger = Logger.getLogger(State.class);
     @Id
     @TableGenerator(name = "PKGenState",
             table = "pk_gen",

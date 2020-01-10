@@ -18,7 +18,6 @@ import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.Taetigkeitsfe
 import org.rapidpm.persistence.prj.stammdaten.person.Anrede;
 import org.rapidpm.persistence.system.security.BenutzerWebapplikation;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 
@@ -30,7 +29,6 @@ import javax.persistence.*;
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
 public class Registration {
-    private static final Logger logger = Logger.getLogger(Registration.class);
 
     @Id
     @TableGenerator(name = "PKGenRegistration",

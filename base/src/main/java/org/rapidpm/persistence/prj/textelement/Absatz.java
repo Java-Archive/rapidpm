@@ -7,7 +7,6 @@ package org.rapidpm.persistence.prj.textelement;
  * Time: 10:11
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.textelement.kommentar.AbsatzKommentar;
 
 import javax.persistence.*;
@@ -22,7 +21,6 @@ public class Absatz {
     public static final String TEXT = "text";
     public static final String KOMMENTARE = "kommentarliste";
 
-    private static final Logger logger = Logger.getLogger(Absatz.class);
 
     @TableGenerator(name = "PKGenAbsatz", table = "pk_gen", pkColumnName = "gen_key",
             pkColumnValue = "Absatz_id",

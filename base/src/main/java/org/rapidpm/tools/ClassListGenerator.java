@@ -8,14 +8,12 @@ package org.rapidpm.tools; /**
 
 import org.rapidpm.Constants;
 import org.rapidpm.lang.PackageClassLoader;
-import org.apache.log4j.Logger;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
 public class ClassListGenerator {
-    private static final Logger logger = Logger.getLogger(ClassListGenerator.class);
 
     public static void main(String[] args) throws IOException {
         final PackageClassLoader pcl = new PackageClassLoader();

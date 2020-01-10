@@ -14,7 +14,6 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.data.provider.Query;
 import com.vaadin.flow.server.VaadinSession;
-import org.apache.log4j.Logger;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
@@ -34,8 +33,6 @@ import java.util.ResourceBundle;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 public class AddProjectWindow extends RapidWindow{
-
-    private static final Logger logger = Logger.getLogger(AddProjectWindow.class);
 
     private MainUI ui;
 
@@ -127,7 +124,6 @@ public class AddProjectWindow extends RapidWindow{
                     }
                     AddProjectWindow.this.close();
                 } catch (final ValidationException e) {
-                    logger.warn(e);
                 }
 
             } else {

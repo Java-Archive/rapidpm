@@ -1,7 +1,5 @@
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit.gesellschaftsformen;
 
-import org.apache.log4j.Logger;
-
 import javax.persistence.*;
 
 /**
@@ -20,7 +18,6 @@ import javax.persistence.*;
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
 public class Gesellschaftsform {
-    private static final Logger logger = Logger.getLogger(Gesellschaftsform.class);
 
     @Id
     @TableGenerator(name = "PKGenGesellschaftsform", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "Gesellschaftsform_id", valueColumnName = "gen_value", allocationSize = 1)

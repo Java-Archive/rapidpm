@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.bewegungsdaten.msgcenter;
 
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 
@@ -18,7 +17,6 @@ import javax.persistence.*;
 
 @Entity
 public class MessageTag {
-    private static final Logger logger = Logger.getLogger(MessageTag.class);
 
     @Id
     @TableGenerator(name = "PKGenMessageTag", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "MessageTag_id", valueColumnName = "gen_value", allocationSize = 1)

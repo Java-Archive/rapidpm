@@ -5,7 +5,6 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.listbox.ListBox;
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
@@ -24,7 +23,6 @@ import java.util.ResourceBundle;
  */
 public class ChosenProjectEditableRapidPanel extends EditableRapidPanel {
 
-    private static Logger logger = Logger.getLogger(ChosenProjectEditableRapidPanel.class);
 
     private ProjektFieldGroup fieldGroup;
 
@@ -56,7 +54,6 @@ public class ChosenProjectEditableRapidPanel extends EditableRapidPanel {
                     listboxComponent.setItems(plannedProjectDAO.loadAllEntities());
                     activate(false);
                 } catch (Exception e) {
-                    logger.warn("Commit Failed", e);
                 }
             });
         });

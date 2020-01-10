@@ -8,10 +8,8 @@ package org.rapidpm.persistence.prj.projectmanagement.planning.technical.special
 
 import org.rapidpm.persistence.prj.projectmanagement.planning.technical.specialmachines.stammdaten.Maschine;
 import org.rapidpm.persistence.prj.stammdaten.person.Person;
-import org.apache.log4j.Logger;
 
 public class EinheitArbeit {
-    private static final Logger logger = Logger.getLogger(EinheitArbeit.class);
 
     /**
      * durchführende Person

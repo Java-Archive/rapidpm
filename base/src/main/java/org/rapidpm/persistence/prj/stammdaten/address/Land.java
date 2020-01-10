@@ -14,8 +14,6 @@ package org.rapidpm.persistence.prj.stammdaten.address;
  *
  */
 
-import org.apache.log4j.Logger;
-
 import javax.persistence.*;
 
 
@@ -27,8 +25,6 @@ import javax.persistence.*;
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
 public class Land {
-    private static final Logger logger = Logger.getLogger(Land.class);
-
     @Id
     @TableGenerator(name = "PKGenLand",
             table = "pk_gen",

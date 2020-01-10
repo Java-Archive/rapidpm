@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
 
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 
@@ -19,7 +18,6 @@ import javax.persistence.*;
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
 public class BrancheAssoc {
-    private static final Logger logger = Logger.getLogger(BrancheAssoc.class);
 
     @Id
     @TableGenerator(name = "PKGenBrancheAssoc", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "BrancheAssoc_id", valueColumnName = "gen_value", allocationSize = 1)

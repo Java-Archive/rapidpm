@@ -13,13 +13,11 @@ package org.rapidpm.persistence.prj.stammdaten.kommunikation;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 
 public class KommunikationsServiceUIDPartDAO extends DAO<Long, KommunikationsServiceUIDPart> {
-    private static final Logger logger = Logger.getLogger(KommunikationsServiceUIDPartDAO.class);
 
 
     public KommunikationsServiceUIDPartDAO(final EntityManager entityManager) {

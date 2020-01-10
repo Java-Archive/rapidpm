@@ -6,7 +6,6 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit; /**
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -14,8 +13,6 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 public class PositionDAO extends DAO<Long, Position> {
-    private static final Logger logger = Logger.getLogger(PositionDAO.class);
-
 
     public PositionDAO(final EntityManager entityManager) {
         super(entityManager, Position.class);

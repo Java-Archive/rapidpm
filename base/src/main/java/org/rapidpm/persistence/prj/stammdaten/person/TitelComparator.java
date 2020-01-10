@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.stammdaten.person;
 
-import org.apache.log4j.Logger;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -18,7 +17,6 @@ import java.util.Comparator;
  */
 
 public class TitelComparator implements Comparator<Titel>, Serializable {
-    private static final Logger logger = Logger.getLogger(TitelComparator.class);
 
     @Override
     public int compare(final Titel o1, final Titel o2) {

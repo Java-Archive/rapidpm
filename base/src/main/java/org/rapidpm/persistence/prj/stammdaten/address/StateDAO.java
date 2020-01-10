@@ -9,14 +9,12 @@ package org.rapidpm.persistence.prj.stammdaten.address;
  *
  */
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 public class StateDAO extends DAO<Long, State> {
-    private static final Logger logger = Logger.getLogger(StateDAO.class);
 
     public StateDAO(final EntityManager entityManager) {
         super(entityManager, State.class);

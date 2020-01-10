@@ -9,14 +9,12 @@ package org.rapidpm.persistence.system.logging;
  */
 
 import org.rapidpm.persistence.system.security.Benutzer;
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 public class LoggingEntityEntry {
-    private static final Logger logger = Logger.getLogger(LoggingEntityEntry.class);
 
     @TableGenerator(name = "PKGenLoggingEntityEntry", table = "pk_gen", pkColumnName = "gen_key",
             pkColumnValue = "LoggingEntityEntry_id", valueColumnName = "gen_value", allocationSize = 1)

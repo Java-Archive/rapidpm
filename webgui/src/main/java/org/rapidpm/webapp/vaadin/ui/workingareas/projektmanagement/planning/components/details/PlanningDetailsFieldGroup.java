@@ -22,78 +22,78 @@ import java.util.*;
  * Time: 12:51
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class PlanningDetailsFieldGroup extends Binder<PlanningUnit> {
-    private ResourceBundle messages;
+public class PlanningDetailsFieldGroup
+    extends Binder<PlanningUnit> {
+  private ResourceBundle messages;
 
-    private ComboBox<Nameable> responsiblePersonBox;
-    private TextField orderNumberField;
-    private TextField complexityField;
-    private TextField storyPointsField;
+  private ComboBox<Nameable> responsiblePersonBox;
+  private TextField          orderNumberField;
+  private TextField          complexityField;
+  private TextField          storyPointsField;
 
-    public PlanningDetailsFieldGroup(final ResourceBundle messages, final PlanningUnit unmanagedPlanningUnit) {
-        super(PlanningUnit.class);
-        this.messages = messages;
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO().findByID(unmanagedPlanningUnit.getId());
-        buildForm();
-        readBean(Objects.requireNonNullElse(planningUnit, unmanagedPlanningUnit));
+  public PlanningDetailsFieldGroup(final ResourceBundle messages, final PlanningUnit unmanagedPlanningUnit) {
+    super(PlanningUnit.class);
+    this.messages = messages;
+    final DaoFactory   daoFactory   = DaoFactorySingelton.getInstance();
+    final PlanningUnit planningUnit = daoFactory.getPlanningUnitDAO()
+                                                .findByID(unmanagedPlanningUnit.getId());
+    buildForm();
+    readBean(Objects.requireNonNullElse(planningUnit, unmanagedPlanningUnit));
+  }
+
+  private void buildForm() {
+    final DaoFactory     daoFactory = DaoFactorySingelton.getInstance();
+    final List<Benutzer> users      = daoFactory.getBenutzerDAO()
+                                                .loadAllEntities();
+    responsiblePersonBox = generateBox(messages.getString("planning_responsible"));
+    responsiblePersonBox.setItems(users.stream()
+                                       .map(benutzer -> (Nameable) benutzer));
+    responsiblePersonBox.setReadOnly(true);
+    forField(responsiblePersonBox).withNullRepresentation(null)
+                                  .asRequired()
+                                  .bind(PlanningUnit.RESPONSIBLE);
+    orderNumberField = new TextField(messages.getString("planning_ordernumber"));
+    orderNumberField.setReadOnly(true);
+    forField(orderNumberField).withNullRepresentation("")
+                              .withConverter(new StringToIntegerConverter(""))
+                              .asRequired()
+                              .bind(PlanningUnit.ORDERNUMBER);
+    complexityField = new TextField(messages.getString("planning_complexity"));
+    complexityField.setReadOnly(true);
+    forField(complexityField).withNullRepresentation("")
+                             .withConverter(new StringToIntegerConverter(""))
+                             .asRequired()
+                             .bind(PlanningUnit.COMPLEXITY);
+    storyPointsField = new TextField(messages.getString("planning_storypoints"));
+    storyPointsField.setReadOnly(true);
+    forField(storyPointsField).withNullRepresentation("")
+                              .withConverter(new StringToIntegerConverter(""))
+                              .asRequired()
+                              .bind(PlanningUnit.STORYPTS);
+  }
+
+  public ComboBox<Nameable> generateBox(final String caption) {
+    final ComboBox<Nameable> box = new ComboBox<>(caption);
+    box.setItemLabelGenerator(Nameable::name);
+    return box;
+  }
+
+  public List<AbstractField> getFieldList() {
+    return new ArrayList<>(Arrays.asList(responsiblePersonBox, orderNumberField, complexityField, storyPointsField));
+  }
+
+  public Optional<AbstractField> getFieldForProperty(String property) {
+    switch (property) {
+      case PlanningUnit.RESPONSIBLE:
+        return Optional.ofNullable(responsiblePersonBox);
+      case PlanningUnit.ORDERNUMBER:
+        return Optional.ofNullable(orderNumberField);
+      case PlanningUnit.COMPLEXITY:
+        return Optional.ofNullable(complexityField);
+      case PlanningUnit.STORYPTS:
+        return Optional.ofNullable(storyPointsField);
+      default:
+        return Optional.empty();
     }
-
-    private void buildForm() {
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        final List<Benutzer> users = daoFactory.getBenutzerDAO().loadAllEntities();
-        responsiblePersonBox = generateBox(messages.getString("planning_responsible"));
-        responsiblePersonBox.setItems(users.stream().map(benutzer -> (Nameable) benutzer));
-        responsiblePersonBox.setReadOnly(true);
-        forField(responsiblePersonBox)
-                .withNullRepresentation(null)
-                .asRequired()
-                .bind(PlanningUnit.RESPONSIBLE);
-        orderNumberField = new TextField(messages.getString("planning_ordernumber"));
-        orderNumberField.setReadOnly(true);
-        forField(orderNumberField)
-                .withNullRepresentation("")
-                .withConverter(new StringToIntegerConverter(""))
-                .asRequired()
-                .bind(PlanningUnit.ORDERNUMBER);
-        complexityField = new TextField(messages.getString("planning_complexity"));
-        complexityField.setReadOnly(true);
-        forField(complexityField)
-                .withNullRepresentation("")
-                .withConverter(new StringToIntegerConverter(""))
-                .asRequired()
-                .bind(PlanningUnit.COMPLEXITY);
-        storyPointsField = new TextField(messages.getString("planning_storypoints"));
-        storyPointsField.setReadOnly(true);
-        forField(storyPointsField)
-                .withNullRepresentation("")
-                .withConverter(new StringToIntegerConverter(""))
-                .asRequired()
-                .bind(PlanningUnit.STORYPTS);
-    }
-
-    public ComboBox<Nameable> generateBox(final String caption){
-        final ComboBox<Nameable> box = new ComboBox<>(caption);
-        box.setItemLabelGenerator(Nameable::name);
-        return box;
-    }
-
-    public List<AbstractField> getFieldList() {
-        return new ArrayList<>(Arrays.asList(responsiblePersonBox, orderNumberField, complexityField, storyPointsField));
-    }
-
-    public Optional<AbstractField> getFieldForProperty(String property) {
-        switch (property) {
-            case PlanningUnit.RESPONSIBLE:
-                return Optional.ofNullable(responsiblePersonBox);
-            case PlanningUnit.ORDERNUMBER:
-                return Optional.ofNullable(orderNumberField);
-            case PlanningUnit.COMPLEXITY:
-                return Optional.ofNullable(complexityField);
-            case PlanningUnit.STORYPTS:
-                return Optional.ofNullable(storyPointsField);
-            default:
-                return Optional.empty();
-        }
-    }
+  }
 }

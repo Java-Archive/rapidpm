@@ -1,6 +1,5 @@
 package org.rapidpm.webservice.mapping;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.jws.WebMethod;
@@ -18,7 +17,6 @@ import java.util.List;
 // public abstract class FlatBaseWS<T, DT extends DAO<Long, T>, FT extends FlatEntity<T>>
 // FT extends FlatEntity<T> funktioniert nicht mit den Web Services...
 public abstract class FlatBaseWS<T, DT extends DAO<Long, T>, FT extends FlatEntity> extends EntityMapper<T, FT> {
-    private static final Logger logger = Logger.getLogger(FlatBaseWS.class);
 
     protected final DT dao;
 

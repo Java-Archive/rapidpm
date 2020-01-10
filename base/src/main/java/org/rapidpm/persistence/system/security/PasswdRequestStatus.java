@@ -14,7 +14,6 @@ package org.rapidpm.persistence.system.security;
  *
  */
 
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 
@@ -22,8 +21,6 @@ import javax.persistence.*;
 //@Entity
 @Deprecated
 public class PasswdRequestStatus {
-    private static final Logger logger = Logger.getLogger(PasswdRequestStatus.class);
-
     @Id
     @TableGenerator(name = "PKGenPasswdRequestStatus", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "PasswdRequestStatus_id", valueColumnName = "gen_value", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.TABLE,

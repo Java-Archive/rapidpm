@@ -14,7 +14,6 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
  *
  */
 
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 
@@ -22,7 +21,6 @@ import javax.persistence.*;
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
 public class Taetigkeitsfeld {
-    private static final Logger logger = Logger.getLogger(Taetigkeitsfeld.class);
 
     @Id
     @TableGenerator(name = "PKGenTaetigkeitsfeld", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "Taetigkeitsfeld_id", valueColumnName = "gen_value", allocationSize = 1)

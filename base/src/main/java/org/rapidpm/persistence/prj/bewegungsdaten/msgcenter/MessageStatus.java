@@ -14,7 +14,6 @@ package org.rapidpm.persistence.prj.bewegungsdaten.msgcenter;
  *
  */
 
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -25,7 +24,6 @@ import java.util.List;
 @Entity
 //@Table(name = "message_status")
 public class MessageStatus {
-    private static final Logger logger = Logger.getLogger(MessageStatus.class);
 
     @Id
     @TableGenerator(name = "PKGenMessageStatus", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "MessageStatus_id", valueColumnName = "gen_value", allocationSize = 1)

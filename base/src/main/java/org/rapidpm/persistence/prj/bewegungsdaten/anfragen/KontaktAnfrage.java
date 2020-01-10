@@ -17,7 +17,6 @@ package org.rapidpm.persistence.prj.bewegungsdaten.anfragen;
 import org.rapidpm.persistence.prj.stammdaten.person.Anrede;
 import org.rapidpm.persistence.system.security.BenutzerWebapplikation;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -25,7 +24,6 @@ import java.util.Date;
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
 public class KontaktAnfrage {
-    private static final Logger logger = Logger.getLogger(KontaktAnfrage.class);
 
     @Id
     @TableGenerator(name = "PKGenKontaktAnfrage", table = "pk_gen", pkColumnName = "gen_key",

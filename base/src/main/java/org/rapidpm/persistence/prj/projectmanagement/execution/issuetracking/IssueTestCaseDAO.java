@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -13,7 +12,6 @@ import javax.persistence.EntityManager;
  * To change this template use File | Settings | File Templates.
  */
 public class IssueTestCaseDAO extends DAO<Long, IssueTestCase> {
-    private static final Logger logger = Logger.getLogger(IssueTestCaseDAO.class);
 
     public IssueTestCaseDAO(final EntityManager entityManager) {
         super(entityManager, IssueTestCase.class);

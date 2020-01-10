@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.book.Buch;
 import org.rapidpm.persistence.prj.projectmanagement.planning.finance.PlannedOffer;
 import org.rapidpm.persistence.prj.projectmanagement.planning.management.travel.PlannedTravel;
@@ -14,7 +13,6 @@ import java.util.Set;
 
 @Entity
 public class PlannedProject implements Comparable<PlannedProject>{
-    private static final Logger logger = Logger.getLogger(PlannedProject.class);
 
     public static final String ID = "id";
     public static final String NAME = "projektName";

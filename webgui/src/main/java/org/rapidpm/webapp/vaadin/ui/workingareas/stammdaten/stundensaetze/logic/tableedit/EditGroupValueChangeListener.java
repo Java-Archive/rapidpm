@@ -1,51 +1,46 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tableedit;
 
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.grid.ItemClickEvent;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import org.apache.log4j.Logger;
-import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
-import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.logic.tablelisteners.StundensaetzeItemClickListener;
 import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.uicomponents.ItemClickDependentComponent;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import static com.vaadin.flow.component.HasValue.ValueChangeEvent;
 import static com.vaadin.flow.component.HasValue.ValueChangeListener;
 
-public class EditGroupValueChangeListener implements ValueChangeListener {
+public class EditGroupValueChangeListener
+    implements ValueChangeListener {
 
-    private Button saveButton;
-    private Grid tabelle;
-    private VerticalLayout saveButtonLayout;
-    private ResourceBundle messages;
-    private StundensaetzeScreen screen;
-    private List<ItemClickDependentComponent> components;
-    private Button deleteButton;
+  private Button                            saveButton;
+  private Grid                              tabelle;
+  private VerticalLayout                    saveButtonLayout;
+  private ResourceBundle                    messages;
+  private StundensaetzeScreen               screen;
+  private List<ItemClickDependentComponent> components;
+  private Button                            deleteButton;
 
-    private static final Logger logger = Logger.getLogger(EditGroupValueChangeListener.class);
 
-    public EditGroupValueChangeListener(final StundensaetzeScreen screen, List<ItemClickDependentComponent>
-            components, final Button deleteButton, final ResourceBundle bundle,
-                                        final VerticalLayout saveButtonLayout,
-                                        final Button saveButton, final Grid tabelle) {
-        this.screen = screen;
-        this.components = components;
-        this.deleteButton = deleteButton;
-        this.messages = bundle;
-        this.saveButton = saveButton;
-        this.tabelle = tabelle;
-        this.saveButtonLayout = saveButtonLayout;
-    }
+  public EditGroupValueChangeListener(final StundensaetzeScreen screen,
+                                      List<ItemClickDependentComponent> components,
+                                      final Button deleteButton,
+                                      final ResourceBundle bundle,
+                                      final VerticalLayout saveButtonLayout,
+                                      final Button saveButton,
+                                      final Grid tabelle) {
+    this.screen           = screen;
+    this.components       = components;
+    this.deleteButton     = deleteButton;
+    this.messages         = bundle;
+    this.saveButton       = saveButton;
+    this.tabelle          = tabelle;
+    this.saveButtonLayout = saveButtonLayout;
+  }
 
-    private void editMethod(final EditModes mode) {
+  private void editMethod(final EditModes mode) {
 //        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
 //        saveButton.
 //        for(final Object listener : tabelle.getListeners(Component.Event.class)){
@@ -107,19 +102,20 @@ public class EditGroupValueChangeListener implements ValueChangeListener {
 //                }
 //            });
 //        }
-    }
+  }
 
-    @Override
-    public void valueChanged(ValueChangeEvent valueChangeEvent) {
-        final String TABLEMODE = messages.getString("stdsatz_tablemode");
-        final Object value = valueChangeEvent.getValue();
-        if (value != null) {
-            if (value.toString().equals(TABLEMODE)) {
-                EditModeGetter.setMode(EditModes.TABLEEDIT);
-            } else {
-                EditModeGetter.setMode(EditModes.ROWEDIT);
-            }
-            editMethod(EditModeGetter.getMode());
-        }
+  @Override
+  public void valueChanged(ValueChangeEvent valueChangeEvent) {
+    final String TABLEMODE = messages.getString("stdsatz_tablemode");
+    final Object value     = valueChangeEvent.getValue();
+    if (value != null) {
+      if (value.toString()
+               .equals(TABLEMODE)) {
+        EditModeGetter.setMode(EditModes.TABLEEDIT);
+      } else {
+        EditModeGetter.setMode(EditModes.ROWEDIT);
+      }
+      editMethod(EditModeGetter.getMode());
     }
+  }
 }

@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.bewegungsdaten;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerDAO;
@@ -18,7 +17,6 @@ import java.util.List;
  */
 
 public class RegistrationDAO extends DAO<Long, Registration> {
-    private static final Logger logger = Logger.getLogger(RegistrationDAO.class);
 
     public RegistrationDAO(final EntityManager entityManager) {
         super(entityManager, Registration.class);

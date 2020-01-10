@@ -9,7 +9,6 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import org.rapidpm.lang.ClassUtils;
 import org.rapidpm.lang.PackageClassLoader;
-import org.apache.log4j.Logger;
 
 import java.lang.annotation.Annotation;
 import java.util.*;
@@ -24,7 +23,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @author Alexander Vos
  */
 public abstract class AbstractRegistry<A extends Annotation, T> {
-    private static final Logger logger = Logger.getLogger(AbstractRegistry.class);
     private static final PackageClassLoader packageClassLoader = new PackageClassLoader();
 
     /**
@@ -109,9 +107,6 @@ public abstract class AbstractRegistry<A extends Annotation, T> {
                 if (annotation != null) {
                     classMap.put(getClass(annotationClass.cast(annotation)), clazz);
                 } else {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Class ohne Annotation " + annotationClass.getSimpleName() + ": " + clazz.getSimpleName());
-                    }
                 }
             }
         }
@@ -212,13 +207,8 @@ public abstract class AbstractRegistry<A extends Annotation, T> {
             try {
                 result = aClass.newInstance();
             } catch (InstantiationException | IllegalAccessException e) {
-                logger.error(e);
             }
         } else {
-            logger.error("Keine Klasse registriert für: " + clazz);
-            if (logger.isDebugEnabled()) {
-                logger.debug("Rückgabewert: " + defaultObject);
-            }
         }
         return result;
     }

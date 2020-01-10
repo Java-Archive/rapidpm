@@ -15,7 +15,6 @@ package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
  */
 
 import org.rapidpm.persistence.prj.stammdaten.person.Person;
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -23,7 +22,6 @@ import java.util.Date;
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
 public class Position {
-    private static final Logger logger = Logger.getLogger(Position.class);
 
     @Id
     @TableGenerator(name = "PKGenPosition",

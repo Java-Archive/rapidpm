@@ -14,18 +14,14 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
-import org.apache.log4j.Logger;
 import org.rapidpm.webapp.vaadin.BaseUI;
-import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.Languages;
 import org.rapidpm.webapp.vaadin.ui.RapidPanel;
-import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
 
 import java.util.Arrays;
 
 public class LoginMask extends VerticalLayout {
 
-    private static final Logger logger = Logger.getLogger(LoginMask.class);
     private BaseUI ui;
     private TextField usernameField;
     private PasswordField passwordField;
@@ -38,17 +34,13 @@ public class LoginMask extends VerticalLayout {
     public LoginMask(final BaseUI ui) {
         this.ui = ui;
         setSizeFull();
-//        initUI();
         frame = new RapidPanel();
-//        frame.setSizeUndefined();
         loginLayout = new FormLayout();
         usernameField = new TextField("username");
         usernameField.focus();
         passwordField = new PasswordField("password");
         loginButton = new Button("Login");
-//        loginButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         languageBox = new ComboBox("Language", Arrays.asList(Languages.values()));
-//        loginLayout.setText("Please enter your username and password");
         loginButton.addClickListener(buttonClickEvent -> {
             try {
                 final String username = usernameField.getValue();
@@ -60,11 +52,7 @@ public class LoginMask extends VerticalLayout {
                 e.printStackTrace();
             }
         });
-//        languageBox.setImmediate(true);
         languageBox.setValue(Languages.GERMAN);
-//        languageBox.setNullSelectionAllowed(false);
-//        languageBox.setTextInputAllowed(false);
-
         loginLayout.add(usernameField);
         loginLayout.add(passwordField);
 

@@ -5,7 +5,6 @@
 package org.rapidpm.validate;
 
 import org.rapidpm.lang.PackageClassLoader;
-import org.apache.log4j.Logger;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -19,7 +18,6 @@ import java.util.Map;
  * @author Christain Ernst
  */
 public class ValidatorComparatorRegistry {
-    private static final Logger logger = Logger.getLogger(ValidatorComparatorRegistry.class);
 
     private static final Map<Class<? extends Annotation>, Class<? extends Comparator>> comparatorMap = new HashMap<>();
     private static final List<String> pkgNameList = new ArrayList<>();
@@ -37,9 +35,6 @@ public class ValidatorComparatorRegistry {
                     final Class classResponsibleFor = responsibleFor.value();
                     comparatorMap.put(classResponsibleFor, aClass);
                 } else {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Klasse '" + aClass.getSimpleName() + "' ohne ValidatorAnnotation-Annotation " + ValidatorAnnotation.class.getSimpleName());
-                    }
                 }
             }
         }
@@ -67,7 +62,6 @@ public class ValidatorComparatorRegistry {
             try {
                 comparator.add(classEntry.getValue().newInstance());
             } catch (InstantiationException | IllegalAccessException e) {
-                logger.error(e);
             }
         }
 
@@ -86,10 +80,8 @@ public class ValidatorComparatorRegistry {
             try {
                 comparator = comparatorMap.get(clazz).newInstance();
             } catch (InstantiationException | IllegalAccessException e) {
-                logger.error(e);
             }
         } else {
-            logger.error("Kein Comparator für diese Klasse '" + clazz.getSimpleName() + "' registriert: " + clazz.getSimpleName());
         }
 
         return comparator;

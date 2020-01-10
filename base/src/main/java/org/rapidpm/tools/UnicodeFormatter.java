@@ -13,10 +13,8 @@ package org.rapidpm.tools;/**
  *
  */
 
-import org.apache.log4j.Logger;
 
 public class UnicodeFormatter {
-    private static final Logger logger = Logger.getLogger(UnicodeFormatter.class);
 
 
     public static String byteToHex(final byte b) {

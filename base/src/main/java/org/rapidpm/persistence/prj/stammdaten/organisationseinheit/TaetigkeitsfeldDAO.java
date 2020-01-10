@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
 
@@ -21,8 +20,6 @@ import java.util.List;
  */
 
 public class TaetigkeitsfeldDAO extends DAO<Long, Taetigkeitsfeld> {
-    private static final Logger logger = Logger.getLogger(TaetigkeitsfeldDAO.class);
-
 
     public TaetigkeitsfeldDAO(final EntityManager entityManager) {
         super(entityManager, Taetigkeitsfeld.class);
@@ -38,7 +35,6 @@ public class TaetigkeitsfeldDAO extends DAO<Long, Taetigkeitsfeld> {
                 final TypedQuery<Taetigkeitsfeld> typedQuery = entityManager.createQuery("from Taetigkeitsfeld  t where t.namen=:taetigkeitsfeldName", Taetigkeitsfeld.class).setParameter("taetigkeitsfeldName", taetigkeitsfeldName);
                 taetigkeitsfeld = getSingleResultOrNull(typedQuery);
             } catch (Exception e) {
-                logger.error(e);
                 final TypedQuery<Taetigkeitsfeld> typedQuery = entityManager.createQuery("from Taetigkeitsfeld  t where t.namen='Nicht eingeordnet'", Taetigkeitsfeld.class);
                 return getSingleResultOrNull(typedQuery);
             }

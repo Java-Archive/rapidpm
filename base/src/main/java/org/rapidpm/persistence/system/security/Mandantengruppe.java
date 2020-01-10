@@ -14,7 +14,6 @@ package org.rapidpm.persistence.system.security;
  *
  */
 
-import org.apache.log4j.Logger;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -26,7 +25,6 @@ import javax.validation.constraints.Size;
 @Entity
 @Audited
 public class Mandantengruppe {
-    private static final Logger logger = Logger.getLogger(Mandantengruppe.class);
 
     @Id
     @TableGenerator(name = "PKGenMandantengruppe",

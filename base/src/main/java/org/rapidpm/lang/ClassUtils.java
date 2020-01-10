@@ -4,7 +4,6 @@
 
 package org.rapidpm.lang;
 
-import org.apache.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +14,6 @@ import java.util.Map;
  * @author Alexander Vos
  */
 public class ClassUtils {
-    private static final Logger logger = Logger.getLogger(ClassUtils.class);
 
     /**
      * Ermittelt den primitiven Datentyp einer boxed Klasse (z.B. <code>Integer -> int</code>).
@@ -29,9 +27,9 @@ public class ClassUtils {
         try {
             return (Class) boxedType.getField("TYPE").get(null);
         } catch (IllegalAccessException | ClassCastException | NoSuchFieldException e) {
-            logger.error(e);
+//            logger.error(e);
         }
-        logger.warn(boxedType + " is not a boxed type");
+//        logger.warn(boxedType + " is not a boxed type");
         return boxedType;
     }
 
@@ -60,7 +58,7 @@ public class ClassUtils {
         if (boxedType != null) {
             return boxedType;
         } else {
-            logger.warn(primitiveType + " is not a primitive type");
+//            logger.warn(primitiveType + " is not a primitive type");
             return primitiveType;
         }
     }

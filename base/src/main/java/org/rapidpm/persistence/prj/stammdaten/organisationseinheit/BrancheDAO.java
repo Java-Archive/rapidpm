@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -19,7 +18,6 @@ import javax.persistence.TypedQuery;
  */
 
 public class BrancheDAO extends DAO<Long, Branche> {
-    private static final Logger logger = Logger.getLogger(BrancheDAO.class);
 
 
     public BrancheDAO(final EntityManager entityManager) {

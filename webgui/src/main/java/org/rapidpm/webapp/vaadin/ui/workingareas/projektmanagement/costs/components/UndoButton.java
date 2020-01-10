@@ -20,19 +20,6 @@ public class UndoButton extends Button {
     public UndoButton(final CostsScreen screen, final MyTreeTable treeTable, final String dataSource){
         this.screen = screen;
         this.treeTable = treeTable;
-//        this.dataSource = dataSource;
-//        this.addClickListener(this);
         this.setText("remove sortorder");
-//        this.setStyleName("link");
     }
-
-//    @Override
-//    public void buttonClick(Button.ClickEvent event) {
-//        final TreeTableFiller treeTableFiller = new TreeTableFiller(VaadinSession.getCurrent().getAttribute(ResourceBundle.class), screen, treeTable,
-//                dataSource);
-//        treeTableFiller.fill();
-//        treeTable.markAsDirty();
-//
-//        this.setVisible(false);
-//    }
 }

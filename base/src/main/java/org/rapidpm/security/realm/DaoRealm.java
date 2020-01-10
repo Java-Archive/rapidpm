@@ -1,6 +1,5 @@
 package org.rapidpm.security.realm;
 
-import org.apache.log4j.Logger;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -23,7 +22,6 @@ import java.util.Set;
  * Time: 11:45
  */
 public class DaoRealm extends AuthorizingRealm {
-    private static final Logger logger = Logger.getLogger(DaoRealm.class);
 
     // TODO CDI @Inject
     private final BenutzerDAO benutzerDAO = DaoFactorySingelton.getInstance().getBenutzerDAO();

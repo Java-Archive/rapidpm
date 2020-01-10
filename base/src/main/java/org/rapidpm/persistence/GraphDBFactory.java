@@ -1,6 +1,5 @@
 package org.rapidpm.persistence;
 
-import org.apache.log4j.Logger;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.rapidpm.Constants;
@@ -13,7 +12,6 @@ import org.rapidpm.Constants;
  * To change this template use File | Settings | File Templates.
  */
 public class GraphDBFactory {
-    private static final Logger logger = Logger.getLogger(GraphDBFactory.class);
 
     public static final String DB_PATH = Constants.GRAPHDB_PATH;
 //    private final GraphDatabaseService graphDb;
@@ -21,8 +19,6 @@ public class GraphDBFactory {
 
     public static GraphDBFactory getInstance() {
         if (instance == null) {
-            if (logger.isDebugEnabled())
-                logger.debug("Create new GraphDBFactory instance");
             instance = new GraphDBFactory();
             if (!instance.initDb())
                 throw new IllegalStateException("GraphDB couldn't be created/initialized.");

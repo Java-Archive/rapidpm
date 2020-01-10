@@ -21,139 +21,141 @@ import java.util.ResourceBundle;
 @Route(value = "vertrieb", layout = MainAppLayout.class)
 @Caption("Vertrieb")
 @Icon(VaadinIcon.SAFE_LOCK)
-public class VertriebScreen extends Screen {
-    private TextField vertrieblerField;
-    private TextField datumField;
-    private TextField summeMitAufschlagField;
-    private TextField summeOhneAufschlagField;
-    private TextField verhandelterPreisField;
-    private TextArea bemerkungenArea;
+public class VertriebScreen
+    extends Screen {
+  private TextField vertrieblerField;
+  private TextField datumField;
+  private TextField summeMitAufschlagField;
+  private TextField summeOhneAufschlagField;
+  private TextField verhandelterPreisField;
+  private TextArea  bemerkungenArea;
 
-    private Grid vertriebsTable;
+  private Grid vertriebsTable;
 
-    private FormLayout vertrieblerLayout = new FormLayout();
-    private VerticalLayout tableLayout = new VerticalLayout();
-    private FormLayout bottomLayout;
+  private FormLayout     vertrieblerLayout = new FormLayout();
+  private VerticalLayout tableLayout       = new VerticalLayout();
+  private FormLayout     bottomLayout;
 
-    public VertriebScreen() {
-        erstelleVertrieblerLayout();
-        erstelleStandardTableLayout(new Label("Uebersicht"));
-        erstelleBottomLayout();
-        setComponents();
-        doInternationalization();
-    }
+  public VertriebScreen() {
+    erstelleVertrieblerLayout();
+    erstelleStandardTableLayout(new Label("Uebersicht"));
+    erstelleBottomLayout();
+    setComponents();
+    doInternationalization();
+  }
 
-    public void doInternationalization() {
-        ResourceBundle messagesBundle = VaadinSession.getCurrent().getAttribute(ResourceBundle.class);
-        vertrieblerField.setValue(messagesBundle.getString("distri_responsible"));
-        datumField.setValue(messagesBundle.getString("distri_date"));
-        summeMitAufschlagField.setValue(messagesBundle.getString("distri_sumWithAddition"));
-        summeOhneAufschlagField.setValue(messagesBundle.getString("distri_sumWithoutAddition"));
-        verhandelterPreisField.setValue(messagesBundle.getString("distri_negotiatedPrice"));
-        bemerkungenArea.setValue(messagesBundle.getString("distri_comments"));
-    }
+  public void doInternationalization() {
+    ResourceBundle messagesBundle = VaadinSession.getCurrent()
+                                                 .getAttribute(ResourceBundle.class);
+    vertrieblerField.setValue(messagesBundle.getString("distri_responsible"));
+    datumField.setValue(messagesBundle.getString("distri_date"));
+    summeMitAufschlagField.setValue(messagesBundle.getString("distri_sumWithAddition"));
+    summeOhneAufschlagField.setValue(messagesBundle.getString("distri_sumWithoutAddition"));
+    verhandelterPreisField.setValue(messagesBundle.getString("distri_negotiatedPrice"));
+    bemerkungenArea.setValue(messagesBundle.getString("distri_comments"));
+  }
 
-    private void erstelleBottomLayout() {
-        bottomLayout = new FormLayout();
-        summeMitAufschlagField = new TextField();
-        summeMitAufschlagField.setEnabled(false);
-        summeOhneAufschlagField = new TextField();
-        summeOhneAufschlagField.setEnabled(false);
-        verhandelterPreisField = new TextField();
-        bemerkungenArea = new TextArea();
-        bemerkungenArea.setWidth("500px");
-        bemerkungenArea.setHeight("300px");
+  private void erstelleBottomLayout() {
+    bottomLayout           = new FormLayout();
+    summeMitAufschlagField = new TextField();
+    summeMitAufschlagField.setEnabled(false);
+    summeOhneAufschlagField = new TextField();
+    summeOhneAufschlagField.setEnabled(false);
+    verhandelterPreisField = new TextField();
+    bemerkungenArea        = new TextArea();
+    bemerkungenArea.setWidth("500px");
+    bemerkungenArea.setHeight("300px");
 
-        bottomLayout.add(summeMitAufschlagField);
-        bottomLayout.add(summeOhneAufschlagField);
-        bottomLayout.add(verhandelterPreisField);
+    bottomLayout.add(summeMitAufschlagField);
+    bottomLayout.add(summeOhneAufschlagField);
+    bottomLayout.add(verhandelterPreisField);
 
-        bottomLayout.add(bemerkungenArea);
-    }
+    bottomLayout.add(bemerkungenArea);
+  }
 
-    private void erstelleStandardTableLayout(Label ueberschrift) {
-        vertriebsTable = new Grid();
-        tableLayout.add(ueberschrift);
-        tableLayout.add(vertriebsTable);
-    }
+  private void erstelleStandardTableLayout(Label ueberschrift) {
+    vertriebsTable = new Grid();
+    tableLayout.add(ueberschrift);
+    tableLayout.add(vertriebsTable);
+  }
 
-    private void erstelleVertrieblerLayout() {
-        vertrieblerLayout.setWidth("600px");
-        vertrieblerField = new TextField();
-        datumField = new TextField();
-        vertrieblerLayout.add(vertrieblerField);
-        vertrieblerLayout.add(datumField);
-    }
+  private void erstelleVertrieblerLayout() {
+    vertrieblerLayout.setWidth("600px");
+    vertrieblerField = new TextField();
+    datumField       = new TextField();
+    vertrieblerLayout.add(vertrieblerField);
+    vertrieblerLayout.add(datumField);
+  }
 
-    public void setComponents() {
-        add(vertrieblerLayout);
-        add(tableLayout);
-        add(bottomLayout);
-    }
+  public void setComponents() {
+    add(vertrieblerLayout);
+    add(tableLayout);
+    add(bottomLayout);
+  }
 
 
-    public TextField getVertrieblerField() {
-        return vertrieblerField;
-    }
+  public TextField getVertrieblerField() {
+    return vertrieblerField;
+  }
 
-    public void setVertrieblerField(TextField vertrieblerField) {
-        this.vertrieblerField = vertrieblerField;
-    }
+  public void setVertrieblerField(TextField vertrieblerField) {
+    this.vertrieblerField = vertrieblerField;
+  }
 
-    public TextField getDatumField() {
-        return datumField;
-    }
+  public TextField getDatumField() {
+    return datumField;
+  }
 
-    public void setDatumField(TextField datumField) {
-        this.datumField = datumField;
-    }
+  public void setDatumField(TextField datumField) {
+    this.datumField = datumField;
+  }
 
-    public TextField getSummeMitAufschlagField() {
-        return summeMitAufschlagField;
-    }
+  public TextField getSummeMitAufschlagField() {
+    return summeMitAufschlagField;
+  }
 
-    public void setSummeMitAufschlagField(TextField summeMitAufschlagField) {
-        this.summeMitAufschlagField = summeMitAufschlagField;
-    }
+  public void setSummeMitAufschlagField(TextField summeMitAufschlagField) {
+    this.summeMitAufschlagField = summeMitAufschlagField;
+  }
 
-    public TextField getSummeOhneAufschlagField() {
-        return summeOhneAufschlagField;
-    }
+  public TextField getSummeOhneAufschlagField() {
+    return summeOhneAufschlagField;
+  }
 
-    public void setSummeOhneAufschlagField(TextField summeOhneAufschlagField) {
-        this.summeOhneAufschlagField = summeOhneAufschlagField;
-    }
+  public void setSummeOhneAufschlagField(TextField summeOhneAufschlagField) {
+    this.summeOhneAufschlagField = summeOhneAufschlagField;
+  }
 
-    public TextField getVerhandelterPreisField() {
-        return verhandelterPreisField;
-    }
+  public TextField getVerhandelterPreisField() {
+    return verhandelterPreisField;
+  }
 
-    public void setVerhandelterPreisField(TextField verhandelterPreisField) {
-        this.verhandelterPreisField = verhandelterPreisField;
-    }
+  public void setVerhandelterPreisField(TextField verhandelterPreisField) {
+    this.verhandelterPreisField = verhandelterPreisField;
+  }
 
-    public TextArea getBemerkungenArea() {
-        return bemerkungenArea;
-    }
+  public TextArea getBemerkungenArea() {
+    return bemerkungenArea;
+  }
 
-    public void setBemerkungenArea(TextArea bemerkungenArea) {
-        this.bemerkungenArea = bemerkungenArea;
-    }
+  public void setBemerkungenArea(TextArea bemerkungenArea) {
+    this.bemerkungenArea = bemerkungenArea;
+  }
 
-    public Grid getVertriebsTable() {
-        return vertriebsTable;
-    }
+  public Grid getVertriebsTable() {
+    return vertriebsTable;
+  }
 
-    public void setVertriebsTable(Grid vertriebsTable) {
-        this.vertriebsTable = vertriebsTable;
-    }
+  public void setVertriebsTable(Grid vertriebsTable) {
+    this.vertriebsTable = vertriebsTable;
+  }
 
-    public VerticalLayout getTableLayout() {
-        return tableLayout;
-    }
+  public VerticalLayout getTableLayout() {
+    return tableLayout;
+  }
 
-    public void setTableLayout(VerticalLayout tableLayout) {
-        this.tableLayout = tableLayout;
-    }
+  public void setTableLayout(VerticalLayout tableLayout) {
+    this.tableLayout = tableLayout;
+  }
 
 }

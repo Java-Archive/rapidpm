@@ -14,7 +14,6 @@ package org.rapidpm.persistence.prj.stammdaten.address;
  *
  */
 
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.List;
@@ -23,7 +22,6 @@ import java.util.List;
 @Entity
 //@Table(name = "adresse")
 public class Adresse {
-    private static final Logger logger = Logger.getLogger(Adresse.class);
 
     @Id
     @TableGenerator(name = "PKGenAdresse", table = "pk_gen", pkColumnName = "gen_key",

@@ -2,7 +2,6 @@ package org.rapidpm.persistence;
 
 import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
-import org.apache.log4j.Logger;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -17,7 +16,6 @@ import org.apache.log4j.Logger;
  */
 
 public class SQLCreator {
-    private static final Logger logger = Logger.getLogger(SQLCreator.class);
 
     public static String andValue(final String variable, final String value) {
         return " and " + variable + " = '" + value + "' \n";

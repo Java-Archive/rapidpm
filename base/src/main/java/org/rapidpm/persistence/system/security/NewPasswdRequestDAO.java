@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.system.security;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -18,7 +17,6 @@ import javax.persistence.EntityManager;
  */
 
 public class NewPasswdRequestDAO extends DAO<Long, NewPasswdRequest> {
-    private static final Logger logger = Logger.getLogger(NewPasswdRequestDAO.class);
 
     public NewPasswdRequestDAO(final EntityManager entityManager) {
         super(entityManager, NewPasswdRequest.class);

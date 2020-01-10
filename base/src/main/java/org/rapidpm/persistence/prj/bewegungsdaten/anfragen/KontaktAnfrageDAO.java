@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.bewegungsdaten.anfragen;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -18,7 +17,6 @@ import javax.persistence.EntityManager;
  */
 
 public class KontaktAnfrageDAO extends DAO<Long, KontaktAnfrage> {
-    private static final Logger logger = Logger.getLogger(KontaktAnfrageDAO.class);
 
     public KontaktAnfrageDAO(final EntityManager entityManager) {
         super(entityManager, KontaktAnfrage.class);

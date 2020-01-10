@@ -1,7 +1,6 @@
 package org.rapidpm.persistence;
 
 
-import org.apache.log4j.Logger;
 import org.neo4j.graphdb.DynamicRelationshipType;
 import org.neo4j.graphdb.RelationshipType;
 import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type.IssueBase;
@@ -14,7 +13,6 @@ import org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.typ
  * To change this template use File | Settings | File Templates.
  */
 public abstract class GraphRelationFactory {
-    private static final Logger logger = Logger.getLogger(GraphRelationFactory.class);
 
     public static String getRelationAttributeName() {
         return "name";

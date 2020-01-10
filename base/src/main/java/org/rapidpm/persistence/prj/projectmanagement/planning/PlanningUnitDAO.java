@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.projectmanagement.planning;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -15,7 +14,6 @@ import java.util.List;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 public class PlanningUnitDAO extends DAO<Long, PlanningUnit> {
-    private static final Logger logger = Logger.getLogger(PlanningUnitDAO.class);
 
     public PlanningUnitDAO(final EntityManager entityManager) {
         super(entityManager, PlanningUnit.class);

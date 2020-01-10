@@ -8,14 +8,12 @@ package org.rapidpm.persistence.prj.book;
  */
 
 import org.rapidpm.persistence.prj.book.kommentar.BuchKapitelKommentar;
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 public class BuchKapitel {
-    private static final Logger logger = Logger.getLogger(BuchKapitel.class);
 
     @TableGenerator(name = "PKGenBuchKapitel", table = "pk_gen", pkColumnName = "gen_key",
             pkColumnValue = "BuchKapitel_id",

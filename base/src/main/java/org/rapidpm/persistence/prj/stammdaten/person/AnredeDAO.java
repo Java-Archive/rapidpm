@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.stammdaten.person;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -20,7 +19,6 @@ import javax.persistence.TypedQuery;
 
 
 public class AnredeDAO extends DAO<Long, Anrede> {
-    private static final Logger logger = Logger.getLogger(AnredeDAO.class);
 
     public AnredeDAO(final EntityManager entityManager) {
         super(entityManager, Anrede.class);

@@ -14,7 +14,6 @@ package org.rapidpm.persistence.prj.stammdaten.kommunikation;
  *
  */
 
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -26,7 +25,6 @@ import java.util.List;
 //@Table(name = "kommunikations_service_uid")
 //@Inheritance(strategy = InheritanceType.JOINED)
 public class KommunikationsServiceUID {
-    private static final Logger logger = Logger.getLogger(KommunikationsServiceUID.class);
 
     @Id
     @TableGenerator(name = "PKGenKommunikationsServiceUID",

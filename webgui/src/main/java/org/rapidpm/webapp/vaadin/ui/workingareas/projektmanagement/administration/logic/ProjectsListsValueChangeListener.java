@@ -17,28 +17,30 @@ import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administratio
  * Time: 10:34
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class ProjectsListsValueChangeListener implements HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<ListBox<PlannedProject>, PlannedProject>> {
+public class ProjectsListsValueChangeListener
+    implements HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<ListBox<PlannedProject>, PlannedProject>> {
 
-    private ChosenProjectEditableRapidPanel chosenProjectEditablePanel;
-    private ProjectsPanel projectsPanel;
+  private ChosenProjectEditableRapidPanel chosenProjectEditablePanel;
+  private ProjectsPanel                   projectsPanel;
 
-    public ProjectsListsValueChangeListener(final ProjectsPanel projectsPanel, final ChosenProjectEditableRapidPanel formPanel) {
-        this.chosenProjectEditablePanel = formPanel;
-        this.projectsPanel = projectsPanel;
+  public ProjectsListsValueChangeListener(final ProjectsPanel projectsPanel,
+                                          final ChosenProjectEditableRapidPanel formPanel) {
+    this.chosenProjectEditablePanel = formPanel;
+    this.projectsPanel              = projectsPanel;
+  }
+
+  @Override
+  public void valueChanged(AbstractField.ComponentValueChangeEvent<ListBox<PlannedProject>, PlannedProject> event) {
+    final Button         deleteButton  = projectsPanel.getDeleteProjectButton();
+    final FormLayout     formLayout    = chosenProjectEditablePanel.getFormLayout();
+    final PlannedProject chosenProjekt = event.getValue();
+    if (chosenProjekt != null) {
+      deleteButton.setEnabled(true);
+      formLayout.removeAll();
+      final ProjektFieldGroup fieldGroup = new ProjektFieldGroup(chosenProjekt, projectsPanel.getMessagesBundle());
+      chosenProjectEditablePanel.setFieldGroup(fieldGroup);
+      chosenProjectEditablePanel.buildForm();
+      chosenProjectEditablePanel.activate(false);
     }
-
-    @Override
-    public void valueChanged(AbstractField.ComponentValueChangeEvent<ListBox<PlannedProject>, PlannedProject> event) {
-        final Button deleteButton = projectsPanel.getDeleteProjectButton();
-        final FormLayout formLayout = chosenProjectEditablePanel.getFormLayout();
-        final PlannedProject chosenProjekt = event.getValue();
-        if(chosenProjekt != null){
-            deleteButton.setEnabled(true);
-            formLayout.removeAll();
-            final ProjektFieldGroup fieldGroup = new ProjektFieldGroup(chosenProjekt, projectsPanel.getMessagesBundle());
-            chosenProjectEditablePanel.setFieldGroup(fieldGroup);
-            chosenProjectEditablePanel.buildForm();
-            chosenProjectEditablePanel.activate(false);
-        }
-    }
+  }
 }

@@ -8,15 +8,12 @@ package org.rapidpm.persistence.prj.textelement.kommentar;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 import org.rapidpm.persistence.system.security.Benutzer;
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 public class AbsatzKommentar {
-    private static final Logger logger = Logger.getLogger(AbsatzKommentar.class);
-
 
     @TableGenerator(name = "PKGenAbsatzKommentar", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "AbsatzKommentar_id",
             valueColumnName = "gen_value", allocationSize = 1)

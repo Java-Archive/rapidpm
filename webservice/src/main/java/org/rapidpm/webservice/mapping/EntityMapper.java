@@ -1,6 +1,5 @@
 package org.rapidpm.webservice.mapping;
 
-import org.apache.log4j.Logger;
 import org.apache.shiro.authz.AuthorizationException;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
@@ -17,7 +16,6 @@ import java.util.List;
  */
 // public abstract class EntityMapper<T, FT extends FlatEntity<T>> {
 public abstract class EntityMapper<T, FT extends FlatEntity> {
-    private static final Logger logger = Logger.getLogger(EntityMapper.class);
 
     /**
      * Berechtigung, ob der Benutzer Daten von dem Objekt abfragen darf.
@@ -64,7 +62,6 @@ public abstract class EntityMapper<T, FT extends FlatEntity> {
         try {
             flatEntity = flatEntityType.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            logger.error(e.getMessage());
             return null;
         }
         flatEntity.fromEntity(entity);
@@ -89,13 +86,11 @@ public abstract class EntityMapper<T, FT extends FlatEntity> {
             try {
                 entity = entityType.newInstance();
             } catch (InstantiationException | IllegalAccessException e) {
-                logger.error(e.getMessage());
                 return null;
             }
         } else {
             entity = findEntityById(id);
             if (entity == null) {
-                logger.error("Entity '" + entityType.getName() + "' with id " + id + " not found!");
                 return null;
             }
         }
@@ -167,9 +162,6 @@ public abstract class EntityMapper<T, FT extends FlatEntity> {
     public void checkPermission(final String permission) throws AuthorizationException {
         final String className = entityType.getSimpleName();
         final String permissionString = className + ':' + permission;
-        if (logger.isDebugEnabled()) {
-            logger.debug("checkPermission(\"" + permission + "\"): " + permissionString);
-        }
 //        final Subject user = SecurityUtils.getSubject();
 //        user.checkPermission(permissionString); // TODO Session not working yet...
     }

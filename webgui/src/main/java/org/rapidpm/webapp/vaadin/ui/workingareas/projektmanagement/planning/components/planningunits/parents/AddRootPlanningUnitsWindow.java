@@ -42,145 +42,161 @@ import java.util.stream.Collectors;
  * Time: 10:54
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
-public class AddRootPlanningUnitsWindow extends RapidWindow {
+public class AddRootPlanningUnitsWindow
+    extends RapidWindow {
 
-    private HorizontalLayout addDeleteLayout = new HorizontalLayout();
-    private HorizontalLayout saveCancelLayout = new HorizontalLayout();
-    private TextField newPlanningUnitField = new TextField();
-    private Button addButton;
-    private ListBox<PlanningUnit> planningUnitSelect;
-    private Button saveButton;
-    private Button cancelButton;
-    private List<PlanningUnit> container = new ArrayList<>();
-    private long transientIdCounter;
-    private ResourceBundle messages;
-    private PlannedProject project;
+  private HorizontalLayout      addDeleteLayout      = new HorizontalLayout();
+  private HorizontalLayout      saveCancelLayout     = new HorizontalLayout();
+  private TextField             newPlanningUnitField = new TextField();
+  private Button                addButton;
+  private ListBox<PlanningUnit> planningUnitSelect;
+  private Button                saveButton;
+  private Button                cancelButton;
+  private List<PlanningUnit>    container            = new ArrayList<>();
+  private long                  transientIdCounter;
+  private ResourceBundle        messages;
+  private PlannedProject        project;
 
-    public AddRootPlanningUnitsWindow(final ResourceBundle messages){
-        this.messages = messages;
+  public AddRootPlanningUnitsWindow(final ResourceBundle messages) {
+    this.messages = messages;
 //        setModal(true);
 //        setText(messages.getString("planning_addPlanningUnit"));
-        newPlanningUnitField.focus();
-        transientIdCounter = 0l;
-        project = DaoFactorySingelton.getInstance().getProjectDAO().findByID(VaadinSession.getCurrent().getAttribute(PlannedProject.class).getId());
+    newPlanningUnitField.focus();
+    transientIdCounter = 0l;
+    project            = DaoFactorySingelton.getInstance()
+                                            .getProjectDAO()
+                                            .findByID(VaadinSession.getCurrent()
+                                                                   .getAttribute(PlannedProject.class)
+                                                                   .getId());
 //        container = new BeanItemContainer<>(PlanningUnit.class);
-        addButton = new Button("+");
-        saveButton = new Button(messages.getString("save"));
-        cancelButton = new Button(messages.getString("cancel"));
+    addButton    = new Button("+");
+    saveButton   = new Button(messages.getString("save"));
+    cancelButton = new Button(messages.getString("cancel"));
 
-        configureListSelect();
-        setAddButtonListener();
-        setCancelButtonListener();
-        setSaveButtonListener();
+    configureListSelect();
+    setAddButtonListener();
+    setCancelButtonListener();
+    setSaveButtonListener();
 
-        addDeleteLayout.add(newPlanningUnitField, addButton);
-        saveCancelLayout.add(saveButton, cancelButton);
+    addDeleteLayout.add(newPlanningUnitField, addButton);
+    saveCancelLayout.add(saveButton, cancelButton);
 
-        add(addDeleteLayout);
-        add(planningUnitSelect);
-        add(saveCancelLayout);
-    }
+    add(addDeleteLayout);
+    add(planningUnitSelect);
+    add(saveCancelLayout);
+  }
 
-    private void setCancelButtonListener(){
-        cancelButton.addClickListener(
-                (ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> AddRootPlanningUnitsWindow.this.close());
-    }
+  private void setCancelButtonListener() {
+    cancelButton.addClickListener(
+        (ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> AddRootPlanningUnitsWindow.this.close());
+  }
 
-    private void setSaveButtonListener(){
-        saveButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> {
-            final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-            daoFactory.new Transaction() {
-                @Override
-                public void doTask() {
-                    final EntityManager entityManager = daoFactory.getEntityManager();
-                    final Benutzer notAssignedUser = daoFactory.getBenutzerDAO().findByID(1l);
-                    for (final PlanningUnit newPlanningUnit : container) {
-                        newPlanningUnit.setId(null);
-                        final List<PlanningUnitElement> newPlanningUnitElements = createNewPlanningUnitElements
-                                (newPlanningUnit, daoFactory.getRessourceGroupDAO().loadAllEntities());
-                        for (PlanningUnitElement newPlanningUnitElement : newPlanningUnitElements) {
-                            entityManager.persist(newPlanningUnitElement);
-                        }
-                        newPlanningUnit.setResponsiblePerson(notAssignedUser);
-                        newPlanningUnit.setPlanningUnitElementList(newPlanningUnitElements);
-                        entityManager.persist(newPlanningUnit);
-                        project.getPlanningUnits().add(newPlanningUnit);
-                    }
-                    entityManager.merge(project);
-                    entityManager.flush();
-                    entityManager.refresh(project);
-                }
-            }.execute();
-            AddRootPlanningUnitsWindow.this.close();
-            planningUnitSelect.setItems(project.getPlanningUnits());
-            planningUnitSelect.getDataProvider().refreshAll();
-        });
-    }
-
-    private void configureListSelect() {
-        planningUnitSelect = new ListBox<>();
-        planningUnitSelect.setItems(container);
-        planningUnitSelect.setRenderer(new ComponentRenderer<>(gerateListBoxItem()));
-        planningUnitSelect.setWidth("100%");
-    }
-
-    private SerializableFunction<PlanningUnit, Component> gerateListBoxItem() {
-        return (SerializableFunction<PlanningUnit, Component>) planningUnit -> {
-            final Label urlLabel = new Label(planningUnit.getPlanningUnitName());
-            final Button button = new Button( new Icon(VaadinIcon.MINUS_CIRCLE), removeButtonClickEvent -> {
-                container.remove(planningUnit);
-                planningUnitSelect.getDataProvider().refreshAll();
-            });
-            final Div layout = new Div(urlLabel, button);
-            urlLabel.getStyle().set("display", "flex").set("flexDirection", "column").set("marginRight", "10px");
-            layout.getStyle().set("display", "flex").set("alignItems", "center");
-            return layout;
-        };
-    }
-
-    private void setAddButtonListener() {
-        addButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> {
-            try {
-                final Set<PlanningUnit> existingPlanningUnits = project.getPlanningUnits();
-                existingPlanningUnits.addAll(container);
-                final String newPlanningUnitName = newPlanningUnitField.getValue();
-                if(newPlanningUnitName.matches(Constants.EMPTY_OR_SPACES_ONLY_PATTERN)){
-                    throw new InvalidNameException();
-                }
-                for (final PlanningUnit planningUnit : existingPlanningUnits) {
-                    if(planningUnit.getPlanningUnitName().equals(newPlanningUnitName)){
-                        throw new SameNameException();
-                    }
-                }
-                final PlanningUnit newPlanningUnit = new PlanningUnit();
-                newPlanningUnit.setPlanningUnitName(newPlanningUnitName);
-                newPlanningUnit.setId(transientIdCounter);
-                container.add(newPlanningUnit);
-                transientIdCounter++;
-                planningUnitSelect.setItems(container);
-                newPlanningUnitField.setValue("");
-                newPlanningUnitField.focus();
-            } catch (final InvalidNameException e) {
-                Notification.show(messages.getString("planning_invalidname"));
-            } catch (final SameNameException e) {
-                Notification.show(messages.getString("planning_samename"));
+  private void setSaveButtonListener() {
+    saveButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> {
+      final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+      daoFactory.new Transaction() {
+        @Override
+        public void doTask() {
+          final EntityManager entityManager   = daoFactory.getEntityManager();
+          final Benutzer      notAssignedUser = daoFactory.getBenutzerDAO()
+                                                          .findByID(1l);
+          for (final PlanningUnit newPlanningUnit : container) {
+            newPlanningUnit.setId(null);
+            final List<PlanningUnitElement> newPlanningUnitElements = createNewPlanningUnitElements(newPlanningUnit,
+                                                                                                    daoFactory.getRessourceGroupDAO()
+                                                                                                              .loadAllEntities());
+            for (PlanningUnitElement newPlanningUnitElement : newPlanningUnitElements) {
+              entityManager.persist(newPlanningUnitElement);
             }
-        });
-    }
-
-    //Erzeugt neue 00:00:00-PlanningUnitElements für die neue PlanningUnit und weist diese der PlanningUnit zu.
-    private List<PlanningUnitElement> createNewPlanningUnitElements(final PlanningUnit planningUnit,
-                                               final List<RessourceGroup> ressourceGroups) {
-        List<PlanningUnitElement> planningUnitElements = new ArrayList<>();
-        planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
-        for (final RessourceGroup ressourceGroup : ressourceGroups) {
-            final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
-            planningUnitElement.setPlannedMinutes(0);
-            planningUnitElement.setRessourceGroup(ressourceGroup);
-            //daoFactory.saveOrUpdateTX(planningUnitElement);
-            //planningUnit.getPlanningUnitElementList().add(planningUnitElement);
-            planningUnitElements.add(planningUnitElement);
+            newPlanningUnit.setResponsiblePerson(notAssignedUser);
+            newPlanningUnit.setPlanningUnitElementList(newPlanningUnitElements);
+            entityManager.persist(newPlanningUnit);
+            project.getPlanningUnits()
+                   .add(newPlanningUnit);
+          }
+          entityManager.merge(project);
+          entityManager.flush();
+          entityManager.refresh(project);
         }
-        return planningUnitElements;
+      }.execute();
+      AddRootPlanningUnitsWindow.this.close();
+      planningUnitSelect.setItems(project.getPlanningUnits());
+      planningUnitSelect.getDataProvider()
+                        .refreshAll();
+    });
+  }
+
+  private void configureListSelect() {
+    planningUnitSelect = new ListBox<>();
+    planningUnitSelect.setItems(container);
+    planningUnitSelect.setRenderer(new ComponentRenderer<>(gerateListBoxItem()));
+    planningUnitSelect.setWidth("100%");
+  }
+
+  private SerializableFunction<PlanningUnit, Component> gerateListBoxItem() {
+    return (SerializableFunction<PlanningUnit, Component>) planningUnit -> {
+      final Label urlLabel = new Label(planningUnit.getPlanningUnitName());
+      final Button button = new Button(new Icon(VaadinIcon.MINUS_CIRCLE), removeButtonClickEvent -> {
+        container.remove(planningUnit);
+        planningUnitSelect.getDataProvider()
+                          .refreshAll();
+      });
+      final Div layout = new Div(urlLabel, button);
+      urlLabel.getStyle()
+              .set("display", "flex")
+              .set("flexDirection", "column")
+              .set("marginRight", "10px");
+      layout.getStyle()
+            .set("display", "flex")
+            .set("alignItems", "center");
+      return layout;
+    };
+  }
+
+  private void setAddButtonListener() {
+    addButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> {
+      try {
+        final Set<PlanningUnit> existingPlanningUnits = project.getPlanningUnits();
+        existingPlanningUnits.addAll(container);
+        final String newPlanningUnitName = newPlanningUnitField.getValue();
+        if (newPlanningUnitName.matches(Constants.EMPTY_OR_SPACES_ONLY_PATTERN)) {
+          throw new InvalidNameException();
+        }
+        for (final PlanningUnit planningUnit : existingPlanningUnits) {
+          if (planningUnit.getPlanningUnitName()
+                          .equals(newPlanningUnitName)) {
+            throw new SameNameException();
+          }
+        }
+        final PlanningUnit newPlanningUnit = new PlanningUnit();
+        newPlanningUnit.setPlanningUnitName(newPlanningUnitName);
+        newPlanningUnit.setId(transientIdCounter);
+        container.add(newPlanningUnit);
+        transientIdCounter++;
+        planningUnitSelect.setItems(container);
+        newPlanningUnitField.setValue("");
+        newPlanningUnitField.focus();
+      } catch (final InvalidNameException e) {
+        Notification.show(messages.getString("planning_invalidname"));
+      } catch (final SameNameException e) {
+        Notification.show(messages.getString("planning_samename"));
+      }
+    });
+  }
+
+  //Erzeugt neue 00:00:00-PlanningUnitElements für die neue PlanningUnit und weist diese der PlanningUnit zu.
+  private List<PlanningUnitElement> createNewPlanningUnitElements(final PlanningUnit planningUnit,
+                                                                  final List<RessourceGroup> ressourceGroups) {
+    List<PlanningUnitElement> planningUnitElements = new ArrayList<>();
+    planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
+    for (final RessourceGroup ressourceGroup : ressourceGroups) {
+      final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
+      planningUnitElement.setPlannedMinutes(0);
+      planningUnitElement.setRessourceGroup(ressourceGroup);
+      //daoFactory.saveOrUpdateTX(planningUnitElement);
+      //planningUnit.getPlanningUnitElementList().add(planningUnitElement);
+      planningUnitElements.add(planningUnitElement);
     }
+    return planningUnitElements;
+  }
 }

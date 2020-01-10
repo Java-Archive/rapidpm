@@ -1,22 +1,17 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.components.details;
 
-import com.vaadin.flow.component.*;
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.server.VaadinSession;
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.webapp.vaadin.MainUI;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 import org.rapidpm.webapp.vaadin.ui.EditableLayout;
+import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.stream.Stream;
 
 import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
 
@@ -32,7 +27,6 @@ import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
 
 public class PlanningDetailsEditableLayout extends EditableLayout {
 
-    private static final Logger logger = Logger.getLogger(PlanningDetailsEditableLayout.class);
 
     private PlanningDetailsFieldGroup fieldGroup;
     private ResourceBundle messages;
@@ -63,9 +57,9 @@ public class PlanningDetailsEditableLayout extends EditableLayout {
                 fieldGroup.setReadOnly(true);
                 getButtonLayout().ifPresent(parent -> parent.getChildren().forEach(component -> component.setVisible(false)));
             }catch (final NullPointerException e){
-                logger.info(COMMIT_EXCEPTION_MESSAGE);
+//                logger.info(COMMIT_EXCEPTION_MESSAGE);
             }catch(final Exception e){
-                logger.warn("Exception", e);
+//                logger.warn("Exception", e);
             }
         });
     }

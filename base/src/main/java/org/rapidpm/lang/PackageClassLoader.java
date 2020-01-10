@@ -14,7 +14,6 @@ package org.rapidpm.lang;
  *
  */
 
-import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.lang.annotation.Annotation;
@@ -25,7 +24,6 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 public class PackageClassLoader {
-    private static final Logger logger = Logger.getLogger(PackageClassLoader.class);
 
     public static final String CLASSLIST_FILE = "classlist.txt";
 
@@ -61,9 +59,6 @@ public class PackageClassLoader {
     public List<Class> getClasses(final String packageName) {
         final ClassLoader startClassLoader = Thread.currentThread().getContextClassLoader();
         //        final ClassLoader startClassLoader = ClassLoader..getContextClassLoader();
-        if (logger.isDebugEnabled()) {
-            logger.debug("ClassLoader current Thread : " + startClassLoader);
-        }
         final List<Class> classes = new ArrayList<>();
         final String path = packageName.replace('.', '/');
 
@@ -92,31 +87,20 @@ public class PackageClassLoader {
                     final URL resource = resources.nextElement();
                     //                final String fileName = resource.getFile();
                     final String fileName = resource.getFile().replace("%20", " "); // REFAC Leerzeichen im Pfad (%20)!?
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("ClassLoader fileName = " + fileName);
-                    }
                     if (fileName.contains(".jar")) {
                         final String jarPath = resource.getPath();
                         final String jarFileName = jarPath.split(".jar")[0] + ".jar";
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("Füge JAR hinzu : " + jarFileName);
-                        }
                         jars.add(new File(jarFileName.replace("file:", ".")));
                     } else {
-                        logger.debug("Füge Dir hinzu " + fileName);
                         dirs.add(new File(fileName));
                     }
                 }
             } catch (IOException e) {
-                logger.error(e);
             }
 
 
             for (final File directory : dirs) {
                 final List<Class> list = findClassesInDirectories(directory, packageName);
-                if (logger.isDebugEnabled()) {
-                    logger.debug("ClassLoader list = " + list);
-                }
                 classes.addAll(list);
             }
 
@@ -127,7 +111,6 @@ public class PackageClassLoader {
             try {
                 final InputStream resourceAsStream = startClassLoader.getResourceAsStream(CLASSLIST_FILE);
                 if (resourceAsStream == null) {
-                    logger.error("Classlist '" + CLASSLIST_FILE + "' existiert nicht");
                 } else {
                     final BufferedReader bis = new BufferedReader(new InputStreamReader(resourceAsStream));
 
@@ -137,15 +120,12 @@ public class PackageClassLoader {
                             final Class<?> aClass = startClassLoader.loadClass(line);
                             classes.add(aClass);
                         } catch (ClassNotFoundException e) {
-                            logger.error("Fehler beim Versuch diese Klasse zu laden : " + line);
-                            logger.error(e);
                         }
                         line = bis.readLine();
                     }
 
                 }
             } catch (IOException e) {
-                logger.error(e);
             }
         }
 
@@ -160,9 +140,6 @@ public class PackageClassLoader {
             final Enumeration<? extends ZipEntry> entries = zipFile.entries();
             while (entries.hasMoreElements()) {
                 final ZipEntry zipEntry = entries.nextElement();
-                if (logger.isDebugEnabled()) {
-                    logger.debug("ZipEntry : " + zipEntry);
-                }
                 final String name = zipEntry.getName();
                 if (name.contains(path) && name.endsWith(".class")) {
                     try {
@@ -172,16 +149,11 @@ public class PackageClassLoader {
                             classes.add(aClass);
                         }
                     } catch (ClassNotFoundException e) {
-                        logger.error(e);
                     }
                 }
             }
         } catch (ZipException e) {
-            logger.error("findClassesInJars (ZipException) - Versuchte folgende Datei zu öffnen : " + jar.getAbsolutePath());
-            logger.error(e);
         } catch (IOException e) {
-            logger.error("findClassesInJars (IOException) - Versuchte folgende Datei zu öffnen : " + jar.getAbsolutePath());
-            logger.error(e);
         }
     }
 
@@ -197,7 +169,6 @@ public class PackageClassLoader {
     private List<Class> findClassesInDirectories(final File directory, final String packageName) {
         final List<Class> classes = new ArrayList<>();
         if (!directory.exists()) {
-            logger.warn("findClassesInDirectories : directory existiert nicht: " + directory.getAbsolutePath());
 
         } else {
             final File[] files = directory.listFiles();
@@ -213,7 +184,6 @@ public class PackageClassLoader {
                         final Class<?> aClass = startClassLoader.loadClass(classNameForLoading);
                         classes.add(aClass);
                     } catch (ClassNotFoundException e) {
-                        logger.error(e);
                     }
                 }
             }

@@ -8,14 +8,11 @@ package org.rapidpm.persistence.prj.stammdaten.kommunikation;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 
 @Entity
 public class KommunikationsServiceUIDPartKlassifikation {
-    private static final Logger logger = Logger.getLogger(KommunikationsServiceUIDPartKlassifikation.class);
-
 
     @Id
     @TableGenerator(name = "PKGenKommunikationsServiceUIDKlassifikation", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "KommunikationsServiceUIDKlassifikation_id", valueColumnName = "gen_value", allocationSize = 1)

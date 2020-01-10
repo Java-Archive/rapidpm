@@ -17,8 +17,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="base" />
-        <module name="webgui" />
         <module name="webservice" />
+        <module name="webgui" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

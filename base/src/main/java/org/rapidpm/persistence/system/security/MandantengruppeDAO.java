@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.system.security;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -15,7 +14,6 @@ import javax.persistence.TypedQuery;
  * please contact sven.ruppert@me.com
  */
 public class MandantengruppeDAO extends DAO<Long, Mandantengruppe> {
-    private static final Logger logger = Logger.getLogger(MandantengruppeDAO.class);
 
     public MandantengruppeDAO(final EntityManager entityManager) {
         super(entityManager, Mandantengruppe.class);

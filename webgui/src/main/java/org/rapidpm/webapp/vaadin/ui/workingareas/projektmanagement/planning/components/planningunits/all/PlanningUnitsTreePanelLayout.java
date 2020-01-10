@@ -8,12 +8,10 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.shared.Registration;
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
-import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.workingareas.Internationalizationable;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.ProjektplanungScreen;
 
@@ -27,118 +25,126 @@ import java.util.ResourceBundle;
  * This is part of the RapidPM - www.rapidpm.org project. please contact chef@sven-ruppert.de
  */
 
-public class PlanningUnitsTreePanelLayout extends HorizontalLayout implements Internationalizationable {
+public class PlanningUnitsTreePanelLayout
+    extends HorizontalLayout
+    implements Internationalizationable {
 
-    private static final Logger logger = Logger.getLogger(PlanningUnitsTreePanelLayout.class);
-    private VerticalLayout leftLayout = new VerticalLayout();
+  private VerticalLayout leftLayout = new VerticalLayout();
 
-    private HorizontalLayout buttonLayout = new HorizontalLayout();
-    private PlannedProject projekt;
+  private HorizontalLayout buttonLayout = new HorizontalLayout();
+  private PlannedProject   projekt;
 
-    private Button addButton;
-    private Button deleteButton;
-    private Button renameButton = new Button();
-    private ResourceBundle messages;
-    private DaoFactory daoFactory;
+  private Button         addButton;
+  private Button         deleteButton;
+  private Button         renameButton = new Button();
+  private ResourceBundle messages;
+  private DaoFactory     daoFactory;
 
-    private Registration addButtonListener;
-    private ProjektplanungScreen screen;
+  private Registration         addButtonListener;
+  private ProjektplanungScreen screen;
 
-    public PlanningUnitsTreePanelLayout(final PlannedProject projekt, final ProjektplanungScreen screen) {
-        this.screen = screen;
-        this.projekt = projekt;
-        daoFactory = DaoFactorySingelton.getInstance();
+  public PlanningUnitsTreePanelLayout(final PlannedProject projekt, final ProjektplanungScreen screen) {
+    this.screen  = screen;
+    this.projekt = projekt;
+    daoFactory   = DaoFactorySingelton.getInstance();
 
-        messages = VaadinSession.getCurrent().getAttribute(ResourceBundle.class);
-        createDeleteButton();
-        createAddButton();
-        createRenameButton();
-        buildForm();
-        doInternationalization();
+    messages = VaadinSession.getCurrent()
+                            .getAttribute(ResourceBundle.class);
+    createDeleteButton();
+    createAddButton();
+    createRenameButton();
+    buildForm();
+    doInternationalization();
+  }
+
+  private void createRenameButton() {
+    renameButton.addClickListener(
+        (ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> new RenamePlanningUnitWindow(screen).open());
+  }
+
+  private void createAddButton() {
+    addButton = screen.getAddButton();
+    if (addButtonListener != null) {
+      addButtonListener.remove();
     }
+    addButtonListener = addButton.addClickListener(
+        (ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> new AddWindow(screen).open());
 
-    private void createRenameButton() {
-        renameButton.addClickListener(
-                (ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> new RenamePlanningUnitWindow(screen).open());
-    }
+  }
 
-    private void createAddButton() {
-        addButton = screen.getAddButton();
-        if (addButtonListener != null) {
-            addButtonListener.remove();
+  private void createDeleteButton() {
+    deleteButton = screen.getDeleteButton();
+    deleteButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> {
+      try {
+        final PlanningUnit planningUnit = screen.getPlanningUnitsTree()
+                                                .getSelectedItems()
+                                                .iterator()
+                                                .next();
+        final PlanningUnit managedPlanningUnit = daoFactory.getPlanningUnitDAO()
+                                                           .findByID(planningUnit.getId());
+        if (managedPlanningUnit == null) {
+          throw new PlatzhalterException();
         }
-        addButtonListener = addButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> new AddWindow(screen).open());
-
-    }
-
-    private void createDeleteButton() {
-        deleteButton = screen.getDeleteButton();
-        deleteButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> {
-            try {
-                final PlanningUnit planningUnit = screen.getPlanningUnitsTree().getSelectedItems().iterator().next();
-                final PlanningUnit managedPlanningUnit = daoFactory.getPlanningUnitDAO().findByID
-                        (planningUnit.getId());
-                if(managedPlanningUnit == null){
-                    throw new PlatzhalterException();
-                }
-                if(managedPlanningUnit.getKindPlanningUnits() != null && !managedPlanningUnit.getKindPlanningUnits
-                        ().isEmpty()){
-                    throw new Exception();
-                }
-                final PlanningUnit parentPlanningUnit = managedPlanningUnit.getParent();
-                projekt = daoFactory.getPlannedProjectDAO().findByID(projekt.getId());
-
-                if(parentPlanningUnit == null){
-                    projekt.getPlanningUnits().remove(managedPlanningUnit);
-                    daoFactory.saveOrUpdateTX(projekt);
-                }
-                else{
-                    parentPlanningUnit.getKindPlanningUnits().remove(managedPlanningUnit);
-                    daoFactory.saveOrUpdateTX(parentPlanningUnit);
-                }
-                daoFactory.removeTX(managedPlanningUnit);
-                for(final PlanningUnit pu : projekt.getPlanningUnits()){
-                    logger.info(pu.getPlanningUnitName()+": "+pu.getKindPlanningUnits());
-                    for(final PlanningUnit pu1 : pu.getKindPlanningUnits()){
-                        logger.info("\t"+pu1.getPlanningUnitName()+": "+pu1.getKindPlanningUnits());
-                    }
-                }
-            }catch (final PlatzhalterException e){
-                Notification.show(messages.getString("planning_placeholder_delete"));
-            } catch (final Exception e) {
-                e.printStackTrace();
-                Notification.show(messages.getString("planning_nodelete"));
-            }
-        });
-    }
-
-    protected void buildForm() {
-        buttonLayout.add(addButton, deleteButton, renameButton);
-        leftLayout.add(buttonLayout);
-        leftLayout.add(screen.getPlanningUnitsTree());
-        add(leftLayout);
-    }
-
-    public Button getDeleteButton() {
-        return deleteButton;
-    }
-
-    public Button getRenameButton() {
-        return renameButton;
-    }
-
-    @Override
-    public void doInternationalization() {
-        renameButton.setText(messages.getString("rename"));
-    }
-
-    public Button getAddButton() {
-        return addButton;
-    }
-
-    public void removeListeners() {
-        if (addButtonListener != null) {
-            addButtonListener.remove();
+        if (managedPlanningUnit.getKindPlanningUnits() != null && !managedPlanningUnit.getKindPlanningUnits()
+                                                                                      .isEmpty()) {
+          throw new Exception();
         }
+        final PlanningUnit parentPlanningUnit = managedPlanningUnit.getParent();
+        projekt = daoFactory.getPlannedProjectDAO()
+                            .findByID(projekt.getId());
+
+        if (parentPlanningUnit == null) {
+          projekt.getPlanningUnits()
+                 .remove(managedPlanningUnit);
+          daoFactory.saveOrUpdateTX(projekt);
+        } else {
+          parentPlanningUnit.getKindPlanningUnits()
+                            .remove(managedPlanningUnit);
+          daoFactory.saveOrUpdateTX(parentPlanningUnit);
+        }
+        daoFactory.removeTX(managedPlanningUnit);
+        for (final PlanningUnit pu : projekt.getPlanningUnits()) {
+//          logger.info(pu.getPlanningUnitName() + ": " + pu.getKindPlanningUnits());
+          for (final PlanningUnit pu1 : pu.getKindPlanningUnits()) {
+//            logger.info("\t" + pu1.getPlanningUnitName() + ": " + pu1.getKindPlanningUnits());
+          }
+        }
+      } catch (final PlatzhalterException e) {
+        Notification.show(messages.getString("planning_placeholder_delete"));
+      } catch (final Exception e) {
+        e.printStackTrace();
+        Notification.show(messages.getString("planning_nodelete"));
+      }
+    });
+  }
+
+  protected void buildForm() {
+    buttonLayout.add(addButton, deleteButton, renameButton);
+    leftLayout.add(buttonLayout);
+    leftLayout.add(screen.getPlanningUnitsTree());
+    add(leftLayout);
+  }
+
+  public Button getDeleteButton() {
+    return deleteButton;
+  }
+
+  public Button getRenameButton() {
+    return renameButton;
+  }
+
+  @Override
+  public void doInternationalization() {
+    renameButton.setText(messages.getString("rename"));
+  }
+
+  public Button getAddButton() {
+    return addButton;
+  }
+
+  public void removeListeners() {
+    if (addButtonListener != null) {
+      addButtonListener.remove();
     }
+  }
 }

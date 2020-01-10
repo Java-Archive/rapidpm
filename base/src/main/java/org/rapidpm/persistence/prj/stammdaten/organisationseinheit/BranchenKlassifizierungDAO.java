@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -20,7 +19,6 @@ import javax.persistence.TypedQuery;
  */
 
 public class BranchenKlassifizierungDAO extends DAO<Long, BrancheKlassifizierung> {
-    private static final Logger logger = Logger.getLogger(BranchenKlassifizierungDAO.class);
 
     public BranchenKlassifizierungDAO(final EntityManager entityManager) {
         super(entityManager, BrancheKlassifizierung.class);

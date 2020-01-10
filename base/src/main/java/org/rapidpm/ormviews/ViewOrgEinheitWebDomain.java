@@ -6,10 +6,8 @@ package org.rapidpm.ormviews; /**
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
-import org.apache.log4j.Logger;
 
 public class ViewOrgEinheitWebDomain {
-    private static final Logger logger = Logger.getLogger(ViewOrgEinheitWebDomain.class);
     private String nameDesUnternehmens;
     private String webdomains;
     private long ordOID;

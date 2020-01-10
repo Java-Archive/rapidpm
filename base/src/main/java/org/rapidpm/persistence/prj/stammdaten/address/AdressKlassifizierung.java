@@ -14,14 +14,12 @@ package org.rapidpm.persistence.prj.stammdaten.address;
  *
  */
 
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
 public class AdressKlassifizierung {
-    private static final Logger logger = Logger.getLogger(AdressKlassifizierung.class);
 
     @Id
     @TableGenerator(name = "PKGenAdressKlassifizierung", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "AdressKlassifizierung_id", valueColumnName = "gen_value", allocationSize = 1)

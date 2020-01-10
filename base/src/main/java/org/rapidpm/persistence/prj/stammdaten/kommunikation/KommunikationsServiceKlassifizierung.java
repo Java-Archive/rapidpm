@@ -14,7 +14,6 @@ package org.rapidpm.persistence.prj.stammdaten.kommunikation;
  *
  */
 
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 
@@ -28,7 +27,6 @@ import javax.persistence.*;
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
 public class KommunikationsServiceKlassifizierung {
-    private static final Logger logger = Logger.getLogger(KommunikationsServiceKlassifizierung.class);
 
     @Id
     @TableGenerator(name = "PKGenKommunikationsServiceKlassifizierung", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "KommunikationsServiceKlassifizierung_id", valueColumnName = "gen_value", allocationSize = 1)

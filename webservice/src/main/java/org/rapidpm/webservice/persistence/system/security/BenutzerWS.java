@@ -1,6 +1,5 @@
 package org.rapidpm.webservice.persistence.system.security;
 
-import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
@@ -18,7 +17,6 @@ import javax.jws.WebService;
  */
 @WebService(serviceName = "BenutzerWS")
 public class BenutzerWS extends FlatBaseWS<Benutzer, BenutzerDAO, FlatBenutzer> {
-    private static final Logger logger = Logger.getLogger(BenutzerWS.class);
 
     public BenutzerWS() {
         super(Benutzer.class, FlatBenutzer.class);

@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit.metadata;
 
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 
@@ -20,7 +19,6 @@ import javax.persistence.*;
 @Entity
 //@Table(name = "verwaltungseinheit")
 public class Verwaltungseinheit {
-    private static final Logger logger = Logger.getLogger(Verwaltungseinheit.class);
 
 
     @Id

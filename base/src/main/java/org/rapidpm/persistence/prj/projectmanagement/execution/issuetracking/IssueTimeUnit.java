@@ -1,7 +1,6 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
 import org.rapidpm.persistence.system.security.Benutzer;
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -21,7 +20,6 @@ import java.util.Date;
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
 public class IssueTimeUnit {
-    private static final Logger logger = Logger.getLogger(IssueTimeUnit.class);
 
     @Id
     @TableGenerator(name = "PKGenIssueTimeUnit", table = "pk_gen",

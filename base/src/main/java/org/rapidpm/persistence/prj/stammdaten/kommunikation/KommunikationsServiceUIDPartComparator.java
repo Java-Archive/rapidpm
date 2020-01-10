@@ -12,14 +12,11 @@ package org.rapidpm.persistence.prj.stammdaten.kommunikation;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
-import org.apache.log4j.Logger;
 
 import java.io.Serializable;
 import java.util.Comparator;
 
 public class KommunikationsServiceUIDPartComparator implements Comparator<KommunikationsServiceUIDPart>, Serializable {
-    private static final Logger logger = Logger.getLogger(KommunikationsServiceUIDPartComparator.class);
-
 
     @Override
     public int compare(final KommunikationsServiceUIDPart o1, final KommunikationsServiceUIDPart o2) {

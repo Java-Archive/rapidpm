@@ -6,10 +6,8 @@ package org.rapidpm.logging; /**
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
-import org.apache.log4j.Logger;
 
 public abstract class TimeLoggerExecuter {
-    private static final Logger logger = Logger.getLogger(TimeLoggerExecuter.class);
 
 
     public abstract void loggingTimeFrom();
@@ -33,9 +31,6 @@ public abstract class TimeLoggerExecuter {
         deltaTime = (stop - start);
 
         final String message = loggingTimeMsgPrefix + " logged DeltaTime [ns]= " + deltaTime;
-        if (logger.isDebugEnabled()) {
-            logger.debug(message);
-        }
 
         if (printSOUT) {
             System.out.println(message);

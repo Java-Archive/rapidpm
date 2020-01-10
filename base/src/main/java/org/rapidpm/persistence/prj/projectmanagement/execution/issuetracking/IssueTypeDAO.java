@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
-import org.apache.log4j.Logger;
 import org.neo4j.graphdb.*;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.GraphBaseDAO;
@@ -16,7 +15,6 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class IssueTypeDAO extends GraphBaseDAO<IssueType> {
-    private static final Logger logger = Logger.getLogger(IssueTypeDAO.class);
 
     public IssueTypeDAO(final GraphDatabaseService graphDb, DaoFactory relDaoFactory) {
         super(graphDb, IssueType.class, relDaoFactory);

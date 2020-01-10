@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.textelement;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -14,8 +13,6 @@ import javax.persistence.EntityManager;
  */
 
 public class AbsatzDAO extends DAO<Long, Absatz> {
-    private static final Logger logger = Logger.getLogger(AbsatzDAO.class);
-
 
     public AbsatzDAO(final EntityManager entityManager) {
         super(entityManager, Absatz.class);

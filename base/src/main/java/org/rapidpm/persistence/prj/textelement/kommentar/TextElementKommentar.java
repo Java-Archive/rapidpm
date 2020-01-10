@@ -9,15 +9,12 @@ package org.rapidpm.persistence.prj.textelement.kommentar;
  */
 
 import org.rapidpm.persistence.system.security.Benutzer;
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 public class TextElementKommentar {
-    private static final Logger logger = Logger.getLogger(TextElementKommentar.class);
-
     @TableGenerator(name = "PKGenTextElementKommentar", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "TextElementKommentar_id",
             valueColumnName = "gen_value", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.TABLE,

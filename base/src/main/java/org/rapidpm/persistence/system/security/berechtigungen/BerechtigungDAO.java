@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.system.security.berechtigungen;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -19,16 +18,15 @@ import javax.persistence.TypedQuery;
  */
 
 public class BerechtigungDAO extends DAO<Long, Berechtigung> {
-    private static final Logger logger = Logger.getLogger(BerechtigungDAO.class);
 
     public BerechtigungDAO(final EntityManager entityManager) {
         super(entityManager, Berechtigung.class);
     }
 
     public Berechtigung loadBerechtigung(final String name) {
-        if (logger.isInfoEnabled()) {
-            logger.info("loadBerechtigung : " + name);
-        }
+//        if (logger.isInfoEnabled()) {
+//            logger.info("loadBerechtigung : " + name);
+//        }
         final TypedQuery<Berechtigung> query = entityManager.createQuery("from Berechtigung  b where b.name=:name", Berechtigung.class)
                 .setParameter("name", name);
         return getSingleResultOrNull(query);

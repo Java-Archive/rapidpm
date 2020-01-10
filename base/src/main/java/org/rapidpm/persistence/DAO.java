@@ -6,7 +6,6 @@
 package org.rapidpm.persistence;
 
 import com.google.common.base.Joiner;
-import org.apache.log4j.Logger;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.query.AuditEntity;
@@ -33,7 +32,6 @@ import java.util.*;
  */
 
 public class DAO<K extends Number, E> implements Serializable {
-    private static final Logger logger = Logger.getLogger(DAO.class);
 
 //    @Inject()
 //    private LogFactory loggerFactory
@@ -72,9 +70,9 @@ public class DAO<K extends Number, E> implements Serializable {
         if (entityManager != null) {
             entityManager.flush();
         } else {
-            if (logger.isDebugEnabled()) {
-                logger.debug("EM is null not flushing");
-            }
+//            if (logger.isDebugEnabled()) {
+//                logger.debug("EM is null not flushing");
+//            }
         }
     }
 
@@ -117,7 +115,6 @@ public class DAO<K extends Number, E> implements Serializable {
                 final Method method = aClass.getDeclaredMethod("getId");
                 oid = (Long) method.invoke(entity);
             } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                logger.error(e);
             }
             return oid;
         }
@@ -220,9 +217,6 @@ public class DAO<K extends Number, E> implements Serializable {
     public List<E> loadWithOIDList(final List<Long> oids) {
         final List<E> entityliste = new ArrayList<>();
         if (oids == null || oids.isEmpty()) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("OID-Liste war leer bzw. null..");
-            }
         } else {
             String oidtxt = "";
             for (int i = 0; i < oids.size(); i++) {
@@ -255,9 +249,6 @@ public class DAO<K extends Number, E> implements Serializable {
     public Set<E> loadWithOIDSet(final Set<Long> oids) {
         final Set<E> entitySet = new HashSet<>();
         if (oids == null || oids.isEmpty()) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("OID-Set war leer bzw. null..");
-            }
         } else {
             final String oidtxt = Joiner.on(',').skipNulls().join(oids);
             final TypedQuery<E> query = entityManager.createQuery("from " + entityClass.getName() + " e where e.id in (" + oidtxt + ")", entityClass);
@@ -289,7 +280,6 @@ public class DAO<K extends Number, E> implements Serializable {
             final E singleResult = typedQuery.getSingleResult();
             return singleResult;
         } catch (Exception e) {
-            logger.info(e);
             return null;
 //                try {
 //                    return entityClass.newInstance();

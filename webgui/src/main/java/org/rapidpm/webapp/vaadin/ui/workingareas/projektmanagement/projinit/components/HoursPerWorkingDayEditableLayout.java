@@ -1,23 +1,11 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.components;
 
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.server.VaadinSession;
-import org.apache.log4j.Logger;
-import org.rapidpm.persistence.DaoFactory;
-import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
-import org.rapidpm.webapp.vaadin.MainUI;
 import org.rapidpm.webapp.vaadin.ui.EditableLayout;
-import org.rapidpm.webapp.vaadin.ui.workingareas.Screen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.DaysHoursMinutesItem;
 import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.administration.uicomponents.ProjektFieldGroup;
-import org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.projinit.AufwandProjInitScreen;
-import org.rapidpm.webapp.vaadin.ui.workingareas.stammdaten.stundensaetze.StundensaetzeScreen;
-
-import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,7 +20,6 @@ public class HoursPerWorkingDayEditableLayout extends EditableLayout {
     private ComboBox hoursBox;
     private PlannedProject project;
 
-    private static final Logger logger = Logger.getLogger(HoursPerWorkingDayEditableLayout.class);
     public HoursPerWorkingDayEditableLayout() {
         final VaadinSession session = VaadinSession.getCurrent();
         project = session.getAttribute(PlannedProject.class);

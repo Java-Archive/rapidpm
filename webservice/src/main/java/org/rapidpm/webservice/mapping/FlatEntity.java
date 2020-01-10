@@ -1,6 +1,5 @@
 package org.rapidpm.webservice.mapping;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 import org.rapidpm.persistence.DaoFactory;
 
@@ -17,7 +16,6 @@ import java.util.Set;
  * @see EntityMapper
  */
 public abstract class FlatEntity<T> {
-    private static final Logger logger = Logger.getLogger(FlatEntity.class);
     protected static final DAO.EntityUtils entityUtils = new DAO.EntityUtils();
 
     protected Long id;
@@ -74,10 +72,8 @@ public abstract class FlatEntity<T> {
                 if (id != null && id > 0L) {
                     idSet.add(id);
                 } else {
-                    logger.warn("Entity has no valid ID: " + entity);
                 }
             } else {
-                logger.warn("Entity is null.");
             }
         }
         return idSet;

@@ -1,6 +1,5 @@
 package org.rapidpm.webservice.persistence.prj.projectmanagement.planning;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
 import org.rapidpm.webservice.mapping.FlatBaseWS;
@@ -13,7 +12,6 @@ import javax.jws.WebService;
  */
 @WebService(serviceName = "PlannedProjectWS")
 public class PlannedProjectWS extends FlatBaseWS<PlannedProject, PlannedProjectDAO, FlatPlannedProject> {
-    private static final Logger logger = Logger.getLogger(PlannedProjectWS.class);
 
     public PlannedProjectWS() {
         super(PlannedProject.class, FlatPlannedProject.class);

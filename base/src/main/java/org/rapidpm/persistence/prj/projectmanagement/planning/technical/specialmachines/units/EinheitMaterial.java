@@ -6,11 +6,9 @@ package org.rapidpm.persistence.prj.projectmanagement.planning.technical.special
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
-import org.apache.log4j.Logger;
 
 
 public class EinheitMaterial {
-    private static final Logger logger = Logger.getLogger(EinheitMaterial.class);
 
 
 }

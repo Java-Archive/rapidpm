@@ -4,7 +4,6 @@
 
 package org.rapidpm.tools.registry;
 
-import org.apache.log4j.Logger;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
@@ -16,7 +15,6 @@ import java.util.Map;
  * @author Alexander Vos
  */
 public final class Registry {
-    private static final Logger logger = Logger.getLogger(Registry.class);
 
     // verwaltet alle konkreten Registries als Singleton-Objekte
     private static final Map<Class<? extends AbstractRegistry<?, ?>>, AbstractRegistry<?, ?>> registryMap =
@@ -40,7 +38,6 @@ public final class Registry {
                 registry = registryClass.newInstance();
                 registryMap.put(registryClass, registry);
             } catch (InstantiationException | IllegalAccessException e) {
-                logger.error(e);
             }
         }
         return registry;

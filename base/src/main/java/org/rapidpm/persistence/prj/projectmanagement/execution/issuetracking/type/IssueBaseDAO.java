@@ -1,7 +1,6 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking.type;
 
 
-import org.apache.log4j.Logger;
 import org.neo4j.graphdb.*;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
@@ -23,7 +22,6 @@ import java.util.List;
  */
 
 public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
-    private static final Logger logger = Logger.getLogger(IssueBaseDAO.class);
 
     public IssueBaseDAO(final GraphDatabaseService graphDb, final DaoFactory relDaoFactory) {
         super(graphDb, IssueBase.class, relDaoFactory);
@@ -34,21 +32,21 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         boolean success = false;
         final Transaction tx = graphDb.beginTx();
         try {
-            if(logger.isDebugEnabled())
-                logger.debug("connectEntitiesWithRelationTx");
+//            if(logger.isDebugEnabled())
+//                logger.debug("connectEntitiesWithRelationTx");
             connectEntitiesWithRelation(start, end, relation);
             tx.success();
             success = true;
         } catch (NullPointerException | IllegalArgumentException e) {
-            logger.error(e.getMessage(), e);
+//            logger.error(e.getMessage(), e);
         } finally {
             tx.finish();
-            if (logger.isDebugEnabled()) {
-                if (success)
-                    logger.debug("Successfull");
-                else
-                    logger.debug("Unsuccessfull");
-            }
+//            if (logger.isDebugEnabled()) {
+//                if (success)
+//                    logger.debug("Successfull");
+//                else
+//                    logger.debug("Unsuccessfull");
+//            }
             return success;
         }
     }
@@ -76,8 +74,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             throw new IllegalArgumentException("Id of relation cant be null. Persist first.");
 
 
-        if(logger.isDebugEnabled())
-            logger.debug("connectEntitiesWithRelation");
+//        if(logger.isDebugEnabled())
+//            logger.debug("connectEntitiesWithRelation");
 
         boolean alreadyExist = false;
         final Node startNode = graphDb.getNodeById(startId);
@@ -102,11 +100,11 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             if (!relExist) {
                 startNode.createRelationshipTo(relationNode, relType);
             } else {
-                if (logger.isDebugEnabled())
-                    logger.debug("Relation to RelationNode already exists. continue...");
+//                if (logger.isDebugEnabled())
+//                    logger.debug("Relation to RelationNode already exists. continue...");
             }
         } else {
-            logger.warn("Relation aleady exists: start: " + start + ", end: " + end + ", relation: " + relation);
+//            logger.warn("Relation aleady exists: start: " + start + ", end: " + end + ", relation: " + relation);
         }
     }
 
@@ -127,8 +125,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         if (direction == null)
             throw new NullPointerException("Direction is null.");
 
-        if(logger.isDebugEnabled())
-            logger.debug("getConnectedIssuesWithRelation");
+//        if(logger.isDebugEnabled())
+//            logger.debug("getConnectedIssuesWithRelation");
 
         final Node startNode = graphDb.getNodeById(issue.getId());
         final List<IssueBase> issueList = new ArrayList<>();
@@ -145,21 +143,21 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         boolean success = false;
         final Transaction tx = graphDb.beginTx();
         try {
-            if(logger.isDebugEnabled())
-                logger.debug("deleteRelationOfEntitiesTx");
+//            if(logger.isDebugEnabled())
+//                logger.debug("deleteRelationOfEntitiesTx");
             deleteRelationOfEntities(start, end, relation, direction);
             tx.success();
             success = true;
         } catch (NullPointerException | IllegalArgumentException e) {
-            logger.error(e.getMessage(), e);
+//            logger.error(e.getMessage(), e);
         } finally {
             tx.finish();
-            if (logger.isDebugEnabled()) {
-                if (success)
-                    logger.debug("Successfull");
-                else
-                    logger.debug("Unsuccessfull");
-            }
+//            if (logger.isDebugEnabled()) {
+//                if (success)
+//                    logger.debug("Successfull");
+//                else
+//                    logger.debug("Unsuccessfull");
+//            }
             return success;
         }
     }
@@ -191,15 +189,15 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             throw new NullPointerException("Direction is null.");
 
 
-        if (logger.isDebugEnabled())
-            logger.debug("deleteRelationOfEntities");
+//        if (logger.isDebugEnabled())
+//            logger.debug("deleteRelationOfEntities");
 
         final Node startNode = graphDb.getNodeById(start.getId());
         final Node endNode = graphDb.getNodeById(end.getId());
         for (final Relationship rel : startNode.getRelationships(relation, direction)) {
             if (rel.getOtherNode(startNode).equals(endNode)) {
-                if (logger.isDebugEnabled())
-                    logger.debug("delete relation between" + start + ", " + end);
+//                if (logger.isDebugEnabled())
+//                    logger.debug("delete relation between" + start + ", " + end);
 
                 final Node referenceNode = rel.getStartNode();
                 rel.delete();
@@ -213,21 +211,21 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
                     for (Relationship relToRelNode : referenceNode.getRelationships(relType, Direction.OUTGOING)) {
                         if (relToRelNode.getEndNode().equals(relationNode)) {
                             relToRelNode.delete();
-                            if (logger.isDebugEnabled())
-                                logger.debug("No more relations of type: " + relation + " present. Delete relation to " +
-                                        "RelationNode");
+//                            if (logger.isDebugEnabled())
+//                                logger.debug("No more relations of type: " + relation + " present. Delete relation to " +
+//                                        "RelationNode");
                             break;
                         }
                     }
 
                 } else {
-                    if (logger.isDebugEnabled())
-                        logger.debug("Issue has more relations of type: " + relation);
+//                    if (logger.isDebugEnabled())
+//                        logger.debug("Issue has more relations of type: " + relation);
                 }
             }
-            else
-                if (logger.isDebugEnabled())
-                    logger.debug("Issue " + start + "has no relation to: " + end);
+//            else
+//                if (logger.isDebugEnabled())
+//                    logger.debug("Issue " + start + "has no relation to: " + end);
         }
     }
 
@@ -236,21 +234,21 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         boolean success = false;
         Transaction tx = graphDb.beginTx();
         try {
-            if(logger.isDebugEnabled())
-                logger.debug("addSubIssueTx");
+//            if(logger.isDebugEnabled())
+//                logger.debug("addSubIssueTx");
             addSubIssue(parent, child);
             tx.success();
             success = true;
         } catch (NullPointerException | IllegalArgumentException e) {
-            logger.error(e.getMessage(), e);
+//            logger.error(e.getMessage(), e);
         } finally {
             tx.finish();
-            if (logger.isDebugEnabled()) {
-                if (success)
-                    logger.debug("Successfull");
-                else
-                    logger.debug("Unsuccessfull");
-            }
+//            if (logger.isDebugEnabled()) {
+//                if (success)
+//                    logger.debug("Successfull");
+//                else
+//                    logger.debug("Unsuccessfull");
+//            }
             return success;
         }
     }
@@ -275,8 +273,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
                     ".");
 
 
-        if (logger.isDebugEnabled())
-            logger.debug("addSubIssue");
+//        if (logger.isDebugEnabled())
+//            logger.debug("addSubIssue");
 
         Node childNode = graphDb.getNodeById(childId);
         final RelationshipType relType = GraphRelationFactory.getSubIssueRelationshipType();
@@ -296,8 +294,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         if (issueId == null)
             throw new IllegalArgumentException("Id of issue cant be null. Persist first.");
 
-        if (logger.isDebugEnabled())
-            logger.debug("getSubIssuesOf");
+//        if (logger.isDebugEnabled())
+//            logger.debug("getSubIssuesOf");
 
         Node startNode = graphDb.getNodeById(issueId);
         List<IssueBase> issueList = new ArrayList<>();
@@ -306,8 +304,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         for (Relationship rel : startNode.getRelationships(relType, Direction.OUTGOING)) {
             issueList.add(getObjectFromNode(rel.getOtherNode(startNode)));
         }
-        if (logger.isDebugEnabled())
-            logger.debug("Subissue: " + issueList);
+//        if (logger.isDebugEnabled())
+//            logger.debug("Subissue: " + issueList);
         return issueList;
     }
 
@@ -316,26 +314,26 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         boolean success = false;
         Transaction tx = graphDb.beginTx();
         try {
-            if (logger.isDebugEnabled())
-                logger.debug("deleteSubIssueRelationTx");
+//            if (logger.isDebugEnabled())
+//                logger.debug("deleteSubIssueRelationTx");
             boolean ret = deleteSubIssueRelation(parent, child);
             tx.success();
             if (ret) {
                 success = true;
             } else {
-                if (logger.isDebugEnabled())
-                    logger.debug("Method 'deleteSubIssueRelation' unsuccessfull");
+//                if (logger.isDebugEnabled())
+//                    logger.debug("Method 'deleteSubIssueRelation' unsuccessfull");
             }
         } catch (NullPointerException | IllegalArgumentException e) {
-            logger.error(e.getMessage(), e);
+//            logger.error(e.getMessage(), e);
         } finally {
             tx.finish();
-            if (logger.isDebugEnabled()) {
-                if (success)
-                    logger.debug("Successfull");
-                else
-                    logger.debug("Unsuccessfull");
-            }
+//            if (logger.isDebugEnabled()) {
+//                if (success)
+//                    logger.debug("Successfull");
+//                else
+//                    logger.debug("Unsuccessfull");
+//            }
             return success;
         }
     }
@@ -358,8 +356,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         if (parent.equals(child))
             throw new IllegalArgumentException("Parent and Child issue are the same.");
 
-        if (logger.isDebugEnabled())
-            logger.debug("deleteSubIssueRelation");
+//        if (logger.isDebugEnabled())
+//            logger.debug("deleteSubIssueRelation");
 
         Node childNode = graphDb.getNodeById(childId);
         Node parentNode = graphDb.getNodeById(parentId);
@@ -371,12 +369,12 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
                     setAsRootIssue(child);
                     success = true;
                 } else {
-                    if (logger.isDebugEnabled())
-                        logger.debug("Parent Issue doesn't match to child. continue...");
+//                    if (logger.isDebugEnabled())
+//                        logger.debug("Parent Issue doesn't match to child. continue...");
                 }
             }
         } else {
-            logger.error("Childissue has no parent!");
+//            logger.error("Childissue has no parent!");
         }
         return success;
     }
@@ -386,21 +384,21 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         boolean success = false;
         Transaction tx = graphDb.beginTx();
         try {
-            if (logger.isDebugEnabled())
-                logger.debug("setAsRootIssueTx");
+//            if (logger.isDebugEnabled())
+//                logger.debug("setAsRootIssueTx");
             setAsRootIssue(issue);
             tx.success();
             success = true;
         } catch (NullPointerException | IllegalArgumentException e) {
-            logger.error(e.getMessage(), e);
+//            logger.error(e.getMessage(), e);
         } finally {
             tx.finish();
-            if (logger.isDebugEnabled()) {
-                if (success)
-                    logger.debug("Successfull");
-                else
-                    logger.debug("Unsuccessfull");
-            }
+//            if (logger.isDebugEnabled()) {
+//                if (success)
+//                    logger.debug("Successfull");
+//                else
+//                    logger.debug("Unsuccessfull");
+//            }
             return success;
         }
     }
@@ -412,15 +410,15 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         if (issueId == null)
             throw new IllegalArgumentException("Id of issue cant be null. Persist first.");
 
-        if (logger.isDebugEnabled())
-            logger.debug("setAsRootIssue");
+//        if (logger.isDebugEnabled())
+//            logger.debug("setAsRootIssue");
 
         Node node = graphDb.getNodeById(issueId);
 
         final RelationshipType relType = GraphRelationFactory.getSubIssueRelationshipType();
         if (node.hasRelationship(relType, Direction.INCOMING)) {
-            if (logger.isDebugEnabled())
-                logger.debug("Delete all subissue relations. Set as rootissue");
+//            if (logger.isDebugEnabled())
+//                logger.debug("Delete all subissue relations. Set as rootissue");
             for (Relationship rel : node.getRelationships(relType, Direction.INCOMING)) {
                 rel.delete();
             }
@@ -428,8 +426,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             getProjectRootNode(issue.getProjectId()).createRelationshipTo(node,
                     GraphRelationFactory.getClassRootToChildRelType());
         } else {
-            if (logger.isDebugEnabled())
-                logger.debug("Is already a rootissue");
+//            if (logger.isDebugEnabled())
+//                logger.debug("Is already a rootissue");
         }
     }
 
@@ -439,21 +437,21 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         boolean success = false;
         final Transaction tx = graphDb.beginTx();
         try {
-            if (logger.isDebugEnabled())
-                logger.debug("addComponentToTx");
+//            if (logger.isDebugEnabled())
+//                logger.debug("addComponentToTx");
             addComponentTo(issue, component);
             tx.success();
             success = true;
         } catch (NullPointerException | IllegalArgumentException e) {
-            logger.error(e.getMessage(), e);
+//            logger.error(e.getMessage(), e);
         } finally {
             tx.finish();
-            if (logger.isDebugEnabled()) {
-                if (success)
-                    logger.debug("Successfull");
-                else
-                    logger.debug("Unsuccessfull");
-            }
+//            if (logger.isDebugEnabled()) {
+//                if (success)
+//                    logger.debug("Successfull");
+//                else
+//                    logger.debug("Unsuccessfull");
+//            }
             return success;
         }
     }
@@ -471,8 +469,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         if (componentId == null)
             throw new IllegalArgumentException("Id of Component cant be null. Persist first.");
 
-        if (logger.isDebugEnabled())
-            logger.debug("addComponentTo");
+//        if (logger.isDebugEnabled())
+//            logger.debug("addComponentTo");
 
         boolean exists = false;
         final Node issueNode = graphDb.getNodeById(issueId);
@@ -487,8 +485,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
 
         if(!exists)
             issueNode.createRelationshipTo(componentNode, relShipType);
-        else
-            logger.warn("Relation to Component already exists: " + issue + ", " + component);
+//        else
+//            logger.warn("Relation to Component already exists: " + issue + ", " + component);
     }
 
 
@@ -499,8 +497,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         if (issueId == null)
             throw new IllegalArgumentException("Id of Issue cant be null. Persist first.");
 
-        if (logger.isDebugEnabled())
-            logger.debug("getComponentsOf");
+//        if (logger.isDebugEnabled())
+//            logger.debug("getComponentsOf");
 
         final Node startNode = graphDb.getNodeById(issueId);
         final List<IssueComponent> componentList = new ArrayList<>();
@@ -510,8 +508,8 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             componentList.add(DaoFactorySingelton.getInstance().getIssueComponentDAO().findByID(rel.getOtherNode(startNode).getId()));
         }
 
-        if (logger.isDebugEnabled())
-            logger.debug("Components: " + componentList);
+//        if (logger.isDebugEnabled())
+//            logger.debug("Components: " + componentList);
         return componentList;
     }
 
@@ -520,26 +518,26 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
         boolean success = false;
         final Transaction tx = graphDb.beginTx();
         try {
-            if (logger.isDebugEnabled())
-                logger.debug("deleteComponentRelationTx");
+//            if (logger.isDebugEnabled())
+//                logger.debug("deleteComponentRelationTx");
             boolean ret = deleteComponentRelation(issue, component);
             tx.success();
             if (ret) {
                 success = true;
             } else {
-                if (logger.isDebugEnabled())
-                    logger.debug("Method 'deleteSubIssueRelation' unsuccessfull");
+//                if (logger.isDebugEnabled())
+//                    logger.debug("Method 'deleteSubIssueRelation' unsuccessfull");
             }
         } catch (NullPointerException | IllegalArgumentException e) {
-            logger.error(e.getMessage(), e);
+//            logger.error(e.getMessage(), e);
         } finally {
             tx.finish();
-            if (logger.isDebugEnabled()) {
-                if (success)
-                    logger.debug("Successfull");
-                else
-                    logger.debug("Unsuccessfull");
-            }
+//            if (logger.isDebugEnabled()) {
+//                if (success)
+//                    logger.debug("Successfull");
+//                else
+//                    logger.debug("Unsuccessfull");
+//            }
             return success;
         }
     }
@@ -558,20 +556,20 @@ public class IssueBaseDAO extends GraphBaseDAO<IssueBase> {
             throw new IllegalArgumentException("Id of Component cant be null. Persist first.");
 
         boolean success = false;
-        if (logger.isDebugEnabled())
-            logger.debug("deleteComponentRelation");
+//        if (logger.isDebugEnabled())
+//            logger.debug("deleteComponentRelation");
 
         final Node issueNode = graphDb.getNodeById(issueId);
         RelationshipType relType = GraphRelationFactory.getRelationshipTypeForClass(IssueComponent.class);
         for (final Relationship rel : issueNode.getRelationships(relType, Direction.OUTGOING))
             if (rel.getOtherNode(issueNode).equals(graphDb.getNodeById(componentId))) {
-                if (logger.isDebugEnabled())
-                    logger.debug("Delete Relation to Component: " + issue + ", " + component);
+//                if (logger.isDebugEnabled())
+//                    logger.debug("Delete Relation to Component: " + issue + ", " + component);
                 rel.delete();
                 success = true;
             } else {
-                if (logger.isDebugEnabled())
-                    logger.debug("Has no relation to Component: " + issue + ", " + component);
+//                if (logger.isDebugEnabled())
+//                    logger.debug("Has no relation to Component: " + issue + ", " + component);
             }
 
         return success;

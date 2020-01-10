@@ -10,7 +10,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
-import org.apache.log4j.Logger;
 import org.rapidpm.Constants;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
@@ -30,144 +29,148 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
-public class AddRowWindow extends Dialog {
-    public static final String HEIGHT = "400px";
-    public static final String WIDTH = "400px";
-    public static final int POSITION_X = 50;
-    public static final int POSITION_Y = 100;
+public class AddRowWindow
+    extends Dialog {
+  public static final String HEIGHT     = "400px";
+  public static final String WIDTH      = "400px";
+  public static final int    POSITION_X = 50;
+  public static final int    POSITION_Y = 100;
 
-    private static final Logger logger = Logger.getLogger(AddRowWindow.class);
-
-    private FormLayout formLayout = new FormLayout();
-    private HorizontalLayout horizontalButtonLayout = new HorizontalLayout();
-    private Button saveButton = new Button();
-    private Button cancelButton = new Button();
-    private RowFieldGroup fieldGroup;
-    private ResourceBundle messages;
+  private FormLayout       formLayout             = new FormLayout();
+  private HorizontalLayout horizontalButtonLayout = new HorizontalLayout();
+  private Button           saveButton             = new Button();
+  private Button           cancelButton           = new Button();
+  private RowFieldGroup    fieldGroup;
+  private ResourceBundle   messages;
 //    private AddRowWindowBean addRowWindowBean;
 
-    public AddRowWindow() {
-        messages = VaadinSession.getCurrent().getAttribute(ResourceBundle.class);
-        setHeight(HEIGHT);
-        setWidth(WIDTH);
+  public AddRowWindow() {
+    messages = VaadinSession.getCurrent()
+                            .getAttribute(ResourceBundle.class);
+    setHeight(HEIGHT);
+    setWidth(WIDTH);
 //        setPositionX(POSITION_X);
 //        setPositionY(POSITION_Y);
 
-        fieldGroup = new RowFieldGroup();
+    fieldGroup = new RowFieldGroup();
 
-        fillFormLayout();
-        add(formLayout);
+    fillFormLayout();
+    add(formLayout);
 
-        horizontalButtonLayout.add(saveButton);
-        horizontalButtonLayout.add(cancelButton);
+    horizontalButtonLayout.add(saveButton);
+    horizontalButtonLayout.add(cancelButton);
 
-        add(horizontalButtonLayout);
+    add(horizontalButtonLayout);
 
-        final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-        addListeners(daoFactory);
-        doInternationalization();
+    final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
+    addListeners(daoFactory);
+    doInternationalization();
 
+  }
+
+  private void fillFormLayout() {
+    for (TextField textField : fieldGroup.getTextFields()) {
+      textField.setValue(fieldGroup.getDefaultValueByField(textField));
+      formLayout.addFormItem(textField, fieldGroup.getLabelByField(textField));
     }
-
-    private void fillFormLayout() {
-        for (TextField textField : fieldGroup.getTextFields()) {
-            textField.setValue(fieldGroup.getDefaultValueByField(textField));
-            formLayout.addFormItem(textField, fieldGroup.getLabelByField(textField));
-        }
-    }
+  }
 
 
-    private void doInternationalization() {
+  private void doInternationalization() {
 //        this.setText(messages.getString("stdsatz_addRessource"));
-        saveButton.setText(messages.getString("save"));
-        cancelButton.setText(messages.getString("cancel"));
-    }
+    saveButton.setText(messages.getString("save"));
+    cancelButton.setText(messages.getString("cancel"));
+  }
 
-    private void addListeners(final DaoFactory baseDaoFactoryBean) {
-        saveButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> {
-            boolean allFilled = true;
-            final Stream<Component> stream = AddRowWindow.this.formLayout.getChildren();
-            boolean anyFieldEmpty = stream.anyMatch(component -> (component instanceof HasValue) && (((HasValue) component).getValue().equals("")));
-            allFilled = !anyFieldEmpty;
-            if (allFilled) {
-                try {
-                    final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
-                    final List<String> ressourceGroupNames = new ArrayList<>();
-                    final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO()
-                            .loadAllEntities();
-                    for(final RessourceGroup ressourceGroup : ressourceGroups){
-                        daoFactory.getEntityManager().refresh(ressourceGroup);
-                        ressourceGroupNames.add(ressourceGroup.getName());
-                    }
-                    fieldGroup.commit();
-                    final RessourceGroup ressourceGroup = fieldGroup.getBean();
+  private void addListeners(final DaoFactory baseDaoFactoryBean) {
+    saveButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> {
+      boolean                 allFilled     = true;
+      final Stream<Component> stream        = AddRowWindow.this.formLayout.getChildren();
+      boolean                 anyFieldEmpty = stream.anyMatch(
+          component -> (component instanceof HasValue) && (((HasValue) component).getValue()
+                                                                                 .equals("")));
+      allFilled = !anyFieldEmpty;
+      if (allFilled) {
+        try {
+          final DaoFactory   daoFactory          = DaoFactorySingelton.getInstance();
+          final List<String> ressourceGroupNames = new ArrayList<>();
+          final List<RessourceGroup> ressourceGroups = daoFactory.getRessourceGroupDAO()
+                                                                 .loadAllEntities();
+          for (final RessourceGroup ressourceGroup : ressourceGroups) {
+            daoFactory.getEntityManager()
+                      .refresh(ressourceGroup);
+            ressourceGroupNames.add(ressourceGroup.getName());
+          }
+          fieldGroup.commit();
+          final RessourceGroup ressourceGroup = fieldGroup.getBean();
 
-                    final String ressourceGroupName = ressourceGroup.getName();
-                    if(ressourceGroupNames.contains(ressourceGroupName)){
-                        throw new NameExistsException();
-                    }
-                    if(ressourceGroupName.matches(Constants.EMPTY_OR_SPACES_ONLY_PATTERN)){
-                        throw new InvalidNameException();
-                    }
+          final String ressourceGroupName = ressourceGroup.getName();
+          if (ressourceGroupNames.contains(ressourceGroupName)) {
+            throw new NameExistsException();
+          }
+          if (ressourceGroupName.matches(Constants.EMPTY_OR_SPACES_ONLY_PATTERN)) {
+            throw new InvalidNameException();
+          }
 
-                    final RessourceGroup persistedRessourceGroup = baseDaoFactoryBean.saveOrUpdateTX
-                            (ressourceGroup);
-                    final List<PlanningUnit> planningUnits = baseDaoFactoryBean.getPlanningUnitDAO()
-                            .loadAllEntities();
+          final RessourceGroup persistedRessourceGroup = baseDaoFactoryBean.saveOrUpdateTX(ressourceGroup);
+          final List<PlanningUnit> planningUnits = baseDaoFactoryBean.getPlanningUnitDAO()
+                                                                     .loadAllEntities();
 
-                    for(final PlanningUnit planningUnit : planningUnits){
-                        final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
-                        planningUnitElement.setPlannedMinutes(0);
-                        planningUnitElement.setRessourceGroup(persistedRessourceGroup);
-                        final PlanningUnitElement persistedPlanningUnitElement = baseDaoFactoryBean.saveOrUpdateTX
-                                (planningUnitElement);
-                        if(planningUnit.getPlanningUnitElementList() == null){
-                            planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
-                        }
-                        planningUnit.getPlanningUnitElementList().add(persistedPlanningUnitElement);
-                        baseDaoFactoryBean.saveOrUpdateTX(planningUnit);
-                    }
-                    getUI().ifPresent(ui -> navigateTo(ui, StundensaetzeScreen.class));
-
-                    AddRowWindow.this.close();
-                } catch (final NameExistsException e) {
-                    Notification.show(messages.getString("stdsatz_nameexists"));
-                } catch (InvalidNameException e) {
-                    Notification.show(messages.getString("stdsatz_invalidname"));
-                }
-            } else {
-                final Label lbl = new Label();
-                lbl.setText(messages.getString("stdsatz_fillInAllFields"));
-                AddRowWindow.this.add(lbl);
+          for (final PlanningUnit planningUnit : planningUnits) {
+            final PlanningUnitElement planningUnitElement = new PlanningUnitElement();
+            planningUnitElement.setPlannedMinutes(0);
+            planningUnitElement.setRessourceGroup(persistedRessourceGroup);
+            final PlanningUnitElement persistedPlanningUnitElement = baseDaoFactoryBean.saveOrUpdateTX(
+                planningUnitElement);
+            if (planningUnit.getPlanningUnitElementList() == null) {
+              planningUnit.setPlanningUnitElementList(new ArrayList<PlanningUnitElement>());
             }
-        });
+            planningUnit.getPlanningUnitElementList()
+                        .add(persistedPlanningUnitElement);
+            baseDaoFactoryBean.saveOrUpdateTX(planningUnit);
+          }
+          getUI().ifPresent(ui -> navigateTo(ui, StundensaetzeScreen.class));
 
-        cancelButton.addClickListener((ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> AddRowWindow.this.close());
-
-    }
-
-    private void navigateTo(UI ui, Class<? extends Screen> screenClass) {
-        for (Annotation annotation : screenClass.getAnnotations()) {
-            Class<? extends Annotation> type = annotation.annotationType();
-            if (type == Route.class) {
-                for (Method method : type.getDeclaredMethods()) {
-                    Object value = null;
-                    try {
-                        value = method.invoke(annotation, (Object[])null);
-                    } catch (IllegalAccessException e) {
-
-                    } catch (InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
-                    if (value != null) {
-                        ui.navigate(value.toString());
-                    }
-                }
-            }
+          AddRowWindow.this.close();
+        } catch (final NameExistsException e) {
+          Notification.show(messages.getString("stdsatz_nameexists"));
+        } catch (InvalidNameException e) {
+          Notification.show(messages.getString("stdsatz_invalidname"));
         }
-    }
+      } else {
+        final Label lbl = new Label();
+        lbl.setText(messages.getString("stdsatz_fillInAllFields"));
+        AddRowWindow.this.add(lbl);
+      }
+    });
 
-    public void show() {
-        open();
+    cancelButton.addClickListener(
+        (ComponentEventListener<ClickEvent<Button>>) buttonClickEvent -> AddRowWindow.this.close());
+
+  }
+
+  private void navigateTo(UI ui, Class<? extends Screen> screenClass) {
+    for (Annotation annotation : screenClass.getAnnotations()) {
+      Class<? extends Annotation> type = annotation.annotationType();
+      if (type == Route.class) {
+        for (Method method : type.getDeclaredMethods()) {
+          Object value = null;
+          try {
+            value = method.invoke(annotation, (Object[]) null);
+          } catch (IllegalAccessException e) {
+
+          } catch (InvocationTargetException e) {
+            e.printStackTrace();
+          }
+          if (value != null) {
+            ui.navigate(value.toString());
+          }
+        }
+      }
     }
+  }
+
+  public void show() {
+    open();
+  }
 }

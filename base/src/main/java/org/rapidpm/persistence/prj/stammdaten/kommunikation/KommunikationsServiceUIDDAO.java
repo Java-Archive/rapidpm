@@ -8,7 +8,6 @@ package org.rapidpm.persistence.prj.stammdaten.kommunikation;
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@neoscio.de
  */
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -16,8 +15,6 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 public class KommunikationsServiceUIDDAO extends DAO<Long, KommunikationsServiceUID> {
-    private static final Logger logger = Logger.getLogger(KommunikationsServiceUIDDAO.class);
-
 
     public KommunikationsServiceUIDDAO(final EntityManager entityManager) {
         super(entityManager, KommunikationsServiceUID.class);

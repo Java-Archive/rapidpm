@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.projectmanagement.execution.issuetracking;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -20,7 +19,6 @@ import java.util.List;
  */
 
 public class IssueTimeUnitDAO extends DAO<Long, IssueTimeUnit> {
-    private static final Logger logger = Logger.getLogger(IssueTimeUnitDAO.class);
 
     public IssueTimeUnitDAO(final EntityManager entityManager) {
         super(entityManager, IssueTimeUnit.class);

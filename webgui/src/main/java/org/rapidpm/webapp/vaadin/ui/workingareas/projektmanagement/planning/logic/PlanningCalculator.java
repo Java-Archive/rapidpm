@@ -1,15 +1,18 @@
 package org.rapidpm.webapp.vaadin.ui.workingareas.projektmanagement.planning.logic;
 
 import com.vaadin.flow.server.VaadinSession;
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
-import org.rapidpm.persistence.prj.projectmanagement.planning.*;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProject;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlannedProjectDAO;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
+import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnitElement;
 import org.rapidpm.persistence.prj.stammdaten.organisationseinheit.intern.personal.RessourceGroup;
-import org.rapidpm.webapp.vaadin.MainUI;
 
 import javax.persistence.EntityManager;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -21,92 +24,95 @@ import java.util.*;
 @SuppressWarnings("ClassWithoutNoArgConstructor")
 public class PlanningCalculator {
 
-    private static final Logger logger = Logger.getLogger(PlanningCalculator.class);
 
-    private PlannedProject projekt;
-    private ResourceBundle messages;
-    private DaoFactory daoFactory;
-    private Integer counter = 0;
+  private PlannedProject projekt;
+  private ResourceBundle messages;
+  private DaoFactory     daoFactory;
+  private Integer        counter = 0;
 
-    private Map<PlanningUnitElement, Integer> planningUnitElements2 = new HashMap<>();
-    private Map<PlanningUnitElement, Integer> planningUnitElements1 = new HashMap<>();
+  private Map<PlanningUnitElement, Integer> planningUnitElements2 = new HashMap<>();
+  private Map<PlanningUnitElement, Integer> planningUnitElements1 = new HashMap<>();
 
 
-    public PlanningCalculator(final ResourceBundle bundle) {
-        this.messages = bundle;
-        daoFactory = DaoFactorySingelton.getInstance();
-        final PlannedProjectDAO plannedProjectDAO = daoFactory.getPlannedProjectDAO();
-        final PlannedProject projectFromSession = VaadinSession.getCurrent().getAttribute(PlannedProject.class);
-        projekt = plannedProjectDAO.findByID(projectFromSession.getId());
-        daoFactory.getEntityManager().refresh(projekt);
-    }
+  public PlanningCalculator(final ResourceBundle bundle) {
+    this.messages = bundle;
+    daoFactory    = DaoFactorySingelton.getInstance();
+    final PlannedProjectDAO plannedProjectDAO  = daoFactory.getPlannedProjectDAO();
+    final PlannedProject    projectFromSession = VaadinSession.getCurrent()
+                                                              .getAttribute(PlannedProject.class);
+    projekt = plannedProjectDAO.findByID(projectFromSession.getId());
+    daoFactory.getEntityManager()
+              .refresh(projekt);
+  }
 
-    public void calculate() {
-        for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
-            resetParents(planningUnit);
-            calculateRessources(planningUnit);
-            daoFactory.new Transaction() {
-                @Override
-                public void doTask() {
-                    final EntityManager entityManager = daoFactory.getEntityManager();
-                    for(final PlanningUnitElement planningUnitElement : planningUnitElements2.keySet()){
-                        entityManager.persist(planningUnitElement);
-                    }
-                    entityManager.flush();
-                    entityManager.refresh(projekt);
-                }
-            }.execute();
+  public void calculate() {
+    for (final PlanningUnit planningUnit : projekt.getPlanningUnits()) {
+      resetParents(planningUnit);
+      calculateRessources(planningUnit);
+      daoFactory.new Transaction() {
+        @Override
+        public void doTask() {
+          final EntityManager entityManager = daoFactory.getEntityManager();
+          for (final PlanningUnitElement planningUnitElement : planningUnitElements2.keySet()) {
+            entityManager.persist(planningUnitElement);
+          }
+          entityManager.flush();
+          entityManager.refresh(projekt);
         }
-
+      }.execute();
     }
 
-    private void resetParents(final PlanningUnit planningUnit) {
+  }
 
-        if(planningUnit.getKindPlanningUnits() != null && !planningUnit.getKindPlanningUnits().isEmpty()){
-            for(final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()){
-                planningUnitElement.setPlannedMinutes(0);
-                planningUnitElements1.put(planningUnitElement,counter++);
-            }
-            for(final PlanningUnit kindPlanningUnit : planningUnit.getKindPlanningUnits()){
-                resetParents(kindPlanningUnit);
-            }
-            daoFactory.new Transaction() {
-                @Override
-                public void doTask() {
-                    final EntityManager entityManager = daoFactory.getEntityManager();
-                    for(final PlanningUnitElement planningUnitElement : planningUnitElements1.keySet()){
-                        entityManager.persist(planningUnitElement);
-                    }
-                    entityManager.flush();
-                }
-            }.execute();
-        } else {
-            //do nothing
+  private void resetParents(final PlanningUnit planningUnit) {
+
+    if (planningUnit.getKindPlanningUnits() != null && !planningUnit.getKindPlanningUnits()
+                                                                    .isEmpty()) {
+      for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+        planningUnitElement.setPlannedMinutes(0);
+        planningUnitElements1.put(planningUnitElement, counter++);
+      }
+      for (final PlanningUnit kindPlanningUnit : planningUnit.getKindPlanningUnits()) {
+        resetParents(kindPlanningUnit);
+      }
+      daoFactory.new Transaction() {
+        @Override
+        public void doTask() {
+          final EntityManager entityManager = daoFactory.getEntityManager();
+          for (final PlanningUnitElement planningUnitElement : planningUnitElements1.keySet()) {
+            entityManager.persist(planningUnitElement);
+          }
+          entityManager.flush();
         }
+      }.execute();
+    } else {
+      //do nothing
     }
+  }
 
-    private void calculateRessources(final PlanningUnit planningUnit) {
-            if(planningUnit.getKindPlanningUnits() != null && !planningUnit.getKindPlanningUnits().isEmpty()){
-                for(final PlanningUnit kindPlanningUnit : planningUnit.getKindPlanningUnits()){
-                    calculateRessources(kindPlanningUnit);
-                    generateCells(planningUnit, kindPlanningUnit);
-                }
-            } else {
-                //do nothing
-            }
+  private void calculateRessources(final PlanningUnit planningUnit) {
+    if (planningUnit.getKindPlanningUnits() != null && !planningUnit.getKindPlanningUnits()
+                                                                    .isEmpty()) {
+      for (final PlanningUnit kindPlanningUnit : planningUnit.getKindPlanningUnits()) {
+        calculateRessources(kindPlanningUnit);
+        generateCells(planningUnit, kindPlanningUnit);
+      }
+    } else {
+      //do nothing
     }
+  }
 
-    private void generateCells(final PlanningUnit planningUnit, final PlanningUnit kindPlanningUnit) {
-        for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
-            final RessourceGroup parentPlanningUnitRessourceGroup = planningUnitElement.getRessourceGroup();
-            for (final PlanningUnitElement kindPlanningUnitElement : kindPlanningUnit.getPlanningUnitElementList()) {
-                final RessourceGroup kindPlanningUnitElementRessourceGroup = kindPlanningUnitElement.getRessourceGroup();
-                if (kindPlanningUnitElementRessourceGroup.equals(parentPlanningUnitRessourceGroup)) {
-                    planningUnitElement.setPlannedMinutes(planningUnitElement.getPlannedMinutes() +
-                            kindPlanningUnitElement.getPlannedMinutes());
-                    planningUnitElements2.put(planningUnitElement,counter++);
-                }
-            }
+  private void generateCells(final PlanningUnit planningUnit, final PlanningUnit kindPlanningUnit) {
+    for (final PlanningUnitElement planningUnitElement : planningUnit.getPlanningUnitElementList()) {
+      final RessourceGroup parentPlanningUnitRessourceGroup = planningUnitElement.getRessourceGroup();
+      for (final PlanningUnitElement kindPlanningUnitElement : kindPlanningUnit.getPlanningUnitElementList()) {
+        final RessourceGroup kindPlanningUnitElementRessourceGroup = kindPlanningUnitElement.getRessourceGroup();
+        if (kindPlanningUnitElementRessourceGroup.equals(parentPlanningUnitRessourceGroup)) {
+          planningUnitElement.setPlannedMinutes(
+              planningUnitElement.getPlannedMinutes() + kindPlanningUnitElement.getPlannedMinutes());
+          planningUnitElements2.put(planningUnitElement, counter++);
         }
+      }
     }
+  }
 }

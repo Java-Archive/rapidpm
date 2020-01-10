@@ -14,14 +14,12 @@ package org.rapidpm.persistence.prj.stammdaten.person;
  *
  */
 
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
 public class NamensKlassifizierung {
-    private static final Logger logger = Logger.getLogger(NamensKlassifizierung.class);
 
     @Id
     @TableGenerator(name = "PKGenNamensKlassifizierung", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "NamensKlassifizierung_id", valueColumnName = "gen_value", allocationSize = 1)

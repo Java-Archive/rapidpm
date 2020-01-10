@@ -13,10 +13,8 @@ package org.rapidpm.exception;/**
  *
  */
 
-import org.apache.log4j.Logger;
 
 public class RapidPMException extends Exception {
-    private static final Logger logger = Logger.getLogger(RapidPMException.class);
 
     public RapidPMException() {
         super();

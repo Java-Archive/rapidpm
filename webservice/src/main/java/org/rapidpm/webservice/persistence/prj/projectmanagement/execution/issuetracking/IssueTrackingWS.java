@@ -1,6 +1,5 @@
 package org.rapidpm.webservice.persistence.prj.projectmanagement.execution.issuetracking;
 
-import org.apache.log4j.Logger;
 import org.neo4j.graphdb.NotFoundException;
 import org.rapidpm.lang.StringUtils;
 import org.rapidpm.persistence.DaoFactory;
@@ -23,7 +22,6 @@ import java.util.List;
  */
 @WebService(serviceName = "IssueTrackingWS")
 public class IssueTrackingWS {
-    private static final Logger logger = Logger.getLogger(IssueTrackingWS.class);
 
     private final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
     private final IssueBaseDAO issueBaseDAO = daoFactory.getIssueBaseDAO();
@@ -108,13 +106,11 @@ public class IssueTrackingWS {
             try {
                 getter = IssueBase.class.getMethod(getterName);
             } catch (NoSuchMethodException e) {
-                logger.error("getter '" + getterName + "' not found", e);
                 return null;
             }
             try {
                 return getter.invoke(issueBase);
             } catch (IllegalAccessException | InvocationTargetException e) {
-                logger.error("getter '" + getterName + "' could not be invoked", e);
             }
         }
         return null;

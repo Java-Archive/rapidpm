@@ -1,7 +1,6 @@
 package org.rapidpm.persistence.prj.bewegungsdaten.msgcenter.msg;
 
 import org.rapidpm.persistence.system.security.Benutzer;
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -21,7 +20,6 @@ import java.util.Date;
 //@CacheStrategy(readOnly = true, warmingQuery = "order by id",useBeanCache = true)
 @Entity
 public class PersonalMessage {
-    private static final Logger logger = Logger.getLogger(PersonalMessage.class);
 
     @Id
     @TableGenerator(name = "PKGenPersonalMessage", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "PersonalMessage_id", valueColumnName = "gen_value", allocationSize = 1)

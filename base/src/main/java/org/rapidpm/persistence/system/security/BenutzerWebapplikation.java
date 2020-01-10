@@ -14,7 +14,6 @@ package org.rapidpm.persistence.system.security;
  *
  */
 
-import org.apache.log4j.Logger;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
@@ -23,7 +22,6 @@ import javax.persistence.*;
 @Entity
 @Audited
 public class BenutzerWebapplikation {
-    private static final Logger logger = Logger.getLogger(BenutzerWebapplikation.class);
 
     @Id
     @TableGenerator(name = "PKGenBenutzerWebapplikation", table = "pk_gen",

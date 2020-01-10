@@ -7,7 +7,6 @@ package org.rapidpm.data.tree.impl;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import org.rapidpm.data.tree.Node;
-import org.apache.log4j.Logger;
 
 import java.util.Iterator;
 import java.util.List;
@@ -21,7 +20,6 @@ import static com.google.common.base.Preconditions.checkArgument;
  * @see org.rapidpm.data.tree.Tree
  */
 public abstract class AbstractNode implements Node {
-    private static final Logger logger = Logger.getLogger(AbstractNode.class);
 
     /**
      * Elternknoten.
@@ -94,7 +92,6 @@ public abstract class AbstractNode implements Node {
         }
         final int index = parent.getChildIndex(this);
         if (index < 0) {
-            logger.error("parent (" + parent + ") doesn't contain this node: " + this);
             return null;
         }
         final int nthIndex = index + delta;

@@ -6,13 +6,11 @@ package org.rapidpm.persistence.prj.stammdaten.address; /**
  * This is part of the RapidPM - www.rapidpm.org project. please contact sven.ruppert@rapidpm.org
  */
 
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 
 @Entity
 public class Postfach {
-    private static final Logger logger = Logger.getLogger(Postfach.class);
 
     @Id
     @TableGenerator(name = "PKGenPostfach",

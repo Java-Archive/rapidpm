@@ -14,7 +14,6 @@ package org.rapidpm.persistence.prj.stammdaten.web;
  *
  */
 
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.List;
@@ -24,7 +23,6 @@ import java.util.List;
 //@Cacheable(value = true)
 @Entity
 public class WebDomain {
-    private static final Logger logger = Logger.getLogger(WebDomain.class);
 
     @Id
     @TableGenerator(name = "PKGenWebDomain",

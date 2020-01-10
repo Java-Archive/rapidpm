@@ -18,7 +18,6 @@ import org.rapidpm.persistence.system.security.Benutzer;
 import org.rapidpm.persistence.system.security.BenutzerGruppe;
 import org.rapidpm.persistence.system.security.BenutzerWebapplikation;
 import org.rapidpm.persistence.system.security.Mandantengruppe;
-import org.apache.log4j.Logger;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -26,7 +25,6 @@ import java.util.Date;
 
 @Entity
 public class Message {
-    private static final Logger logger = Logger.getLogger(Message.class);
 
     @Id
     @TableGenerator(name = "PKGenMessage", table = "pk_gen", pkColumnName = "gen_key", pkColumnValue = "Message_id", valueColumnName = "gen_value", allocationSize = 1)

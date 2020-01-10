@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.stammdaten.web;
 
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DAO;
 
 import javax.persistence.EntityManager;
@@ -19,7 +18,6 @@ import java.util.List;
  */
 
 public class WebDomainDAO extends DAO<Long, WebDomain> {
-    private static final Logger logger = Logger.getLogger(WebDomainDAO.class);
 
     public WebDomainDAO(final EntityManager entityManager) {
         super(entityManager, WebDomain.class);

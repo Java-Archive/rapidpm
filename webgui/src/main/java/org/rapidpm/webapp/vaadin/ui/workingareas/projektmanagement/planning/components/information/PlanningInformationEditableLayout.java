@@ -7,7 +7,6 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.server.VaadinSession;
-import org.apache.log4j.Logger;
 import org.rapidpm.persistence.DaoFactory;
 import org.rapidpm.persistence.DaoFactorySingelton;
 import org.rapidpm.persistence.prj.projectmanagement.planning.PlanningUnit;
@@ -31,8 +30,6 @@ import static org.rapidpm.Constants.COMMIT_EXCEPTION_MESSAGE;
 public class PlanningInformationEditableLayout extends EditableLayout {
 
     //TODO Testcases managen
-    private static final Logger logger = Logger.getLogger(PlanningInformationEditableLayout.class);
-
     private ResourceBundle messages;
     private List<AbstractField> fieldList;
     private PlanningUnitFieldGroup fieldGroup;
@@ -63,9 +60,9 @@ public class PlanningInformationEditableLayout extends EditableLayout {
                 final DaoFactory daoFactory = DaoFactorySingelton.getInstance();
                 daoFactory.saveOrUpdateTX(editedPlanningUnit);
             }catch (NullPointerException e){
-                logger.info(COMMIT_EXCEPTION_MESSAGE);
+//                logger.info(COMMIT_EXCEPTION_MESSAGE);
             }catch(Exception e){
-                logger.warn("Exception", e);
+//                logger.warn("Exception", e);
             }
         });
     }

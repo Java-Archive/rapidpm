@@ -1,6 +1,5 @@
 package org.rapidpm.persistence.prj.stammdaten.organisationseinheit.gesellschaftsformen;
 
-import org.apache.log4j.Logger;
 
 /**
  * RapidPM - www.rapidpm.org
@@ -15,6 +14,5 @@ import org.apache.log4j.Logger;
  */
 
 public class Einzelunternehmung {
-    private static final Logger logger = Logger.getLogger(Einzelunternehmung.class);
 
 }
